@@ -19,13 +19,14 @@ class SiteCrawler
     protected string $userAgent = 'SEOAIco/1.0 (SEO Crawler)';
 
     /**
-     * Crawl a site's homepage and extract all valid links
+     * Crawl a site's homepage and extract all valid links and metadata
      *
      * @param string $domain Domain without protocol (e.g., 'bionw.com')
      * @return array{
      *     success: bool,
      *     url: string,
      *     links: array<string>,
+     *     title: string|null,
      *     error: string|null,
      *     status_code: int|null
      * }
@@ -47,6 +48,7 @@ class SiteCrawler
                     'success' => false,
                     'url' => $url,
                     'links' => [],
+                    'title' => null,
                     'error' => "HTTP {$response->status()}: Failed to fetch page",
                     'status_code' => $response->status(),
                 ];
@@ -58,10 +60,14 @@ class SiteCrawler
             // Parse HTML and extract links
             $links = $this->extractLinks($html, $url);
 
+            // Extract title from HTML
+            $title = $this->extractTitle($html);
+
             return [
                 'success' => true,
                 'url' => $url,
                 'links' => $links,
+                'title' => $title,
                 'error' => null,
                 'status_code' => $response->status(),
             ];
@@ -72,6 +78,7 @@ class SiteCrawler
                 'success' => false,
                 'url' => $url,
                 'links' => [],
+                'title' => null,
                 'error' => "Connection error: {$e->getMessage()}",
                 'status_code' => null,
             ];
@@ -82,6 +89,7 @@ class SiteCrawler
                 'success' => false,
                 'url' => $url,
                 'links' => [],
+                'title' => null,
                 'error' => "Error: {$e->getMessage()}",
                 'status_code' => null,
             ];
@@ -235,6 +243,29 @@ class SiteCrawler
         $baseHost = preg_replace('/^www\./i', '', $baseHost ?? '');
 
         return $urlHost === $baseHost;
+    }
+
+    /**
+     * Extract page title from HTML
+     */
+    protected function extractTitle(string $html): ?string
+    {
+        try {
+            $crawler = new Crawler($html);
+            
+            // Try to get title tag content
+            $titleNode = $crawler->filter('title');
+            
+            if ($titleNode->count() > 0) {
+                $title = trim($titleNode->text());
+                return !empty($title) ? $title : null;
+            }
+            
+            return null;
+        } catch (\Exception $e) {
+            Log::warning("Failed to extract title: {$e->getMessage()}");
+            return null;
+        }
     }
 
     /**

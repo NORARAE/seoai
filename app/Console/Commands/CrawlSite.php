@@ -52,8 +52,26 @@ class CrawlSite extends Command
                 return self::FAILURE;
             }
 
-            // Save discovered pages
+            // Save homepage page with metadata
+            $homepageUrl = $result['url'];
+            Page::updateOrCreate(
+                ['site_id' => $site->id, 'url' => $homepageUrl],
+                [
+                    'path' => parse_url($homepageUrl, PHP_URL_PATH) ?? '/',
+                    'title' => $result['title'],
+                    'status_code' => $result['status_code'],
+                    'crawl_status' => 'completed',
+                    'last_crawled_at' => now(),
+                ]
+            );
+
+            // Save other discovered pages (without metadata for now)
             foreach ($result['links'] as $url) {
+                // Skip if it's the homepage (already saved above)
+                if ($url === $homepageUrl) {
+                    continue;
+                }
+
                 Page::updateOrCreate(
                     ['site_id' => $site->id, 'url' => $url],
                     [
@@ -76,6 +94,8 @@ class CrawlSite extends Command
                 ['Metric', 'Value'],
                 [
                     ['Domain', $site->domain],
+                    ['Homepage Title', $result['title'] ?? '—'],
+                    ['HTTP Status', $result['status_code']],
                     ['Links Found', count($result['links'])],
                     ['Total Pages', $site->pages_crawled],
                     ['Status', $site->crawl_status],
