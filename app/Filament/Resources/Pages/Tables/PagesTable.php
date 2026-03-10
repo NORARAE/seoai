@@ -74,24 +74,13 @@ class PagesTable
                     ->numeric()
                     ->sortable()
                     ->alignEnd()
-                    ->color(fn ($state) => match (true) {
-                        $state === 0 => 'danger',
-                        $state < 2 => 'warning',
-                        default => 'success',
-                    })
-                    ->tooltip('Number of internal links pointing to this page'),
+                    ->color(fn ($state) => $state === 0 ? 'danger' : ($state < 2 ? 'warning' : 'success')),
 
                 TextColumn::make('outgoing_links_count')
                     ->label('Out Links')
                     ->numeric()
                     ->sortable()
-                    ->alignEnd()
-                    ->color(fn ($state) => match (true) {
-                        $state === 0 => 'gray',
-                        $state > 100 => 'warning',
-                        default => 'success',
-                    })
-                    ->tooltip('Number of internal links from this page'),
+                    ->alignEnd(),
 
                 TextColumn::make('last_crawled_at')
                     ->label('Last Crawled')

@@ -2,11 +2,9 @@
 
 namespace App\Filament\Widgets;
 
-use App\Models\InternalLink;
 use App\Models\Page;
 use Filament\Widgets\StatsOverviewWidget as BaseWidget;
 use Filament\Widgets\StatsOverviewWidget\Stat;
-use Illuminate\Support\Facades\DB;
 
 class PageHealthOverview extends BaseWidget
 {
