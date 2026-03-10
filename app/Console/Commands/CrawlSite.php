@@ -6,113 +6,64 @@ use App\Models\Page;
 use App\Models\Site;
 use App\Services\SiteCrawler;
 use Illuminate\Console\Command;
-use Illuminate\Support\Facades\DB;
 
 class CrawlSite extends Command
 {
-    /**
-     * The name and signature of the console command.
-     *
-     * @var string
-     */
     protected $signature = 'crawl:site {domain? : The domain to crawl (e.g., bionw.com)}';
+    
+    protected $description = 'Crawl a site\'s homepage and persist discovered links to database';
 
-    /**
-     * The console command description.
-     *
-     * @var string
-     */
-    protected $description = 'Crawl a site\'s homepage, discover links, and persist to database';
-
-    /**
-     * Execute the console command.
-     */
     public function handle(SiteCrawler $crawler): int
     {
         $domain = $this->argument('domain');
 
-        // If no domain provided, try to use the first site from database
         if (!$domain) {
             $site = Site::first();
-
-            if ($site) {
-                $domain = $site->domain;
-                $this->info("No domain provided. Using first site from database: {$domain}");
-            } else {
+            
+            if (!$site) {
                 $this->error('No domain provided and no sites found in database.');
-                $this->info('Usage: php artisan crawl:site bionw.com');
+                $this->info('Usage: php artisan crawl:site example.com');
                 return self::FAILURE;
             }
+            
+            $domain = $site->domain;
+            $this->info("Using first site from database: {$domain}");
         }
 
-        $this->info("🔍 Starting crawl for: {$domain}");
-        $this->newLine();
+        $this->info("Crawling: {$domain}");
 
         try {
-            // Find or create the Site record
+            // Find or create Site
             $site = Site::firstOrCreate(
                 ['domain' => $domain],
-                [
-                    'name' => $domain,
-                    'status' => 'active',
-                    'crawl_status' => 'crawling',
-                ]
+                ['name' => $domain, 'status' => 'active']
             );
 
-            // Update crawl status to "crawling"
-            $site->update(['crawl_status' => 'crawling']);
-
-            // Perform the crawl
+            // Perform crawl
             $result = $crawler->crawlHomepage($domain);
 
-            // Handle crawl failure
             if (!$result['success']) {
                 $site->update([
                     'crawl_status' => 'failed',
                     'last_crawled_at' => now(),
                 ]);
 
-                $this->error("❌ Crawl failed!");
-                $this->error("URL: {$result['url']}");
-                $this->error("Error: {$result['error']}");
-
-                if ($result['status_code']) {
-                    $this->warn("Status Code: {$result['status_code']}");
-                }
-
+                $this->error("Crawl failed: {$result['error']}");
                 return self::FAILURE;
             }
 
-            // Persist discovered pages to database
-            $newPagesCount = 0;
-            $existingPagesCount = 0;
-
+            // Save discovered pages
             foreach ($result['links'] as $url) {
-                // Extract path from URL
-                $path = parse_url($url, PHP_URL_PATH) ?? '/';
-
-                // Try to create page, or update if exists
-                $page = Page::firstOrNew([
-                    'site_id' => $site->id,
-                    'url' => $url,
-                ]);
-
-                if (!$page->exists) {
-                    $newPagesCount++;
-                } else {
-                    $existingPagesCount++;
-                }
-
-                $page->fill([
-                    'path' => $path,
-                    'crawl_status' => 'discovered',
-                    'last_crawled_at' => now(),
-                ]);
-
-                $page->save();
+                Page::updateOrCreate(
+                    ['site_id' => $site->id, 'url' => $url],
+                    [
+                        'path' => parse_url($url, PHP_URL_PATH) ?? '/',
+                        'last_crawled_at' => now(),
+                    ]
+                );
             }
 
-            // Update Site record with crawl summary
+            // Update Site stats
             $site->update([
                 'pages_crawled' => $site->pages()->count(),
                 'crawl_status' => 'completed',
@@ -120,40 +71,25 @@ class CrawlSite extends Command
             ]);
 
             // Display summary
-            $this->info("✅ Crawl completed successfully!");
-            $this->newLine();
-
-            $this->info("📋 Summary:");
+            $this->info("✓ Success!");
             $this->table(
                 ['Metric', 'Value'],
                 [
-                    ['Site Domain', $site->domain],
-                    ['Site URL', $result['url']],
-                    ['HTTP Status', $result['status_code']],
-                    ['Links Discovered', count($result['links'])],
-                    ['New Pages Created', $newPagesCount],
-                    ['Existing Pages Found', $existingPagesCount],
-                    ['Total Pages in DB', $site->pages_crawled],
-                    ['Crawl Status', $site->crawl_status],
+                    ['Domain', $site->domain],
+                    ['Links Found', count($result['links'])],
+                    ['Total Pages', $site->pages_crawled],
+                    ['Status', $site->crawl_status],
                 ]
             );
 
-            $this->newLine();
-            $this->info('✨ Results saved to database!');
-
             return self::SUCCESS;
+            
         } catch (\Exception $e) {
-            // Update site status on exception
             if (isset($site)) {
-                $site->update([
-                    'crawl_status' => 'failed',
-                    'last_crawled_at' => now(),
-                ]);
+                $site->update(['crawl_status' => 'failed', 'last_crawled_at' => now()]);
             }
 
-            $this->error("❌ An error occurred: {$e->getMessage()}");
-            $this->error("Stack trace: {$e->getTraceAsString()}");
-
+            $this->error("Error: {$e->getMessage()}");
             return self::FAILURE;
         }
     }
