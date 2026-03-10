@@ -111,6 +111,9 @@ class CrawlSite extends Command
             // Sync page metrics
             $this->call('pages:sync-metrics', ['--site' => $domain]);
 
+            // Generate opportunities
+            $this->call('opportunities:generate', ['--site' => $domain]);
+
             // Display summary
             $this->info("✓ Success!");
             $this->table(
