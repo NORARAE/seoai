@@ -15,11 +15,15 @@ class Page extends Model
         'title',
         'status_code',
         'crawl_status',
+        'incoming_links_count',
+        'outgoing_links_count',
         'last_crawled_at',
     ];
 
     protected $casts = [
         'status_code' => 'integer',
+        'incoming_links_count' => 'integer',
+        'outgoing_links_count' => 'integer',
         'last_crawled_at' => 'datetime',
     ];
 
@@ -63,15 +67,5 @@ class Page extends Model
     public function scopeDiscovered($query)
     {
         return $query->where('crawl_status', 'discovered');
-    }
-
-    /**
-     * Count incoming internal links to this page
-     */
-    public function getIncomingLinksCountAttribute(): int
-    {
-        return InternalLink::where('target_url', $this->url)
-            ->where('site_id', $this->site_id)
-            ->count();
     }
 }

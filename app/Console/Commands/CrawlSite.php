@@ -108,6 +108,10 @@ class CrawlSite extends Command
                 'last_crawled_at' => now(),
             ]);
 
+            // Sync page metrics (incoming/outgoing link counts)
+            $this->info('Syncing page metrics...');
+            $this->call('pages:sync-metrics', ['--site' => $domain]);
+
             // Display summary
             $this->info("✓ Success!");
             $this->table(

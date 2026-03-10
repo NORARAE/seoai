@@ -69,6 +69,30 @@ class PagesTable
                     })
                     ->sortable(),
 
+                TextColumn::make('incoming_links_count')
+                    ->label('In Links')
+                    ->numeric()
+                    ->sortable()
+                    ->alignEnd()
+                    ->color(fn ($state) => match (true) {
+                        $state === 0 => 'danger',
+                        $state < 2 => 'warning',
+                        default => 'success',
+                    })
+                    ->tooltip('Number of internal links pointing to this page'),
+
+                TextColumn::make('outgoing_links_count')
+                    ->label('Out Links')
+                    ->numeric()
+                    ->sortable()
+                    ->alignEnd()
+                    ->color(fn ($state) => match (true) {
+                        $state === 0 => 'gray',
+                        $state > 100 => 'warning',
+                        default => 'success',
+                    })
+                    ->tooltip('Number of internal links from this page'),
+
                 TextColumn::make('last_crawled_at')
                     ->label('Last Crawled')
                     ->dateTime()
@@ -114,29 +138,15 @@ class PagesTable
 
                 Filter::make('orphan')
                     ->label('Orphan Pages (0 incoming links)')
-                    ->query(fn (Builder $query): Builder => $query
-                        ->leftJoin('internal_links', function ($join) {
-                            $join->on('pages.url', '=', 'internal_links.target_url')
-                                 ->on('pages.site_id', '=', 'internal_links.site_id');
-                        })
-                        ->whereNull('internal_links.id')
-                        ->select('pages.*')
-                    )
+                    ->query(fn (Builder $query): Builder => $query->where('incoming_links_count', 0))
                     ->toggle(),
 
                 Filter::make('weak_links')
                     ->label('Weak Links (< 2 incoming)')
-                    ->query(function (Builder $query): Builder {
-                        return $query
-                            ->leftJoin('internal_links', function ($join) {
-                                $join->on('pages.url', '=', 'internal_links.target_url')
-                                     ->on('pages.site_id', '=', 'internal_links.site_id');
-                            })
-                            ->select('pages.*')
-                            ->groupBy('pages.id', 'pages.site_id', 'pages.url', 'pages.path', 'pages.title', 'pages.status_code', 'pages.crawl_status', 'pages.last_crawled_at', 'pages.created_at', 'pages.updated_at')
-                            ->havingRaw('COUNT(internal_links.id) < 2')
-                            ->havingRaw('COUNT(internal_links.id) > 0');
-                    })
+                    ->query(fn (Builder $query): Builder => $query
+                        ->where('incoming_links_count', '>', 0)
+                        ->where('incoming_links_count', '<', 2)
+                    )
                     ->toggle(),
             ])
             ->recordActions([

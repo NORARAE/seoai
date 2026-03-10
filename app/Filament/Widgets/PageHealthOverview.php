@@ -23,28 +23,12 @@ class PageHealthOverview extends BaseWidget
         // Count pages awaiting crawl (crawl_status = 'discovered')
         $awaitingCrawl = Page::discovered()->count();
 
-        // Count orphan pages (zero incoming links)
-        // Using a LEFT JOIN to find pages with no incoming internal links
-        $orphanPages = Page::select('pages.*')
-            ->leftJoin('internal_links', function ($join) {
-                $join->on('pages.url', '=', 'internal_links.target_url')
-                     ->on('pages.site_id', '=', 'internal_links.site_id');
-            })
-            ->whereNull('internal_links.id')
-            ->count();
+        // Count orphan pages (zero incoming links) - using stored count
+        $orphanPages = Page::where('incoming_links_count', 0)->count();
 
-        // Count weak internal link pages (< 2 incoming links)
-        // Group by page URL and count incoming links
-        $weakPages = DB::table('pages')
-            ->select('pages.id')
-            ->leftJoin('internal_links', function ($join) {
-                $join->on('pages.url', '=', 'internal_links.target_url')
-                     ->on('pages.site_id', '=', 'internal_links.site_id');
-            })
-            ->groupBy('pages.id', 'pages.url', 'pages.site_id')
-            ->havingRaw('COUNT(internal_links.id) < 2')
-            ->havingRaw('COUNT(internal_links.id) > 0') // Exclude orphans
-            ->get()
+        // Count weak internal link pages (< 2 incoming links, excluding orphans)
+        $weakPages = Page::where('incoming_links_count', '>', 0)
+            ->where('incoming_links_count', '<', 2)
             ->count();
 
         return [
