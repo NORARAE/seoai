@@ -24,6 +24,8 @@ class SiteResource extends Resource
 
     protected static ?string $recordTitleAttribute = 'domain';
 
+    protected static ?int $navigationSort = 1;
+
     public static function form(Schema $schema): Schema
     {
         return SiteForm::configure($schema);
