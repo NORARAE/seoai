@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use App\Models\InternalLink;
 use App\Models\Page;
 use App\Models\Site;
 use App\Services\SiteCrawler;
@@ -54,7 +55,7 @@ class CrawlSite extends Command
 
             // Save homepage page with metadata
             $homepageUrl = $result['url'];
-            Page::updateOrCreate(
+            $homepage = Page::updateOrCreate(
                 ['site_id' => $site->id, 'url' => $homepageUrl],
                 [
                     'path' => parse_url($homepageUrl, PHP_URL_PATH) ?? '/',
@@ -65,20 +66,39 @@ class CrawlSite extends Command
                 ]
             );
 
-            // Save other discovered pages (without metadata for now)
-            foreach ($result['links'] as $url) {
+            $internalLinksCount = 0;
+
+            // Save links and internal links
+            foreach ($result['links'] as $linkData) {
+                $targetUrl = $linkData['url'];
+                $anchorText = $linkData['anchor_text'];
+
                 // Skip if it's the homepage (already saved above)
-                if ($url === $homepageUrl) {
-                    continue;
+                if ($targetUrl !== $homepageUrl) {
+                    // Save target page (without metadata for now)
+                    Page::updateOrCreate(
+                        ['site_id' => $site->id, 'url' => $targetUrl],
+                        [
+                            'path' => parse_url($targetUrl, PHP_URL_PATH) ?? '/',
+                            'last_crawled_at' => now(),
+                        ]
+                    );
                 }
 
-                Page::updateOrCreate(
-                    ['site_id' => $site->id, 'url' => $url],
+                // Save internal link
+                InternalLink::updateOrCreate(
                     [
-                        'path' => parse_url($url, PHP_URL_PATH) ?? '/',
-                        'last_crawled_at' => now(),
+                        'site_id' => $site->id,
+                        'source_url' => $homepageUrl,
+                        'target_url' => $targetUrl,
+                        'anchor_text' => $anchorText,
+                    ],
+                    [
+                        'source_page_id' => $homepage->id,
                     ]
                 );
+
+                $internalLinksCount++;
             }
 
             // Update Site stats
@@ -97,6 +117,7 @@ class CrawlSite extends Command
                     ['Homepage Title', $result['title'] ?? '—'],
                     ['HTTP Status', $result['status_code']],
                     ['Links Found', count($result['links'])],
+                    ['Internal Links Saved', $internalLinksCount],
                     ['Total Pages', $site->pages_crawled],
                     ['Status', $site->crawl_status],
                 ]

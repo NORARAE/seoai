@@ -28,4 +28,12 @@ class Site extends Model
     {
         return $this->hasMany(Page::class);
     }
+
+    /**
+     * Get all internal links for this site
+     */
+    public function internalLinks(): HasMany
+    {
+        return $this->hasMany(InternalLink::class);
+    }
 }

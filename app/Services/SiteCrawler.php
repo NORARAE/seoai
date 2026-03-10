@@ -25,7 +25,7 @@ class SiteCrawler
      * @return array{
      *     success: bool,
      *     url: string,
-     *     links: array<string>,
+     *     links: array<array{url: string, anchor_text: string|null}>,
      *     title: string|null,
      *     error: string|null,
      *     status_code: int|null
@@ -57,7 +57,7 @@ class SiteCrawler
             // Get HTML content
             $html = $response->body();
 
-            // Parse HTML and extract links
+            // Parse HTML and extract links with anchor text
             $links = $this->extractLinks($html, $url);
 
             // Extract title from HTML
@@ -116,28 +116,41 @@ class SiteCrawler
      *
      * @param string $html HTML content
      * @param string $baseUrl Base URL for resolving relative links
-     * @return array<string> Array of normalized URLs
+     * @return array<array{url: string, anchor_text: string|null}> Array of link data with URLs and anchor text
      */
     protected function extractLinks(string $html, string $baseUrl): array
     {
         $crawler = new Crawler($html, $baseUrl);
         $links = [];
+        $seen = []; // Track URL+anchor combinations to prevent exact duplicates
 
         // Extract all anchor tags with href attributes
-        $crawler->filter('a[href]')->each(function (Crawler $node) use (&$links, $baseUrl) {
+        $crawler->filter('a[href]')->each(function (Crawler $node) use (&$links, &$seen, $baseUrl) {
             $href = $node->attr('href');
 
             if ($this->isValidLink($href)) {
                 $normalizedLink = $this->resolveUrl($href, $baseUrl);
 
                 if ($normalizedLink && $this->isInternalLink($normalizedLink, $baseUrl)) {
-                    $links[] = $normalizedLink;
+                    // Extract anchor text (visible text inside the link)
+                    $anchorText = trim($node->text());
+                    $anchorText = !empty($anchorText) ? $anchorText : null;
+
+                    // Create unique key to prevent exact duplicates
+                    $key = $normalizedLink . '|' . ($anchorText ?? '');
+                    
+                    if (!isset($seen[$key])) {
+                        $links[] = [
+                            'url' => $normalizedLink,
+                            'anchor_text' => $anchorText,
+                        ];
+                        $seen[$key] = true;
+                    }
                 }
             }
         });
 
-        // Remove duplicates and return
-        return array_values(array_unique($links));
+        return $links;
     }
 
     /**
