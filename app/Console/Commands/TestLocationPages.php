@@ -1,0 +1,556 @@
+<?php
+
+namespace App\Console\Commands;
+
+use App\Models\LocationPage;
+use Illuminate\Console\Command;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Http;
+
+class TestLocationPages extends Command
+{
+    /**
+     * The name and signature of the console command.
+     *
+     * @var string
+     */
+    protected $signature = 'seo:test-location-pages';
+
+    /**
+     * The console command description.
+     *
+     * @var string
+     */
+    protected $description = 'Run automated QA tests on location page workflow';
+
+    protected int $passCount = 0;
+    protected int $failCount = 0;
+    protected int $warningCount = 0;
+    protected array $errors = [];
+
+    /**
+     * Execute the console command.
+     */
+    public function handle(): int
+    {
+        $this->info('╔════════════════════════════════════════════════════╗');
+        $this->info('║      Location Page QA Report                      ║');
+        $this->info('╚════════════════════════════════════════════════════╝');
+        $this->newLine();
+
+        // TEST 1: Database State
+        $this->test1_databaseState();
+
+        // TEST 2: Unique Slugs
+        $this->test2_uniqueSlugs();
+
+        // TEST 3: Preview Route
+        $this->test3_previewRoute();
+
+        // TEST 4: Body Content
+        $this->test4_bodyContent();
+
+        // TEST 5: Internal Links
+        $this->test5_internalLinks();
+
+        // TEST 6: Export Validation
+        $this->test6_exportValidation();
+
+        // TEST 7: Generation Idempotency
+        $this->test7_generationIdempotency();
+
+        // TEST 8: Slug Quality Warnings
+        $this->test8_slugQualityWarnings();
+
+        // Summary
+        $this->displaySummary();
+
+        return $this->failCount > 0 ? 1 : 0;
+    }
+
+    protected function test1_databaseState(): void
+    {
+        $this->info('TEST 1: Database State');
+        $this->line('─────────────────────────────────────────');
+
+        try {
+            // Find Seattle service_city pages
+            $seattlePages = LocationPage::whereHas('city', function ($query) {
+                $query->where('name', 'Seattle');
+            })
+            ->where('type', 'service_city')
+            ->with(['city', 'service'])
+            ->get();
+
+            $count = $seattlePages->count();
+            $this->line("Seattle service_city pages found: <fg=cyan>{$count}</>");
+
+            if ($count === 0) {
+                $this->recordError('No Seattle service_city pages found in database');
+                return;
+            }
+
+            // Report on each page
+            foreach ($seattlePages as $page) {
+                $serviceName = $page->service->name ?? 'Unknown';
+                $this->line("  • {$serviceName} in Seattle");
+                $this->line("    - Slug: {$page->slug}");
+                $this->line("    - Status: {$page->status}");
+                $this->line("    - Quality: {$page->content_quality_status}");
+                $needsReview = $page->needs_review ? 'Yes' : 'No';
+                $this->line("    - Needs Review: {$needsReview}");
+            }
+
+            $this->recordPass('Database state verified');
+
+        } catch (\Exception $e) {
+            $this->recordError("Database state check failed: {$e->getMessage()}");
+        }
+
+        $this->newLine();
+    }
+
+    protected function test2_uniqueSlugs(): void
+    {
+        $this->info('TEST 2: Unique Slugs');
+        $this->line('─────────────────────────────────────────');
+
+        $requiredSlugs = [
+            'biohazard-cleanup-seattle-wa',
+            'crime-scene-cleanup-seattle-wa',
+            'unattended-death-cleanup-seattle-wa',
+        ];
+
+        $allPass = true;
+
+        foreach ($requiredSlugs as $slug) {
+            $count = LocationPage::where('slug', $slug)->count();
+
+            if ($count === 0) {
+                $this->line("  ✗ <fg=red>{$slug}</> - MISSING");
+                $this->recordError("Required slug missing: {$slug}");
+                $allPass = false;
+            } elseif ($count > 1) {
+                $this->line("  ✗ <fg=red>{$slug}</> - DUPLICATE (found {$count})");
+                $this->recordError("Duplicate slug detected: {$slug} (found {$count} times)");
+                $allPass = false;
+            } else {
+                $this->line("  ✓ <fg=green>{$slug}</> - OK");
+            }
+        }
+
+        if ($allPass) {
+            $this->recordPass('All required slugs exist exactly once');
+        }
+
+        $this->newLine();
+    }
+
+    protected function test3_previewRoute(): void
+    {
+        $this->info('TEST 3: Preview Route');
+        $this->line('─────────────────────────────────────────');
+
+        $seattlePages = LocationPage::whereHas('city', function ($query) {
+            $query->where('name', 'Seattle');
+        })
+        ->where('type', 'service_city')
+        ->get(['slug', 'status']);
+
+        if ($seattlePages->isEmpty()) {
+            $this->recordError('No Seattle pages found for preview testing');
+            $this->newLine();
+            return;
+        }
+
+        // Check if server is running
+        $baseUrl = 'http://localhost:8000';
+        
+        try {
+            $testResponse = Http::timeout(2)->get($baseUrl);
+            $serverRunning = true;
+        } catch (\Exception $e) {
+            $this->line("  <fg=yellow>⚠</> Server not running on {$baseUrl}");
+            $this->line("    Preview route tests skipped");
+            $this->line("    Run: php artisan serve");
+            $this->recordWarning('Preview server not running - tests skipped');
+            $this->newLine();
+            return;
+        }
+
+        $allPass = true;
+        $draftCount = 0;
+
+        foreach ($seattlePages as $page) {
+            try {
+                $response = Http::timeout(5)->get("{$baseUrl}/preview/{$page->slug}");
+                $status = $response->status();
+
+                // For unauthenticated requests, draft pages return 404 (by design)
+                if ($status === 200) {
+                    $this->line("  ✓ <fg=green>/preview/{$page->slug}</> - 200 OK");
+                } elseif ($status === 404 && $page->status !== 'published') {
+                    $this->line("  <fg=yellow>⚠</> /preview/{$page->slug} - 404 (draft page, expected without auth)");
+                    $draftCount++;
+                } else {
+                    $this->line("  ✗ <fg=red>/preview/{$page->slug}</> - {$status}");
+                    $this->recordError("Preview route returned unexpected {$status} for slug: {$page->slug}");
+                    $allPass = false;
+                }
+            } catch (\Exception $e) {
+                $this->line("  ✗ <fg=red>/preview/{$page->slug}</> - ERROR: {$e->getMessage()}");
+                $this->recordError("Preview route failed for slug {$page->slug}: {$e->getMessage()}");
+                $allPass = false;
+            }
+        }
+
+        if ($allPass) {
+            if ($draftCount > 0) {
+                $this->recordPass("All preview routes working ({$draftCount} draft pages return 404 without auth)");
+            } else {
+                $this->recordPass('All preview routes accessible');
+            }
+        }
+
+        $this->newLine();
+    }
+
+    protected function test4_bodyContent(): void
+    {
+        $this->info('TEST 4: Body Content');
+        $this->line('─────────────────────────────────────────');
+
+        $seattlePages = LocationPage::whereHas('city', function ($query) {
+            $query->where('name', 'Seattle');
+        })
+        ->where('type', 'service_city')
+        ->get();
+
+        if ($seattlePages->isEmpty()) {
+            $this->recordError('No Seattle pages found for body content testing');
+            $this->newLine();
+            return;
+        }
+
+        $requiredSections = ['hero', 'intro', 'cta'];
+        $allPass = true;
+
+        foreach ($seattlePages as $page) {
+            $bodySections = $page->body_sections_json;
+
+            if (empty($bodySections) || !is_array($bodySections)) {
+                $this->line("  ✗ <fg=red>{$page->slug}</> - No body sections found");
+                $this->recordError("Missing body_sections_json for: {$page->slug}");
+                $allPass = false;
+                continue;
+            }
+
+            // Extract section types
+            $sectionTypes = array_column($bodySections, 'type');
+            $missingSections = array_diff($requiredSections, $sectionTypes);
+
+            if (empty($missingSections)) {
+                $this->line("  ✓ <fg=green>{$page->slug}</> - All required sections present (" . count($bodySections) . " total)");
+            } else {
+                $this->line("  ✗ <fg=red>{$page->slug}</> - Missing: " . implode(', ', $missingSections));
+                $this->recordError("Missing sections for {$page->slug}: " . implode(', ', $missingSections));
+                $allPass = false;
+            }
+        }
+
+        if ($allPass) {
+            $this->recordPass('All pages have required body sections');
+        }
+
+        $this->newLine();
+    }
+
+    protected function test5_internalLinks(): void
+    {
+        $this->info('TEST 5: Internal Links');
+        $this->line('─────────────────────────────────────────');
+
+        $seattlePages = LocationPage::whereHas('city', function ($query) {
+            $query->where('name', 'Seattle');
+        })
+        ->where('type', 'service_city')
+        ->get();
+
+        if ($seattlePages->isEmpty()) {
+            $this->recordError('No Seattle pages found for internal links testing');
+            $this->newLine();
+            return;
+        }
+
+        $allPass = true;
+
+        foreach ($seattlePages as $page) {
+            $internalLinks = $page->internal_links_json;
+
+            if (empty($internalLinks) || !is_array($internalLinks)) {
+                $this->line("  ✗ <fg=red>{$page->slug}</> - No internal_links_json");
+                $this->recordError("Missing internal_links_json for: {$page->slug}");
+                $allPass = false;
+                continue;
+            }
+
+            $links = $internalLinks['links'] ?? [];
+            $linkCount = count($links);
+
+            if ($linkCount === 0) {
+                $this->line("  ✗ <fg=red>{$page->slug}</> - No links in internal_links_json");
+                $this->recordError("No links found for: {$page->slug}");
+                $allPass = false;
+            } else {
+                $this->line("  ✓ <fg=green>{$page->slug}</> - {$linkCount} internal links");
+            }
+        }
+
+        if ($allPass) {
+            $this->recordPass('All pages have internal links');
+        }
+
+        $this->newLine();
+    }
+
+    protected function test6_exportValidation(): void
+    {
+        $this->info('TEST 6: Export Validation');
+        $this->line('─────────────────────────────────────────');
+
+        $testOutputPath = storage_path('app/exports/qa-test-export.json');
+
+        try {
+            // Run export command silently
+            $this->line("  Running export command...");
+            $exitCode = $this->call('seo:export-location-pages', [
+                '--state' => 'WA',
+                '--type' => 'service_city',
+                '--output' => $testOutputPath,
+            ]);
+
+            if ($exitCode !== 0) {
+                $this->recordError('Export command failed with exit code: ' . $exitCode);
+                $this->newLine();
+                return;
+            }
+
+            if (!file_exists($testOutputPath)) {
+                $this->recordError("Export file not created at: {$testOutputPath}");
+                $this->newLine();
+                return;
+            }
+
+            $json = json_decode(file_get_contents($testOutputPath), true);
+
+            if (!$json) {
+                $this->recordError('Export file contains invalid JSON');
+                $this->newLine();
+                return;
+            }
+
+            // Verify structure
+            $requiredTopLevelKeys = ['exported_at', 'total_pages', 'filters', 'pages'];
+            $missingTopKeys = array_diff($requiredTopLevelKeys, array_keys($json));
+
+            if (!empty($missingTopKeys)) {
+                $this->recordError('Export missing top-level keys: ' . implode(', ', $missingTopKeys));
+                $this->newLine();
+                return;
+            }
+
+            // Verify first page has required keys
+            if (empty($json['pages'])) {
+                $this->recordError('Export contains no pages');
+                $this->newLine();
+                return;
+            }
+
+            $firstPage = $json['pages'][0];
+            $requiredPageKeys = [
+                'slug', 'meta_title', 'meta_description', 'h1', 
+                'canonical_url', 'body_sections', 'internal_links'
+            ];
+            $missingPageKeys = array_diff($requiredPageKeys, array_keys($firstPage));
+
+            if (!empty($missingPageKeys)) {
+                $this->line("  ✗ <fg=red>Page missing keys:</> " . implode(', ', $missingPageKeys));
+                $this->recordError('Export page missing keys: ' . implode(', ', $missingPageKeys));
+            } else {
+                $this->line("  ✓ <fg=green>Export structure valid</>");
+                $this->line("    - Total pages exported: {$json['total_pages']}");
+                $this->line("    - File size: " . number_format(filesize($testOutputPath) / 1024, 2) . " KB");
+                $this->recordPass('Export validation successful');
+            }
+
+            // Cleanup test file
+            @unlink($testOutputPath);
+
+        } catch (\Exception $e) {
+            $this->recordError("Export validation failed: {$e->getMessage()}");
+        }
+
+        $this->newLine();
+    }
+
+    protected function test7_generationIdempotency(): void
+    {
+        $this->info('TEST 7: Generation Idempotency');
+        $this->line('─────────────────────────────────────────');
+
+        try {
+            // Get current Seattle slug counts
+            $beforeSlugs = LocationPage::whereHas('city', function ($query) {
+                $query->where('name', 'Seattle');
+            })
+            ->where('type', 'service_city')
+            ->pluck('slug')
+            ->toArray();
+
+            $beforeCount = count($beforeSlugs);
+            $this->line("  Seattle pages before generation: <fg=cyan>{$beforeCount}</>");
+
+            // Run generation command
+            $this->line("  Running generation command...");
+            $exitCode = $this->call('seo:generate-wa-drafts', ['--skip-validation' => true]);
+
+            if ($exitCode !== 0) {
+                $this->recordError('Generation command failed with exit code: ' . $exitCode);
+                $this->newLine();
+                return;
+            }
+
+            // Get counts after
+            $afterSlugs = LocationPage::whereHas('city', function ($query) {
+                $query->where('name', 'Seattle');
+            })
+            ->where('type', 'service_city')
+            ->pluck('slug')
+            ->toArray();
+
+            $afterCount = count($afterSlugs);
+            $this->line("  Seattle pages after generation: <fg=cyan>{$afterCount}</>");
+
+            // Check for duplicates
+            $duplicateCheck = LocationPage::select('slug', DB::raw('COUNT(*) as count'))
+                ->whereHas('city', function ($query) {
+                    $query->where('name', 'Seattle');
+                })
+                ->where('type', 'service_city')
+                ->groupBy('slug')
+                ->having('count', '>', 1)
+                ->get();
+
+            if ($duplicateCheck->isNotEmpty()) {
+                $this->line("  ✗ <fg=red>Duplicate Seattle slugs detected:</>");
+                foreach ($duplicateCheck as $dup) {
+                    $this->line("    - {$dup->slug} (count: {$dup->count})");
+                }
+                $this->recordError('Generation created duplicate Seattle slugs');
+            } elseif ($afterCount > $beforeCount) {
+                $this->line("  ✗ <fg=yellow>New Seattle pages created</> ({$beforeCount} → {$afterCount})");
+                $this->recordWarning('Generation unexpectedly created new Seattle pages');
+            } else {
+                $this->line("  ✓ <fg=green>No duplicates created, count stable</>");
+                $this->recordPass('Generation idempotency verified');
+            }
+
+        } catch (\Exception $e) {
+            $this->recordError("Generation idempotency test failed: {$e->getMessage()}");
+        }
+
+        $this->newLine();
+    }
+
+    protected function test8_slugQualityWarnings(): void
+    {
+        $this->info('TEST 8: Slug Quality Warnings');
+        $this->line('─────────────────────────────────────────');
+
+        try {
+            // Check for awkward patterns
+            $awkwardPatterns = [
+                'county-county' => 'duplicated county suffix',
+                'city-city' => 'duplicated city suffix',
+                'wa-wa' => 'duplicated state code',
+            ];
+
+            $foundIssues = [];
+
+            foreach ($awkwardPatterns as $pattern => $description) {
+                $pages = LocationPage::where('slug', 'LIKE', "%{$pattern}%")->get();
+
+                foreach ($pages as $page) {
+                    $foundIssues[] = [
+                        'slug' => $page->slug,
+                        'issue' => $description,
+                    ];
+                }
+            }
+
+            if (empty($foundIssues)) {
+                $this->line("  ✓ <fg=green>No slug quality issues detected</>");
+                $this->recordPass('Slug quality check passed');
+            } else {
+                $issueCount = count($foundIssues);
+                $this->line("  <fg=yellow>⚠</> Found {$issueCount} slug quality warnings:");
+                foreach ($foundIssues as $issue) {
+                    $this->line("    - {$issue['slug']} ({$issue['issue']})");
+                    $this->recordWarning("Slug quality: {$issue['slug']} has {$issue['issue']}");
+                }
+            }
+
+        } catch (\Exception $e) {
+            $this->recordError("Slug quality check failed: {$e->getMessage()}");
+        }
+
+        $this->newLine();
+    }
+
+    protected function displaySummary(): void
+    {
+        $this->info('╔════════════════════════════════════════════════════╗');
+        $this->info('║      Summary                                      ║');
+        $this->info('╚════════════════════════════════════════════════════╝');
+        $this->newLine();
+
+        $this->line("  Tests Passed:    <fg=green>{$this->passCount}</>");
+        $this->line("  Tests Failed:    <fg=red>{$this->failCount}</>");
+        $this->line("  Warnings:        <fg=yellow>{$this->warningCount}</>");
+
+        $this->newLine();
+
+        if ($this->failCount > 0) {
+            $this->error('❌ QA FAILED - Critical issues detected');
+            $this->newLine();
+            $this->line('<fg=red>Errors:</>', 'v');
+            foreach ($this->errors as $error) {
+                $this->line("  • {$error}");
+            }
+        } else {
+            $this->info('✅ QA PASSED - All critical tests successful');
+            if ($this->warningCount > 0) {
+                $this->newLine();
+                $this->line("<fg=yellow>⚠ {$this->warningCount} warning(s) detected - review recommended</>");
+            }
+        }
+
+        $this->newLine();
+    }
+
+    protected function recordPass(string $message): void
+    {
+        $this->passCount++;
+    }
+
+    protected function recordError(string $message): void
+    {
+        $this->failCount++;
+        $this->errors[] = $message;
+    }
+
+    protected function recordWarning(string $message): void
+    {
+        $this->warningCount++;
+    }
+}
