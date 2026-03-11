@@ -42,6 +42,33 @@ class LocationPageForm
                     ])
                     ->columns(3),
 
+                Section::make('Review Workflow')
+                    ->schema([
+                        Select::make('content_quality_status')
+                            ->label('Quality Status')
+                            ->options([
+                                'unreviewed' => 'Unreviewed',
+                                'edited' => 'Edited',
+                                'approved' => 'Approved',
+                                'excluded' => 'Excluded',
+                            ])
+                            ->required()
+                            ->default('unreviewed')
+                            ->helperText('Current review status of this page'),
+
+                        Checkbox::make('needs_review')
+                            ->label('Needs Review')
+                            ->helperText('Check if this page requires review or re-review')
+                            ->default(true),
+
+                        Textarea::make('review_notes')
+                            ->label('Review Notes')
+                            ->rows(3)
+                            ->helperText('Internal notes about content quality, edits needed, or approval reasons')
+                            ->columnSpanFull(),
+                    ])
+                    ->columns(2),
+
                 Section::make('SEO Content')
                     ->schema([
                         TextInput::make('title')

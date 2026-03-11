@@ -34,6 +34,38 @@ class LocationPageInfolist
                         default => 'gray',
                     }),
 
+                TextEntry::make('content_quality_status')
+                    ->label('Quality Status')
+                    ->badge()
+                    ->color(fn (string $state): string => match ($state) {
+                        'unreviewed' => 'gray',
+                        'edited' => 'warning',
+                        'approved' => 'success',
+                        'excluded' => 'danger',
+                        default => 'gray',
+                    })
+                    ->formatStateUsing(fn (string $state): string => ucfirst($state)),
+
+                TextEntry::make('needs_review')
+                    ->label('Needs Review')
+                    ->badge()
+                    ->color(fn (bool $state): string => $state ? 'warning' : 'success')
+                    ->formatStateUsing(fn (bool $state): string => $state ? 'Yes' : 'No'),
+
+                TextEntry::make('review_notes')
+                    ->label('Review Notes')
+                    ->placeholder('—')
+                    ->columnSpanFull(),
+
+                TextEntry::make('approved_at')
+                    ->label('Approved At')
+                    ->dateTime()
+                    ->placeholder('—'),
+
+                TextEntry::make('approvedBy.name')
+                    ->label('Approved By')
+                    ->placeholder('—'),
+
                 TextEntry::make('is_indexable')
                     ->label('Indexable')
                     ->badge()

@@ -28,6 +28,11 @@ class LocationPage extends Model
         'status',
         'is_indexable',
         'generated_at',
+        'needs_review',
+        'review_notes',
+        'content_quality_status',
+        'approved_at',
+        'approved_by',
     ];
 
     protected $casts = [
@@ -36,6 +41,8 @@ class LocationPage extends Model
         'score' => 'integer',
         'is_indexable' => 'boolean',
         'generated_at' => 'datetime',
+        'needs_review' => 'boolean',
+        'approved_at' => 'datetime',
     ];
 
     /**
@@ -87,6 +94,14 @@ class LocationPage extends Model
     }
 
     /**
+     * Get the user who approved this page
+     */
+    public function approvedBy(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'approved_by');
+    }
+
+    /**
      * Scope to filter county hub pages
      */
     public function scopeCountyHub($query)
@@ -124,5 +139,45 @@ class LocationPage extends Model
     public function scopeDraft($query)
     {
         return $query->where('status', 'draft');
+    }
+
+    /**
+     * Scope to filter pages needing review
+     */
+    public function scopeNeedsReview($query)
+    {
+        return $query->where('needs_review', true);
+    }
+
+    /**
+     * Scope to filter approved pages
+     */
+    public function scopeApproved($query)
+    {
+        return $query->where('content_quality_status', 'approved');
+    }
+
+    /**
+     * Scope to filter excluded pages
+     */
+    public function scopeExcluded($query)
+    {
+        return $query->where('content_quality_status', 'excluded');
+    }
+
+    /**
+     * Scope to filter unreviewed pages
+     */
+    public function scopeUnreviewed($query)
+    {
+        return $query->where('content_quality_status', 'unreviewed');
+    }
+
+    /**
+     * Scope to filter edited pages
+     */
+    public function scopeEdited($query)
+    {
+        return $query->where('content_quality_status', 'edited');
     }
 }

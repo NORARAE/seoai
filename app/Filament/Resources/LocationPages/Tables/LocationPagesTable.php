@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\LocationPages\Tables;
 
+use Filament\Actions\BulkAction;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
@@ -13,6 +14,8 @@ use Filament\Tables\Filters\Filter;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Facades\Auth;
 
 class LocationPagesTable
 {
@@ -45,6 +48,25 @@ class LocationPagesTable
                         default => 'gray',
                     })
                     ->sortable(),
+
+                TextColumn::make('content_quality_status')
+                    ->label('Quality')
+                    ->badge()
+                    ->color(fn (string $state): string => match ($state) {
+                        'unreviewed' => 'gray',
+                        'edited' => 'warning',
+                        'approved' => 'success',
+                        'excluded' => 'danger',
+                        default => 'gray',
+                    })
+                    ->formatStateUsing(fn (string $state): string => ucfirst($state))
+                    ->sortable(),
+
+                IconColumn::make('needs_review')
+                    ->label('Needs Review')
+                    ->boolean()
+                    ->sortable()
+                    ->toggleable(),
 
                 TextColumn::make('title')
                     ->label('Title')
@@ -134,6 +156,20 @@ class LocationPagesTable
                         'archived' => 'Archived',
                     ]),
 
+                SelectFilter::make('content_quality_status')
+                    ->label('Quality Status')
+                    ->options([
+                        'unreviewed' => 'Unreviewed',
+                        'edited' => 'Edited',
+                        'approved' => 'Approved',
+                        'excluded' => 'Excluded',
+                    ]),
+
+                Filter::make('needs_review')
+                    ->label('Needs Review')
+                    ->query(fn (Builder $query): Builder => $query->where('needs_review', true))
+                    ->toggle(),
+
                 SelectFilter::make('county_id')
                     ->label('County')
                     ->relationship('county', 'name')
@@ -167,6 +203,65 @@ class LocationPagesTable
             ])
             ->toolbarActions([
                 BulkActionGroup::make([
+                    BulkAction::make('markApproved')
+                        ->label('Mark as Approved')
+                        ->icon('heroicon-o-check-circle')
+                        ->color('success')
+                        ->requiresConfirmation()
+                        ->action(function (Collection $records) {
+                            $records->each(function ($record) {
+                                $record->update([
+                                    'content_quality_status' => 'approved',
+                                    'needs_review' => false,
+                                    'approved_at' => now(),
+                                    'approved_by' => Auth::id(),
+                                ]);
+                            });
+                        })
+                        ->deselectRecordsAfterCompletion(),
+
+                    BulkAction::make('markEdited')
+                        ->label('Mark as Edited')
+                        ->icon('heroicon-o-pencil')
+                        ->color('warning')
+                        ->action(function (Collection $records) {
+                            $records->each(function ($record) {
+                                $record->update([
+                                    'content_quality_status' => 'edited',
+                                    'needs_review' => true,
+                                ]);
+                            });
+                        })
+                        ->deselectRecordsAfterCompletion(),
+
+                    BulkAction::make('markExcluded')
+                        ->label('Mark as Excluded')
+                        ->icon('heroicon-o-x-circle')
+                        ->color('danger')
+                        ->requiresConfirmation()
+                        ->action(function (Collection $records) {
+                            $records->each(function ($record) {
+                                $record->update([
+                                    'content_quality_status' => 'excluded',
+                                    'needs_review' => false,
+                                ]);
+                            });
+                        })
+                        ->deselectRecordsAfterCompletion(),
+
+                    BulkAction::make('markNeedsReview')
+                        ->label('Mark Needs Review')
+                        ->icon('heroicon-o-flag')
+                        ->color('info')
+                        ->action(function (Collection $records) {
+                            $records->each(function ($record) {
+                                $record->update([
+                                    'needs_review' => true,
+                                ]);
+                            });
+                        })
+                        ->deselectRecordsAfterCompletion(),
+
                     DeleteBulkAction::make(),
                 ]),
             ])
