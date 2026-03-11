@@ -46,7 +46,10 @@ class SeoSlugGenerator
     /**
      * Generate county hub URL path
      *
-     * Format: /{county-slug}-county-{state-code}/
+     * Format: /{county-slug}-{state-code}/
+     *
+     * Handles county names that already include "County" to avoid duplication.
+     * Example: "King County" + "WA" => "/king-county-wa/" (not "king-county-county-wa")
      *
      * @param string $countyName
      * @param string $stateCode
@@ -57,6 +60,13 @@ class SeoSlugGenerator
         $countySlug = $this->generate($countyName);
         $stateCodeLower = strtolower($stateCode);
         
+        // If slug already ends with "county", don't duplicate it
+        // This handles cases like "King County" which becomes "king-county"
+        if (str_ends_with($countySlug, '-county') || $countySlug === 'county') {
+            return "/{$countySlug}-{$stateCodeLower}/";
+        }
+        
+        // Otherwise, add "-county-" suffix for county names without "County" in them
         return "/{$countySlug}-county-{$stateCodeLower}/";
     }
 

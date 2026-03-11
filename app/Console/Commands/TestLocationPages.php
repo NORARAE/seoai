@@ -468,14 +468,14 @@ class TestLocationPages extends Command
         $this->line('─────────────────────────────────────────');
 
         try {
-            // Check for awkward patterns
+            $foundIssues = [];
+
+            // Check for awkward patterns that should NOT exist
             $awkwardPatterns = [
                 'county-county' => 'duplicated county suffix',
                 'city-city' => 'duplicated city suffix',
                 'wa-wa' => 'duplicated state code',
             ];
-
-            $foundIssues = [];
 
             foreach ($awkwardPatterns as $pattern => $description) {
                 $pages = LocationPage::where('slug', 'LIKE', "%{$pattern}%")->get();
@@ -483,20 +483,54 @@ class TestLocationPages extends Command
                 foreach ($pages as $page) {
                     $foundIssues[] = [
                         'slug' => $page->slug,
+                        'type' => $page->type,
                         'issue' => $description,
                     ];
                 }
             }
 
+            // Verify county hubs follow correct format
+            $countyHubs = LocationPage::where('type', 'county_hub')->get();
+            $countyHubsChecked = 0;
+            $countyHubsCorrect = 0;
+
+            foreach ($countyHubs as $hub) {
+                $countyHubsChecked++;
+                
+                // Correct format: {county-name}-wa (e.g., king-county-wa)
+                // Incorrect format: {county-name}-county-wa (e.g., king-county-county-wa)
+                if (preg_match('/^[a-z0-9\-]+-wa$/', $hub->slug) && !str_contains($hub->slug, 'county-county')) {
+                    $countyHubsCorrect++;
+                }
+            }
+
             if (empty($foundIssues)) {
-                $this->line("  ✓ <fg=green>No slug quality issues detected</>");
-                $this->recordPass('Slug quality check passed');
+                $this->line("  ✓ <fg=green>No awkward patterns detected</>");
+                
+                if ($countyHubsChecked > 0) {
+                    if ($countyHubsCorrect === $countyHubsChecked) {
+                        $this->line("  ✓ <fg=green>All {$countyHubsChecked} county hub slugs follow correct format</>");
+                        $this->recordPass('Slug quality check passed - all county hubs correct');
+                    } else {
+                        $badCount = $countyHubsChecked - $countyHubsCorrect;
+                        $this->line("  <fg=yellow>⚠</> {$badCount} of {$countyHubsChecked} county hub slugs need correction");
+                        $this->recordWarning("{$badCount} county hub slugs need correction");
+                    }
+                } else {
+                    $this->recordPass('Slug quality check passed');
+                }
             } else {
                 $issueCount = count($foundIssues);
                 $this->line("  <fg=yellow>⚠</> Found {$issueCount} slug quality warnings:");
                 foreach ($foundIssues as $issue) {
-                    $this->line("    - {$issue['slug']} ({$issue['issue']})");
-                    $this->recordWarning("Slug quality: {$issue['slug']} has {$issue['issue']}");
+                    $this->line("    - {$issue['slug']} ({$issue['issue']}, type: {$issue['type']})");
+                    
+                    // County-county pattern is considered an error that needs repair
+                    if ($issue['issue'] === 'duplicated county suffix') {
+                        $this->recordWarning("Slug quality: {$issue['slug']} has {$issue['issue']} - run seo:repair-county-hub-slugs");
+                    } else {
+                        $this->recordWarning("Slug quality: {$issue['slug']} has {$issue['issue']}");
+                    }
                 }
             }
 
