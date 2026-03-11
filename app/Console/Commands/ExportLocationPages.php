@@ -4,6 +4,7 @@ namespace App\Console\Commands;
 
 use App\Models\LocationPage;
 use App\Models\State;
+use App\Services\LocationPageRenderService;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Storage;
 
@@ -19,6 +20,7 @@ class ExportLocationPages extends Command
                             {--status= : Filter by publication status (draft|published|archived)}
                             {--quality= : Filter by content quality status (unreviewed|edited|approved|excluded)}
                             {--type= : Filter by page type (county_hub|service_city)}
+                            {--include-html : Include rendered HTML in export}
                             {--format=json : Export format (only json supported currently)}
                             {--output=storage/app/exports/location-pages.json : Output file path}';
 
@@ -32,7 +34,7 @@ class ExportLocationPages extends Command
     /**
      * Execute the console command.
      */
-    public function handle(): int
+    public function handle(LocationPageRenderService $renderService): int
     {
         $this->info('Starting location pages export...');
         $this->newLine();
@@ -103,6 +105,12 @@ class ExportLocationPages extends Command
         $this->info("Found {$pages->count()} pages to export.");
         $this->newLine();
 
+        $includeHtml = $this->option('include-html');
+        if ($includeHtml) {
+            $this->line('Option: Including rendered HTML');
+            $this->newLine();
+        }
+
         // Transform to export format
         $export = [
             'exported_at' => now()->toIso8601String(),
@@ -113,7 +121,10 @@ class ExportLocationPages extends Command
                 'quality' => $this->option('quality'),
                 'type' => $this->option('type'),
             ],
-            'pages' => $pages->map(function ($page) {
+            'options' => [
+                'include_html' => $includeHtml,
+            ],
+            'pages' => $pages->map(function ($page) use ($renderService, $includeHtml) {
                 return [
                     'id' => $page->id,
                     'type' => $page->type,
@@ -130,6 +141,7 @@ class ExportLocationPages extends Command
                     // Content
                     'body_sections' => $page->body_sections_json,
                     'internal_links' => $page->internal_links_json,
+                    'rendered_html' => $includeHtml ? $renderService->render($page) : null,
                     
                     // Metadata
                     'score' => $page->score,
