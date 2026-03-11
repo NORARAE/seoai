@@ -13,6 +13,7 @@ class Page extends Model
         'url',
         'path',
         'title',
+        'suggested_title',
         'status_code',
         'crawl_status',
         'incoming_links_count',
@@ -41,6 +42,22 @@ class Page extends Model
     public function outgoingLinks(): HasMany
     {
         return $this->hasMany(InternalLink::class, 'source_page_id');
+    }
+
+    /**
+     * Get link suggestions where this page is the target
+     */
+    public function linkSuggestions(): HasMany
+    {
+        return $this->hasMany(LinkSuggestion::class, 'target_page_id');
+    }
+
+    /**
+     * Get opportunities related to this page
+     */
+    public function opportunities(): HasMany
+    {
+        return $this->hasMany(Opportunity::class);
     }
 
     /**

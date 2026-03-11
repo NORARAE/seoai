@@ -15,6 +15,14 @@ class SiteForm
             ->components([
                 Section::make('Site Information')
                     ->schema([
+                        Select::make('client_id')
+                            ->label('Client')
+                            ->relationship('client', 'name')
+                            ->searchable()
+                            ->preload()
+                            ->nullable()
+                            ->placeholder('Select a client'),
+
                         TextInput::make('name')
                             ->label('Site Name')
                             ->maxLength(255)

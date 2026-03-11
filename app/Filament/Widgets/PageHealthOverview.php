@@ -2,6 +2,8 @@
 
 namespace App\Filament\Widgets;
 
+use App\Filament\Resources\Pages\PageFilters;
+use App\Filament\Resources\Pages\PageResource;
 use App\Models\Page;
 use Filament\Widgets\StatsOverviewWidget as BaseWidget;
 use Filament\Widgets\StatsOverviewWidget\Stat;
@@ -33,27 +35,32 @@ class PageHealthOverview extends BaseWidget
             Stat::make('Pages Missing Titles', $missingTitles)
                 ->description('Pages without a title tag')
                 ->descriptionIcon('heroicon-o-exclamation-triangle')
-                ->color($missingTitles > 0 ? 'danger' : 'success'),
+                ->color($missingTitles > 0 ? 'danger' : 'success')
+                ->url(PageResource::getUrl('index', ['tableFilters' => [PageFilters::MISSING_TITLE => ['isActive' => true]]])),
 
             Stat::make('Broken Pages', $brokenPages)
                 ->description('HTTP status code >= 400')
                 ->descriptionIcon('heroicon-o-x-circle')
-                ->color($brokenPages > 0 ? 'danger' : 'success'),
+                ->color($brokenPages > 0 ? 'danger' : 'success')
+                ->url(PageResource::getUrl('index', ['tableFilters' => [PageFilters::BROKEN => ['isActive' => true]]])),
 
             Stat::make('Pages Awaiting Crawl', $awaitingCrawl)
                 ->description('Discovered but not yet crawled')
                 ->descriptionIcon('heroicon-o-clock')
-                ->color($awaitingCrawl > 0 ? 'warning' : 'success'),
+                ->color($awaitingCrawl > 0 ? 'warning' : 'success')
+                ->url(PageResource::getUrl('index', ['tableFilters' => [PageFilters::DISCOVERED => ['isActive' => true]]])),
 
             Stat::make('Potential Orphan Pages', $orphanPages)
                 ->description('Pages with zero incoming links')
                 ->descriptionIcon('heroicon-o-link-slash')
-                ->color($orphanPages > 0 ? 'warning' : 'success'),
+                ->color($orphanPages > 0 ? 'warning' : 'success')
+                ->url(PageResource::getUrl('index', ['tableFilters' => [PageFilters::ORPHAN => ['isActive' => true]]])),
 
             Stat::make('Weak Internal Links', $weakPages)
                 ->description('Pages with fewer than 2 incoming links')
                 ->descriptionIcon('heroicon-o-arrow-trending-down')
-                ->color($weakPages > 0 ? 'warning' : 'success'),
+                ->color($weakPages > 0 ? 'warning' : 'success')
+                ->url(PageResource::getUrl('index', ['tableFilters' => [PageFilters::WEAK_LINKS => ['isActive' => true]]])),
         ];
     }
 }

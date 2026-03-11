@@ -24,6 +24,12 @@ class SitesTable
                     ->weight(FontWeight::Medium)
                     ->placeholder('—'),
 
+                TextColumn::make('client.name')
+                    ->label('Client')
+                    ->searchable()
+                    ->sortable()
+                    ->placeholder('—'),
+
                 TextColumn::make('domain')
                     ->label('Domain')
                     ->searchable()
@@ -72,6 +78,12 @@ class SitesTable
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
+                SelectFilter::make('client_id')
+                    ->label('Client')
+                    ->relationship('client', 'name')
+                    ->searchable()
+                    ->preload(),
+
                 SelectFilter::make('status')
                     ->options([
                         'active' => 'Active',

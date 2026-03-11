@@ -3,11 +3,13 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Site extends Model
 {
     protected $fillable = [
+        'client_id',
         'name',
         'domain',
         'status',
@@ -20,6 +22,14 @@ class Site extends Model
         'pages_crawled' => 'integer',
         'last_crawled_at' => 'datetime',
     ];
+
+    /**
+     * Get the client that owns the site
+     */
+    public function client(): BelongsTo
+    {
+        return $this->belongsTo(Client::class);
+    }
 
     /**
      * Get all pages for this site
