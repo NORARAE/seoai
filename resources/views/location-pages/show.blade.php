@@ -4,6 +4,7 @@
     'metaDescription' => $page->meta_description,
     'canonicalUrl' => $page->canonical_url,
     'isIndexable' => $page->is_indexable,
+    'schemas' => $schemas ?? [],
 ])
 
 @section('admin-banner')
@@ -61,56 +62,8 @@
 @endsection
 
 @section('content')
-    {{-- Main H1 --}}
-    <h1>{{ $page->h1 }}</h1>
-
-    {{-- Render Body Sections --}}
-    @if($page->body_sections_json && is_array($page->body_sections_json))
-        @foreach($page->body_sections_json as $section)
-            @if(isset($section['type']) && $section['type'] !== 'internal_links')
-                <div class="section section-{{ $section['type'] ?? 'default' }}">
-                    @if(isset($section['heading']))
-                        @if($loop->first)
-                            <h2>{{ $section['heading'] }}</h2>
-                        @else
-                            <h2>{{ $section['heading'] }}</h2>
-                        @endif
-                    @endif
-
-                    @if(isset($section['content']))
-                        <p>{{ $section['content'] }}</p>
-                    @endif
-                </div>
-            @endif
-        @endforeach
-    @endif
-
-    {{-- Render Internal Links --}}
-    @if($page->internal_links_json && isset($page->internal_links_json['links']) && count($page->internal_links_json['links']) > 0)
-        <div class="internal-links">
-            <h2>Related Service Areas</h2>
-            
-            <div class="link-grid">
-                @foreach($page->internal_links_json['links'] as $link)
-                    <a href="{{ $link['url'] ?? '#' }}" class="link-card">
-                        <div class="link-card-title">
-                            {{ $link['anchor'] ?? 'View Page' }}
-                        </div>
-                        
-                        @if(isset($link['distance']))
-                            <div class="link-card-meta">
-                                📍 {{ number_format($link['distance'], 1) }} miles away
-                            </div>
-                        @elseif(isset($link['rel']) && $link['rel'] === 'parent')
-                            <div class="link-card-meta">
-                                🏠 County Hub
-                            </div>
-                        @endif
-                    </a>
-                @endforeach
-            </div>
-        </div>
-    @endif
+    {{-- Render HTML from LocationPageRenderService --}}
+    {!! $renderedHtml !!}
 @endsection
 
 @section('footer')

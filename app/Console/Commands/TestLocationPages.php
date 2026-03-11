@@ -62,6 +62,12 @@ class TestLocationPages extends Command
         // TEST 8: Slug Quality Warnings
         $this->test8_slugQualityWarnings();
 
+        // TEST 9: Render Cache Validation
+        $this->test9_renderCacheValidation();
+
+        // TEST 10: Schema Validation
+        $this->test10_schemaValidation();
+
         // Summary
         $this->displaySummary();
 
@@ -536,6 +542,147 @@ class TestLocationPages extends Command
 
         } catch (\Exception $e) {
             $this->recordError("Slug quality check failed: {$e->getMessage()}");
+        }
+
+        $this->newLine();
+    }
+
+    protected function test9_renderCacheValidation(): void
+    {
+        $this->info('TEST 9: Render Cache Validation');
+        $this->line('─────────────────────────────────────────');
+
+        try {
+            // Check Seattle pages for render cache
+            $seattlePages = LocationPage::whereHas('city', function ($query) {
+                $query->where('name', 'Seattle');
+            })->where('type', 'service_city')->get();
+
+            if ($seattlePages->isEmpty()) {
+                $this->recordError('No Seattle service_city pages found for cache validation');
+                return;
+            }
+
+            $cachedCount = 0;
+            $needsRenderCount = 0;
+            $staleCacheCount = 0;
+
+            foreach ($seattlePages as $page) {
+                if ($page->rendered_html_cache) {
+                    $cachedCount++;
+                    
+                    // Check if cache is stale (content updated after last render)
+                    if ($page->rendered_at && $page->updated_at && $page->updated_at > $page->rendered_at) {
+                        $staleCacheCount++;
+                    }
+                }
+                
+                if ($page->needs_render) {
+                    $needsRenderCount++;
+                }
+            }
+
+            $this->line("  <fg=blue>Info:</> {$seattlePages->count()} Seattle page(s) checked");
+            $this->line("  <fg=blue>Info:</> {$cachedCount} have cached HTML");
+            $this->line("  <fg=blue>Info:</> {$needsRenderCount} flagged as needs_render");
+            
+            if ($staleCacheCount > 0) {
+                $this->line("  <fg=yellow>⚠</> {$staleCacheCount} have stale cache (updated after rendering)");
+                $this->recordWarning("{$staleCacheCount} pages have stale cache");
+            }
+
+            // Check if render cache structure is valid
+            $validCacheCount = 0;
+            foreach ($seattlePages->where('rendered_html_cache', '!=', null) as $page) {
+                if (is_string($page->rendered_html_cache) && strlen($page->rendered_html_cache) > 0) {
+                    $validCacheCount++;
+                }
+            }
+
+            if ($validCacheCount > 0) {
+                $this->line("  ✓ <fg=green>{$validCacheCount} pages have valid cached HTML</>");
+                $this->recordPass("Render cache validation passed for {$validCacheCount} page(s)");
+            } else {
+                $this->line("  <fg=blue>Info:</> No pages with cached HTML yet (run seo:render-location-pages to cache)");
+                $this->recordPass('Render cache fields exist and are queryable');
+            }
+
+        } catch (\Exception $e) {
+            $this->recordError("Render cache validation failed: {$e->getMessage()}");
+        }
+
+        $this->newLine();
+    }
+
+    protected function test10_schemaValidation(): void
+    {
+        $this->info('TEST 10: Schema Validation');
+        $this->line('─────────────────────────────────────────');
+
+        try {
+            // Check Seattle service_city pages for schemas
+            $seattlePages = LocationPage::whereHas('city', function ($query) {
+                $query->where('name', 'Seattle');
+            })->where('type', 'service_city')->get();
+
+            if ($seattlePages->isEmpty()) {
+                $this->recordError('No Seattle service_city pages found for schema validation');
+                return;
+            }
+
+            $serviceSchemaCount = 0;
+            $localBusinessSchemaCount = 0;
+            $faqSchemaCount = 0;
+            $anySchemaCount = 0;
+
+            foreach ($seattlePages as $page) {
+                $hasAnySchema = false;
+                
+                if ($page->service_schema_json && is_array($page->service_schema_json)) {
+                    $serviceSchemaCount++;
+                    $hasAnySchema = true;
+                    
+                    // Validate structure
+                    if (!isset($page->service_schema_json['@type']) || $page->service_schema_json['@type'] !== 'Service') {
+                        $this->recordWarning("Page {$page->slug} has invalid service schema structure");
+                    }
+                }
+                
+                if ($page->local_business_schema_json && is_array($page->local_business_schema_json)) {
+                    $localBusinessSchemaCount++;
+                    $hasAnySchema = true;
+                    
+                    // Validate structure
+                    if (!isset($page->local_business_schema_json['@type']) || $page->local_business_schema_json['@type'] !== 'LocalBusiness') {
+                        $this->recordWarning("Page {$page->slug} has invalid local business schema structure");
+                    }
+                }
+                
+                if ($page->faq_schema_json && is_array($page->faq_schema_json)) {
+                    $faqSchemaCount++;
+                    $hasAnySchema = true;
+                }
+                
+                if ($hasAnySchema) {
+                    $anySchemaCount++;
+                }
+            }
+
+            $this->line("  <fg=blue>Info:</> {$seattlePages->count()} Seattle page(s) checked");
+            $this->line("  <fg=blue>Info:</> {$serviceSchemaCount} have Service schema");
+            $this->line("  <fg=blue>Info:</> {$localBusinessSchemaCount} have LocalBusiness schema");
+            $this->line("  <fg=blue>Info:</> {$faqSchemaCount} have FAQ schema");
+
+            if ($anySchemaCount > 0) {
+                $this->line("  ✓ <fg=green>{$anySchemaCount} pages have at least one valid schema</>");
+                $this->recordPass("Schema validation passed for {$anySchemaCount} page(s)");
+            } else {
+                $this->line("  <fg=blue>Info:</> No schemas cached yet (run seo:render-location-pages to generate)");
+                $this->recordPass('Schema fields exist and are queryable');
+            }
+
+        } catch (\Exception $e) {
+            $this->recordError("Schema validation failed: {$e->getMessage()}");
         }
 
         $this->newLine();

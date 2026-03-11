@@ -3,11 +3,24 @@
 namespace App\Http\Controllers;
 
 use App\Models\LocationPage;
+use App\Services\LocationPageRenderService;
+use App\Services\LocationSchemaBuilder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class LocationPagePreviewController extends Controller
 {
+    protected LocationPageRenderService $renderService;
+    protected LocationSchemaBuilder $schemaBuilder;
+
+    public function __construct(
+        LocationPageRenderService $renderService,
+        LocationSchemaBuilder $schemaBuilder
+    ) {
+        $this->renderService = $renderService;
+        $this->schemaBuilder = $schemaBuilder;
+    }
+
     /**
      * Display a location page by slug
      */
@@ -33,7 +46,19 @@ class LocationPagePreviewController extends Controller
         // Build breadcrumbs
         $breadcrumbs = $this->buildBreadcrumbs($page);
 
-        return view('location-pages.show', compact('page', 'isAdmin', 'breadcrumbs'));
+        // Render HTML using the service
+        $renderedHtml = $this->renderService->render($page);
+        
+        // Get schemas
+        $schemas = $this->schemaBuilder->generateAllSchemas($page);
+
+        return view('location-pages.show', compact(
+            'page',
+            'isAdmin',
+            'breadcrumbs',
+            'renderedHtml',
+            'schemas'
+        ));
     }
 
     /**

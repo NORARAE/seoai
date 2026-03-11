@@ -24,10 +24,19 @@ class LocationPage extends Model
         'canonical_url',
         'body_sections_json',
         'internal_links_json',
+        'faq_schema_json',
+        'service_schema_json',
+        'local_business_schema_json',
+        'schema_cache_json',
         'score',
         'status',
         'is_indexable',
         'generated_at',
+        'render_version',
+        'rendered_html_cache',
+        'rendered_excerpt_cache',
+        'rendered_at',
+        'needs_render',
         'needs_review',
         'review_notes',
         'content_quality_status',
@@ -38,12 +47,48 @@ class LocationPage extends Model
     protected $casts = [
         'body_sections_json' => 'array',
         'internal_links_json' => 'array',
+        'faq_schema_json' => 'array',
+        'service_schema_json' => 'array',
+        'local_business_schema_json' => 'array',
+        'schema_cache_json' => 'array',
         'score' => 'integer',
         'is_indexable' => 'boolean',
         'generated_at' => 'datetime',
+        'rendered_at' => 'datetime',
+        'needs_render' => 'boolean',
         'needs_review' => 'boolean',
         'approved_at' => 'datetime',
     ];
+
+    /**
+     * Fields that should trigger re-rendering when changed
+     */
+    protected static $renderDirtyFields = [
+        'title',
+        'h1',
+        'body_sections_json',
+        'internal_links_json',
+        'meta_title',
+        'meta_description',
+    ];
+
+    /**
+     * Boot the model and add dirty-render tracking
+     */
+    protected static function boot()
+    {
+        parent::boot();
+
+        // Mark page as needing render when content fields change
+        static::updating(function ($page) {
+            foreach (self::$renderDirtyFields as $field) {
+                if ($page->isDirty($field)) {
+                    $page->needs_render = true;
+                    break;
+                }
+            }
+        });
+    }
 
     /**
      * Get the state this page belongs to

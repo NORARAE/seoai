@@ -200,6 +200,17 @@
         }
     </style>
 
+    {{-- Schema.org JSON-LD Structured Data --}}
+    @if(isset($schemas) && is_array($schemas))
+        @foreach($schemas as $schema)
+            @if($schema)
+                <script type="application/ld+json">
+                    {!! json_encode($schema, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES) !!}
+                </script>
+            @endif
+        @endforeach
+    @endif
+
     @stack('styles')
 </head>
 <body>

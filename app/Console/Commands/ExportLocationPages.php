@@ -125,6 +125,16 @@ class ExportLocationPages extends Command
                 'include_html' => $includeHtml,
             ],
             'pages' => $pages->map(function ($page) use ($renderService, $includeHtml) {
+                // Use cached HTML if available, otherwise render on demand
+                $renderedHtml = null;
+                if ($includeHtml) {
+                    if ($page->rendered_html_cache && !$page->needs_render) {
+                        $renderedHtml = $page->rendered_html_cache;
+                    } else {
+                        $renderedHtml = $renderService->render($page);
+                    }
+                }
+
                 return [
                     'id' => $page->id,
                     'type' => $page->type,
@@ -141,7 +151,13 @@ class ExportLocationPages extends Command
                     // Content
                     'body_sections' => $page->body_sections_json,
                     'internal_links' => $page->internal_links_json,
-                    'rendered_html' => $includeHtml ? $renderService->render($page) : null,
+                    'rendered_html' => $renderedHtml,
+                    'rendered_excerpt' => $page->rendered_excerpt_cache,
+                    
+                    // Schema.org structured data
+                    'faq_schema' => $page->faq_schema_json,
+                    'service_schema' => $page->service_schema_json,
+                    'local_business_schema' => $page->local_business_schema_json,
                     
                     // Metadata
                     'score' => $page->score,
@@ -154,6 +170,11 @@ class ExportLocationPages extends Command
                     'content_quality_status' => $page->content_quality_status,
                     'approved_at' => $page->approved_at?->toIso8601String(),
                     'approved_by' => $page->approvedBy?->name,
+                    
+                    // Render cache metadata
+                    'render_version' => $page->render_version,
+                    'rendered_at' => $page->rendered_at?->toIso8601String(),
+                    'needs_render' => $page->needs_render,
                     
                     // Relationships
                     'state' => [

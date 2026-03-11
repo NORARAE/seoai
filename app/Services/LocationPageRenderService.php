@@ -17,8 +17,15 @@ use App\Models\LocationPage;
  */
 class LocationPageRenderService
 {
+    protected LocationSchemaBuilder $schemaBuilder;
+
+    public function __construct(LocationSchemaBuilder $schemaBuilder)
+    {
+        $this->schemaBuilder = $schemaBuilder;
+    }
+
     /**
-     * Render a complete LocationPage to HTML
+     * Render a complete LocationPage to HTML with optional schema
      *
      * @param LocationPage $page
      * @param array $options
@@ -29,10 +36,16 @@ class LocationPageRenderService
         $options = array_merge([
             'include_h1' => true,
             'include_internal_links' => true,
+            'include_schema' => false,
             'wrapper_class' => 'abm-location-page',
         ], $options);
 
         $html = '';
+
+        // Schema tags (if requested)
+        if ($options['include_schema']) {
+            $html .= $this->schemaBuilder->renderAllSchemaTags($page);
+        }
 
         // Wrapper
         if ($options['wrapper_class']) {
@@ -64,6 +77,40 @@ class LocationPageRenderService
         }
 
         return $html;
+    }
+
+    /**
+     * Render and cache the page HTML
+     *
+     * Updates the rendered_html_cache, rendered_excerpt_cache, and schema fields
+     *
+     * @param LocationPage $page
+     * @param string $version
+     * @return void
+     */
+    public function renderAndCache(LocationPage $page, string $version = '1.0'): void
+    {
+        // Generate schemas
+        $schemas = $this->schemaBuilder->generateAllSchemas($page);
+        
+        // Render HTML (without schema tags - those are cached separately)
+        $html = $this->render($page, ['include_schema' => false]);
+        
+        // Generate excerpt
+        $excerpt = $this->getExcerpt($page);
+        
+        // Update page cache fields
+        $page->update([
+            'render_version' => $version,
+            'rendered_html_cache' => $html,
+            'rendered_excerpt_cache' => $excerpt,
+            'faq_schema_json' => $schemas['faq_schema'],
+            'service_schema_json' => $schemas['service_schema'],
+            'local_business_schema_json' => $schemas['local_business_schema'],
+            'schema_cache_json' => $schemas,
+            'rendered_at' => now(),
+            'needs_render' => false,
+        ]);
     }
 
     /**

@@ -15,11 +15,16 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // User::factory(10)->create();
+        // Create admin user (or update if exists)
+        User::updateOrCreate(
+            ['email' => 'nora@seoaico.com'],
+            [
+                'name' => 'Nora Genetti',
+                'password' => \Hash::make('password'),
+            ]
+        );
 
-        User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
-        ]);
+        // Seed location data (states, counties, cities, services)
+        $this->call(LocationSeeder::class);
     }
 }
