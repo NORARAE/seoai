@@ -1,0 +1,88 @@
+<?php
+
+namespace App\Filament\Widgets;
+
+use App\Models\Site;
+use App\Models\LocationPage;
+use App\Models\Opportunity;
+use App\Models\Client;
+use Filament\Widgets\StatsOverviewWidget as BaseWidget;
+use Filament\Widgets\StatsOverviewWidget\Stat;
+use Illuminate\Support\Facades\DB;
+
+class SeoDashboardStats extends BaseWidget
+{
+    protected static ?int $sort = 1;
+
+    protected function getStats(): array
+    {
+        // Get current client context (if multi-tenant)
+        $clientId = auth()->user()?->client_id;
+
+        // Total sites
+        $totalSites = Site::query()
+            ->when($clientId, fn($q) => $q->where('client_id', $clientId))
+            ->count();
+
+        // Total location pages
+        $totalPages = LocationPage::query()
+            ->when($clientId, function($q) use ($clientId) {
+                $q->whereIn('site_id', Site::where('client_id', $clientId)->pluck('id'));
+            })
+            ->count();
+
+        $publishedPages = LocationPage::query()
+            ->when($clientId, function($q) use ($clientId) {
+                $q->whereIn('site_id', Site::where('client_id', $clientId)->pluck('id'));
+            })
+            ->where('status', 'published')
+            ->count();
+
+        // Open opportunities
+        $openOpportunities = Opportunity::query()
+            ->when($clientId, function($q) use ($clientId) {
+                $q->whereIn('site_id', Site::where('client_id', $clientId)->pluck('id'));
+            })
+            ->where('status', 'open')
+            ->count();
+
+        // Low CTR opportunities (high priority)
+        $lowCtrOpportunities = Opportunity::query()
+            ->when($clientId, function($q) use ($clientId) {
+                $q->whereIn('site_id', Site::where('client_id', $clientId)->pluck('id'));
+            })
+            ->where('status', 'open')
+            ->where('type', 'low_ctr')
+            ->count();
+
+        // Recent optimizations (last 30 days)
+        $recentOptimizations = DB::table('optimization_runs')
+            ->when($clientId, function($q) use ($clientId) {
+                $q->whereIn('site_id', Site::where('client_id', $clientId)->pluck('id'));
+            })
+            ->where('created_at', '>=', now()->subDays(30))
+            ->count();
+
+        return [
+            Stat::make('Total Sites', $totalSites)
+                ->description('Active client sites')
+                ->descriptionIcon('heroicon-m-globe-alt')
+                ->color('success'),
+
+            Stat::make('Location Pages', $totalPages)
+                ->description("{$publishedPages} published")
+                ->descriptionIcon('heroicon-m-map-pin')
+                ->color('info'),
+
+            Stat::make('Open Opportunities', $openOpportunities)
+                ->description("{$lowCtrOpportunities} low CTR pages")
+                ->descriptionIcon('heroicon-m-light-bulb')
+                ->color($openOpportunities > 0 ? 'warning' : 'success'),
+
+            Stat::make('Recent Optimizations', $recentOptimizations)
+                ->description('Last 30 days')
+                ->descriptionIcon('heroicon-m-arrow-trending-up')
+                ->color('primary'),
+        ];
+    }
+}

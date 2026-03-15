@@ -5,6 +5,8 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
+use Illuminate\Database\Eloquent\Relations\MorphOne;
 
 class LocationPage extends Model
 {
@@ -176,6 +178,57 @@ class LocationPage extends Model
     public function scopePublished($query)
     {
         return $query->where('status', 'published');
+    }
+
+    /**
+     * Get performance metrics for this location page
+     */
+    public function performanceMetrics(): HasMany
+    {
+        return $this->hasMany(PerformanceMetric::class);
+    }
+
+    /**
+     * Get baseline snapshots for this location page
+     */
+    public function baselineSnapshots(): MorphMany
+    {
+        return $this->morphMany(BaselineSnapshot::class, 'snapshotable');
+    }
+
+    /**
+     * Get the most recent baseline snapshot
+     */
+    public function latestBaselineSnapshot(): MorphOne
+    {
+        return $this->morphOne(BaselineSnapshot::class, 'snapshotable')->latestOfMany('snapshot_date');
+    }
+
+    /**
+     * Get optimization runs for this location page
+     */
+    public function optimizationRuns(): MorphMany
+    {
+        return $this->morphMany(OptimizationRun::class, 'optimizable');
+    }
+
+    /**
+     * Get content for snapshot
+     */
+    public function getContentForSnapshot(): string
+    {
+        return json_encode($this->body_sections_json ?? []);
+    }
+
+    /**
+     * Get site_id for this location page (for compatibility with Page interface)
+     * Note: LocationPages don't currently have a site_id column
+     * This would need to be added or calculated based on business logic
+     */
+    public function getSiteIdAttribute(): ?int
+    {
+        // TODO: Add site_id column to location_pages table or determine from relationships
+        return null;
     }
 
     /**

@@ -426,9 +426,9 @@ class LocationPageRenderService
             return '';
         }
 
-        $html = '<section class="abm-internal-links abm-section">' . "\n";
-        $html .= '  <h2 class="abm-section__heading">Related Service Areas</h2>' . "\n";
-        $html .= '  <div class="abm-link-grid">' . "\n";
+        $html = '<section class="internal-links section">' . "\n";
+        $html .= '  <h2>Related Service Areas</h2>' . "\n";
+        $html .= '  <div class="link-grid">' . "\n";
 
         foreach ($linksData['links'] as $link) {
             $url = $link['url'] ?? '#';
@@ -436,15 +436,22 @@ class LocationPageRenderService
             $rel = $link['rel'] ?? '';
             $type = $link['type'] ?? '';
 
-            $html .= '    <a href="' . htmlspecialchars($url) . '" class="abm-link-card">' . "\n";
-            $html .= '      <span class="abm-link-card__title">' . htmlspecialchars($anchor) . '</span>' . "\n";
+            // Convert regular URLs to preview URLs for consistency
+            // Extract slug from URL if it's a relative path
+            if (preg_match('#^/([a-z0-9\-]+)/?$#', $url, $matches)) {
+                $slug = $matches[1];
+                $url = '/preview/' . $slug;
+            }
+
+            $html .= '    <a href="' . htmlspecialchars($url) . '" class="link-card">' . "\n";
+            $html .= '      <div class="link-card-title">' . htmlspecialchars($anchor) . '</div>' . "\n";
 
             // Add metadata badge
             if (isset($link['distance_miles'])) {
                 $distance = number_format($link['distance_miles'], 1);
-                $html .= '      <span class="abm-link-card__meta">📍 ' . $distance . ' miles away</span>' . "\n";
+                $html .= '      <div class="link-card-meta">📍 ' . $distance . ' miles away</div>' . "\n";
             } elseif ($rel === 'parent-page' || $type === 'county-hub') {
-                $html .= '      <span class="abm-link-card__meta">🏠 County Hub</span>' . "\n";
+                $html .= '      <div class="link-card-meta">🏠 County Hub</div>' . "\n";
             }
 
             $html .= '    </a>' . "\n";

@@ -1,0 +1,186 @@
+<?php
+
+namespace App\Filament\Resources;
+
+use App\Filament\Resources\TitleRecommendationResource\Pages;
+use App\Models\TitleRecommendation;
+use Filament\Forms;
+use Filament\Forms\Form;
+use Filament\Resources\Resource;
+use Filament\Tables;
+use Filament\Tables\Table;
+
+class TitleRecommendationResource extends Resource
+{
+    protected static ?string $model = TitleRecommendation::class;
+    protected static ?string $navigationIcon = 'heroicon-o-light-bulb';
+    protected static ?string $navigationGroup = 'SEO Intelligence';
+    protected static ?int $navigationSort = 2;
+
+    public static function form(Form $form): Form
+    {
+        return $form
+            ->schema([
+                Forms\Components\Section::make('Page Information')
+                    ->schema([
+                        Forms\Components\Select::make('site_id')
+                            ->relationship('site', 'name')
+                            ->required()
+                            ->disabled(),
+
+                        Forms\Components\TextInput::make('recommendable_type')
+                            ->label('Page Type')
+                            ->disabled(),
+
+                        Forms\Components\TextInput::make('recommendable_id')
+                            ->label('Page ID')
+                            ->disabled(),
+                    ])
+                    ->columns(3),
+
+                Forms\Components\Section::make('Title Recommendation')
+                    ->schema([
+                        Forms\Components\TextInput::make('current_title')
+                            ->label('Current Title')
+                            ->disabled()
+                            ->columnSpanFull(),
+
+                        Forms\Components\TextInput::make('suggested_title')
+                            ->label('Suggested Title')
+                            ->required()
+                            ->maxLength(255)
+                            ->columnSpanFull(),
+
+                        Forms\Components\Textarea::make('reasoning')
+                            ->label('Reasoning')
+                            ->rows(3)
+                            ->columnSpanFull(),
+
+                        Forms\Components\TextInput::make('confidence_score')
+                            ->label('Confidence Score')
+                            ->numeric()
+                            ->suffix('%')
+                            ->disabled(),
+
+                        Forms\Components\Select::make('status')
+                            ->options([
+                                'pending' => 'Pending Review',
+                                'approved' => 'Approved',
+                                'rejected' => 'Rejected',
+                                'applied' => 'Applied',
+                                'rolled_back' => 'Rolled Back',
+                            ])
+                            ->required(),
+                    ]),
+
+                Forms\Components\Section::make('Performance Data')
+                    ->schema([
+                        Forms\Components\KeyValue::make('current_performance')
+                            ->label('Current Performance')
+                            ->disabled(),
+
+                        Forms\Components\KeyValue::make('predicted_impact')
+                            ->label('Predicted Impact')
+                            ->disabled(),
+                    ])
+                    ->columns(2)
+                    ->collapsible(),
+            ]);
+    }
+
+    public static function table(Table $table): Table
+    {
+        return $table
+            ->columns([
+                Tables\Columns\TextColumn::make('site.name')
+                    ->sortable()
+                    ->searchable(),
+
+                Tables\Columns\TextColumn::make('recommendable.title')
+                    ->label('Page')
+                    ->limit(40)
+                    ->searchable(),
+
+                Tables\Columns\TextColumn::make('suggested_title')
+                    ->label('Suggested Title')
+                    ->limit(50)
+                    ->wrap(),
+
+                Tables\Columns\TextColumn::make('confidence_score')
+                    ->label('Confidence')
+                    ->suffix('%')
+                    ->sortable()
+                    ->color(fn (float $state): string => 
+                        $state >= 75 ? 'success' : ($state >= 50 ? 'warning' : 'danger')
+                    ),
+
+                Tables\Columns\BadgeColumn::make('status')
+                    ->colors([
+                        'warning' => 'pending',
+                        'success' => 'approved',
+                        'danger' => 'rejected',
+                        'info' => 'applied',
+                        'gray' => 'rolled_back',
+                    ]),
+
+                Tables\Columns\TextColumn::make('generated_at')
+                    ->label('Generated')
+                    ->dateTime('M j, Y')
+                    ->sortable(),
+            ])
+            ->filters([
+                Tables\Filters\SelectFilter::make('status')
+                    ->options([
+                        'pending' => 'Pending',
+                        'approved' => 'Approved',
+                        'rejected' => 'Rejected',
+                        'applied' => 'Applied',
+                    ]),
+
+                Tables\Filters\SelectFilter::make('site_id')
+                    ->relationship('site', 'name'),
+            ])
+            ->actions([
+                Tables\Actions\ViewAction::make(),
+                Tables\Actions\EditAction::make(),
+                
+                Tables\Actions\Action::make('approve')
+                    ->icon('heroicon-o-check-circle')
+                    ->color('success')
+                    ->requiresConfirmation()
+                    ->visible(fn (TitleRecommendation $record) => $record->status === 'pending')
+                    ->action(fn (TitleRecommendation $record) => 
+                        $record->update(['status' => 'approved', 'reviewed_at' => now(), 'reviewed_by' => auth()->id()])
+                    ),
+
+                Tables\Actions\Action::make('reject')
+                    ->icon('heroicon-o-x-circle')
+                    ->color('danger')
+                    ->requiresConfirmation()
+                    ->visible(fn (TitleRecommendation $record) => $record->status === 'pending')
+                    ->action(fn (TitleRecommendation $record) => 
+                        $record->update(['status' => 'rejected', 'reviewed_at' => now(), 'reviewed_by' => auth()->id()])
+                    ),
+            ])
+            ->bulkActions([
+                Tables\Actions\BulkActionGroup::make([
+                    Tables\Actions\DeleteBulkAction::make(),
+                ]),
+            ])
+            ->defaultSort('confidence_score', 'desc');
+    }
+
+    public static function getPages(): array
+    {
+        return [
+            'index' => Pages\ListTitleRecommendations::route('/'),
+            'view' => Pages\ViewTitleRecommendation::route('/{record}'),
+            'edit' => Pages\EditTitleRecommendation::route('/{record}/edit'),
+        ];
+    }
+
+    public static function getNavigationBadge(): ?string
+    {
+        return static::getModel()::where('status', 'pending')->count();
+    }
+}

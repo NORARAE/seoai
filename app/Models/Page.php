@@ -5,6 +5,8 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
+use Illuminate\Database\Eloquent\Relations\MorphOne;
 
 class Page extends Model
 {
@@ -76,6 +78,46 @@ class Page extends Model
     public function scopeBroken($query)
     {
         return $query->where('status_code', '>=', 400);
+    }
+
+    /**
+     * Get performance metrics for this page
+     */
+    public function performanceMetrics(): HasMany
+    {
+        return $this->hasMany(PerformanceMetric::class);
+    }
+
+    /**
+     * Get baseline snapshots for this page
+     */
+    public function baselineSnapshots(): MorphMany
+    {
+        return $this->morphMany(BaselineSnapshot::class, 'snapshotable');
+    }
+
+    /**
+     * Get the most recent baseline snapshot
+     */
+    public function latestBaselineSnapshot(): MorphOne
+    {
+        return $this->morphOne(BaselineSnapshot::class, 'snapshotable')->latestOfMany('snapshot_date');
+    }
+
+    /**
+     * Get optimization runs for this page
+     */
+    public function optimizationRuns(): MorphMany
+    {
+        return $this->morphMany(OptimizationRun::class, 'optimizable');
+    }
+
+    /**
+     * Get content for snapshot (can be overridden in subclasses)
+     */
+    public function getContentForSnapshot(): string
+    {
+        return $this->title ?? '';
     }
 
     /**

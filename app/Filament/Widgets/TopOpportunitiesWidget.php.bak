@@ -1,0 +1,71 @@
+<?php
+
+namespace App\Filament\Widgets;
+
+use App\Models\Opportunity;
+use App\Models\Site;
+use Filament\Tables;
+use Filament\Tables\Table;
+use Filament\Widgets\TableWidget as BaseWidget;
+use Illuminate\Database\Eloquent\Builder;
+
+class TopOpportunitiesWidget extends BaseWidget
+{
+    protected static ?int $sort = 2;
+    protected int | string | array $columnSpan = 'full';
+
+    public function table(Table $table): Table
+    {
+        $clientId = auth()->user()?->client_id;
+
+        return $table
+            ->query(
+                Opportunity::query()
+                    ->when($clientId, function($q) use ($clientId) {
+                        $q->whereIn('site_id', Site::where('client_id', $clientId)->pluck('id'));
+                    })
+                    ->where('status', 'open')
+                    ->orderByDesc('score')
+                    ->limit(10)
+            )
+            ->columns([
+                Tables\Columns\TextColumn::make('type')
+                    ->badge()
+                    ->color(fn (string $state): string => match ($state) {
+                        'low_ctr' => 'warning',
+                        'high_impressions' => 'info',
+                        'thin_content' => 'danger',
+                        'missing_page' => 'gray',
+                        default => 'primary',
+                    })
+                    ->formatStateUsing(fn (string $state): string => str_replace('_', ' ', title_case($state))),
+
+                Tables\Columns\TextColumn::make('opportunifiable.title')
+                    ->label('Page')
+                    ->limit(50)
+                    ->searchable(),
+
+                Tables\Columns\TextColumn::make('score')
+                    ->label('Score')
+                    ->numeric(decimalPlaces: 0)
+                    ->sortable(),
+
+                Tables\Columns\TextColumn::make('recommendation')
+                    ->limit(60)
+                    ->wrap(),
+
+                Tables\Columns\TextColumn::make('created_at')
+                    ->label('Detected')
+                    ->dateTime('M j, Y')
+                    ->sortable(),
+            ])
+            ->actions([
+                Tables\Actions\ViewAction::make()
+                    ->url(fn (Opportunity $record): string => 
+                        route('filament.admin.resources.opportunities.view', $record)
+                    ),
+            ])
+            ->heading('Top SEO Opportunities')
+            ->description('High-priority optimization opportunities ranked by potential impact');
+    }
+}

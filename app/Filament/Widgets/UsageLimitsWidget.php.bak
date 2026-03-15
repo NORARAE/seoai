@@ -1,0 +1,57 @@
+<?php
+
+namespace App\Filament\Widgets;
+
+use App\Models\UsageRecord;
+use App\Models\Client;
+use App\Services\UsageTrackingService;
+use Filament\Widgets\Widget;
+use Illuminate\Contracts\View\View;
+
+class UsageLimitsWidget extends Widget
+{
+    protected static string $view = 'filament.widgets.usage-limits-widget';
+    protected static ?int $sort = 4;
+    protected int | string | array $columnSpan = 'full';
+
+    public function getUsageData(): ?array
+    {
+        $user = auth()->user();
+        
+        if (!$user || !$user->client_id) {
+            return null;
+        }
+
+        $client = Client::find($user->client_id);
+        
+        if (!$client) {
+            return null;
+        }
+
+        $usageService = app(UsageTrackingService::class);
+        
+        return $usageService->getUsageSummary($client);
+    }
+
+    public function getClientData(): ?array
+    {
+        $user = auth()->user();
+        
+        if (!$user || !$user->client_id) {
+            return null;
+        }
+
+        $client = Client::with('activeSubscription.plan')->find($user->client_id);
+        
+        if (!$client) {
+            return null;
+        }
+
+        return [
+            'name' => $client->name,
+            'plan' => $client->activeSubscription?->plan?->name ?? 'No Plan',
+            'trial_ends_at' => $client->trial_ends_at,
+            'on_trial' => $client->onTrial(),
+        ];
+    }
+}
