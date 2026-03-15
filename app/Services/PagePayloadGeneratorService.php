@@ -75,12 +75,12 @@ class PagePayloadGeneratorService
                 'location_type' => $opportunity->location_type ?? $this->getLocationTypeName($location),
                 
                 // Core content
-                'title' => $content['title'],
-                'meta_description' => $content['meta_description'],
+                'title' => $content['title'] ?? '',
+                'meta_description' => $content['meta_description'] ?? '',
                 'slug' => $slug,
                 'canonical_url_suggestion' => $this->generateCanonicalUrl($site, $slug),
-                'body_content' => $this->renderBodyContent($content['body_sections']),
-                'excerpt' => $this->generateExcerpt($content['body_sections']),
+                'body_content' => $this->renderBodyContent($content['body_sections'] ?? []),
+                'excerpt' => $this->generateExcerpt($content['body_sections'] ?? []),
                 
                 // SEO assets
                 'schema_json_ld' => $schema,

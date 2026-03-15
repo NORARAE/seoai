@@ -101,7 +101,7 @@ class BulkPageExpansionService
     protected function selectOpportunities(Site $site, int $count, array $options): Collection
     {
         $query = SeoOpportunity::where('site_id', $site->id)
-            ->where('status', 'identified');
+            ->whereIn('status', ['identified', 'pending']); // Include both identified and pending
 
         // Apply filters
         if (!empty($options['filters']['opportunity_type'])) {

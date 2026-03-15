@@ -27,51 +27,6 @@ class PublishingLogResource extends Resource
         return false; // Logs are created automatically, not manually
     }
 
-    public static function form(Form $form): Form
-    {
-        return $form
-            ->schema([
-                Forms\Components\Section::make('Log Information')
-                    ->schema([
-                        Forms\Components\Select::make('payload_id')
-                            ->relationship('payload', 'title')
-                            ->disabled(),
-                        
-                        Forms\Components\TextInput::make('adapter_type')
-                            ->disabled(),
-                        
-                        Forms\Components\TextInput::make('action')
-                            ->disabled(),
-                        
-                        Forms\Components\TextInput::make('result')
-                            ->disabled(),
-                    ])
-                    ->columns(2),
-
-                Forms\Components\Section::make('Details')
-                    ->schema([
-                        Forms\Components\Textarea::make('remote_url')
-                            ->disabled()
-                            ->rows(2),
-                        
-                        Forms\Components\Textarea::make('error_message')
-                            ->disabled()
-                            ->rows(3),
-                        
-                        Forms\Components\Textarea::make('remote_response')
-                            ->disabled()
-                            ->rows(10)
-                            ->columnSpanFull(),
-                    ]),
-
-                Forms\Components\Section::make('Timing')
-                    ->schema([
-                        Forms\Components\DateTimePicker::make('created_at')
-                            ->disabled(),
-                    ]),
-            ]);
-    }
-
     public static function table(Table $table): Table
     {
         return $table
