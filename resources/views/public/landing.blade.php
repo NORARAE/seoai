@@ -103,7 +103,7 @@ nav.stuck{background:rgba(8,8,8,.95);backdrop-filter:blur(16px);border-color:var
 .gold-rule{height:1px;background:linear-gradient(to right,transparent,var(--gold-dim),transparent)}
 .s-eye{font-size:.76rem;letter-spacing:.24em;text-transform:uppercase;color:var(--gold);margin-bottom:12px;display:flex;align-items:center;gap:14px}
 .s-eye::before{content:'';width:28px;height:1px;background:var(--gold)}
-.s-h{font-family:'Cormorant Garamond',serif;font-size:clamp(2.1rem,3.5vw,3.2rem);font-weight:300;line-height:1.15;margin-bottom:16px}
+.s-h{font-family:'Cormorant Garamond',serif;font-size:clamp(2.4rem,4vw,3.6rem);font-weight:400;line-height:1.08;margin-bottom:16px}
 .s-h em{font-style:italic;color:var(--gold)}
 .s-p{font-size:1rem;line-height:1.85;color:var(--muted)}
 .s-p strong{color:var(--ivory);font-weight:400}
@@ -198,9 +198,9 @@ nav.stuck{background:rgba(8,8,8,.95);backdrop-filter:blur(16px);border-color:var
 .step::after{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--gold),transparent);transform:scaleX(0);transition:transform .5s cubic-bezier(.23,1,.32,1)}
 .step:hover{background:var(--card)}
 .step:hover::after{transform:scaleX(1)}
-.step-n{font-family:'Cormorant Garamond',serif;font-size:3.6rem;font-weight:300;color:rgba(200,168,75,.08);line-height:1;margin-bottom:20px;transition:color .3s}
-.step:hover .step-n{color:rgba(200,168,75,.18)}
-.step-title{font-family:'Cormorant Garamond',serif;font-size:1.4rem;font-weight:400;margin-bottom:10px;color:var(--ivory)}
+.step-n{font-family:'Cormorant Garamond',serif;font-size:3.6rem;font-weight:300;color:rgba(200,168,75,.25);line-height:1;margin-bottom:16px;transition:color .3s}
+.step:hover .step-n{color:rgba(200,168,75,.45)}
+.step-title{font-family:'Cormorant Garamond',serif;font-size:1.6rem;font-weight:400;line-height:1.15;margin-bottom:10px;color:var(--ivory)}
 .step-desc{font-size:.9rem;line-height:1.8;color:var(--muted)}
 
 /* ── URL Lock ── */
