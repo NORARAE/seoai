@@ -27,6 +27,7 @@ Route::get('/privacy', [PublicController::class, 'privacy'])->name('privacy');
 Route::get('/terms', [PublicController::class, 'terms'])->name('terms');
 Route::post('/licensing-inquiry', [PublicController::class, 'storeLicensingInquiry'])
     ->name('licensing-inquiry.store');
+Route::get('/licensing-inquiry', fn () => redirect(url('/').'#contact'))->name('licensing-inquiry.get');
 Route::get('/sitemaps/{site}.xml', [PublicSitemapController::class, 'index'])
     ->whereNumber('site')
     ->name('public.sitemaps.index');
