@@ -63,13 +63,12 @@ class PublishPagePayloadJob implements ShouldQueue
                 PublishingLog::create([
                     'payload_id' => $payload->id,
                     'site_id' => $site->id,
-                    'client_id' => $site->client_id,
                     'adapter_type' => $site->publishing_mode,
                     'action' => 'publish',
                     'result' => 'success',
                     'remote_id' => $result->remoteId,
                     'remote_url' => $result->remoteUrl,
-                    'remote_response' => $result->rawResponse,
+                    'remote_response' => $result->metadata,
                 ]);
 
                 Log::channel('publishing')->info('Payload published successfully', [
@@ -80,7 +79,7 @@ class PublishPagePayloadJob implements ShouldQueue
                     'remote_url' => $result->remoteUrl,
                 ]);
             } else {
-                $this->handlePublishingFailure($payload, $result->errorMessage);
+                $this->handlePublishingFailure($payload, $result->error ?? 'Publishing failed.');
             }
 
         } catch (\Exception $e) {
@@ -94,19 +93,15 @@ class PublishPagePayloadJob implements ShouldQueue
      */
     protected function handlePublishingFailure(PagePayload $payload, string $errorMessage): void
     {
-        // Update payload
-        $payload->update([
-            'publish_status' => 'failed',
-        ]);
+        $payload->markAsFailed($errorMessage);
 
         // Log failure
         PublishingLog::create([
             'payload_id' => $payload->id,
             'site_id' => $payload->site_id,
-            'client_id' => $payload->client_id,
             'adapter_type' => $payload->site->publishing_mode,
             'action' => 'publish',
-            'result' => 'failed',
+            'result' => 'failure',
             'error_message' => $errorMessage,
             'retry_count' => $this->attempts(),
         ]);
@@ -127,17 +122,14 @@ class PublishPagePayloadJob implements ShouldQueue
         $payload = PagePayload::with(['site', 'batch'])->find($this->payloadId);
         
         if ($payload) {
-            $payload->update([
-                'publish_status' => 'failed',
-            ]);
+            $payload->markAsFailed('Job permanently failed: ' . $exception->getMessage());
 
             PublishingLog::create([
                 'payload_id' => $payload->id,
                 'site_id' => $payload->site_id,
-                'client_id' => $payload->client_id,
                 'adapter_type' => $payload->site->publishing_mode,
                 'action' => 'publish',
-                'result' => 'failed',
+                'result' => 'failure',
                 'error_message' => 'Job permanently failed: ' . $exception->getMessage(),
                 'retry_count' => $this->tries,
             ]);

@@ -11,7 +11,8 @@ use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
-use Filament\Tables\Actions\Action;
+use Filament\Actions\Action;
+use Filament\Actions\ViewAction;
 use Illuminate\Database\Eloquent\Builder;
 
 class PageGenerationBatchResource extends Resource
@@ -20,7 +21,11 @@ class PageGenerationBatchResource extends Resource
 
     protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-queue-list';
 
-    protected static ?int $navigationSort = 2;
+    protected static ?string $navigationLabel = 'Generation Batches';
+
+    protected static string|\UnitEnum|null $navigationGroup = 'Content';
+
+    protected static ?int $navigationSort = 20;
 
     protected static ?string $label = 'Generation Batch';
 
@@ -63,10 +68,20 @@ class PageGenerationBatchResource extends Resource
                     ->label('Failed')
                     ->sortable()
                     ->color('danger'),
+
+                Tables\Columns\TextColumn::make('duration_seconds')
+                    ->label('Duration')
+                    ->formatStateUsing(fn (?int $state): string => $state ? gmdate('H:i:s', $state) : '—')
+                    ->toggleable(),
                 
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable(),
+
+                Tables\Columns\TextColumn::make('completed_at')
+                    ->dateTime()
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
                 Tables\Filters\SelectFilter::make('status')
@@ -82,7 +97,7 @@ class PageGenerationBatchResource extends Resource
                     ->label('Site'),
             ])
             ->actions([
-                Tables\Actions\ViewAction::make(),
+                ViewAction::make(),
                 
                 Action::make('publish')
                     ->icon('heroicon-o-cloud-arrow-up')

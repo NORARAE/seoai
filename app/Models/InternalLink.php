@@ -10,6 +10,8 @@ class InternalLink extends Model
     protected $fillable = [
         'site_id',
         'source_page_id',
+        'source_url_id',
+        'target_url_id',
         'source_url',
         'target_url',
         'anchor_text',
@@ -29,5 +31,15 @@ class InternalLink extends Model
     public function sourcePage(): BelongsTo
     {
         return $this->belongsTo(Page::class, 'source_page_id');
+    }
+
+    public function sourceUrlInventory(): BelongsTo
+    {
+        return $this->belongsTo(UrlInventory::class, 'source_url_id');
+    }
+
+    public function targetUrlInventory(): BelongsTo
+    {
+        return $this->belongsTo(UrlInventory::class, 'target_url_id');
     }
 }

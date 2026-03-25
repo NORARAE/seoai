@@ -61,6 +61,18 @@ class PagePayloadGeneratorService
         // Plan internal links
         $linkSuggestions = $this->planInternalLinks($site, $service, $location);
         
+        // Generate body content
+        $bodyContent = $this->renderBodyContent($content['body_sections_json'] ?? []);
+        $excerpt = $this->generateExcerpt($content['body_sections_json'] ?? []);
+
+        // Validate content was generated successfully
+        if (empty($bodyContent)) {
+            throw new \RuntimeException(
+                "Body content generation produced empty result for opportunity #{$opportunity->id}. " .
+                "Location: {$location->name}, Service: {$service->name}"
+            );
+        }
+        
         // Create or update payload
         return PagePayload::updateOrCreate(
             [
@@ -79,8 +91,8 @@ class PagePayloadGeneratorService
                 'meta_description' => $content['meta_description'] ?? '',
                 'slug' => $slug,
                 'canonical_url_suggestion' => $this->generateCanonicalUrl($site, $slug),
-                'body_content' => $this->renderBodyContent($content['body_sections'] ?? []),
-                'excerpt' => $this->generateExcerpt($content['body_sections'] ?? []),
+                'body_content' => $bodyContent,
+                'excerpt' => $excerpt,
                 
                 // SEO assets
                 'schema_json_ld' => $schema,
@@ -105,7 +117,7 @@ class PagePayloadGeneratorService
                 // Publishing metadata
                 'publish_notes' => 'Generated from SEO opportunity #' . $opportunity->id,
                 'publish_status' => 'pending',
-                'status' => 'ready', // Ready to publish
+                'status' => 'needs_review',
                 
                 // Quality scores
                 'content_quality_score' => $this->assessContentQuality($content),

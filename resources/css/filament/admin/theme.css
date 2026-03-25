@@ -1,0 +1,90 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;600;700&display=swap');
+@import '../../../../vendor/filament/filament/resources/css/theme.css';
+
+@source '../../../../app/Filament/**/*.php';
+@source '../../../../resources/views/filament/**/*.blade.php';
+@source '../../../../vendor/filament/**/*.blade.php';
+
+:root {
+    --seoai-bg: #0b0f14;
+    --seoai-panel: #111827;
+    --seoai-panel-2: #1f2937;
+    --seoai-green: #22c55e;
+    --seoai-blue: #3b82f6;
+}
+
+body.filament-panel {
+    font-family: 'Inter', ui-sans-serif, system-ui, sans-serif;
+    background-color: var(--seoai-bg);
+    background-image: radial-gradient(circle at 1px 1px, rgba(59, 130, 246, 0.035) 1px, transparent 0);
+    background-size: 36px 36px;
+}
+
+.fi-main,
+.fi-topbar,
+.fi-sidebar,
+.fi-ta-ctn,
+.fi-wi-widget {
+    background-color: var(--seoai-panel);
+    border-color: rgba(148, 163, 184, 0.18);
+}
+
+.fi-sidebar-nav,
+.fi-ta-table,
+.fi-wi-stats-overview-stat {
+    background-color: var(--seoai-panel-2);
+}
+
+.fi-section,
+.fi-wi-widget > .fi-section,
+.fi-ta-ctn {
+    border-color: rgba(148, 163, 184, 0.16);
+    box-shadow: 0 14px 34px rgba(2, 6, 23, 0.18);
+}
+
+.fi-section-content,
+.fi-ta-content {
+    padding-top: 1.125rem;
+    padding-bottom: 1.125rem;
+}
+
+.fi-header-heading,
+.fi-ta-header-heading,
+.fi-section-header-heading,
+.fi-topbar .fi-user-menu-trigger {
+    color: #e5e7eb;
+}
+
+.fi-body,
+.fi-ta-text,
+.fi-section-description,
+.fi-ta-header-description,
+.fi-wi-stats-overview-stat-description {
+    color: #94a3b8;
+    line-height: 1.55;
+}
+
+.fi-btn-color-primary {
+    --c-400: var(--seoai-blue);
+    --c-500: var(--seoai-blue);
+    --c-600: #2563eb;
+}
+
+.fi-badge-color-success {
+    --c-500: var(--seoai-green);
+}
+
+.fi-badge,
+.fi-ta-col-header-cell-label,
+.fi-wi-stats-overview-stat-value {
+    font-family: 'Inter', ui-sans-serif, system-ui, sans-serif;
+}
+
+.fi-badge {
+    font-weight: 600;
+}
+
+.fi-topbar,
+.fi-sidebar {
+    backdrop-filter: blur(8px);
+}

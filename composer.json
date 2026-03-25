@@ -9,6 +9,7 @@
         "php": "^8.2",
         "filament/filament": "^5.3",
         "google/apiclient": "^2.19",
+        "laravel/cashier": "^16.5",
         "laravel/framework": "^12.0",
         "laravel/tinker": "^2.10.1",
         "symfony/css-selector": "^7.4",
@@ -47,6 +48,14 @@
         "dev": [
             "Composer\\Config::disableProcessTimeout",
             "npx concurrently -c \"#93c5fd,#c4b5fd,#fb7185,#fdba74\" \"php artisan serve\" \"php artisan queue:listen --tries=1 --timeout=0\" \"php artisan pail --timeout=0\" \"npm run dev\" --names=server,queue,logs,vite --kill-others"
+        ],
+        "runtime": [
+            "Composer\\Config::disableProcessTimeout",
+            "bash scripts/dev-runtime.sh"
+        ],
+        "runtime:backend": [
+            "Composer\\Config::disableProcessTimeout",
+            "SEOAI_SKIP_VITE=1 bash scripts/dev-runtime.sh"
         ],
         "test": [
             "@php artisan config:clear --ansi",

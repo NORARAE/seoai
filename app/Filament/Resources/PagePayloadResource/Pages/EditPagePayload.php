@@ -16,4 +16,9 @@ class EditPagePayload extends EditRecord
             Actions\ViewAction::make(),
         ];
     }
+
+    protected function getSavedNotificationTitle(): ?string
+    {
+        return 'Payload metadata updated';
+    }
 }

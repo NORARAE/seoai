@@ -22,11 +22,13 @@ class OpportunityResource extends Resource
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedLightBulb;
 
-    protected static ?string $navigationLabel = 'Opportunities';
+    protected static ?string $navigationLabel = 'Site Issues';
+
+    protected static string|\UnitEnum|null $navigationGroup = 'Operations';
 
     protected static ?string $recordTitleAttribute = 'issue_type';
 
-    protected static ?int $navigationSort = 3;
+    protected static ?int $navigationSort = 20;
 
     public static function form(Schema $schema): Schema
     {

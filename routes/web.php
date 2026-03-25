@@ -3,6 +3,7 @@
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\LocationPagePreviewController;
 use App\Http\Controllers\PublicController;
+use App\Http\Controllers\PublicSitemapController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -22,6 +23,17 @@ use Illuminate\Support\Facades\Route;
 // ============================================================================
 
 Route::get('/', [PublicController::class, 'landing'])->name('home');
+Route::get('/privacy', [PublicController::class, 'privacy'])->name('privacy');
+Route::get('/terms', [PublicController::class, 'terms'])->name('terms');
+Route::post('/licensing-inquiry', [PublicController::class, 'storeLicensingInquiry'])
+    ->name('licensing-inquiry.store');
+Route::get('/sitemaps/{site}.xml', [PublicSitemapController::class, 'index'])
+    ->whereNumber('site')
+    ->name('public.sitemaps.index');
+Route::get('/sitemaps/{site}/pages-{page}.xml', [PublicSitemapController::class, 'page'])
+    ->whereNumber('site')
+    ->whereNumber('page')
+    ->name('public.sitemaps.page');
 
 // ============================================================================
 // CUSTOMER APP LAYER - Main SaaS Application

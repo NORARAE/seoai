@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Support\Str;
 
 class PagePayload extends Model
 {
@@ -15,7 +16,8 @@ class PagePayload extends Model
         'internal_link_suggestions', 'anchor_text_suggestions', 'outbound_links',
         'parent_page_slug', 'hub_page_slug', 'related_pages', 'submenu_suggestions',
         'sitemap_priority', 'sitemap_changefreq', 'sitemap_lastmod',
-        'publish_notes', 'publish_status', 'published_at', 'remote_id',
+        'publish_notes', 'reviewed_by_user_id', 'reviewed_at', 'review_notes',
+        'publish_status', 'published_at', 'remote_id',
         'remote_url', 'remote_edit_url', 'content_quality_score',
         'seo_score', 'readability_score', 'generated_by', 'generation_params',
         'template_used', 'ai_model_used', 'status',
@@ -30,6 +32,7 @@ class PagePayload extends Model
         'related_pages' => 'array',
         'submenu_suggestions' => 'array',
         'generation_params' => 'array',
+        'reviewed_at' => 'datetime',
         'published_at' => 'datetime',
         'sitemap_lastmod' => 'datetime',
         'content_quality_score' => 'decimal:2',
@@ -37,6 +40,11 @@ class PagePayload extends Model
         'readability_score' => 'decimal:2',
         'sitemap_priority' => 'decimal:2',
     ];
+
+    public function reviewedBy(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'reviewed_by_user_id');
+    }
 
     public function site(): BelongsTo
     {
@@ -225,8 +233,66 @@ class PagePayload extends Model
     {
         $this->update([
             'publish_status' => 'exported',
-            'status' => 'published', // Exported counts as "done"
+            'status' => 'published',
         ]);
+    }
+
+    /**
+     * Mark publishing as failed while preserving review context
+     */
+    public function markAsFailed(?string $reason = null): void
+    {
+        $attributes = [
+            'publish_status' => 'failed',
+            'status' => 'failed',
+        ];
+
+        if (filled($reason)) {
+            $attributes['review_notes'] = $reason;
+        }
+
+        $this->update($attributes);
+    }
+
+    /**
+     * Approve payload for publishing
+     */
+    public function approve(?int $userId = null, ?string $note = null): void
+    {
+        $this->update([
+            'status' => 'approved',
+            'reviewed_by_user_id' => $userId,
+            'reviewed_at' => now(),
+            'review_notes' => $note,
+        ]);
+    }
+
+    /**
+     * Reject payload and store review feedback
+     */
+    public function reject(?int $userId = null, string $reason = ''): void
+    {
+        $this->update([
+            'status' => 'rejected',
+            'reviewed_by_user_id' => $userId,
+            'reviewed_at' => now(),
+            'review_notes' => $reason,
+        ]);
+    }
+
+    public function isAwaitingReview(): bool
+    {
+        return $this->status === 'needs_review';
+    }
+
+    public function isApproved(): bool
+    {
+        return $this->status === 'approved';
+    }
+
+    public function isEditable(): bool
+    {
+        return ! in_array($this->status, ['published'], true);
     }
 
     /**
@@ -234,10 +300,73 @@ class PagePayload extends Model
      */
     public function isReadyToPublish(): bool
     {
-        return $this->status === 'ready' 
+        return $this->status === 'approved'
             && $this->publish_status === 'pending'
             && !empty($this->body_content)
             && !empty($this->title);
+    }
+
+    public function getSectionCountAttribute(): int
+    {
+        return count($this->preview_sections);
+    }
+
+    public function getBodyLengthAttribute(): int
+    {
+        return strlen((string) $this->body_content);
+    }
+
+    public function getFormattedBodyLengthAttribute(): string
+    {
+        if ($this->body_length < 1024) {
+            return $this->body_length . ' B';
+        }
+
+        return number_format($this->body_length / 1024, 1) . ' KB';
+    }
+
+    public function getHasSchemaAttribute(): bool
+    {
+        return filled($this->schema_json_ld);
+    }
+
+    public function getInternalLinksCountAttribute(): int
+    {
+        return count($this->internal_link_suggestions ?? []);
+    }
+
+    public function getPreviewBodyHtmlAttribute(): string
+    {
+        $html = (string) $this->body_content;
+        $html = preg_replace('#<script\b[^>]*>(.*?)</script>#is', '', $html) ?? $html;
+        $html = preg_replace('#<style\b[^>]*>(.*?)</style>#is', '', $html) ?? $html;
+
+        return $html;
+    }
+
+    public function getPreviewSectionsAttribute(): array
+    {
+        $html = (string) $this->preview_body_html;
+
+        if (blank($html)) {
+            return [];
+        }
+
+        preg_match_all('/<h2[^>]*>(.*?)<\/h2>(.*?)(?=<h2[^>]*>|$)/is', $html, $matches, PREG_SET_ORDER);
+
+        return collect($matches)
+            ->map(function (array $match): array {
+                $heading = trim(strip_tags(html_entity_decode($match[1] ?? '', ENT_QUOTES | ENT_HTML5)));
+                $content = trim($match[2] ?? '');
+
+                return [
+                    'heading' => filled($heading) ? $heading : 'Section',
+                    'content' => $content,
+                    'excerpt' => Str::limit(trim(preg_replace('/\s+/', ' ', strip_tags($content))), 180),
+                ];
+            })
+            ->values()
+            ->all();
     }
 
     /**
@@ -248,8 +377,15 @@ class PagePayload extends Model
         if ($this->location_type === 'city' && $this->city) {
             return $this->city->name . ', ' . $this->site->state->code;
         }
+
+        if ($this->location_type === 'county' && $this->relationLoaded('location') && $this->location) {
+            return $this->location->name;
+        }
+
+        if ($this->location_type === 'state' && $this->relationLoaded('location') && $this->location) {
+            return $this->location->name;
+        }
         
-        // Handle County/State similarly
         return 'Unknown Location';
     }
 }

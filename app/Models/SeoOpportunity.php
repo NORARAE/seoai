@@ -12,13 +12,25 @@ class SeoOpportunity extends Model
 
     protected $fillable = [
         'site_id',
+        'scan_run_id',
         'client_id',
+        'opportunity_category',
         'service_id',
         'location_id',
+        'url_inventory_id',
         'search_volume',
         'competition_score',
         'rank_potential',
         'priority_score',
+        'demand_score',
+        'readiness_score',
+        'business_value_score',
+        'risk_score',
+        'total_score',
+        'score_components',
+        'signals',
+        'reason_summary',
+        'recommended_action',
         'estimated_monthly_revenue',
         'service_value',
         'conversion_rate',
@@ -36,6 +48,10 @@ class SeoOpportunity extends Model
         'identified_at',
         'last_analyzed_at',
         'completed_at',
+        'target_keyword',
+        'suggested_url',
+        'detection_source',
+        'payload_id',
     ];
 
     protected $casts = [
@@ -43,6 +59,13 @@ class SeoOpportunity extends Model
         'competition_score' => 'decimal:2',
         'rank_potential' => 'decimal:2',
         'priority_score' => 'decimal:2',
+        'demand_score' => 'decimal:2',
+        'readiness_score' => 'decimal:2',
+        'business_value_score' => 'decimal:2',
+        'risk_score' => 'decimal:2',
+        'total_score' => 'decimal:2',
+        'score_components' => 'array',
+        'signals' => 'array',
         'estimated_monthly_revenue' => 'decimal:2',
         'service_value' => 'decimal:2',
         'conversion_rate' => 'decimal:4',
@@ -65,6 +88,11 @@ class SeoOpportunity extends Model
         return $this->belongsTo(Site::class);
     }
 
+    public function scanRun(): BelongsTo
+    {
+        return $this->belongsTo(ScanRun::class, 'scan_run_id');
+    }
+
     public function client(): BelongsTo
     {
         return $this->belongsTo(Client::class);
@@ -73,6 +101,15 @@ class SeoOpportunity extends Model
     public function service(): BelongsTo
     {
         return $this->belongsTo(Service::class);
+    }
+    public function urlInventory(): BelongsTo
+    {
+        return $this->belongsTo(UrlInventory::class, 'url_inventory_id');
+    }
+
+    public function payload(): BelongsTo
+    {
+        return $this->belongsTo(PagePayload::class, 'payload_id');
     }
 
     public function location(): BelongsTo
@@ -249,5 +286,42 @@ class SeoOpportunity extends Model
         };
 
         return $ctrByPosition[$potentialPosition] ?? 0.02;
+    }
+
+
+    public function scopeMissingPages($query)
+    {
+        return $query->where('opportunity_category', 'missing_page');
+    }
+
+    public function scopeOptimizationCandidates($query)
+    {
+        return $query->where('opportunity_category', 'optimization_candidate');
+    }
+
+    public function scopeStructuralWeaknesses($query)
+    {
+        return $query->where('opportunity_category', 'structural_weakness');
+    }
+
+    public function scopeByCategory($query, string $category)
+    {
+        return $query->where('opportunity_category', $category);
+    }
+
+    public function scopeScored($query)
+    {
+        return $query->whereNotNull('total_score');
+    }
+
+    public function getTotalScoreLabelAttribute(): string
+    {
+        $score = (float) ($this->total_score ?? 0);
+
+        return match (true) {
+            $score >= 75 => 'high',
+            $score >= 45 => 'medium',
+            default      => 'low',
+        };
     }
 }

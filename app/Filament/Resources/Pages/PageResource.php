@@ -22,11 +22,13 @@ class PageResource extends Resource
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedDocumentText;
 
-    protected static ?string $navigationLabel = 'Pages';
+    protected static ?string $navigationLabel = 'Page Library';
+
+    protected static string|\UnitEnum|null $navigationGroup = 'Content';
 
     protected static ?string $recordTitleAttribute = 'url';
 
-    protected static ?int $navigationSort = 2;
+    protected static ?int $navigationSort = 10;
 
     public static function form(Schema $schema): Schema
     {

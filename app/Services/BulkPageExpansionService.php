@@ -9,8 +9,10 @@ use App\Models\PagePayload;
 use App\Models\SeoOpportunity;
 use App\Models\Site;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Str;
 
 /**
  * BulkPageExpansionService
@@ -58,7 +60,7 @@ class BulkPageExpansionService
             $batch = PageGenerationBatch::create([
                 'site_id' => $site->id,
                 'client_id' => $site->client_id,
-                'initiated_by_user_id' => auth()->id(),
+                'initiated_by_user_id' => Auth::id(),
                 'name' => $options['name'] ?? "Batch " . now()->format('Y-m-d H:i'),
                 'description' => $options['description'] ?? null,
                 'status' => 'pending',
@@ -70,6 +72,19 @@ class BulkPageExpansionService
 
             // Select opportunities
             $opportunities = $this->selectOpportunities($site, $count, $options);
+
+            $batch->update(['requested_count' => $opportunities->count()]);
+
+            if ($opportunities->isEmpty()) {
+                $batch->update([
+                    'status' => 'completed',
+                    'completed_at' => now(),
+                    'duration_seconds' => 0,
+                    'error_summary' => 'No eligible opportunities found for this batch.',
+                ]);
+
+                return $batch->fresh();
+            }
 
             // Dispatch generation jobs
             $this->dispatchGenerationJobs($opportunities, $batch, $options);
@@ -183,8 +198,8 @@ class BulkPageExpansionService
      */
     protected function generateSlug(SeoOpportunity $opportunity): string
     {
-        $serviceName = \Str::slug($opportunity->service->name);
-        $locationName = \Str::slug($opportunity->city->name ?? 'location');
+        $serviceName = Str::slug($opportunity->service->name);
+        $locationName = Str::slug($opportunity->city->name ?? 'location');
         $stateCode = strtolower($opportunity->city->state->code ?? 'us');
         
         return "{$serviceName}-{$locationName}-{$stateCode}";
@@ -241,7 +256,7 @@ class BulkPageExpansionService
      */
     public function publishBatch(PageGenerationBatch $batch, bool $force = false): int
     {
-        $query = $batch->payloads()->where('status', 'ready');
+        $query = $batch->payloads()->where('status', 'approved');
         
         if (!$force) {
             $query->where('publish_status', 'pending');

@@ -48,4 +48,11 @@ Artisan::command('inspire', function () {
 //         return class_exists(DailyGscSyncJob::class);
 //     });
 
+// Phase 4: discovery crawl orchestration
+Schedule::command('crawl:dispatch --limit=50')
+    ->everyMinute()
+    ->name('crawl_dispatch')
+    ->withoutOverlapping()
+    ->runInBackground();
+
 

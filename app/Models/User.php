@@ -2,12 +2,14 @@
 
 namespace App\Models;
 
+use App\Support\ActiveSiteContext;
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Collection;
 
 class User extends Authenticatable
 {
@@ -27,6 +29,7 @@ class User extends Authenticatable
         'role',
         'permissions',
         'last_login_at',
+        'onboarding_completed_at',
         'is_active',
     ];
 
@@ -52,6 +55,7 @@ class User extends Authenticatable
             'password' => 'hashed',
             'permissions' => 'array',
             'last_login_at' => 'datetime',
+            'onboarding_completed_at' => 'datetime',
             'is_active' => 'boolean',
         ];
     }
@@ -72,6 +76,11 @@ class User extends Authenticatable
         return $this->belongsToMany(Role::class);
     }
 
+    public function sites(): BelongsToMany
+    {
+        return $this->belongsToMany(Site::class, 'site_user')->withTimestamps();
+    }
+
     /**
      * Check if user has a role
      */
@@ -85,7 +94,17 @@ class User extends Authenticatable
      */
     public function isOwner(): bool
     {
-        return $this->role === 'owner';
+        return in_array($this->role, ['owner', 'buyer'], true);
+    }
+
+    public function isSuperAdmin(): bool
+    {
+        return in_array($this->role, ['super_admin', 'superadmin'], true);
+    }
+
+    public function isOperator(): bool
+    {
+        return in_array($this->role, ['operator', 'team_member', 'member'], true);
     }
 
     /**
@@ -93,7 +112,34 @@ class User extends Authenticatable
      */
     public function isAdmin(): bool
     {
-        return in_array($this->role, ['owner', 'admin']);
+        return $this->isSuperAdmin() || in_array($this->role, ['owner', 'buyer', 'admin'], true);
+    }
+
+    /**
+     * @return Collection<int, Site>
+     */
+    public function accessibleSites(): Collection
+    {
+        if ($this->isSuperAdmin()) {
+            return Site::query()->orderBy('domain')->get();
+        }
+
+        $assigned = $this->sites()->orderBy('domain')->get();
+
+        if ($assigned->isNotEmpty()) {
+            return $assigned;
+        }
+
+        $effectiveClientId = $this->client_id ?: ActiveSiteContext::resolveClientIdForUser($this);
+
+        if ($effectiveClientId) {
+            return Site::query()
+                ->where('client_id', $effectiveClientId)
+                ->orderBy('domain')
+                ->get();
+        }
+
+        return collect();
     }
 
     /**

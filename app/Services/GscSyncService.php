@@ -18,7 +18,7 @@ class GscSyncService
     {
         $this->client = new GoogleClient();
         $this->client->setApplicationName(config('app.name'));
-        $this->client->setScopes([SearchConsole::WEBMASTERS_READONLY]);
+        $this->client->setScopes(['https://www.googleapis.com/auth/webmasters']);
         $this->client->setAccessType('offline');
         $this->client->setPrompt('consent');
     }
@@ -284,6 +284,42 @@ class GscSyncService
         } catch (\Exception $e) {
             Log::error('Failed to list GSC properties', ['error' => $e->getMessage()]);
             return [];
+        }
+    }
+
+    public function submitSitemap(Site $site, string $sitemapUrl): array
+    {
+        if (! $site->gsc_property_url) {
+            return ['success' => false, 'error' => 'Site not connected to GSC'];
+        }
+
+        try {
+            $this->authenticateClient($site);
+
+            $service = new SearchConsole($this->client);
+            $service->sitemaps->submit($site->gsc_property_url, $sitemapUrl);
+
+            $site->update([
+                'gsc_last_sitemap_submission_at' => now(),
+                'gsc_last_sitemap_submission_status' => 'submitted',
+                'gsc_last_sitemap_submission_error' => null,
+            ]);
+
+            return ['success' => true];
+        } catch (\Exception $e) {
+            Log::error('GSC sitemap submission failed', [
+                'site_id' => $site->id,
+                'sitemap_url' => $sitemapUrl,
+                'error' => $e->getMessage(),
+            ]);
+
+            $site->update([
+                'gsc_last_sitemap_submission_at' => now(),
+                'gsc_last_sitemap_submission_status' => 'failed',
+                'gsc_last_sitemap_submission_error' => $e->getMessage(),
+            ]);
+
+            return ['success' => false, 'error' => $e->getMessage()];
         }
     }
 }

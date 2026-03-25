@@ -3,6 +3,7 @@
 .env
 .env.backup
 .env.production
+.credentials
 .phpactor.json
 .phpunit.result.cache
 /.fleet
@@ -22,3 +23,14 @@
 Homestead.json
 Homestead.yaml
 Thumbs.db
+
+# Build artifacts & cache
+.npm-cache/
+npm-debug.log
+node_modules/.cache/
+
+# OS & editor
+.DS_Store
+*.swp
+*.swo
+*~

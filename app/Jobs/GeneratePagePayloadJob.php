@@ -46,7 +46,9 @@ class GeneratePagePayloadJob implements ShouldQueue
 
             // Update batch counts
             if ($batch) {
+                $batch->incrementSuccessful();
                 $batch->incrementPayload();
+                $batch->reconcileGenerationStatus();
                 
                 Log::channel('page-generation')->info('Payload generated', [
                     'batch_id' => $batch->id,
@@ -58,11 +60,6 @@ class GeneratePagePayloadJob implements ShouldQueue
             }
 
         } catch (\Exception $e) {
-            // Update batch with failure
-            if ($batch) {
-                $batch->increment('failed_count');
-            }
-
             Log::channel('page-generation')->error('Payload generation failed', [
                 'batch_id' => $this->batchId,
                 'opportunity_id' => $this->opportunityId,
@@ -92,6 +89,7 @@ class GeneratePagePayloadJob implements ShouldQueue
                 'failed_at' => now()->toDateTimeString(),
             ];
             $batch->update(['failed_items' => $failedItems]);
+            $batch->reconcileGenerationStatus();
         }
 
         Log::channel('page-generation')->error('Payload generation permanently failed', [

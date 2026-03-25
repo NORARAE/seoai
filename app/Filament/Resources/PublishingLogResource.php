@@ -4,13 +4,16 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\PublishingLogResource\Pages;
 use App\Models\PublishingLog;
+use App\Models\User;
 use BackedEnum;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
+use Filament\Actions\ViewAction;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Facades\Auth;
 
 class PublishingLogResource extends Resource
 {
@@ -25,6 +28,33 @@ class PublishingLogResource extends Resource
     public static function canCreate(): bool
     {
         return false; // Logs are created automatically, not manually
+    }
+
+    public static function canViewAny(): bool
+    {
+        return Auth::user() instanceof User;
+    }
+
+    public static function getEloquentQuery(): Builder
+    {
+        $query = parent::getEloquentQuery();
+        $user = Auth::user();
+
+        if (! $user instanceof User) {
+            return $query->whereRaw('1 = 0');
+        }
+
+        if ($user->isSuperAdmin()) {
+            return $query;
+        }
+
+        $siteIds = $user->accessibleSites()->pluck('sites.id');
+
+        if ($siteIds->isEmpty()) {
+            return $query->whereRaw('1 = 0');
+        }
+
+        return $query->whereHas('payload', fn (Builder $payloadQuery) => $payloadQuery->whereIn('site_id', $siteIds));
     }
 
     public static function table(Table $table): Table
@@ -61,7 +91,7 @@ class PublishingLogResource extends Resource
                 Tables\Columns\BadgeColumn::make('result')
                     ->colors([
                         'success' => 'success',
-                        'danger' => 'failed',
+                        'danger' => 'failure',
                     ]),
                 
                 Tables\Columns\TextColumn::make('remote_url')
@@ -83,7 +113,7 @@ class PublishingLogResource extends Resource
                 Tables\Filters\SelectFilter::make('result')
                     ->options([
                         'success' => 'Success',
-                        'failed' => 'Failed',
+                        'failure' => 'Failed',
                     ]),
                 
                 Tables\Filters\SelectFilter::make('adapter_type')
@@ -119,7 +149,7 @@ class PublishingLogResource extends Resource
                     }),
             ])
             ->actions([
-                Tables\Actions\ViewAction::make(),
+                ViewAction::make(),
             ])
             ->defaultSort('created_at', 'desc');
     }
