@@ -94,7 +94,7 @@ nav.stuck{background:rgba(8,8,8,.95);backdrop-filter:blur(16px);border-color:var
 .hp-kicker::before{content:'';display:inline-block;width:28px;height:1px;background:var(--gold);flex-shrink:0}
 .hp-question{
   font-family:'Cormorant Garamond',serif;font-weight:300;font-style:italic;
-  font-size:clamp(1.05rem,1.8vw,1.4rem);color:var(--ivory);
+  font-size:clamp(1.3rem,2.2vw,1.8rem);color:var(--ivory);
   letter-spacing:.04em;line-height:1.45;padding-left:42px;
 }
 .hero-h1{
@@ -109,20 +109,20 @@ nav.stuck{background:rgba(8,8,8,.95);backdrop-filter:blur(16px);border-color:var
   display:flex;flex-direction:column;gap:0;
 }
 .hero-p-line{
-  font-size:1rem;line-height:1.85;color:var(--muted);
-  padding:5px 0;
+  font-size:1.08rem;line-height:1.9;color:var(--muted);
+  padding:6px 0;
 }
 .hero-p-line + .hero-p-line{border-top:none}
 .hp-emphasis{
-  font-family:'Cormorant Garamond',serif;font-weight:300;font-style:italic;
-  font-size:clamp(1.25rem,2.2vw,1.6rem);color:var(--ivory);
-  padding-top:14px;padding-bottom:10px;
-  margin-top:6px;
-  border-top:1px solid rgba(200,168,75,.14);
+  font-family:'Cormorant Garamond',serif;font-weight:400;font-style:italic;
+  font-size:clamp(1.55rem,2.8vw,2.2rem);color:var(--ivory);
+  padding-top:16px;padding-bottom:12px;
+  margin-top:8px;
+  border-top:1px solid rgba(200,168,75,.18);
 }
 .hp-strong{
-  color:var(--ivory);font-size:1.05rem;font-weight:500;
-  letter-spacing:.03em;padding-top:10px;margin-top:4px;
+  color:var(--ivory);font-size:1.15rem;font-weight:500;
+  letter-spacing:.03em;padding-top:12px;margin-top:6px;
 }
 .hero-p strong{color:var(--ivory);font-weight:400}
 .hero-actions{display:flex;gap:20px;align-items:center;opacity:0;animation:up .85s .65s forwards}
@@ -459,11 +459,11 @@ footer{border-top:1px solid var(--border);padding:36px 64px;display:flex;flex-di
   .hero-h1{font-size:clamp(2.6rem,9vw,3.8rem);max-width:100%;margin-bottom:20px;line-height:1.05}
   .hero-pre{margin-bottom:16px;gap:4px}
   .hp-kicker{font-size:clamp(1.45rem,5.5vw,2rem)}
-  .hp-question{font-size:clamp(.95rem,3.5vw,1.2rem);padding-left:42px}
+  .hp-question{font-size:clamp(1.15rem,4vw,1.55rem);padding-left:42px}
   .hero-p{margin-bottom:32px}
-  .hero-p-line{font-size:1.1rem;padding:5px 0}
-  .hp-emphasis{font-size:clamp(1.3rem,5vw,1.6rem);padding-top:12px;padding-bottom:8px}
-  .hp-strong{font-size:1.1rem}
+  .hero-p-line{font-size:1.15rem;padding:5px 0}
+  .hp-emphasis{font-size:clamp(1.5rem,6vw,2rem);padding-top:14px;padding-bottom:10px}
+  .hp-strong{font-size:1.15rem}
   .hero-actions{flex-direction:column;gap:16px;width:100%}
   .btn-primary{width:100%;text-align:center;padding:16px 24px}
   .btn-ghost{text-align:center}
@@ -528,11 +528,11 @@ footer{border-top:1px solid var(--border);padding:36px 64px;display:flex;flex-di
   .hero-h1{font-size:clamp(2.8rem,11vw,3.8rem);line-height:1.04}
   .hero-pre{gap:3px;margin-bottom:14px}
   .hp-kicker{font-size:clamp(1.3rem,6vw,1.75rem)}
-  .hp-question{font-size:clamp(.9rem,4vw,1.1rem);padding-left:42px}
+  .hp-question{font-size:clamp(1.05rem,4.5vw,1.35rem);padding-left:42px}
   .hero-p{margin-bottom:28px}
-  .hero-p-line{font-size:.95rem;padding:4px 0}
-  .hp-emphasis{font-size:clamp(1.1rem,5vw,1.35rem);padding-top:10px;padding-bottom:6px}
-  .hp-strong{font-size:.98rem}
+  .hero-p-line{font-size:1.05rem;padding:5px 0}
+  .hp-emphasis{font-size:clamp(1.3rem,6vw,1.7rem);padding-top:12px;padding-bottom:8px}
+  .hp-strong{font-size:1.05rem}
   .hero-scroll{display:none}
   .wyl-icon{font-size:1.6rem;margin-bottom:12px}
   .proof-icon{font-size:1.8rem;margin-bottom:10px}
