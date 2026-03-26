@@ -84,7 +84,7 @@
 }
 </style>
 
-<div x-data="bookingModal()" x-cloak>
+<div x-data="bookingModal()" x-cloak @open-booking.window="open($event.detail)">
   {{-- Overlay --}}
   <div class="bk-overlay" :class="{ open: isOpen }" @click.self="close()">
     <div class="bk-box">

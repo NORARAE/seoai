@@ -804,7 +804,7 @@ footer{border-top:1px solid var(--border);padding:36px 64px;display:flex;flex-di
         <span><strong>Not publicly priced.</strong> Starter access is granted case-by-case. Apply below — we'll assess fit and confirm capacity.</span>
       </div>
       <a href="#contact" class="tier-cta" style="margin-top:20px">Apply for Starter Access</a>
-      <button class="tier-book" onclick="document.querySelector('[x-data]').__x.$data.open({id: 1, duration: 15, name: 'Free Discovery Call'})">Book a Free Discovery Call</button>
+      <button class="tier-book" onclick="window.dispatchEvent(new CustomEvent('open-booking', {detail: {id: 1, duration: 15, name: 'Free Discovery Call'}}))">Book a Free Discovery Call</button>
     </div>
 
     <div class="tier">
@@ -824,7 +824,7 @@ footer{border-top:1px solid var(--border);padding:36px 64px;display:flex;flex-di
         <li>Dashboard onboarding <em class="soon">(coming soon)</em></li>
       </ul>
       <a href="#contact" class="tier-cta">Request 5K Licensing Details</a>
-      <button class="tier-book" onclick="document.querySelector('[x-data]').__x.$data.open({id: 1, duration: 15, name: 'Free Discovery Call'})">Book a Free Discovery Call</button>
+      <button class="tier-book" onclick="window.dispatchEvent(new CustomEvent('open-booking', {detail: {id: 1, duration: 15, name: 'Free Discovery Call'}}))">Book a Free Discovery Call</button>
     </div>
 
     <div class="tier prime">
@@ -843,7 +843,7 @@ footer{border-top:1px solid var(--border);padding:36px 64px;display:flex;flex-di
         <li>First access to new industries &amp; features</li>
       </ul>
       <a href="#contact" class="tier-cta">Request 10K Licensing Details</a>
-      <button class="tier-book" onclick="document.querySelector('[x-data]').__x.$data.open({id: 3, duration: 60, name: 'Agency License Review'})">Review My Agency License</button>
+      <button class="tier-book" onclick="window.dispatchEvent(new CustomEvent('open-booking', {detail: {id: 3, duration: 60, name: 'Agency License Review'}}))">Review My Agency License</button>
     </div>
 
   </div>

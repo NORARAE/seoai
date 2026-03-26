@@ -35,8 +35,7 @@ h1 em{font-style:italic;color:var(--gold)}
   document.addEventListener('alpine:init', () => {
     // Auto-open modal on standalone book page
     setTimeout(() => {
-      const el = document.querySelector('[x-data]');
-      if (el && el.__x) el.__x.$data.open();
+      window.dispatchEvent(new CustomEvent('open-booking', {detail: null}));
     }, 300);
   });
   </script>
