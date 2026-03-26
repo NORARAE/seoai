@@ -15,16 +15,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        // After registering via Filament, send new users to the pending-approval
-        // page rather than the /admin panel home.
-        $this->app->bind(RegistrationResponse::class, function (): object {
-            return new class implements RegistrationResponse {
-                public function toResponse($request): RedirectResponse
-                {
-                    return redirect()->route('pending-approval');
-                }
-            };
-        });
+        //
     }
 
     /**
@@ -33,5 +24,17 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         Cashier::ignoreRoutes();
+
+        // After registering via Filament, send new users to the pending-approval
+        // page rather than the /admin panel home. Bound in boot() so it runs
+        // after FilamentServiceProvider::register() and wins the binding.
+        $this->app->bind(RegistrationResponse::class, function (): object {
+            return new class implements RegistrationResponse {
+                public function toResponse($request): RedirectResponse
+                {
+                    return redirect()->route('pending-approval');
+                }
+            };
+        });
     }
 }
