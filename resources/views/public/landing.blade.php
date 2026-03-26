@@ -435,6 +435,16 @@ footer{border-top:1px solid var(--border);padding:36px 64px;display:flex;flex-di
 .r{opacity:0;transform:translateY(32px);transition:opacity .85s cubic-bezier(.23,1,.32,1),transform .85s cubic-bezier(.23,1,.32,1)}
 .r.on{opacity:1;transform:none}
 
+/* ── Large tablet / small desktop nav compact ── */
+@media(max-width:1200px){
+  nav{padding:20px 36px}
+  nav.stuck{padding:14px 36px}
+  .nav-link{font-size:.72rem;letter-spacing:.13em}
+  .nav-btn{font-size:.72rem;letter-spacing:.13em;padding:13px 24px}
+  .nav-account-full{display:none}
+  .nav-account-short{display:inline}
+}
+
 /* ── Mobile ── */
 @media(max-width:900px){
   html{font-size:17px;-webkit-text-size-adjust:100%}
@@ -449,9 +459,9 @@ footer{border-top:1px solid var(--border);padding:36px 64px;display:flex;flex-di
   .hp-kicker{font-size:clamp(1.45rem,5.5vw,2rem)}
   .hp-question{font-size:clamp(.95rem,3.5vw,1.2rem);padding-left:42px}
   .hero-p{margin-bottom:32px}
-  .hero-p-line{font-size:.96rem;padding:4px 0}
-  .hp-emphasis{font-size:clamp(1.15rem,4.5vw,1.4rem);padding-top:12px;padding-bottom:8px}
-  .hp-strong{font-size:1rem}
+  .hero-p-line{font-size:1.1rem;padding:5px 0}
+  .hp-emphasis{font-size:clamp(1.3rem,5vw,1.6rem);padding-top:12px;padding-bottom:8px}
+  .hp-strong{font-size:1.1rem}
   .hero-actions{flex-direction:column;gap:16px;width:100%}
   .btn-primary{width:100%;text-align:center;padding:16px 24px}
   .btn-ghost{text-align:center}
