@@ -241,6 +241,60 @@ nav.stuck{background:rgba(8,8,8,.95);backdrop-filter:blur(16px);border-color:var
 .wyl-title{font-family:'Cormorant Garamond',serif;font-size:1.35rem;font-weight:400;letter-spacing:.02em;line-height:1.25;margin-bottom:14px;color:var(--ivory)}
 .wyl-desc{font-size:.88rem;line-height:2;color:var(--muted);opacity:.82}
 
+/* ── Positioning block ── */
+.positioning-block{
+  border-top:1px solid rgba(154,122,48,.18);
+  padding:96px 64px;
+  background:var(--bg);
+}
+.positioning-inner{
+  max-width:760px;
+  margin:0 auto;
+}
+.pos-line{
+  display:block;
+  font-size:1rem;
+  font-weight:300;
+  line-height:1.75;
+  color:var(--muted);
+  opacity:.8;
+  margin-bottom:14px;
+}
+.pos-line:last-child{margin-bottom:0}
+.pos-line.lead{
+  font-family:'Cormorant Garamond',serif;
+  font-size:clamp(1.35rem,2.2vw,1.75rem);
+  font-weight:300;
+  letter-spacing:.02em;
+  color:var(--ivory);
+  opacity:1;
+  margin-bottom:28px;
+}
+.pos-line.emphasis{
+  color:var(--gold);
+  opacity:1;
+  font-size:1.02rem;
+  letter-spacing:.01em;
+  margin-top:10px;
+}
+.pos-line.strong{
+  color:var(--ivory);
+  opacity:.95;
+  font-size:1.02rem;
+  font-weight:400;
+  margin-top:10px;
+  letter-spacing:.01em;
+}
+@media(max-width:900px){
+  .positioning-block{padding:64px 24px}
+  .pos-line{font-size:.97rem;margin-bottom:16px}
+  .pos-line.lead{font-size:clamp(1.2rem,5vw,1.5rem);margin-bottom:24px}
+}
+@media(max-width:520px){
+  .positioning-block{padding:52px 20px}
+  .pos-line{font-size:.95rem}
+}
+
 /* ── URL demo section ── */
 .url-section{background:var(--deep);border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:72px 64px}
 .url-inner{max-width:1200px;margin:0 auto;display:grid;grid-template-columns:1fr 1.1fr;gap:64px;align-items:start}
@@ -778,6 +832,25 @@ footer{border-top:1px solid var(--border);padding:36px 64px;display:flex;flex-di
         </div>
       </div>
     </div>
+  </div>
+</section>
+
+<!-- ════════════ POSITIONING BLOCK ════════════ -->
+<section class="positioning-block">
+  <div class="positioning-inner">
+    <p class="pos-line lead r">This is how SEO is done now.</p>
+
+    <p class="pos-line r">SEOAIco is the engine behind every service and location page &mdash; generating headlines, FAQs, local data, internal links, and AI-driven content across entire markets.</p>
+
+    <p class="pos-line emphasis r">Access is licensed &mdash; not sold.</p>
+    <p class="pos-line r">Each market is limited.</p>
+
+    <p class="pos-line r">When a license is active, that territory is effectively locked.</p>
+    <p class="pos-line r">You hold the position for as long as you maintain it.</p>
+
+    <p class="pos-line emphasis r">If you release it, it becomes available &mdash; and someone else will take it.</p>
+
+    <p class="pos-line strong r">It keeps your pages ranking.</p>
   </div>
 </section>
 
