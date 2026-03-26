@@ -110,10 +110,19 @@ class CryptoPaymentService
     /**
      * Route the verified event to the appropriate handler.
      *
-     * @return array{handled: bool, event: string, charge_id: string|null}
+     * Webhook handling is always gated by the enabled flag so that stale
+     * retries from Coinbase cannot activate licenses when the feature is off.
+     *
+     * @return array{handled: bool, event: string, charge_id: string|null, result: string}
      */
     public function handleWebhook(string $payload, string $signature): array
     {
+        // Hard gate — if feature is off, acknowledge receipt without processing
+        if (! config('services.coinbase_commerce.enabled', false)) {
+            Log::info('CoinbaseCommerce: webhook received but feature is disabled — acknowledged without processing');
+            return ['handled' => false, 'event' => 'disabled', 'charge_id' => null, 'result' => 'feature_disabled'];
+        }
+
         $event      = $this->parseWebhook($payload, $signature);
         $type       = $event['type'] ?? 'unknown';
         $chargeData = $event['data'] ?? [];
@@ -126,19 +135,41 @@ class CryptoPaymentService
 
         $action = $this->resolveAction($type);
 
-        if ($action === null || ! $chargeId) {
-            return ['handled' => false, 'event' => $type, 'charge_id' => $chargeId];
+        if ($action === null) {
+            Log::info('CoinbaseCommerce: unhandled webhook event type (ignored)', [
+                'type'      => $type,
+                'charge_id' => $chargeId,
+            ]);
+            return ['handled' => false, 'event' => $type, 'charge_id' => $chargeId, 'result' => 'unhandled_type'];
+        }
+
+        if (! $chargeId) {
+            Log::warning('CoinbaseCommerce: webhook missing charge ID', ['type' => $type, 'payload_keys' => array_keys($chargeData)]);
+            return ['handled' => false, 'event' => $type, 'charge_id' => null, 'result' => 'missing_charge_id'];
+        }
+
+        // Explicit guard: failed/expired events must NEVER activate a license
+        if ($action === 'expire') {
+            $this->expireByCharge($chargeId, $type);
+            Log::info('CoinbaseCommerce: webhook processed', [
+                'type'      => $type,
+                'charge_id' => $chargeId,
+                'action'    => 'expire',
+            ]);
+            return ['handled' => true, 'event' => $type, 'charge_id' => $chargeId, 'result' => 'expired'];
         }
 
         if ($action === 'activate') {
             $this->activateLicense($chargeData, $chargeData['metadata'] ?? []);
+            Log::info('CoinbaseCommerce: webhook processed', [
+                'type'      => $type,
+                'charge_id' => $chargeId,
+                'action'    => 'activate',
+            ]);
+            return ['handled' => true, 'event' => $type, 'charge_id' => $chargeId, 'result' => 'activated'];
         }
 
-        if ($action === 'expire') {
-            $this->expireByCharge($chargeId, $type);
-        }
-
-        return ['handled' => true, 'event' => $type, 'charge_id' => $chargeId];
+        return ['handled' => false, 'event' => $type, 'charge_id' => $chargeId, 'result' => 'no_action'];
     }
 
     // ──────────────────────────────────────────────────

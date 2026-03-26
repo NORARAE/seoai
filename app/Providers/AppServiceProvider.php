@@ -43,9 +43,9 @@ class AppServiceProvider extends ServiceProvider
 
     protected function configureRateLimiting(): void
     {
-        // Licensing inquiry form — generous but prevents spam floods
+        // Licensing inquiry form — 3/min per IP; server-side spam scoring adds further friction
         RateLimiter::for('inquiry', fn (Request $r): Limit =>
-            Limit::perHour(10)->by($r->ip())
+            Limit::perMinute(3)->by($r->ip())
         );
 
         // Public booking form + slot-fetching AJAX

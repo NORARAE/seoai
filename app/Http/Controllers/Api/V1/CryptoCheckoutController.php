@@ -61,11 +61,15 @@ class CryptoCheckoutController extends Controller
      * Receive and process Coinbase Commerce webhooks.
      * Coinbase signs each request with X-CC-Webhook-Signature (HMAC-SHA256).
      * Must use raw body — do NOT let Laravel parse it first.
+     *
+     * When crypto is disabled we still return 200 OK so Coinbase stops retrying.
      */
     public function handleWebhook(Request $request): JsonResponse
     {
         $signature = (string) $request->header('X-CC-Webhook-Signature', '');
 
+        // When feature is off the service will acknowledge without processing
+        // and return a 200 — prevents Coinbase from retrying indefinitely.
         try {
             $result = $this->cryptoPaymentService->handleWebhook(
                 $request->getContent(),

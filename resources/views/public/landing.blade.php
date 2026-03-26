@@ -295,6 +295,39 @@ nav.stuck{background:rgba(8,8,8,.95);backdrop-filter:blur(16px);border-color:var
   .pos-line{font-size:.95rem}
 }
 
+/* ── Crypto acceptance block ── */
+.crypto-accept{
+  text-align:center;
+  padding:56px 64px;
+  border-top:1px solid rgba(154,122,48,.12);
+  background:var(--bg);
+  max-width:680px;
+  margin:0 auto;
+}
+.crypto-lines{
+  display:block;
+  margin:0 0 10px;
+  font-size:.92rem;
+  color:var(--muted);
+  line-height:1.7;
+  letter-spacing:.02em;
+}
+.crypto-emphasis{
+  font-size:1.06rem;
+  font-weight:500;
+  color:var(--gold);
+  letter-spacing:.12em;
+  text-transform:uppercase;
+  margin-bottom:16px;
+}
+.crypto-sub{
+  font-size:.82rem;
+  color:rgba(168,168,160,.6);
+  letter-spacing:.06em;
+}
+@media(max-width:900px){.crypto-accept{padding:44px 24px}}
+@media(max-width:520px){.crypto-accept{padding:36px 18px}.crypto-lines{font-size:.88rem}}
+
 /* ── URL demo section ── */
 .url-section{background:var(--deep);border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:72px 64px}
 .url-inner{max-width:1200px;margin:0 auto;display:grid;grid-template-columns:1fr 1.1fr;gap:64px;align-items:start}
@@ -627,6 +660,9 @@ footer{border-top:1px solid var(--border);padding:36px 64px;display:flex;flex-di
   .logo-seo{font-size:1.28rem}.logo-ai{font-size:1.5rem}.logo-co{font-size:1.1rem}
 }
 </style>
+@if(config('services.recaptcha.site_key'))
+<script src="https://www.google.com/recaptcha/api.js?render={{ config('services.recaptcha.site_key') }}" async defer></script>
+@endif
 </head>
 <body>
 
@@ -1014,6 +1050,17 @@ footer{border-top:1px solid var(--border);padding:36px 64px;display:flex;flex-di
   </div>
 </section>
 
+<!-- ════════════ CRYPTO ACCEPTANCE ════════════ -->
+<div class="crypto-accept r">
+  <p class="crypto-lines">
+    Crypto accepted by request.
+  </p>
+  <p class="crypto-lines crypto-emphasis">USDC preferred.</p>
+  <p class="crypto-lines">Large engagements and licensing agreements may be settled in digital assets.</p>
+  <p class="crypto-lines crypto-sub">Structured. Verified. Direct.</p>
+  <p class="crypto-lines crypto-sub">This is infrastructure — not retail checkout.</p>
+</div>
+
 <!-- ════════════ ROADMAP — PROOF / FUTURE ════════════ -->
 <div class="roadmap">
   <p class="s-eye r">On the Roadmap</p>
@@ -1115,7 +1162,11 @@ footer{border-top:1px solid var(--border);padding:36px 64px;display:flex;flex-di
         @error('message') <span class="field-error">{{ $message }}</span> @enderror
       </div>
 
-      <input type="text" name="website_url" style="display:none" tabindex="-1" autocomplete="off" aria-hidden="true">
+      <input type="text" name="website_confirm" id="website_confirm" autocomplete="off" tabindex="-1" aria-hidden="true" style="position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden;opacity:0">
+      <input type="hidden" name="form_loaded_at" id="form_loaded_at" value="">
+      @if(config('services.recaptcha.site_key'))
+      <input type="hidden" name="g-recaptcha-response" id="g-recaptcha-response" value="">
+      @endif
 
       <button type="submit" class="fsub" id="submitBtn">Submit Licensing Enquiry</button>
     </form>
@@ -1177,10 +1228,25 @@ footer{border-top:1px solid var(--border);padding:36px 64px;display:flex;flex-di
   }, {threshold:.1});
   items.forEach(el => io.observe(el));
 
-  document.getElementById('inquiryForm').addEventListener('submit', function() {
+  document.getElementById('form_loaded_at').value = Math.floor(Date.now() / 1000);
+
+  document.getElementById('inquiryForm').addEventListener('submit', function(e) {
     const btn = document.getElementById('submitBtn');
     btn.disabled = true;
     btn.textContent = 'Submitting…';
+    @if(config('services.recaptcha.site_key'))
+    // reCAPTCHA v3 — execute before submit
+    e.preventDefault();
+    grecaptcha.ready(function() {
+      grecaptcha.execute('{{ config('services.recaptcha.site_key') }}', {action: 'inquiry_submit'}).then(function(token) {
+        document.getElementById('g-recaptcha-response').value = token;
+        document.getElementById('inquiryForm').submit();
+      }).catch(function() {
+        // reCAPTCHA failure should not block submission
+        document.getElementById('inquiryForm').submit();
+      });
+    });
+    @endif
   });
 
   // ── Back to Top ──
