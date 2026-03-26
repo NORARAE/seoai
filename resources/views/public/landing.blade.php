@@ -56,8 +56,10 @@ nav.stuck{background:rgba(8,8,8,.95);backdrop-filter:blur(16px);border-color:var
 .nav-btn{
   font-size:.78rem;letter-spacing:.14em;text-transform:uppercase;
   color:var(--bg);background:var(--gold);padding:12px 28px;text-decoration:none;transition:background .3s;
+  display:inline-flex;align-items:center;white-space:nowrap;
 }
 .nav-btn:hover{background:var(--gold-lt)}
+.nav-account-short{display:none}
 
 /* ── Hero ── */
 #hero{
@@ -440,7 +442,7 @@ footer{border-top:1px solid var(--border);padding:36px 64px;display:flex;flex-di
   nav{padding:20px 36px}
   nav.stuck{padding:14px 36px}
   .nav-link{font-size:.72rem;letter-spacing:.13em}
-  .nav-btn{font-size:.72rem;letter-spacing:.13em;padding:13px 24px}
+  .nav-btn{font-size:.72rem;letter-spacing:.13em;padding:12px 22px;min-height:40px}
   .nav-account-full{display:none}
   .nav-account-short{display:inline}
 }
@@ -562,7 +564,7 @@ footer{border-top:1px solid var(--border);padding:36px 64px;display:flex;flex-di
   <div class="nav-right">
     <a href="#wyl" class="nav-link">The System</a>
     <a href="#offer" class="nav-link">Licensing</a>
-    <a href="/dashboard" class="nav-btn nav-account" style="background:linear-gradient(90deg,var(--gold),var(--gold-lt));color:var(--deep);box-shadow:0 2px 12px 0 rgba(200,168,75,.13);font-weight:500;letter-spacing:.18em;"><span class="nav-account-full">Sign Up / Account</span><span class="nav-account-short" style="display:none">Account</span></a>
+    <a href="/dashboard" class="nav-btn nav-account" style="background:linear-gradient(90deg,var(--gold),var(--gold-lt));color:var(--deep);box-shadow:0 2px 12px 0 rgba(200,168,75,.13);font-weight:500;letter-spacing:.18em;"><span class="nav-account-full">Sign Up / Account</span><span class="nav-account-short">Account</span></a>
     <a href="#contact" class="nav-btn">Request Licensing Access</a>
   </div>
 </nav>
