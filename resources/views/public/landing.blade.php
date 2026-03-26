@@ -77,41 +77,51 @@ nav.stuck{background:rgba(8,8,8,.95);backdrop-filter:blur(16px);border-color:var
   position:absolute;top:30%;right:-10%;width:600px;height:600px;border-radius:50%;
   background:radial-gradient(ellipse,rgba(200,168,75,.07) 0%,transparent 65%);pointer-events:none;
 }
-.hero-kicker{
-  font-size:clamp(1.5rem,3vw,2.4rem);
-  line-height:1.35;
-  margin-bottom:40px;
-  padding-top:18px;
-  padding-bottom:18px;
-  letter-spacing:.06em;
-  text-transform:none;
-  color:var(--gold);
-  display:flex;align-items:center;gap:14px;font-style:italic;
-  font-family:'Cormorant Garamond',serif;font-weight:300;
-  opacity:0;animation:up .7s .2s forwards;
+/* ── Hero pre-headline (kicker + question) ── */
+.hero-pre{
+  margin-bottom:24px;
+  display:flex;flex-direction:column;gap:6px;
+  opacity:0;animation:up .7s .15s forwards;
 }
-.hero-kicker::before{content:'';width:28px;height:1px;background:var(--gold)}
+.hp-kicker{
+  font-family:'Cormorant Garamond',serif;font-weight:300;font-style:italic;
+  font-size:clamp(1.3rem,2.4vw,1.85rem);color:var(--gold);
+  letter-spacing:.04em;line-height:1.4;
+  display:flex;align-items:center;gap:14px;
+}
+.hp-kicker::before{content:'';display:inline-block;width:28px;height:1px;background:var(--gold);flex-shrink:0}
+.hp-question{
+  font-family:'Cormorant Garamond',serif;font-weight:300;font-style:italic;
+  font-size:clamp(1.05rem,1.8vw,1.4rem);color:var(--ivory);
+  letter-spacing:.04em;line-height:1.45;padding-left:42px;
+}
 .hero-h1{
   font-family:'Cormorant Garamond',serif;
   font-size:clamp(3rem,7vw,6.8rem);font-weight:300;line-height:1.06;
-  margin-bottom:32px;max-width:780px;opacity:0;animation:up .9s .35s forwards;
+  margin-bottom:28px;max-width:780px;opacity:0;animation:up .9s .3s forwards;
 }
 .hero-h1 em{font-style:italic;color:var(--gold)}
 .hero-p{
-  font-size:1.12rem;line-height:1.9;color:var(--muted);max-width:560px;margin-bottom:48px;
+  max-width:580px;margin-bottom:48px;
   opacity:0;animation:up .85s .5s forwards;
   display:flex;flex-direction:column;gap:0;
 }
 .hero-p-line{
-  font-size:1.05rem;line-height:1.75;color:var(--muted);
-  padding:6px 0;
-  border-bottom:none;
+  font-size:1rem;line-height:1.85;color:var(--muted);
+  padding:5px 0;
 }
-.hero-p-line:first-child{
-  font-family:'Cormorant Garamond',serif;font-size:1.35rem;font-style:italic;
-  color:var(--ivory);font-weight:300;padding-bottom:10px;margin-bottom:4px;
+.hero-p-line + .hero-p-line{border-top:none}
+.hp-emphasis{
+  font-family:'Cormorant Garamond',serif;font-weight:300;font-style:italic;
+  font-size:clamp(1.25rem,2.2vw,1.6rem);color:var(--ivory);
+  padding-top:14px;padding-bottom:10px;
+  margin-top:6px;
+  border-top:1px solid rgba(200,168,75,.14);
 }
-.hero-p-line:last-child{ margin-top:4px;color:var(--ivory); }
+.hp-strong{
+  color:var(--ivory);font-size:1.05rem;font-weight:500;
+  letter-spacing:.03em;padding-top:10px;margin-top:4px;
+}
 .hero-p strong{color:var(--ivory);font-weight:400}
 .hero-actions{display:flex;gap:20px;align-items:center;opacity:0;animation:up .85s .65s forwards}
 .btn-primary{
@@ -434,10 +444,14 @@ footer{border-top:1px solid var(--border);padding:36px 64px;display:flex;flex-di
   .nav-account{display:inline-flex;padding:12px 24px;font-size:.78rem;letter-spacing:.14em;border-radius:3px;min-height:44px;align-items:center}
   .nav-account-full{display:none}.nav-account-short{display:inline}
   #hero{padding:110px 24px 60px;min-height:auto}
-  .hero-h1{font-size:clamp(2.6rem,9vw,3.8rem);max-width:100%;margin-bottom:24px;line-height:1.05}
-  .hero-p{font-size:1rem;margin-bottom:32px;line-height:1.8;gap:2px}
-  .hero-p-line{font-size:.97rem;padding:5px 0}
-  .hero-p-line:first-child{font-size:1.15rem}
+  .hero-h1{font-size:clamp(2.6rem,9vw,3.8rem);max-width:100%;margin-bottom:20px;line-height:1.05}
+  .hero-pre{margin-bottom:16px;gap:4px}
+  .hp-kicker{font-size:clamp(1.15rem,4.5vw,1.5rem)}
+  .hp-question{font-size:clamp(.95rem,3.5vw,1.2rem);padding-left:42px}
+  .hero-p{margin-bottom:32px}
+  .hero-p-line{font-size:.96rem;padding:4px 0}
+  .hp-emphasis{font-size:clamp(1.15rem,4.5vw,1.4rem);padding-top:12px;padding-bottom:8px}
+  .hp-strong{font-size:1rem}
   .hero-actions{flex-direction:column;gap:16px;width:100%}
   .btn-primary{width:100%;text-align:center;padding:16px 24px}
   .btn-ghost{text-align:center}
@@ -500,17 +514,13 @@ footer{border-top:1px solid var(--border);padding:36px 64px;display:flex;flex-di
   html{font-size:16px}
   #hero{padding:100px 20px 48px}
   .hero-h1{font-size:clamp(2.8rem,11vw,3.8rem);line-height:1.04}
-  .hero-kicker{
-    font-size:1.15rem;
-    line-height:1.45;
-    margin-bottom:24px;
-    padding-top:10px;
-    padding-bottom:10px;
-    letter-spacing:.05em;
-  }
+  .hero-pre{gap:3px;margin-bottom:14px}
+  .hp-kicker{font-size:clamp(1.1rem,5vw,1.4rem)}
+  .hp-question{font-size:clamp(.9rem,4vw,1.1rem);padding-left:42px}
   .hero-p{margin-bottom:28px}
-  .hero-p-line{font-size:.98rem}
-  .hero-p-line:first-child{font-size:1.2rem}
+  .hero-p-line{font-size:.95rem;padding:4px 0}
+  .hp-emphasis{font-size:clamp(1.1rem,5vw,1.35rem);padding-top:10px;padding-bottom:6px}
+  .hp-strong{font-size:.98rem}
   .hero-scroll{display:none}
   .wyl-icon{font-size:1.6rem;margin-bottom:12px}
   .proof-icon{font-size:1.8rem;margin-bottom:10px}
@@ -552,7 +562,10 @@ footer{border-top:1px solid var(--border);padding:36px 64px;display:flex;flex-di
   <div class="hero-grid"></div>
   <div class="hero-orb"></div>
 
-  <p class="hero-kicker">Someone is searching for what you do.</p>
+  <div class="hero-pre">
+    <p class="hp-kicker">Someone is searching for what you do.</p>
+    <p class="hp-question">Are you showing up?</p>
+  </div>
 
   <h1 class="hero-h1">
     Own the rankings.<br>
@@ -560,10 +573,11 @@ footer{border-top:1px solid var(--border);padding:36px 64px;display:flex;flex-di
   </h1>
 
   <div class="hero-p">
-    <p class="hero-p-line">You don't.</p>
+    <p class="hero-p-line">Your competitor does — because they have a page built for that exact search.</p>
+    <p class="hero-p-line hp-emphasis">You don't.</p>
     <p class="hero-p-line">SEOAIco builds and manages every service and location page your business needs.</p>
-    <p class="hero-p-line">You show up for every city, every service, every time.</p>
-    <p class="hero-p-line">You're on top of the rank.</p>
+    <p class="hero-p-line">So you show up in every city, for every service, every time someone searches.</p>
+    <p class="hero-p-line hp-strong">You're on top.</p>
   </div>
 
   <div class="hero-actions">
