@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\AdminBookingController;
+use App\Http\Controllers\BookingController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\LocationPagePreviewController;
 use App\Http\Controllers\PublicController;
@@ -32,6 +34,14 @@ Route::get('/licensing-inquiry', fn () => redirect(url('/').'#contact'))->name('
 
 Route::get('/checkout/success', fn () => view('public.checkout-success'))->name('checkout.success');
 Route::get('/checkout/cancelled', fn () => view('public.checkout-cancelled'))->name('checkout.cancelled');
+
+// ── Booking / Consult System ──
+Route::get('/book', [BookingController::class, 'index'])->name('book.index');
+Route::get('/book/slots', [BookingController::class, 'getSlots'])->name('book.slots');
+Route::post('/book', [BookingController::class, 'store'])->name('book.store');
+Route::get('/book/confirm/{booking}', [BookingController::class, 'confirm'])->name('book.confirm');
+Route::get('/book/cancel/{booking}', [BookingController::class, 'cancel'])->name('book.cancel');
+Route::post('/book/cancel/{booking}', [BookingController::class, 'processCancel'])->name('book.processCancel');
 
 Route::get('/sitemaps/{site}.xml', [PublicSitemapController::class, 'index'])
     ->whereNumber('site')
@@ -87,6 +97,19 @@ Route::get('/automations', fn() => redirect('/dashboard'))->name('automations.in
 Route::get('/sitemaps', fn() => redirect('/dashboard'))->name('sitemaps.index');
 Route::get('/schema', fn() => redirect('/dashboard'))->name('schema.index');
 Route::get('/settings', fn() => redirect('/dashboard'))->name('settings.index');
+
+// ============================================================================
+// ADMIN BOOKING MANAGEMENT (auth-protected)
+// ============================================================================
+
+Route::middleware('auth')->prefix('admin/bookings')->name('admin.bookings.')->group(function () {
+    Route::get('/', [AdminBookingController::class, 'index'])->name('index');
+    Route::get('/availability', [AdminBookingController::class, 'availability'])->name('availability');
+    Route::post('/availability', [AdminBookingController::class, 'saveAvailability'])->name('availability.save');
+    Route::get('/consult-types', [AdminBookingController::class, 'consultTypes'])->name('consultTypes');
+    Route::get('/{booking}', [AdminBookingController::class, 'show'])->name('show');
+    Route::post('/{booking}/cancel', [AdminBookingController::class, 'cancel'])->name('cancel');
+});
 
 // ============================================================================
 // PREVIEW LAYER - Public-facing location pages (with auth check for drafts)

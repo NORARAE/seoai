@@ -9,6 +9,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<meta name="csrf-token" content="{{ csrf_token() }}">
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
@@ -287,6 +288,13 @@ nav.stuck{background:rgba(8,8,8,.95);backdrop-filter:blur(16px);border-color:var
 .tier .tier-cta{color:var(--gold);border:1px solid var(--gold-dim)}
 .tier .tier-cta:hover,.tier.prime .tier-cta:hover{background:var(--gold-lt);color:var(--bg);border-color:var(--gold-lt)}
 .tier.prime .tier-cta{background:var(--gold);color:var(--bg);border:1px solid var(--gold)}
+.tier-book{
+  display:block;width:100%;margin-top:10px;padding:12px 16px;background:transparent;
+  border:1px solid var(--border);color:var(--muted);font-size:.78rem;font-weight:400;
+  letter-spacing:.12em;text-transform:uppercase;cursor:pointer;transition:all .3s;
+  font-family:'DM Sans',sans-serif;
+}
+.tier-book:hover{border-color:var(--gold-dim);color:var(--gold)}
 .tier-gated{
   margin-top:12px;padding:14px 16px;border:1px solid var(--border);
   font-size:.82rem;line-height:1.7;color:var(--muted);
@@ -796,6 +804,7 @@ footer{border-top:1px solid var(--border);padding:36px 64px;display:flex;flex-di
         <span><strong>Not publicly priced.</strong> Starter access is granted case-by-case. Apply below — we'll assess fit and confirm capacity.</span>
       </div>
       <a href="#contact" class="tier-cta" style="margin-top:20px">Apply for Starter Access</a>
+      <button class="tier-book" onclick="document.querySelector('[x-data]').__x.$data.open({id: 1, duration: 15, name: 'Free Discovery Call'})">Book a Free Discovery Call</button>
     </div>
 
     <div class="tier">
@@ -815,6 +824,7 @@ footer{border-top:1px solid var(--border);padding:36px 64px;display:flex;flex-di
         <li>Dashboard onboarding <em class="soon">(coming soon)</em></li>
       </ul>
       <a href="#contact" class="tier-cta">Request 5K Licensing Details</a>
+      <button class="tier-book" onclick="document.querySelector('[x-data]').__x.$data.open({id: 1, duration: 15, name: 'Free Discovery Call'})">Book a Free Discovery Call</button>
     </div>
 
     <div class="tier prime">
@@ -833,6 +843,7 @@ footer{border-top:1px solid var(--border);padding:36px 64px;display:flex;flex-di
         <li>First access to new industries &amp; features</li>
       </ul>
       <a href="#contact" class="tier-cta">Request 10K Licensing Details</a>
+      <button class="tier-book" onclick="document.querySelector('[x-data]').__x.$data.open({id: 3, duration: 60, name: 'Agency License Review'})">Review My Agency License</button>
     </div>
 
   </div>
@@ -1055,5 +1066,8 @@ footer{border-top:1px solid var(--border);padding:36px 64px;display:flex;flex-di
     document.getElementById('contact').scrollIntoView({behavior:'smooth'});
   @endif
 </script>
+
+@include('components.booking-modal')
+
 </body>
 </html>

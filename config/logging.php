@@ -142,6 +142,14 @@ return [
             'replace_placeholders' => true,
         ],
 
+        'booking' => [
+            'driver' => 'daily',
+            'path' => storage_path('logs/booking.log'),
+            'level' => env('LOG_LEVEL', 'debug'),
+            'days' => 30,
+            'replace_placeholders' => true,
+        ],
+
     ],
 
 ];

@@ -39,6 +39,13 @@ return [
         'client_id' => env('GOOGLE_CLIENT_ID'),
         'client_secret' => env('GOOGLE_CLIENT_SECRET'),
         'redirect_uri' => env('GOOGLE_REDIRECT_URI', env('APP_URL') . '/admin/gsc/callback'),
+        'credentials' => env('GOOGLE_APPLICATION_CREDENTIALS', storage_path('app/google/service-account.json')),
+        'calendar_id' => env('GOOGLE_CALENDAR_ID'),
+    ],
+
+    'booking' => [
+        'owner_email' => env('BOOKING_OWNER_EMAIL', 'hello@seoaico.com'),
+        'owner_name' => env('BOOKING_OWNER_NAME', 'SEOAI Co'),
     ],
 
     'gsc' => [
