@@ -10,6 +10,7 @@ use Filament\Http\Middleware\DispatchServingFilamentEvent;
 use Filament\Panel;
 use Filament\PanelProvider;
 use Filament\Support\Colors\Color;
+use Filament\View\PanelsRenderHook;
 use Filament\Widgets\AccountWidget;
 use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
 use Illuminate\Cookie\Middleware\EncryptCookies;
@@ -17,6 +18,7 @@ use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
 use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\HtmlString;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
 
 class AdminPanelProvider extends PanelProvider
@@ -28,10 +30,25 @@ class AdminPanelProvider extends PanelProvider
             ->id('admin')
             ->path('admin')
             ->login()
+            ->brandName(new HtmlString(
+                '<span style="display:inline-flex;align-items:baseline;gap:0;line-height:1;font-family:inherit">'
+                . '<span style="font-family:\'DM Sans\',sans-serif;font-weight:300;font-size:1.15rem;letter-spacing:.06em;color:inherit">SEO</span>'
+                . '<span style="font-family:\'Cormorant Garamond\',serif;font-weight:600;font-size:1.38rem;color:#c8a84b;letter-spacing:.02em;display:inline-block;transform:skewX(-11deg) translateY(-1px)">AI</span>'
+                . '<span style="font-family:\'DM Sans\',sans-serif;font-weight:300;font-size:1rem;color:rgba(150,150,150,.7);letter-spacing:.04em">co</span>'
+                . '</span>'
+            ))
             ->colors([
-                    'primary' => Color::Blue,
-                    'success' => Color::Green,
-            ]);
+                'primary' => Color::hex('#c8a84b'),
+                'success' => Color::Green,
+            ])
+            ->renderHook(
+                PanelsRenderHook::HEAD_END,
+                fn (): HtmlString => new HtmlString(
+                    '<link rel="preconnect" href="https://fonts.googleapis.com">'
+                    . '<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>'
+                    . '<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600&family=DM+Sans:wght@300;400&display=swap" rel="stylesheet">'
+                )
+            );
 
         if (File::exists(public_path('build/manifest.json'))) {
             $panel->viteTheme('resources/css/filament/admin/theme.css');
