@@ -78,12 +78,12 @@ nav.stuck{background:rgba(8,8,8,.95);backdrop-filter:blur(16px);border-color:var
   background:radial-gradient(ellipse,rgba(200,168,75,.07) 0%,transparent 65%);pointer-events:none;
 }
 .hero-kicker{
-  font-size:2.1rem; /* Larger for desktop */
-  line-height:1.4;
-  margin-bottom:48px;
+  font-size:clamp(1.5rem,3vw,2.4rem);
+  line-height:1.35;
+  margin-bottom:40px;
   padding-top:18px;
   padding-bottom:18px;
-  letter-spacing:.08em;
+  letter-spacing:.06em;
   text-transform:none;
   color:var(--gold);
   display:flex;align-items:center;gap:14px;font-style:italic;
@@ -100,7 +100,18 @@ nav.stuck{background:rgba(8,8,8,.95);backdrop-filter:blur(16px);border-color:var
 .hero-p{
   font-size:1.12rem;line-height:1.9;color:var(--muted);max-width:560px;margin-bottom:48px;
   opacity:0;animation:up .85s .5s forwards;
+  display:flex;flex-direction:column;gap:0;
 }
+.hero-p-line{
+  font-size:1.05rem;line-height:1.75;color:var(--muted);
+  padding:6px 0;
+  border-bottom:none;
+}
+.hero-p-line:first-child{
+  font-family:'Cormorant Garamond',serif;font-size:1.35rem;font-style:italic;
+  color:var(--ivory);font-weight:300;padding-bottom:10px;margin-bottom:4px;
+}
+.hero-p-line:last-child{ margin-top:4px;color:var(--ivory); }
 .hero-p strong{color:var(--ivory);font-weight:400}
 .hero-actions{display:flex;gap:20px;align-items:center;opacity:0;animation:up .85s .65s forwards}
 .btn-primary{
@@ -197,7 +208,7 @@ nav.stuck{background:rgba(8,8,8,.95);backdrop-filter:blur(16px);border-color:var
   transform:scaleX(0);transition:transform .5s cubic-bezier(.23,1,.32,1);
 }
 .wyl-card:hover::after{transform:scaleX(1)}
-.wyl-icon{font-size:.9rem;color:var(--gold);opacity:.6;margin-bottom:16px;display:block;transition:opacity .3s}
+.wyl-icon{font-size:1.35rem;color:var(--gold);opacity:.65;margin-bottom:14px;display:block;transition:opacity .3s;line-height:1}
 .wyl-card:hover .wyl-icon{opacity:1}
 .wyl-title{font-family:'Cormorant Garamond',serif;font-size:1.25rem;font-weight:400;margin-bottom:10px;color:var(--ivory)}
 .wyl-desc{font-size:.9rem;line-height:1.85;color:var(--muted)}
@@ -323,7 +334,7 @@ nav.stuck{background:rgba(8,8,8,.95);backdrop-filter:blur(16px);border-color:var
 .proof-item{padding:36px 28px;text-align:center;border-right:1px solid var(--border);transition:background .3s}
 .proof-item:last-child{border-right:none}
 .proof-item:hover{background:rgba(200,168,75,.03)}
-.proof-icon{font-size:1.1rem;color:var(--gold);margin-bottom:10px;opacity:.7}
+.proof-icon{font-size:1.5rem;color:var(--gold);margin-bottom:12px;opacity:.75}
 .proof-label{font-size:.78rem;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);line-height:1.6}
 .proof-label strong{display:block;font-size:.92rem;color:var(--ivory);font-weight:400;letter-spacing:.06em;text-transform:none;margin-bottom:3px}
 
@@ -420,17 +431,19 @@ footer{border-top:1px solid var(--border);padding:36px 64px;display:flex;flex-di
   body{-webkit-overflow-scrolling:touch}
   nav{padding:14px 20px}nav.stuck{padding:10px 20px}.nav-link{display:none}
   .nav-btn{display:none}
-  .nav-account{display:inline-flex;padding:8px 18px;font-size:.7rem;letter-spacing:.14em;border-radius:3px}
+  .nav-account{display:inline-flex;padding:12px 24px;font-size:.78rem;letter-spacing:.14em;border-radius:3px;min-height:44px;align-items:center}
   .nav-account-full{display:none}.nav-account-short{display:inline}
-  #hero{padding:110px 20px 60px;min-height:auto}
-  .hero-h1{font-size:clamp(2.4rem,8vw,3.6rem);max-width:100%;margin-bottom:24px}
-  .hero-p{font-size:1rem;margin-bottom:32px}
+  #hero{padding:110px 24px 60px;min-height:auto}
+  .hero-h1{font-size:clamp(2.6rem,9vw,3.8rem);max-width:100%;margin-bottom:24px;line-height:1.05}
+  .hero-p{font-size:1rem;margin-bottom:32px;line-height:1.8;gap:2px}
+  .hero-p-line{font-size:.97rem;padding:5px 0}
+  .hero-p-line:first-child{font-size:1.15rem}
   .hero-actions{flex-direction:column;gap:16px;width:100%}
   .btn-primary{width:100%;text-align:center;padding:16px 24px}
   .btn-ghost{text-align:center}
   .hero-orb{display:none}
   .hero-scroll{left:20px;bottom:32px}
-  .statement{grid-template-columns:1fr;gap:32px;padding:48px 20px}
+  .statement{grid-template-columns:1fr;gap:32px;padding:48px 24px}
   .stmt-quote{padding:32px 24px}
   .stmt-quote .sq-mark{font-size:2.4rem;margin-bottom:8px}
   .stmt-quote .sq-text{font-size:clamp(1.2rem,4.5vw,1.6rem)}
@@ -471,9 +484,9 @@ footer{border-top:1px solid var(--border);padding:36px 64px;display:flex;flex-di
   .s-eye{font-size:.7rem;letter-spacing:.2em}
   .s-p{font-size:.96rem}
   .c-meta{gap:16px;margin-top:24px}
-  .audience-section,.url-lock,.wyl-section,.url-section{padding:48px 20px}
-  .steps-wrap,.integrity-section{padding:48px 20px}
-  #offer,.roadmap,#contact,footer{padding:48px 20px}
+  .audience-section,.url-lock,.wyl-section,.url-section{padding:48px 24px}
+  .steps-wrap,.integrity-section{padding:48px 24px}
+  #offer,.roadmap,#contact,footer{padding:48px 24px}
   .footer-main{flex-direction:column;gap:12px;text-align:center}
   .btt{bottom:20px;right:20px;width:42px;height:42px}
   .gate-box{padding:36px 24px}
@@ -485,25 +498,30 @@ footer{border-top:1px solid var(--border);padding:36px 64px;display:flex;flex-di
 }
 @media(max-width:520px){
   html{font-size:16px}
-  #hero{padding:100px 16px 48px}
-  .hero-h1{font-size:clamp(2rem,7.5vw,2.8rem)}
+  #hero{padding:100px 20px 48px}
+  .hero-h1{font-size:clamp(2.8rem,11vw,3.8rem);line-height:1.04}
   .hero-kicker{
-    font-size:1.35rem; /* Larger for mobile */
-    line-height:1.35;
-    margin-bottom:32px;
-    padding-top:12px;
-    padding-bottom:12px;
-    letter-spacing:.06em;
+    font-size:1.15rem;
+    line-height:1.45;
+    margin-bottom:24px;
+    padding-top:10px;
+    padding-bottom:10px;
+    letter-spacing:.05em;
   }
+  .hero-p{margin-bottom:28px}
+  .hero-p-line{font-size:.98rem}
+  .hero-p-line:first-child{font-size:1.2rem}
   .hero-scroll{display:none}
+  .wyl-icon{font-size:1.6rem;margin-bottom:12px}
+  .proof-icon{font-size:1.8rem;margin-bottom:10px}
   .wyl-grid,.steps-grid{grid-template-columns:1fr}
   .proof-strip{grid-template-columns:1fr}
   .stmt-quote{padding:24px 18px}
   .stmt-quote .sq-text{font-size:clamp(1.1rem,4vw,1.4rem)}
   .stmt-quote::before,.stmt-quote::after{left:18px;right:18px}
-  .audience-section,.url-lock,.wyl-section,.url-section{padding:36px 16px}
-  .steps-wrap,.integrity-section{padding:36px 16px}
-  #offer,.roadmap,#contact,footer{padding:36px 16px}
+  .audience-section,.url-lock,.wyl-section,.url-section{padding:36px 20px}
+  .steps-wrap,.integrity-section{padding:36px 20px}
+  #offer,.roadmap,#contact,footer{padding:36px 20px}
   .aud-card{padding:32px 18px}
   .tier{padding:32px 20px}
   .tier-price{font-size:2.6rem}
@@ -534,16 +552,19 @@ footer{border-top:1px solid var(--border);padding:36px 64px;display:flex;flex-di
   <div class="hero-grid"></div>
   <div class="hero-orb"></div>
 
-  <p class="hero-kicker">Someone is searching for what you do. Are you showing up?</p>
+  <p class="hero-kicker">Someone is searching for what you do.</p>
 
   <h1 class="hero-h1">
     Own the rankings.<br>
     <em>In every city.</em>
   </h1>
 
-  <p class="hero-p">
-    Your competitor shows up on Google because they have a page built for that exact search. You don't. <strong>SEOAIco builds and manages every service and location page your business needs</strong> — so you show up in every city, for every service, every time someone searches.
-  </p>
+  <div class="hero-p">
+    <p class="hero-p-line">You don't.</p>
+    <p class="hero-p-line">SEOAIco builds and manages every service and location page your business needs.</p>
+    <p class="hero-p-line">You show up for every city, every service, every time.</p>
+    <p class="hero-p-line">You're on top of the rank.</p>
+  </div>
 
   <div class="hero-actions">
     <a href="#contact" class="btn-primary">Request Licensing Access</a>
