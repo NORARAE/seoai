@@ -33,6 +33,7 @@ Route::get('/login', fn () => redirect('/admin/login'))->name('login');
 Route::get('/privacy', [PublicController::class, 'privacy'])->name('privacy');
 Route::get('/terms', [PublicController::class, 'terms'])->name('terms');
 Route::post('/licensing-inquiry', [PublicController::class, 'storeLicensingInquiry'])
+    ->middleware('throttle:inquiry')
     ->name('licensing-inquiry.store');
 Route::get('/licensing-inquiry', fn () => redirect(url('/').'#contact'))->name('licensing-inquiry.get');
 
@@ -41,8 +42,8 @@ Route::get('/checkout/cancelled', fn () => view('public.checkout-cancelled'))->n
 
 // ── Booking / Consult System ──
 Route::get('/book', [BookingController::class, 'index'])->name('book.index');
-Route::get('/book/slots', [BookingController::class, 'getSlots'])->name('book.slots');
-Route::post('/book', [BookingController::class, 'store'])->name('book.store');
+Route::get('/book/slots', [BookingController::class, 'getSlots'])->middleware('throttle:booking')->name('book.slots');
+Route::post('/book', [BookingController::class, 'store'])->middleware('throttle:booking')->name('book.store');
 Route::get('/book/confirm/{booking}', [BookingController::class, 'confirm'])->name('book.confirm');
 Route::get('/book/cancel/{booking}', [BookingController::class, 'cancel'])->name('book.cancel');
 Route::post('/book/cancel/{booking}', [BookingController::class, 'processCancel'])->name('book.processCancel');

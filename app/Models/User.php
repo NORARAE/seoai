@@ -21,6 +21,15 @@ class User extends Authenticatable
      *
      * @var list<string>
      */
+    /**
+     * Mass-assignable attributes.
+     *
+     * Note on privileged fields (role, approved, permissions, is_active):
+     * These are intentionally fillable so Filament admin operations work.
+     * They are safe because (a) no public-facing route calls User::create/update
+     * with raw request data, and (b) the Filament registration form schema only
+     * exposes name/email/password — Livewire ignores extra POST body parameters.
+     */
     protected $fillable = [
         'name',
         'email',
