@@ -47,6 +47,7 @@ class LicenseController extends Controller
             'site_url' => ['required', 'string', 'max:255'],
             'plan' => ['required', 'string', Rule::in($planKeys)],
             'urls_allowed' => ['nullable', 'integer', 'min:1'],
+            'term_months' => ['nullable', 'integer', 'min:' . config('license.min_term_months', 3)],
             'stripe_subscription_id' => ['nullable', 'string', 'max:255'],
             'stripe_customer_id' => ['nullable', 'string', 'max:255'],
             'status' => ['nullable', 'string', Rule::in(['trial', 'active', 'expired', 'cancelled'])],
@@ -55,7 +56,11 @@ class LicenseController extends Controller
             'send_email' => ['nullable', 'boolean'],
         ]);
 
-        $license = $this->licenseService->createLicense($data, (bool) ($data['send_email'] ?? true));
+        try {
+            $license = $this->licenseService->createLicense($data, (bool) ($data['send_email'] ?? true));
+        } catch (\DomainException $e) {
+            return response()->json(['message' => $e->getMessage()], Response::HTTP_CONFLICT);
+        }
 
         return response()->json([
             'data' => $license,

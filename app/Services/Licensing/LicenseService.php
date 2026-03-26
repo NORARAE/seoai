@@ -104,21 +104,43 @@ class LicenseService
         return DB::transaction(function () use ($attributes, $sendEmail): License {
             $plan = $attributes['plan'];
             $status = $attributes['status'] ?? 'trial';
+            $termMonths = isset($attributes['term_months']) ? (int) $attributes['term_months'] : null;
+            $siteUrl = $this->normalizeDomain((string) $attributes['site_url']);
+
+            // Enforce minimum term when a paid term is specified.
+            $minTerm = (int) config('license.min_term_months', 3);
+            if ($termMonths !== null && $termMonths < $minTerm) {
+                $termMonths = $minTerm;
+            }
+
+            // Block duplicate: one active/trial license per domain.
+            $existing = License::query()
+                ->where('site_url', $siteUrl)
+                ->whereIn('status', ['trial', 'active'])
+                ->first();
+
+            if ($existing) {
+                throw new \DomainException(
+                    "An active license already exists for {$siteUrl} (key: {$existing->license_key}). "
+                    . 'Renew or upgrade the existing license instead of creating a duplicate.',
+                );
+            }
 
             $license = License::query()->create([
                 'license_key' => ($this->generateLicenseKey)(),
                 'customer_email' => Str::lower(trim((string) $attributes['customer_email'])),
                 'customer_name' => trim((string) $attributes['customer_name']),
-                'site_url' => $this->normalizeDomain((string) $attributes['site_url']),
+                'site_url' => $siteUrl,
                 'plan' => $plan,
                 'urls_allowed' => $attributes['urls_allowed'] ?? $this->urlsAllowedForPlan($plan),
                 'stripe_subscription_id' => $attributes['stripe_subscription_id'] ?? null,
                 'stripe_customer_id' => $attributes['stripe_customer_id'] ?? null,
                 'status' => $status,
                 'trial_ends_at' => $status === 'trial'
-                    ? CarbonImmutable::parse($attributes['trial_ends_at'] ?? now()->addDays(30))
+                    ? CarbonImmutable::parse($attributes['trial_ends_at'] ?? now()->addDays((int) config('license.trial_days', 30)))
                     : (! empty($attributes['trial_ends_at']) ? CarbonImmutable::parse($attributes['trial_ends_at']) : null),
-                'expires_at' => $attributes['expires_at'] ?? null,
+                'expires_at' => $attributes['expires_at']
+                    ?? ($termMonths ? now()->addMonths($termMonths) : null),
             ]);
 
             if ($sendEmail && $license->customer_email) {
@@ -323,8 +345,15 @@ class LicenseService
         }
 
         foreach ((array) config('license.plans', []) as $slug => $definition) {
+            // Legacy single price_id
             if (($definition['stripe_price_id'] ?? null) === $stripePriceId) {
                 return $slug;
+            }
+            // Term-based prices map  {3 => 'price_xxx', 6 => 'price_yyy', …}
+            foreach (($definition['stripe_prices'] ?? []) as $priceId) {
+                if ($priceId === $stripePriceId) {
+                    return $slug;
+                }
             }
         }
 
