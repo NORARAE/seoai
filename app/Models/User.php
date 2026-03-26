@@ -31,6 +31,7 @@ class User extends Authenticatable
         'last_login_at',
         'onboarding_completed_at',
         'is_active',
+        'approved',
     ];
 
     /**
@@ -57,6 +58,7 @@ class User extends Authenticatable
             'last_login_at' => 'datetime',
             'onboarding_completed_at' => 'datetime',
             'is_active' => 'boolean',
+            'approved' => 'boolean',
         ];
     }
 
@@ -100,6 +102,34 @@ class User extends Authenticatable
     public function isSuperAdmin(): bool
     {
         return in_array($this->role, ['super_admin', 'superadmin'], true);
+    }
+
+    /**
+     * Whether this user's account has been approved for dashboard access.
+     */
+    public function isApproved(): bool
+    {
+        return (bool) $this->approved;
+    }
+
+    /**
+     * Whether this user is allowed to approve/revoke other users.
+     * SuperAdmin, Admin, AccountManager only.
+     */
+    public function canApproveUsers(): bool
+    {
+        return in_array($this->role, [
+            'super_admin', 'superadmin', 'admin', 'owner', 'account_manager',
+        ], true);
+    }
+
+    /**
+     * Whether this user may bypass the approval gate entirely (privileged staff).
+     * These users are always allowed into the app regardless of the approved flag.
+     */
+    public function isPrivilegedStaff(): bool
+    {
+        return $this->canApproveUsers();
     }
 
     public function isOperator(): bool

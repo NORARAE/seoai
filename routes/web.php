@@ -7,6 +7,7 @@ use App\Http\Controllers\LocationPagePreviewController;
 use App\Http\Controllers\PublicController;
 use App\Http\Controllers\PublicSitemapController;
 use App\Http\Controllers\SeoController;
+use App\Http\Middleware\EnsureUserIsApproved;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -55,7 +56,11 @@ Route::get('/sitemaps/{site}/pages-{page}.xml', [PublicSitemapController::class,
 // CUSTOMER APP LAYER - Main SaaS Application
 // ============================================================================
 
-Route::prefix('dashboard')->name('app.')->group(function () {
+// Authenticated-but-unapproved users land here. No approval check to avoid loops.
+Route::middleware('auth')->get('/pending-approval', fn () => view('pending-approval'))
+    ->name('pending-approval');
+
+Route::middleware(['auth', EnsureUserIsApproved::class])->prefix('dashboard')->name('app.')->group(function () {
     
     // Dashboard / Home
     Route::get('/', [DashboardController::class, 'index'])->name('dashboard');

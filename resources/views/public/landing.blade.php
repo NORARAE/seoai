@@ -1,6 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-LNPGQ0GN69"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-LNPGQ0GN69');
+</script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>SEOAIco — Licensed Ranking Infrastructure for Agencies & Growing Businesses</title>
@@ -70,8 +78,15 @@ nav.stuck{background:rgba(8,8,8,.95);backdrop-filter:blur(16px);border-color:var
   background:radial-gradient(ellipse,rgba(200,168,75,.07) 0%,transparent 65%);pointer-events:none;
 }
 .hero-kicker{
-  font-size:1.1rem;letter-spacing:.08em;text-transform:none;color:var(--gold);
-  margin-bottom:36px;display:flex;align-items:center;gap:14px;font-style:italic;
+  font-size:2.1rem; /* Larger for desktop */
+  line-height:1.4;
+  margin-bottom:48px;
+  padding-top:18px;
+  padding-bottom:18px;
+  letter-spacing:.08em;
+  text-transform:none;
+  color:var(--gold);
+  display:flex;align-items:center;gap:14px;font-style:italic;
   font-family:'Cormorant Garamond',serif;font-weight:300;
   opacity:0;animation:up .7s .2s forwards;
 }
@@ -470,7 +485,14 @@ footer{border-top:1px solid var(--border);padding:36px 64px;display:flex;flex-di
   html{font-size:16px}
   #hero{padding:100px 16px 48px}
   .hero-h1{font-size:clamp(2rem,7.5vw,2.8rem)}
-  .hero-kicker{font-size:.95rem;letter-spacing:.06em;margin-bottom:20px}
+  .hero-kicker{
+    font-size:1.35rem; /* Larger for mobile */
+    line-height:1.35;
+    margin-bottom:32px;
+    padding-top:12px;
+    padding-bottom:12px;
+    letter-spacing:.06em;
+  }
   .hero-scroll{display:none}
   .wyl-grid,.steps-grid{grid-template-columns:1fr}
   .proof-strip{grid-template-columns:1fr}
@@ -500,6 +522,7 @@ footer{border-top:1px solid var(--border);padding:36px 64px;display:flex;flex-di
   <div class="nav-right">
     <a href="#wyl" class="nav-link">The System</a>
     <a href="#offer" class="nav-link">Licensing</a>
+    <a href="/dashboard" class="nav-btn nav-account" style="background:linear-gradient(90deg,var(--gold),var(--gold-lt));color:var(--deep);box-shadow:0 2px 12px 0 rgba(200,168,75,.13);font-weight:500;letter-spacing:.18em;">Sign Up / Account</a>
     <a href="#contact" class="nav-btn">Request Licensing Access</a>
   </div>
 </nav>
@@ -992,6 +1015,7 @@ footer{border-top:1px solid var(--border);padding:36px 64px;display:flex;flex-di
     <a href="#" class="logo">
       <span class="logo-seo">SEO</span><span class="logo-ai">AI</span><span class="logo-co">co</span>
     </a>
+    <a href="/dashboard" class="footer-account-btn" style="background:linear-gradient(90deg,var(--gold),var(--gold-lt));color:var(--deep);padding:10px 28px;border-radius:24px;font-weight:500;letter-spacing:.18em;text-decoration:none;box-shadow:0 2px 12px 0 rgba(200,168,75,.13);margin:0 18px;">Sign Up / Account</a>
     <span class="footer-copy">&copy; 2026 SEOAIco. Licensed Ranking Infrastructure.</span>
   </div>
   <nav class="footer-legal">
