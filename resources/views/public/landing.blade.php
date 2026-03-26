@@ -85,7 +85,7 @@ nav.stuck{background:rgba(8,8,8,.95);backdrop-filter:blur(16px);border-color:var
 }
 .hp-kicker{
   font-family:'Cormorant Garamond',serif;font-weight:300;font-style:italic;
-  font-size:clamp(1.3rem,2.4vw,1.85rem);color:var(--gold);
+  font-size:clamp(1.6rem,3vw,2.4rem);color:var(--gold);
   letter-spacing:.04em;line-height:1.4;
   display:flex;align-items:center;gap:14px;
 }
@@ -446,7 +446,7 @@ footer{border-top:1px solid var(--border);padding:36px 64px;display:flex;flex-di
   #hero{padding:110px 24px 60px;min-height:auto}
   .hero-h1{font-size:clamp(2.6rem,9vw,3.8rem);max-width:100%;margin-bottom:20px;line-height:1.05}
   .hero-pre{margin-bottom:16px;gap:4px}
-  .hp-kicker{font-size:clamp(1.15rem,4.5vw,1.5rem)}
+  .hp-kicker{font-size:clamp(1.45rem,5.5vw,2rem)}
   .hp-question{font-size:clamp(.95rem,3.5vw,1.2rem);padding-left:42px}
   .hero-p{margin-bottom:32px}
   .hero-p-line{font-size:.96rem;padding:4px 0}
@@ -515,7 +515,7 @@ footer{border-top:1px solid var(--border);padding:36px 64px;display:flex;flex-di
   #hero{padding:100px 20px 48px}
   .hero-h1{font-size:clamp(2.8rem,11vw,3.8rem);line-height:1.04}
   .hero-pre{gap:3px;margin-bottom:14px}
-  .hp-kicker{font-size:clamp(1.1rem,5vw,1.4rem)}
+  .hp-kicker{font-size:clamp(1.3rem,6vw,1.75rem)}
   .hp-question{font-size:clamp(.9rem,4vw,1.1rem);padding-left:42px}
   .hero-p{margin-bottom:28px}
   .hero-p-line{font-size:.95rem;padding:4px 0}
