@@ -27,6 +27,9 @@ use Illuminate\Support\Facades\Route;
 // ============================================================================
 
 Route::get('/', [PublicController::class, 'landing'])->name('home');
+
+// Auth middleware redirects here when unauthenticated; forward to Filament login.
+Route::get('/login', fn () => redirect('/admin/login'))->name('login');
 Route::get('/privacy', [PublicController::class, 'privacy'])->name('privacy');
 Route::get('/terms', [PublicController::class, 'terms'])->name('terms');
 Route::post('/licensing-inquiry', [PublicController::class, 'storeLicensingInquiry'])
