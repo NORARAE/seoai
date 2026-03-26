@@ -209,21 +209,37 @@ nav.stuck{background:rgba(8,8,8,.95);backdrop-filter:blur(16px);border-color:var
 .aud-cta:hover{background:var(--gold-lt);border-color:var(--gold-lt);transform:translateY(-2px)}
 
 /* ── WYL (What You're Licensing) ── */
-.wyl-section{border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:72px 64px;background:var(--deep)}
+.wyl-section{border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:88px 64px;background:var(--deep)}
 .wyl-inner{max-width:1200px;margin:0 auto}
-.wyl-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--border);margin-top:40px}
-.wyl-card{background:var(--deep);padding:36px 28px;position:relative;overflow:hidden;transition:background .4s}
-.wyl-card:hover{background:var(--card)}
+.wyl-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;margin-top:52px}
+.wyl-card{
+  background:linear-gradient(160deg,rgba(18,18,16,.98) 0%,rgba(12,12,10,1) 100%);
+  border:1px solid rgba(200,168,75,.1);
+  padding:44px 36px;position:relative;overflow:hidden;
+  transition:transform .45s cubic-bezier(.23,1,.32,1),box-shadow .45s cubic-bezier(.23,1,.32,1),border-color .4s;
+}
+.wyl-card:hover{
+  transform:translateY(-5px);
+  box-shadow:0 12px 48px rgba(0,0,0,.55),0 0 0 1px rgba(200,168,75,.2);
+  border-color:rgba(200,168,75,.24);
+}
+.wyl-card::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:1px;
+  background:linear-gradient(90deg,transparent,rgba(200,168,75,.18),transparent);
+}
 .wyl-card::after{
   content:'';position:absolute;bottom:0;left:0;right:0;height:1px;
   background:linear-gradient(90deg,transparent,var(--gold-dim),transparent);
-  transform:scaleX(0);transition:transform .5s cubic-bezier(.23,1,.32,1);
+  transform:scaleX(0);transition:transform .55s cubic-bezier(.23,1,.32,1);
 }
 .wyl-card:hover::after{transform:scaleX(1)}
-.wyl-icon{font-size:1.35rem;color:var(--gold);opacity:.65;margin-bottom:14px;display:block;transition:opacity .3s;line-height:1}
-.wyl-card:hover .wyl-icon{opacity:1}
-.wyl-title{font-family:'Cormorant Garamond',serif;font-size:1.25rem;font-weight:400;margin-bottom:10px;color:var(--ivory)}
-.wyl-desc{font-size:.9rem;line-height:1.85;color:var(--muted)}
+.wyl-icon{
+  font-size:1.8rem;color:var(--gold);opacity:.55;margin-bottom:22px;
+  display:block;transition:opacity .35s,transform .45s cubic-bezier(.23,1,.32,1);line-height:1;
+}
+.wyl-card:hover .wyl-icon{opacity:1;transform:translateY(-3px)}
+.wyl-title{font-family:'Cormorant Garamond',serif;font-size:1.35rem;font-weight:400;letter-spacing:.02em;line-height:1.25;margin-bottom:14px;color:var(--ivory)}
+.wyl-desc{font-size:.88rem;line-height:2;color:var(--muted);opacity:.82}
 
 /* ── URL demo section ── */
 .url-section{background:var(--deep);border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:72px 64px}
@@ -483,7 +499,9 @@ footer{border-top:1px solid var(--border);padding:36px 64px;display:flex;flex-di
   .aud-card{padding:40px 24px}
   .aud-title{font-size:1.6rem}
   .wyl-grid,.steps-grid{grid-template-columns:1fr 1fr}
-  .wyl-card{padding:24px 20px}
+  .wyl-grid{gap:14px}
+  .wyl-card{padding:32px 26px}
+  .wyl-icon{font-size:1.9rem;margin-bottom:18px}
   .step{padding:32px 20px}
   .step-n{font-size:2.8rem;margin-bottom:14px}
   .step-title{font-size:1.2rem}
@@ -534,7 +552,9 @@ footer{border-top:1px solid var(--border);padding:36px 64px;display:flex;flex-di
   .hp-emphasis{font-size:clamp(1.3rem,6vw,1.7rem);padding-top:12px;padding-bottom:8px}
   .hp-strong{font-size:1.05rem}
   .hero-scroll{display:none}
-  .wyl-icon{font-size:1.6rem;margin-bottom:12px}
+  .wyl-icon{font-size:2.2rem;margin-bottom:20px}
+  .wyl-card{padding:36px 28px}
+  .wyl-title{font-size:1.3rem}
   .proof-icon{font-size:1.8rem;margin-bottom:10px}
   .wyl-grid,.steps-grid{grid-template-columns:1fr}
   .proof-strip{grid-template-columns:1fr}
@@ -718,43 +738,43 @@ footer{border-top:1px solid var(--border);padding:36px 64px;display:flex;flex-di
       <div class="wyl-grid">
         <div class="wyl-card r">
           <span class="wyl-icon">⬡</span>
-          <h3 class="wyl-title">Automatic Page Building</h3>
-          <p class="wyl-desc">Each page is assembled from SEO building blocks — a targeted headline, service content, FAQ section, and calls to action — built specifically for that search term.</p>
+          <h3 class="wyl-title">Precision Page Assembly</h3>
+          <p class="wyl-desc">Every page is constructed through an automated pipeline — pairing a targeted headline, service-specific body, FAQ signal, and conversion elements to the exact search intent it targets. Zero manual composition.</p>
         </div>
         <div class="wyl-card r">
           <span class="wyl-icon">◈</span>
-          <h3 class="wyl-title">Smart Internal Linking</h3>
-          <p class="wyl-desc">Related services, nearby cities, category navigation, and breadcrumbs are built into every page — creating a web of links that search engines can easily follow and trust.</p>
+          <h3 class="wyl-title">Topical Authority Architecture</h3>
+          <p class="wyl-desc">Related services, adjacent cities, category hubs, and breadcrumb trails are woven into every page at build time — forming a structured link graph that signals topical authority and domain depth to search engines.</p>
+        </div>
+        <div class="wyl-card r">
+          <span class="wyl-icon">⊹</span>
+          <h3 class="wyl-title">Structured Data Injection</h3>
+          <p class="wyl-desc">Rich business markup, FAQ schema, and breadcrumb signals are generated and embedded on every page automatically — no manual entry, no missed opportunities for AI-powered search visibility.</p>
+        </div>
+        <div class="wyl-card r">
+          <span class="wyl-icon">◎</span>
+          <h3 class="wyl-title">Location-Aware Content Generation</h3>
+          <p class="wyl-desc">Each page is independently generated around its specific city and service combination — producing content that reads and ranks as locally distinct. Not a city-name swap. Genuinely differentiated output at scale.</p>
+        </div>
+        <div class="wyl-card r">
+          <span class="wyl-icon">⬧</span>
+          <h3 class="wyl-title">Semantic Cluster Architecture</h3>
+          <p class="wyl-desc">Services, sub-services, and locations are mapped into topical clusters — building a coherent, authoritative site structure that positions your domain as the definitive resource in your niche.</p>
         </div>
         <div class="wyl-card r">
           <span class="wyl-icon">◻</span>
-          <h3 class="wyl-title">Automatic Search Data</h3>
-          <p class="wyl-desc">Local business details, FAQ data, and breadcrumb data are added to every page automatically — not entered by hand one page at a time.</p>
+          <h3 class="wyl-title">Crawl-Safe Rendering</h3>
+          <p class="wyl-desc">Every page is delivered with clean URL structure, stable server-side output, and proper fallback logic — ensuring consistent, indexable rendering whether Googlebot requests JavaScript or not.</p>
         </div>
         <div class="wyl-card r">
-          <span class="wyl-icon">⬡</span>
-          <h3 class="wyl-title">Unique Content per City</h3>
-          <p class="wyl-desc">Each page reads and ranks as a genuinely different page — not a copy-paste template with a city name swapped in.</p>
-        </div>
-        <div class="wyl-card r">
-          <span class="wyl-icon">◈</span>
-          <h3 class="wyl-title">Organized by Topic</h3>
-          <p class="wyl-desc">Services, sub-services, and locations are grouped into related clusters — giving your site a clear, authoritative presence in search results.</p>
-        </div>
-        <div class="wyl-card r">
-          <span class="wyl-icon">◻</span>
-          <h3 class="wyl-title">Built for How Google Works</h3>
-          <p class="wyl-desc">Safe page loading, proper URL structure, and fallback handling are built in — so the system stays stable when Google scans and reads your site.</p>
-        </div>
-        <div class="wyl-card r">
-          <span class="wyl-icon">⬡</span>
-          <h3 class="wyl-title">White-Label — Your Brand Only</h3>
-          <p class="wyl-desc">Everything delivered is free of SEOAIco branding. It deploys under your agency name — your clients see your work, not ours.</p>
+          <span class="wyl-icon">◼</span>
+          <h3 class="wyl-title">Zero-Attribution Deployment</h3>
+          <p class="wyl-desc">The entire system deploys under your brand identity. No SEOAIco attribution in code, content, or metadata. Your clients see your agency's work. The infrastructure behind it remains invisible.</p>
         </div>
         <div class="wyl-card r">
           <span class="wyl-icon">◈</span>
-          <h3 class="wyl-title">Licensed Page Inventory</h3>
-          <p class="wyl-desc">Your licence covers a set number of pages. Growth is controlled and step-by-step — protecting the quality of every page in the system.</p>
+          <h3 class="wyl-title">Capacity-Controlled Growth</h3>
+          <p class="wyl-desc">Your licence defines a precise page inventory. Expansion is planned and incremental — protecting per-page quality and ensuring the system scales without diluting the search authority already earned.</p>
         </div>
       </div>
     </div>
