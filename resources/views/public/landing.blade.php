@@ -418,8 +418,10 @@ footer{border-top:1px solid var(--border);padding:36px 64px;display:flex;flex-di
 @media(max-width:900px){
   html{font-size:17px;-webkit-text-size-adjust:100%}
   body{-webkit-overflow-scrolling:touch}
-  nav{padding:16px 20px}nav.stuck{padding:12px 20px}.nav-link{display:none}
-  .nav-btn{padding:10px 20px;font-size:.72rem}
+  nav{padding:14px 20px}nav.stuck{padding:10px 20px}.nav-link{display:none}
+  .nav-btn{display:none}
+  .nav-account{display:inline-flex;padding:8px 18px;font-size:.7rem;letter-spacing:.14em;border-radius:3px}
+  .nav-account-full{display:none}.nav-account-short{display:inline}
   #hero{padding:110px 20px 60px;min-height:auto}
   .hero-h1{font-size:clamp(2.4rem,8vw,3.6rem);max-width:100%;margin-bottom:24px}
   .hero-p{font-size:1rem;margin-bottom:32px}
@@ -508,7 +510,7 @@ footer{border-top:1px solid var(--border);padding:36px 64px;display:flex;flex-di
   .offer-note{font-size:.88rem}
   .contact-inner{gap:28px}
   .gate-box{padding:28px 18px}
-  .logo-seo{font-size:1.05rem}.logo-ai{font-size:1.2rem}.logo-co{font-size:.9rem}
+  .logo-seo{font-size:1.28rem}.logo-ai{font-size:1.5rem}.logo-co{font-size:1.1rem}
 }
 </style>
 </head>
@@ -522,7 +524,7 @@ footer{border-top:1px solid var(--border);padding:36px 64px;display:flex;flex-di
   <div class="nav-right">
     <a href="#wyl" class="nav-link">The System</a>
     <a href="#offer" class="nav-link">Licensing</a>
-    <a href="/dashboard" class="nav-btn nav-account" style="background:linear-gradient(90deg,var(--gold),var(--gold-lt));color:var(--deep);box-shadow:0 2px 12px 0 rgba(200,168,75,.13);font-weight:500;letter-spacing:.18em;">Sign Up / Account</a>
+    <a href="/dashboard" class="nav-btn nav-account" style="background:linear-gradient(90deg,var(--gold),var(--gold-lt));color:var(--deep);box-shadow:0 2px 12px 0 rgba(200,168,75,.13);font-weight:500;letter-spacing:.18em;"><span class="nav-account-full">Sign Up / Account</span><span class="nav-account-short" style="display:none">Account</span></a>
     <a href="#contact" class="nav-btn">Request Licensing Access</a>
   </div>
 </nav>
