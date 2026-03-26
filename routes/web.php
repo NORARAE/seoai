@@ -28,6 +28,10 @@ Route::get('/terms', [PublicController::class, 'terms'])->name('terms');
 Route::post('/licensing-inquiry', [PublicController::class, 'storeLicensingInquiry'])
     ->name('licensing-inquiry.store');
 Route::get('/licensing-inquiry', fn () => redirect(url('/').'#contact'))->name('licensing-inquiry.get');
+
+Route::get('/checkout/success', fn () => view('public.checkout-success'))->name('checkout.success');
+Route::get('/checkout/cancelled', fn () => view('public.checkout-cancelled'))->name('checkout.cancelled');
+
 Route::get('/sitemaps/{site}.xml', [PublicSitemapController::class, 'index'])
     ->whereNumber('site')
     ->name('public.sitemaps.index');

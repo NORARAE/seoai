@@ -62,5 +62,14 @@ return [
                 12 => env('STRIPE_AGENCY_12M_PRICE_ID'),
             ],
         ],
+        'legacy' => [
+            'monthly_price' => 599500,      // $5,995.00
+            'urls_allowed'  => 10000,
+            'stripe_prices' => [
+                3  => env('STRIPE_LEGACY_3M_PRICE_ID'),
+                6  => env('STRIPE_LEGACY_6M_PRICE_ID'),
+                12 => env('STRIPE_LEGACY_12M_PRICE_ID'),
+            ],
+        ],
     ],
 ];

@@ -5,9 +5,11 @@ namespace App\Http\Controllers\Api\V1;
 use App\Http\Controllers\Controller;
 use App\Services\Licensing\LicenseService;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 use Illuminate\Validation\Rule;
+use Laravel\Cashier\Cashier;
 use Stripe\Exception\SignatureVerificationException;
 use Symfony\Component\HttpFoundation\Response;
 use UnexpectedValueException;
@@ -76,6 +78,57 @@ class LicenseController extends Controller
         return response()->json([
             'data' => $license,
         ]);
+    }
+
+    public function createCheckoutSession(Request $request): JsonResponse|RedirectResponse
+    {
+        $plans = (array) config('license.plans', []);
+        $terms = array_keys((array) config('license.terms', []));
+
+        $data = $request->validate([
+            'plan' => ['required', 'string', Rule::in(array_keys($plans))],
+            'term_months' => ['required', 'integer', Rule::in($terms)],
+            'site_url' => ['required', 'string', 'max:255'],
+            'customer_email' => ['required', 'email', 'max:255'],
+            'customer_name' => ['nullable', 'string', 'max:255'],
+        ]);
+
+        $plan = $data['plan'];
+        $term = (int) $data['term_months'];
+        $priceId = $plans[$plan]['stripe_prices'][$term] ?? null;
+
+        if (! $priceId) {
+            return response()->json([
+                'message' => "No Stripe Price ID configured for {$plan} / {$term}-month term. Contact support.",
+            ], Response::HTTP_UNPROCESSABLE_ENTITY);
+        }
+
+        $siteUrl = $this->licenseService->normalizeDomain($data['site_url']) ?? $data['site_url'];
+
+        $session = Cashier::stripe()->checkout->sessions->create([
+            'mode' => 'subscription',
+            'customer_email' => $data['customer_email'],
+            'line_items' => [[
+                'price' => $priceId,
+                'quantity' => 1,
+            ]],
+            'metadata' => [
+                'site_url' => $siteUrl,
+                'plan' => $plan,
+                'term_months' => $term,
+            ],
+            'subscription_data' => [
+                'metadata' => [
+                    'site_url' => $siteUrl,
+                    'plan' => $plan,
+                    'term_months' => $term,
+                ],
+            ],
+            'success_url' => $request->input('success_url', url('/checkout/success')) . '?session_id={CHECKOUT_SESSION_ID}',
+            'cancel_url' => $request->input('cancel_url', url('/checkout/cancelled')),
+        ]);
+
+        return response()->json(['checkout_url' => $session->url]);
     }
 
     public function handleStripeWebhook(Request $request): JsonResponse
