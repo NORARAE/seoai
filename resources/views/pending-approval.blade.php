@@ -99,7 +99,7 @@ body{
     </p>
   </div>
 
-  <form method="POST" action="{{ route('logout') }}" style="display:inline">
+  <form method="POST" action="{{ route('filament.admin.auth.logout') }}" style="display:inline">
     @csrf
     <button type="submit" class="logout-link">Sign Out</button>
   </form>
