@@ -26,8 +26,25 @@ class GoogleCalendarService
     {
         $credentialsPath = config('services.google.credentials');
 
-        if (str_starts_with($credentialsPath, 'storage/')) {
-            $credentialsPath = storage_path(str_replace('storage/', '', $credentialsPath));
+        // Normalise shorthand paths that users may put in .env
+        // e.g. "storage/google-credentials.json" or "/var/www/seoai/storage/google-credentials.json"
+        if (! str_starts_with($credentialsPath, '/')) {
+            // Relative to storage_path — strip leading "storage/" if present
+            $rel = preg_replace('#^storage[/\\\\]#', '', $credentialsPath);
+            $credentialsPath = storage_path($rel);
+        }
+
+        if (! file_exists($credentialsPath)) {
+            Log::channel('booking')->error('Google Calendar: credentials file not found', [
+                'path' => $credentialsPath,
+            ]);
+            throw new \RuntimeException("Google credentials file not found: {$credentialsPath}");
+        }
+
+        $calendarId = config('services.google.calendar_id');
+        if (empty($calendarId)) {
+            Log::channel('booking')->error('Google Calendar: GOOGLE_CALENDAR_ID is not set');
+            throw new \RuntimeException('GOOGLE_CALENDAR_ID is not configured.');
         }
 
         $client = new GoogleClient();
@@ -36,7 +53,23 @@ class GoogleCalendarService
         $client->addScope(GoogleCalendar::CALENDAR_EVENTS);
 
         $this->calendar = new GoogleCalendar($client);
-        $this->calendarId = config('services.google.calendar_id');
+        $this->calendarId = $calendarId;
+    }
+
+    /**
+     * Quickly verify the service can connect and the calendar is accessible.
+     * Used by the test:integrations artisan command.
+     */
+    public function ping(): bool
+    {
+        try {
+            $this->calendar->calendars->get($this->calendarId);
+            Log::channel('booking')->info('Google Calendar ping: OK', ['calendar_id' => $this->calendarId]);
+            return true;
+        } catch (\Exception $e) {
+            Log::channel('booking')->error('Google Calendar ping failed', ['error' => $e->getMessage()]);
+            return false;
+        }
     }
 
     /**

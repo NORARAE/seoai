@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Mail\LicensingInquiry;
+use App\Mail\NewAccountInquiryAdminMail;
+use App\Mail\NewAccountInquiryWelcomeMail;
+use App\Models\Inquiry;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
@@ -43,18 +45,25 @@ class PublicController extends Controller
 
         unset($validated['website_url']);
 
-        $inquiry = array_merge($validated, [
-            'ip' => $request->ip(),
-        ]);
+        // Persist inquiry to DB first — leads are never lost if mail fails
+        $inquiry = Inquiry::create(array_merge($validated, [
+            'ip_address' => $request->ip(),
+        ]));
 
-        $recipient = config('mail.from.address', 'hello@seoaico.com');
+        // Queue confirmation to the submitter
+        Mail::to($inquiry->email)->queue(new NewAccountInquiryWelcomeMail($inquiry));
+        $inquiry->update(['welcome_sent_at' => now()]);
 
-        Mail::to($recipient)->queue(new LicensingInquiry($inquiry));
+        // Queue internal notification to admin
+        $adminEmail = config('services.inquiry.recipient_email', 'hello@seoaico.com');
+        Mail::to($adminEmail)->queue(new NewAccountInquiryAdminMail($inquiry));
+        $inquiry->update(['admin_notified_at' => now()]);
 
-        Log::info('Licensing enquiry submitted', [
-            'company' => $inquiry['company'],
-            'email' => $inquiry['email'],
-            'tier' => $inquiry['tier'],
+        Log::info('Licensing inquiry persisted and emails queued', [
+            'id'      => $inquiry->id,
+            'company' => $inquiry->company,
+            'email'   => $inquiry->email,
+            'tier'    => $inquiry->tier,
         ]);
 
         return redirect(url('/').'#contact')

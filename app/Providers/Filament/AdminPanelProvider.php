@@ -2,6 +2,7 @@
 
 namespace App\Providers\Filament;
 
+use App\Filament\Pages\Auth\Register;
 use App\Filament\Pages\SeoGrowthCommandCenter;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\AuthenticateSession;
@@ -30,6 +31,7 @@ class AdminPanelProvider extends PanelProvider
             ->id('admin')
             ->path('admin')
             ->login()
+            ->registration(Register::class)
             ->brandName(new HtmlString(
                 '<span style="display:inline-flex;align-items:baseline;gap:0;line-height:1;font-family:inherit">'
                 . '<span style="font-family:\'DM Sans\',sans-serif;font-weight:300;font-size:1.15rem;letter-spacing:.06em;color:inherit">SEO</span>'

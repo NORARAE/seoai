@@ -118,9 +118,9 @@ class BookingController extends Controller
 
         // Send confirmation emails
         try {
-            Mail::to($booking->email)->send(new BookingConfirmed($booking));
+            Mail::to($booking->email)->queue(new BookingConfirmed($booking));
             Mail::to(config('services.booking.owner_email', 'hello@seoaico.com'))
-                ->send(new BookingAlert($booking));
+                ->queue(new BookingAlert($booking));
         } catch (\Exception $e) {
             Log::channel('booking')->error('Booking email failed', [
                 'booking_id' => $booking->id,

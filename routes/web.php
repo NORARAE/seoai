@@ -110,7 +110,7 @@ Route::get('/settings', fn() => redirect('/dashboard'))->name('settings.index');
 // ADMIN BOOKING MANAGEMENT (auth-protected)
 // ============================================================================
 
-Route::middleware('auth')->prefix('admin/bookings')->name('admin.bookings.')->group(function () {
+Route::middleware(['auth', EnsureUserIsApproved::class])->prefix('admin/bookings')->name('admin.bookings.')->group(function () {
     Route::get('/', [AdminBookingController::class, 'index'])->name('index');
     Route::get('/availability', [AdminBookingController::class, 'availability'])->name('availability');
     Route::post('/availability', [AdminBookingController::class, 'saveAvailability'])->name('availability.save');

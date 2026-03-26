@@ -36,16 +36,23 @@ return [
     ],
 
     'google' => [
-        'client_id' => env('GOOGLE_CLIENT_ID'),
-        'client_secret' => env('GOOGLE_CLIENT_SECRET'),
-        'redirect_uri' => env('GOOGLE_REDIRECT_URI', env('APP_URL') . '/admin/gsc/callback'),
-        'credentials' => env('GOOGLE_APPLICATION_CREDENTIALS', storage_path('app/google/service-account.json')),
-        'calendar_id' => env('GOOGLE_CALENDAR_ID'),
+        // Service account credentials (JSON file path). OAuth keys below are only needed for GSC.
+        'credentials'    => env('GOOGLE_APPLICATION_CREDENTIALS', storage_path('google-credentials.json')),
+        'calendar_id'    => env('GOOGLE_CALENDAR_ID'),
+        'calendar_enabled' => env('GOOGLE_CALENDAR_ENABLED', false),
+        // GSC OAuth (not used by Calendar)
+        'client_id'      => env('GOOGLE_CLIENT_ID'),
+        'client_secret'  => env('GOOGLE_CLIENT_SECRET'),
+        'redirect_uri'   => env('GOOGLE_REDIRECT_URI', env('APP_URL') . '/admin/gsc/callback'),
     ],
 
     'booking' => [
         'owner_email' => env('BOOKING_OWNER_EMAIL', 'hello@seoaico.com'),
-        'owner_name' => env('BOOKING_OWNER_NAME', 'SEOAI Co'),
+        'owner_name'  => env('BOOKING_OWNER_NAME', 'SEOAIco'),
+    ],
+
+    'inquiry' => [
+        'recipient_email' => env('ADMIN_NOTIFICATION_EMAIL', env('BOOKING_OWNER_EMAIL', 'hello@seoaico.com')),
     ],
 
     'gsc' => [
