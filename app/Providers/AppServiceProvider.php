@@ -6,7 +6,7 @@ use Filament\Auth\Http\Responses\Contracts\RegistrationResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\ServiceProvider;
 use Laravel\Cashier\Cashier;
-use Livewire\Features\SupportRedirects\Redirector;
+use Livewire\Features\SupportRedirects\Redirector as LivewireRedirector;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -30,7 +30,7 @@ class AppServiceProvider extends ServiceProvider
         // after FilamentServiceProvider::register() and wins the binding.
         $this->app->bind(RegistrationResponse::class, function (): object {
             return new class implements RegistrationResponse {
-                public function toResponse($request): RedirectResponse
+                public function toResponse($request)
                 {
                     return redirect()->route('pending-approval');
                 }
