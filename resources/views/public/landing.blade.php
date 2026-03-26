@@ -69,7 +69,7 @@ nav.stuck{background:rgba(8,8,8,.95);backdrop-filter:blur(16px);border-color:var
   background:radial-gradient(ellipse,rgba(200,168,75,.07) 0%,transparent 65%);pointer-events:none;
 }
 .hero-kicker{
-  font-size:.78rem;letter-spacing:.08em;text-transform:none;color:var(--gold);
+  font-size:1.1rem;letter-spacing:.08em;text-transform:none;color:var(--gold);
   margin-bottom:36px;display:flex;align-items:center;gap:14px;font-style:italic;
   font-family:'Cormorant Garamond',serif;font-weight:300;
   opacity:0;animation:up .7s .2s forwards;
@@ -456,7 +456,7 @@ footer{border-top:1px solid var(--border);padding:36px 64px;display:flex;flex-di
   html{font-size:16px}
   #hero{padding:100px 16px 48px}
   .hero-h1{font-size:clamp(2rem,7.5vw,2.8rem)}
-  .hero-kicker{font-size:.68rem;letter-spacing:.06em;margin-bottom:20px}
+  .hero-kicker{font-size:.95rem;letter-spacing:.06em;margin-bottom:20px}
   .hero-scroll{display:none}
   .wyl-grid,.steps-grid{grid-template-columns:1fr}
   .proof-strip{grid-template-columns:1fr}
