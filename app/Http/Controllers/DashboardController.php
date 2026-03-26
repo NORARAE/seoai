@@ -105,7 +105,13 @@ class DashboardController extends Controller
                 'score' => 0,
                 'grade' => 'No Data',
                 'color' => 'gray',
-                'metrics' => [],
+                'metrics' => [
+                    'render'  => 0,
+                    'meta'    => 0,
+                    'links'   => 0,
+                    'schema'  => 0,
+                    'quality' => 0,
+                ],
             ];
         }
 
