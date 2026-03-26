@@ -19,6 +19,8 @@ class License extends Model
         'urls_allowed',
         'stripe_subscription_id',
         'stripe_customer_id',
+        'payment_method',
+        'crypto_charge_id',
         'status',
         'trial_ends_at',
         'expires_at',

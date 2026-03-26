@@ -55,6 +55,12 @@ return [
         'recipient_email' => env('ADMIN_NOTIFICATION_EMAIL', env('BOOKING_OWNER_EMAIL', 'hello@seoaico.com')),
     ],
 
+    'coinbase_commerce' => [
+        'enabled'        => env('COINBASE_COMMERCE_ENABLED', false),
+        'api_key'        => env('COINBASE_COMMERCE_API_KEY'),
+        'webhook_secret' => env('COINBASE_COMMERCE_WEBHOOK_SECRET'),
+    ],
+
     'gsc' => [
         'site_url'         => env('GSC_SITE_URL'),
         'credentials_path' => env('GOOGLE_APPLICATION_CREDENTIALS', storage_path('app/google-credentials.json')),
