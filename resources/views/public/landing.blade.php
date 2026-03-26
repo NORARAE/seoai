@@ -69,8 +69,9 @@ nav.stuck{background:rgba(8,8,8,.95);backdrop-filter:blur(16px);border-color:var
   background:radial-gradient(ellipse,rgba(200,168,75,.07) 0%,transparent 65%);pointer-events:none;
 }
 .hero-kicker{
-  font-size:.78rem;letter-spacing:.24em;text-transform:uppercase;color:var(--gold);
-  margin-bottom:28px;display:flex;align-items:center;gap:14px;
+  font-size:.78rem;letter-spacing:.08em;text-transform:none;color:var(--gold);
+  margin-bottom:36px;display:flex;align-items:center;gap:14px;font-style:italic;
+  font-family:'Cormorant Garamond',serif;font-weight:300;
   opacity:0;animation:up .7s .2s forwards;
 }
 .hero-kicker::before{content:'';width:28px;height:1px;background:var(--gold)}
@@ -96,6 +97,12 @@ nav.stuck{background:rgba(8,8,8,.95);backdrop-filter:blur(16px);border-color:var
   text-decoration:none;border-bottom:1px solid var(--border);padding-bottom:3px;transition:color .3s,border-color .3s;
 }
 .btn-ghost:hover{color:var(--ivory);border-color:var(--muted)}
+.hero-scroll{
+  position:absolute;bottom:48px;left:64px;display:flex;align-items:center;gap:16px;
+  opacity:0;animation:up .8s 1.1s forwards;
+}
+.hero-scroll span{font-size:.58rem;letter-spacing:.28em;text-transform:uppercase;color:var(--muted)}
+.scroll-line{width:48px;height:1px;background:linear-gradient(to right,var(--gold),transparent)}
 
 @keyframes up{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:none}}
 
@@ -391,6 +398,7 @@ footer{border-top:1px solid var(--border);padding:36px 64px;display:flex;flex-di
   .btn-primary{width:100%;text-align:center;padding:16px 24px}
   .btn-ghost{text-align:center}
   .hero-orb{display:none}
+  .hero-scroll{left:20px;bottom:32px}
   .statement{grid-template-columns:1fr;gap:28px;padding:36px 20px}
   .stmt-quote{padding:32px 24px}
   .stmt-quote .sq-mark{font-size:2.4rem;margin-bottom:8px}
@@ -448,7 +456,8 @@ footer{border-top:1px solid var(--border);padding:36px 64px;display:flex;flex-di
   html{font-size:16px}
   #hero{padding:100px 16px 48px}
   .hero-h1{font-size:clamp(2rem,7.5vw,2.8rem)}
-  .hero-kicker{font-size:.68rem;letter-spacing:.18em;margin-bottom:20px}
+  .hero-kicker{font-size:.68rem;letter-spacing:.06em;margin-bottom:20px}
+  .hero-scroll{display:none}
   .wyl-grid,.steps-grid{grid-template-columns:1fr}
   .proof-strip{grid-template-columns:1fr}
   .stmt-quote{padding:24px 18px}
@@ -481,29 +490,65 @@ footer{border-top:1px solid var(--border);padding:36px 64px;display:flex;flex-di
   </div>
 </nav>
 
-<!-- ════════════ HERO — SELL ════════════ -->
+<!-- ════════════ HERO ════════════ -->
 <section id="hero">
   <div class="hero-grid"></div>
   <div class="hero-orb"></div>
 
-  <p class="hero-kicker">AI-Powered SEO Infrastructure · Licensed to Agencies &amp; Businesses</p>
+  <p class="hero-kicker">Someone is searching for what you do. Are you showing up?</p>
 
   <h1 class="hero-h1">
-    Lease the pages.<br>
-    <em>Own the rankings.</em><br>
-    In every city.
+    Own the rankings.<br>
+    <em>In every city.</em>
   </h1>
 
   <p class="hero-p">
-    SEOAIco builds and manages <strong>every service and location page on your website</strong> — AI-written content, hero sections, FAQ schema, local business data, and internal linking across 100+ cities. <strong>You license the system. We keep it ranking.</strong>
+    Your competitor shows up on Google because they have a page built for that exact search. You don't. <strong>SEOAIco builds and manages every service and location page your business needs</strong> — so you show up in every city, for every service, every time someone searches.
   </p>
 
   <div class="hero-actions">
     <a href="#contact" class="btn-primary">Request Licensing Access</a>
     <a href="#wyl" class="btn-ghost">See the System</a>
   </div>
-
 </section>
+
+<!-- ════════════ PROOF STRIP ════════════ -->
+<div class="proof-strip r">
+  <div class="proof-item">
+    <div class="proof-icon">◈</div>
+    <div class="proof-label"><strong>White-Label Licensed</strong>Your brand. Your clients. Your margin.</div>
+  </div>
+  <div class="proof-item">
+    <div class="proof-icon">⬡</div>
+    <div class="proof-label"><strong>Built for Search Engines</strong>Structure-first. Not just content.</div>
+  </div>
+  <div class="proof-item">
+    <div class="proof-icon">◻</div>
+    <div class="proof-label"><strong>Controlled Page Inventory</strong>Licensed capacity. Protected growth.</div>
+  </div>
+  <div class="proof-item">
+    <div class="proof-icon">◈</div>
+    <div class="proof-label"><strong>Agencies &amp; Businesses</strong>Agencies. Operators. Businesses ready to grow.</div>
+  </div>
+</div>
+
+<div class="gold-rule"></div>
+
+<!-- ════════════ STATEMENT ════════════ -->
+<div class="statement r">
+  <div class="stmt-quote">
+    <span class="sq-mark">&ldquo;</span>
+    <p class="sq-text">It's not because your competitor is better at what they do. It's because their website has a page built for that search — <strong>and yours doesn't.</strong></p>
+    <span class="sq-rule"></span>
+  </div>
+  <div class="stmt-body">
+    <p>Google and AI search engines all work the same way: they look for a page that matches what someone typed. If that page doesn't exist on your site, you don't show up — no matter how good your business is.</p>
+    <p>SEOAIco builds that page. Then builds one for every service you offer, in every city you serve. Each page is written around the exact words your customers search — with FAQs, local business details, and every page linked together so the whole system gets stronger over time.</p>
+    <p><strong>You don't touch any of it.</strong> We build it, manage it, and keep it current. You lease the system. You own the rankings it earns.</p>
+  </div>
+</div>
+
+<div class="gold-rule"></div>
 
 <!-- ════════════ URL DEMO — LICENSED SEARCH FOOTPRINT ════════════ -->
 <div class="url-section">
@@ -511,7 +556,7 @@ footer{border-top:1px solid var(--border);padding:36px 64px;display:flex;flex-di
     <div>
       <p class="s-eye r">Licensed Search Footprint</p>
       <h2 class="s-h r">Thousands of search<br>targets. <em>One structured</em><br>system.</h2>
-      <p class="s-p r">Each licensed URL is a deliberately composed search asset — built around topic clusters, service-location intent, and structured internal linking logic. <strong>Not pages generated in bulk. A search footprint engineered for coverage.</strong></p>
+      <p class="s-p r">Each page is built around a specific search — combining the right service, city, and keywords so Google knows exactly what your page is about. <strong>Not pages thrown together in bulk. A complete system built for search coverage.</strong></p>
     </div>
     <div class="url-box r">
       <div class="url-box-label">Example Agency Deployment — Home Services</div>
@@ -524,7 +569,7 @@ footer{border-top:1px solid var(--border);padding:36px 64px;display:flex;flex-di
         <div class="url-item"><div class="url-dot"></div>client.com/<span class="hl">air-duct-cleaning-redmond-wa</span></div>
         <div class="url-item"><div class="url-dot"></div>client.com/<span class="hl">boiler-service-kirkland-wa</span></div>
       </div>
-      <div class="url-more">+ structured coverage across all service × location permutations</div>
+      <div class="url-more">+ coverage across every service and location combination</div>
     </div>
   </div>
 </div>
@@ -534,7 +579,7 @@ footer{border-top:1px solid var(--border);padding:36px 64px;display:flex;flex-di
   <div class="audience-section">
     <div class="stmt-quote r" style="text-align:center;max-width:960px;margin:0 auto 48px">
       <span class="sq-mark">&ldquo;</span>
-      <p class="sq-text">Imagine 500 pages — each targeting a different service in a different city — all <strong>live, ranking, and generating leads… while you sleep.</strong> That's what your competitors just turned on.</p>
+      <p class="sq-text">Imagine 500 pages — each targeting a different service in a different city — all <strong>live, ranking, and bringing in leads… while you sleep.</strong> That's what your competitors just turned on.</p>
       <span class="sq-rule"></span>
     </div>
     <p class="s-eye r">Who This Is For</p>
@@ -544,30 +589,30 @@ footer{border-top:1px solid var(--border);padding:36px 64px;display:flex;flex-di
       <div class="aud-card r">
         <span class="aud-tag">For Agencies</span>
         <h3 class="aud-title">Give every client a <em>full local SEO engine</em> — overnight.</h3>
-        <p class="aud-body">Your clients need to rank in dozens of cities — not just their headquarters. SEOAIco gives you a turn-key system: hundreds of AI-optimised service + location pages, deployed <strong>under your brand, at your margin</strong>, with schema, linking, and geo-targeting handled automatically.</p>
+        <p class="aud-body">Your clients need to rank in dozens of cities — not just where their office is. SEOAIco gives you a ready-to-go system: hundreds of AI-written service + location pages, deployed <strong>under your brand, at your markup</strong>, with search data, linking, and local targeting handled automatically.</p>
         <ul class="aud-list">
-          <li><strong>New revenue stream</strong> — offer local SEO at scale as a premium retainer without hiring more writers</li>
-          <li><strong>White-label, your brand</strong> — zero SEOAIco attribution, clients see only your work</li>
-          <li><strong>One licence, entire client book</strong> — deploy across all your clients from a single subscription</li>
+          <li><strong>New revenue stream</strong> — offer local SEO at scale as a premium service without hiring more writers</li>
+          <li><strong>White-label, your brand</strong> — zero SEOAIco branding, clients see only your work</li>
+          <li><strong>One licence, all your clients</strong> — deploy across your entire book of business from one subscription</li>
           <li><strong>AI content unique to each city &amp; service</strong> — not templates with a city name swapped in</li>
           <li><strong>Reduce churn</strong> — clients stay because their rankings depend on your licence being active</li>
-          <li><strong>Upsell built in</strong> — expand URL inventory as clients grow into new markets</li>
-          <li><strong>Faster delivery</strong> — deploy 500+ pages in days, not months of content production</li>
+          <li><strong>Upsell built in</strong> — add more pages as clients grow into new markets</li>
+          <li><strong>Faster delivery</strong> — deploy 500+ pages in days, not months of writing</li>
         </ul>
       </div>
 
       <div class="aud-card r">
         <span class="aud-tag">For CEOs &amp; Business Owners</span>
         <h3 class="aud-title">Finally rank in <em>every city</em><br>you actually serve.</h3>
-        <p class="aud-body">You've spent years paying for SEO that covers a handful of pages. Meanwhile, your competitors are showing up in 100+ cities — because they have the infrastructure. <strong>SEOAIco builds that infrastructure for you:</strong> every service, every location, every query your customers are typing. AI-written, schema-marked, and ranking.</p>
+        <p class="aud-body">You've spent years paying for SEO that covers a handful of pages. Meanwhile, your competitors show up in 100+ cities — because they have the pages. <strong>SEOAIco builds those pages for you:</strong> every service, every location, every search your customers are typing. AI-written, tagged for Google, and ranking.</p>
         <ul class="aud-list">
-          <li><strong>Leads from cities you've never ranked in</strong> — cover every service × location combination automatically</li>
+          <li><strong>Leads from cities you've never ranked in</strong> — cover every service and location combination automatically</li>
           <li><strong>Stop overpaying for SEO</strong> — get 500 pages for the cost of your agency writing 10</li>
-          <li><strong>AI content + FAQ schema + LocalBusiness JSON-LD</strong> on every single page</li>
-          <li><strong>Geo-targeted, unique content</strong> — Google sees each page as genuinely local, not a duplicate</li>
+          <li><strong>AI content + FAQ data + local business details</strong> on every single page</li>
+          <li><strong>Unique content for every city</strong> — Google sees each page as genuinely local, not a copy</li>
           <li><strong>Show up in AI search results</strong> — structured data feeds ChatGPT, Gemini, and AI Overviews</li>
           <li><strong>You own the URLs</strong> — pages live on your domain, your site, your brand</li>
-          <li><strong>Compounds over time</strong> — rankings get stronger the longer the system runs, not weaker</li>
+          <li><strong>Gets stronger over time</strong> — rankings improve the longer the system runs, not weaker</li>
         </ul>
       </div>
 
@@ -581,47 +626,47 @@ footer{border-top:1px solid var(--border);padding:36px 64px;display:flex;flex-di
     <div class="wyl-inner">
       <p class="s-eye r">What You're Actually Licensing</p>
       <h2 class="s-h r">The AI engine behind<br><em>every page on your site.</em></h2>
-      <p class="s-p r" style="max-width:640px">SEOAIco is the software that powers every service and location page — managing hero sections, FAQ schema, LocalBusiness JSON-LD, meta descriptions, internal linking, and AI-optimised content across 100+ cities. <strong>You license the engine. It keeps your pages ranking.</strong></p>
+      <p class="s-p r" style="max-width:640px">SEOAIco is the software behind every service and location page — handling headlines, FAQs, local business data for Google, page descriptions, internal links, and AI-written content across 100+ cities. <strong>You license the engine. It keeps your pages ranking.</strong></p>
       <div class="wyl-grid">
         <div class="wyl-card r">
           <span class="wyl-icon">⬡</span>
-          <h3 class="wyl-title">Programmatic Page Composition</h3>
-          <p class="wyl-desc">Each URL is assembled from structured SEO components — hero targeting, service content, FAQ schema, and CTAs — composed specifically for that search target.</p>
+          <h3 class="wyl-title">Automatic Page Building</h3>
+          <p class="wyl-desc">Each page is assembled from SEO building blocks — a targeted headline, service content, FAQ section, and calls to action — built specifically for that search term.</p>
         </div>
         <div class="wyl-card r">
           <span class="wyl-icon">◈</span>
-          <h3 class="wyl-title">Internal Linking Architecture</h3>
-          <p class="wyl-desc">Related services, nearby cities, topic cluster navigation, and breadcrumb logic are built into every page — creating crawlable, reinforcing link structures across the entire footprint.</p>
+          <h3 class="wyl-title">Smart Internal Linking</h3>
+          <p class="wyl-desc">Related services, nearby cities, category navigation, and breadcrumbs are built into every page — creating a web of links that search engines can easily follow and trust.</p>
         </div>
         <div class="wyl-card r">
           <span class="wyl-icon">◻</span>
-          <h3 class="wyl-title">Automated Schema Deployment</h3>
-          <p class="wyl-desc">JSON-LD schema graphs, service FAQ schema, and breadcrumb schema are deployed at the system level — not added manually per page.</p>
+          <h3 class="wyl-title">Automatic Search Data</h3>
+          <p class="wyl-desc">Local business details, FAQ data, and breadcrumb data are added to every page automatically — not entered by hand one page at a time.</p>
         </div>
         <div class="wyl-card r">
           <span class="wyl-icon">⬡</span>
-          <h3 class="wyl-title">Hyper-Local Content Variation</h3>
-          <p class="wyl-desc">Location-specific copy variations ensure each URL reads and ranks as a genuinely distinct page — not a templated clone with a city name swapped in.</p>
+          <h3 class="wyl-title">Unique Content per City</h3>
+          <p class="wyl-desc">Each page reads and ranks as a genuinely different page — not a copy-paste template with a city name swapped in.</p>
         </div>
         <div class="wyl-card r">
           <span class="wyl-icon">◈</span>
-          <h3 class="wyl-title">Topic Clustering</h3>
-          <p class="wyl-desc">Service categories, sub-services, and geographic markets are structured as topic clusters — giving each client a coherent, authority-signalling search presence.</p>
+          <h3 class="wyl-title">Organized by Topic</h3>
+          <p class="wyl-desc">Services, sub-services, and locations are grouped into related clusters — giving your site a clear, authoritative presence in search results.</p>
         </div>
         <div class="wyl-card r">
           <span class="wyl-icon">◻</span>
-          <h3 class="wyl-title">Crawl-Aware SEO Architecture</h3>
-          <p class="wyl-desc">Safe rendering logic, canonical structure, and fallback handling are baked in — so the system is stable under Google's crawl and rendering pipelines.</p>
+          <h3 class="wyl-title">Built for How Google Works</h3>
+          <p class="wyl-desc">Safe page loading, proper URL structure, and fallback handling are built in — so the system stays stable when Google scans and reads your site.</p>
         </div>
         <div class="wyl-card r">
           <span class="wyl-icon">⬡</span>
-          <h3 class="wyl-title">White-Label Licensing Framework</h3>
-          <p class="wyl-desc">Every deliverable is stripped of SEOAIco attribution. The infrastructure deploys under your agency brand — your clients see your work, not ours.</p>
+          <h3 class="wyl-title">White-Label — Your Brand Only</h3>
+          <p class="wyl-desc">Everything delivered is free of SEOAIco branding. It deploys under your agency name — your clients see your work, not ours.</p>
         </div>
         <div class="wyl-card r">
           <span class="wyl-icon">◈</span>
-          <h3 class="wyl-title">Licensed URL Inventory Control</h3>
-          <p class="wyl-desc">Your licence governs a defined, protected URL capacity. Expansion is controlled and sequential — protecting the integrity of every search asset in the system.</p>
+          <h3 class="wyl-title">Licensed Page Inventory</h3>
+          <p class="wyl-desc">Your licence covers a set number of pages. Growth is controlled and step-by-step — protecting the quality of every page in the system.</p>
         </div>
       </div>
     </div>
@@ -633,27 +678,27 @@ footer{border-top:1px solid var(--border);padding:36px 64px;display:flex;flex-di
   <div class="steps-section">
     <div class="steps-wrap">
       <p class="s-eye r">The Process</p>
-      <h2 class="s-h r">Structured deployment.<br><em>Controlled expansion.</em></h2>
+      <h2 class="s-h r">Simple setup.<br><em>Controlled growth.</em></h2>
       <div class="steps-grid">
         <div class="step r">
           <div class="step-n">01</div>
-          <h3 class="step-title">Define Search Coverage</h3>
-          <p class="step-desc">We map your client's service categories, target locations, and topic clusters — establishing the full architecture of the licensed search footprint before a single page is composed.</p>
+          <h3 class="step-title">Map Your Search Coverage</h3>
+          <p class="step-desc">We map out your services, target cities, and related topics — laying out the full plan for your pages before anything gets built.</p>
         </div>
         <div class="step r">
           <div class="step-n">02</div>
-          <h3 class="step-title">Configure Licensed Architecture</h3>
-          <p class="step-desc">The system is configured for your client's brand, internal linking structure, schema requirements, and local content parameters — within your licensed URL capacity.</p>
+          <h3 class="step-title">Set Up Your System</h3>
+          <p class="step-desc">The system is configured for your brand, linking structure, local content details, and search data — all within your licensed page count.</p>
         </div>
         <div class="step r">
           <div class="step-n">03</div>
           <h3 class="step-title">Deploy Under Your Brand</h3>
-          <p class="step-desc">Structured pages are delivered for integration into your client's site via API or flat-file export. White-label throughout — no SEOAIco attribution anywhere in the output.</p>
+          <p class="step-desc">Pages are delivered for your site via API or file export. White-label from top to bottom — no SEOAIco branding anywhere.</p>
         </div>
         <div class="step r">
           <div class="step-n">04</div>
-          <h3 class="step-title">Expand and Protect Your Footprint</h3>
-          <p class="step-desc">As rankings develop and market coverage grows, your licence provides the capacity to expand into new services, locations, and topic clusters — within a protected, controlled system.</p>
+          <h3 class="step-title">Grow Your Footprint</h3>
+          <p class="step-desc">As rankings build and you reach more markets, your licence lets you add new services, cities, and topics — all within a protected, controlled system.</p>
         </div>
       </div>
     </div>
@@ -667,28 +712,48 @@ footer{border-top:1px solid var(--border);padding:36px 64px;display:flex;flex-di
     <div class="ul-head r">
       <p class="s-eye">The Licence Is the Product</p>
       <h2 class="ul-title">Your URLs are assets.<br><em>The licence is the key.</em></h2>
-      <p class="ul-lead">Every page, every ranking, every lead — controlled by one thing: your active licence.</p>
+      <p class="ul-lead">Every page, every ranking, every lead — tied to one thing: your active licence.</p>
     </div>
     <div class="r">
       <div class="ul-states">
         <div class="ul-state active">
           <span class="ul-state-label">Active Licence</span>
           <div class="ul-state-title">Fully live — ranking, indexing, generating leads</div>
-          <div class="ul-state-desc">AI content, schema markup, FAQ sections, LocalBusiness JSON-LD, internal links, and meta descriptions all active. Google and AI search engines reading and ranking your pages across every city you serve. <strong>Your SEO compounds month over month.</strong></div>
+          <div class="ul-state-desc">AI content, search data, FAQ sections, local business details, internal links, and page descriptions all active. Google and AI search engines reading and ranking your pages across every city you serve. <strong>Your SEO gets stronger month over month.</strong></div>
         </div>
         <div class="ul-state inactive">
           <span class="ul-state-label">Licence Lapsed</span>
           <div class="ul-state-title">Pages revert — company name &amp; phone number only</div>
-          <div class="ul-state-desc">All AI content, schema, structured data, and internal links removed. URLs stay on your site, but <strong>rankings drop, leads stop, and the SEO signal disappears.</strong> Reactivate anytime to restore everything.</div>
+          <div class="ul-state-desc">All AI content, search data, structured details, and internal links removed. Pages stay on your site, but <strong>rankings drop, leads stop, and the SEO advantage disappears.</strong> Reactivate anytime to bring everything back.</div>
         </div>
       </div>
       <div class="ul-note">
         <p><strong>Need more pages?</strong> Upgrade to the next tier — your existing pages carry over.</p>
-        <p><strong>Already have pages built outside SEOAIco?</strong> You can bring them in on the 10,000 URL tier. Full schema, linking, and AI content across your entire footprint.</p>
+        <p><strong>Already have pages built outside SEOAIco?</strong> You can bring them in on the 10,000 page tier. Full search data, linking, and AI content across your entire site.</p>
       </div>
     </div>
   </div>
 </div>
+</section>
+
+<!-- ════════════ INTEGRITY ════════════ -->
+<section>
+  <div class="integrity-section">
+    <p class="s-eye r">Licensing &amp; Page Protection</p>
+    <h2 class="s-h r">Protected pages need<br><em>an active licence.</em></h2>
+    <div class="integrity-grid r">
+      <div class="integrity-block">
+        <span class="ib-label">Active Licence Holders</span>
+        <h3 class="ib-title">Your pages are protected within your licence</h3>
+        <p class="ib-body">Pages built through an active SEOAIco licence are tied to that licence. <strong>Growth, updates, and system upkeep are all maintained within your licensed page count.</strong> More coverage requires a tier upgrade — simple, step-by-step, and controlled.</p>
+      </div>
+      <div class="integrity-block">
+        <span class="ib-label">Legacy &amp; Pre-Licence Builds</span>
+        <h3 class="ib-title">Unlicensed builds need a fresh start</h3>
+        <p class="ib-body">Pages built outside SEOAIco aren't eligible for protected growth within the licensed system. <strong>To bring an existing site into the licensed system — with full growth rights, search data, and protected pages — you'll need to start at the 10,000 page licence tier.</strong></p>
+      </div>
+    </div>
+  </div>
 </section>
 
 <!-- ════════════ PRICING ════════════ -->
@@ -699,8 +764,8 @@ footer{border-top:1px solid var(--border);padding:36px 64px;display:flex;flex-di
       <h2 class="s-h">Three tiers.<br><em>One system.</em><br>Pick your level.</h2>
     </div>
     <div class="offer-note">
-      <p>We review every application individually — this isn't a self-serve checkout. Once you're in, the licence controls everything: the AI content, schema, structured data, and page architecture your site runs on. <strong>Built for agencies and businesses serious about owning their search presence.</strong></p>
-      <p style="margin-top:12px;font-size:.84rem">Need more URLs than your current tier allows? Upgrade to the next level — your existing pages carry over.</p>
+      <p>We review every application individually — this isn't a self-serve checkout. Once you're approved, the licence controls everything: the AI content, search data, and page system your site runs on. <strong>Built for agencies and businesses serious about owning their search results.</strong></p>
+      <p style="margin-top:12px;font-size:.84rem">Need more pages than your current tier allows? Upgrade to the next level — your existing pages carry over.</p>
     </div>
   </div>
 
@@ -709,14 +774,14 @@ footer{border-top:1px solid var(--border);padding:36px 64px;display:flex;flex-di
     <div class="tier starter">
       <span class="tier-flag">Starter — By Application</span>
       <h3 class="tier-name">Entry Access</h3>
-      <div class="tier-urls">Limited URL capacity · Reviewed &amp; approved individually</div>
+      <div class="tier-urls">Limited page capacity · Reviewed &amp; approved individually</div>
       <div class="tier-price">Apply</div>
       <div class="tier-commitment">Entry-level access for qualifying businesses or agencies. Capacity and pricing confirmed on application.</div>
       <ul class="tier-features">
-        <li>Structured page composition within approved capacity</li>
-        <li>Schema framework deployment</li>
-        <li>Internal linking architecture</li>
-        <li>Upgrades to 5K or 10K tier as footprint grows</li>
+        <li>Page building within your approved capacity</li>
+        <li>Search data added automatically</li>
+        <li>Smart internal linking</li>
+        <li>Upgrades to 5K or 10K tier as you grow</li>
       </ul>
       <div class="tier-gated">
         <span class="tier-gated-icon">◈</span>
@@ -727,18 +792,18 @@ footer{border-top:1px solid var(--border);padding:36px 64px;display:flex;flex-di
 
     <div class="tier">
       <span class="tier-flag">Agency / Business Licence — Foundation</span>
-      <h3 class="tier-name">5,000 URL Licence</h3>
-      <div class="tier-urls">Up to 5,000 licensed URLs — agencies or single-business deployment</div>
+      <h3 class="tier-name">5,000 Page Licence</h3>
+      <div class="tier-urls">Up to 5,000 licensed pages — agencies or single-business deployment</div>
       <div class="tier-price"><sup>$</sup>2,995<sub>/mo</sub></div>
       <div class="tier-commitment">3-month minimum engagement. Month-to-month thereafter.</div>
       <ul class="tier-features">
-        <li><strong>Licensed URL inventory</strong> — 5,000 active search assets</li>
-        <li><strong>White-label deployment rights</strong></li>
-        <li>Structured programmatic page composition</li>
-        <li>Schema framework &amp; JSON-LD deployment</li>
-        <li>Internal linking architecture</li>
-        <li>Topic &amp; location scaling within capacity</li>
-        <li>API or flat-file export delivery</li>
+        <li><strong>Licensed page inventory</strong> — 5,000 active pages</li>
+        <li><strong>White-label — your brand only</strong></li>
+        <li>Automatic page building for every service + city</li>
+        <li>Search data &amp; local business details on every page</li>
+        <li>Smart internal linking</li>
+        <li>Grow into new topics &amp; cities within your licence</li>
+        <li>API or file export delivery</li>
         <li>Dashboard onboarding <em class="soon">(coming soon)</em></li>
       </ul>
       <a href="#contact" class="tier-cta">Request 5K Licensing Details</a>
@@ -746,18 +811,18 @@ footer{border-top:1px solid var(--border);padding:36px 64px;display:flex;flex-di
 
     <div class="tier prime">
       <span class="tier-flag">Agency / Business Licence — Preferred</span>
-      <h3 class="tier-name">10,000 URL Licence</h3>
-      <div class="tier-urls">Up to 10,000 licensed URLs — full portfolio or enterprise-scale deployment</div>
+      <h3 class="tier-name">10,000 Page Licence</h3>
+      <div class="tier-urls">Up to 10,000 licensed pages — full portfolio or large-scale deployment</div>
       <div class="tier-price"><sup>$</sup>5,995<sub>/mo</sub></div>
       <div class="tier-commitment">Priority processing. Dedicated account contact. 3-month minimum, then month-to-month.</div>
       <ul class="tier-features">
-        <li>Everything in the 5,000 URL licence</li>
-        <li><strong>Extended licensed inventory</strong> — 10,000 search assets</li>
-        <li><strong>Required for all legacy re-entry</strong> &amp; unlicensed build continuity</li>
-        <li>Priority deployment processing</li>
+        <li>Everything in the 5,000 page licence</li>
+        <li><strong>Extended page inventory</strong> — 10,000 pages</li>
+        <li><strong>Required for bringing in existing sites</strong> &amp; unlicensed builds</li>
+        <li>Priority deployment</li>
         <li>Dedicated account contact</li>
         <li>Early access to dashboard &amp; reporting <em class="soon">(coming soon)</em></li>
-        <li>First access to new verticals &amp; system features</li>
+        <li>First access to new industries &amp; features</li>
       </ul>
       <a href="#contact" class="tier-cta">Request 10K Licensing Details</a>
     </div>
@@ -765,38 +830,18 @@ footer{border-top:1px solid var(--border);padding:36px 64px;display:flex;flex-di
   </div>
 </section>
 
-<!-- ════════════ PROOF STRIP — PROOF (moved to bottom) ════════════ -->
-<div class="proof-strip r">
-  <div class="proof-item">
-    <div class="proof-icon">◈</div>
-    <div class="proof-label"><strong>White-Label Licensed</strong>Your brand. Your clients. Your margin.</div>
-  </div>
-  <div class="proof-item">
-    <div class="proof-icon">⬡</div>
-    <div class="proof-label"><strong>Structured SEO System</strong>Architecture-first. Not content-first.</div>
-  </div>
-  <div class="proof-item">
-    <div class="proof-icon">◻</div>
-    <div class="proof-label"><strong>URL Inventory Control</strong>Licensed capacity. Protected expansion.</div>
-  </div>
-  <div class="proof-item">
-    <div class="proof-icon">◈</div>
-    <div class="proof-label"><strong>Agencies &amp; Businesses</strong>Agencies. Operators. Businesses at the wall.</div>
-  </div>
-</div>
-
 <!-- ════════════ ROADMAP — PROOF / FUTURE ════════════ -->
 <div class="roadmap">
   <p class="s-eye r">On the Roadmap</p>
-  <h2 class="s-h r">The platform expands<br><em>with the licence base.</em></h2>
+  <h2 class="s-h r">The platform grows<br><em>with the licence base.</em></h2>
   <div class="rm-grid">
     <div class="rm-item r">
       <h3 class="rm-title">Agency Dashboard</h3>
-      <p class="rm-desc">A self-serve portal for managing licensed URL sets, reviewing deployment status, and onboarding new client campaigns — without developer involvement.</p>
+      <p class="rm-desc">A self-serve dashboard for managing your licensed pages, checking deployment status, and adding new client sites — no developer needed.</p>
     </div>
     <div class="rm-item r">
       <h3 class="rm-title">Per-URL Search Tracking</h3>
-      <p class="rm-desc">SERP visibility monitoring at the individual URL level — giving agencies the reporting layer to demonstrate the value of the licensed footprint to clients.</p>
+      <p class="rm-desc">Search ranking tracking at the individual page level — giving agencies the reports they need to show clients the value of their pages.</p>
     </div>
     <div class="rm-item r">
       <h3 class="rm-title">Reseller Sub-Licensing</h3>
@@ -811,7 +856,7 @@ footer{border-top:1px solid var(--border);padding:36px 64px;display:flex;flex-di
     <div>
       <p class="s-eye r">Request Licensing Details</p>
       <h2 class="s-h r">Tell us where you are — and where you need <em>search to take you.</em></h2>
-      <p class="s-p r">Whether you're an agency building a scalable infrastructure layer or a business that has hit the ceiling of conventional SEO — licensing access is reviewed individually. We'll assess your market, your coverage goals, and the right licence structure for your situation.</p>
+      <p class="s-p r">Whether you're an agency looking for a scalable SEO system or a business that's hit the ceiling with traditional SEO — licensing access is reviewed individually. We'll look at your market, your goals, and the right licence level for your situation.</p>
       <div class="c-meta r">
         <div class="cm"><label>Licensing Model</label><span>Reviewed individually — not automated</span></div>
         <div class="cm"><label>Commitment</label><span>3-month minimum, then month-to-month</span></div>
