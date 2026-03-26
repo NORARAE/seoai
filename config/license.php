@@ -63,7 +63,7 @@ return [
             ],
         ],
         'legacy' => [
-            'monthly_price' => 599500,      // $5,995.00
+            'monthly_price' => 479900,      // $4,799.00
             'urls_allowed'  => 10000,
             'stripe_prices' => [
                 3  => env('STRIPE_LEGACY_3M_PRICE_ID'),

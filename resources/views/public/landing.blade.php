@@ -813,7 +813,7 @@ footer{border-top:1px solid var(--border);padding:36px 64px;display:flex;flex-di
       <span class="tier-flag">Agency / Business Licence — Preferred</span>
       <h3 class="tier-name">10,000 Page Licence</h3>
       <div class="tier-urls">Up to 10,000 licensed pages — full portfolio or large-scale deployment</div>
-      <div class="tier-price"><sup>$</sup>5,995<sub>/mo</sub></div>
+      <div class="tier-price"><sup>$</sup>4,799<sub>/mo</sub></div>
       <div class="tier-commitment">Priority processing. Dedicated account contact. 3-month minimum, then month-to-month.</div>
       <ul class="tier-features">
         <li>Everything in the 5,000 page licence</li>
@@ -914,7 +914,7 @@ footer{border-top:1px solid var(--border);padding:36px 64px;display:flex;flex-di
             <option value="">Select…</option>
             <option value="starter" @selected(old('tier') === 'starter')>Starter — apply for access &amp; pricing</option>
             <option value="5k" @selected(old('tier') === '5k')>5,000 URLs — $2,995/mo</option>
-            <option value="10k" @selected(old('tier') === '10k')>10,000 URLs — $5,995/mo</option>
+            <option value="10k" @selected(old('tier') === '10k')>10,000 URLs — $4,799/mo</option>
             <option value="legacy" @selected(old('tier') === 'legacy')>Legacy build — re-licence required</option>
           </select>
           @error('tier') <span class="field-error">{{ $message }}</span> @enderror
@@ -958,7 +958,7 @@ footer{border-top:1px solid var(--border);padding:36px 64px;display:flex;flex-di
       </div>
       <div class="gate-tier selected" data-tier="10k">
         <div class="gate-tier-name">10,000 URLs</div>
-        <div class="gate-tier-price">$5,995/mo</div>
+        <div class="gate-tier-price">$4,799/mo</div>
         <div class="gate-tier-urls">Preferred · Priority access</div>
       </div>
     </div>
