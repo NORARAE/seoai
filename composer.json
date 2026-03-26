@@ -8,6 +8,7 @@
     "require": {
         "php": "^8.2",
         "filament/filament": "^5.3",
+        "google/analytics-data": "^0.23.3",
         "google/apiclient": "^2.19",
         "laravel/cashier": "^16.5",
         "laravel/framework": "^12.0",

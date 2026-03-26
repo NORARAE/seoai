@@ -41,4 +41,13 @@ return [
         'redirect_uri' => env('GOOGLE_REDIRECT_URI', env('APP_URL') . '/admin/gsc/callback'),
     ],
 
+    'gsc' => [
+        'site_url'         => env('GSC_SITE_URL'),
+        'credentials_path' => env('GOOGLE_APPLICATION_CREDENTIALS', storage_path('app/google-credentials.json')),
+    ],
+
+    'ga4' => [
+        'property_id' => env('GA4_PROPERTY_ID'),
+    ],
+
 ];

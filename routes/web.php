@@ -4,6 +4,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\LocationPagePreviewController;
 use App\Http\Controllers\PublicController;
 use App\Http\Controllers\PublicSitemapController;
+use App\Http\Controllers\SeoController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -90,6 +91,10 @@ Route::get('/settings', fn() => redirect('/dashboard'))->name('settings.index');
 // ============================================================================
 // PREVIEW LAYER - Public-facing location pages (with auth check for drafts)
 // ============================================================================
+
+Route::get('/seo/dashboard', [SeoController::class, 'dashboard'])
+    ->middleware('auth')
+    ->name('seo.dashboard');
 
 Route::get('/preview/{slug}', [LocationPagePreviewController::class, 'show'])
     ->name('location-pages.preview')

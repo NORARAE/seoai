@@ -134,6 +134,14 @@ return [
             'replace_placeholders' => true,
         ],
 
+        'seo' => [
+            'driver' => 'daily',
+            'path' => storage_path('logs/seo.log'),
+            'level' => env('LOG_LEVEL', 'debug'),
+            'days' => 30,
+            'replace_placeholders' => true,
+        ],
+
     ],
 
 ];
