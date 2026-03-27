@@ -4,6 +4,8 @@ use App\Http\Controllers\AdminBookingController;
 use App\Http\Controllers\BookingController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\LocationPagePreviewController;
+use App\Http\Controllers\MarketingPageController;
+use App\Http\Controllers\MarketingSitemapController;
 use App\Http\Controllers\PublicController;
 use App\Http\Controllers\PublicSitemapController;
 use App\Http\Controllers\SeoController;
@@ -138,3 +140,19 @@ Route::get('/preview/{slug}', [LocationPagePreviewController::class, 'show'])
 // Handled by Filament at /admin
 // See App\Providers\Filament\AdminPanelProvider
 // Protected by Filament's built-in authentication
+
+// ============================================================================
+// SEO MARKETING PAGES — sitemap routes first, wildcard slug LAST
+// ============================================================================
+
+Route::get('/sitemap.xml', [MarketingSitemapController::class, 'index'])
+    ->name('seo.sitemap.index');
+
+Route::get('/sitemaps/marketing-{cluster}.xml', [MarketingSitemapController::class, 'cluster'])
+    ->where('cluster', 'core|agency|local|strategy|industry')
+    ->name('seo.sitemap.cluster');
+
+// Wildcard slug MUST be registered last to avoid capturing app routes above
+Route::get('/{slug}', [MarketingPageController::class, 'show'])
+    ->where('slug', '[a-z0-9\-]+')
+    ->name('seo.page.show');

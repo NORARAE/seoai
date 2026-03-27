@@ -1,0 +1,357 @@
+{
+  "meta": {
+    "title": "SEOAIco — Master SEO Architecture Index",
+    "generated": "2025-07",
+    "total_pages": 50,
+    "clusters": ["core", "agency", "local", "strategy", "industry"],
+    "base_domain": "https://seoaico.com",
+    "contact_url": "https://seoaico.com/#contact"
+  },
+
+  "sitemap_architecture": {
+    "index_sitemap": "/sitemap.xml",
+    "child_sitemaps": [
+      {
+        "file": "/sitemap-core.xml",
+        "cluster": "core",
+        "page_ids": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+        "priority_range": "0.8–1.0",
+        "changefreq": "weekly",
+        "notes": "Primary conversion and flagship infrastructure pages. Highest crawl priority. Weekly refresh signals active authority."
+      },
+      {
+        "file": "/sitemap-agency.xml",
+        "cluster": "agency",
+        "page_ids": [11, 12, 13, 14, 15, 16, 17, 18, 19, 20],
+        "priority_range": "0.7–0.8",
+        "changefreq": "monthly",
+        "notes": "Agency and white-label acquisition pages. High commercial intent. Feed internal link equity to core cluster."
+      },
+      {
+        "file": "/sitemap-local.xml",
+        "cluster": "local",
+        "page_ids": [21, 22, 23, 24, 25, 26, 27, 28, 29, 30],
+        "priority_range": "0.7–0.8",
+        "changefreq": "monthly",
+        "notes": "Local and multi-location search infrastructure pages. Captures high-intent local operator and franchise SEO demand."
+      },
+      {
+        "file": "/sitemap-strategy.xml",
+        "cluster": "strategy",
+        "page_ids": [31, 32, 33, 34, 35, 36, 37, 38, 39, 40],
+        "priority_range": "0.6–0.7",
+        "changefreq": "monthly",
+        "notes": "Strategy and methodology pages. Informational and commercial hybrid. Build topical authority and internal equity toward core pages."
+      },
+      {
+        "file": "/sitemap-industry.xml",
+        "cluster": "industry",
+        "page_ids": [41, 42, 43, 44, 45, 46, 47, 48, 49, 50],
+        "priority_range": "0.7–0.75",
+        "changefreq": "monthly",
+        "notes": "High-value industry vertical pages. Commercial intent. Convert industry-specific search demand into core platform licensing inquiries."
+      }
+    ]
+  },
+
+  "top_10_money_pages": [
+    {
+      "rank": 1,
+      "page_id": 1,
+      "slug": "programmatic-seo-platform",
+      "url_path": "/programmatic-seo-platform",
+      "cluster": "core",
+      "revenue_rationale": "Primary product positioning page. Captures the highest-value buyer intent in the entire site. Decision-makers evaluating programmatic SEO infrastructure arrive here with direct commercial intent. Converts to licensing inquiries at the highest rate of any page.",
+      "sitemap_priority": 1.0,
+      "nav_inclusion": true,
+      "paid_traffic_support": "Primary paid landing page for 'programmatic SEO platform' branded and category terms. Highest ROAS conversion page across the domain.",
+      "internal_linking_weight": "apex",
+      "receives_links_from": "all clusters",
+      "notes": "All internal linking strategies should send maximum equity to this page. It is the hub of the authority architecture."
+    },
+    {
+      "rank": 2,
+      "page_id": 2,
+      "slug": "enterprise-seo-automation",
+      "url_path": "/enterprise-seo-automation",
+      "cluster": "core",
+      "revenue_rationale": "Enterprise buyer acquisition page. Captures the highest ACV licensing intent — decision-makers at the VP/C-suite level researching SEO at infrastructure scale. Converts at lower volume but significantly higher deal value than any other page.",
+      "sitemap_priority": 0.95,
+      "nav_inclusion": true,
+      "paid_traffic_support": "Secondary paid target for 'enterprise SEO automation' and 'enterprise SEO platform' terms. Supports sales-assist for large license negotiations.",
+      "internal_linking_weight": "primary",
+      "receives_links_from": "core, agency, strategy, industry clusters",
+      "notes": "Internal links from all industry vertical pages should include an anchor to this page. Enterprise buyer journey often begins at an industry vertical before navigating to enterprise platform."
+    },
+    {
+      "rank": 3,
+      "page_id": 3,
+      "slug": "exclusive-territory-licensing-model",
+      "url_path": "/exclusive-territory-licensing-model",
+      "cluster": "core",
+      "revenue_rationale": "The critical conversion accelerator page. Buyers who are already convinced of the platform's value need to understand the exclusivity model to make the licensing decision. This page drives urgency and closes inquiries. Without it, the funnel leaks at decision stage.",
+      "sitemap_priority": 0.9,
+      "nav_inclusion": true,
+      "paid_traffic_support": "Remarketing audience landing page. Targets platform-aware visitors who have not yet converted. High-intent exclusivity angle performs in middle-funnel paid campaigns.",
+      "internal_linking_weight": "primary",
+      "receives_links_from": "core, all industry cluster pages, local cluster",
+      "notes": "Every industry vertical page should link to this page in the exclusivity section or lateral links. It closes the loop between vertical interest and licensing action."
+    },
+    {
+      "rank": 4,
+      "page_id": 11,
+      "slug": "agency-seo-platform",
+      "url_path": "/agency-seo-platform",
+      "cluster": "agency",
+      "revenue_rationale": "Agency licensing is the highest-volume deal category. A single agency license covers multiple client territories simultaneously, representing multiple license-value capture in a single sale. Agencies also become distribution channels through white-label deployment.",
+      "sitemap_priority": 0.85,
+      "nav_inclusion": true,
+      "paid_traffic_support": "Primary paid target for 'white-label SEO platform' and 'SEO platform for agencies' terms. Strong ROAS given agency buyer's potential multi-territory licensing volume.",
+      "internal_linking_weight": "primary",
+      "receives_links_from": "core, local, strategy, industry clusters",
+      "notes": "Agency buyers are often the most sophisticated and highest-volume licensees. This page should receive secondary link equity priority after core platform pages."
+    },
+    {
+      "rank": 5,
+      "page_id": 21,
+      "slug": "local-seo-automation",
+      "url_path": "/local-seo-automation",
+      "cluster": "local",
+      "revenue_rationale": "Local search automation represents the broadest addressable market — every local business across every industry and geography. High volume of licensing inquiries at competitive deal value. Also bridges to multi-location and franchise categories.",
+      "sitemap_priority": 0.85,
+      "nav_inclusion": true,
+      "paid_traffic_support": "Strong paid target across 'local SEO automation,' 'automated local SEO,' and 'local search infrastructure' terms. Particularly effective for home services, healthcare, and legal paid audiences.",
+      "internal_linking_weight": "primary",
+      "receives_links_from": "core, all industry cluster pages, agency cluster",
+      "notes": "Most industry vertical pages link here. Aggregate equity from industry cluster flows to this page, which should pass it on to core cluster."
+    },
+    {
+      "rank": 6,
+      "page_id": 4,
+      "slug": "search-intelligence-platform",
+      "url_path": "/search-intelligence-platform",
+      "cluster": "core",
+      "revenue_rationale": "Search intelligence is the recurring data-subscription differentiator. Buyers who understand competitive intelligence subscribe at higher retention rates. This page converts buyers motivated by competitive risk — a powerful psychological driver with premium deal value attachment.",
+      "sitemap_priority": 0.85,
+      "nav_inclusion": true,
+      "paid_traffic_support": "Effective for 'competitive SEO intelligence' and 'search rank tracking platform' paid terms. Supports mid-funnel retention and expansion revenue.",
+      "internal_linking_weight": "secondary",
+      "receives_links_from": "core, strategy, industry clusters",
+      "notes": "Link here from strategy cluster pages where competitive analysis and gap analysis are discussed."
+    },
+    {
+      "rank": 7,
+      "page_id": 41,
+      "slug": "seo-for-law-firms",
+      "url_path": "/seo-for-law-firms",
+      "cluster": "industry",
+      "revenue_rationale": "Legal search carries the highest revenue-per-click economics of all industry verticals. A single personal injury or business litigation firm license represents substantial deal value. Legal search intent is defined, high-volume, and high-converting for licensing inquiries.",
+      "sitemap_priority": 0.8,
+      "nav_inclusion": false,
+      "paid_traffic_support": "Primary industry vertical paid landing page. 'SEO for law firms' and 'attorney SEO platform' terms carry high CPC in paid channels — indicating high organic conversion potential too.",
+      "internal_linking_weight": "secondary",
+      "receives_links_from": "core cluster, local cluster, strategy cluster",
+      "notes": "Highest-value individual industry vertical page. May be worth elevating to nav inclusion as a featured use case."
+    },
+    {
+      "rank": 8,
+      "page_id": 44,
+      "slug": "seo-for-saas-companies",
+      "url_path": "/seo-for-saas-companies",
+      "cluster": "industry",
+      "revenue_rationale": "SaaS companies understand programmatic infrastructure intuitively — alignment between buyer mental model and product positioning is highest here. SaaS buyers also represent high-value, technically sophisticated licensees who retain long-term. Category is growth-stage and willing to invest.",
+      "sitemap_priority": 0.8,
+      "nav_inclusion": false,
+      "paid_traffic_support": "Strong paid alignment with 'SaaS SEO platform' and 'programmatic SEO for SaaS' terms. B2B SaaS audiences in paid channels are high-intent and well-defined.",
+      "internal_linking_weight": "secondary",
+      "receives_links_from": "core cluster, strategy cluster, agency cluster",
+      "notes": "SaaS buyers are closest in profile to SEOAIco itself — infrastructure thinkers with scalability emphasis. Content on this page converts well with like-minded buyers."
+    },
+    {
+      "rank": 9,
+      "page_id": 12,
+      "slug": "white-label-seo-platform",
+      "url_path": "/white-label-seo-platform",
+      "cluster": "agency",
+      "revenue_rationale": "White-label is the highest-leverage distribution model. Agency resellers who white-label the platform expand SEOAIco's market reach while maintaining full licensing economics. Each white-label agency partner effectively becomes a sales channel. High LTV per licensee.",
+      "sitemap_priority": 0.8,
+      "nav_inclusion": true,
+      "paid_traffic_support": "Dedicated paid landing page for 'white-label SEO software' and 'reseller SEO platform' terms. Conversion rate is high given buyer commitment profile.",
+      "internal_linking_weight": "secondary",
+      "receives_links_from": "agency cluster, core cluster",
+      "notes": "White-label page links tightly to the agency platform page. Both should reinforce each other in lateral internal linking."
+    },
+    {
+      "rank": 10,
+      "page_id": 46,
+      "slug": "seo-for-financial-services",
+      "url_path": "/seo-for-financial-services",
+      "cluster": "industry",
+      "revenue_rationale": "Financial services combines the highest organic intent value per visitor with buyers who have the budget authority to license at premium levels. RIAs, wealth management firms, and fintech platforms are accustomed to infrastructure-level investments and long-term licensing relationships.",
+      "sitemap_priority": 0.75,
+      "nav_inclusion": false,
+      "paid_traffic_support": "Financial services paid channel targeting is precise — RIA, fintech, and insurance decistion-maker audiences available. CPC is high, but licensing deal value justifies it strongly.",
+      "internal_linking_weight": "secondary",
+      "receives_links_from": "core cluster, local cluster, strategy cluster",
+      "notes": "Pair with enterprise SEO automation landing in paid remarketing for highest closing rate against financial services buyers."
+    }
+  ],
+
+  "exclusivity_positioning_block": {
+    "headline": "Infrastructure Positioned as Scarce by Design — Not by Accident",
+    "core_value_proposition": "SEOAIco is not a tool that anyone can purchase. It is a licensed infrastructure system where each territory — defined by geography, industry category, and search intent domain — is issued to a single licensee. Once your territory is licensed and locked, competing businesses within the same category and geography cannot access the same search acquisition infrastructure.",
+    "scarcity_mechanics": {
+      "territorial_exclusivity": "One license issued per competitive category per defined geographic territory. Contractually enforced, not just technically implied.",
+      "compounding_advantage": "Infrastructure that has been active for 12 months is structurally harder to displace than fresh-start deployment. First movers in each territory build a compounding advantage that extends with every passing month.",
+      "access_control": "License inquiries are reviewed and qualified. Not every applicant is accepted. Markets with active licensees are closed until those licenses lapse or are released.",
+      "finite_inventory": "The number of high-value territories across the most competitive markets is finite. Primary metro legal, financial, healthcare, and real estate territories typically close within weeks of opening."
+    },
+    "positioning_language": {
+      "avoid": [
+        "SaaS",
+        "monthly subscription",
+        "cancel anytime",
+        "free trial",
+        "plans and pricing",
+        "per-seat",
+        "unlimited",
+        "self-serve"
+      ],
+      "prefer": [
+        "licensed territory",
+        "exclusive infrastructure",
+        "search acquisition engine",
+        "territorial control",
+        "licensed access",
+        "compounding authority",
+        "infrastructure license",
+        "protected position"
+      ]
+    },
+    "buyer_psychology_drivers": [
+      {
+        "driver": "Loss Aversion",
+        "application": "Once a competitor licenses your territory, that position is closed. The cost of inaction is not zero — it is the permanent loss of territorial access."
+      },
+      {
+        "driver": "Status Exclusivity",
+        "application": "Not every business qualifies for a license. Approval and territory assignment signals that the licensee has been selected over competing applicants."
+      },
+      {
+        "driver": "Compounding Returns",
+        "application": "The sooner the license activates, the more search authority compounds. A licensee who starts today has a structural advantage over a licensee who starts in six months."
+      },
+      {
+        "driver": "Infrastructure Permanence",
+        "application": "Unlike campaign spending that stops when budget stops, licensed infrastructure compounds when it is maintained and degrades when it is abandoned — creating strong lock-in."
+      }
+    ],
+    "premium_cta_language": [
+      "Inquire About Licensing Your Territory",
+      "Check Territory Availability",
+      "Lock Your Market Before a Competitor Does",
+      "Request a Territory Assessment",
+      "Claim Exclusive Search Infrastructure for Your Category"
+    ],
+    "pricing_positioning": "SEOAIco does not publish pricing. Territory licensing is scoped to the competitive density, geographic size, and category value of each market. Inquiries are evaluated individually. This is not a commodity purchase — it is a strategic infrastructure investment."
+  },
+
+  "page_index": [
+    { "id": 1,  "url_path": "/programmatic-seo-platform",        "cluster": "core",     "nav_label": "Platform",              "money_page_rank": 1,  "sitemap_file": "/sitemap-core.xml",     "sitemap_priority": 1.0  },
+    { "id": 2,  "url_path": "/enterprise-seo-automation",         "cluster": "core",     "nav_label": "Enterprise",            "money_page_rank": 2,  "sitemap_file": "/sitemap-core.xml",     "sitemap_priority": 0.95 },
+    { "id": 3,  "url_path": "/exclusive-territory-licensing-model","cluster": "core",    "nav_label": "How It Works",          "money_page_rank": 3,  "sitemap_file": "/sitemap-core.xml",     "sitemap_priority": 0.9  },
+    { "id": 4,  "url_path": "/search-intelligence-platform",      "cluster": "core",     "nav_label": "Search Intelligence",   "money_page_rank": 6,  "sitemap_file": "/sitemap-core.xml",     "sitemap_priority": 0.85 },
+    { "id": 5,  "url_path": "/ai-seo-content-automation",         "cluster": "core",     "nav_label": "AI Content",            "money_page_rank": null,"sitemap_file": "/sitemap-core.xml",     "sitemap_priority": 0.85 },
+    { "id": 6,  "url_path": "/automated-internal-linking",        "cluster": "core",     "nav_label": "Internal Linking",      "money_page_rank": null,"sitemap_file": "/sitemap-core.xml",     "sitemap_priority": 0.8  },
+    { "id": 7,  "url_path": "/technical-seo-automation",          "cluster": "core",     "nav_label": "Technical SEO",         "money_page_rank": null,"sitemap_file": "/sitemap-core.xml",     "sitemap_priority": 0.8  },
+    { "id": 8,  "url_path": "/seo-reporting-dashboard",           "cluster": "core",     "nav_label": "Reporting",             "money_page_rank": null,"sitemap_file": "/sitemap-core.xml",     "sitemap_priority": 0.8  },
+    { "id": 9,  "url_path": "/scalable-seo-infrastructure",       "cluster": "core",     "nav_label": "Infrastructure",        "money_page_rank": null,"sitemap_file": "/sitemap-core.xml",     "sitemap_priority": 0.8  },
+    { "id": 10, "url_path": "/seo-roi-calculator",                "cluster": "core",     "nav_label": "ROI Calculator",        "money_page_rank": null,"sitemap_file": "/sitemap-core.xml",     "sitemap_priority": 0.8  },
+
+    { "id": 11, "url_path": "/agency-seo-platform",               "cluster": "agency",   "nav_label": "Agency Platform",       "money_page_rank": 4,  "sitemap_file": "/sitemap-agency.xml",   "sitemap_priority": 0.85 },
+    { "id": 12, "url_path": "/white-label-seo-platform",          "cluster": "agency",   "nav_label": "White Label",           "money_page_rank": 9,  "sitemap_file": "/sitemap-agency.xml",   "sitemap_priority": 0.8  },
+    { "id": 13, "url_path": "/seo-reseller-program",              "cluster": "agency",   "nav_label": "Reseller Program",      "money_page_rank": null,"sitemap_file": "/sitemap-agency.xml",   "sitemap_priority": 0.75 },
+    { "id": 14, "url_path": "/managed-seo-for-clients",           "cluster": "agency",   "nav_label": "Managed SEO",           "money_page_rank": null,"sitemap_file": "/sitemap-agency.xml",   "sitemap_priority": 0.75 },
+    { "id": 15, "url_path": "/seo-platform-for-digital-agencies", "cluster": "agency",   "nav_label": "Digital Agencies",      "money_page_rank": null,"sitemap_file": "/sitemap-agency.xml",   "sitemap_priority": 0.75 },
+    { "id": 16, "url_path": "/agency-seo-reporting",              "cluster": "agency",   "nav_label": "Agency Reporting",      "money_page_rank": null,"sitemap_file": "/sitemap-agency.xml",   "sitemap_priority": 0.7  },
+    { "id": 17, "url_path": "/client-seo-portal",                 "cluster": "agency",   "nav_label": "Client Portal",         "money_page_rank": null,"sitemap_file": "/sitemap-agency.xml",   "sitemap_priority": 0.7  },
+    { "id": 18, "url_path": "/seo-fulfillment-for-agencies",      "cluster": "agency",   "nav_label": "SEO Fulfillment",       "money_page_rank": null,"sitemap_file": "/sitemap-agency.xml",   "sitemap_priority": 0.7  },
+    { "id": 19, "url_path": "/agency-territory-exclusivity",      "cluster": "agency",   "nav_label": "Agency Exclusivity",    "money_page_rank": null,"sitemap_file": "/sitemap-agency.xml",   "sitemap_priority": 0.7  },
+    { "id": 20, "url_path": "/seo-platform-comparison",           "cluster": "agency",   "nav_label": "Platform Comparison",   "money_page_rank": null,"sitemap_file": "/sitemap-agency.xml",   "sitemap_priority": 0.7  },
+
+    { "id": 21, "url_path": "/local-seo-automation",              "cluster": "local",    "nav_label": "Local SEO",             "money_page_rank": 5,  "sitemap_file": "/sitemap-local.xml",    "sitemap_priority": 0.85 },
+    { "id": 22, "url_path": "/multi-location-seo",                "cluster": "local",    "nav_label": "Multi-Location",        "money_page_rank": null,"sitemap_file": "/sitemap-local.xml",    "sitemap_priority": 0.8  },
+    { "id": 23, "url_path": "/google-business-profile-automation","cluster": "local",    "nav_label": "GBP Automation",        "money_page_rank": null,"sitemap_file": "/sitemap-local.xml",    "sitemap_priority": 0.75 },
+    { "id": 24, "url_path": "/service-area-seo",                  "cluster": "local",    "nav_label": "Service Area SEO",      "money_page_rank": null,"sitemap_file": "/sitemap-local.xml",    "sitemap_priority": 0.75 },
+    { "id": 25, "url_path": "/city-level-seo-pages",              "cluster": "local",    "nav_label": "City Pages",            "money_page_rank": null,"sitemap_file": "/sitemap-local.xml",    "sitemap_priority": 0.75 },
+    { "id": 26, "url_path": "/neighborhood-seo",                  "cluster": "local",    "nav_label": "Neighborhood SEO",      "money_page_rank": null,"sitemap_file": "/sitemap-local.xml",    "sitemap_priority": 0.7  },
+    { "id": 27, "url_path": "/local-citation-automation",         "cluster": "local",    "nav_label": "Local Citations",       "money_page_rank": null,"sitemap_file": "/sitemap-local.xml",    "sitemap_priority": 0.7  },
+    { "id": 28, "url_path": "/local-search-rank-tracking",        "cluster": "local",    "nav_label": "Rank Tracking",         "money_page_rank": null,"sitemap_file": "/sitemap-local.xml",    "sitemap_priority": 0.7  },
+    { "id": 29, "url_path": "/hyperlocal-seo-platform",           "cluster": "local",    "nav_label": "Hyperlocal SEO",        "money_page_rank": null,"sitemap_file": "/sitemap-local.xml",    "sitemap_priority": 0.7  },
+    { "id": 30, "url_path": "/local-seo-for-franchises",          "cluster": "local",    "nav_label": "Franchise Local SEO",   "money_page_rank": null,"sitemap_file": "/sitemap-local.xml",    "sitemap_priority": 0.7  },
+
+    { "id": 31, "url_path": "/search-first-content-strategy",     "cluster": "strategy", "nav_label": "Content Strategy",      "money_page_rank": null,"sitemap_file": "/sitemap-strategy.xml", "sitemap_priority": 0.7  },
+    { "id": 32, "url_path": "/competitive-gap-analysis",          "cluster": "strategy", "nav_label": "Gap Analysis",          "money_page_rank": null,"sitemap_file": "/sitemap-strategy.xml", "sitemap_priority": 0.7  },
+    { "id": 33, "url_path": "/keyword-cluster-architecture",      "cluster": "strategy", "nav_label": "Keyword Clusters",      "money_page_rank": null,"sitemap_file": "/sitemap-strategy.xml", "sitemap_priority": 0.65 },
+    { "id": 34, "url_path": "/topical-authority-building",        "cluster": "strategy", "nav_label": "Topical Authority",     "money_page_rank": null,"sitemap_file": "/sitemap-strategy.xml", "sitemap_priority": 0.65 },
+    { "id": 35, "url_path": "/search-intent-targeting-platform",  "cluster": "strategy", "nav_label": "Search Intent",         "money_page_rank": null,"sitemap_file": "/sitemap-strategy.xml", "sitemap_priority": 0.65 },
+    { "id": 36, "url_path": "/seo-for-lead-generation",          "cluster": "strategy", "nav_label": "Lead Gen SEO",          "money_page_rank": null,"sitemap_file": "/sitemap-strategy.xml", "sitemap_priority": 0.65 },
+    { "id": 37, "url_path": "/long-tail-seo-strategy",            "cluster": "strategy", "nav_label": "Long-Tail Strategy",    "money_page_rank": null,"sitemap_file": "/sitemap-strategy.xml", "sitemap_priority": 0.65 },
+    { "id": 38, "url_path": "/seo-content-at-scale",              "cluster": "strategy", "nav_label": "Content at Scale",      "money_page_rank": null,"sitemap_file": "/sitemap-strategy.xml", "sitemap_priority": 0.65 },
+    { "id": 39, "url_path": "/organic-acquisition-strategy",      "cluster": "strategy", "nav_label": "Organic Acquisition",   "money_page_rank": null,"sitemap_file": "/sitemap-strategy.xml", "sitemap_priority": 0.6  },
+    { "id": 40, "url_path": "/seo-automation-strategy",           "cluster": "strategy", "nav_label": "Automation Strategy",   "money_page_rank": null,"sitemap_file": "/sitemap-strategy.xml", "sitemap_priority": 0.6  },
+
+    { "id": 41, "url_path": "/seo-for-law-firms",                 "cluster": "industry", "nav_label": "Law Firms",             "money_page_rank": 7,  "sitemap_file": "/sitemap-industry.xml", "sitemap_priority": 0.8  },
+    { "id": 42, "url_path": "/seo-for-real-estate",               "cluster": "industry", "nav_label": "Real Estate",           "money_page_rank": null,"sitemap_file": "/sitemap-industry.xml", "sitemap_priority": 0.75 },
+    { "id": 43, "url_path": "/seo-for-healthcare",                "cluster": "industry", "nav_label": "Healthcare",            "money_page_rank": null,"sitemap_file": "/sitemap-industry.xml", "sitemap_priority": 0.75 },
+    { "id": 44, "url_path": "/seo-for-saas-companies",            "cluster": "industry", "nav_label": "SaaS",                  "money_page_rank": 8,  "sitemap_file": "/sitemap-industry.xml", "sitemap_priority": 0.8  },
+    { "id": 45, "url_path": "/seo-for-home-services",             "cluster": "industry", "nav_label": "Home Services",         "money_page_rank": null,"sitemap_file": "/sitemap-industry.xml", "sitemap_priority": 0.75 },
+    { "id": 46, "url_path": "/seo-for-financial-services",        "cluster": "industry", "nav_label": "Financial Services",    "money_page_rank": 10, "sitemap_file": "/sitemap-industry.xml", "sitemap_priority": 0.75 },
+    { "id": 47, "url_path": "/seo-for-ecommerce",                 "cluster": "industry", "nav_label": "Ecommerce",             "money_page_rank": null,"sitemap_file": "/sitemap-industry.xml", "sitemap_priority": 0.75 },
+    { "id": 48, "url_path": "/seo-for-franchises",                "cluster": "industry", "nav_label": "Franchises",            "money_page_rank": null,"sitemap_file": "/sitemap-industry.xml", "sitemap_priority": 0.75 },
+    { "id": 49, "url_path": "/seo-for-recruitment-staffing",      "cluster": "industry", "nav_label": "Recruitment & Staffing","money_page_rank": null,"sitemap_file": "/sitemap-industry.xml", "sitemap_priority": 0.75 },
+    { "id": 50, "url_path": "/seo-for-education",                 "cluster": "industry", "nav_label": "Education",             "money_page_rank": null,"sitemap_file": "/sitemap-industry.xml", "sitemap_priority": 0.75 }
+  ],
+
+  "navigation_strategy": {
+    "primary_nav": [
+      { "page_id": 1,  "label": "Platform",          "url_path": "/programmatic-seo-platform" },
+      { "page_id": 2,  "label": "Enterprise",         "url_path": "/enterprise-seo-automation" },
+      { "page_id": 3,  "label": "How It Works",       "url_path": "/exclusive-territory-licensing-model" },
+      { "page_id": 11, "label": "For Agencies",       "url_path": "/agency-seo-platform" },
+      { "page_id": 21, "label": "Local SEO",          "url_path": "/local-seo-automation" },
+      { "page_id": 12, "label": "White Label",        "url_path": "/white-label-seo-platform" }
+    ],
+    "industry_dropdown": [
+      { "page_id": 41, "label": "Law Firms",          "url_path": "/seo-for-law-firms" },
+      { "page_id": 42, "label": "Real Estate",        "url_path": "/seo-for-real-estate" },
+      { "page_id": 43, "label": "Healthcare",         "url_path": "/seo-for-healthcare" },
+      { "page_id": 44, "label": "SaaS",               "url_path": "/seo-for-saas-companies" },
+      { "page_id": 45, "label": "Home Services",      "url_path": "/seo-for-home-services" },
+      { "page_id": 46, "label": "Financial Services", "url_path": "/seo-for-financial-services" },
+      { "page_id": 47, "label": "Ecommerce",          "url_path": "/seo-for-ecommerce" },
+      { "page_id": 48, "label": "Franchises",         "url_path": "/seo-for-franchises" }
+    ],
+    "footer_links": [
+      { "page_id": 4,  "label": "Search Intelligence",       "url_path": "/search-intelligence-platform" },
+      { "page_id": 31, "label": "Content Strategy",          "url_path": "/search-first-content-strategy" },
+      { "page_id": 32, "label": "Competitive Gap Analysis",  "url_path": "/competitive-gap-analysis" },
+      { "page_id": 35, "label": "Search Intent Targeting",   "url_path": "/search-intent-targeting-platform" }
+    ]
+  },
+
+  "internal_linking_architecture": {
+    "equity_flow": "All clusters pass authority upward to the core cluster. Industry verticals link to local cluster (local SEO automation, multi-location), which links to core (programmatic SEO platform, enterprise SEO automation). Strategy cluster links to core and search intelligence. Agency cluster links both to core and receives equity from industry verticals.",
+    "apex_pages": ["/programmatic-seo-platform", "/enterprise-seo-automation", "/exclusive-territory-licensing-model"],
+    "hub_pages": ["/local-seo-automation", "/agency-seo-platform", "/search-intelligence-platform"],
+    "spoke_pages": "All strategy and industry cluster pages act as spokes that feed equity to hub and apex pages.",
+    "anchor_text_rotation": [
+      "SEO automation platform",
+      "programmatic SEO system",
+      "scalable SEO engine",
+      "SEOAIco platform",
+      "enterprise SEO platform",
+      "search intelligence platform"
+    ]
+  }
+}
