@@ -11,8 +11,8 @@
 </script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>SEOAIco — Licensed Ranking Infrastructure for Agencies & Growing Businesses</title>
-<meta name="description" content="SEOAIco licenses structured ranking infrastructure — not content. Agencies and growing businesses gain a controlled, expandable search footprint that compounds over time.">
+<title>SEOAIco — Programmatic Search Infrastructure. Licensed. Controlled. Exclusive.</title>
+<meta name="description" content="SEOAIco is programmatic search infrastructure—deploying structured content, internal link architecture, and structured data across 1,000+ U.S. cities. Access is licensed. One operator per market.">
 <link rel="canonical" href="{{ url('/') }}">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -696,26 +696,26 @@ footer{border-top:1px solid var(--border);padding:36px 64px;display:flex;flex-di
   <div class="hero-orb"></div>
 
   <div class="hero-pre">
-    <p class="hp-kicker">Someone is searching for what you do.</p>
-    <p class="hp-question">Are you showing up?</p>
+    <p class="hp-kicker">Search infrastructure. Licensed. Controlled.</p>
+    <p class="hp-question">One operator per market. One agreement. No exceptions.</p>
   </div>
 
   <h1 class="hero-h1">
-    Own the rankings.<br>
-    <em>In every city.</em>
+    The system is engineered<br>
+    to secure position—<em>not chase it.</em>
   </h1>
 
   <div class="hero-p">
-    <p class="hero-p-line">Your competitor does — because they have a page built for that exact search.</p>
-    <p class="hero-p-line hp-emphasis">You don't.</p>
-    <p class="hero-p-line">SEOAIco builds and manages every service and location page your business needs.</p>
-    <p class="hero-p-line">So you show up in every city, for every service, every time someone searches.</p>
-    <p class="hero-p-line hp-strong">You're on top.</p>
+    <p class="hero-p-line">SEOAIco is the infrastructure behind every service and location page—deploying structured headlines, intelligent FAQs, localized data, internal link architecture, and search-ready content across 1,000+ U.S. cities.</p>
+    <p class="hero-p-line hp-emphasis">Access is licensed. Position is controlled.</p>
+    <p class="hero-p-line">The system is continuously maintained, expanded, and reinforced—holding your visibility across search engines, AI systems, and emerging discovery layers.</p>
+    <p class="hero-p-line">Once a market is secured, it is no longer available to competing operators—until released.</p>
+    <p class="hero-p-line hp-strong">We don't compete. We own the position.</p>
   </div>
 
   <div class="hero-actions">
-    <a href="#contact" class="btn-primary">Request Licensing Access</a>
-    <a href="#wyl" class="btn-ghost">See the System</a>
+    <a href="#contact" class="btn-primary">Check Market Availability</a>
+    <a href="#wyl" class="btn-ghost">Explore the System</a>
   </div>
 </section>
 
@@ -766,13 +766,13 @@ footer{border-top:1px solid var(--border);padding:36px 64px;display:flex;flex-di
 <div class="statement r">
   <div class="stmt-quote">
     <span class="sq-mark">&ldquo;</span>
-    <p class="sq-text">It's not because your competitor is better at what they do. It's because their website has a page built for that search — <strong>and yours doesn't.</strong></p>
+    <p class="sq-text">Most visibility is lost not to better operators — but to <strong>better infrastructure.</strong></p>
     <span class="sq-rule"></span>
   </div>
   <div class="stmt-body">
-    <p>Google and AI search engines all work the same way: they look for a page that matches what someone typed. If that page doesn't exist on your site, you don't show up — no matter how good your business is.</p>
-    <p>SEOAIco builds that page. Then builds one for every service you offer, in every city you serve. Each page is written around the exact words your customers search — with FAQs, local business details, and every page linked together so the whole system gets stronger over time.</p>
-    <p><strong>You don't touch any of it.</strong> We build it, manage it, and keep it current. You lease the system. You own the rankings it earns.</p>
+    <p>Every search engine — and every AI system — returns what it can find. What it finds is determined by structure. Not effort. Not spend. <strong>Architecture.</strong></p>
+    <p>SEOAIco deploys that architecture at scale. Every service, every city, every search variation — structured, interlinked, and maintained under a single licensed system covering 1,000+ U.S. markets.</p>
+    <p>The system runs continuously under an active agreement. <strong>Position is held. Not earned once and forgotten. Maintained.</strong></p>
   </div>
 </div>
 
@@ -807,7 +807,7 @@ footer{border-top:1px solid var(--border);padding:36px 64px;display:flex;flex-di
   <div class="audience-section">
     <div class="stmt-quote r" style="text-align:center;max-width:960px;margin:0 auto 48px">
       <span class="sq-mark">&ldquo;</span>
-      <p class="sq-text">Imagine 500 pages — each targeting a different service in a different city — all <strong>live, ranking, and bringing in leads… while you sleep.</strong> That's what your competitors just turned on.</p>
+      <p class="sq-text">This is not about ranking faster. This is about <strong>claiming infrastructure that holds position for as long as the agreement is active.</strong></p>
       <span class="sq-rule"></span>
     </div>
     <p class="s-eye r">Who This Is For</p>
@@ -816,32 +816,32 @@ footer{border-top:1px solid var(--border);padding:36px 64px;display:flex;flex-di
 
       <div class="aud-card r">
         <span class="aud-tag">For Agencies</span>
-        <h3 class="aud-title">Give every client a <em>full local SEO engine</em> — overnight.</h3>
-        <p class="aud-body">Your clients need to rank in dozens of cities — not just where their office is. SEOAIco gives you a ready-to-go system: hundreds of AI-written service + location pages, deployed <strong>under your brand, at your markup</strong>, with search data, linking, and local targeting handled automatically.</p>
+        <h3 class="aud-title">Deploy <em>search infrastructure</em> for every client.</h3>
+        <p class="aud-body">Your clients need presence across dozens of cities — not just where their office is. SEOAIco gives you a licensed system: structured service and location pages deployed <strong>under your brand</strong>, with internal link architecture, localized signals, and structured data handled at the infrastructure level.</p>
         <ul class="aud-list">
-          <li><strong>New revenue stream</strong> — offer local SEO at scale as a premium service without hiring more writers</li>
-          <li><strong>White-label, your brand</strong> — zero SEOAIco branding, clients see only your work</li>
-          <li><strong>One licence, all your clients</strong> — deploy across your entire book of business from one subscription</li>
-          <li><strong>AI content unique to each city &amp; service</strong> — not templates with a city name swapped in</li>
-          <li><strong>Reduce churn</strong> — clients stay because their rankings depend on your licence being active</li>
-          <li><strong>Upsell built in</strong> — add more pages as clients grow into new markets</li>
-          <li><strong>Faster delivery</strong> — deploy 500+ pages in days, not months of writing</li>
+          <li><strong>Zero-attribution deployment</strong> — no SEOAIco branding in code, content, or metadata</li>
+          <li><strong>One licence, your full client portfolio</strong> — deploy across your entire book of business</li>
+          <li><strong>Controlled market exclusivity</strong> — clients hold protected position in their category and territory</li>
+          <li><strong>Position compounds under active maintenance</strong> — authority signals accumulate over time</li>
+          <li><strong>Retention built into the structure</strong> — position is tied to the active licence</li>
+          <li><strong>Structured for every discovery layer</strong> — organic search, AI systems, LLMs, and emerging signals</li>
+          <li><strong>System-level expansion</strong> — new services and cities added within licensed capacity</li>
         </ul>
         <a href="#offer" class="aud-cta">See Licensing Plans &rarr;</a>
       </div>
 
       <div class="aud-card r">
         <span class="aud-tag">For CEOs &amp; Business Owners</span>
-        <h3 class="aud-title">Finally rank in <em>every city</em><br>you actually serve.</h3>
-        <p class="aud-body">You've spent years paying for SEO that covers a handful of pages. Meanwhile, your competitors show up in 100+ cities — because they have the pages. <strong>SEOAIco builds those pages for you:</strong> every service, every location, every search your customers are typing. AI-written, tagged for Google, and ranking.</p>
+        <h3 class="aud-title">Secure your market.<br><em>Before it is claimed.</em></h3>
+        <p class="aud-body">Traditional SEO addresses a handful of pages. SEOAIco deploys infrastructure across every service, every city, every search variation you need to own. <strong>Structured, interlinked, and maintained under your active agreement.</strong> Not a campaign. A position held.</p>
         <ul class="aud-list">
-          <li><strong>Leads from cities you've never ranked in</strong> — cover every service and location combination automatically</li>
-          <li><strong>Stop overpaying for SEO</strong> — get 500 pages for the cost of your agency writing 10</li>
-          <li><strong>AI content + FAQ data + local business details</strong> on every single page</li>
-          <li><strong>Unique content for every city</strong> — Google sees each page as genuinely local, not a copy</li>
-          <li><strong>Show up in AI search results</strong> — structured data feeds ChatGPT, Gemini, and AI Overviews</li>
-          <li><strong>You own the URLs</strong> — pages live on your domain, your site, your brand</li>
-          <li><strong>Gets stronger over time</strong> — rankings improve the longer the system runs, not weaker</li>
+          <li><strong>Structured coverage across every service and location</strong> — not isolated pages</li>
+          <li><strong>Localized signals on every page</strong> — structured data, FAQ architecture, and internal links</li>
+          <li><strong>Built for every discovery surface</strong> — organic search, AI overviews, LLM citations, emerging layers</li>
+          <li><strong>One operator per market</strong> — your category is exclusive while your agreement is active</li>
+          <li><strong>Position compounds under active maintenance</strong> — authority grows with the system</li>
+          <li><strong>Pages live on your domain</strong> — your brand, your architecture, your territory</li>
+          <li><strong>Continuously reinforced</strong> — the system adapts as search behavior evolves</li>
         </ul>
         <a href="#offer" class="aud-cta">See Licensing Plans &rarr;</a>
       </div>
@@ -855,8 +855,8 @@ footer{border-top:1px solid var(--border);padding:36px 64px;display:flex;flex-di
   <div class="wyl-section">
     <div class="wyl-inner">
       <p class="s-eye r">What You're Actually Licensing</p>
-      <h2 class="s-h r">The AI engine behind<br><em>every page on your site.</em></h2>
-      <p class="s-p r" style="max-width:640px">SEOAIco is the software behind every service and location page — handling headlines, FAQs, local business data for Google, page descriptions, internal links, and AI-written content across 100+ cities. <strong>You license the engine. It keeps your pages ranking.</strong></p>
+      <h2 class="s-h r">The infrastructure behind<br><em>every service and location page.</em></h2>
+      <p class="s-p r" style="max-width:640px">SEOAIco is the infrastructure behind every service and location page — deploying structured headlines, intelligent FAQs, localized data, internal link architecture, and search-ready content across 1,000+ U.S. cities. <strong>This is not a tool. This is the system that holds your position.</strong></p>
       <div class="wyl-grid">
         <div class="wyl-card r">
           <span class="wyl-icon">⬡</span>
@@ -906,19 +906,19 @@ footer{border-top:1px solid var(--border);padding:36px 64px;display:flex;flex-di
 <!-- ════════════ POSITIONING BLOCK ════════════ -->
 <section class="positioning-block">
   <div class="positioning-inner">
-    <p class="pos-line lead r">This is how SEO is done now.</p>
+    <p class="pos-line lead r">The system is engineered to secure position—not chase it.</p>
 
-    <p class="pos-line r">SEOAIco is the engine behind every service and location page &mdash; generating headlines, FAQs, local data, internal links, and AI-driven content across entire markets.</p>
+    <p class="pos-line r">SEOAIco is the infrastructure behind every service and location page &mdash; deploying structured content, link architecture, and localized data across 1,000+ U.S. cities.</p>
 
-    <p class="pos-line emphasis r">Access is licensed &mdash; not sold.</p>
-    <p class="pos-line r">Each market is limited.</p>
+    <p class="pos-line emphasis r">Access is licensed. Position is controlled.</p>
+    <p class="pos-line r">Each territory is held by a single operator.</p>
 
-    <p class="pos-line r">When a license is active, that territory is effectively locked.</p>
-    <p class="pos-line r">You hold the position for as long as you maintain it.</p>
+    <p class="pos-line r">When a licence is active, that market is no longer available to competing operators.</p>
+    <p class="pos-line r">Position is held under the agreement &mdash; maintained, expanded, and defended on your behalf.</p>
 
-    <p class="pos-line emphasis r">If you release it, it becomes available &mdash; and someone else will take it.</p>
+    <p class="pos-line emphasis r">Once released, it becomes available. Another operator will claim it.</p>
 
-    <p class="pos-line strong r">It keeps your pages ranking.</p>
+    <p class="pos-line strong r">We don't compete. We own the position.</p>
   </div>
 </section>
 
@@ -927,7 +927,7 @@ footer{border-top:1px solid var(--border);padding:36px 64px;display:flex;flex-di
   <div class="steps-section">
     <div class="steps-wrap">
       <p class="s-eye r">The Process</p>
-      <h2 class="s-h r">Simple setup.<br><em>Controlled growth.</em></h2>
+      <h2 class="s-h r">Controlled onboarding.<br><em>Disciplined expansion.</em></h2>
       <div class="steps-grid">
         <div class="step r">
           <div class="step-n">01</div>
@@ -968,12 +968,12 @@ footer{border-top:1px solid var(--border);padding:36px 64px;display:flex;flex-di
         <div class="ul-state active">
           <span class="ul-state-label">Active Licence</span>
           <div class="ul-state-title">Fully live — ranking, indexing, generating leads</div>
-          <div class="ul-state-desc">AI content, search data, FAQ sections, local business details, internal links, and page descriptions all active. Google and AI search engines reading and ranking your pages across every city you serve. <strong>Your SEO gets stronger month over month.</strong></div>
+          <div class="ul-state-desc">Structured content, search signals, FAQ architecture, localized data, internal link structure, and page descriptions all active. Organic search, AI systems, and emerging discovery layers indexing your pages across every city under your agreement. <strong>Position compounds under active maintenance.</strong></div>
         </div>
         <div class="ul-state inactive">
           <span class="ul-state-label">Licence Lapsed</span>
           <div class="ul-state-title">Pages revert — company name &amp; phone number only</div>
-          <div class="ul-state-desc">All AI content, search data, structured details, and internal links removed. Pages stay on your site, but <strong>rankings drop, leads stop, and the SEO advantage disappears.</strong> Reactivate anytime to bring everything back.</div>
+          <div class="ul-state-desc">All structured content, search signals, and internal link architecture removed. Pages remain on your site, but <strong>the search infrastructure is inactive. Position is no longer held.</strong> Reactivate the agreement to restore the system.</div>
         </div>
       </div>
       <div class="ul-note">
@@ -1013,7 +1013,7 @@ footer{border-top:1px solid var(--border);padding:36px 64px;display:flex;flex-di
       <h2 class="s-h">Three tiers.<br><em>One system.</em><br>Pick your level.</h2>
     </div>
     <div class="offer-note">
-      <p>We review every application individually — this isn't a self-serve checkout. Once you're approved, the licence controls everything: the AI content, search data, and page system your site runs on. <strong>Built for agencies and businesses serious about owning their search results.</strong></p>
+      <p>Every application is reviewed individually. Access is not automated. Once confirmed, the licence governs the infrastructure — structured content, search signals, and page architecture — that holds your position. <strong>Built for operators serious about owning their search surface.</strong></p>
       <p style="margin-top:12px;font-size:.84rem">Need more pages than your current tier allows? Upgrade to the next level — your existing pages carry over.</p>
     </div>
   </div>
@@ -1117,9 +1117,9 @@ footer{border-top:1px solid var(--border);padding:36px 64px;display:flex;flex-di
 <section id="contact">
   <div class="contact-inner">
     <div>
-      <p class="s-eye r">Request Licensing Details</p>
-      <h2 class="s-h r">Tell us where you are — and where you need <em>search to take you.</em></h2>
-      <p class="s-p r">Whether you're an agency looking for a scalable SEO system or a business that's hit the ceiling with traditional SEO — licensing access is reviewed individually. We'll look at your market, your goals, and the right licence level for your situation.</p>
+      <p class="s-eye r">Licensing Access</p>
+      <h2 class="s-h r">Tell us your market — and we'll assess <em>whether access is available.</em></h2>
+      <p class="s-p r">Every application is reviewed individually. We assess your category, your territory, and your operating context — then confirm access level and availability. Not automated. Not self-serve.</p>
       <div class="c-meta r">
         <div class="cm"><label>Licensing Model</label><span>Reviewed individually — not automated</span></div>
         <div class="cm"><label>Commitment</label><span>3-month minimum, then month-to-month</span></div>

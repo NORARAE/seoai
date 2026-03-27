@@ -377,11 +377,11 @@ footer{border-top:1px solid var(--border);padding:36px 64px;display:flex;flex-di
     <p class="ai-claim loud r">Built to be read by every machine that matters.</p>
     <p class="ai-claim mid r">One page. Every system that <em>determines what gets found.</em></p>
 
-    <p class="s-p r" style="margin-top:20px;max-width:780px">Most SEO strategies address a single discovery layer. These pages are engineered for the full stack — structured data, semantic hierarchy, and schema markup that make each licensed page parseable, citable, and retrievable across every surface where intent becomes action.</p>
+    <p class="s-p r" style="margin-top:20px;max-width:780px">This isn't just about Google. This is positioning across every system that determines visibility — search engines, AI platforms, language models, and interfaces not yet built. Each licensed page is structured to surface wherever intent becomes action.</p>
 
     <p class="s-p r" style="margin-top:16px;max-width:780px">Exclusivity compounds the advantage. One licensee per category, per territory — meaning the authority signals and discovery presence you establish cannot be replicated by a direct competitor in the same market.</p>
 
-    <p class="s-p r" style="margin-top:20px;max-width:780px"><strong style="color:var(--ivory);font-weight:400">Built for now. Architected for what comes next.</strong></p>
+    <p class="s-p r" style="margin-top:20px;max-width:780px"><strong style="color:var(--ivory);font-weight:400">This is built for how information is discovered now — and next.</strong></p>
 
     <div class="ai-channels r">
       <div class="ai-channel">
@@ -490,8 +490,9 @@ footer{border-top:1px solid var(--border);padding:36px 64px;display:flex;flex-di
       Lock Your Territory Before a Competitor Does
     @endif
   </h2>
+  <p style="font-family:'Cormorant Garamond',serif;font-weight:300;font-style:italic;font-size:clamp(1.05rem,1.8vw,1.35rem);color:var(--gold);text-align:center;letter-spacing:.01em;margin-bottom:8px">The system is engineered to secure position—not chase it. We don't compete. We own the position.</p>
   <p style="font-size:1.05rem;color:var(--muted);max-width:560px;text-align:center;line-height:1.9">
-    One licensee per category, per territory. Once your market is claimed, competitors in the same vertical are locked out — permanently. Access closes when a region fills.
+    One licensee per category, per territory. Once a market is secured under agreement, it is no longer available to competing operators. Position is held while the licence is active.
   </p>
   <a href="{{ url('/#contact') }}" class="btn-primary">Check Market Availability</a>
 </div>
