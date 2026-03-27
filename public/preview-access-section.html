@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Access Section Preview — SEOAIco</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#080808;--deep:#0b0b0b;--card:#101010;--border:#1a1a1a;
+  --gold:#c8a84b;--gold-lt:#e2c97d;--gold-dim:#9a7a30;
+  --white:#ffffff;--ivory:#ede8de;--muted:#a8a8a0;
+}
+html{font-size:18px;scroll-behavior:smooth}
+body{background:var(--bg);color:var(--ivory);font-family:'DM Sans',sans-serif;font-weight:300;line-height:1.85;padding:80px 0}
+body::after{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");opacity:.022}
+
+/* ── Section wrapper ── */
+.access-section{
+  padding:100px 64px;
+  max-width:1200px;
+  margin:0 auto;
+  position:relative;
+  z-index:1;
+}
+
+/* ── Section header ── */
+.access-eyebrow{
+  font-size:.72rem;
+  letter-spacing:.26em;
+  text-transform:uppercase;
+  color:var(--gold);
+  display:flex;
+  align-items:center;
+  gap:16px;
+  margin-bottom:20px;
+}
+.access-eyebrow::before{content:'';width:28px;height:1px;background:var(--gold)}
+
+.access-headline{
+  font-family:'Cormorant Garamond',serif;
+  font-size:clamp(2.2rem,3.5vw,3.2rem);
+  font-weight:300;
+  line-height:1.12;
+  max-width:640px;
+  margin-bottom:16px;
+}
+.access-headline em{font-style:italic;color:var(--gold)}
+
+.access-subline{
+  font-size:1rem;
+  color:var(--muted);
+  max-width:520px;
+  line-height:1.8;
+  margin-bottom:72px;
+}
+
+/* ── Grid ── */
+.access-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:1px;
+  background:rgba(200,168,75,.08);
+}
+
+/* ── Card ── */
+.ac-card{
+  background:var(--bg);
+  padding:52px 52px;
+  position:relative;
+  overflow:hidden;
+  transition:transform .28s cubic-bezier(.23,1,.32,1), box-shadow .28s cubic-bezier(.23,1,.32,1), background .28s;
+  cursor:default;
+}
+
+.ac-card::before{
+  content:'';
+  position:absolute;
+  top:0;left:0;right:0;
+  height:1px;
+  background:linear-gradient(90deg,transparent,rgba(200,168,75,.12),transparent);
+}
+
+.ac-card::after{
+  content:'';
+  position:absolute;
+  inset:0;
+  background:radial-gradient(ellipse at 20% 50%, rgba(200,168,75,.04) 0%, transparent 65%);
+  opacity:0;
+  transition:opacity .35s;
+  pointer-events:none;
+}
+
+.ac-card:hover{
+  transform:translateY(-4px);
+  background:rgba(14,13,10,1);
+  box-shadow:0 24px 64px rgba(0,0,0,.65), 0 0 0 1px rgba(200,168,75,.14);
+}
+.ac-card:hover::after{opacity:1}
+
+/* ── Card internals ── */
+.ac-label{
+  font-size:.65rem;
+  letter-spacing:.24em;
+  text-transform:uppercase;
+  color:var(--gold-dim);
+  margin-bottom:18px;
+  display:block;
+  transition:color .25s;
+}
+.ac-card:hover .ac-label{color:var(--gold)}
+
+.ac-head{
+  font-family:'Cormorant Garamond',serif;
+  font-size:clamp(1.55rem,2.2vw,2rem);
+  font-weight:400;
+  line-height:1.15;
+  color:var(--ivory);
+  margin-bottom:14px;
+  letter-spacing:-.01em;
+}
+.ac-head em{font-style:italic;color:var(--gold)}
+
+.ac-impact{
+  font-size:.96rem;
+  font-weight:400;
+  color:var(--ivory);
+  opacity:.85;
+  margin-bottom:18px;
+  letter-spacing:.01em;
+  line-height:1.5;
+}
+
+.ac-body{
+  font-size:.88rem;
+  line-height:1.9;
+  color:var(--muted);
+  max-width:420px;
+}
+
+/* ── Gold rule ── */
+.gold-rule{height:1px;background:linear-gradient(to right,transparent,var(--gold-dim),transparent);margin:0}
+
+/* ── Responsive ── */
+@media(max-width:860px){
+  .access-section{padding:64px 24px}
+  .access-grid{grid-template-columns:1fr}
+  .ac-card{padding:40px 32px}
+}
+@media(max-width:520px){
+  .ac-card{padding:32px 24px}
+  .access-headline{font-size:clamp(1.8rem,7vw,2.2rem)}
+}
+</style>
+</head>
+<body>
+
+<div class="gold-rule"></div>
+
+<section class="access-section">
+
+  <div class="access-eyebrow">Platform Access</div>
+  <h2 class="access-headline">Not a tool.<br><em>A territory.</em></h2>
+  <p class="access-subline">One licensee per category, per market. What you secure cannot be replicated by a competitor in the same space.</p>
+
+  <div class="access-grid">
+
+    <!-- Card 1: Controlled Market Access -->
+    <div class="ac-card">
+      <span class="ac-label">Controlled Access</span>
+      <h3 class="ac-head">One Market.<br><em>One License.</em></h3>
+      <p class="ac-impact">Once secured, it's yours alone.</p>
+      <p class="ac-body">No two businesses in the same category share the same market. When you license a territory, competitors in your vertical are locked out — permanently. This is not a subscription. This is a position.</p>
+    </div>
+
+    <!-- Card 2: Multi-System Visibility -->
+    <div class="ac-card">
+      <span class="ac-label">Full-Stack Visibility</span>
+      <h3 class="ac-head">Not just<br><em>search results.</em></h3>
+      <p class="ac-impact">Every surface. Every signal.</p>
+      <p class="ac-body">Each page is built to surface across organic search, AI-generated answers, language model citations, and emerging discovery layers. Not just crawled — understood, cited, and returned across the full discovery stack.</p>
+    </div>
+
+    <!-- Card 3: Total Search Coverage -->
+    <div class="ac-card">
+      <span class="ac-label">Total Coverage</span>
+      <h3 class="ac-head">A market captured,<br><em>not a keyword.</em></h3>
+      <p class="ac-impact">This is category ownership.</p>
+      <p class="ac-body">Every service. Every location. Every variation of how a customer searches for what you do. This is not a campaign — it is a systematic claim on the surface area of your market, built to compound.</p>
+    </div>
+
+    <!-- Card 4: Persistent Infrastructure -->
+    <div class="ac-card">
+      <span class="ac-label">Permanent Infrastructure</span>
+      <h3 class="ac-head">Built to<br><em>outlast everything.</em></h3>
+      <p class="ac-impact">No maintenance. No expiry.</p>
+      <p class="ac-body">The system runs, updates, and strengthens without your involvement. As search behavior evolves, the architecture adapts. What you build today is not a campaign with an end date — it is infrastructure with a permanent footprint.</p>
+    </div>
+
+  </div>
+
+</section>
+
+<div class="gold-rule"></div>
+
+</body>
+</html>

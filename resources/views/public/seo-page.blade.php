@@ -249,7 +249,7 @@ footer{border-top:1px solid var(--border);padding:36px 64px;display:flex;flex-di
   </a>
   <div class="nav-right">
     <a href="{{ url('/') }}" class="nav-link">Home</a>
-    <a href="{{ url('/#contact') }}" class="nav-btn">Request Licensing Access</a>
+    <a href="{{ url('/#contact') }}" class="nav-btn">Request Access</a>
   </div>
 </nav>
 

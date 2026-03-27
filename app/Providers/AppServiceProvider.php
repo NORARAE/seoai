@@ -57,6 +57,18 @@ class AppServiceProvider extends ServiceProvider
         RateLimiter::for('api-public', fn (Request $r): Limit =>
             Limit::perMinute(60)->by($r->ip())
         );
+
+        // Auth — login: 5 attempts per 60 s per email+IP (also enforced in Login page)
+        RateLimiter::for('login', fn (Request $r): Limit =>
+            Limit::perMinute(5)->by(
+                mb_strtolower((string) $r->input('email', '')) . '|' . $r->ip()
+            )
+        );
+
+        // Password reset request: 3 per 15 min per IP
+        RateLimiter::for('password-reset', fn (Request $r): Limit =>
+            Limit::perMinutes(15, 3)->by($r->ip())
+        );
     }
 }
 

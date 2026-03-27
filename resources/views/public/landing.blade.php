@@ -444,14 +444,25 @@ nav.stuck{background:rgba(8,8,8,.95);backdrop-filter:blur(16px);border-color:var
 .tier-gated-icon{color:var(--gold);flex-shrink:0;margin-top:1px;font-size:.8rem}
 .tier-gated strong{color:var(--ivory);font-weight:400}
 
-/* ── Proof strip ── */
-.proof-strip{border-top:1px solid var(--border);border-bottom:1px solid var(--border);display:grid;grid-template-columns:repeat(4,1fr)}
-.proof-item{padding:36px 28px;text-align:center;border-right:1px solid var(--border);transition:background .3s}
-.proof-item:last-child{border-right:none}
-.proof-item:hover{background:rgba(200,168,75,.03)}
-.proof-icon{font-size:1.5rem;color:var(--gold);margin-bottom:12px;opacity:.75}
-.proof-label{font-size:.78rem;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);line-height:1.6}
-.proof-label strong{display:block;font-size:.92rem;color:var(--ivory);font-weight:400;letter-spacing:.06em;text-transform:none;margin-bottom:3px}
+/* ── Access section (replaces proof strip) ── */
+.access-section{padding:88px 64px;max-width:1200px;margin:0 auto}
+.access-eyebrow{font-size:.72rem;letter-spacing:.26em;text-transform:uppercase;color:var(--gold);display:flex;align-items:center;gap:16px;margin-bottom:20px}
+.access-eyebrow::before{content:'';width:28px;height:1px;background:var(--gold)}
+.access-headline{font-family:'Cormorant Garamond',serif;font-size:clamp(2.2rem,3.5vw,3.2rem);font-weight:300;line-height:1.12;max-width:640px;margin-bottom:14px}
+.access-headline em{font-style:italic;color:var(--gold)}
+.access-subline{font-size:1rem;color:var(--muted);max-width:520px;line-height:1.8;margin-bottom:64px}
+.access-grid{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:rgba(200,168,75,.08)}
+.ac-card{background:var(--bg);padding:52px 52px;position:relative;overflow:hidden;transition:transform .28s cubic-bezier(.23,1,.32,1),box-shadow .28s cubic-bezier(.23,1,.32,1),background .28s;cursor:default}
+.ac-card::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(200,168,75,.12),transparent)}
+.ac-card::after{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 20% 50%,rgba(200,168,75,.04) 0%,transparent 65%);opacity:0;transition:opacity .35s;pointer-events:none}
+.ac-card:hover{transform:translateY(-4px);background:rgba(14,13,10,1);box-shadow:0 24px 64px rgba(0,0,0,.65),0 0 0 1px rgba(200,168,75,.14)}
+.ac-card:hover::after{opacity:1}
+.ac-label{font-size:.65rem;letter-spacing:.24em;text-transform:uppercase;color:var(--gold-dim);margin-bottom:18px;display:block;transition:color .25s}
+.ac-card:hover .ac-label{color:var(--gold)}
+.ac-head{font-family:'Cormorant Garamond',serif;font-size:clamp(1.55rem,2.2vw,2rem);font-weight:400;line-height:1.15;color:var(--ivory);margin-bottom:14px;letter-spacing:-.01em}
+.ac-head em{font-style:italic;color:var(--gold)}
+.ac-impact{font-size:.96rem;font-weight:400;color:var(--ivory);opacity:.85;margin-bottom:18px;letter-spacing:.01em;line-height:1.5}
+.ac-body{font-size:.88rem;line-height:1.9;color:var(--muted);max-width:420px}
 
 /* ── Roadmap ── */
 .roadmap{border-top:1px solid var(--border);padding:72px 64px;max-width:1200px;margin:0 auto}
@@ -602,8 +613,8 @@ footer{border-top:1px solid var(--border);padding:36px 64px;display:flex;flex-di
   .ul-states{grid-template-columns:1fr}
   .ul-state{padding:18px 18px}
   .ul-note{padding:14px 16px}
-  .proof-strip{grid-template-columns:1fr 1fr}
-  .proof-item{padding:24px 16px}
+  .access-grid{grid-template-columns:1fr}
+  .ac-card{padding:40px 32px}
   .tier{padding:40px 28px}
   .tier-name{font-size:1.6rem}
   .tier-price{font-size:3.2rem}
@@ -644,7 +655,7 @@ footer{border-top:1px solid var(--border);padding:36px 64px;display:flex;flex-di
   .wyl-title{font-size:1.3rem}
   .proof-icon{font-size:1.8rem;margin-bottom:10px}
   .wyl-grid,.steps-grid{grid-template-columns:1fr}
-  .proof-strip{grid-template-columns:1fr}
+  .ac-card{padding:32px 24px}
   .stmt-quote{padding:24px 18px}
   .stmt-quote .sq-text{font-size:clamp(1.1rem,4vw,1.4rem)}
   .stmt-quote::before,.stmt-quote::after{left:18px;right:18px}
@@ -708,25 +719,46 @@ footer{border-top:1px solid var(--border);padding:36px 64px;display:flex;flex-di
   </div>
 </section>
 
-<!-- ════════════ PROOF STRIP ════════════ -->
-<div class="proof-strip r">
-  <div class="proof-item">
-    <div class="proof-icon">◈</div>
-    <div class="proof-label"><strong>White-Label Licensed</strong>Your brand. Your clients. Your margin.</div>
+<!-- ════════════ ACCESS SECTION ════════════ -->
+<section class="access-section r">
+
+  <div class="access-eyebrow">Platform Access</div>
+  <h2 class="access-headline">Not a tool.<br><em>A territory.</em></h2>
+  <p class="access-subline">One licensee per category, per market. What you secure under agreement cannot be replicated by a direct competitor in the same space.</p>
+
+  <div class="access-grid">
+
+    <div class="ac-card">
+      <span class="ac-label">Controlled Access</span>
+      <h3 class="ac-head">One Market.<br><em>One Agreement.</em></h3>
+      <p class="ac-impact">Once held, competitors are excluded.</p>
+      <p class="ac-body">No two businesses in the same vertical share the same licensed territory. When your agreement is active, your category is protected. This is not a subscription — it is a position held under contract.</p>
+    </div>
+
+    <div class="ac-card">
+      <span class="ac-label">Full-Stack Visibility</span>
+      <h3 class="ac-head">Not just<br><em>search results.</em></h3>
+      <p class="ac-impact">Every surface. Every signal.</p>
+      <p class="ac-body">Each page is built to surface across organic search, AI-generated answers, language model citations, and next-generation discovery layers. Not just crawled — understood, cited, and returned by the full stack.</p>
+    </div>
+
+    <div class="ac-card">
+      <span class="ac-label">Market Coverage</span>
+      <h3 class="ac-head">A market claimed,<br><em>not a keyword.</em></h3>
+      <p class="ac-impact">This is category ownership.</p>
+      <p class="ac-body">Every service. Every location. Every variation of how a customer searches for what you offer. Not a campaign — a systematic claim on the full search surface of your market, structured to compound with time.</p>
+    </div>
+
+    <div class="ac-card">
+      <span class="ac-label">Active Infrastructure</span>
+      <h3 class="ac-head">Built to last.<br><em>Maintained to win.</em></h3>
+      <p class="ac-impact">The system runs. You don’t manage it.</p>
+      <p class="ac-body">Your pages are continuously maintained, updated, and optimised under your active agreement. As search behavior evolves, the infrastructure adapts. Position is not static — it is actively defended on your behalf.</p>
+    </div>
+
   </div>
-  <div class="proof-item">
-    <div class="proof-icon">⬡</div>
-    <div class="proof-label"><strong>Built for Search Engines</strong>Structure-first. Not just content.</div>
-  </div>
-  <div class="proof-item">
-    <div class="proof-icon">◻</div>
-    <div class="proof-label"><strong>Controlled Page Inventory</strong>Licensed capacity. Protected growth.</div>
-  </div>
-  <div class="proof-item">
-    <div class="proof-icon">◈</div>
-    <div class="proof-label"><strong>Agencies &amp; Businesses</strong>Agencies. Operators. Businesses ready to grow.</div>
-  </div>
-</div>
+
+</section>
 
 <div class="gold-rule"></div>
 
