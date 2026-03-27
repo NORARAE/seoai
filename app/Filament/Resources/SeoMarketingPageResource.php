@@ -96,7 +96,7 @@ class SeoMarketingPageResource extends Resource
                     ->getStateUsing(fn (SeoMarketingPage $r): bool => ! empty($r->schema_json))
                     ->boolean()
                     ->trueIcon(Heroicon::OutlinedCheckCircle)
-                    ->falseIcon(Heroicon::MiniMinusCircle)
+                    ->falseIcon(Heroicon::OutlinedMinusCircle)
                     ->trueColor('success')
                     ->falseColor('gray')
                     ->width('60px'),
