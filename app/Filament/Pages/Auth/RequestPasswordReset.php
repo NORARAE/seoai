@@ -11,6 +11,8 @@ class RequestPasswordReset extends BaseRequestPasswordReset
     /**
      * Extra per-IP bucket (3 per 15 min) on top of Filament's built-in
      * per-email throttle, preventing mass enumeration from a single IP.
+     * After the parent sends the reset link, dispatch a calm 3-second
+     * redirect back to the admin login page.
      */
     public function request(): void
     {
@@ -33,5 +35,15 @@ class RequestPasswordReset extends BaseRequestPasswordReset
         RateLimiter::hit($key, 900);
 
         parent::request();
+
+        // After the generic success notification has been sent, show a secondary
+        // message and redirect to the login page after 3 seconds.
+        // The message deliberately does not reveal whether an account was found.
+        Notification::make()
+            ->title('You\'ll be redirected shortly.')
+            ->info()
+            ->send();
+
+        $this->js("setTimeout(() => window.location.href = '/admin/login', 3000)");
     }
 }

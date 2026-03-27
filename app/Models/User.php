@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Notifications\AdminPasswordResetNotification;
 use App\Support\ActiveSiteContext;
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -217,5 +218,16 @@ class User extends Authenticatable
     public function scopeForClient($query, $clientId)
     {
         return $query->where('client_id', $clientId);
+    }
+
+    /**
+     * Send the password reset notification via the Filament admin route.
+     * Laravel's default ResetPassword notification uses route('password.reset')
+     * which does not exist in this Filament-only application — overriding here
+     * so the reset link in the email points to the correct admin reset page.
+     */
+    public function sendPasswordResetNotification($token): void
+    {
+        $this->notify(new AdminPasswordResetNotification($token));
     }
 }

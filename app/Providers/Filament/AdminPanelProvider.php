@@ -37,11 +37,11 @@ class AdminPanelProvider extends PanelProvider
             ->registration(Register::class)
             ->passwordReset(RequestPasswordReset::class, ResetPassword::class)
             ->brandName(new HtmlString(
-                '<span style="display:inline-flex;align-items:baseline;gap:0;line-height:1;font-family:inherit">'
+                '<a href="/" style="text-decoration:none;color:inherit;display:inline-flex;align-items:baseline;gap:0;line-height:1;font-family:inherit">'
                 . '<span style="font-family:\'DM Sans\',sans-serif;font-weight:300;font-size:1.15rem;letter-spacing:.06em;color:inherit">SEO</span>'
                 . '<span style="font-family:\'Cormorant Garamond\',serif;font-weight:600;font-size:1.38rem;color:#c8a84b;letter-spacing:.02em;display:inline-block;transform:skewX(-11deg) translateY(-1px)">AI</span>'
                 . '<span style="font-family:\'DM Sans\',sans-serif;font-weight:300;font-size:1rem;color:rgba(150,150,150,.7);letter-spacing:.04em">co</span>'
-                . '</span>'
+                . '</a>'
             ))
             ->colors([
                 'primary' => Color::hex('#c8a84b'),
