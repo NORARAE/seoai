@@ -2,6 +2,8 @@
 
 namespace App\Filament\Resources;
 
+use App\Filament\Concerns\FrontendDevRestricted;
+
 use App\Filament\Resources\PageGenerationBatchResource\Pages;
 use App\Models\PageGenerationBatch;
 use App\Services\BulkPageExpansionService;
@@ -17,6 +19,8 @@ use Illuminate\Database\Eloquent\Builder;
 
 class PageGenerationBatchResource extends Resource
 {
+    use FrontendDevRestricted;
+
     protected static ?string $model = PageGenerationBatch::class;
 
     protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-queue-list';

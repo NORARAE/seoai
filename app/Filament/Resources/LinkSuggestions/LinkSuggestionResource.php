@@ -2,6 +2,8 @@
 
 namespace App\Filament\Resources\LinkSuggestions;
 
+use App\Filament\Concerns\FrontendDevRestricted;
+
 use App\Filament\Resources\LinkSuggestions\Pages\ListLinkSuggestions;
 use App\Filament\Resources\LinkSuggestions\Pages\ViewLinkSuggestion;
 use App\Filament\Resources\LinkSuggestions\Tables\LinkSuggestionsTable;
@@ -13,6 +15,8 @@ use Filament\Tables\Table;
 
 class LinkSuggestionResource extends Resource
 {
+    use FrontendDevRestricted;
+
     protected static ?string $model = LinkSuggestion::class;
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedLink;

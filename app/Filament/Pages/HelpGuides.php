@@ -2,11 +2,15 @@
 
 namespace App\Filament\Pages;
 
+use App\Filament\Concerns\FrontendDevRestricted;
+
 use BackedEnum;
 use Filament\Pages\Page;
 
 class HelpGuides extends Page
 {
+    use FrontendDevRestricted;
+
     protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-lifebuoy';
 
     protected static ?string $navigationLabel = 'Help & Guides';

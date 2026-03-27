@@ -148,6 +148,15 @@ class User extends Authenticatable
     }
 
     /**
+     * Whether this user is a temporary frontend contractor with restricted admin access.
+     * frontend_dev users may only access pages listed in App\Support\FrontendDevAccess.
+     */
+    public function isFrontendDev(): bool
+    {
+        return $this->role === 'frontend_dev';
+    }
+
+    /**
      * Check if user is admin
      */
     public function isAdmin(): bool

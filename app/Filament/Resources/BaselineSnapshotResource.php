@@ -2,6 +2,8 @@
 
 namespace App\Filament\Resources;
 
+use App\Filament\Concerns\FrontendDevRestricted;
+
 use App\Filament\Resources\BaselineSnapshotResource\Pages;
 use App\Models\BaselineSnapshot;
 use BackedEnum;
@@ -12,6 +14,8 @@ use Filament\Tables\Table;
 
 class BaselineSnapshotResource extends Resource
 {
+    use FrontendDevRestricted;
+
     protected static ?string $model = BaselineSnapshot::class;
 
     protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-camera';

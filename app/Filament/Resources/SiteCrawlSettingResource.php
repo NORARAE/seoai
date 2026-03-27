@@ -2,6 +2,8 @@
 
 namespace App\Filament\Resources;
 
+use App\Filament\Concerns\FrontendDevRestricted;
+
 use App\Filament\Resources\SiteCrawlSettingResource\Pages;
 use App\Models\SiteCrawlSetting;
 use App\Models\User;
@@ -15,6 +17,8 @@ use Illuminate\Support\Facades\Auth;
 
 class SiteCrawlSettingResource extends Resource
 {
+    use FrontendDevRestricted;
+
     protected static ?string $model = SiteCrawlSetting::class;
 
     protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-cog-6-tooth';

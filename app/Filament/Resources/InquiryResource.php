@@ -2,6 +2,8 @@
 
 namespace App\Filament\Resources;
 
+use App\Filament\Concerns\FrontendDevRestricted;
+
 use App\Filament\Resources\InquiryResource\Pages\ListInquiries;
 use App\Filament\Resources\InquiryResource\Pages\ViewInquiry;
 use App\Models\Inquiry;
@@ -18,6 +20,8 @@ use Illuminate\Database\Eloquent\Builder;
 
 class InquiryResource extends Resource
 {
+    use FrontendDevRestricted;
+
     protected static ?string $model = Inquiry::class;
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedInboxArrowDown;

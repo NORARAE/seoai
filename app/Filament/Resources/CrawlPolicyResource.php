@@ -2,6 +2,8 @@
 
 namespace App\Filament\Resources;
 
+use App\Filament\Concerns\FrontendDevRestricted;
+
 use App\Filament\Resources\CrawlPolicyResource\Pages;
 use App\Models\User;
 use BackedEnum;
@@ -13,6 +15,8 @@ use Illuminate\Support\Facades\Auth;
 
 class CrawlPolicyResource extends Resource
 {
+    use FrontendDevRestricted;
+
     protected static ?string $model = 'App\\Models\\CrawlPolicy';
 
     protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-shield-check';

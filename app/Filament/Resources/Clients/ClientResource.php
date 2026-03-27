@@ -2,6 +2,8 @@
 
 namespace App\Filament\Resources\Clients;
 
+use App\Filament\Concerns\FrontendDevRestricted;
+
 use App\Filament\Resources\Clients\Pages\CreateClient;
 use App\Filament\Resources\Clients\Pages\EditClient;
 use App\Filament\Resources\Clients\Pages\ListClients;
@@ -18,6 +20,8 @@ use Filament\Tables\Table;
 
 class ClientResource extends Resource
 {
+    use FrontendDevRestricted;
+
     protected static ?string $model = Client::class;
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedUserGroup;

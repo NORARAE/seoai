@@ -2,6 +2,8 @@
 
 namespace App\Filament\Resources;
 
+use App\Filament\Concerns\FrontendDevRestricted;
+
 use App\Filament\Resources\SeoMarketingPageResource\Pages\ListSeoMarketingPages;
 use App\Filament\Resources\SeoMarketingPageResource\Pages\ViewSeoMarketingPage;
 use App\Models\SeoMarketingPage;
@@ -20,6 +22,8 @@ use Illuminate\Database\Eloquent\Builder;
 
 class SeoMarketingPageResource extends Resource
 {
+    use FrontendDevRestricted;
+
     protected static ?string $model = SeoMarketingPage::class;
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedGlobeAlt;

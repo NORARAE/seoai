@@ -2,6 +2,8 @@
 
 namespace App\Filament\Resources;
 
+use App\Filament\Concerns\FrontendDevRestricted;
+
 use App\Enums\OptimizationStatus;
 use App\Enums\OptimizationType;
 use App\Filament\Resources\OptimizationRunResource\Pages;
@@ -13,6 +15,8 @@ use Filament\Tables\Table;
 
 class OptimizationRunResource extends Resource
 {
+    use FrontendDevRestricted;
+
     protected static ?string $model = OptimizationRun::class;
 
     protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-sparkles';

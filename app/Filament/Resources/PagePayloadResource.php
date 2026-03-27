@@ -2,6 +2,8 @@
 
 namespace App\Filament\Resources;
 
+use App\Filament\Concerns\FrontendDevRestricted;
+
 use App\Filament\Resources\PagePayloadResource\Pages;
 use App\Models\PagePayload;
 use App\Models\User;
@@ -30,6 +32,8 @@ use Illuminate\Support\Facades\Storage;
 
 class PagePayloadResource extends Resource
 {
+    use FrontendDevRestricted;
+
     protected static ?string $model = PagePayload::class;
 
     protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-document-text';

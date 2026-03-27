@@ -2,6 +2,8 @@
 
 namespace App\Filament\Resources\Opportunities;
 
+use App\Filament\Concerns\FrontendDevRestricted;
+
 use App\Filament\Resources\Opportunities\Pages\CreateOpportunity;
 use App\Filament\Resources\Opportunities\Pages\EditOpportunity;
 use App\Filament\Resources\Opportunities\Pages\ListOpportunities;
@@ -18,6 +20,8 @@ use Filament\Tables\Table;
 
 class OpportunityResource extends Resource
 {
+    use FrontendDevRestricted;
+
     protected static ?string $model = Opportunity::class;
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedLightBulb;

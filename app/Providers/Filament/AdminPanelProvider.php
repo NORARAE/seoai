@@ -7,6 +7,7 @@ use App\Filament\Pages\Auth\Register;
 use App\Filament\Pages\Auth\RequestPasswordReset;
 use App\Filament\Pages\Auth\ResetPassword;
 use App\Filament\Pages\SeoGrowthCommandCenter;
+use App\Http\Middleware\FrontendDevAccessMiddleware;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\AuthenticateSession;
 use Filament\Http\Middleware\DisableBladeIconComponents;
@@ -48,6 +49,19 @@ class AdminPanelProvider extends PanelProvider
                 'success' => Color::Green,
             ])
             ->renderHook(
+                PanelsRenderHook::BODY_START,
+                fn (): HtmlString => auth()->check() && auth()->user()->isFrontendDev()
+                    ? new HtmlString(
+                        '<div style="background:#1a1200;border-bottom:1px solid rgba(200,168,75,.2);'
+                        . 'padding:10px 24px;font-size:.78rem;color:#c8a84b;letter-spacing:.06em;'
+                        . 'text-align:center;font-family:\'DM Sans\',sans-serif;">'
+                        . '&#128274;&nbsp; Your account has <strong>limited access</strong>. '
+                        . 'Only the homepage editor and dashboard are available to you.'
+                        . '</div>'
+                    )
+                    : new HtmlString('')
+            )
+            ->renderHook(
                 PanelsRenderHook::HEAD_END,
                 fn (): HtmlString => new HtmlString(
                     '<link rel="preconnect" href="https://fonts.googleapis.com">'
@@ -80,6 +94,7 @@ class AdminPanelProvider extends PanelProvider
                 SubstituteBindings::class,
                 DisableBladeIconComponents::class,
                 DispatchServingFilamentEvent::class,
+                FrontendDevAccessMiddleware::class,
             ])
             ->authMiddleware([
                 Authenticate::class,

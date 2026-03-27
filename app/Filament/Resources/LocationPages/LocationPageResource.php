@@ -2,6 +2,8 @@
 
 namespace App\Filament\Resources\LocationPages;
 
+use App\Filament\Concerns\FrontendDevRestricted;
+
 use App\Filament\Resources\LocationPages\Pages\CreateLocationPage;
 use App\Filament\Resources\LocationPages\Pages\EditLocationPage;
 use App\Filament\Resources\LocationPages\Pages\ListLocationPages;
@@ -18,6 +20,8 @@ use Filament\Tables\Table;
 
 class LocationPageResource extends Resource
 {
+    use FrontendDevRestricted;
+
     protected static ?string $model = LocationPage::class;
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedMapPin;

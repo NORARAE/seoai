@@ -2,6 +2,8 @@
 
 namespace App\Filament\Pages;
 
+use App\Filament\Concerns\FrontendDevRestricted;
+
 use App\Models\City;
 use App\Models\Service;
 use App\Models\ServiceLocation;
@@ -28,6 +30,8 @@ use UnitEnum;
 
 class CoverageMap extends Page implements HasForms, HasTable
 {
+    use FrontendDevRestricted;
+
     use InteractsWithForms;
     use InteractsWithTable;
 

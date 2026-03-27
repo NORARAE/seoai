@@ -2,6 +2,8 @@
 
 namespace App\Filament\Resources;
 
+use App\Filament\Concerns\FrontendDevRestricted;
+
 use App\Filament\Resources\LicenseResource\Pages\ListLicenses;
 use App\Filament\Resources\LicenseResource\Pages\ViewLicense;
 use App\Models\License;
@@ -18,6 +20,8 @@ use Illuminate\Database\Eloquent\Builder;
 
 class LicenseResource extends Resource
 {
+    use FrontendDevRestricted;
+
     protected static ?string $model = License::class;
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedKey;

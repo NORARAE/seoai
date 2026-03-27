@@ -2,6 +2,8 @@
 
 namespace App\Filament\Pages;
 
+use App\Filament\Concerns\FrontendDevRestricted;
+
 use App\Filament\Resources\SeoOpportunityResource;
 use App\Filament\Resources\Sites\SiteResource;
 use App\Filament\Widgets\CompetitorGapWidget;
@@ -20,6 +22,8 @@ use Illuminate\Support\Facades\Auth;
 
 class SeoGrowthCommandCenter extends Dashboard
 {
+    use FrontendDevRestricted;
+
     protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-chart-bar-square';
 
     protected static ?string $navigationLabel = 'Command Center';
@@ -40,6 +44,11 @@ class SeoGrowthCommandCenter extends Dashboard
 
     protected function getHeaderActions(): array
     {
+        // frontend_dev users cannot navigate to sites/opportunities from the dashboard
+        if (auth()->user()?->isFrontendDev()) {
+            return [];
+        }
+
         return [
             Action::make('add_site')
                 ->label('Add Site')
@@ -76,6 +85,11 @@ class SeoGrowthCommandCenter extends Dashboard
 
     public function getWidgets(): array
     {
+        // frontend_dev users see no sensitive SEO data widgets
+        if (auth()->user()?->isFrontendDev()) {
+            return [];
+        }
+
         return [
             SiteScanSummaryWidget::class,
             ScanLifecycleStripWidget::class,

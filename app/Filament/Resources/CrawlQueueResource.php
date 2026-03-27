@@ -2,6 +2,8 @@
 
 namespace App\Filament\Resources;
 
+use App\Filament\Concerns\FrontendDevRestricted;
+
 use App\Filament\Resources\CrawlQueueResource\Pages;
 use App\Jobs\ProcessCrawlQueueItemJob;
 use App\Models\CrawlQueue;
@@ -19,6 +21,8 @@ use Illuminate\Support\Facades\Auth;
 
 class CrawlQueueResource extends Resource
 {
+    use FrontendDevRestricted;
+
     protected static ?string $model = CrawlQueue::class;
 
     protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-queue-list';

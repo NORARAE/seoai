@@ -2,6 +2,8 @@
 
 namespace App\Filament\Resources;
 
+use App\Filament\Concerns\FrontendDevRestricted;
+
 use App\Filament\Resources\ScanRunResource\Pages;
 use App\Filament\Resources\ScanRunResource\RelationManagers\CrawlQueueItemsRelationManager;
 use App\Filament\Resources\ScanRunResource\RelationManagers\FirstSeenUrlsRelationManager;
@@ -22,6 +24,8 @@ use Illuminate\Support\Facades\Auth;
 
 class ScanRunResource extends Resource
 {
+    use FrontendDevRestricted;
+
     protected static ?string $model = ScanRun::class;
 
     protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-clock';

@@ -2,6 +2,8 @@
 
 namespace App\Filament\Resources;
 
+use App\Filament\Concerns\FrontendDevRestricted;
+
 use App\Filament\Resources\SeoOpportunityResource\Pages;
 use App\Jobs\GeneratePagePayloadJob;
 use App\Models\User;
@@ -24,6 +26,8 @@ use Illuminate\Support\Facades\Auth;
 
 class SeoOpportunityResource extends Resource
 {
+    use FrontendDevRestricted;
+
     protected static ?string $model = SeoOpportunity::class;
 
     protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-light-bulb';
@@ -36,6 +40,11 @@ class SeoOpportunityResource extends Resource
 
     public static function canViewAny(): bool
     {
+        // frontend_dev users cannot access SEO opportunity data
+        if (\App\Support\FrontendDevAccess::isRestricted()) {
+            return false;
+        }
+
         return Auth::check();
     }
 

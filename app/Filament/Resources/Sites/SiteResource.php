@@ -2,6 +2,8 @@
 
 namespace App\Filament\Resources\Sites;
 
+use App\Filament\Concerns\FrontendDevRestricted;
+
 use App\Filament\Resources\Sites\Pages\CreateSite;
 use App\Filament\Resources\Sites\Pages\EditSite;
 use App\Filament\Resources\Sites\Pages\ListSites;
@@ -18,6 +20,8 @@ use Filament\Tables\Table;
 
 class SiteResource extends Resource
 {
+    use FrontendDevRestricted;
+
     protected static ?string $model = Site::class;
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
