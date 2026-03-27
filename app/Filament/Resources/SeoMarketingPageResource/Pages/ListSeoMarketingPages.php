@@ -5,7 +5,7 @@ namespace App\Filament\Resources\SeoMarketingPageResource\Pages;
 use App\Filament\Resources\SeoMarketingPageResource;
 use App\Models\SeoMarketingPage;
 use Filament\Resources\Pages\ListRecords;
-use Filament\Resources\Pages\ListRecords\Tab;
+use Filament\Schemas\Components\Tabs\Tab;
 use Illuminate\Database\Eloquent\Builder;
 
 class ListSeoMarketingPages extends ListRecords
