@@ -84,6 +84,7 @@ nav.stuck{background:rgba(8,8,8,.95);backdrop-filter:blur(16px);border-color:var
 .hero-actions{display:flex;gap:20px;align-items:center;opacity:0;animation:up .85s .65s forwards}
 .btn-primary{background:var(--gold);color:var(--bg);font-size:.82rem;font-weight:500;letter-spacing:.14em;text-transform:uppercase;padding:18px 48px;text-decoration:none;transition:background .3s,transform .2s}
 .btn-primary:hover{background:var(--gold-lt);transform:translateY(-2px)}
+.btn-primary:focus-visible,.btn-ghost:focus-visible{outline:2px solid var(--gold);outline-offset:3px}
 .btn-ghost{font-size:.82rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);text-decoration:none;border-bottom:1px solid var(--border);padding-bottom:3px;transition:color .3s,border-color .3s}
 .btn-ghost:hover{color:var(--ivory);border-color:var(--muted)}
 

@@ -125,6 +125,12 @@ nav.stuck{background:rgba(8,8,8,.95);backdrop-filter:blur(16px);border-color:var
   letter-spacing:.03em;padding-top:12px;margin-top:6px;
 }
 .hero-p strong{color:var(--ivory);font-weight:400}
+.hero-gravity{
+  font-family:'Cormorant Garamond',serif;font-weight:300;font-style:italic;
+  font-size:clamp(.88rem,1.3vw,.98rem);letter-spacing:.16em;text-transform:uppercase;
+  color:rgba(200,168,75,.32);margin-bottom:22px;
+  opacity:0;animation:up .75s .42s forwards;
+}
 .hero-actions{display:flex;gap:20px;align-items:center;opacity:0;animation:up .85s .65s forwards}
 .btn-primary{
   background:var(--gold);color:var(--bg);font-size:.82rem;font-weight:500;letter-spacing:.14em;
@@ -492,7 +498,9 @@ nav.stuck{background:rgba(8,8,8,.95);backdrop-filter:blur(16px);border-color:var
   padding:14px 18px;outline:none;transition:border-color .3s;appearance:none;
 }
 .fg input::placeholder,.fg textarea::placeholder{color:#222}
-.fg input:focus,.fg textarea:focus,.fg select:focus{border-color:var(--gold-dim)}
+.fg input:focus,.fg textarea:focus,.fg select:focus{border-color:var(--gold);box-shadow:0 0 0 3px rgba(200,168,75,.08)}
+.fg input:focus-visible,.fg textarea:focus-visible,.fg select:focus-visible{outline:none}
+.btn-primary:focus-visible,.btn-ghost:focus-visible,.aud-cta:focus-visible,.fsub:focus-visible,.tier-cta:focus-visible,.tier-book:focus-visible,.nav-btn:focus-visible,.gate-cta:focus-visible,.gate-skip:focus-visible,.btt:focus-visible{outline:2px solid var(--gold);outline-offset:3px}
 .fg textarea{resize:vertical;min-height:100px}
 .fg select option{background:var(--bg)}
 .frow{display:grid;grid-template-columns:1fr 1fr;gap:12px}
@@ -705,6 +713,8 @@ footer{border-top:1px solid var(--border);padding:36px 64px;display:flex;flex-di
     to secure position—<em>not chase it.</em>
   </h1>
 
+  <p class="hero-gravity">Position is architecture. Not effort.</p>
+
   <div class="hero-p">
     <p class="hero-p-line">SEOAIco is the infrastructure behind every service and location page—deploying structured headlines, intelligent FAQs, localized data, internal link architecture, and search-ready content across 1,000+ U.S. cities.</p>
     <p class="hero-p-line hp-emphasis">Access is licensed. Position is controlled.</p>
@@ -739,7 +749,7 @@ footer{border-top:1px solid var(--border);padding:36px 64px;display:flex;flex-di
       <span class="ac-label">Full-Stack Visibility</span>
       <h3 class="ac-head">Not just<br><em>search results.</em></h3>
       <p class="ac-impact">Every surface. Every signal.</p>
-      <p class="ac-body">Each page is built to surface across organic search, AI-generated answers, language model citations, and next-generation discovery layers. Not just crawled — understood, cited, and returned by the full stack.</p>
+      <p class="ac-body">Each page is built to surface across organic search, AI-generated answers, and emerging discovery layers — not just crawled, but understood, cited, and returned by the full stack.</p>
     </div>
 
     <div class="ac-card">
@@ -889,7 +899,7 @@ footer{border-top:1px solid var(--border);padding:36px 64px;display:flex;flex-di
         <div class="wyl-card r">
           <span class="wyl-icon">◻</span>
           <h3 class="wyl-title">Crawl-Safe Rendering</h3>
-          <p class="wyl-desc">Every page is delivered with clean URL structure, stable server-side output, and proper fallback logic — ensuring consistent, indexable delivery to crawlers, AI systems, and every mechanism that reads the web.</p>
+          <p class="wyl-desc">Every page is delivered with clean URL structure, stable server-side output, and proper fallback logic — ensuring consistent, indexable delivery to every crawler and discovery system that reads the web.</p>
         </div>
         <div class="wyl-card r">
           <span class="wyl-icon">◼</span>
