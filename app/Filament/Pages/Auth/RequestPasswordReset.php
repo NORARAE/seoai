@@ -2,57 +2,36 @@
 
 namespace App\Filament\Pages\Auth;
 
-use Filament\Forms\Components\TextInput;
-use Filament\Forms\Form;
+use Filament\Auth\Pages\PasswordReset\RequestPasswordReset as BaseRequestPasswordReset;
 use Filament\Notifications\Notification;
-use Filament\Pages\Auth\PasswordReset\RequestPasswordReset as BaseRequestPasswordReset;
-use Illuminate\Support\Facades\Password;
 use Illuminate\Support\Facades\RateLimiter;
 
 class RequestPasswordReset extends BaseRequestPasswordReset
 {
-    public function form(Form $form): Form
-    {
-        return $form->schema([
-            TextInput::make('email')
-                ->label('Email address')
-                ->email()
-                ->required()
-                ->autocomplete('email')
-                ->autofocus(),
-        ]);
-    }
-
+    /**
+     * Extra per-IP bucket (3 per 15 min) on top of Filament's built-in
+     * per-email throttle, preventing mass enumeration from a single IP.
+     */
     public function request(): void
     {
-        $key = 'password-reset-request:' . request()->ip();
+        $key = 'pw-reset-ip:' . sha1(request()->ip());
 
-        // 3 password reset requests per 15 minutes per IP
         if (RateLimiter::tooManyAttempts($key, 3)) {
             $seconds = RateLimiter::availableIn($key);
 
             Notification::make()
-                ->title('Too many requests')
-                ->body("Please wait {$seconds} seconds before requesting another reset.")
+                ->title(__('filament-panels::auth/pages/password-reset/request-password-reset.notifications.throttled.title', [
+                    'seconds' => $seconds,
+                    'minutes' => ceil($seconds / 60),
+                ]))
                 ->danger()
                 ->send();
 
             return;
         }
 
-        RateLimiter::hit($key, 900); // 15-minute decay
+        RateLimiter::hit($key, 900);
 
-        $this->validate();
-
-        // Always send the same response to prevent account enumeration
-        Password::sendResetLink(['email' => $this->data['email']]);
-
-        Notification::make()
-            ->title('Check your inbox')
-            ->body('If an account exists for that address, a reset link has been sent. It expires in 60 minutes.')
-            ->success()
-            ->send();
-
-        $this->form->fill();
+        parent::request();
     }
 }

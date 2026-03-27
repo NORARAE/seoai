@@ -2,11 +2,9 @@
 
 namespace App\Filament\Pages\Auth;
 
-use DanHarrin\LivewireRateLimiting\Exceptions\TooManyRequestsException;
-use Filament\Facades\Filament;
-use Filament\Http\Responses\Auth\Contracts\LoginResponse;
+use Filament\Auth\Pages\Login as BaseLogin;
+use Filament\Auth\Http\Responses\Contracts\LoginResponse;
 use Filament\Notifications\Notification;
-use Filament\Pages\Auth\Login as BaseLogin;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
@@ -14,27 +12,23 @@ use Illuminate\Validation\ValidationException;
 class Login extends BaseLogin
 {
     /**
-     * Throttle key based on email + IP so credential stuffing hits
-     * the same bucket regardless of different email variations.
+     * Extra login throttle: 5 attempts per minute keyed by email+IP.
+     * This runs *before* Filament's own rateLimit(), giving us a finer-grained
+     * per-credential bucket in addition to the global Filament limiter.
      */
-    protected function getRateLimitKey(): string
-    {
-        $email = Str::lower($this->data['email'] ?? '');
-
-        return 'filament-login:' . $email . ':' . request()->ip();
-    }
-
     public function authenticate(): ?LoginResponse
     {
-        $key = $this->getRateLimitKey();
+        $email = Str::lower($this->data['email'] ?? '');
+        $key   = 'login:' . $email . ':' . request()->ip();
 
-        // 5 attempts per minute per email+IP
         if (RateLimiter::tooManyAttempts($key, 5)) {
             $seconds = RateLimiter::availableIn($key);
 
             Notification::make()
-                ->title('Too many attempts')
-                ->body("Please wait {$seconds} seconds before trying again.")
+                ->title(__('filament-panels::auth/pages/login.notifications.throttled.title', [
+                    'seconds' => $seconds,
+                    'minutes' => ceil($seconds / 60),
+                ]))
                 ->danger()
                 ->send();
 
@@ -49,7 +43,7 @@ class Login extends BaseLogin
         try {
             $response = parent::authenticate();
 
-            // Successful login — clear throttle, regenerate session
+            // Clear our throttle bucket on success; regenerate to prevent fixation
             RateLimiter::clear($key);
             request()->session()->regenerate();
 
@@ -59,5 +53,7 @@ class Login extends BaseLogin
             RateLimiter::hit($key, 60);
             throw $e;
         }
+        // TooManyRequestsException from Filament's own limiter propagates naturally
     }
 }
+
