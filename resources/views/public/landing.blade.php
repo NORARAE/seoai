@@ -1254,7 +1254,6 @@ footer{border-top:1px solid var(--border);padding:36px 64px;display:flex;flex-di
     <a href="#" class="logo">
       <span class="logo-seo">SEO</span><span class="logo-ai">AI</span><span class="logo-co">co</span>
     </a>
-    <a href="/dashboard" class="footer-account-btn" style="background:linear-gradient(90deg,var(--gold),var(--gold-lt));color:var(--deep);padding:10px 28px;border-radius:24px;font-weight:500;letter-spacing:.18em;text-decoration:none;box-shadow:0 2px 12px 0 rgba(200,168,75,.13);margin:0 18px;">Sign Up / Account</a>
     <span class="footer-copy">&copy; 2026 SEOAIco. Licensed Ranking Infrastructure.</span>
   </div>
   <nav class="footer-legal">
