@@ -709,8 +709,8 @@ footer{border-top:1px solid var(--border);padding:36px 64px;display:flex;flex-di
     <p class="hero-p-line">SEOAIco is the infrastructure behind every service and location page—deploying structured headlines, intelligent FAQs, localized data, internal link architecture, and search-ready content across 1,000+ U.S. cities.</p>
     <p class="hero-p-line hp-emphasis">Access is licensed. Position is controlled.</p>
     <p class="hero-p-line">The system is continuously maintained, expanded, and reinforced—holding your visibility across search engines, AI systems, and emerging discovery layers.</p>
-    <p class="hero-p-line">Once a market is secured, it is no longer available to competing operators—until released.</p>
-    <p class="hero-p-line hp-strong">Availability is limited by design. Not every market remains open.</p>
+    <p class="hero-p-line">Once secured, a market is held exclusively — one operator, one category, no shared access. It remains closed to direct competitors for the full duration of the agreement.</p>
+    <p class="hero-p-line hp-strong">Not every market remains open. Availability is confirmed individually.</p>
   </div>
 
   <div class="hero-actions">
@@ -772,7 +772,7 @@ footer{border-top:1px solid var(--border);padding:36px 64px;display:flex;flex-di
   <div class="stmt-body">
     <p>Every search engine — and every AI system — returns what it can find. What it finds is determined by structure. Not effort. Not spend. <strong>Architecture.</strong></p>
     <p>SEOAIco deploys that architecture at scale. Every service, every city, every search variation — structured, interlinked, and maintained under a single licensed system covering 1,000+ U.S. markets.</p>
-    <p>The system runs continuously under an active agreement. <strong>Position is held. Not earned once and forgotten. Maintained.</strong></p>
+    <p>The system runs continuously under an active agreement — not as a set-and-forget deployment, but as maintained infrastructure with a single objective: holding the position you've secured.</p>
     <p style="font-family:'Cormorant Garamond',serif;font-style:italic;font-weight:500;font-size:clamp(1.2rem,2vw,1.55rem);color:var(--gold);margin-top:1.4em;letter-spacing:.01em">Visibility is structured—or it is lost.</p>
   </div>
 </div>
@@ -914,12 +914,12 @@ footer{border-top:1px solid var(--border);padding:36px 64px;display:flex;flex-di
     <p class="pos-line r">SEOAIco is the infrastructure behind every service and location page &mdash; deploying structured content, link architecture, and localized data across 1,000+ U.S. cities.</p>
 
     <p class="pos-line emphasis r">Access is licensed. Position is controlled.</p>
-    <p class="pos-line r">Each territory is held by a single operator.</p>
+    <p class="pos-line r">Each territory is held by a single operator — one licence, one category, no shared access and no replication by a competitor in the same vertical.</p>
 
     <p class="pos-line r">When a licence is active, that market is no longer available to competing operators.</p>
     <p class="pos-line r">Position is held under the agreement &mdash; maintained, expanded, and defended on your behalf.</p>
 
-    <p class="pos-line emphasis r">Once released, it becomes available. Another operator will claim it.</p>
+    <p class="pos-line r">Once a licence is released, the territory reopens — and another operator in the same category will move to secure it.</p>
 
     <p class="pos-line strong r">We don't compete. We own the position.</p>
   </div>
