@@ -978,7 +978,7 @@ footer{border-top:1px solid var(--border);padding:36px 64px;display:flex;flex-di
       </div>
       <div class="ul-note">
         <p><strong>Need more pages?</strong> Upgrade to the next tier — your existing pages carry over.</p>
-        <p><strong>Already have pages built outside SEOAIco?</strong> You can bring them in on the 10,000 page tier. Full search data, linking, and AI content across your entire site.</p>
+        <p><strong>Already have pages built outside SEOAIco?</strong> You can bring them into the licensed infrastructure at the 10,000 page tier — full structured coverage, link architecture, and search signals across your entire footprint.</p>
       </div>
     </div>
   </div>
@@ -1027,10 +1027,10 @@ footer{border-top:1px solid var(--border);padding:36px 64px;display:flex;flex-di
       <div class="tier-price">Apply</div>
       <div class="tier-commitment">Entry-level access for qualifying businesses or agencies. Capacity and pricing confirmed on application.</div>
       <ul class="tier-features">
-        <li>Page building within your approved capacity</li>
-        <li>Search data added automatically</li>
-        <li>Smart internal linking</li>
-        <li>Upgrades to 5K or 10K tier as you grow</li>
+        <li>Structured pages within your approved capacity</li>
+        <li>Search signals and localized data on every page</li>
+        <li>Internal link architecture included</li>
+        <li>Expandable to 5K or 10K tier under the same system</li>
       </ul>
       <div class="tier-gated">
         <span class="tier-gated-icon">◈</span>
@@ -1047,14 +1047,14 @@ footer{border-top:1px solid var(--border);padding:36px 64px;display:flex;flex-di
       <div class="tier-price"><sup>$</sup>2,995<sub>/mo</sub></div>
       <div class="tier-commitment">3-month minimum engagement. Month-to-month thereafter.</div>
       <ul class="tier-features">
-        <li><strong>Licensed page inventory</strong> — 5,000 active pages</li>
-        <li><strong>White-label — your brand only</strong></li>
-        <li>Automatic page building for every service + city</li>
-        <li>Search data &amp; local business details on every page</li>
-        <li>Smart internal linking</li>
-        <li>Grow into new topics &amp; cities within your licence</li>
+        <li><strong>Licensed page inventory</strong> — 5,000 structured pages</li>
+        <li><strong>Zero-attribution deployment — your brand only</strong></li>
+        <li>Structured coverage across every service and city in your territory</li>
+        <li>Search signals, localized data, and FAQ architecture on every page</li>
+        <li>Internal link architecture maintaining topical authority</li>
+        <li>Controlled expansion into new services and markets within licence</li>
         <li>API or file export delivery</li>
-        <li>Dashboard onboarding <em class="soon">(coming soon)</em></li>
+        <li>Operator dashboard <em class="soon">(coming soon)</em></li>
       </ul>
       <a href="#contact" class="tier-cta">Request 5K Licensing Details</a>
       <button class="tier-book" onclick="window.dispatchEvent(new CustomEvent('open-booking', {detail: {id: 1, duration: 15, name: 'Free Discovery Call'}}))">Book a Free Discovery Call</button>
@@ -1068,12 +1068,12 @@ footer{border-top:1px solid var(--border);padding:36px 64px;display:flex;flex-di
       <div class="tier-commitment">Priority processing. Dedicated account contact. 3-month minimum, then month-to-month.</div>
       <ul class="tier-features">
         <li>Everything in the 5,000 page licence</li>
-        <li><strong>Extended page inventory</strong> — 10,000 pages</li>
-        <li><strong>Required for bringing in existing sites</strong> &amp; unlicensed builds</li>
-        <li>Priority deployment</li>
+        <li><strong>Extended licensed inventory</strong> — 10,000 structured pages</li>
+        <li><strong>Required for existing-site infrastructure entry</strong> — unlicensed builds</li>
+        <li>Priority deployment and processing</li>
         <li>Dedicated account contact</li>
-        <li>Early access to dashboard &amp; reporting <em class="soon">(coming soon)</em></li>
-        <li>First access to new industries &amp; features</li>
+        <li>Early operator dashboard and position reporting <em class="soon">(coming soon)</em></li>
+        <li>First access to new markets and system expansions</li>
       </ul>
       <a href="#contact" class="tier-cta">Request 10K Licensing Details</a>
       <button class="tier-book" onclick="window.dispatchEvent(new CustomEvent('open-booking', {detail: {id: 3, duration: 60, name: 'Agency License Review'}}))">Review My Agency License</button>
@@ -1215,8 +1215,8 @@ footer{border-top:1px solid var(--border);padding:36px 64px;display:flex;flex-di
   <div class="gate-box">
     <div class="gate-icon">◈</div>
     <span class="gate-badge">Licensed Access Required</span>
-    <h2 class="gate-title">Activate your<br><em>ranking infrastructure.</em></h2>
-    <p class="gate-desc">Select a licence tier to unlock full access to the SEOAIco platform — <strong>dashboard, deployment tools, and URL inventory management.</strong></p>
+    <h2 class="gate-title">Secure your<br><em>position.</em></h2>
+    <p class="gate-desc">Select a licence tier to activate your territory — <strong>structured pages, link architecture, and search signals deployed across your markets under a single agreement.</strong></p>
     <div class="gate-tiers">
       <div class="gate-tier" data-tier="5k">
         <div class="gate-tier-name">5,000 URLs</div>

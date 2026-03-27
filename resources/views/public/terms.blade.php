@@ -71,7 +71,7 @@ footer{border-top:1px solid var(--border);padding:36px 64px;display:flex;flex-di
   <p>These Terms of Service ("Terms") govern your use of the SEOAIco platform, website, and licensed services. By submitting a licensing inquiry or activating a licence, you agree to these Terms.</p>
 
   <h2>1. The Service</h2>
-  <p>SEOAIco provides a <strong>licensed ranking infrastructure system</strong> that generates AI-written, schema-marked, geo-targeted service and location pages deployed on your website. The system includes AI content generation, structured data (JSON-LD), internal linking architecture, and FAQ schema — all controlled by your active licence.</p>
+  <p>SEOAIco provides a <strong>licensed search infrastructure system</strong> that deploys structured, intelligent content — including schema-marked service and location pages — across your website and across 1,000+ U.S. cities. The system includes structured content deployment, JSON-LD schema, internal linking architecture, and FAQ signals — all governed by your active licence.</p>
 
   <h2>2. Licence Tiers &amp; Access</h2>
   <p>SEOAIco licences are offered in three tiers:</p>
@@ -85,17 +85,17 @@ footer{border-top:1px solid var(--border);padding:36px 64px;display:flex;flex-di
   <h2>3. What Your Licence Includes</h2>
   <p>While your licence is active, you receive:</p>
   <ul>
-    <li>AI-generated content unique to each service + city combination</li>
-    <li>LocalBusiness JSON-LD, FAQ schema, and meta descriptions on every page</li>
-    <li>Internal linking architecture across your entire page footprint</li>
-    <li>Geo-targeted page deployment for every market you serve</li>
-    <li>White-label deployment (no SEOAIco attribution on your site)</li>
-    <li>URL inventory within your licensed tier capacity</li>
+    <li>Structured, intelligent content unique to each service and city combination</li>
+    <li>LocalBusiness JSON-LD, FAQ schema, and meta signals on every page</li>
+    <li>Internal link architecture across your entire licensed footprint</li>
+    <li>Localized page deployment covering every market in your agreement</li>
+    <li>Zero-attribution deployment — no SEOAIco branding on your site</li>
+    <li>Licensed page inventory within your approved tier capacity</li>
   </ul>
 
   <h2>4. Active Licence vs. Lapsed Licence</h2>
-  <p><strong>Active licence:</strong> All pages are fully live — AI content, schema markup, FAQ sections, internal links, and structured data are operational. Your pages rank in Google and appear in AI search results.</p>
-  <p><strong>Lapsed licence:</strong> The system deactivates. <strong>All AI content, schema, FAQ sections, and structured data are removed.</strong> Pages revert to displaying only your company name and phone number. Rankings will drop. Leads will stop. The URLs remain on your site but cease to function as ranking assets.</p>
+  <p><strong>Active licence:</strong> All pages are fully live — structured content, schema markup, FAQ architecture, internal link structure, and localized data are operational. Your pages are indexed and maintained across organic search, AI systems, and emerging discovery layers.</p>
+  <p><strong>Lapsed licence:</strong> The infrastructure deactivates. <strong>All structured content, schema, FAQ architecture, and search signals are removed.</strong> Pages revert to displaying only your company name and phone number. Position is no longer held. The URLs remain on your site but are no longer operating as search assets.</p>
   <p>Reactivation is available by resuming payment on your existing tier.</p>
 
   <h2>5. Payments &amp; Billing</h2>
@@ -110,12 +110,12 @@ footer{border-top:1px solid var(--border);padding:36px 64px;display:flex;flex-di
   <p>Each licence tier has a defined URL capacity. If you need more pages than your current tier allows, you can upgrade to the next tier. <strong>Existing pages carry over</strong> — nothing is lost when you upgrade. Downgrading is not available; URL inventory is tied to the tier at which it was deployed.</p>
 
   <h2>7. Legacy &amp; Pre-Licence Builds</h2>
-  <p>If you have existing programmatic pages built outside the SEOAIco system, they can be brought into the licensed infrastructure — but this requires the <strong>10,000 URL licence tier</strong>. This ensures system integrity and provides full access to our schema, linking, and AI content engine across your entire footprint.</p>
+  <p>If you have existing programmatic pages built outside the SEOAIco system, they can be brought into the licensed infrastructure — but this requires the <strong>10,000 URL licence tier</strong>. This ensures system integrity and provides full access to structured content deployment, link architecture, and search signals across your entire footprint.</p>
 
   <h2>8. Ownership &amp; Intellectual Property</h2>
   <p><strong>Your domain, your site:</strong> Pages are deployed on your website and under your brand. You own your domain and site content.</p>
-  <p><strong>System IP:</strong> The SEOAIco system — including its AI content engine, schema framework, linking architecture, and deployment infrastructure — remains the intellectual property of SEOAIco. Your licence grants you the right to <em>use</em> these outputs, not to copy, reverse-engineer, or redistribute the underlying system.</p>
-  <p><strong>AI-generated content:</strong> Content generated by the system for your pages is delivered under your licence for use on your site. You may not resell, redistribute, or syndicate the raw content output outside your licensed deployment.</p>
+  <p><strong>System IP:</strong> The SEOAIco infrastructure — including its content generation system, schema framework, linking architecture, and deployment logic — remains the intellectual property of SEOAIco. Your licence grants you the right to <em>use</em> these outputs, not to copy, reverse-engineer, or redistribute the underlying system.</p>
+  <p><strong>System-generated content:</strong> Structured content generated by the system for your pages is delivered under your licence for use on your site. You may not resell, redistribute, or syndicate the raw content output outside your licensed deployment.</p>
 
   <h2>9. White-Label &amp; Agency Use</h2>
   <p>Agency licence holders may deploy SEOAIco pages across multiple client sites under their own brand. There is no SEOAIco attribution required on client-facing pages. The agency is responsible for managing client relationships and ensuring compliance with these Terms across all deployments.</p>
