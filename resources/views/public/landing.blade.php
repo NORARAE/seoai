@@ -710,7 +710,7 @@ footer{border-top:1px solid var(--border);padding:36px 64px;display:flex;flex-di
     <p class="hero-p-line hp-emphasis">Access is licensed. Position is controlled.</p>
     <p class="hero-p-line">The system is continuously maintained, expanded, and reinforced—holding your visibility across search engines, AI systems, and emerging discovery layers.</p>
     <p class="hero-p-line">Once a market is secured, it is no longer available to competing operators—until released.</p>
-    <p class="hero-p-line hp-strong">We don't compete. We own the position.</p>
+    <p class="hero-p-line hp-strong">Availability is limited by design. Not every market remains open.</p>
   </div>
 
   <div class="hero-actions">
@@ -773,6 +773,7 @@ footer{border-top:1px solid var(--border);padding:36px 64px;display:flex;flex-di
     <p>Every search engine — and every AI system — returns what it can find. What it finds is determined by structure. Not effort. Not spend. <strong>Architecture.</strong></p>
     <p>SEOAIco deploys that architecture at scale. Every service, every city, every search variation — structured, interlinked, and maintained under a single licensed system covering 1,000+ U.S. markets.</p>
     <p>The system runs continuously under an active agreement. <strong>Position is held. Not earned once and forgotten. Maintained.</strong></p>
+    <p style="font-family:'Cormorant Garamond',serif;font-style:italic;font-weight:500;font-size:clamp(1.2rem,2vw,1.55rem);color:var(--gold);margin-top:1.4em;letter-spacing:.01em">Visibility is structured—or it is lost.</p>
   </div>
 </div>
 
@@ -784,7 +785,7 @@ footer{border-top:1px solid var(--border);padding:36px 64px;display:flex;flex-di
     <div>
       <p class="s-eye r">Licensed Search Footprint</p>
       <h2 class="s-h r">Thousands of search<br>targets. <em>One structured</em><br>system.</h2>
-      <p class="s-p r">Each page is built around a specific search — combining the right service, city, and keywords so Google knows exactly what your page is about. <strong>Not pages thrown together in bulk. A complete system built for search coverage.</strong></p>
+      <p class="s-p r">Every page deploys structured content around a precise search intent — the right service, the right city, the right signals — readable by organic search, cited by AI systems, and indexed across every layer of discovery. <strong>Not volume. Structured coverage that compounds.</strong></p>
     </div>
     <div class="url-box r">
       <div class="url-box-label">Example Agency Deployment — Home Services</div>
@@ -827,7 +828,8 @@ footer{border-top:1px solid var(--border);padding:36px 64px;display:flex;flex-di
           <li><strong>Structured for every discovery layer</strong> — organic search, AI systems, LLMs, and emerging signals</li>
           <li><strong>System-level expansion</strong> — new services and cities added within licensed capacity</li>
         </ul>
-        <a href="#offer" class="aud-cta">See Licensing Plans &rarr;</a>
+        <p style="font-size:.84rem;color:var(--muted);letter-spacing:.04em;margin-bottom:12px">One licence holds your full client territory — exclusively. Review capacity and tier options below.</p>
+        <a href="#offer" class="aud-cta">Review Agency Licensing &rarr;</a>
       </div>
 
       <div class="aud-card r">
@@ -843,7 +845,8 @@ footer{border-top:1px solid var(--border);padding:36px 64px;display:flex;flex-di
           <li><strong>Pages live on your domain</strong> — your brand, your architecture, your territory</li>
           <li><strong>Continuously reinforced</strong> — the system adapts as search behavior evolves</li>
         </ul>
-        <a href="#offer" class="aud-cta">See Licensing Plans &rarr;</a>
+        <p style="font-size:.84rem;color:var(--muted);letter-spacing:.04em;margin-bottom:12px">Once a competitor claims your territory, it cannot be reallocated while their agreement is active. Not every market remains open.</p>
+        <a href="#offer" class="aud-cta">Assess Market Availability &rarr;</a>
       </div>
 
     </div>
@@ -866,12 +869,12 @@ footer{border-top:1px solid var(--border);padding:36px 64px;display:flex;flex-di
         <div class="wyl-card r">
           <span class="wyl-icon">◈</span>
           <h3 class="wyl-title">Topical Authority Architecture</h3>
-          <p class="wyl-desc">Related services, adjacent cities, category hubs, and breadcrumb trails are woven into every page at build time — forming a structured link graph that signals topical authority and domain depth to search engines.</p>
+          <p class="wyl-desc">Related services, adjacent cities, category hubs, and breadcrumb trails are woven into every page at build time — forming a structured link graph that signals topical authority and domain depth across search engines, AI systems, and language models.</p>
         </div>
         <div class="wyl-card r">
           <span class="wyl-icon">⊹</span>
           <h3 class="wyl-title">Structured Data Injection</h3>
-          <p class="wyl-desc">Rich business markup, FAQ schema, and breadcrumb signals are generated and embedded on every page automatically — no manual entry, no missed opportunities for AI-powered search visibility.</p>
+          <p class="wyl-desc">Rich business markup, FAQ schema, and breadcrumb signals are generated and embedded on every page automatically — no manual entry, no missed signals for organic search, AI-generated answers, or language model citations.</p>
         </div>
         <div class="wyl-card r">
           <span class="wyl-icon">◎</span>
@@ -886,7 +889,7 @@ footer{border-top:1px solid var(--border);padding:36px 64px;display:flex;flex-di
         <div class="wyl-card r">
           <span class="wyl-icon">◻</span>
           <h3 class="wyl-title">Crawl-Safe Rendering</h3>
-          <p class="wyl-desc">Every page is delivered with clean URL structure, stable server-side output, and proper fallback logic — ensuring consistent, indexable rendering whether Googlebot requests JavaScript or not.</p>
+          <p class="wyl-desc">Every page is delivered with clean URL structure, stable server-side output, and proper fallback logic — ensuring consistent, indexable delivery to crawlers, AI systems, and every mechanism that reads the web.</p>
         </div>
         <div class="wyl-card r">
           <span class="wyl-icon">◼</span>
@@ -932,12 +935,12 @@ footer{border-top:1px solid var(--border);padding:36px 64px;display:flex;flex-di
         <div class="step r">
           <div class="step-n">01</div>
           <h3 class="step-title">Map Your Search Coverage</h3>
-          <p class="step-desc">We map out your services, target cities, and related topics — laying out the full plan for your pages before anything gets built.</p>
+          <p class="step-desc">Your full search territory is mapped — every service, every city, every topic variation — establishing the complete coverage architecture before a single page is deployed.</p>
         </div>
         <div class="step r">
           <div class="step-n">02</div>
           <h3 class="step-title">Set Up Your System</h3>
-          <p class="step-desc">The system is configured for your brand, linking structure, local content details, and search data — all within your licensed page count.</p>
+          <p class="step-desc">The infrastructure is configured to your brand: link architecture, localized content signals, and structured data — calibrated to your licensed territory before deployment begins.</p>
         </div>
         <div class="step r">
           <div class="step-n">03</div>
@@ -947,7 +950,7 @@ footer{border-top:1px solid var(--border);padding:36px 64px;display:flex;flex-di
         <div class="step r">
           <div class="step-n">04</div>
           <h3 class="step-title">Grow Your Footprint</h3>
-          <p class="step-desc">As rankings build and you reach more markets, your licence lets you add new services, cities, and topics — all within a protected, controlled system.</p>
+          <p class="step-desc">As your licensed position compounds, your agreement accommodates controlled expansion — new services, additional cities, deeper coverage — all within the same protected system.</p>
         </div>
       </div>
     </div>
@@ -989,7 +992,7 @@ footer{border-top:1px solid var(--border);padding:36px 64px;display:flex;flex-di
 <section>
   <div class="integrity-section">
     <p class="s-eye r">Licensing &amp; Page Protection</p>
-    <h2 class="s-h r">Protected pages need<br><em>an active licence.</em></h2>
+    <h2 class="s-h r">Position is held<br><em>under agreement — not by default.</em></h2>
     <div class="integrity-grid r">
       <div class="integrity-block">
         <span class="ib-label">Active Licence Holders</span>
@@ -1100,11 +1103,11 @@ footer{border-top:1px solid var(--border);padding:36px 64px;display:flex;flex-di
   <div class="rm-grid">
     <div class="rm-item r">
       <h3 class="rm-title">Agency Dashboard</h3>
-      <p class="rm-desc">A self-serve dashboard for managing your licensed pages, checking deployment status, and adding new client sites — no developer needed.</p>
+      <p class="rm-desc">An operator dashboard for managing your licensed pages, reviewing deployment status, and onboarding new client sites — structured oversight, controlled access.</p>
     </div>
     <div class="rm-item r">
       <h3 class="rm-title">Per-URL Search Tracking</h3>
-      <p class="rm-desc">Search ranking tracking at the individual page level — giving agencies the reports they need to show clients the value of their pages.</p>
+      <p class="rm-desc">Position reporting at the individual page level — giving operators clear visibility into indexed status, discovery performance, and the compounding value of the licensed infrastructure.</p>
     </div>
     <div class="rm-item r">
       <h3 class="rm-title">Reseller Sub-Licensing</h3>
@@ -1200,6 +1203,7 @@ footer{border-top:1px solid var(--border);padding:36px 64px;display:flex;flex-di
       <input type="hidden" name="g-recaptcha-response" id="g-recaptcha-response" value="">
       @endif
 
+      <p style="font-size:.84rem;color:var(--muted);text-align:center;letter-spacing:.04em;margin-bottom:8px">Markets are held while agreements are active. Not all territories are available at the time of application.</p>
       <button type="submit" class="fsub" id="submitBtn">Submit Licensing Enquiry</button>
     </form>
   </div>

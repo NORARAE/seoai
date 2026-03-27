@@ -494,6 +494,7 @@ footer{border-top:1px solid var(--border);padding:36px 64px;display:flex;flex-di
   <p style="font-size:1.05rem;color:var(--muted);max-width:560px;text-align:center;line-height:1.9">
     One licensee per category, per territory. Once a market is secured under agreement, it is no longer available to competing operators. Position is held while the licence is active.
   </p>
+  <p style="font-size:.82rem;color:var(--muted);text-align:center;letter-spacing:.07em;text-transform:uppercase;margin-top:4px">Availability confirmed individually — not all territories remain open.</p>
   <a href="{{ url('/#contact') }}" class="btn-primary">Check Market Availability</a>
 </div>
 
