@@ -24,6 +24,7 @@
   --bg:#080808;--deep:#0b0b0b;--card:#101010;--border:#1a1a1a;
   --gold:#c8a84b;--gold-lt:#e2c97d;--gold-dim:#9a7a30;
   --white:#ffffff;--ivory:#ede8de;--muted:#a8a8a0;--warn:#b84040;
+  --space-xs:10px;--space-sm:14px;--space-md:18px;--space-lg:28px;--space-xl:72px;
 }
 html{scroll-behavior:smooth;font-size:18px}
 body{background:var(--bg);color:var(--ivory);font-family:'DM Sans',sans-serif;font-weight:300;overflow-x:hidden;line-height:1.85}
@@ -51,8 +52,10 @@ nav{
 }
 nav.stuck{background:rgba(8,8,8,.95);backdrop-filter:blur(16px);border-color:var(--border);padding:16px 64px}
 .nav-right{display:flex;align-items:center;gap:32px}
-.nav-link{font-size:.82rem;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);text-decoration:none;transition:color .3s}
+.nav-link{font-size:.82rem;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);text-decoration:none;transition:color .3s;position:relative;padding-bottom:2px}
+.nav-link::after{content:'';position:absolute;bottom:0;left:0;right:100%;height:1px;background:var(--gold);transition:right .3s cubic-bezier(.23,1,.32,1)}
 .nav-link:hover{color:var(--gold)}
+.nav-link:hover::after{right:0}
 .nav-btn{
   font-size:.78rem;letter-spacing:.14em;text-transform:uppercase;
   color:var(--bg);background:var(--gold);padding:12px 28px;text-decoration:none;transition:background .3s;
@@ -63,9 +66,9 @@ nav.stuck{background:rgba(8,8,8,.95);backdrop-filter:blur(16px);border-color:var
 
 /* ── Hero ── */
 #hero{
-  min-height:100vh;display:flex;flex-direction:column;
-  justify-content:center;align-items:flex-start;
-  padding:140px 64px 100px;position:relative;overflow:hidden;
+  display:flex;flex-direction:column;
+  justify-content:flex-start;align-items:flex-start;
+  padding:clamp(100px,13vh,148px) 64px 80px;position:relative;overflow:hidden;
   max-width:1200px;margin:0 auto;
 }
 .hero-grid{
@@ -77,77 +80,109 @@ nav.stuck{background:rgba(8,8,8,.95);backdrop-filter:blur(16px);border-color:var
 }
 .hero-orb{
   position:absolute;top:30%;right:-10%;width:600px;height:600px;border-radius:50%;
-  background:radial-gradient(ellipse,rgba(200,168,75,.07) 0%,transparent 65%);pointer-events:none;
+  background:radial-gradient(ellipse,rgba(200,168,75,.07) 0%,transparent 65%);
+  pointer-events:none;
+  animation:orbDrift 22s ease-in-out infinite alternate;
 }
-/* ── Hero pre-headline (kicker + question) ── */
-.hero-pre{
-  margin-bottom:24px;
-  display:flex;flex-direction:column;gap:6px;
-  opacity:0;animation:up .7s .15s forwards;
+@keyframes orbDrift{
+  from{transform:translate(0,0) scale(1)}
+  to{transform:translate(-5%,4%) scale(1.1)}
 }
-.hp-kicker{
-  font-family:'Cormorant Garamond',serif;font-weight:300;font-style:italic;
-  font-size:clamp(1.6rem,3vw,2.4rem);color:var(--gold);
-  letter-spacing:.04em;line-height:1.4;
-  display:flex;align-items:center;gap:14px;
+
+/* ── Rotating headline ── */
+.hero-rotate{
+  position:relative;
+  width:100%;max-width:820px;
+  margin-bottom:16px;
+  opacity:0;animation:up .7s .1s forwards;
 }
-.hp-kicker::before{content:'';display:inline-block;width:28px;height:1px;background:var(--gold);flex-shrink:0}
-.hp-question{
-  font-family:'Cormorant Garamond',serif;font-weight:300;font-style:italic;
-  font-size:clamp(1.3rem,2.2vw,1.8rem);color:var(--ivory);
-  letter-spacing:.04em;line-height:1.45;padding-left:42px;
-}
-.hero-h1{
+/*
+  Sizer: in-flow, invisible — its text matches the longest headline phrase.
+  This forces .hero-rotate to adopt the correct minimum height naturally,
+  so absolutely-positioned lines never overflow into content below.
+*/
+.hero-rotate-sizer{
+  display:block;visibility:hidden;pointer-events:none;user-select:none;
   font-family:'Cormorant Garamond',serif;
   font-size:clamp(3rem,7vw,6.8rem);font-weight:300;line-height:1.06;
-  margin-bottom:28px;max-width:780px;opacity:0;animation:up .9s .3s forwards;
 }
-.hero-h1 em{font-style:italic;color:var(--gold)}
-.hero-p{
-  max-width:580px;margin-bottom:48px;
-  opacity:0;animation:up .85s .5s forwards;
-  display:flex;flex-direction:column;gap:0;
+.hero-rotate-line{
+  position:absolute;top:0;left:0;width:100%;
+  font-family:'Cormorant Garamond',serif;
+  font-size:clamp(3rem,7vw,6.8rem);font-weight:300;line-height:1.06;
+  color:var(--ivory);
+  opacity:0;transition:opacity 1.4s ease;
+  pointer-events:none;
 }
-.hero-p-line{
-  font-size:1.08rem;line-height:1.9;color:var(--muted);
-  padding:6px 0;
-}
-.hero-p-line + .hero-p-line{border-top:none}
-.hp-emphasis{
-  font-family:'Cormorant Garamond',serif;font-weight:400;font-style:italic;
-  font-size:clamp(1.55rem,2.8vw,2.2rem);color:var(--ivory);
-  padding-top:16px;padding-bottom:12px;
-  margin-top:8px;
-  border-top:1px solid rgba(200,168,75,.18);
-}
-.hp-strong{
-  color:var(--ivory);font-size:1.15rem;font-weight:500;
-  letter-spacing:.03em;padding-top:12px;margin-top:6px;
-}
-.hero-p strong{color:var(--ivory);font-weight:400}
-.hero-gravity{
+.hero-rotate-line.active{opacity:1;pointer-events:auto}
+
+/* ── Static anchor ── */
+.hero-anchor{
   font-family:'Cormorant Garamond',serif;font-weight:300;font-style:italic;
-  font-size:clamp(.88rem,1.3vw,.98rem);letter-spacing:.16em;text-transform:uppercase;
-  color:rgba(200,168,75,.32);margin-bottom:22px;
-  opacity:0;animation:up .75s .42s forwards;
+  font-size:clamp(1.05rem,1.7vw,1.4rem);letter-spacing:.04em;
+  color:rgba(200,168,75,.5);line-height:1.5;
+  margin-bottom:28px;
+  opacity:0;animation:up .75s .32s forwards;
 }
-.hero-actions{display:flex;gap:20px;align-items:center;opacity:0;animation:up .85s .65s forwards}
+
+/* ── Body copy ── */
+.hero-body{
+  max-width:540px;margin-bottom:28px;
+  display:flex;flex-direction:column;gap:14px;
+  opacity:0;animation:up .85s .48s forwards;
+}
+.hb-line{font-size:.98rem;line-height:1.65;color:var(--muted)}
+.hb-rule{
+  padding-top:18px;margin-top:4px;
+  border-top:1px solid rgba(200,168,75,.14);
+  color:rgba(237,232,222,.5);
+}
+
+/* ── Conversion block ── */
+.hero-convert{opacity:0;animation:up .85s .62s forwards}
+.hc-alloc{
+  font-family:'Cormorant Garamond',serif;font-style:italic;font-weight:300;
+  font-size:clamp(1.2rem,1.9vw,1.65rem);color:var(--ivory);
+  letter-spacing:.02em;margin-bottom:28px;line-height:1.4;
+}
+
+/* ── CTAs ── */
+.hero-actions{display:flex;gap:20px;align-items:center}
 .btn-primary{
   background:var(--gold);color:var(--bg);font-size:.82rem;font-weight:500;letter-spacing:.14em;
-  text-transform:uppercase;padding:18px 48px;text-decoration:none;transition:background .3s,transform .2s;
+  text-transform:uppercase;padding:18px 48px;text-decoration:none;
+  transition:background .3s,transform .2s,box-shadow .3s;
 }
-.btn-primary:hover{background:var(--gold-lt);transform:translateY(-2px)}
+.btn-primary:hover{background:var(--gold-lt);transform:translateY(-2px);box-shadow:0 10px 30px rgba(200,168,75,.18)}
 .btn-ghost{
   font-size:.82rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);
-  text-decoration:none;border-bottom:1px solid var(--border);padding-bottom:3px;transition:color .3s,border-color .3s;
+  text-decoration:none;padding-bottom:4px;position:relative;transition:color .3s;
 }
-.btn-ghost:hover{color:var(--ivory);border-color:var(--muted)}
+.btn-ghost::after{
+  content:'';position:absolute;bottom:0;left:0;right:100%;height:1px;
+  background:var(--gold-dim);transition:right .38s cubic-bezier(.23,1,.32,1);
+}
+.btn-ghost:hover{color:var(--ivory)}
+.btn-ghost:hover::after{right:0}
+
+/* ── Scroll cue ── */
 .hero-scroll{
-  position:absolute;bottom:48px;left:64px;display:flex;align-items:center;gap:16px;
+  position:absolute;bottom:48px;left:64px;
+  display:flex;flex-direction:column;align-items:center;gap:8px;
   opacity:0;animation:up .8s 1.1s forwards;
 }
-.hero-scroll span{font-size:.58rem;letter-spacing:.28em;text-transform:uppercase;color:var(--muted)}
-.scroll-line{width:48px;height:1px;background:linear-gradient(to right,var(--gold),transparent)}
+.scroll-line{width:1px;height:28px;background:linear-gradient(to bottom,transparent,rgba(200,168,75,.35))}
+.scroll-caret{
+  width:9px;height:9px;
+  border-right:1px solid rgba(200,168,75,.45);
+  border-bottom:1px solid rgba(200,168,75,.45);
+  transform:rotate(45deg);
+  animation:pullDown 2.6s ease-in-out infinite;
+}
+@keyframes pullDown{
+  0%,100%{opacity:.4;transform:rotate(45deg) translateY(0)}
+  55%{opacity:.7;transform:rotate(45deg) translateY(4px)}
+}
 
 @keyframes up{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:none}}
 
@@ -166,11 +201,11 @@ nav.stuck{background:rgba(8,8,8,.95);backdrop-filter:blur(16px);border-color:var
   max-width:1200px;margin:0 auto;
 }
 .stmt-quote{
-  position:relative;padding:48px 56px;border:1px solid var(--border);
+  position:relative;padding:28px 32px;border:1px solid var(--border);
   background:linear-gradient(135deg,rgba(200,168,75,.03) 0%,transparent 60%);
 }
-.stmt-quote::before{content:'';position:absolute;top:0;left:48px;right:48px;height:1px;background:linear-gradient(90deg,transparent,var(--gold-dim),transparent)}
-.stmt-quote::after{content:'';position:absolute;bottom:0;left:48px;right:48px;height:1px;background:linear-gradient(90deg,transparent,var(--gold-dim),transparent)}
+.stmt-quote::before{content:'';position:absolute;top:0;left:28px;right:28px;height:1px;background:linear-gradient(90deg,transparent,var(--gold-dim),transparent)}
+.stmt-quote::after{content:'';position:absolute;bottom:0;left:28px;right:28px;height:1px;background:linear-gradient(90deg,transparent,var(--gold-dim),transparent)}
 .stmt-quote .sq-mark{display:block;font-family:'Cormorant Garamond',serif;font-size:3.2rem;line-height:1;color:var(--gold-dim);margin-bottom:12px;user-select:none}
 .stmt-quote .sq-text{
   font-family:'Cormorant Garamond',serif;font-size:clamp(1.5rem,2.6vw,2.2rem);
@@ -178,7 +213,7 @@ nav.stuck{background:rgba(8,8,8,.95);backdrop-filter:blur(16px);border-color:var
 }
 .stmt-quote .sq-text strong{font-style:normal;color:var(--gold);font-weight:400}
 .stmt-quote .sq-rule{display:block;width:48px;height:1px;background:var(--gold-dim);margin:20px auto 0}
-.stmt-body p{font-size:1.05rem;line-height:1.95;color:var(--muted);margin-bottom:18px}
+.stmt-body p{font-size:1.05rem;line-height:1.72;color:var(--muted);margin-bottom:18px}
 .stmt-body p:last-child{margin-bottom:0}
 .stmt-body strong{color:var(--ivory);font-weight:400}
 .stmt-split{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-top:20px}
@@ -190,7 +225,7 @@ nav.stuck{background:rgba(8,8,8,.95);backdrop-filter:blur(16px);border-color:var
 /* ── Audience ── */
 .audience-section{border-top:1px solid var(--border);padding:72px 64px;max-width:1200px;margin:0 auto}
 .audience-grid{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--border);margin-top:40px}
-.aud-card{background:var(--deep);padding:56px 44px;position:relative;overflow:hidden;transition:background .4s}
+.aud-card{background:var(--deep);padding:40px 36px;position:relative;overflow:hidden;transition:background .4s}
 .aud-card:hover{background:var(--card)}
 .aud-card::before{
   content:'';position:absolute;top:0;left:0;right:0;height:2px;
@@ -201,27 +236,27 @@ nav.stuck{background:rgba(8,8,8,.95);backdrop-filter:blur(16px);border-color:var
 .aud-tag{font-size:.78rem;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);margin-bottom:18px;display:block}
 .aud-title{font-family:'Cormorant Garamond',serif;font-size:2rem;font-weight:300;line-height:1.25;margin-bottom:20px}
 .aud-title em{font-style:italic;color:var(--gold)}
-.aud-body{font-size:1.05rem;line-height:1.95;color:var(--muted);margin-bottom:28px}
+.aud-body{font-size:1.05rem;line-height:1.72;color:var(--muted);margin-bottom:28px}
 .aud-body strong{color:var(--ivory);font-weight:400}
 .aud-list{list-style:none;display:flex;flex-direction:column;gap:14px}
 .aud-list li{font-size:1rem;color:var(--muted);padding-left:22px;position:relative;line-height:1.8}
 .aud-list li::before{content:'';position:absolute;left:0;top:12px;width:10px;height:1px;background:var(--gold)}
 .aud-list li strong{color:var(--ivory);font-weight:400}
 .aud-cta{
-  display:inline-block;margin-top:32px;font-size:.82rem;font-weight:500;letter-spacing:.14em;
+  display:inline-block;margin-top:22px;font-size:.82rem;font-weight:500;letter-spacing:.14em;
   text-transform:uppercase;padding:16px 40px;text-decoration:none;transition:background .3s,transform .2s,border-color .3s;
   background:var(--gold);color:var(--bg);border:1px solid var(--gold);
 }
 .aud-cta:hover{background:var(--gold-lt);border-color:var(--gold-lt);transform:translateY(-2px)}
 
 /* ── WYL (What You're Licensing) ── */
-.wyl-section{border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:88px 64px;background:var(--deep)}
+.wyl-section{border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:72px 64px;background:var(--deep)}
 .wyl-inner{max-width:1200px;margin:0 auto}
-.wyl-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;margin-top:52px}
+.wyl-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;margin-top:36px}
 .wyl-card{
   background:linear-gradient(160deg,rgba(18,18,16,.98) 0%,rgba(12,12,10,1) 100%);
   border:1px solid rgba(200,168,75,.1);
-  padding:44px 36px;position:relative;overflow:hidden;
+  padding:32px 28px;position:relative;overflow:hidden;
   transition:transform .45s cubic-bezier(.23,1,.32,1),box-shadow .45s cubic-bezier(.23,1,.32,1),border-color .4s;
 }
 .wyl-card:hover{
@@ -240,65 +275,84 @@ nav.stuck{background:rgba(8,8,8,.95);backdrop-filter:blur(16px);border-color:var
 }
 .wyl-card:hover::after{transform:scaleX(1)}
 .wyl-icon{
-  font-size:1.8rem;color:var(--gold);opacity:.55;margin-bottom:22px;
+  font-size:1.8rem;color:var(--gold);opacity:.55;margin-bottom:16px;
   display:block;transition:opacity .35s,transform .45s cubic-bezier(.23,1,.32,1);line-height:1;
 }
 .wyl-card:hover .wyl-icon{opacity:1;transform:translateY(-3px)}
 .wyl-title{font-family:'Cormorant Garamond',serif;font-size:1.35rem;font-weight:400;letter-spacing:.02em;line-height:1.25;margin-bottom:14px;color:var(--ivory)}
-.wyl-desc{font-size:.88rem;line-height:2;color:var(--muted);opacity:.82}
+.wyl-desc{font-size:.88rem;line-height:1.7;color:var(--muted);opacity:.82}
 
-/* ── Positioning block ── */
-.positioning-block{
+/* ── Position block (split composition) ── */
+.pos-block{
   border-top:1px solid rgba(154,122,48,.18);
-  padding:96px 64px;
+  padding:72px 64px;
   background:var(--bg);
+  position:relative;overflow:hidden;
 }
-.positioning-inner{
-  max-width:760px;
-  margin:0 auto;
+.pos-block-inner{
+  max-width:1200px;margin:0 auto;
+  display:grid;grid-template-columns:1.1fr 1fr;gap:72px;align-items:center;
 }
-.pos-line{
-  display:block;
-  font-size:1rem;
-  font-weight:300;
-  line-height:1.75;
-  color:var(--muted);
-  opacity:.8;
-  margin-bottom:14px;
-}
-.pos-line:last-child{margin-bottom:0}
-.pos-line.lead{
+.pos-left{position:relative;z-index:2}
+.pos-h2{
   font-family:'Cormorant Garamond',serif;
-  font-size:clamp(1.35rem,2.2vw,1.75rem);
-  font-weight:300;
-  letter-spacing:.02em;
-  color:var(--ivory);
-  opacity:1;
-  margin-bottom:28px;
+  font-size:clamp(3.2rem,5vw,4.5rem);font-weight:300;line-height:1.06;
+  color:var(--ivory);margin-bottom:16px;letter-spacing:-.01em;
 }
-.pos-line.emphasis{
-  color:var(--gold);
-  opacity:1;
-  font-size:1.02rem;
-  letter-spacing:.01em;
-  margin-top:10px;
+.pos-rule{
+  width:48px;height:1px;
+  background:linear-gradient(to right,var(--gold),transparent);
+  margin-bottom:20px;
 }
-.pos-line.strong{
-  color:var(--ivory);
-  opacity:.95;
-  font-size:1.02rem;
-  font-weight:400;
-  margin-top:10px;
+.pos-support{
+  font-size:clamp(.94rem,1.3vw,1.08rem);font-weight:300;
+  color:rgba(168,168,160,.65);line-height:1.6;margin-bottom:20px;
   letter-spacing:.01em;
+}
+.pos-gold{
+  display:block;
+  font-family:'Cormorant Garamond',serif;font-style:italic;font-weight:300;
+  font-size:clamp(1.05rem,1.6vw,1.25rem);
+  color:var(--gold);letter-spacing:.02em;line-height:1.5;
+  margin-bottom:20px;
+  text-shadow:0 0 28px rgba(200,168,75,.22);
+}
+.pos-proof{
+  list-style:none;display:flex;flex-direction:column;gap:10px;
+  margin-bottom:24px;max-width:520px;
+}
+.pos-proof li{
+  font-size:1.08rem;font-weight:300;
+  color:var(--muted);line-height:1.65;
+  padding-left:18px;position:relative;
+}
+.pos-proof li::before{
+  content:'';position:absolute;left:0;top:.65em;
+  width:8px;height:1px;background:var(--gold-dim);
+}
+.pos-close{
+  display:block;
+  font-size:1.08rem;font-weight:400;color:var(--ivory);
+  letter-spacing:.02em;line-height:1.5;
+  padding-top:20px;border-top:1px solid rgba(200,168,75,.12);
+}
+.pos-right{
+  position:relative;
+  display:flex;align-items:center;justify-content:center;
+  min-height:280px;
+}
+.pos-canvas{
+  display:block;width:100%;height:320px;
+  max-width:460px;opacity:.9;
 }
 @media(max-width:900px){
-  .positioning-block{padding:64px 24px}
-  .pos-line{font-size:.97rem;margin-bottom:16px}
-  .pos-line.lead{font-size:clamp(1.2rem,5vw,1.5rem);margin-bottom:24px}
+  .pos-block{padding:52px 24px}
+  .pos-block-inner{grid-template-columns:1fr;gap:36px}
+  .pos-canvas{height:200px;max-width:100%}
 }
 @media(max-width:520px){
-  .positioning-block{padding:52px 20px}
-  .pos-line{font-size:.95rem}
+  .pos-block{padding:40px 20px}
+  .pos-right{display:none}
 }
 
 /* ── Crypto acceptance block ── */
@@ -355,14 +409,14 @@ nav.stuck{background:rgba(8,8,8,.95);backdrop-filter:blur(16px);border-color:var
 .steps-section{background:var(--deep);border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
 .steps-wrap{max-width:1200px;margin:0 auto;padding:72px 64px}
 .steps-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--border);margin-top:40px}
-.step{background:var(--deep);padding:48px 32px;position:relative;overflow:hidden;transition:background .4s}
+.step{background:var(--deep);padding:36px 28px;position:relative;overflow:hidden;transition:background .4s}
 .step::after{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--gold),transparent);transform:scaleX(0);transition:transform .5s cubic-bezier(.23,1,.32,1)}
 .step:hover{background:var(--card)}
 .step:hover::after{transform:scaleX(1)}
 .step-n{font-family:'Cormorant Garamond',serif;font-size:3.6rem;font-weight:300;color:rgba(200,168,75,.25);line-height:1;margin-bottom:16px;transition:color .3s}
 .step:hover .step-n{color:rgba(200,168,75,.45)}
 .step-title{font-family:'Cormorant Garamond',serif;font-size:1.6rem;font-weight:400;line-height:1.15;margin-bottom:10px;color:var(--ivory)}
-.step-desc{font-size:.92rem;line-height:1.85;color:var(--muted)}
+.step-desc{font-size:.92rem;line-height:1.70;color:var(--muted)}
 
 /* ── URL Lock ── */
 .url-lock{
@@ -372,7 +426,7 @@ nav.stuck{background:rgba(8,8,8,.95);backdrop-filter:blur(16px);border-color:var
 .url-lock-inner{max-width:1200px;margin:0 auto;display:grid;grid-template-columns:1fr 1.4fr;gap:64px;align-items:center}
 .ul-title{font-family:'Cormorant Garamond',serif;font-size:clamp(1.8rem,3vw,2.6rem);font-weight:300;line-height:1.3;margin-top:14px}
 .ul-title em{font-style:italic;color:var(--gold)}
-.ul-body{font-size:1rem;line-height:1.9;color:var(--muted)}
+.ul-body{font-size:1rem;line-height:1.75;color:var(--muted)}
 .ul-body strong{color:var(--ivory);font-weight:400}
 .ul-lead{font-size:1.05rem;color:var(--muted);margin-top:18px;line-height:1.7}
 .ul-note{margin-top:20px;padding:16px 20px;border:1px solid var(--border);border-radius:2px;background:var(--card)}
@@ -396,7 +450,7 @@ nav.stuck{background:rgba(8,8,8,.95);backdrop-filter:blur(16px);border-color:var
 .integrity-block::before{content:'';position:absolute;top:0;left:0;bottom:0;width:2px;background:var(--gold-dim)}
 .ib-label{font-size:.7rem;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);margin-bottom:10px;display:block}
 .ib-title{font-family:'Cormorant Garamond',serif;font-size:1.35rem;font-weight:400;margin-bottom:10px;color:var(--ivory)}
-.ib-body{font-size:.94rem;line-height:1.9;color:var(--muted)}
+.ib-body{font-size:.94rem;line-height:1.75;color:var(--muted)}
 .ib-body strong{color:var(--ivory);font-weight:400}
 
 /* ── Pricing / Offer ── */
@@ -404,61 +458,274 @@ nav.stuck{background:rgba(8,8,8,.95);backdrop-filter:blur(16px);border-color:var
 .offer-intro{display:grid;grid-template-columns:1fr 1fr;gap:56px;margin-bottom:40px;align-items:end}
 .offer-note{font-size:1rem;line-height:1.9;color:var(--muted)}
 .offer-note strong{color:var(--ivory);font-weight:400}
-.tier-grid-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:1px;background:var(--border)}
-.tier{background:var(--deep);padding:52px 44px;position:relative;overflow:hidden;transition:background .4s}
-.tier:hover{background:var(--card)}
-.tier.prime{background:var(--card)}
-.tier.prime::before{
-  content:'';position:absolute;top:0;left:0;right:0;height:2px;
-  background:linear-gradient(90deg,transparent,var(--gold),transparent);
+/* ── Tier grid ─────────────────────────────────────────────── */
+.tier-grid-3{
+  display:grid;grid-template-columns:1fr 1fr 1fr;
+  gap:0;background:transparent;
+  align-items:start;
+  position:relative;
 }
-.tier.starter{background:var(--deep);opacity:.9}
-.tier.starter .tier-flag{color:var(--muted)}
-.tier.starter .tier-price{font-size:2.8rem;color:var(--muted)}
-.tier.starter .tier-price sup{color:var(--muted)}
-.tier-flag{font-size:.7rem;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);margin-bottom:16px;display:block}
-.tier-name{font-family:'Cormorant Garamond',serif;font-size:1.9rem;font-weight:300;margin-bottom:6px}
-.tier-urls{font-size:.82rem;color:var(--muted);letter-spacing:.04em;margin-bottom:32px;padding-bottom:32px;border-bottom:1px solid var(--border)}
-.tier-price{font-family:'Cormorant Garamond',serif;font-size:4.2rem;font-weight:300;color:var(--gold);line-height:1;margin-bottom:6px}
-.tier-price sup{font-size:1.8rem;vertical-align:top;margin-top:14px;color:var(--gold-dim)}
-.tier-price sub{font-size:1.1rem;color:var(--muted)}
-.tier-commitment{font-size:.82rem;color:var(--muted);margin-bottom:36px;line-height:1.7}
-.tier-features{list-style:none;display:flex;flex-direction:column;gap:10px;margin-bottom:40px}
-.tier-features li{font-size:.92rem;color:var(--muted);padding-left:20px;position:relative;line-height:1.75}
-.tier-features li::before{content:'';position:absolute;left:0;top:10px;width:9px;height:1px;background:var(--gold)}
+/* ambient radial glow behind focal card */
+.tier-grid-3::before{
+  content:'';
+  position:absolute;top:-80px;left:33.33%;width:33.34%;height:calc(100% + 160px);
+  background:radial-gradient(ellipse at 50% 38%,rgba(200,168,75,.06) 0%,transparent 68%);
+  pointer-events:none;z-index:0;
+}
+
+/* ── Base card ── */
+.tier{
+  background:var(--deep);padding:44px 40px;
+  position:relative;overflow:hidden;z-index:1;
+  border:1px solid rgba(200,168,75,.08);
+  opacity:0;transform:translateY(18px);
+  transition:
+    opacity .65s cubic-bezier(.23,1,.32,1),
+    transform .65s cubic-bezier(.23,1,.32,1),
+    border-color .3s,box-shadow .35s,background .3s;
+}
+.tier.vis{opacity:1;transform:none}
+.tier-grid-3 .tier:nth-child(1){transition-delay:.07s}
+.tier-grid-3 .tier:nth-child(2){transition-delay:.17s}
+.tier-grid-3 .tier:nth-child(3){transition-delay:.27s}
+.tier:hover{
+  background:rgba(13,12,10,1);
+  transform:translateY(-4px);
+  border-color:rgba(200,168,75,.18);
+  box-shadow:0 20px 60px rgba(0,0,0,.6);
+}
+
+/* ── Entry Access — reduced visual weight ── */
+.tier.starter{
+  background:var(--deep);
+  padding:36px 32px;
+}
+.tier.starter .tier-flag{color:rgba(200,168,75,.4);font-size:.65rem}
+.tier.starter .tier-name{font-size:1.5rem;color:var(--muted)}
+.tier.starter .tier-price{font-size:2.4rem;color:rgba(200,168,75,.35)}
+.tier.starter .tier-price sup{color:rgba(200,168,75,.35)}
+.tier.starter .tier-commitment{color:rgba(168,168,160,.5)}
+.tier.starter .tier-cta{
+  color:rgba(200,168,75,.45);
+  border:1px solid rgba(200,168,75,.18);
+  font-size:.72rem;
+}
+.tier.starter .tier-cta:hover{
+  background:rgba(200,168,75,.06);
+  border-color:rgba(200,168,75,.3);
+  color:var(--gold-dim);
+}
+.tier.starter .tier-book{
+  border-color:rgba(255,255,255,.07);
+  color:rgba(168,168,160,.45);
+}
+.tier.starter .tier-book:hover{
+  border-color:rgba(200,168,75,.18);
+  color:rgba(200,168,75,.45);
+}
+
+/* ── 5K card — primary focal point ── */
+.tier.focal{
+  background:rgba(14,13,11,1);
+  padding:52px 44px;
+  transform:scale(1.03) translateY(12px);
+  z-index:2;
+  border-color:rgba(200,168,75,.16);
+  box-shadow:
+    0 0 64px rgba(200,168,75,.04),
+    0 28px 72px rgba(0,0,0,.55);
+}
+.tier.focal.vis{opacity:1;transform:scale(1.03) translateY(-6px)}
+.tier.focal:hover{
+  transform:scale(1.03) translateY(-10px);
+  border-color:rgba(200,168,75,.26);
+  box-shadow:
+    0 0 80px rgba(200,168,75,.07),
+    0 32px 80px rgba(0,0,0,.65);
+  background:rgba(16,15,12,1);
+}
+.tier.focal::before{
+  content:'';
+  position:absolute;top:0;left:0;right:0;height:1px;
+  background:linear-gradient(90deg,transparent,rgba(200,168,75,.5),transparent);
+}
+.tier.focal .tier-flag{color:var(--gold)}
+.tier.focal .tier-cta{
+  background:var(--gold);
+  color:var(--bg);
+  border:1px solid var(--gold);
+}
+.tier.focal .tier-cta:hover{
+  background:var(--gold-lt);
+  border-color:var(--gold-lt);
+  box-shadow:0 8px 24px rgba(200,168,75,.18);
+  transform:translateY(-2px);
+}
+
+/* ── 10K card ── */
+.tier.prime{background:rgba(12,11,9,1)}
+.tier.prime::before{
+  content:'';
+  position:absolute;top:0;left:0;right:0;height:1px;
+  background:linear-gradient(90deg,transparent,rgba(200,168,75,.25),transparent);
+}
+.tier.prime .tier-cta{background:var(--gold);color:var(--bg);border:1px solid var(--gold)}
+.tier.prime .tier-cta:hover{
+  background:var(--gold-lt);border-color:var(--gold-lt);
+  box-shadow:0 8px 24px rgba(200,168,75,.18);
+  transform:translateY(-2px);
+}
+
+/* ── Shared type ── */
+.tier-flag{font-size:.65rem;letter-spacing:.22em;text-transform:uppercase;color:var(--gold-dim);margin-bottom:20px;display:block}
+.tier-name{font-family:'Cormorant Garamond',serif;font-size:2rem;font-weight:300;margin-bottom:8px}
+.tier-urls{font-size:.8rem;color:var(--muted);letter-spacing:.03em;margin-bottom:24px;padding-bottom:24px;border-bottom:1px solid rgba(200,168,75,.08)}
+.tier-price{font-family:'Cormorant Garamond',serif;font-size:4.6rem;font-weight:300;color:var(--gold);line-height:1;margin-bottom:10px}
+.tier-price sup{font-size:1.6rem;vertical-align:top;margin-top:16px;color:var(--gold-dim);opacity:.7}
+.tier-price sub{font-size:.82rem;color:rgba(168,168,160,.42);letter-spacing:.01em}
+.tier-commitment{font-size:.8rem;color:var(--muted);margin-bottom:28px;line-height:1.75}
+
+/* ── Feature rows with SVG icons ── */
+.tier-features{list-style:none;display:flex;flex-direction:column;gap:14px;margin-bottom:32px}
+.tier-features li{
+  display:flex;align-items:flex-start;gap:11px;
+  font-size:.88rem;color:var(--muted);line-height:1.65;
+}
+.tier-features li svg{
+  flex-shrink:0;margin-top:1px;
+  width:16px;height:16px;
+  color:var(--gold-dim);
+  opacity:.75;
+}
+.tier.focal .tier-features li svg{opacity:1;color:var(--gold)}
 .tier-features li strong{color:var(--ivory);font-weight:400}
-.tier-features .soon{color:var(--gold);font-style:normal}
+.tier-features .soon{color:var(--gold-dim);font-style:normal;font-size:.8rem}
+
+/* ── CTAs ── */
 .tier-cta{
-  display:block;text-align:center;font-size:.78rem;letter-spacing:.16em;text-transform:uppercase;
+  display:block;text-align:center;font-size:.76rem;letter-spacing:.16em;text-transform:uppercase;
   padding:16px;text-decoration:none;transition:all .3s;
 }
 .tier .tier-cta{color:var(--gold);border:1px solid var(--gold-dim)}
-.tier .tier-cta:hover,.tier.prime .tier-cta:hover{background:var(--gold-lt);color:var(--bg);border-color:var(--gold-lt)}
-.tier.prime .tier-cta{background:var(--gold);color:var(--bg);border:1px solid var(--gold)}
+.tier .tier-cta:hover{background:var(--gold-lt);color:var(--bg);border-color:var(--gold-lt)}
 .tier-book{
   display:block;width:100%;margin-top:10px;padding:12px 16px;background:transparent;
-  border:1px solid var(--border);color:var(--muted);font-size:.78rem;font-weight:400;
+  border:1px solid rgba(200,168,75,.1);color:var(--muted);font-size:.72rem;font-weight:400;
   letter-spacing:.12em;text-transform:uppercase;cursor:pointer;transition:all .3s;
   font-family:'DM Sans',sans-serif;
 }
 .tier-book:hover{border-color:var(--gold-dim);color:var(--gold)}
+
+/* ── Gated note (Entry) ── */
 .tier-gated{
-  margin-top:12px;padding:14px 16px;border:1px solid var(--border);
-  font-size:.82rem;line-height:1.7;color:var(--muted);
+  margin-top:16px;padding:14px 16px;border:1px solid rgba(200,168,75,.08);
+  font-size:.8rem;line-height:1.7;color:rgba(168,168,160,.6);
   display:flex;align-items:flex-start;gap:10px;
 }
-.tier-gated-icon{color:var(--gold);flex-shrink:0;margin-top:1px;font-size:.8rem}
-.tier-gated strong{color:var(--ivory);font-weight:400}
+.tier-gated-icon{color:rgba(200,168,75,.4);flex-shrink:0;margin-top:1px;font-size:.8rem}
+.tier-gated strong{color:rgba(237,232,222,.5);font-weight:400}
+
+/* ── Market Allocation ── */
+.alloc-section{padding:68px 64px;max-width:1200px;margin:0 auto;position:relative}
+.alloc-layout{display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:start}
+
+/* left copy */
+.alloc-eyebrow{
+  font-size:.68rem;letter-spacing:.28em;text-transform:uppercase;
+  color:var(--gold);display:flex;align-items:center;gap:14px;margin-bottom:16px;
+}
+.alloc-eyebrow::before{content:'';width:28px;height:1px;background:var(--gold)}
+.alloc-hed{
+  font-family:'Cormorant Garamond',serif;font-size:clamp(2.4rem,3.8vw,3.4rem);
+  font-weight:300;line-height:1.1;color:var(--ivory);margin-bottom:14px;
+}
+.alloc-hed em{font-style:italic;color:rgba(200,168,75,.75)}
+.alloc-sub{
+  font-size:1rem;color:var(--muted);line-height:1.9;margin-bottom:18px;
+  display:flex;flex-direction:column;gap:10px;
+}
+.alloc-sub em{
+  font-family:'Cormorant Garamond',serif;font-style:italic;
+  color:var(--ivory);font-size:1.08rem;
+}
+.alloc-reinforce{
+  font-size:.9rem;color:rgba(237,232,222,.55);line-height:1.70;
+  display:flex;flex-direction:column;gap:7px;margin-bottom:18px;
+  padding-left:20px;border-left:1px solid rgba(200,168,75,.2);
+}
+.alloc-urgency{
+  font-family:'Cormorant Garamond',serif;font-style:italic;font-weight:300;
+  font-size:clamp(1.15rem,1.9vw,1.55rem);color:rgba(200,168,75,.72);
+  line-height:1.65;margin-bottom:18px;
+}
+.alloc-convert-label{
+  display:block;font-size:.7rem;letter-spacing:.22em;text-transform:uppercase;
+  color:rgba(168,168,160,.55);margin-bottom:18px;
+}
+.alloc-actions{display:flex;gap:16px;align-items:center;flex-wrap:wrap}
+
+/* right panel */
+.alloc-panel{position:relative}
+.alloc-panel-label{
+  font-size:.7rem;letter-spacing:.24em;text-transform:uppercase;
+  color:rgba(168,168,160,.5);margin-bottom:18px;
+  display:flex;align-items:center;gap:10px;
+}
+.alloc-panel-label::after{content:'';flex:1;height:1px;background:rgba(200,168,75,.1)}
+.alloc-grid{
+  display:grid;grid-template-columns:1fr 1fr;
+  gap:1px;background:rgba(200,168,75,.07);
+}
+.alloc-cell{
+  background:var(--bg);padding:30px 26px;position:relative;overflow:hidden;
+  transition:background .3s;
+}
+.alloc-cell::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:1px;
+  background:linear-gradient(90deg,transparent,rgba(200,168,75,.1),transparent);
+}
+.alloc-cell:hover{background:rgba(14,13,10,1)}
+.alloc-region{
+  font-family:'Cormorant Garamond',serif;font-weight:300;
+  font-size:1.12rem;color:var(--ivory);margin-bottom:4px;line-height:1.25;
+}
+.alloc-states{
+  font-size:.78rem;color:rgba(168,168,160,.6);letter-spacing:.04em;margin-bottom:12px;
+}
+.alloc-status{display:flex;align-items:center;gap:8px}
+.alloc-dot{
+  width:7px;height:7px;border-radius:50%;flex-shrink:0;
+  box-shadow:0 0 5px currentColor;
+}
+.alloc-dot.allocated{background:rgba(200,80,80,.8);color:rgba(200,80,80,.8)}
+.alloc-dot.limited{background:rgba(200,168,75,.72);color:rgba(200,168,75,.72)}
+.alloc-dot.open{background:rgba(80,160,100,.65);color:rgba(80,160,100,.65)}
+.alloc-status-label{font-size:.72rem;letter-spacing:.15em;text-transform:uppercase}
+.alloc-status-label.allocated{color:rgba(215,100,100,.75)}
+.alloc-status-label.limited{color:rgba(200,168,75,.75)}
+.alloc-status-label.open{color:rgba(80,160,100,.72)}
+.alloc-legend{
+  margin-top:16px;padding:15px 22px;border:1px solid var(--border);
+  display:flex;gap:24px;align-items:center;flex-wrap:wrap;
+}
+.alloc-legend-item{display:flex;align-items:center;gap:8px}
+.alloc-legend-label{font-size:.72rem;letter-spacing:.13em;text-transform:uppercase;color:rgba(168,168,160,.6)}
+.alloc-avail-note{
+  margin-top:14px;padding:18px 22px;
+  border:1px solid rgba(200,168,75,.12);
+  font-size:.88rem;line-height:1.75;color:rgba(168,168,160,.7);
+}
+.alloc-avail-note strong{color:rgba(237,232,222,.65);font-weight:400}
 
 /* ── Access section (replaces proof strip) ── */
-.access-section{padding:88px 64px;max-width:1200px;margin:0 auto}
+.access-section{padding:72px 64px;max-width:1200px;margin:0 auto}
 .access-eyebrow{font-size:.72rem;letter-spacing:.26em;text-transform:uppercase;color:var(--gold);display:flex;align-items:center;gap:16px;margin-bottom:20px}
 .access-eyebrow::before{content:'';width:28px;height:1px;background:var(--gold)}
 .access-headline{font-family:'Cormorant Garamond',serif;font-size:clamp(2.2rem,3.5vw,3.2rem);font-weight:300;line-height:1.12;max-width:640px;margin-bottom:14px}
 .access-headline em{font-style:italic;color:var(--gold)}
-.access-subline{font-size:1rem;color:var(--muted);max-width:520px;line-height:1.8;margin-bottom:64px}
+.access-subline{font-size:1rem;color:var(--muted);max-width:520px;line-height:1.8;margin-bottom:40px}
 .access-grid{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:rgba(200,168,75,.08)}
-.ac-card{background:var(--bg);padding:52px 52px;position:relative;overflow:hidden;transition:transform .28s cubic-bezier(.23,1,.32,1),box-shadow .28s cubic-bezier(.23,1,.32,1),background .28s;cursor:default}
+.ac-card{background:var(--bg);padding:40px 40px;position:relative;overflow:hidden;transition:transform .28s cubic-bezier(.23,1,.32,1),box-shadow .28s cubic-bezier(.23,1,.32,1),background .28s;cursor:default}
 .ac-card::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(200,168,75,.12),transparent)}
 .ac-card::after{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 20% 50%,rgba(200,168,75,.04) 0%,transparent 65%);opacity:0;transition:opacity .35s;pointer-events:none}
 .ac-card:hover{transform:translateY(-4px);background:rgba(14,13,10,1);box-shadow:0 24px 64px rgba(0,0,0,.65),0 0 0 1px rgba(200,168,75,.14)}
@@ -468,20 +735,121 @@ nav.stuck{background:rgba(8,8,8,.95);backdrop-filter:blur(16px);border-color:var
 .ac-head{font-family:'Cormorant Garamond',serif;font-size:clamp(1.55rem,2.2vw,2rem);font-weight:400;line-height:1.15;color:var(--ivory);margin-bottom:14px;letter-spacing:-.01em}
 .ac-head em{font-style:italic;color:var(--gold)}
 .ac-impact{font-size:.96rem;font-weight:400;color:var(--ivory);opacity:.85;margin-bottom:18px;letter-spacing:.01em;line-height:1.5}
-.ac-body{font-size:.88rem;line-height:1.9;color:var(--muted);max-width:420px}
+.ac-body{font-size:.88rem;line-height:1.75;color:var(--muted);max-width:420px}
 
-/* ── Roadmap ── */
-.roadmap{border-top:1px solid var(--border);padding:72px 64px;max-width:1200px;margin:0 auto}
-.rm-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:28px;margin-top:36px}
-.rm-item{padding:28px 24px;border:1px solid var(--border);position:relative;overflow:hidden;transition:background .3s}
-.rm-item:hover{background:var(--deep)}
-.rm-item::after{
-  content:'Coming Soon';position:absolute;top:14px;right:12px;
-  font-size:.54rem;letter-spacing:.18em;text-transform:uppercase;
-  color:var(--gold-dim);border:1px solid var(--gold-dim);padding:3px 8px;
+/* ── Platform Expansion section ── */
+.expansion{
+  border-top:1px solid var(--border);padding:72px 64px;
+  position:relative;overflow:hidden;
 }
-.rm-title{font-family:'Cormorant Garamond',serif;font-size:1.3rem;font-weight:400;margin-bottom:8px}
-.rm-desc{font-size:.9rem;line-height:1.85;color:var(--muted)}
+.expansion::before{
+  content:'';
+  position:absolute;top:0;left:50%;transform:translateX(-50%);
+  width:600px;height:400px;pointer-events:none;z-index:0;
+  background:radial-gradient(ellipse at 50% 0%,rgba(200,168,75,.04) 0%,transparent 70%);
+}
+.expansion-inner{max-width:1200px;margin:0 auto;position:relative;z-index:1}
+.exp-hed-block{margin-bottom:48px}
+.exp-gold-line{
+  display:block;
+  font-family:'Cormorant Garamond',serif;font-style:italic;font-weight:300;
+  font-size:clamp(1rem,1.5vw,1.2rem);color:var(--gold);
+  letter-spacing:.02em;margin-top:12px;
+}
+.exp-grid{
+  display:grid;grid-template-columns:repeat(3,1fr);gap:24px;
+  margin-bottom:48px;
+}
+.exp-card{
+  padding:40px 36px 44px;
+  border:1px solid var(--border);
+  background:var(--deep);
+  position:relative;overflow:hidden;
+  opacity:0;transform:translateY(20px);
+  transition:
+    opacity .7s cubic-bezier(.23,1,.32,1),
+    transform .7s cubic-bezier(.23,1,.32,1),
+    border-color .35s,
+    box-shadow .35s,
+    background .35s;
+}
+.exp-card.vis{
+  opacity:1;transform:none;
+}
+.exp-card:nth-child(1){transition-delay:.08s}
+.exp-card:nth-child(2){transition-delay:.18s}
+.exp-card:nth-child(3){transition-delay:.28s}
+.exp-card::before{
+  content:'';
+  position:absolute;top:0;left:0;right:0;height:1px;
+  background:linear-gradient(90deg,transparent,rgba(200,168,75,.15),transparent);
+  transition:background .35s;
+}
+.exp-card::after{
+  content:'';
+  position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
+  width:200px;height:200px;border-radius:50%;pointer-events:none;
+  background:radial-gradient(ellipse,rgba(200,168,75,.04) 0%,transparent 70%);
+  opacity:0;transition:opacity .5s;
+}
+.exp-card:hover{
+  transform:translateY(-6px);
+  border-color:rgba(200,168,75,.28);
+  box-shadow:0 12px 48px rgba(0,0,0,.5),0 0 0 1px rgba(200,168,75,.1);
+  background:var(--card);
+}
+.exp-card:hover::before{background:linear-gradient(90deg,transparent,rgba(200,168,75,.3),transparent)}
+.exp-card:hover::after{opacity:1}
+.exp-dev-tag{
+  display:inline-block;
+  font-size:.56rem;letter-spacing:.2em;text-transform:uppercase;
+  color:rgba(200,168,75,.4);border:1px solid rgba(200,168,75,.18);
+  padding:3px 8px;margin-bottom:20px;
+}
+.exp-title{
+  font-family:'Cormorant Garamond',serif;
+  font-size:clamp(1.4rem,1.9vw,1.75rem);font-weight:400;
+  line-height:1.15;margin-bottom:10px;color:var(--ivory);
+  transition:color .3s;
+}
+.exp-card:hover .exp-title{color:var(--ivory)}
+.exp-punch{
+  font-size:.98rem;font-weight:400;
+  color:rgba(237,232,222,.72);
+  line-height:1.5;margin-bottom:12px;
+  letter-spacing:.01em;
+  transition:color .3s;
+}
+.exp-card:hover .exp-punch{color:rgba(237,232,222,.9)}
+.exp-body{
+  font-size:.88rem;line-height:1.7;
+  color:var(--muted);opacity:.85;
+}
+.exp-footer{
+  text-align:center;
+  padding-top:36px;
+  border-top:1px solid rgba(200,168,75,.08);
+}
+.exp-footer-line{
+  display:block;
+  font-size:.94rem;color:var(--muted);line-height:1.6;margin-bottom:8px;
+}
+.exp-footer-accent{
+  display:block;
+  font-family:'Cormorant Garamond',serif;font-style:italic;
+  font-size:clamp(1.05rem,1.6vw,1.2rem);color:var(--gold);
+  letter-spacing:.02em;
+}
+@media(max-width:900px){
+  .expansion{padding:48px 24px}
+  .exp-hed-block{margin-bottom:36px}
+  .exp-grid{grid-template-columns:1fr;gap:16px}
+  .exp-card{padding:32px 28px 36px}
+}
+@media(max-width:520px){
+  .expansion{padding:36px 20px}
+  .exp-card{padding:28px 22px 32px}
+}
 
 /* ── Contact ── */
 #contact{background:var(--deep);border-top:1px solid var(--border);padding:72px 64px}
@@ -577,20 +945,16 @@ footer{border-top:1px solid var(--border);padding:36px 64px;display:flex;flex-di
   .nav-btn{display:none}
   .nav-account{display:inline-flex;padding:12px 24px;font-size:.78rem;letter-spacing:.14em;border-radius:3px;min-height:44px;align-items:center}
   .nav-account-full{display:none}.nav-account-short{display:inline}
-  #hero{padding:110px 24px 60px;min-height:auto}
-  .hero-h1{font-size:clamp(2.6rem,9vw,3.8rem);max-width:100%;margin-bottom:20px;line-height:1.05}
-  .hero-pre{margin-bottom:16px;gap:4px}
-  .hp-kicker{font-size:clamp(1.45rem,5.5vw,2rem)}
-  .hp-question{font-size:clamp(1.15rem,4vw,1.55rem);padding-left:42px}
-  .hero-p{margin-bottom:32px}
-  .hero-p-line{font-size:1.15rem;padding:5px 0}
-  .hp-emphasis{font-size:clamp(1.5rem,6vw,2rem);padding-top:14px;padding-bottom:10px}
-  .hp-strong{font-size:1.15rem}
+  #hero{padding:88px 24px 60px}
   .hero-actions{flex-direction:column;gap:16px;width:100%}
   .btn-primary{width:100%;text-align:center;padding:16px 24px}
   .btn-ghost{text-align:center}
   .hero-orb{display:none}
   .hero-scroll{left:20px;bottom:32px}
+  .alloc-section{padding:64px 24px}
+  .alloc-layout{grid-template-columns:1fr;gap:48px}
+  .alloc-actions{flex-direction:column;gap:16px;width:100%;}
+  .alloc-actions .btn-primary{width:100%;text-align:center}
   .statement{grid-template-columns:1fr;gap:32px;padding:48px 24px}
   .stmt-quote{padding:32px 24px}
   .stmt-quote .sq-mark{font-size:2.4rem;margin-bottom:8px}
@@ -613,8 +977,7 @@ footer{border-top:1px solid var(--border);padding:36px 64px;display:flex;flex-di
   .step-title{font-size:1.2rem}
   .integrity-grid{grid-template-columns:1fr}
   .integrity-block{padding:28px 24px}
-  .rm-grid{grid-template-columns:1fr}
-  .rm-item{padding:22px 20px}
+  /* exp-grid mobile handled by expansion @media block */
   .url-lock-inner{grid-template-columns:1fr;gap:28px}
   .ul-title{font-size:clamp(1.5rem,5vw,2rem)}
   .ul-lead{font-size:.95rem}
@@ -627,6 +990,10 @@ footer{border-top:1px solid var(--border);padding:36px 64px;display:flex;flex-di
   .tier-name{font-size:1.6rem}
   .tier-price{font-size:3.2rem}
   .tier-price sup{font-size:1.4rem}
+  .tier.focal{transform:none;border:1px solid rgba(200,168,75,.12)}
+  .tier.focal.vis{transform:none}
+  .tier.focal:hover{transform:translateY(-4px)}
+  .tier-grid-3::before{display:none}
   .frow{grid-template-columns:1fr}
   .fg input,.fg textarea,.fg select{font-size:16px;padding:14px 16px}
   .fsub{width:100%;text-align:center;padding:16px 24px}
@@ -636,7 +1003,7 @@ footer{border-top:1px solid var(--border);padding:36px 64px;display:flex;flex-di
   .c-meta{gap:16px;margin-top:24px}
   .audience-section,.url-lock,.wyl-section,.url-section{padding:48px 24px}
   .steps-wrap,.integrity-section{padding:48px 24px}
-  #offer,.roadmap,#contact,footer{padding:48px 24px}
+  #offer,#contact,footer{padding:48px 24px}
   .footer-main{flex-direction:column;gap:12px;text-align:center}
   .btt{bottom:20px;right:20px;width:42px;height:42px}
   .gate-box{padding:36px 24px}
@@ -648,18 +1015,12 @@ footer{border-top:1px solid var(--border);padding:36px 64px;display:flex;flex-di
 }
 @media(max-width:520px){
   html{font-size:16px}
-  #hero{padding:100px 20px 48px}
-  .hero-h1{font-size:clamp(2.8rem,11vw,3.8rem);line-height:1.04}
-  .hero-pre{gap:3px;margin-bottom:14px}
-  .hp-kicker{font-size:clamp(1.3rem,6vw,1.75rem)}
-  .hp-question{font-size:clamp(1.05rem,4.5vw,1.35rem);padding-left:42px}
-  .hero-p{margin-bottom:28px}
-  .hero-p-line{font-size:1.05rem;padding:5px 0}
-  .hp-emphasis{font-size:clamp(1.3rem,6vw,1.7rem);padding-top:12px;padding-bottom:8px}
-  .hp-strong{font-size:1.05rem}
+  #hero{padding:80px 20px 48px}
   .hero-scroll{display:none}
+  .alloc-section{padding:48px 20px}
+  .alloc-sub{max-width:100%}
   .wyl-icon{font-size:2.2rem;margin-bottom:20px}
-  .wyl-card{padding:36px 28px}
+  .wyl-card{padding:30px 24px}
   .wyl-title{font-size:1.3rem}
   .proof-icon{font-size:1.8rem;margin-bottom:10px}
   .wyl-grid,.steps-grid{grid-template-columns:1fr}
@@ -669,7 +1030,7 @@ footer{border-top:1px solid var(--border);padding:36px 64px;display:flex;flex-di
   .stmt-quote::before,.stmt-quote::after{left:18px;right:18px}
   .audience-section,.url-lock,.wyl-section,.url-section{padding:36px 20px}
   .steps-wrap,.integrity-section{padding:36px 20px}
-  #offer,.roadmap,#contact,footer{padding:36px 20px}
+  #offer,#contact,footer{padding:36px 20px}
   .aud-card{padding:32px 18px}
   .tier{padding:32px 20px}
   .tier-price{font-size:2.6rem}
@@ -677,6 +1038,221 @@ footer{border-top:1px solid var(--border);padding:36px 64px;display:flex;flex-di
   .contact-inner{gap:28px}
   .gate-box{padding:28px 18px}
   .logo-seo{font-size:1.28rem}.logo-ai{font-size:1.5rem}.logo-co{font-size:1.1rem}
+}
+
+/* ═══════════════════════════════════════════════════════════
+   LUXURY REFACTOR — new components
+═══════════════════════════════════════════════════════════ */
+
+/* ── Ambient body glow ── */
+body::before{
+  content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
+  background:radial-gradient(ellipse at 50% 12%,rgba(200,168,75,.025) 0%,transparent 55%);
+  animation:ambientShift 20s ease-in-out infinite alternate;
+}
+@keyframes ambientShift{
+  from{transform:translate(0,0) scale(1)}
+  to{transform:translate(3%,2%) scale(1.12)}
+}
+
+/* ── Hero sequence ── */
+.hero-seq-wrap{
+  position:relative;
+  margin-bottom:40px;
+}
+.hero-seq-line{
+  font-family:'Cormorant Garamond',serif;
+  font-size:clamp(4.4rem,9.5vw,8.5rem);font-weight:300;line-height:1.03;
+  color:var(--ivory);letter-spacing:-.02em;
+  position:absolute;top:0;left:0;width:100%;
+  opacity:0;transform:translateY(10px);
+  transition:opacity 700ms cubic-bezier(.16,1,.3,1),
+             transform 700ms cubic-bezier(.16,1,.3,1);
+  pointer-events:none;will-change:opacity,transform;
+}
+.hero-seq-line.hs-active{
+  opacity:1;transform:translateY(0);pointer-events:auto;
+}
+@media(prefers-reduced-motion:reduce){
+  .hero-seq-line{transition:none}
+  .hero-seq-line:not(.hs-active){display:none}
+}
+.hero-gold-accent{
+  font-family:'Cormorant Garamond',serif;font-style:italic;font-weight:300;
+  font-size:clamp(1.2rem,2.4vw,1.85rem);
+  color:var(--gold);letter-spacing:.02em;line-height:1.38;
+  opacity:0;animation:up .75s .2s forwards;
+  margin-bottom:24px;
+}
+.hero-sub{
+  font-size:clamp(.98rem,1.4vw,1.1rem);line-height:1.75;
+  color:rgba(168,168,160,.75);max-width:560px;
+  opacity:0;animation:up .8s .35s forwards;
+  margin-bottom:12px;
+}
+.hero-note{
+  font-size:.74rem;letter-spacing:.22em;text-transform:uppercase;
+  color:rgba(200,168,75,.32);
+  opacity:0;animation:up .8s .46s forwards;
+  margin-bottom:56px;
+}
+
+/* ── Market decision trigger ── */
+.alloc-decision{
+  margin-top:56px;padding:40px 44px;
+  background:rgba(10,9,7,1);
+  border:1px solid rgba(200,168,75,.1);
+  position:relative;overflow:hidden;max-width:600px;
+}
+.alloc-decision::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:1px;
+  background:linear-gradient(90deg,transparent,rgba(200,168,75,.2),transparent);
+}
+.alloc-d-main{
+  font-family:'Cormorant Garamond',serif;
+  font-size:clamp(1.55rem,2.8vw,2.2rem);font-weight:300;
+  line-height:1.22;color:var(--ivory);margin-bottom:14px;
+}
+.alloc-d-main em{color:var(--gold);font-style:italic}
+.alloc-d-sub{
+  font-size:.82rem;color:var(--muted);margin-bottom:24px;
+  letter-spacing:.01em;line-height:1.7;
+}
+.scarcity-strip{
+  margin-top:40px;display:flex;flex-direction:column;gap:9px;
+}
+.scarcity-line{
+  font-size:.7rem;letter-spacing:.18em;text-transform:uppercase;
+  color:rgba(200,168,75,.24);padding-left:16px;position:relative;
+}
+.scarcity-line::before{
+  content:'';position:absolute;left:0;top:50%;transform:translateY(-50%);
+  width:6px;height:1px;background:rgba(200,168,75,.24);
+}
+
+/* ── Centered statement ── */
+.stmt-center{
+  padding:88px 64px;text-align:center;max-width:1060px;margin:0 auto;
+}
+.stmt-center-mark{
+  display:block;font-family:'Cormorant Garamond',serif;font-size:4rem;
+  line-height:1;color:rgba(200,168,75,.2);margin-bottom:18px;user-select:none;
+}
+.stmt-center-text{
+  font-family:'Cormorant Garamond',serif;
+  font-size:clamp(1.9rem,3.8vw,3rem);font-weight:300;font-style:italic;
+  line-height:1.38;color:var(--ivory);letter-spacing:.01em;
+}
+.stmt-center-text strong{font-style:normal;color:var(--gold);font-weight:400}
+.stmt-center-rule{display:block;width:48px;height:1px;background:var(--gold-dim);margin:30px auto 0}
+
+/* ── Settlement section ── */
+.settlement{
+  padding:72px 64px;
+  border-top:1px solid rgba(154,122,48,.1);
+}
+.settlement-inner{max-width:960px;margin:0 auto}
+.settle-gold{
+  display:block;
+  font-family:'Cormorant Garamond',serif;font-style:italic;font-weight:300;
+  font-size:clamp(1.1rem,1.8vw,1.4rem);
+  color:var(--gold);letter-spacing:.02em;margin-top:8px;margin-bottom:28px;
+}
+.settle-body{font-size:.98rem;line-height:1.82;color:var(--muted);margin-bottom:10px;max-width:580px}
+.settle-body strong{color:var(--ivory);font-weight:400}
+.settle-icons{
+  display:flex;gap:40px;align-items:center;flex-wrap:wrap;
+  margin:44px 0 48px;
+}
+.settle-icon-item{
+  display:flex;flex-direction:column;align-items:center;gap:10px;
+  opacity:.24;transition:opacity .4s,filter .4s;cursor:default;
+}
+.settle-icon-item:hover{
+  opacity:.62;filter:drop-shadow(0 0 12px rgba(200,168,75,.2));
+}
+.settle-icon-logo{
+  width:48px;height:36px;display:flex;align-items:center;justify-content:center;
+  color:var(--ivory);
+}
+.settle-icon-label{
+  font-size:.58rem;letter-spacing:.24em;text-transform:uppercase;color:var(--muted);
+}
+.settle-trust{
+  display:grid;grid-template-columns:1fr 1fr 1fr;gap:0;
+  background:rgba(200,168,75,.06);
+  margin-top:44px;
+}
+.settle-trust-item{
+  background:var(--deep);padding:26px 28px;position:relative;
+}
+.settle-trust-item::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:1px;
+  background:linear-gradient(90deg,transparent,rgba(200,168,75,.1),transparent);
+}
+.settle-trust-strong{
+  font-size:.64rem;letter-spacing:.2em;text-transform:uppercase;
+  color:var(--gold-dim);display:block;margin-bottom:8px;
+}
+.settle-trust-text{font-size:.88rem;line-height:1.72;color:var(--muted)}
+.settle-note{
+  margin-top:20px;padding:14px 20px;
+  border:1px solid rgba(200,168,75,.07);
+  font-family:'Cormorant Garamond',serif;font-style:italic;
+  font-size:.96rem;color:rgba(168,168,160,.42);text-align:center;
+}
+
+/* ── Offer trust block ── */
+.offer-trust-line{
+  margin-top:28px;padding:18px 22px;
+  border:1px solid rgba(200,168,75,.08);
+  background:rgba(10,9,7,.6);
+}
+.offer-trust-main{
+  font-size:.86rem;color:var(--ivory);line-height:1.75;opacity:.8;
+}
+.offer-trust-sub{
+  font-family:'Cormorant Garamond',serif;font-style:italic;
+  font-size:.94rem;color:rgba(168,168,160,.42);margin-top:6px;display:block;
+}
+
+/* ── Expansion momentum ── */
+.exp-momentum{
+  margin-top:48px;padding-top:40px;
+  border-top:1px solid rgba(200,168,75,.07);
+  text-align:center;
+}
+.exp-momentum-main{
+  font-family:'Cormorant Garamond',serif;
+  font-size:clamp(1.4rem,2.6vw,2.1rem);font-weight:300;
+  color:var(--ivory);line-height:1.35;margin-bottom:8px;
+}
+.exp-momentum-main em{font-style:italic;color:var(--gold)}
+.exp-momentum-sub{
+  font-size:.7rem;letter-spacing:.2em;text-transform:uppercase;
+  color:rgba(168,168,160,.32);
+}
+
+/* ── Button press micro-UX ── */
+.btn-primary:active{transform:scale(.98)!important;box-shadow:none!important}
+.tier-cta:active,.aud-cta:active,.nav-btn:active,.fsub:active,.gate-cta:active{
+  transform:scale(.98)!important;
+}
+
+@media(max-width:900px){
+  .stmt-center{padding:60px 24px}
+  .settlement{padding:48px 24px}
+  .settle-trust{grid-template-columns:1fr}
+  .settle-icons{gap:24px}
+  .alloc-decision{padding:28px 24px;max-width:100%}
+}
+@media(max-width:520px){
+  .stmt-center{padding:44px 20px}
+  .stmt-center-text{font-size:clamp(1.5rem,5.5vw,2rem)}
+  .settlement{padding:36px 20px}
+  .hero-seq-line{font-size:clamp(3.2rem,11vw,5rem)}
+  .hero-gold-accent{font-size:clamp(1.1rem,4.5vw,1.4rem)}
+  .exp-momentum-main{font-size:clamp(1.2rem,4.5vw,1.6rem)}
 }
 </style>
 @if(config('services.recaptcha.site_key'))
@@ -703,38 +1279,90 @@ footer{border-top:1px solid var(--border);padding:36px 64px;display:flex;flex-di
   <div class="hero-grid"></div>
   <div class="hero-orb"></div>
 
-  <div class="hero-pre">
-    <p class="hp-kicker">Search infrastructure. Licensed. Controlled.</p>
-    <p class="hp-question">One operator per market. One agreement. No exceptions.</p>
-  </div>
-
-  <h1 class="hero-h1">
-    The system is engineered<br>
-    to secure position—<em>not chase it.</em>
+  <h1 class="hero-seq-wrap" id="heroSeq" aria-label="Position secured. Markets claimed. Position compounds. One operator per market. Before they even arrive.">
+    <span class="hero-seq-line">Position is secured.</span>
+    <span class="hero-seq-line">Markets are claimed.</span>
+    <span class="hero-seq-line">Position compounds.</span>
+    <span class="hero-seq-line">One operator per market.</span>
+    <span class="hero-seq-line">Before they even arrive.</span>
   </h1>
-
-  <p class="hero-gravity">Position is architecture. Not effort.</p>
-
-  <div class="hero-p">
-    <p class="hero-p-line">SEOAIco is the infrastructure behind every service and location page—deploying structured headlines, intelligent FAQs, localized data, internal link architecture, and search-ready content across 1,000+ U.S. cities.</p>
-    <p class="hero-p-line hp-emphasis">Access is licensed. Position is controlled.</p>
-    <p class="hero-p-line">The system is continuously maintained, expanded, and reinforced—holding your visibility across search engines, AI systems, and emerging discovery layers.</p>
-    <p class="hero-p-line">Once secured, a market is held exclusively — one operator, one category, no shared access. It remains closed to direct competitors for the full duration of the agreement.</p>
-    <p class="hero-p-line hp-strong">Not every market remains open. Availability is confirmed individually.</p>
+  <p class="hero-gold-accent">Structured to secure position &mdash; not chase it.</p>
+  <p class="hero-sub">We deploy infrastructure that captures your market and holds it.</p>
+  <p class="hero-note">Access is licensed. Position is secured.</p>
+  <div class="hero-actions" style="opacity:0;animation:up .85s .52s forwards">
+    <a href="#contact" class="btn-primary">Apply for Position Access</a>
+    <a href="#offer" class="btn-ghost">Review Licensing Structure</a>
   </div>
 
-  <div class="hero-actions">
-    <a href="#contact" class="btn-primary">Check Market Availability</a>
-    <a href="#wyl" class="btn-ghost">Explore the System</a>
+  <div class="hero-scroll">
+    <div class="scroll-line"></div>
+    <div class="scroll-caret"></div>
+  </div>
+
+</section>
+
+<div class="gold-rule"></div>
+
+<!-- ════════════ MARKET ALLOCATION ════════════ -->
+<section class="alloc-section r">
+  <div class="alloc-layout">
+
+    <!-- Left: editorial copy -->
+    <div class="alloc-copy">
+      <p class="alloc-eyebrow">Market Allocation</p>
+      <h2 class="alloc-hed">
+        Market allocation<br>is active.<br>
+        <em>Not every territory<br>is available.</em>
+      </h2>
+      <div class="alloc-sub">
+        <p>Each market is assigned to a single operator.</p>
+        <p>Once allocated, <em>access is closed.</em></p>
+      </div>
+      <div class="alloc-reinforce">
+        <span>High-demand markets are secured first.</span>
+        <span>There is no overlap. There is no secondary access.</span>
+        <span>Position is held through infrastructure — and reinforced, where appropriate, through paid media.</span>
+      </div>
+      <p class="alloc-urgency">If your market is still open,<br><em>it won’t be for long.</em></p>
+      <span class="alloc-convert-label">Access is not open. It is allocated.</span>
+      <div class="alloc-actions">
+        <a href="#contact" class="btn-primary">Request Licensing Access</a>
+        <a href="#offer" class="btn-ghost">Review Licensing Structure</a>
+      </div>
+    </div>
+
+    <!-- Right: regional allocation grid (data rendered from JS array below) -->
+    <div class="alloc-panel">
+      <p class="alloc-panel-label">U.S. Territory Status</p>
+      <div class="alloc-grid" id="allocGrid"></div>
+      <div class="alloc-legend">
+        <div class="alloc-legend-item">
+          <span class="alloc-dot allocated"></span>
+          <span class="alloc-legend-label">Allocated</span>
+        </div>
+        <div class="alloc-legend-item">
+          <span class="alloc-dot limited"></span>
+          <span class="alloc-legend-label">Limited Availability</span>
+        </div>
+        <div class="alloc-legend-item">
+          <span class="alloc-dot open"></span>
+          <span class="alloc-legend-label">Open</span>
+        </div>
+      </div>
+      <p class="alloc-avail-note"><strong>Territory status reflects current allocation.</strong> Access is reviewed individually — based on market availability, business fit, and operator readiness.<br><br>Approval is reserved for legitimate operating businesses, with applicable licensing where required, and the capacity to support both deployment and media spend. Search position is secured through structured infrastructure and reinforced, where appropriate, through paid media.</p>
+    </div>
+
   </div>
 </section>
+
+<div class="gold-rule"></div>
 
 <!-- ════════════ ACCESS SECTION ════════════ -->
 <section class="access-section r">
 
-  <div class="access-eyebrow">Platform Access</div>
+  <div class="access-eyebrow">The System</div>
   <h2 class="access-headline">Not a tool.<br><em>A territory.</em></h2>
-  <p class="access-subline">One licensee per category, per market. What you secure under agreement cannot be replicated by a direct competitor in the same space.</p>
+  <p class="access-subline">One licensee per category, per market. Position held under agreement — unavailable to competitors while active.</p>
 
   <div class="access-grid">
 
@@ -742,28 +1370,28 @@ footer{border-top:1px solid var(--border);padding:36px 64px;display:flex;flex-di
       <span class="ac-label">Controlled Access</span>
       <h3 class="ac-head">One Market.<br><em>One Agreement.</em></h3>
       <p class="ac-impact">Once held, competitors are excluded.</p>
-      <p class="ac-body">No two businesses in the same vertical share the same licensed territory. When your agreement is active, your category is protected. This is not a subscription — it is a position held under contract.</p>
+      <p class="ac-body">No two businesses in the same vertical share the same licensed territory. This is not a subscription — it is a position held under contract.</p>
     </div>
 
     <div class="ac-card">
       <span class="ac-label">Full-Stack Visibility</span>
-      <h3 class="ac-head">Not just<br><em>search results.</em></h3>
-      <p class="ac-impact">Every surface. Every signal.</p>
-      <p class="ac-body">Each page is built to surface across organic search, AI-generated answers, and emerging discovery layers — not just crawled, but understood, cited, and returned by the full stack.</p>
+      <h3 class="ac-head">Every surface.<br><em>Every signal.</em></h3>
+      <p class="ac-impact">Organic search, AI, emerging discovery — all layers.</p>
+      <p class="ac-body">Every page is structured to surface across the full discovery stack — not just crawled, but understood, cited, and returned.</p>
     </div>
 
     <div class="ac-card">
       <span class="ac-label">Market Coverage</span>
       <h3 class="ac-head">A market claimed,<br><em>not a keyword.</em></h3>
-      <p class="ac-impact">This is category ownership.</p>
-      <p class="ac-body">Every service. Every location. Every variation of how a customer searches for what you offer. Not a campaign — a systematic claim on the full search surface of your market, structured to compound with time.</p>
+      <p class="ac-impact">Complete coverage of your entire search surface.</p>
+      <p class="ac-body">Every service. Every city. Every variation. Structured to compound as the system builds authority — not a campaign, a held position.</p>
     </div>
 
     <div class="ac-card">
       <span class="ac-label">Active Infrastructure</span>
       <h3 class="ac-head">Built to last.<br><em>Maintained to win.</em></h3>
       <p class="ac-impact">The system runs. You don’t manage it.</p>
-      <p class="ac-body">Your pages are continuously maintained, updated, and optimised under your active agreement. As search behavior evolves, the infrastructure adapts. Position is not static — it is actively defended on your behalf.</p>
+      <p class="ac-body">Pages are maintained and adapted under your active agreement. Position is not static — it is actively defended.</p>
     </div>
 
   </div>
@@ -773,18 +1401,10 @@ footer{border-top:1px solid var(--border);padding:36px 64px;display:flex;flex-di
 <div class="gold-rule"></div>
 
 <!-- ════════════ STATEMENT ════════════ -->
-<div class="statement r">
-  <div class="stmt-quote">
-    <span class="sq-mark">&ldquo;</span>
-    <p class="sq-text">Most visibility is lost not to better operators — but to <strong>better infrastructure.</strong></p>
-    <span class="sq-rule"></span>
-  </div>
-  <div class="stmt-body">
-    <p>Every search engine — and every AI system — returns what it can find. What it finds is determined by structure. Not effort. Not spend. <strong>Architecture.</strong></p>
-    <p>SEOAIco deploys that architecture at scale. Every service, every city, every search variation — structured, interlinked, and maintained under a single licensed system covering 1,000+ U.S. markets.</p>
-    <p>The system runs continuously under an active agreement — not as a set-and-forget deployment, but as maintained infrastructure with a single objective: holding the position you've secured.</p>
-    <p style="font-family:'Cormorant Garamond',serif;font-style:italic;font-weight:500;font-size:clamp(1.2rem,2vw,1.55rem);color:var(--gold);margin-top:1.4em;letter-spacing:.01em">Visibility is structured—or it is lost.</p>
-  </div>
+<div class="stmt-center r">
+  <span class="stmt-center-mark">&ldquo;</span>
+  <p class="stmt-center-text">Most visibility is lost not to better operators &mdash; but to <strong>better infrastructure.</strong></p>
+  <span class="stmt-center-rule"></span>
 </div>
 
 <div class="gold-rule"></div>
@@ -794,8 +1414,8 @@ footer{border-top:1px solid var(--border);padding:36px 64px;display:flex;flex-di
   <div class="url-inner">
     <div>
       <p class="s-eye r">Licensed Search Footprint</p>
-      <h2 class="s-h r">Thousands of search<br>targets. <em>One structured</em><br>system.</h2>
-      <p class="s-p r">Every page deploys structured content around a precise search intent — the right service, the right city, the right signals — readable by organic search, cited by AI systems, and indexed across every layer of discovery. <strong>Not volume. Structured coverage that compounds.</strong></p>
+      <h2 class="s-h r">Every service.<br>Every city.<br><em>One structured system.</em></h2>
+      <p class="s-p r">Each page targets a precise search intent — service, city, search variation — structured for organic discovery, AI citation, and every emerging layer. <strong>Structured coverage that compounds.</strong></p>
     </div>
     <div class="url-box r">
       <div class="url-box-label">Example Agency Deployment — Home Services</div>
@@ -816,46 +1436,40 @@ footer{border-top:1px solid var(--border);padding:36px 64px;display:flex;flex-di
 <!-- ════════════ AUDIENCE — SELL ════════════ -->
 <section id="who">
   <div class="audience-section">
-    <div class="stmt-quote r" style="text-align:center;max-width:960px;margin:0 auto 48px">
+    <div class="stmt-quote r" style="text-align:center;max-width:820px;margin:0 auto 48px">
       <span class="sq-mark">&ldquo;</span>
-      <p class="sq-text">This is not about ranking faster. This is about <strong>claiming infrastructure that holds position for as long as the agreement is active.</strong></p>
+      <p class="sq-text">The system holds position for as long as the agreement is active. <strong>Infrastructure, not effort.</strong></p>
       <span class="sq-rule"></span>
     </div>
     <p class="s-eye r">Who This Is For</p>
-    <h2 class="s-h r">Two different starting points.<br><em>One infrastructure.</em></h2>
+    <h2 class="s-h r">Two starting points.<br><em>One infrastructure.</em></h2>
     <div class="audience-grid">
 
       <div class="aud-card r">
         <span class="aud-tag">For Agencies</span>
         <h3 class="aud-title">Deploy <em>search infrastructure</em> for every client.</h3>
-        <p class="aud-body">Your clients need presence across dozens of cities — not just where their office is. SEOAIco gives you a licensed system: structured service and location pages deployed <strong>under your brand</strong>, with internal link architecture, localized signals, and structured data handled at the infrastructure level.</p>
+        <p class="aud-body">A licensed system deployed under your brand — structured service and location pages across your entire client portfolio, with no SEOAIco attribution in code, content, or metadata.</p>
         <ul class="aud-list">
-          <li><strong>Zero-attribution deployment</strong> — no SEOAIco branding in code, content, or metadata</li>
-          <li><strong>One licence, your full client portfolio</strong> — deploy across your entire book of business</li>
-          <li><strong>Controlled market exclusivity</strong> — clients hold protected position in their category and territory</li>
-          <li><strong>Position compounds under active maintenance</strong> — authority signals accumulate over time</li>
+          <li><strong>Zero-attribution deployment</strong> — no SEOAIco branding anywhere</li>
+          <li><strong>One licence, your full client portfolio</strong></li>
+          <li><strong>Controlled market exclusivity</strong> per client territory</li>
           <li><strong>Retention built into the structure</strong> — position is tied to the active licence</li>
-          <li><strong>Structured for every discovery layer</strong> — organic search, AI systems, LLMs, and emerging signals</li>
-          <li><strong>System-level expansion</strong> — new services and cities added within licensed capacity</li>
         </ul>
-        <p style="font-size:.84rem;color:var(--muted);letter-spacing:.04em;margin-bottom:12px">One licence holds your full client territory — exclusively. Review capacity and tier options below.</p>
+        <p style="font-size:.82rem;color:var(--muted);letter-spacing:.04em;margin-bottom:12px">One licence holds your full client territory — exclusively.</p>
         <a href="#offer" class="aud-cta">Review Agency Licensing &rarr;</a>
       </div>
 
       <div class="aud-card r">
-        <span class="aud-tag">For CEOs &amp; Business Owners</span>
+        <span class="aud-tag">For Operators &amp; Business Owners</span>
         <h3 class="aud-title">Secure your market.<br><em>Before it is claimed.</em></h3>
-        <p class="aud-body">Traditional SEO addresses a handful of pages. SEOAIco deploys infrastructure across every service, every city, every search variation you need to own. <strong>Structured, interlinked, and maintained under your active agreement.</strong> Not a campaign. A position held.</p>
+        <p class="aud-body">Infrastructure across every service, every city, every search variation you need to own. Structured, interlinked, and maintained under your active agreement. <strong>Not a campaign. A position held.</strong></p>
         <ul class="aud-list">
-          <li><strong>Structured coverage across every service and location</strong> — not isolated pages</li>
-          <li><strong>Localized signals on every page</strong> — structured data, FAQ architecture, and internal links</li>
-          <li><strong>Built for every discovery surface</strong> — organic search, AI overviews, LLM citations, emerging layers</li>
-          <li><strong>One operator per market</strong> — your category is exclusive while your agreement is active</li>
-          <li><strong>Position compounds under active maintenance</strong> — authority grows with the system</li>
-          <li><strong>Pages live on your domain</strong> — your brand, your architecture, your territory</li>
-          <li><strong>Continuously reinforced</strong> — the system adapts as search behavior evolves</li>
+          <li><strong>Structured coverage across every service and location</strong></li>
+          <li><strong>Built for every discovery surface</strong> — organic, AI overviews, LLM citations</li>
+          <li><strong>One operator per market</strong> — your category is exclusive while active</li>
+          <li><strong>Position compounds under active maintenance</strong></li>
         </ul>
-        <p style="font-size:.84rem;color:var(--muted);letter-spacing:.04em;margin-bottom:12px">Once a competitor claims your territory, it cannot be reallocated while their agreement is active. Not every market remains open.</p>
+        <p style="font-size:.82rem;color:var(--muted);letter-spacing:.04em;margin-bottom:12px">Once a competitor claims your territory, it cannot be reallocated while active.</p>
         <a href="#offer" class="aud-cta">Assess Market Availability &rarr;</a>
       </div>
 
@@ -867,9 +1481,9 @@ footer{border-top:1px solid var(--border);padding:36px 64px;display:flex;flex-di
 <section id="wyl">
   <div class="wyl-section">
     <div class="wyl-inner">
-      <p class="s-eye r">What You're Actually Licensing</p>
-      <h2 class="s-h r">The infrastructure behind<br><em>every service and location page.</em></h2>
-      <p class="s-p r" style="max-width:640px">SEOAIco is the infrastructure behind every service and location page — deploying structured headlines, intelligent FAQs, localized data, internal link architecture, and search-ready content across 1,000+ U.S. cities. <strong>This is not a tool. This is the system that holds your position.</strong></p>
+      <p class="s-eye r">What the Licence Includes</p>
+      <h2 class="s-h r">The infrastructure behind<br><em>every page in your territory.</em></h2>
+      <p class="s-p r" style="max-width:640px">Every service page, every location page — structured headlines, intelligent FAQs, localized data, internal link architecture. <strong>This is not a tool. This is the system that holds your position.</strong></p>
       <div class="wyl-grid">
         <div class="wyl-card r">
           <span class="wyl-icon">⬡</span>
@@ -917,23 +1531,147 @@ footer{border-top:1px solid var(--border);padding:36px 64px;display:flex;flex-di
 </section>
 
 <!-- ════════════ POSITIONING BLOCK ════════════ -->
-<section class="positioning-block">
-  <div class="positioning-inner">
-    <p class="pos-line lead r">The system is engineered to secure position—not chase it.</p>
+<section class="pos-block">
+  <div class="pos-block-inner">
 
-    <p class="pos-line r">SEOAIco is the infrastructure behind every service and location page &mdash; deploying structured content, link architecture, and localized data across 1,000+ U.S. cities.</p>
+    <!-- LEFT: text hierarchy -->
+    <div class="pos-left">
+      <h2 class="pos-h2 r">Infrastructure<br>holds position.</h2>
+      <div class="pos-rule r"></div>
+      <p class="pos-support r">Structure does what effort cannot sustain.</p>
+      <span class="pos-gold r">Every page. Every market. One system.</span>
+      <ul class="pos-proof r">
+        <li>One operator per market.</li>
+        <li>No overlap. No duplication.</li>
+        <li>Once secured, it is held.</li>
+      </ul>
+      <span class="pos-close r">We don't compete. We own the position.</span>
+    </div>
 
-    <p class="pos-line emphasis r">Access is licensed. Position is controlled.</p>
-    <p class="pos-line r">Each territory is held by a single operator — one licence, one category, no shared access and no replication by a competitor in the same vertical.</p>
+    <!-- RIGHT: territory lock canvas -->
+    <div class="pos-right r">
+      <canvas class="pos-canvas" id="territoryCanvas" aria-hidden="true"></canvas>
+    </div>
 
-    <p class="pos-line r">When a licence is active, that market is no longer available to competing operators.</p>
-    <p class="pos-line r">Position is held under the agreement &mdash; maintained, expanded, and defended on your behalf.</p>
-
-    <p class="pos-line r">Once a licence is released, the territory reopens — and another operator in the same category will move to secure it.</p>
-
-    <p class="pos-line strong r">We don't compete. We own the position.</p>
   </div>
 </section>
+<script>
+(function(){
+  var C=document.getElementById('territoryCanvas');
+  if(!C)return;
+  var ctx=C.getContext('2d');
+  var DPR=window.devicePixelRatio||1;
+  var COLS=10,ROWS=7;
+  var W,H,cW,cH,nodes=[],lastClaim=0;
+  var INTERVAL=1600;
+
+  function resize(){
+    var r=C.getBoundingClientRect();
+    W=r.width;H=r.height;
+    if(!W||!H)return;
+    C.width=Math.round(W*DPR);C.height=Math.round(H*DPR);
+    ctx.setTransform(DPR,0,0,DPR,0,0);
+    cW=W/COLS;cH=H/ROWS;
+    build();
+  }
+
+  function shuffle(a){return a.slice().sort(function(){return Math.random()-.5});}
+
+  function build(){
+    nodes=[];
+    for(var ro=0;ro<ROWS;ro++){
+      for(var co=0;co<COLS;co++){
+        nodes.push({x:cW*(co+.5),y:cH*(ro+.5),ri:ro,ci:co,state:'n',prog:0});
+      }
+    }
+    shuffle(nodes).slice(0,Math.floor(nodes.length*.32)).forEach(function(n){n.state='l';n.prog=1;});
+  }
+
+  function frame(ts){
+    ctx.clearRect(0,0,W,H);
+
+    // faint grid
+    ctx.strokeStyle='rgba(200,168,75,.05)';ctx.lineWidth=.5;
+    for(var c=0;c<=COLS;c++){ctx.beginPath();ctx.moveTo(cW*c,0);ctx.lineTo(cW*c,H);ctx.stroke();}
+    for(var ro=0;ro<=ROWS;ro++){ctx.beginPath();ctx.moveTo(0,cH*ro);ctx.lineTo(W,cH*ro);ctx.stroke();}
+
+    // connection lines between adjacent locked nodes
+    for(var i=0;i<nodes.length;i++){
+      var n=nodes[i];
+      if(n.state!=='l')continue;
+      var dirs=[[0,1],[1,0]];
+      for(var d=0;d<dirs.length;d++){
+        var dr=dirs[d][0],dc=dirs[d][1];
+        for(var j=0;j<nodes.length;j++){
+          var nb=nodes[j];
+          if(nb.ri===n.ri+dr&&nb.ci===n.ci+dc&&nb.state==='l'){
+            ctx.beginPath();ctx.moveTo(n.x,n.y);ctx.lineTo(nb.x,nb.y);
+            ctx.strokeStyle='rgba(200,168,75,.07)';ctx.lineWidth=.5;ctx.stroke();
+            break;
+          }
+        }
+      }
+    }
+
+    // claim new node
+    if(!lastClaim||ts-lastClaim>INTERVAL){
+      var avail=nodes.filter(function(n){return n.state==='n';});
+      if(avail.length){
+        shuffle(avail)[0].state='a';
+      } else {
+        shuffle(nodes.filter(function(n){return n.state==='l';})).slice(0,Math.floor(nodes.length*.22)).forEach(function(n){n.state='n';n.prog=0;});
+      }
+      lastClaim=ts;
+    }
+
+    // draw nodes
+    for(var k=0;k<nodes.length;k++){
+      var n=nodes[k];
+      if(n.state==='a'){
+        n.prog=Math.min(1,n.prog+.009);
+        var ring=cW*.38*(0.4+0.6*n.prog);
+        var g=ctx.createRadialGradient(n.x,n.y,0,n.x,n.y,ring);
+        g.addColorStop(0,'rgba(200,168,75,'+(0.18+0.18*n.prog)+')');
+        g.addColorStop(1,'rgba(200,168,75,0)');
+        ctx.fillStyle=g;ctx.beginPath();ctx.arc(n.x,n.y,ring,0,Math.PI*2);ctx.fill();
+        ctx.fillStyle='rgba(200,168,75,'+(0.55+0.35*n.prog)+')';
+        ctx.beginPath();ctx.arc(n.x,n.y,3,0,Math.PI*2);ctx.fill();
+        if(n.prog>=1)n.state='l';
+      } else if(n.state==='l'){
+        var s=5;
+        ctx.strokeStyle='rgba(200,168,75,.2)';ctx.lineWidth=.7;
+        ctx.strokeRect(n.x-s,n.y-s,s*2,s*2);
+        ctx.fillStyle='rgba(200,168,75,.48)';
+        ctx.beginPath();ctx.arc(n.x,n.y,2.5,0,Math.PI*2);ctx.fill();
+      } else {
+        ctx.fillStyle='rgba(200,168,75,.07)';
+        ctx.beginPath();ctx.arc(n.x,n.y,1.8,0,Math.PI*2);ctx.fill();
+      }
+    }
+
+    requestAnimationFrame(frame);
+  }
+
+  function init(){
+    resize();
+    if(W&&H)requestAnimationFrame(frame);
+  }
+
+  // Defer until element is visible
+  if('IntersectionObserver' in window){
+    var obs=new IntersectionObserver(function(entries){
+      if(entries[0].isIntersecting){init();obs.disconnect();}
+    },{threshold:.1});
+    obs.observe(C);
+  } else {
+    init();
+  }
+
+  window.addEventListener('resize',function(){
+    resize();
+  });
+})();
+</script>
 
 <!-- ════════════ STEPS — PROCESS (TRANSITION) ════════════ -->
 <section id="how">
@@ -1022,117 +1760,258 @@ footer{border-top:1px solid var(--border);padding:36px 64px;display:flex;flex-di
 <section id="offer">
   <div class="offer-intro r">
     <div>
-      <p class="s-eye">The Licence</p>
-      <h2 class="s-h">Three tiers.<br><em>One system.</em><br>Pick your level.</h2>
+      <p class="s-eye">Licensing Positions</p>
+      <h2 class="s-h">Secure your<br>position.<br><em>Before it's claimed.</em></h2>
     </div>
     <div class="offer-note">
-      <p>Every application is reviewed individually. Access is not automated. Once confirmed, the licence governs the infrastructure — structured content, search signals, and page architecture — that holds your position. <strong>Built for operators serious about owning their search surface.</strong></p>
-      <p style="margin-top:12px;font-size:.84rem">Need more pages than your current tier allows? Upgrade to the next level — your existing pages carry over.</p>
+      <p>Infrastructure first. Price second. Every application is reviewed individually — we assess your market, confirm availability, then agree terms. <strong>This is a licensed position secured under agreement, not a subscription.</strong></p>
+      <div class="offer-trust-line">
+        <p class="offer-trust-main">This is not a subscription. This is a licensed position secured under agreement.</p>
+        <span class="offer-trust-sub">Annual engagements typically range from $36K–$60K+ depending on territory and scale.</span>
+      </div>
     </div>
   </div>
 
-  <div class="tier-grid-3 r">
+  <div class="tier-grid-3" id="tierGrid">
 
     <div class="tier starter">
-      <span class="tier-flag">Starter — By Application</span>
-      <h3 class="tier-name">Entry Access</h3>
-      <div class="tier-urls">Limited page capacity · Reviewed &amp; approved individually</div>
-      <div class="tier-price">Apply</div>
-      <div class="tier-commitment">Entry-level access for qualifying businesses or agencies. Capacity and pricing confirmed on application.</div>
+      <span class="tier-flag">Entry — By Application</span>
+      <h3 class="tier-name">Entry Allocation</h3>
+      <div class="tier-urls">Reviewed individually &middot; Limited capacity</div>
       <ul class="tier-features">
-        <li>Structured pages within your approved capacity</li>
-        <li>Search signals and localized data on every page</li>
-        <li>Internal link architecture included</li>
-        <li>Expandable to 5K or 10K tier under the same system</li>
+        <li>
+          <svg fill="none" stroke="currentColor" stroke-width="1.4" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6M7 3H5a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2V5a2 2 0 00-2-2h-2"/></svg>
+          Structured page infrastructure
+        </li>
+        <li>
+          <svg fill="none" stroke="currentColor" stroke-width="1.4" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M17 20h5v-2a4 4 0 00-3-3.87M9 20H4v-2a4 4 0 013-3.87m6 5.87a4 4 0 100-8 4 4 0 000 8z"/></svg>
+          Single territory alloc
+        </li>
+        <li>
+          <svg fill="none" stroke="currentColor" stroke-width="1.4" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/></svg>
+          Upgradeable to Strategic or Dominant
+        </li>
+        <li>
+          <svg fill="none" stroke="currentColor" stroke-width="1.4" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3"/></svg>
+          Minimum engagement required
+        </li>
       </ul>
       <div class="tier-gated">
         <span class="tier-gated-icon">◈</span>
-        <span><strong>Not publicly priced.</strong> Starter access is granted case-by-case. Apply below — we'll assess fit and confirm capacity.</span>
+        <span><strong>Not publicly priced.</strong> Entry access is reviewed individually. Apply below.</span>
       </div>
-      <a href="#contact" class="tier-cta" style="margin-top:20px">Apply for Starter Access</a>
-      <button class="tier-book" onclick="window.dispatchEvent(new CustomEvent('open-booking', {detail: {id: 1, duration: 15, name: 'Free Discovery Call'}}))">Book a Free Discovery Call</button>
+      <a href="#contact" class="tier-cta" style="margin-top:20px">Apply for Entry Access</a>
+      <button class="tier-book" onclick="window.dispatchEvent(new CustomEvent('open-booking', {detail: {id: 1, duration: 15, name: 'Free Discovery Call'}}))">Book a Discovery Call</button>
     </div>
 
-    <div class="tier">
-      <span class="tier-flag">Agency / Business Licence — Foundation</span>
+    <div class="tier focal">
+      <span class="tier-flag">Strategic Position — Most Selected</span>
       <h3 class="tier-name">5,000 Page Licence</h3>
-      <div class="tier-urls">Up to 5,000 licensed pages — agencies or single-business deployment</div>
-      <div class="tier-price"><sup>$</sup>2,995<sub>/mo</sub></div>
-      <div class="tier-commitment">3-month minimum engagement. Month-to-month thereafter.</div>
+      <div class="tier-urls">Up to 5,000 licensed pages &middot; Agency or single-business deployment</div>
       <ul class="tier-features">
-        <li><strong>Licensed page inventory</strong> — 5,000 structured pages</li>
-        <li><strong>Zero-attribution deployment — your brand only</strong></li>
-        <li>Structured coverage across every service and city in your territory</li>
-        <li>Search signals, localized data, and FAQ architecture on every page</li>
-        <li>Internal link architecture maintaining topical authority</li>
-        <li>Controlled expansion into new services and markets within licence</li>
-        <li>API or file export delivery</li>
-        <li>Operator dashboard <em class="soon">(coming soon)</em></li>
+        <li>
+          <svg fill="none" stroke="currentColor" stroke-width="1.4" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/></svg>
+          <strong>5,000 structured pages</strong> — exclusive territory
+        </li>
+        <li>
+          <svg fill="none" stroke="currentColor" stroke-width="1.4" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
+          <strong>Zero-attribution</strong> — your brand only
+        </li>
+        <li>
+          <svg fill="none" stroke="currentColor" stroke-width="1.4" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064"/></svg>
+          Every service &amp; city in your territory
+        </li>
+        <li>
+          <svg fill="none" stroke="currentColor" stroke-width="1.4" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8 9l4-4 4 4m0 6l-4 4-4-4"/></svg>
+          API or file export delivery
+        </li>
       </ul>
-      <a href="#contact" class="tier-cta">Request 5K Licensing Details</a>
-      <button class="tier-book" onclick="window.dispatchEvent(new CustomEvent('open-booking', {detail: {id: 1, duration: 15, name: 'Free Discovery Call'}}))">Book a Free Discovery Call</button>
+      <div class="tier-price"><sup>$</sup>2,995<sub>/mo</sub></div>
+      <div class="tier-commitment">3-month minimum. Month-to-month thereafter.</div>
+      <a href="#contact" class="tier-cta">Apply for Position Access</a>
+      <button class="tier-book" onclick="window.dispatchEvent(new CustomEvent('open-booking', {detail: {id: 1, duration: 15, name: 'Strategy Call'}}))">Book a Strategy Call</button>
     </div>
 
     <div class="tier prime">
-      <span class="tier-flag">Agency / Business Licence — Preferred</span>
+      <span class="tier-flag">Dominant Position — Full Scale</span>
       <h3 class="tier-name">10,000 Page Licence</h3>
-      <div class="tier-urls">Up to 10,000 licensed pages — full portfolio or large-scale deployment</div>
-      <div class="tier-price"><sup>$</sup>4,799<sub>/mo</sub></div>
-      <div class="tier-commitment">Priority processing. Dedicated account contact. 3-month minimum, then month-to-month.</div>
+      <div class="tier-urls">Up to 10,000 licensed pages &middot; Full portfolio or large-scale deployment</div>
       <ul class="tier-features">
-        <li>Everything in the 5,000 page licence</li>
-        <li><strong>Extended licensed inventory</strong> — 10,000 structured pages</li>
-        <li><strong>Required for existing-site infrastructure entry</strong> — unlicensed builds</li>
-        <li>Priority deployment and processing</li>
-        <li>Dedicated account contact</li>
-        <li>Early operator dashboard and position reporting <em class="soon">(coming soon)</em></li>
-        <li>First access to new markets and system expansions</li>
+        <li>
+          <svg fill="none" stroke="currentColor" stroke-width="1.4" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+          Everything in the Strategic Position licence
+        </li>
+        <li>
+          <svg fill="none" stroke="currentColor" stroke-width="1.4" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/></svg>
+          <strong>10,000 structured pages</strong> — extended territory
+        </li>
+        <li>
+          <svg fill="none" stroke="currentColor" stroke-width="1.4" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
+          Entry path for existing unlicensed builds
+        </li>
+        <li>
+          <svg fill="none" stroke="currentColor" stroke-width="1.4" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>
+          Dedicated account contact
+        </li>
       </ul>
-      <a href="#contact" class="tier-cta">Request 10K Licensing Details</a>
-      <button class="tier-book" onclick="window.dispatchEvent(new CustomEvent('open-booking', {detail: {id: 3, duration: 60, name: 'Agency License Review'}}))">Review My Agency License</button>
+      <div class="tier-price"><sup>$</sup>4,799<sub>/mo</sub></div>
+      <div class="tier-commitment">Priority processing. 3-month minimum, then month-to-month.</div>
+      <a href="#contact" class="tier-cta">Request Licensing Details</a>
+      <button class="tier-book" onclick="window.dispatchEvent(new CustomEvent('open-booking', {detail: {id: 3, duration: 60, name: 'Agency Licence Review'}}))">Review My Agency Licence</button>
     </div>
 
   </div>
 </section>
+<script>
+(function(){
+  var grid=document.getElementById('tierGrid');
+  if(!grid)return;
+  var cards=grid.querySelectorAll('.tier');
+  if('IntersectionObserver' in window){
+    var io=new IntersectionObserver(function(entries){
+      if(entries[0].isIntersecting){
+        cards.forEach(function(c){c.classList.add('vis');});
+        io.disconnect();
+      }
+    },{threshold:.12});
+    io.observe(grid);
+  } else {
+    cards.forEach(function(c){c.classList.add('vis');});
+  }
+})();
+</script>
 
-<!-- ════════════ CRYPTO ACCEPTANCE ════════════ -->
-<div class="crypto-accept r">
-  <p class="crypto-lines">
-    Crypto accepted by request.
-  </p>
-  <p class="crypto-lines crypto-emphasis">USDC preferred.</p>
-  <p class="crypto-lines">Large engagements and licensing agreements may be settled in digital assets.</p>
-  <p class="crypto-lines crypto-sub">Structured. Verified. Direct.</p>
-  <p class="crypto-lines crypto-sub">This is infrastructure — not retail checkout.</p>
+<!-- ════════════ SETTLEMENT ════════════ -->
+<div class="settlement">
+  <div class="settlement-inner">
+    <p class="s-eye r">Settlement</p>
+    <h2 class="s-h r">Structured. Verified.<br><em>Direct.</em></h2>
+    <span class="settle-gold r">USDC preferred.</span>
+    <p class="settle-body r">Large engagements may be settled in digital assets or traditional methods. Every transaction is verified under agreement.</p>
+    <p class="settle-body r"><strong>This is infrastructure — not retail checkout.</strong></p>
+
+    <div class="settle-icons r">
+      <div class="settle-icon-item">
+        <div class="settle-icon-logo">
+          <svg width="44" height="30" viewBox="0 0 44 30" fill="none">
+            <circle cx="22" cy="15" r="13" stroke="currentColor" stroke-width="1.2"/>
+            <text x="22" y="20" font-size="9" text-anchor="middle" fill="currentColor" font-family="DM Sans,sans-serif" font-weight="400" letter-spacing="0">USDC</text>
+          </svg>
+        </div>
+        <span class="settle-icon-label">USD Coin</span>
+      </div>
+      <div class="settle-icon-item">
+        <div class="settle-icon-logo">
+          <svg width="44" height="30" viewBox="0 0 44 30" fill="none">
+            <polygon points="22,3 36,15 22,20 8,15" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"/>
+            <polygon points="22,20 36,15 22,28 8,15" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round" opacity=".6"/>
+          </svg>
+        </div>
+        <span class="settle-icon-label">Ethereum</span>
+      </div>
+      <div class="settle-icon-item">
+        <div class="settle-icon-logo">
+          <svg width="44" height="30" viewBox="0 0 44 30" fill="none">
+            <text x="22" y="22" font-size="18" text-anchor="middle" fill="currentColor" font-family="serif" font-weight="400">&#x20BF;</text>
+          </svg>
+        </div>
+        <span class="settle-icon-label">Bitcoin</span>
+      </div>
+      <div class="settle-icon-item">
+        <div class="settle-icon-logo">
+          <svg width="44" height="30" viewBox="0 0 44 30" fill="none">
+            <rect x="9" y="5" width="26" height="20" rx="4" stroke="currentColor" stroke-width="1.2"/>
+            <text x="22" y="20" font-size="11" text-anchor="middle" fill="currentColor" font-family="DM Sans,sans-serif" font-weight="300" letter-spacing="1">S</text>
+          </svg>
+        </div>
+        <span class="settle-icon-label">Stripe</span>
+      </div>
+    </div>
+
+    <div class="settle-trust r">
+      <div class="settle-trust-item">
+        <strong class="settle-trust-strong">Settlement Verified</strong>
+        <p class="settle-trust-text">Confirmed per agreement. No automated billing. Every transaction is direct and structured.</p>
+      </div>
+      <div class="settle-trust-item">
+        <strong class="settle-trust-strong">Private Structure</strong>
+        <p class="settle-trust-text">Transactions are handled directly between parties. No third-party exposure.</p>
+      </div>
+      <div class="settle-trust-item">
+        <strong class="settle-trust-strong">Operator Approval Required</strong>
+        <p class="settle-trust-text">Payment follows position confirmation. Access is not self-service.</p>
+      </div>
+    </div>
+
+    <p class="settle-note r">Wallet integration available upon onboarding.</p>
+  </div>
 </div>
 
-<!-- ════════════ ROADMAP — PROOF / FUTURE ════════════ -->
-<div class="roadmap">
-  <p class="s-eye r">On the Roadmap</p>
-  <h2 class="s-h r">The platform grows<br><em>with the licence base.</em></h2>
-  <div class="rm-grid">
-    <div class="rm-item r">
-      <h3 class="rm-title">Agency Dashboard</h3>
-      <p class="rm-desc">An operator dashboard for managing your licensed pages, reviewing deployment status, and onboarding new client sites — structured oversight, controlled access.</p>
+<!-- ════════════ PLATFORM EXPANSION ════════════ -->
+<div class="expansion">
+  <div class="expansion-inner">
+    <div class="exp-hed-block">
+      <p class="s-eye r">Platform Expansion</p>
+      <h2 class="s-h r">The system expands<br><em>with you.</em></h2>
+      <span class="exp-gold-line r">Your position compounds.</span>
     </div>
-    <div class="rm-item r">
-      <h3 class="rm-title">Per-URL Search Tracking</h3>
-      <p class="rm-desc">Position reporting at the individual page level — giving operators clear visibility into indexed status, discovery performance, and the compounding value of the licensed infrastructure.</p>
+    <div class="exp-grid" id="expGrid">
+      <div class="exp-card">
+        <span class="exp-dev-tag">In Development</span>
+        <h3 class="exp-title">Agency Dashboard</h3>
+        <p class="exp-punch">Full visibility. Real ownership.</p>
+        <p class="exp-body">Manage deployment, track coverage, and oversee expansion across your licensed territory — every page, every market, one place.</p>
+      </div>
+      <div class="exp-card">
+        <span class="exp-dev-tag">In Development</span>
+        <h3 class="exp-title">Per-URL Search Tracking</h3>
+        <p class="exp-punch">Know exactly where you stand.</p>
+        <p class="exp-body">Track performance at the page level — visibility, indexing, and the compounding advantage of your infrastructure as it builds.</p>
+      </div>
+      <div class="exp-card">
+        <span class="exp-dev-tag">In Development</span>
+        <h3 class="exp-title">Reseller Sub-Licensing</h3>
+        <p class="exp-punch">Expand under your brand.</p>
+        <p class="exp-body">Bring clients into your system with structured access and scalable territory allocation. The advantage is yours to extend.</p>
+      </div>
     </div>
-    <div class="rm-item r">
-      <h3 class="rm-title">Reseller Sub-Licensing</h3>
-      <p class="rm-desc">Bring client accounts into the system under your brand. You control access, pricing, and capacity allocation — the infrastructure remains SEOAIco's.</p>
+    <div class="exp-footer r">
+      <span class="exp-footer-line">New capabilities are deployed as the network expands.</span>
+      <span class="exp-footer-accent">The advantage compounds over time.</span>
+    </div>
+    <div class="exp-momentum r">
+      <p class="exp-momentum-main">This is not a roadmap.<br><em>This is the system expanding under your position.</em></p>
+      <p class="exp-momentum-sub">New capabilities deploy continuously</p>
     </div>
   </div>
 </div>
+<script>
+(function(){
+  var grid=document.getElementById('expGrid');
+  if(!grid)return;
+  var cards=grid.querySelectorAll('.exp-card');
+  if('IntersectionObserver' in window){
+    var io=new IntersectionObserver(function(entries){
+      if(entries[0].isIntersecting){
+        cards.forEach(function(c){c.classList.add('vis');});
+        io.disconnect();
+      }
+    },{threshold:.15});
+    io.observe(grid);
+  } else {
+    cards.forEach(function(c){c.classList.add('vis');});
+  }
+})();
+</script>
 
 <!-- ════════════ CONTACT ════════════ -->
 <section id="contact">
   <div class="contact-inner">
     <div>
-      <p class="s-eye r">Licensing Access</p>
-      <h2 class="s-h r">Tell us your market — and we'll assess <em>whether access is available.</em></h2>
-      <p class="s-p r">Every application is reviewed individually. We assess your category, your territory, and your operating context — then confirm access level and availability. Not automated. Not self-serve.</p>
+      <p class="s-eye r">Submit Market for Review</p>
+      <h2 class="s-h r">Submit your market<br>for review.<br><em>Before it's claimed.</em></h2>
+      <p class="s-p r">Access is not guaranteed. Availability is limited per territory. We assess your category, your market, and your operating context — then confirm whether access is available. Not automated. Not self-serve.</p>
+      <p class="s-p r" style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.05rem;margin-top:8px;color:rgba(168,168,160,.55)">This is not a purchase decision. It is a position decision.</p>
       <div class="c-meta r">
         <div class="cm"><label>Licensing Model</label><span>Reviewed individually — not automated</span></div>
         <div class="cm"><label>Commitment</label><span>3-month minimum, then month-to-month</span></div>
@@ -1213,8 +2092,8 @@ footer{border-top:1px solid var(--border);padding:36px 64px;display:flex;flex-di
       <input type="hidden" name="g-recaptcha-response" id="g-recaptcha-response" value="">
       @endif
 
-      <p style="font-size:.84rem;color:var(--muted);text-align:center;letter-spacing:.04em;margin-bottom:8px">Markets are held while agreements are active. Not all territories are available at the time of application.</p>
-      <button type="submit" class="fsub" id="submitBtn">Submit Licensing Enquiry</button>
+      <p style="font-size:.82rem;color:var(--muted);text-align:center;letter-spacing:.04em;margin-bottom:8px">Markets are reviewed individually. Not all territories are available at time of application.</p>
+      <button type="submit" class="fsub" id="submitBtn">Submit Market for Review</button>
     </form>
   </div>
 </section>
@@ -1342,6 +2221,93 @@ footer{border-top:1px solid var(--border);padding:36px 64px;display:flex;flex-di
   @if (session('inquiry_success'))
     document.getElementById('contact').scrollIntoView({behavior:'smooth'});
   @endif
+
+  /* ── Hero sequence ── */
+  (function(){
+    var wrap = document.getElementById('heroSeq');
+    if(!wrap) return;
+    var lines = wrap.querySelectorAll('.hero-seq-line');
+    if(!lines.length) return;
+
+    // Lock container height to tallest variant — prevents layout shift
+    function lockHeight(){
+      lines.forEach(function(l){
+        l.style.setProperty('position','relative','important');
+        l.style.setProperty('opacity','1','important');
+        l.style.setProperty('transition','none','important');
+        l.style.setProperty('transform','none','important');
+      });
+      var maxH = 0;
+      lines.forEach(function(l){ if(l.offsetHeight > maxH) maxH = l.offsetHeight; });
+      lines.forEach(function(l){
+        l.style.removeProperty('position');
+        l.style.removeProperty('opacity');
+        l.style.removeProperty('transition');
+        l.style.removeProperty('transform');
+      });
+      wrap.style.height = maxH + 'px';
+    }
+    lockHeight();
+    var resizeTimer;
+    window.addEventListener('resize', function(){
+      clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(lockHeight, 150);
+    });
+
+    // Reduced-motion: show first line only, no cycling
+    if(window.matchMedia('(prefers-reduced-motion:reduce)').matches){
+      lines[0].classList.add('hs-active');
+      return;
+    }
+
+    var current = 0;
+    var HOLD = 3000;  // ms each headline is fully visible
+    var OUT  = 600;   // ms fade-out duration
+    var GAP  = 300;   // ms dark pause (luxury spacing)
+    var IN   = 750;   // ms fade-in duration
+    var CYCLE = HOLD + OUT + GAP + IN;
+
+    // Show first line immediately
+    lines[0].classList.add('hs-active');
+
+    setInterval(function(){
+      var outEl = lines[current];
+      current = (current + 1) % lines.length;
+      var inEl = lines[current];
+      // Step 1: fade out
+      outEl.classList.remove('hs-active');
+      // Step 2: after outgoing fade + gap, fade in next
+      // Two separate elements, never both active simultaneously
+      setTimeout(function(){ inEl.classList.add('hs-active'); }, OUT + GAP);
+    }, CYCLE);
+  })();
+
+  /* ── Market Allocation grid ── */
+  (function(){
+    var markets = [
+      {region:'Pacific Northwest', states:'WA · OR',            status:'allocated'},
+      {region:'California',        states:'CA',                 status:'allocated'},
+      {region:'Southwest',         states:'AZ · NV · NM',       status:'limited'},
+      {region:'Mountain West',     states:'CO · UT · ID · MT',  status:'open'},
+      {region:'Midwest',           states:'IL · OH · MI · MN',  status:'allocated'},
+      {region:'South Central',     states:'TX · OK · AR · LA',  status:'limited'},
+      {region:'Southeast',         states:'FL · GA · NC · SC',  status:'limited'},
+      {region:'Northeast',         states:'NY · NJ · CT · MA',  status:'allocated'},
+    ];
+    var labels = {allocated:'Allocated',limited:'Limited Availability',open:'Open'};
+    var grid = document.getElementById('allocGrid');
+    if(!grid) return;
+    grid.innerHTML = markets.map(function(m){
+      return '<div class="alloc-cell">'
+        + '<p class="alloc-region">' + m.region + '</p>'
+        + '<p class="alloc-states">' + m.states + '</p>'
+        + '<div class="alloc-status">'
+        +   '<span class="alloc-dot ' + m.status + '"></span>'
+        +   '<span class="alloc-status-label ' + m.status + '">' + labels[m.status] + '</span>'
+        + '</div>'
+        + '</div>';
+    }).join('');
+  })();
 </script>
 
 @include('components.booking-modal')
