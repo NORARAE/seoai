@@ -25,7 +25,8 @@ class PublicController extends Controller
      */
     public function landing(): View
     {
-        return view('public.landing');
+        $consultTypes = \App\Models\ConsultType::active()->get()->keyBy('slug');
+        return view('public.landing', compact('consultTypes'));
     }
 
     /**

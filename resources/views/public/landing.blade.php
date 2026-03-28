@@ -445,15 +445,14 @@ nav.stuck{background:rgba(8,8,8,.95);backdrop-filter:blur(16px);border-color:var
 .ul-state.active{border-color:#2a2a18}
 .ul-state.inactive{border-color:#2a1414}
 
-/* ── Integrity ── */
-.integrity-section{border-top:1px solid var(--border);padding:72px 64px;max-width:1200px;margin:0 auto}
-.integrity-grid{display:grid;grid-template-columns:1fr 1fr;gap:44px;align-items:start;margin-top:40px}
-.integrity-block{padding:36px 32px;border:1px solid var(--border);position:relative;overflow:hidden}
-.integrity-block::before{content:'';position:absolute;top:0;left:0;bottom:0;width:2px;background:var(--gold-dim)}
-.ib-label{font-size:.7rem;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);margin-bottom:10px;display:block}
-.ib-title{font-family:'Cormorant Garamond',serif;font-size:1.35rem;font-weight:400;margin-bottom:10px;color:var(--ivory)}
-.ib-body{font-size:.94rem;line-height:1.75;color:var(--muted)}
-.ib-body strong{color:var(--ivory);font-weight:400}
+/* ── Licence Statement ── */
+.licence-stmt-section{border-top:1px solid var(--border);padding:64px 64px;max-width:1200px;margin:0 auto}
+.licence-stmt-principle{font-family:'Cormorant Garamond',serif;font-size:clamp(1.2rem,1.8vw,1.55rem);font-weight:400;font-style:italic;color:var(--ivory);letter-spacing:.01em;margin-bottom:16px}
+.licence-stmt-body{display:flex;flex-direction:column;gap:6px}
+.licence-stmt-body p{font-size:.9rem;color:var(--muted);letter-spacing:.04em;line-height:1.9}
+/* ── Pricing Buyer Guide ── */
+.offer-guide{padding:0 0 40px;text-align:center;position:relative;z-index:2}
+.offer-guide-line{font-size:.78rem;letter-spacing:.14em;text-transform:uppercase;color:var(--gold-dim)}
 
 /* ── Pricing / Offer ── */
 #offer{padding:48px 64px;max-width:1200px;margin:0 auto;position:relative;overflow:hidden}
@@ -1005,8 +1004,6 @@ footer{border-top:1px solid var(--border);padding:36px 64px;display:flex;flex-di
   .step{padding:32px 20px}
   .step-n{font-size:2.8rem;margin-bottom:14px}
   .step-title{font-size:1.2rem}
-  .integrity-grid{grid-template-columns:1fr}
-  .integrity-block{padding:28px 24px}
   /* exp-grid mobile handled by expansion @media block */
   .url-lock-inner{grid-template-columns:1fr;gap:28px}
   .ul-title{font-size:clamp(1.5rem,5vw,2rem)}
@@ -1032,7 +1029,7 @@ footer{border-top:1px solid var(--border);padding:36px 64px;display:flex;flex-di
   .s-p{font-size:.96rem}
   .c-meta{gap:16px;margin-top:24px}
   .audience-section,.url-lock,.wyl-section,.url-section{padding:48px 24px}
-  .steps-wrap,.integrity-section{padding:48px 24px}
+  .steps-wrap,.licence-stmt-section{padding:40px 24px}
   #offer,#contact,footer{padding:48px 24px}
   .footer-main{flex-direction:column;gap:12px;text-align:center}
   .btt{bottom:20px;right:20px;width:42px;height:42px}
@@ -1059,7 +1056,7 @@ footer{border-top:1px solid var(--border);padding:36px 64px;display:flex;flex-di
   .stmt-quote .sq-text{font-size:clamp(1.1rem,4vw,1.4rem)}
   .stmt-quote::before,.stmt-quote::after{left:18px;right:18px}
   .audience-section,.url-lock,.wyl-section,.url-section{padding:36px 20px}
-  .steps-wrap,.integrity-section{padding:36px 20px}
+  .steps-wrap,.licence-stmt-section{padding:32px 20px}
   #offer,#contact,footer{padding:36px 20px}
   .aud-card{padding:32px 18px}
   .tier{padding:32px 20px}
@@ -1245,59 +1242,66 @@ body::before{
 
 /* ── Settlement section ── */
 .settlement{
-  padding:72px 64px;
+  padding:44px 64px;
   border-top:1px solid rgba(154,122,48,.1);
 }
 .settlement-inner{max-width:960px;margin:0 auto}
-.settle-gold{
-  display:block;
-  font-family:'Cormorant Garamond',serif;font-style:italic;font-weight:300;
-  font-size:clamp(1.1rem,1.8vw,1.4rem);
-  color:var(--gold);letter-spacing:.02em;margin-top:8px;margin-bottom:28px;
+.settle-hed{
+  font-family:'Cormorant Garamond',serif;font-weight:300;font-style:normal;
+  font-size:clamp(1.4rem,2.2vw,2rem);line-height:1.1;
+  color:var(--ivory);margin-bottom:4px;
 }
-.settle-body{font-size:.98rem;line-height:1.82;color:var(--muted);margin-bottom:10px;max-width:580px}
-.settle-body strong{color:var(--ivory);font-weight:400}
+.settle-hed em{font-style:italic;color:var(--gold-lt)}
+.settle-body{font-size:.88rem;line-height:1.8;color:rgba(168,168,160,.78);margin-bottom:8px;max-width:560px}
+.settle-wallet-note{
+  font-size:.76rem;letter-spacing:.06em;color:rgba(168,168,160,.44);
+  margin-top:12px;font-style:italic;
+}
 .settle-icons{
-  display:flex;gap:40px;align-items:center;flex-wrap:wrap;
-  margin:44px 0 48px;
+  display:flex;gap:32px;align-items:center;flex-wrap:wrap;
+  margin:24px 0 20px;
 }
 .settle-icon-item{
-  display:flex;flex-direction:column;align-items:center;gap:10px;
-  opacity:.30;transition:opacity .4s,filter .4s;cursor:default;
+  display:flex;flex-direction:column;align-items:center;gap:8px;
+  opacity:.46;transition:opacity .3s,filter .3s;cursor:default;
+  position:relative;
 }
 .settle-icon-item:hover{
-  opacity:.62;filter:drop-shadow(0 0 12px rgba(200,168,75,.2));
+  opacity:.86;filter:drop-shadow(0 0 10px rgba(200,168,75,.22));
+}
+.settle-icon-item:hover .settle-icon-label{color:var(--ivory)}
+.settle-icon-item[data-tip]:hover::after{
+  content:attr(data-tip);
+  position:absolute;bottom:calc(100% + 10px);left:50%;transform:translateX(-50%);
+  background:rgba(10,9,7,.94);border:1px solid rgba(200,168,75,.14);
+  color:rgba(168,168,160,.82);font-size:.6rem;letter-spacing:.08em;
+  white-space:nowrap;padding:5px 10px;pointer-events:none;z-index:10;
 }
 .settle-icon-logo{
-  width:48px;height:36px;display:flex;align-items:center;justify-content:center;
+  width:44px;height:32px;display:flex;align-items:center;justify-content:center;
   color:var(--ivory);
 }
 .settle-icon-label{
-  font-size:.58rem;letter-spacing:.24em;text-transform:uppercase;color:var(--muted);
+  font-size:.56rem;letter-spacing:.22em;text-transform:uppercase;color:var(--muted);
+  transition:color .3s;
 }
 .settle-trust{
-  display:grid;grid-template-columns:1fr 1fr 1fr;gap:0;
-  background:rgba(200,168,75,.06);
-  margin-top:44px;
+  display:grid;grid-template-columns:1fr 1fr;gap:0;
+  background:rgba(200,168,75,.05);
+  margin-top:24px;
 }
 .settle-trust-item{
-  background:var(--deep);padding:26px 28px;position:relative;
+  background:var(--deep);padding:20px 24px;position:relative;
 }
 .settle-trust-item::before{
   content:'';position:absolute;top:0;left:0;right:0;height:1px;
-  background:linear-gradient(90deg,transparent,rgba(200,168,75,.1),transparent);
+  background:linear-gradient(90deg,transparent,rgba(200,168,75,.09),transparent);
 }
 .settle-trust-strong{
-  font-size:.64rem;letter-spacing:.2em;text-transform:uppercase;
-  color:var(--gold-dim);display:block;margin-bottom:8px;
+  font-size:.62rem;letter-spacing:.18em;text-transform:uppercase;
+  color:var(--gold-dim);display:block;margin-bottom:6px;
 }
-.settle-trust-text{font-size:.88rem;line-height:1.72;color:var(--muted)}
-.settle-note{
-  margin-top:20px;padding:14px 20px;
-  border:1px solid rgba(200,168,75,.07);
-  font-family:'Cormorant Garamond',serif;font-style:italic;
-  font-size:.96rem;color:rgba(168,168,160,.62);text-align:center;
-}
+.settle-trust-text{font-size:.84rem;line-height:1.7;color:rgba(168,168,160,.7)}
 
 /* ── Offer trust block ── */
 .offer-trust-line{
@@ -1396,16 +1400,16 @@ body::before{
 
 @media(max-width:900px){
   .infra-principle{padding:96px 24px}
-  .settlement{padding:48px 24px}
+  .settlement{padding:36px 24px}
   .settle-trust{grid-template-columns:1fr}
-  .settle-icons{gap:24px}
+  .settle-icons{gap:20px}
   .alloc-decision{padding:28px 24px;max-width:100%}
 }
 @media(max-width:520px){
   .infra-principle{padding:72px 20px}
   .infra-hed-1,.infra-hed-2{font-size:clamp(2.4rem,9.5vw,3.4rem)}
   .infra-gold{font-size:clamp(1.6rem,5.8vw,2.2rem)}
-  .settlement{padding:36px 20px}
+  .settlement{padding:28px 20px}
   .hero-stage{font-size:clamp(3.2rem,11vw,5rem)}
   .hero-gold-accent{font-size:clamp(1.1rem,4.5vw,1.4rem)}
   .exp-momentum-main{font-size:clamp(1.2rem,4.5vw,1.6rem)}
@@ -1899,22 +1903,13 @@ body::before{
 </div>
 </section>
 
-<!-- ════════════ INTEGRITY ════════════ -->
+<!-- ════════════ LICENCE STATEMENT ════════════ -->
 <section>
-  <div class="integrity-section">
-    <p class="s-eye r">Licensing &amp; Page Protection</p>
-    <h2 class="s-h r">Position is held<br><em>under agreement — not by default.</em></h2>
-    <div class="integrity-grid r">
-      <div class="integrity-block">
-        <span class="ib-label">Active Licence Holders</span>
-        <h3 class="ib-title">Your pages are protected within your licence</h3>
-        <p class="ib-body">Pages built through an active SEOAIco licence are tied to that licence. <strong>Growth, updates, and system upkeep are all maintained within your licensed page count.</strong> More coverage requires a tier upgrade — simple, step-by-step, and controlled.</p>
-      </div>
-      <div class="integrity-block">
-        <span class="ib-label">Legacy &amp; Pre-Licence Builds</span>
-        <h3 class="ib-title">Unlicensed builds need a fresh start</h3>
-        <p class="ib-body">Pages built outside SEOAIco aren't eligible for protected growth within the licensed system. <strong>To bring an existing site into the licensed system — with full growth rights, search data, and protected pages — you'll need to start at the 10,000 page licence tier.</strong></p>
-      </div>
+  <div class="licence-stmt-section">
+    <p class="licence-stmt-principle r">Position is held under licence — not by default.</p>
+    <div class="licence-stmt-body r">
+      <p>Active licences protect your position.</p>
+      <p>Unlicensed builds do not carry forward.</p>
     </div>
   </div>
 </section>
@@ -1957,16 +1952,20 @@ body::before{
     </div>
   </div>
 
+  <div class="offer-guide r">
+    <p class="offer-guide-line">Start with the market you need to own. Expand from there.</p>
+  </div>
+
   <div class="tier-grid-3" id="tierGrid">
 
     <div class="tier starter">
       <span class="tier-flag">Entry — By Application</span>
-      <h3 class="tier-name">Entry Allocation</h3>
-      <div class="tier-urls">Reviewed individually &middot; Limited capacity</div>
+      <h3 class="tier-name">Market Entry</h3>
+      <div class="tier-urls">For approved operators entering a market selectively.</div>
       <ul class="tier-features">
         <li>
           <svg fill="none" stroke="currentColor" stroke-width="1.4" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064"/></svg>
-          Search coverage across your assigned territory
+          Search coverage across your assigned market
         </li>
         <li>
           <svg fill="none" stroke="currentColor" stroke-width="1.4" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
@@ -1978,7 +1977,7 @@ body::before{
         </li>
         <li>
           <svg fill="none" stroke="currentColor" stroke-width="1.4" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/></svg>
-          Upgradeable to Strategic or Dominant
+          Upgradeable to Market Position or Expansion
         </li>
       </ul>
       <div class="tier-gated">
@@ -1986,21 +1985,21 @@ body::before{
         <span><strong>Not publicly priced.</strong> Entry access is reviewed individually. Apply below.</span>
       </div>
       <a href="#contact" class="tier-cta">Apply for Entry Access</a>
-      <button class="tier-book" onclick="window.dispatchEvent(new CustomEvent('open-booking', {detail: {id: 1, duration: 15, name: 'Free Discovery Call'}}))">Book a Discovery Call</button>
+      <button class="tier-book" onclick="window._bkPending={id:{{ $consultTypes->get('discovery')?->id ?? 1 }},duration:{{ $consultTypes->get('discovery')?->duration_minutes ?? 15 }},name:{{ json_encode($consultTypes->get('discovery')?->name ?? 'Free Discovery Call') }},isFree:{{ ($consultTypes->get('discovery')?->is_free ?? true) ? 'true' : 'false' }}};window.dispatchEvent(new CustomEvent('open-booking',{detail:window._bkPending}))">Book a Discovery Call</button>
     </div>
 
     <div class="tier focal">
-      <span class="tier-flag">Strategic Position — Most Selected</span>
-      <h3 class="tier-name">Strategic Territory</h3>
-      <div class="tier-urls">Full market coverage &middot; Agency or single-business</div>
+      <span class="tier-flag">Most Selected</span>
+      <h3 class="tier-name">Market Position</h3>
+      <div class="tier-urls">For businesses securing full search coverage across a target market.</div>
       <ul class="tier-features">
         <li>
           <svg fill="none" stroke="currentColor" stroke-width="1.4" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
-          <strong>Exclusive territory</strong> — one operator, one market
+          <strong>Exclusive market</strong> — one operator, protected coverage
         </li>
         <li>
           <svg fill="none" stroke="currentColor" stroke-width="1.4" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064"/></svg>
-          Full search coverage across services and cities
+          Full search coverage across services and locations
         </li>
         <li>
           <svg fill="none" stroke="currentColor" stroke-width="1.4" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
@@ -2013,22 +2012,22 @@ body::before{
       </ul>
       <div class="tier-price"><sup>$</sup>2,995<sub>/mo</sub></div>
       <div class="tier-commitment">3-month minimum. Month-to-month thereafter.</div>
-      <a href="#contact" class="tier-cta">Apply for This Position</a>
-      <button class="tier-book" onclick="window.dispatchEvent(new CustomEvent('open-booking', {detail: {id: 1, duration: 15, name: 'Strategy Call'}}))">Book a Strategy Call</button>
+      <a href="#contact" class="tier-cta">Apply for Market Position</a>
+      <button class="tier-book" onclick="window._bkPending={id:{{ $consultTypes->get('strategy')?->id ?? 2 }},duration:{{ $consultTypes->get('strategy')?->duration_minutes ?? 30 }},name:{{ json_encode($consultTypes->get('strategy')?->name ?? 'Strategy Call') }},isFree:{{ ($consultTypes->get('strategy')?->is_free ?? false) ? 'true' : 'false' }}};window.dispatchEvent(new CustomEvent('open-booking',{detail:window._bkPending}))">Book a Strategy Call</button>
     </div>
 
     <div class="tier prime">
-      <span class="tier-flag">Dominant Position — Full Scale</span>
-      <h3 class="tier-name">Dominant Territory</h3>
-      <div class="tier-urls">Full market saturation &middot; Full portfolio or large-scale deployment</div>
+      <span class="tier-flag">Full Scale</span>
+      <h3 class="tier-name">Market Expansion</h3>
+      <div class="tier-urls">For operators expanding coverage, scale, and protected reach.</div>
       <ul class="tier-features">
         <li>
           <svg fill="none" stroke="currentColor" stroke-width="1.4" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
-          Everything in Strategic Territory
+          Everything in Market Position
         </li>
         <li>
           <svg fill="none" stroke="currentColor" stroke-width="1.4" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064"/></svg>
-          <strong>Expanded coverage</strong> — full market saturation
+          <strong>Expanded coverage</strong> — broader market footprint
         </li>
         <li>
           <svg fill="none" stroke="currentColor" stroke-width="1.4" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/></svg>
@@ -2036,13 +2035,13 @@ body::before{
         </li>
         <li>
           <svg fill="none" stroke="currentColor" stroke-width="1.4" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>
-          Designed for full market ownership
+          For full-scale market ownership and expansion
         </li>
       </ul>
       <div class="tier-price"><sup>$</sup>4,799<sub>/mo</sub></div>
       <div class="tier-commitment">Priority processing. 3-month minimum, then month-to-month.</div>
       <a href="#contact" class="tier-cta">Request Licensing Details</a>
-      <button class="tier-book" onclick="window.dispatchEvent(new CustomEvent('open-booking', {detail: {id: 3, duration: 60, name: 'Agency Licence Review'}}))">Review My Agency Licence</button>
+      <button class="tier-book" onclick="window._bkPending={id:{{ $consultTypes->get('agency-review')?->id ?? $consultTypes->get('agency')?->id ?? 3 }},duration:{{ $consultTypes->get('agency-review')?->duration_minutes ?? $consultTypes->get('agency')?->duration_minutes ?? 60 }},name:{{ json_encode($consultTypes->get('agency-review')?->name ?? $consultTypes->get('agency')?->name ?? 'Agency Licence Review') }},isFree:{{ ($consultTypes->get('agency-review')?->is_free ?? $consultTypes->get('agency')?->is_free ?? false) ? 'true' : 'false' }}};window.dispatchEvent(new CustomEvent('open-booking',{detail:window._bkPending}))">Review My Agency Licence</button>
     </div>
 
   </div>
@@ -2070,39 +2069,13 @@ body::before{
 <div class="settlement">
   <div class="settlement-inner">
     <p class="s-eye r">Settlement</p>
-    <h2 class="s-h r">Structured. Verified.<br><em>Direct.</em></h2>
-    <span class="settle-gold r">USDC preferred.</span>
-    <p class="settle-body r">Large engagements may be settled in digital assets or traditional methods. Every transaction is verified under agreement.</p>
-    <p class="settle-body r"><strong>This is a structured engagement — not retail checkout.</strong></p>
+    <h2 class="settle-hed r">Secure. Direct.<br><em>Flexible.</em></h2>
+
+    <p class="settle-body r">Transactions can be completed via traditional payment methods or digital assets. USDC is supported for direct settlement. Stripe is available for standard invoicing and card payments.</p>
+    <p class="settle-wallet-note r">Wallet-based settlement will be available within your dashboard upon onboarding.</p>
 
     <div class="settle-icons r">
-      <div class="settle-icon-item">
-        <div class="settle-icon-logo">
-          <svg width="44" height="30" viewBox="0 0 44 30" fill="none">
-            <circle cx="22" cy="15" r="13" stroke="currentColor" stroke-width="1.2"/>
-            <text x="22" y="20" font-size="9" text-anchor="middle" fill="currentColor" font-family="DM Sans,sans-serif" font-weight="400" letter-spacing="0">USDC</text>
-          </svg>
-        </div>
-        <span class="settle-icon-label">USD Coin</span>
-      </div>
-      <div class="settle-icon-item">
-        <div class="settle-icon-logo">
-          <svg width="44" height="30" viewBox="0 0 44 30" fill="none">
-            <polygon points="22,3 36,15 22,20 8,15" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"/>
-            <polygon points="22,20 36,15 22,28 8,15" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round" opacity=".6"/>
-          </svg>
-        </div>
-        <span class="settle-icon-label">Ethereum</span>
-      </div>
-      <div class="settle-icon-item">
-        <div class="settle-icon-logo">
-          <svg width="44" height="30" viewBox="0 0 44 30" fill="none">
-            <text x="22" y="22" font-size="18" text-anchor="middle" fill="currentColor" font-family="serif" font-weight="400">&#x20BF;</text>
-          </svg>
-        </div>
-        <span class="settle-icon-label">Bitcoin</span>
-      </div>
-      <div class="settle-icon-item">
+      <div class="settle-icon-item" data-tip="Standard billing and invoicing">
         <div class="settle-icon-logo">
           <svg width="44" height="30" viewBox="0 0 44 30" fill="none">
             <rect x="9" y="5" width="26" height="20" rx="4" stroke="currentColor" stroke-width="1.2"/>
@@ -2111,24 +2084,44 @@ body::before{
         </div>
         <span class="settle-icon-label">Stripe</span>
       </div>
+      <div class="settle-icon-item" data-tip="Preferred for direct settlement">
+        <div class="settle-icon-logo">
+          <svg width="44" height="30" viewBox="0 0 44 30" fill="none">
+            <circle cx="22" cy="15" r="13" stroke="currentColor" stroke-width="1.2"/>
+            <text x="22" y="20" font-size="9" text-anchor="middle" fill="currentColor" font-family="DM Sans,sans-serif" font-weight="400" letter-spacing="0">USDC</text>
+          </svg>
+        </div>
+        <span class="settle-icon-label">USD Coin</span>
+      </div>
+      <div class="settle-icon-item" data-tip="Eligible for premium access tiers">
+        <div class="settle-icon-logo">
+          <svg width="44" height="30" viewBox="0 0 44 30" fill="none">
+            <polygon points="22,3 36,15 22,20 8,15" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"/>
+            <polygon points="22,20 36,15 22,28 8,15" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round" opacity=".6"/>
+          </svg>
+        </div>
+        <span class="settle-icon-label">Ethereum</span>
+      </div>
+      <div class="settle-icon-item" data-tip="Accepted for settlement">
+        <div class="settle-icon-logo">
+          <svg width="44" height="30" viewBox="0 0 44 30" fill="none">
+            <text x="22" y="22" font-size="18" text-anchor="middle" fill="currentColor" font-family="serif" font-weight="400">&#x20BF;</text>
+          </svg>
+        </div>
+        <span class="settle-icon-label">Bitcoin</span>
+      </div>
     </div>
 
     <div class="settle-trust r">
       <div class="settle-trust-item">
-        <strong class="settle-trust-strong">Settlement Verified</strong>
-        <p class="settle-trust-text">Confirmed per agreement. No automated billing. Every transaction is direct and structured.</p>
+        <strong class="settle-trust-strong">Verified per agreement</strong>
+        <p class="settle-trust-text">No automated billing. Structured engagement only.</p>
       </div>
       <div class="settle-trust-item">
-        <strong class="settle-trust-strong">Private Structure</strong>
-        <p class="settle-trust-text">Transactions are handled directly between parties. No third-party exposure.</p>
-      </div>
-      <div class="settle-trust-item">
-        <strong class="settle-trust-strong">Operator Approval Required</strong>
-        <p class="settle-trust-text">Payment follows position confirmation. Access is not self-service.</p>
+        <strong class="settle-trust-strong">Access approved before payment</strong>
+        <p class="settle-trust-text">Position is confirmed first. Not self-service.</p>
       </div>
     </div>
-
-    <p class="settle-note r">Wallet integration available upon onboarding.</p>
   </div>
 </div>
 

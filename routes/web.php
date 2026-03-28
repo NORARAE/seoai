@@ -46,6 +46,9 @@ Route::get('/checkout/cancelled', fn () => view('public.checkout-cancelled'))->n
 Route::get('/book', [BookingController::class, 'index'])->name('book.index');
 Route::get('/book/slots', [BookingController::class, 'getSlots'])->middleware('throttle:booking')->name('book.slots');
 Route::post('/book', [BookingController::class, 'store'])->middleware('throttle:booking')->name('book.store');
+Route::post('/book/checkout', [BookingController::class, 'initiateCheckout'])->middleware('throttle:booking')->name('book.checkout');
+Route::get('/book/confirmed', [BookingController::class, 'confirmed'])->name('book.confirmed');
+Route::get('/book/payment-return/{booking}', [BookingController::class, 'handlePaymentReturn'])->name('book.payment-return');
 Route::get('/book/confirm/{booking}', [BookingController::class, 'confirm'])->name('book.confirm');
 Route::get('/book/cancel/{booking}', [BookingController::class, 'cancel'])->name('book.cancel');
 Route::post('/book/cancel/{booking}', [BookingController::class, 'processCancel'])->name('book.processCancel');

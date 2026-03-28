@@ -22,6 +22,8 @@ class Booking extends Model
         'google_meet_link',
         'confirmed_at',
         'cancelled_at',
+        'stripe_checkout_session_id',
+        'stripe_payment_intent_id',
     ];
 
     protected function casts(): array

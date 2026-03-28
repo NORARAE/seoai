@@ -10,9 +10,11 @@ use App\Models\ConsultType;
 use App\Services\GoogleCalendarService;
 use Carbon\Carbon;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
+use Laravel\Cashier\Cashier;
 
 class BookingController extends Controller
 {
@@ -143,7 +145,172 @@ class BookingController extends Controller
     }
 
     /**
-     * Booking confirmation page.
+     * Post-booking confirmation landing page.
+     * Reached via redirect after successful free OR paid booking.
+     */
+    public function confirmed(Request $request)
+    {
+        $booking = Booking::with('consultType')
+            ->where('id', (int) $request->query('booking'))
+            ->whereIn('status', ['confirmed', 'pending'])
+            ->firstOrFail();
+
+        return view('public.booking-confirmed', compact('booking'));
+    }
+
+    /**
+     * Initiate a Stripe Checkout session for a paid consult booking.
+     * Creates the booking in awaiting_payment status and returns the checkout URL.
+     */
+    public function initiateCheckout(Request $request): JsonResponse
+    {
+        $validated = $request->validate([
+            'consult_type_id' => 'required|exists:consult_types,id',
+            'name'            => 'required|string|max:255',
+            'email'           => 'required|email|max:255',
+            'phone'           => 'nullable|string|max:50',
+            'company'         => 'nullable|string|max:255',
+            'website'         => 'nullable|url|max:500',
+            'message'         => 'nullable|string|max:2000',
+            'preferred_date'  => 'required|date|after_or_equal:today',
+            'preferred_time'  => 'required|date_format:H:i',
+        ]);
+
+        $type = ConsultType::findOrFail($validated['consult_type_id']);
+
+        if ($type->is_free) {
+            return response()->json(['message' => 'This consult type does not require payment.'], 422);
+        }
+
+        if (! $type->price || $type->price <= 0) {
+            return response()->json(['message' => 'Price not configured for this consult type. Contact support.'], 422);
+        }
+
+        $date = Carbon::parse($validated['preferred_date']);
+
+        $existing = Booking::where('preferred_date', $date->toDateString())
+            ->where('preferred_time', $validated['preferred_time'])
+            ->whereIn('status', ['pending', 'confirmed', 'awaiting_payment'])
+            ->exists();
+
+        if ($existing) {
+            return response()->json(['message' => 'That time slot was just taken. Please pick another.'], 422);
+        }
+
+        $booking = Booking::create([
+            ...$validated,
+            'status' => 'awaiting_payment',
+        ]);
+
+        try {
+            $session = Cashier::stripe()->checkout->sessions->create([
+                'mode'           => 'payment',
+                'customer_email' => $booking->email,
+                'line_items'     => [[
+                    'price_data' => [
+                        'currency'     => 'usd',
+                        'unit_amount'  => (int) ($type->price * 100),
+                        'product_data' => [
+                            'name'        => $type->name,
+                            'description' => $type->formattedDuration() . ' consultation — seoaico.com',
+                        ],
+                    ],
+                    'quantity' => 1,
+                ]],
+                'metadata'    => ['booking_id' => $booking->id],
+                'success_url' => url('/book/payment-return/' . $booking->id) . '?session_id={CHECKOUT_SESSION_ID}',
+                'cancel_url'  => url('/'),
+                'expires_at'  => now()->addMinutes(30)->timestamp,
+            ]);
+        } catch (\Exception $e) {
+            $booking->delete();
+            Log::channel('booking')->error('Stripe checkout session creation failed', [
+                'error' => $e->getMessage(),
+            ]);
+
+            return response()->json(['message' => 'Payment initialisation failed. Please try again.'], 500);
+        }
+
+        $booking->update(['stripe_checkout_session_id' => $session->id]);
+
+        return response()->json(['checkout_url' => $session->url]);
+    }
+
+    /**
+     * Handle Stripe's return redirect after a paid booking checkout.
+     * Verifies payment, creates the calendar event, and sends confirmation emails.
+     */
+    public function handlePaymentReturn(Booking $booking, Request $request): RedirectResponse
+    {
+        $sessionId = (string) $request->query('session_id', '');
+
+        if (! $sessionId || $booking->stripe_checkout_session_id !== $sessionId) {
+            abort(403, 'Invalid payment return.');
+        }
+
+        // Already confirmed — safe to redirect (handles double-hits / webhook races)
+        if ($booking->status === 'confirmed') {
+            return redirect()->route('book.confirmed', ['booking' => $booking->id]);
+        }
+
+        try {
+            $session = Cashier::stripe()->checkout->sessions->retrieve($sessionId);
+
+            if ($session->payment_status !== 'paid') {
+                Log::channel('booking')->warning('Payment return with unpaid session', [
+                    'booking_id'     => $booking->id,
+                    'payment_status' => $session->payment_status,
+                ]);
+
+                return redirect('/')->with('booking_error', 'Payment was not completed. Please try again.');
+            }
+
+            $booking->update(['stripe_payment_intent_id' => $session->payment_intent]);
+        } catch (\Exception $e) {
+            Log::channel('booking')->error('Stripe session retrieval failed on payment return', [
+                'booking_id' => $booking->id,
+                'error'      => $e->getMessage(),
+            ]);
+            // Proceed cautiously — charge likely succeeded, confirm the booking
+        }
+
+        // Attempt Google Calendar integration
+        try {
+            $calendarService = app(GoogleCalendarService::class);
+            $result = $calendarService->createBookingEvent($booking);
+
+            $booking->update([
+                'google_event_id'  => $result['event_id'],
+                'google_meet_link' => $result['meet_link'],
+                'status'           => 'confirmed',
+                'confirmed_at'     => now(),
+            ]);
+        } catch (\Exception $e) {
+            Log::channel('booking')->error('Google Calendar event creation failed for paid booking', [
+                'booking_id' => $booking->id,
+                'error'      => $e->getMessage(),
+            ]);
+            $booking->update(['status' => 'confirmed', 'confirmed_at' => now()]);
+        }
+
+        $booking->refresh()->load('consultType');
+
+        try {
+            Mail::to($booking->email)->queue(new BookingConfirmed($booking));
+            Mail::to(config('services.booking.owner_email', 'hello@seoaico.com'))
+                ->queue(new BookingAlert($booking));
+        } catch (\Exception $e) {
+            Log::channel('booking')->error('Booking email failed for paid booking', [
+                'booking_id' => $booking->id,
+                'error'      => $e->getMessage(),
+            ]);
+        }
+
+        return redirect()->route('book.confirmed', ['booking' => $booking->id]);
+    }
+
+    /**
+     * Booking confirmation page (legacy — linked from admin / emails).
      */
     public function confirm(Booking $booking)
     {

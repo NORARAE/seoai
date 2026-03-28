@@ -84,7 +84,7 @@
 }
 </style>
 
-<div x-data="bookingModal()" x-cloak @open-booking.window="open($event.detail)">
+<div x-data="bookingModal()" x-cloak @open-booking.window="open($event.detail); window._bkPending = undefined;">
   {{-- Overlay --}}
   <div class="bk-overlay" :class="{ open: isOpen }" @click.self="close()">
     <div class="bk-box">
@@ -108,7 +108,7 @@
           @foreach(\App\Models\ConsultType::active()->get() as $ct)
           <div class="bk-type"
                :class="{ selected: selectedType === {{ $ct->id }} }"
-               @click="selectType({{ $ct->id }}, {{ $ct->duration_minutes }}, '{{ e($ct->name) }}')">
+               @click="selectType({{ $ct->id }}, {{ $ct->duration_minutes }}, {{ json_encode($ct->name) }}, {{ $ct->is_free ? 'true' : 'false' }})">
             <div>
               <div class="bk-type-name">{{ $ct->name }}</div>
               <div class="bk-type-desc">{{ $ct->description }}</div>
@@ -193,23 +193,11 @@
         </button>
       </div>
 
-      {{-- ═══ STEP 4: Confirmation ═══ --}}
-      <div x-show="step === 4" style="text-align:center">
+      {{-- ═══ STEP 4: Redirecting ═══ --}}
+      <div x-show="step === 4" style="text-align:center;padding:32px 0">
         <div class="bk-check">&#10003;</div>
-        <h3 class="bk-conf-title">Booking Confirmed!</h3>
-        <div class="bk-conf-details">
-          <div class="bk-conf-row"><strong x-text="confirmation.consult_type"></strong></div>
-          <div class="bk-conf-row" x-text="confirmation.date + ' at ' + confirmation.time"></div>
-          <div class="bk-conf-row" x-text="confirmation.duration + ' minutes'"></div>
-        </div>
-        <a :href="confirmation.meet_link" target="_blank" class="bk-meet-btn" x-show="confirmation.meet_link">
-          Join Google Meet &rarr;
-        </a>
-        <div x-show="confirmation.meet_link">
-          <a :href="googleCalendarLink()" target="_blank" class="bk-gcal-link">+ Add to Google Calendar</a>
-        </div>
-        <p class="bk-conf-note">You'll receive a confirmation email shortly with all the details.</p>
-        <button class="bk-submit" style="margin-top:20px;background:transparent;border:1px solid #333;color:#a8a8a0" @click="close()">Close</button>
+        <h3 class="bk-conf-title">Confirmed &mdash; redirecting&hellip;</h3>
+        <p class="bk-conf-note" style="margin-top:12px">Taking you to your confirmation page.</p>
       </div>
     </div>
   </div>
@@ -228,6 +216,7 @@ document.addEventListener('alpine:init', () => {
     selectedType: null,
     selectedDuration: 0,
     selectedTypeName: '',
+    selectedTypeIsFree: false,
     selectedDate: '',
     selectedTime: '',
     slots: [],
@@ -239,11 +228,20 @@ document.addEventListener('alpine:init', () => {
     // Available days (0=Sun..6=Sat) — populated from DB availability
     availableDays: @json(\App\Models\BookingAvailability::active()->pluck('day_of_week')->toArray()),
 
+    init() {
+      if (window._bkPending !== undefined) {
+        this.$nextTick(() => {
+          this.open(window._bkPending);
+          window._bkPending = undefined;
+        });
+      }
+    },
+
     open(preselect) {
       this.isOpen = true;
       document.body.style.overflow = 'hidden';
       if (preselect) {
-        this.selectType(preselect.id, preselect.duration, preselect.name);
+        this.selectType(preselect.id, preselect.duration, preselect.name, preselect.isFree ?? false);
       }
     },
 
@@ -272,10 +270,11 @@ document.addEventListener('alpine:init', () => {
       }
     },
 
-    selectType(id, duration, name) {
+    selectType(id, duration, name, isFree = false) {
       this.selectedType = id;
       this.selectedDuration = duration;
       this.selectedTypeName = name;
+      this.selectedTypeIsFree = isFree;
       this.errorMsg = '';
       this.step = 2;
 
@@ -333,7 +332,8 @@ document.addEventListener('alpine:init', () => {
       this.submitting = true;
       this.errorMsg = '';
       try {
-        const resp = await fetch('/book', {
+        const endpoint = this.selectedTypeIsFree ? '/book' : '/book/checkout';
+        const resp = await fetch(endpoint, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -354,8 +354,17 @@ document.addEventListener('alpine:init', () => {
           this.submitting = false;
           return;
         }
+        // Paid booking — redirect to Stripe checkout
+        if (data.checkout_url) {
+          window.location.href = data.checkout_url;
+          return;
+        }
+        // Free booking — flash step 4 then redirect to confirmed page
         this.confirmation = data.booking;
         this.step = 4;
+        setTimeout(() => {
+          window.location.href = '/book/confirmed?booking=' + data.booking.id;
+        }, 900);
       } catch (e) {
         this.errorMsg = 'Network error — please try again.';
       }
