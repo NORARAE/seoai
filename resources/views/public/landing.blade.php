@@ -209,8 +209,9 @@ nav.stuck{background:rgba(8,8,8,.95);backdrop-filter:blur(16px);border-color:var
 .stmt-quote::after{content:'';position:absolute;bottom:0;left:28px;right:28px;height:1px;background:linear-gradient(90deg,transparent,var(--gold-dim),transparent)}
 .stmt-quote .sq-mark{display:block;font-family:'Cormorant Garamond',serif;font-size:3.2rem;line-height:1;color:var(--gold-dim);margin-bottom:12px;user-select:none}
 .stmt-quote .sq-text{
-  font-family:'Cormorant Garamond',serif;font-size:clamp(1.5rem,2.6vw,2.2rem);
-  font-weight:300;font-style:italic;line-height:1.5;color:var(--ivory);letter-spacing:.01em;
+  font-family:'Cormorant Garamond',serif;font-size:clamp(1.6rem,2.8vw,2.4rem);
+  font-weight:300;font-style:italic;line-height:1.45;color:var(--ivory);letter-spacing:.01em;
+  display:flex;flex-direction:column;gap:.35em;
 }
 .stmt-quote .sq-text strong{font-style:normal;color:var(--gold);font-weight:400}
 .stmt-quote .sq-rule{display:block;width:48px;height:1px;background:var(--gold-dim);margin:20px auto 0}
@@ -307,7 +308,7 @@ nav.stuck{background:rgba(8,8,8,.95);backdrop-filter:blur(16px);border-color:var
 }
 .pos-support{
   font-size:clamp(.94rem,1.3vw,1.08rem);font-weight:300;
-  color:rgba(168,168,160,.65);line-height:1.6;margin-bottom:20px;
+  color:rgba(168,168,160,.72);line-height:1.6;margin-bottom:20px;
   letter-spacing:.01em;
 }
 .pos-gold{
@@ -404,7 +405,7 @@ nav.stuck{background:rgba(8,8,8,.95);backdrop-filter:blur(16px);border-color:var
 .url-dot{width:5px;height:5px;border-radius:50%;background:var(--gold);flex-shrink:0;animation:blink 2.8s ease-in-out infinite}
 .url-item .hl{color:var(--gold)}
 @keyframes blink{0%,100%{opacity:.2}50%{opacity:1}}
-.url-more{font-size:.72rem;letter-spacing:.1em;color:var(--muted);text-align:center;margin-top:12px;opacity:.45}
+.url-more{font-size:.72rem;letter-spacing:.1em;color:var(--muted);text-align:center;margin-top:12px;opacity:.6}
 
 /* ── Steps ── */
 .steps-section{background:var(--deep);border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
@@ -455,8 +456,8 @@ nav.stuck{background:rgba(8,8,8,.95);backdrop-filter:blur(16px);border-color:var
 .ib-body strong{color:var(--ivory);font-weight:400}
 
 /* ── Pricing / Offer ── */
-#offer{padding:72px 64px;max-width:1200px;margin:0 auto}
-.offer-intro{display:grid;grid-template-columns:1fr 1fr;gap:56px;margin-bottom:40px;align-items:end}
+#offer{padding:48px 64px;max-width:1200px;margin:0 auto;position:relative;overflow:hidden}
+.offer-intro{display:grid;grid-template-columns:1fr 1fr;gap:56px;margin-bottom:40px;align-items:start;position:relative;z-index:2}
 .offer-note{font-size:1rem;line-height:1.9;color:var(--muted)}
 .offer-note strong{color:var(--ivory);font-weight:400}
 /* ── Tier grid ─────────────────────────────────────────────── */
@@ -464,7 +465,7 @@ nav.stuck{background:rgba(8,8,8,.95);backdrop-filter:blur(16px);border-color:var
   display:grid;grid-template-columns:1fr 1fr 1fr;
   gap:0;background:transparent;
   align-items:start;
-  position:relative;
+  position:relative;z-index:2;
 }
 /* ambient radial glow behind focal card */
 .tier-grid-3::before{
@@ -502,10 +503,10 @@ nav.stuck{background:rgba(8,8,8,.95);backdrop-filter:blur(16px);border-color:var
   padding:36px 32px;
 }
 .tier.starter .tier-flag{color:rgba(200,168,75,.4);font-size:.65rem}
-.tier.starter .tier-name{font-size:1.5rem;color:var(--muted)}
+.tier.starter .tier-name{font-size:1.5rem;color:rgba(168,168,160,.82)}
 .tier.starter .tier-price{font-size:2.4rem;color:rgba(200,168,75,.35)}
 .tier.starter .tier-price sup{color:rgba(200,168,75,.35)}
-.tier.starter .tier-commitment{color:rgba(168,168,160,.5)}
+.tier.starter .tier-commitment{color:rgba(168,168,160,.62)}
 .tier.starter .tier-cta{
   color:rgba(200,168,75,.45);
   border:1px solid rgba(200,168,75,.18);
@@ -551,6 +552,7 @@ nav.stuck{background:rgba(8,8,8,.95);backdrop-filter:blur(16px);border-color:var
   background:linear-gradient(90deg,transparent,rgba(200,168,75,.5),transparent);
 }
 .tier.focal .tier-flag{color:var(--gold)}
+.tier.focal .tier-name{font-weight:400}
 .tier.focal .tier-cta{
   background:var(--gold);
   color:var(--bg);
@@ -576,14 +578,15 @@ nav.stuck{background:rgba(8,8,8,.95);backdrop-filter:blur(16px);border-color:var
   box-shadow:0 8px 24px rgba(200,168,75,.18);
   transform:translateY(-2px);
 }
+.tier.prime .tier-name{font-weight:400}
 
 /* ── Shared type ── */
 .tier-flag{font-size:.65rem;letter-spacing:.22em;text-transform:uppercase;color:var(--gold-dim);margin-bottom:20px;display:block}
-.tier-name{font-family:'Cormorant Garamond',serif;font-size:2rem;font-weight:300;margin-bottom:8px}
+.tier-name{font-family:'Cormorant Garamond',serif;font-size:2rem;font-weight:300;line-height:1.0;margin-bottom:8px;letter-spacing:-.02em;color:var(--ivory)}
 .tier-urls{font-size:.8rem;color:var(--muted);letter-spacing:.03em;margin-bottom:24px;padding-bottom:24px;border-bottom:1px solid rgba(200,168,75,.08)}
 .tier-price{font-family:'Cormorant Garamond',serif;font-size:4.6rem;font-weight:300;color:var(--gold);line-height:1;margin-bottom:10px}
 .tier-price sup{font-size:1.6rem;vertical-align:top;margin-top:16px;color:var(--gold-dim);opacity:.7}
-.tier-price sub{font-size:.82rem;color:rgba(168,168,160,.42);letter-spacing:.01em}
+.tier-price sub{font-size:.82rem;color:rgba(168,168,160,.58);letter-spacing:.01em}
 .tier-commitment{font-size:.8rem;color:var(--muted);margin-bottom:28px;line-height:1.75}
 
 /* ── Feature rows with SVG icons ── */
@@ -619,12 +622,12 @@ nav.stuck{background:rgba(8,8,8,.95);backdrop-filter:blur(16px);border-color:var
 
 /* ── Gated note (Entry) ── */
 .tier-gated{
-  margin-top:16px;padding:14px 16px;border:1px solid rgba(200,168,75,.08);
-  font-size:.8rem;line-height:1.7;color:rgba(168,168,160,.6);
+  margin-top:16px;padding:14px 16px;border:1px solid rgba(200,168,75,.12);
+  font-size:.8rem;line-height:1.7;color:rgba(168,168,160,.72);
   display:flex;align-items:flex-start;gap:10px;
 }
 .tier-gated-icon{color:rgba(200,168,75,.4);flex-shrink:0;margin-top:1px;font-size:.8rem}
-.tier-gated strong{color:rgba(237,232,222,.5);font-weight:400}
+.tier-gated strong{color:rgba(237,232,222,.7);font-weight:400}
 
 /* ── Market Allocation ── */
 .alloc-section{padding:68px 64px;max-width:1200px;margin:0 auto;position:relative}
@@ -642,40 +645,40 @@ nav.stuck{background:rgba(8,8,8,.95);backdrop-filter:blur(16px);border-color:var
 }
 .alloc-hed em{font-style:italic;color:rgba(200,168,75,.75)}
 .alloc-sub{
-  font-size:1rem;color:var(--muted);line-height:1.9;margin-bottom:18px;
+  font-size:clamp(1rem,1.35vw,1.12rem);color:rgba(168,168,160,.88);line-height:1.92;margin-bottom:18px;
   display:flex;flex-direction:column;gap:10px;
 }
 .alloc-sub em{
   font-family:'Cormorant Garamond',serif;font-style:italic;
-  color:var(--ivory);font-size:1.08rem;
+  color:var(--ivory);font-size:clamp(1.06rem,1.45vw,1.18rem);
 }
 .alloc-reinforce{
-  font-size:.9rem;color:rgba(237,232,222,.55);line-height:1.70;
+  font-size:clamp(.98rem,1.2vw,1rem);color:rgba(237,232,222,.68);line-height:1.78;
   display:flex;flex-direction:column;gap:7px;margin-bottom:18px;
-  padding-left:20px;border-left:1px solid rgba(200,168,75,.2);
+  padding-left:20px;border-left:1px solid rgba(200,168,75,.28);
 }
 .alloc-urgency{
   font-family:'Cormorant Garamond',serif;font-style:italic;font-weight:300;
-  font-size:clamp(1.15rem,1.9vw,1.55rem);color:rgba(200,168,75,.72);
+  font-size:clamp(1.25rem,1.9vw,1.55rem);color:rgba(200,168,75,.82);
   line-height:1.65;margin-bottom:18px;
 }
 .alloc-convert-label{
-  display:block;font-size:.7rem;letter-spacing:.22em;text-transform:uppercase;
-  color:rgba(168,168,160,.55);margin-bottom:18px;
+  display:block;font-size:clamp(.78rem,.9vw,.82rem);letter-spacing:.22em;text-transform:uppercase;
+  color:rgba(168,168,160,.62);margin-bottom:18px;
 }
 .alloc-actions{display:flex;gap:16px;align-items:center;flex-wrap:wrap}
 
 /* right panel */
 .alloc-panel{position:relative}
 .alloc-panel-label{
-  font-size:.7rem;letter-spacing:.24em;text-transform:uppercase;
-  color:rgba(168,168,160,.5);margin-bottom:18px;
+  font-size:.72rem;letter-spacing:.24em;text-transform:uppercase;
+  color:rgba(168,168,160,.65);margin-bottom:18px;
   display:flex;align-items:center;gap:10px;
 }
-.alloc-panel-label::after{content:'';flex:1;height:1px;background:rgba(200,168,75,.1)}
+.alloc-panel-label::after{content:'';flex:1;height:1px;background:rgba(200,168,75,.15)}
 .alloc-grid{
   display:grid;grid-template-columns:1fr 1fr;
-  gap:1px;background:rgba(200,168,75,.07);
+  gap:1px;background:rgba(200,168,75,.11);
 }
 .alloc-cell{
   background:var(--bg);padding:30px 26px;position:relative;overflow:hidden;
@@ -683,40 +686,66 @@ nav.stuck{background:rgba(8,8,8,.95);backdrop-filter:blur(16px);border-color:var
 }
 .alloc-cell::before{
   content:'';position:absolute;top:0;left:0;right:0;height:1px;
-  background:linear-gradient(90deg,transparent,rgba(200,168,75,.1),transparent);
+  background:linear-gradient(90deg,transparent,rgba(200,168,75,.14),transparent);
 }
 .alloc-cell:hover{background:rgba(14,13,10,1)}
 .alloc-region{
   font-family:'Cormorant Garamond',serif;font-weight:300;
-  font-size:1.12rem;color:var(--ivory);margin-bottom:4px;line-height:1.25;
+  font-size:1.22rem;color:rgba(237,232,222,.95);margin-bottom:5px;line-height:1.25;
 }
 .alloc-states{
-  font-size:.78rem;color:rgba(168,168,160,.6);letter-spacing:.04em;margin-bottom:12px;
+  font-size:.82rem;color:rgba(168,168,160,.72);letter-spacing:.05em;margin-bottom:13px;
 }
-.alloc-status{display:flex;align-items:center;gap:8px}
+.alloc-status{display:flex;align-items:center;gap:9px}
+
+/* ── Status dot animations ── */
+@keyframes dotPulseOpen{
+  0%,100%{box-shadow:0 0 0 0 rgba(200,185,75,.5),0 0 6px rgba(200,185,75,.45)}
+  50%{box-shadow:0 0 0 4px rgba(200,185,75,.0),0 0 11px rgba(200,185,75,.6)}
+}
+@keyframes dotGlowLimited{
+  0%,100%{box-shadow:0 0 4px rgba(210,148,60,.45)}
+  50%{box-shadow:0 0 9px rgba(210,148,60,.65)}
+}
+@keyframes dotStableAllocated{
+  0%,100%{opacity:.88;box-shadow:0 0 4px rgba(200,168,75,.35)}
+  50%{opacity:1;box-shadow:0 0 7px rgba(200,168,75,.52)}
+}
 .alloc-dot{
-  width:7px;height:7px;border-radius:50%;flex-shrink:0;
-  box-shadow:0 0 5px currentColor;
+  width:8px;height:8px;border-radius:50%;flex-shrink:0;
 }
-.alloc-dot.allocated{background:rgba(200,80,80,.8);color:rgba(200,80,80,.8)}
-.alloc-dot.limited{background:rgba(200,168,75,.72);color:rgba(200,168,75,.72)}
-.alloc-dot.open{background:rgba(80,160,100,.65);color:rgba(80,160,100,.65)}
-.alloc-status-label{font-size:.72rem;letter-spacing:.15em;text-transform:uppercase}
-.alloc-status-label.allocated{color:rgba(215,100,100,.75)}
-.alloc-status-label.limited{color:rgba(200,168,75,.75)}
-.alloc-status-label.open{color:rgba(80,160,100,.72)}
+.alloc-dot.allocated{
+  background:rgba(200,168,75,.72);
+  box-shadow:0 0 5px rgba(200,168,75,.35);
+  animation:dotStableAllocated 5s ease-in-out infinite;
+}
+.alloc-dot.limited{
+  background:rgba(210,148,60,.85);
+  animation:dotGlowLimited 3.8s ease-in-out infinite;
+}
+.alloc-dot.open{
+  background:rgba(200,195,80,.92);
+  animation:dotPulseOpen 2.6s ease-in-out infinite;
+}
+
+.alloc-status-label{font-size:.74rem;letter-spacing:.15em;text-transform:uppercase;font-weight:400}
+.alloc-status-label.allocated{color:rgba(200,168,75,.82)}
+.alloc-status-label.limited{color:rgba(210,148,60,.9)}
+.alloc-status-label.open{color:rgba(200,195,80,.95);letter-spacing:.18em}
 .alloc-legend{
-  margin-top:16px;padding:15px 22px;border:1px solid var(--border);
+  margin-top:16px;padding:16px 22px;border:1px solid rgba(200,168,75,.18);
   display:flex;gap:24px;align-items:center;flex-wrap:wrap;
+  background:rgba(8,8,8,.6);
 }
-.alloc-legend-item{display:flex;align-items:center;gap:8px}
-.alloc-legend-label{font-size:.72rem;letter-spacing:.13em;text-transform:uppercase;color:rgba(168,168,160,.6)}
+.alloc-legend-item{display:flex;align-items:center;gap:9px}
+.alloc-legend-label{font-size:.75rem;letter-spacing:.13em;text-transform:uppercase;color:rgba(168,168,160,.75)}
 .alloc-avail-note{
-  margin-top:14px;padding:18px 22px;
-  border:1px solid rgba(200,168,75,.12);
-  font-size:.88rem;line-height:1.75;color:rgba(168,168,160,.7);
+  margin-top:14px;padding:20px 24px;
+  border:1px solid rgba(200,168,75,.18);
+  background:rgba(12,11,8,.7);
+  font-size:clamp(.97rem,1.2vw,1rem);line-height:1.85;color:rgba(168,168,160,.82);
 }
-.alloc-avail-note strong{color:rgba(237,232,222,.65);font-weight:400}
+.alloc-avail-note strong{color:rgba(237,232,222,.82);font-weight:400}
 
 /* ── Access section (replaces proof strip) ── */
 .access-section{padding:72px 64px;max-width:1200px;margin:0 auto}
@@ -866,7 +895,7 @@ nav.stuck{background:rgba(8,8,8,.95);backdrop-filter:blur(16px);border-color:var
   font-family:'DM Sans',sans-serif;font-size:.94rem;font-weight:300;
   padding:14px 18px;outline:none;transition:border-color .3s;appearance:none;
 }
-.fg input::placeholder,.fg textarea::placeholder{color:#222}
+.fg input::placeholder,.fg textarea::placeholder{color:rgba(168,168,160,.28)}
 .fg input:focus,.fg textarea:focus,.fg select:focus{border-color:var(--gold);box-shadow:0 0 0 3px rgba(200,168,75,.08)}
 .fg input:focus-visible,.fg textarea:focus-visible,.fg select:focus-visible{outline:none}
 .btn-primary:focus-visible,.btn-ghost:focus-visible,.aud-cta:focus-visible,.fsub:focus-visible,.tier-cta:focus-visible,.tier-book:focus-visible,.nav-btn:focus-visible,.gate-cta:focus-visible,.gate-skip:focus-visible,.btt:focus-visible{outline:2px solid var(--gold);outline-offset:3px}
@@ -1131,21 +1160,88 @@ body::before{
   width:6px;height:1px;background:rgba(200,168,75,.24);
 }
 
-/* ── Centered statement ── */
-.stmt-center{
-  padding:88px 64px;text-align:center;max-width:1060px;margin:0 auto;
+/* ── Infrastructure Principle ── */
+.infra-principle{
+  position:relative;overflow:hidden;
+  padding:140px 64px;text-align:center;
+  border-top:1px solid rgba(200,168,75,.12);
+  border-bottom:1px solid rgba(200,168,75,.12);
 }
-.stmt-center-mark{
-  display:block;font-family:'Cormorant Garamond',serif;font-size:4rem;
-  line-height:1;color:rgba(200,168,75,.2);margin-bottom:18px;user-select:none;
+.infra-canvas{
+  position:absolute;inset:0;width:100%;height:100%;
+  pointer-events:none;z-index:0;
 }
-.stmt-center-text{
-  font-family:'Cormorant Garamond',serif;
-  font-size:clamp(1.9rem,3.8vw,3rem);font-weight:300;font-style:italic;
-  line-height:1.38;color:var(--ivory);letter-spacing:.01em;
+/* breathing radial glow */
+.infra-principle::before{
+  content:'';
+  position:absolute;inset:0;
+  background:radial-gradient(ellipse 72% 68% at 50% 50%,rgba(200,168,75,.07) 0%,transparent 68%);
+  pointer-events:none;
+  animation:infraGlow 7s ease-in-out infinite;
 }
-.stmt-center-text strong{font-style:normal;color:var(--gold);font-weight:400}
-.stmt-center-rule{display:block;width:48px;height:1px;background:var(--gold-dim);margin:30px auto 0}
+/* faint grid texture */
+.infra-principle::after{
+  content:'';
+  position:absolute;inset:0;
+  background-image:
+    linear-gradient(rgba(200,168,75,.02) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(200,168,75,.02) 1px,transparent 1px);
+  background-size:72px 72px;
+  pointer-events:none;
+}
+@keyframes infraGlow{
+  0%,100%{opacity:.65}
+  50%{opacity:1}
+}
+.infra-inner{
+  position:relative;z-index:1;
+  max-width:900px;margin:0 auto;
+}
+.infra-eyebrow{
+  font-size:.64rem;letter-spacing:.38em;text-transform:uppercase;
+  color:rgba(200,168,75,.6);margin-bottom:44px;
+  display:flex;align-items:center;justify-content:center;gap:20px;
+}
+.infra-eyebrow::before,.infra-eyebrow::after{
+  content:'';width:44px;height:1px;background:rgba(200,168,75,.22);
+}
+.infra-hed{
+  font-family:'Cormorant Garamond',serif;font-weight:200;
+  line-height:1.1;margin-bottom:48px;
+  display:flex;flex-direction:column;gap:0;
+}
+.infra-hed-1{
+  font-size:clamp(3rem,5.8vw,5.6rem);
+  color:var(--ivory);letter-spacing:-.018em;
+}
+.infra-hed-2{
+  font-size:clamp(3rem,5.8vw,5.6rem);
+  color:rgba(237,232,222,.68);letter-spacing:-.018em;font-style:italic;
+}
+.infra-gold{
+  font-family:'Cormorant Garamond',serif;font-weight:300;font-style:italic;
+  font-size:clamp(2.1rem,3.6vw,3.4rem);
+  letter-spacing:.01em;line-height:1.2;margin-bottom:28px;
+  /* shimmer pass */
+  background:linear-gradient(90deg,var(--gold) 0%,rgba(245,228,152,.98) 45%,var(--gold) 62%,var(--gold) 100%);
+  background-size:260% 100%;
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
+  background-clip:text;
+  animation:infraGoldShimmer 9s ease-in-out infinite;
+}
+@keyframes infraGoldShimmer{
+  0%,100%{background-position:120% 0}
+  40%,60%{background-position:0% 0}
+}
+.infra-sub{
+  font-size:.72rem;letter-spacing:.22em;text-transform:uppercase;
+  color:rgba(168,168,160,.55);
+}
+.infra-rule{
+  display:block;width:72px;height:1px;margin:44px auto 0;
+  background:linear-gradient(90deg,transparent,rgba(200,168,75,.3),transparent);
+}
 
 /* ── Settlement section ── */
 .settlement{
@@ -1167,7 +1263,7 @@ body::before{
 }
 .settle-icon-item{
   display:flex;flex-direction:column;align-items:center;gap:10px;
-  opacity:.24;transition:opacity .4s,filter .4s;cursor:default;
+  opacity:.30;transition:opacity .4s,filter .4s;cursor:default;
 }
 .settle-icon-item:hover{
   opacity:.62;filter:drop-shadow(0 0 12px rgba(200,168,75,.2));
@@ -1200,7 +1296,7 @@ body::before{
   margin-top:20px;padding:14px 20px;
   border:1px solid rgba(200,168,75,.07);
   font-family:'Cormorant Garamond',serif;font-style:italic;
-  font-size:.96rem;color:rgba(168,168,160,.42);text-align:center;
+  font-size:.96rem;color:rgba(168,168,160,.62);text-align:center;
 }
 
 /* ── Offer trust block ── */
@@ -1214,8 +1310,66 @@ body::before{
 }
 .offer-trust-sub{
   font-family:'Cormorant Garamond',serif;font-style:italic;
-  font-size:.94rem;color:rgba(168,168,160,.42);margin-top:6px;display:block;
+  font-size:.94rem;color:rgba(168,168,160,.58);margin-top:6px;display:block;
 }
+
+/* ── Offer headline split ── */
+.offer-hed-split{display:flex;flex-direction:column;gap:.06em}
+.offer-hed-mid{font-size:clamp(1.5rem,2.5vw,2.4rem);color:rgba(237,232,222,.64);font-style:normal;font-weight:300;line-height:1.1}
+
+/* ── Offer panel (right side — 3-chunk) ── */
+.offer-panel{display:flex;flex-direction:column;gap:0}
+
+/* A. Scarcity */
+.offer-scarcity{padding-bottom:28px;border-bottom:1px solid rgba(200,168,75,.12)}
+.offer-scarcity-main{
+  font-family:'Cormorant Garamond',serif;
+  font-size:clamp(1.25rem,2.2vw,1.65rem);font-weight:300;line-height:1.25;
+  color:rgba(237,232,222,.86);letter-spacing:-.01em;margin-bottom:8px;
+}
+.offer-scarcity-sub{
+  font-size:.85rem;color:rgba(168,168,160,.68);line-height:1.6;
+}
+
+/* B. Value */
+.offer-value{padding:20px 22px;margin:24px 0;background:rgba(9,8,6,.65);border:1px solid rgba(200,168,75,.15)}
+.offer-value-price{
+  font-size:1.04rem;font-weight:400;
+  color:rgba(237,232,222,.9);line-height:1.55;
+  display:block;margin-bottom:10px;
+}
+.offer-value-inline{
+  font-size:.82rem;color:rgba(168,168,160,.72);line-height:1.6;display:block;margin-bottom:6px;
+}
+.offer-value-media{
+  font-size:.74rem;color:rgba(168,168,160,.55);line-height:1.5;letter-spacing:.02em;
+}
+
+/* C. Final positioning */
+.offer-positioning{padding-top:24px}
+.offer-positioning-bottom{
+  font-size:clamp(1rem,1.6vw,1.2rem);
+  font-family:'Cormorant Garamond',serif;font-weight:300;font-style:italic;
+  color:rgba(237,232,222,.72);line-height:1.5;
+}
+
+/* ── Ambient network canvas (Offer/Licensing section) ── */
+.ambient-network{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
+.ambient-canvas{position:absolute;inset:0;width:100%;height:100%;display:block;pointer-events:none;z-index:0}
+.ambient-overlay{
+  position:absolute;inset:0;z-index:1;
+  background:linear-gradient(to bottom,
+    rgba(6,6,6,.80),
+    rgba(6,6,6,.50) 28%,
+    rgba(6,6,6,.46) 50%,
+    rgba(6,6,6,.50) 72%,
+    rgba(6,6,6,.80)
+  );
+}
+
+/* ── FOMO close ── */
+.offer-fomo{padding:52px 0 8px;text-align:center;position:relative;z-index:2}
+.offer-fomo-line{font-family:'Cormorant Garamond',serif;font-size:clamp(1.3rem,2.4vw,2rem);font-weight:300;font-style:italic;color:rgba(237,232,222,.68);letter-spacing:.02em}
 
 /* ── Expansion momentum ── */
 .exp-momentum{
@@ -1231,7 +1385,7 @@ body::before{
 .exp-momentum-main em{font-style:italic;color:var(--gold)}
 .exp-momentum-sub{
   font-size:.7rem;letter-spacing:.2em;text-transform:uppercase;
-  color:rgba(168,168,160,.32);
+  color:rgba(168,168,160,.55);
 }
 
 /* ── Button press micro-UX ── */
@@ -1241,15 +1395,16 @@ body::before{
 }
 
 @media(max-width:900px){
-  .stmt-center{padding:60px 24px}
+  .infra-principle{padding:96px 24px}
   .settlement{padding:48px 24px}
   .settle-trust{grid-template-columns:1fr}
   .settle-icons{gap:24px}
   .alloc-decision{padding:28px 24px;max-width:100%}
 }
 @media(max-width:520px){
-  .stmt-center{padding:44px 20px}
-  .stmt-center-text{font-size:clamp(1.5rem,5.5vw,2rem)}
+  .infra-principle{padding:72px 20px}
+  .infra-hed-1,.infra-hed-2{font-size:clamp(2.4rem,9.5vw,3.4rem)}
+  .infra-gold{font-size:clamp(1.6rem,5.8vw,2.2rem)}
   .settlement{padding:36px 20px}
   .hero-stage{font-size:clamp(3.2rem,11vw,5rem)}
   .hero-gold-accent{font-size:clamp(1.1rem,4.5vw,1.4rem)}
@@ -1313,15 +1468,15 @@ body::before{
       </h2>
       <div class="alloc-sub">
         <p>Each market is assigned to a single operator.</p>
-        <p>Once allocated, <em>access is closed.</em></p>
+        <p>Once active, <em>access is exclusive.</em></p>
       </div>
       <div class="alloc-reinforce">
         <span>High-demand markets are secured first.</span>
         <span>There is no overlap. There is no secondary access.</span>
-        <span>Position is held through infrastructure — and reinforced, where appropriate, through paid media.</span>
+        <span>Coverage is held under agreement — reinforced, where appropriate, through paid media.</span>
       </div>
-      <p class="alloc-urgency">If your market is still open,<br><em>it won’t be for long.</em></p>
-      <span class="alloc-convert-label">Access is not open. It is allocated.</span>
+      <p class="alloc-urgency">If your market is still available,<br><em>claim it before the window closes.</em></p>
+      <span class="alloc-convert-label">Access is reserved. Not open.</span>
       <div class="alloc-actions">
         <a href="#contact" class="btn-primary">Request Licensing Access</a>
         <a href="#offer" class="btn-ghost">Review Licensing Structure</a>
@@ -1335,18 +1490,18 @@ body::before{
       <div class="alloc-legend">
         <div class="alloc-legend-item">
           <span class="alloc-dot allocated"></span>
-          <span class="alloc-legend-label">Allocated</span>
+          <span class="alloc-legend-label">Active</span>
         </div>
         <div class="alloc-legend-item">
           <span class="alloc-dot limited"></span>
-          <span class="alloc-legend-label">Limited Availability</span>
+          <span class="alloc-legend-label">Selective Access</span>
         </div>
         <div class="alloc-legend-item">
           <span class="alloc-dot open"></span>
-          <span class="alloc-legend-label">Open</span>
+          <span class="alloc-legend-label">Expansion Available</span>
         </div>
       </div>
-      <p class="alloc-avail-note"><strong>Territory status reflects current allocation.</strong> Access is reviewed individually — based on market availability, business fit, and operator readiness.<br><br>Approval is reserved for legitimate operating businesses, with applicable licensing where required, and the capacity to support both deployment and media spend. Search position is secured through structured infrastructure and reinforced, where appropriate, through paid media.</p>
+      <p class="alloc-avail-note"><strong>Territory access is structured by industry and market.</strong> Availability reflects current operator coverage — not total capacity.<br><br>Access is reviewed individually based on market availability, operator readiness, and business fit. Approval is reserved for legitimate operators with the capacity to support deployment and, where appropriate, media amplification. Search visibility is secured through structured systems and reinforced over time.</p>
     </div>
 
   </div>
@@ -1385,24 +1540,36 @@ body::before{
     </div>
 
     <div class="ac-card">
-      <span class="ac-label">Active Infrastructure</span>
+      <span class="ac-label">Active Coverage</span>
       <h3 class="ac-head">Built to last.<br><em>Maintained to win.</em></h3>
       <p class="ac-impact">The system runs. You don’t manage it.</p>
-      <p class="ac-body">Pages are maintained and adapted under your active agreement. Position is not static — it is actively defended.</p>
+      <p class="ac-body">Pages are maintained and adapted under your active agreement. Coverage is not static — it is actively defended.</p>
     </div>
 
+  </div><!-- /tier-grid-3 -->
+
+  <div class="offer-fomo r">
+    <p class="offer-fomo-line">Availability contracts with every agreement signed.</p>
   </div>
 
 </section>
 
 <div class="gold-rule"></div>
 
-<!-- ════════════ STATEMENT ════════════ -->
-<div class="stmt-center r">
-  <span class="stmt-center-mark">&ldquo;</span>
-  <p class="stmt-center-text">Most visibility is lost not to better operators &mdash; but to <strong>better infrastructure.</strong></p>
-  <span class="stmt-center-rule"></span>
-</div>
+<!-- ════════════ INFRASTRUCTURE PRINCIPLE ════════════ -->
+<section class="infra-principle r">
+  <canvas class="infra-canvas" id="infraCanvas" aria-hidden="true"></canvas>
+  <div class="infra-inner">
+    <p class="infra-eyebrow">Market Position</p>
+    <h2 class="infra-hed">
+      <span class="infra-hed-1">The territory will be owned.</span>
+      <span class="infra-hed-2">The only question is by whom.</span>
+    </h2>
+    <p class="infra-gold">First to claim. First to rank.</p>
+    <p class="infra-sub">Available ground closes without warning.</p>
+    <span class="infra-rule"></span>
+  </div>
+</section>
 
 <div class="gold-rule"></div>
 
@@ -1434,39 +1601,38 @@ body::before{
 <section id="who">
   <div class="audience-section">
     <div class="stmt-quote r" style="text-align:center;max-width:820px;margin:0 auto 48px">
-      <span class="sq-mark">&ldquo;</span>
-      <p class="sq-text">The system holds position for as long as the agreement is active. <strong>Infrastructure, not effort.</strong></p>
+      <p class="sq-text">The first to claim the market, owns it.<br><strong>Premium territories are still available.</strong></p>
       <span class="sq-rule"></span>
     </div>
     <p class="s-eye r">Who This Is For</p>
-    <h2 class="s-h r">Two starting points.<br><em>One infrastructure.</em></h2>
+    <h2 class="s-h r">Two paths in.<br><em>One outcome. Total market control.</em></h2>
     <div class="audience-grid">
 
       <div class="aud-card r">
         <span class="aud-tag">For Agencies</span>
-        <h3 class="aud-title">Deploy <em>search infrastructure</em> for every client.</h3>
-        <p class="aud-body">A licensed system deployed under your brand — structured service and location pages across your entire client portfolio, with no SEOAIco attribution in code, content, or metadata.</p>
+        <h3 class="aud-title">Own search<br><em>for every client.</em></h3>
+        <p class="aud-body">White-label deployment, entirely under your brand — complete search coverage across your client portfolio, exclusive by territory, with no SEOAIco attribution anywhere.</p>
         <ul class="aud-list">
-          <li><strong>Zero-attribution deployment</strong> — no SEOAIco branding anywhere</li>
-          <li><strong>One licence, your full client portfolio</strong></li>
-          <li><strong>Controlled market exclusivity</strong> per client territory</li>
-          <li><strong>Retention built into the structure</strong> — position is tied to the active licence</li>
+          <li><strong>Zero attribution</strong> — invisible to clients and competitors alike</li>
+          <li><strong>One licence covers your full portfolio</strong></li>
+          <li><strong>Exclusive territory per client</strong> — no overlap, no competition</li>
+          <li><strong>Search presence is tied to your agreement</strong> — retention by design</li>
         </ul>
-        <p style="font-size:.82rem;color:var(--muted);letter-spacing:.04em;margin-bottom:12px">One licence holds your full client territory — exclusively.</p>
+        <p style="font-size:.82rem;color:var(--muted);letter-spacing:.04em;margin-bottom:12px">Not ads. Not campaigns. Ownership.</p>
         <a href="#offer" class="aud-cta">Review Agency Licensing &rarr;</a>
       </div>
 
       <div class="aud-card r">
         <span class="aud-tag">For Operators &amp; Business Owners</span>
-        <h3 class="aud-title">Secure your market.<br><em>Before it is claimed.</em></h3>
-        <p class="aud-body">Infrastructure across every service, every city, every search variation you need to own. Structured, interlinked, and maintained under your active agreement. <strong>Not a campaign. A position held.</strong></p>
+        <h3 class="aud-title">Take your market.<br><em>Before someone else does.</em></h3>
+        <p class="aud-body">Full search coverage across every service, every city, every variation — structured, maintained, and held under your active agreement. <strong>A position you hold.</strong></p>
         <ul class="aud-list">
-          <li><strong>Structured coverage across every service and location</strong></li>
-          <li><strong>Built for every discovery surface</strong> — organic, AI overviews, LLM citations</li>
-          <li><strong>One operator per market</strong> — your category is exclusive while active</li>
-          <li><strong>Position compounds under active maintenance</strong></li>
+          <li><strong>Every service. Every city. Total coverage.</strong></li>
+          <li><strong>Visible across organic, AI, and emerging search</strong></li>
+          <li><strong>One operator per market</strong> — your category, exclusively yours</li>
+          <li><strong>Locked in from day one</strong> — competitors cannot enter while you're active</li>
         </ul>
-        <p style="font-size:.82rem;color:var(--muted);letter-spacing:.04em;margin-bottom:12px">Once a competitor claims your territory, it cannot be reallocated while active.</p>
+        <p style="font-size:.82rem;color:var(--muted);letter-spacing:.04em;margin-bottom:12px">Once claimed, your territory cannot be reallocated while active.</p>
         <a href="#offer" class="aud-cta">Assess Market Availability &rarr;</a>
       </div>
 
@@ -1479,8 +1645,8 @@ body::before{
   <div class="wyl-section">
     <div class="wyl-inner">
       <p class="s-eye r">What the Licence Includes</p>
-      <h2 class="s-h r">The infrastructure behind<br><em>every page in your territory.</em></h2>
-      <p class="s-p r" style="max-width:640px">Every service page, every location page — structured headlines, intelligent FAQs, localized data, internal link architecture. <strong>This is not a tool. This is the system that holds your position.</strong></p>
+      <h2 class="s-h r">The system behind<br><em>every page in your territory.</em></h2>
+      <p class="s-p r" style="max-width:640px">Every service page, every location page — structured headlines, intelligent FAQs, localized data, internal link architecture. <strong>This is not a tool. This is what holds your position.</strong></p>
       <div class="wyl-grid">
         <div class="wyl-card r">
           <span class="wyl-icon">⬡</span>
@@ -1515,12 +1681,12 @@ body::before{
         <div class="wyl-card r">
           <span class="wyl-icon">◼</span>
           <h3 class="wyl-title">Zero-Attribution Deployment</h3>
-          <p class="wyl-desc">The entire system deploys under your brand identity. No SEOAIco attribution in code, content, or metadata. Your clients see your agency's work. The infrastructure behind it remains invisible.</p>
+          <p class="wyl-desc">Everything deploys under your brand identity. No SEOAIco attribution in code, content, or metadata. Your clients see your agency's work. The platform behind it remains invisible.</p>
         </div>
         <div class="wyl-card r">
           <span class="wyl-icon">◈</span>
           <h3 class="wyl-title">Capacity-Controlled Growth</h3>
-          <p class="wyl-desc">Your licence defines a precise page inventory. Expansion is planned and incremental — protecting per-page quality and ensuring the system scales without diluting the search authority already earned.</p>
+          <p class="wyl-desc">Your licence defines a precise page inventory. Expansion is planned and incremental — protecting per-page quality and ensuring coverage scales without diluting the authority already earned.</p>
         </div>
       </div>
     </div>
@@ -1533,16 +1699,16 @@ body::before{
 
     <!-- LEFT: text hierarchy -->
     <div class="pos-left">
-      <h2 class="pos-h2 r">Infrastructure<br>holds position.</h2>
+      <h2 class="pos-h2 r">Claimed.<br><em>Not competed for daily.</em></h2>
       <div class="pos-rule r"></div>
       <p class="pos-support r">Structure does what effort cannot sustain.</p>
-      <span class="pos-gold r">Every page. Every market. One system.</span>
+      <span class="pos-gold r">Every page. Every market. One operator.</span>
       <ul class="pos-proof r">
         <li>One operator per market.</li>
         <li>No overlap. No duplication.</li>
         <li>Once secured, it is held.</li>
       </ul>
-      <span class="pos-close r">We don't compete. We own the position.</span>
+      <span class="pos-close r">We don't compete. We own the ground.</span>
     </div>
 
     <!-- RIGHT: territory lock canvas -->
@@ -1685,17 +1851,17 @@ body::before{
         <div class="step r">
           <div class="step-n">02</div>
           <h3 class="step-title">Set Up Your System</h3>
-          <p class="step-desc">The infrastructure is configured to your brand: link architecture, localized content signals, and structured data — calibrated to your licensed territory before deployment begins.</p>
+          <p class="step-desc">The system is configured to your brand: link architecture, localized content signals, and structured data — calibrated to your licensed territory before deployment begins.</p>
         </div>
         <div class="step r">
           <div class="step-n">03</div>
           <h3 class="step-title">Deploy Under Your Brand</h3>
-          <p class="step-desc">Pages are delivered for your site via API or file export. White-label from top to bottom — no SEOAIco branding anywhere.</p>
+          <p class="step-desc">Pages deploy across your licensed territory — white-label from top to bottom, no SEOAIco branding anywhere.</p>
         </div>
         <div class="step r">
           <div class="step-n">04</div>
           <h3 class="step-title">Grow Your Footprint</h3>
-          <p class="step-desc">As your licensed position compounds, your agreement accommodates controlled expansion — new services, additional cities, deeper coverage — all within the same protected system.</p>
+          <p class="step-desc">As your licensed position compounds, your agreement accommodates controlled expansion — new services, additional cities, deeper coverage — all within the same licensed agreement.</p>
         </div>
       </div>
     </div>
@@ -1721,12 +1887,12 @@ body::before{
         <div class="ul-state inactive">
           <span class="ul-state-label">Licence Lapsed</span>
           <div class="ul-state-title">Pages revert — company name &amp; phone number only</div>
-          <div class="ul-state-desc">All structured content, search signals, and internal link architecture removed. Pages remain on your site, but <strong>the search infrastructure is inactive. Position is no longer held.</strong> Reactivate the agreement to restore the system.</div>
+          <div class="ul-state-desc">All structured content, search signals, and internal link architecture removed. Pages remain on your site, but <strong>search coverage is inactive. Position is no longer held.</strong> Reactivate the agreement to restore full coverage.</div>
         </div>
       </div>
       <div class="ul-note">
         <p><strong>Need more pages?</strong> Upgrade to the next tier — your existing pages carry over.</p>
-        <p><strong>Already have pages built outside SEOAIco?</strong> You can bring them into the licensed infrastructure at the 10,000 page tier — full structured coverage, link architecture, and search signals across your entire footprint.</p>
+        <p><strong>Already have pages built outside SEOAIco?</strong> You can bring them under the licensed platform at the 10,000 page tier — full structured coverage, link architecture, and search signals across your entire footprint.</p>
       </div>
     </div>
   </div>
@@ -1755,17 +1921,39 @@ body::before{
 
 <!-- ════════════ PRICING ════════════ -->
 <section id="offer">
+  <div class="ambient-network" aria-hidden="true">
+    <canvas class="ambient-canvas" id="offerCanvas"></canvas>
+    <div class="ambient-overlay"></div>
+  </div>
   <div class="offer-intro r">
     <div>
       <p class="s-eye">Licensing Positions</p>
-      <h2 class="s-h">Secure your<br>position.<br><em>Before it's claimed.</em></h2>
+      <h2 class="s-h offer-hed-split">
+        <span>Your market will be owned.</span>
+        <span class="offer-hed-mid">The only question is:</span>
+        <em>by you — or someone else.</em>
+      </h2>
     </div>
-    <div class="offer-note">
-      <p>Infrastructure first. Price second. Every application is reviewed individually — we assess your market, confirm availability, then agree terms. <strong>This is a licensed position secured under agreement, not a subscription.</strong></p>
-      <div class="offer-trust-line">
-        <p class="offer-trust-main">This is not a subscription. This is a licensed position secured under agreement.</p>
-        <span class="offer-trust-sub">Annual engagements typically range from $36K–$60K+ depending on territory and scale.</span>
+    <div class="offer-panel">
+
+      <!-- A. SCARCITY -->
+      <div class="offer-scarcity">
+        <p class="offer-scarcity-main">Territories are not open by default.</p>
+        <p class="offer-scarcity-sub">Access is selective. Capacity is limited.</p>
       </div>
+
+      <!-- B. VALUE -->
+      <div class="offer-value">
+        <span class="offer-value-price">Annual engagements range from $36K&ndash;$60K+.</span>
+        <span class="offer-value-inline">Visibility.&ensp;Optimization.&ensp;Reporting.</span>
+        <span class="offer-value-media">Paid media and ad management are separate.</span>
+      </div>
+
+      <!-- C. FINAL POSITIONING -->
+      <div class="offer-positioning">
+        <p class="offer-positioning-bottom">Not a deliverable.<br>A position that is actively held.</p>
+      </div>
+
     </div>
   </div>
 
@@ -1777,78 +1965,78 @@ body::before{
       <div class="tier-urls">Reviewed individually &middot; Limited capacity</div>
       <ul class="tier-features">
         <li>
-          <svg fill="none" stroke="currentColor" stroke-width="1.4" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6M7 3H5a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2V5a2 2 0 00-2-2h-2"/></svg>
-          Structured page infrastructure
+          <svg fill="none" stroke="currentColor" stroke-width="1.4" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064"/></svg>
+          Search coverage across your assigned territory
         </li>
         <li>
-          <svg fill="none" stroke="currentColor" stroke-width="1.4" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M17 20h5v-2a4 4 0 00-3-3.87M9 20H4v-2a4 4 0 013-3.87m6 5.87a4 4 0 100-8 4 4 0 000 8z"/></svg>
-          Single territory alloc
+          <svg fill="none" stroke="currentColor" stroke-width="1.4" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
+          Single-operator exclusivity
+        </li>
+        <li>
+          <svg fill="none" stroke="currentColor" stroke-width="1.4" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
+          Ongoing visibility management included
         </li>
         <li>
           <svg fill="none" stroke="currentColor" stroke-width="1.4" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/></svg>
           Upgradeable to Strategic or Dominant
-        </li>
-        <li>
-          <svg fill="none" stroke="currentColor" stroke-width="1.4" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3"/></svg>
-          Minimum engagement required
         </li>
       </ul>
       <div class="tier-gated">
         <span class="tier-gated-icon">◈</span>
         <span><strong>Not publicly priced.</strong> Entry access is reviewed individually. Apply below.</span>
       </div>
-      <a href="#contact" class="tier-cta" style="margin-top:20px">Apply for Entry Access</a>
+      <a href="#contact" class="tier-cta">Apply for Entry Access</a>
       <button class="tier-book" onclick="window.dispatchEvent(new CustomEvent('open-booking', {detail: {id: 1, duration: 15, name: 'Free Discovery Call'}}))">Book a Discovery Call</button>
     </div>
 
     <div class="tier focal">
       <span class="tier-flag">Strategic Position — Most Selected</span>
-      <h3 class="tier-name">5,000 Page Licence</h3>
-      <div class="tier-urls">Up to 5,000 licensed pages &middot; Agency or single-business deployment</div>
+      <h3 class="tier-name">Strategic Territory</h3>
+      <div class="tier-urls">Full market coverage &middot; Agency or single-business</div>
       <ul class="tier-features">
         <li>
-          <svg fill="none" stroke="currentColor" stroke-width="1.4" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/></svg>
-          <strong>5,000 structured pages</strong> — exclusive territory
-        </li>
-        <li>
-          <svg fill="none" stroke="currentColor" stroke-width="1.4" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
-          <strong>Zero-attribution</strong> — your brand only
+          <svg fill="none" stroke="currentColor" stroke-width="1.4" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
+          <strong>Exclusive territory</strong> — one operator, one market
         </li>
         <li>
           <svg fill="none" stroke="currentColor" stroke-width="1.4" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064"/></svg>
-          Every service &amp; city in your territory
+          Full search coverage across services and cities
         </li>
         <li>
-          <svg fill="none" stroke="currentColor" stroke-width="1.4" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8 9l4-4 4 4m0 6l-4 4-4-4"/></svg>
-          API or file export delivery
+          <svg fill="none" stroke="currentColor" stroke-width="1.4" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
+          <strong>Your brand only</strong> — zero attribution
+        </li>
+        <li>
+          <svg fill="none" stroke="currentColor" stroke-width="1.4" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/></svg>
+          Ongoing optimization and reporting included
         </li>
       </ul>
       <div class="tier-price"><sup>$</sup>2,995<sub>/mo</sub></div>
       <div class="tier-commitment">3-month minimum. Month-to-month thereafter.</div>
-      <a href="#contact" class="tier-cta">Apply for Position Access</a>
+      <a href="#contact" class="tier-cta">Apply for This Position</a>
       <button class="tier-book" onclick="window.dispatchEvent(new CustomEvent('open-booking', {detail: {id: 1, duration: 15, name: 'Strategy Call'}}))">Book a Strategy Call</button>
     </div>
 
     <div class="tier prime">
       <span class="tier-flag">Dominant Position — Full Scale</span>
-      <h3 class="tier-name">10,000 Page Licence</h3>
-      <div class="tier-urls">Up to 10,000 licensed pages &middot; Full portfolio or large-scale deployment</div>
+      <h3 class="tier-name">Dominant Territory</h3>
+      <div class="tier-urls">Full market saturation &middot; Full portfolio or large-scale deployment</div>
       <ul class="tier-features">
         <li>
           <svg fill="none" stroke="currentColor" stroke-width="1.4" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
-          Everything in the Strategic Position licence
+          Everything in Strategic Territory
         </li>
         <li>
-          <svg fill="none" stroke="currentColor" stroke-width="1.4" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/></svg>
-          <strong>10,000 structured pages</strong> — extended territory
+          <svg fill="none" stroke="currentColor" stroke-width="1.4" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064"/></svg>
+          <strong>Expanded coverage</strong> — full market saturation
         </li>
         <li>
-          <svg fill="none" stroke="currentColor" stroke-width="1.4" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
-          Entry path for existing unlicensed builds
+          <svg fill="none" stroke="currentColor" stroke-width="1.4" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/></svg>
+          Priority processing and dedicated support
         </li>
         <li>
           <svg fill="none" stroke="currentColor" stroke-width="1.4" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>
-          Dedicated account contact
+          Designed for full market ownership
         </li>
       </ul>
       <div class="tier-price"><sup>$</sup>4,799<sub>/mo</sub></div>
@@ -1885,7 +2073,7 @@ body::before{
     <h2 class="s-h r">Structured. Verified.<br><em>Direct.</em></h2>
     <span class="settle-gold r">USDC preferred.</span>
     <p class="settle-body r">Large engagements may be settled in digital assets or traditional methods. Every transaction is verified under agreement.</p>
-    <p class="settle-body r"><strong>This is infrastructure — not retail checkout.</strong></p>
+    <p class="settle-body r"><strong>This is a structured engagement — not retail checkout.</strong></p>
 
     <div class="settle-icons r">
       <div class="settle-icon-item">
@@ -1963,7 +2151,7 @@ body::before{
         <span class="exp-dev-tag">In Development</span>
         <h3 class="exp-title">Per-URL Search Tracking</h3>
         <p class="exp-punch">Know exactly where you stand.</p>
-        <p class="exp-body">Track performance at the page level — visibility, indexing, and the compounding advantage of your infrastructure as it builds.</p>
+        <p class="exp-body">Track performance at the page level — visibility, indexing, and the compounding advantage of your position as it builds.</p>
       </div>
       <div class="exp-card">
         <span class="exp-dev-tag">In Development</span>
@@ -1977,7 +2165,7 @@ body::before{
       <span class="exp-footer-accent">The advantage compounds over time.</span>
     </div>
     <div class="exp-momentum r">
-      <p class="exp-momentum-main">This is not a roadmap.<br><em>This is the system expanding under your position.</em></p>
+      <p class="exp-momentum-main">Your position expands over time.<br><em>Without restarting. Without renegotiating.</em></p>
       <p class="exp-momentum-sub">New capabilities deploy continuously</p>
     </div>
   </div>
@@ -2008,7 +2196,7 @@ body::before{
       <p class="s-eye r">Submit Market for Review</p>
       <h2 class="s-h r">Submit your market<br>for review.<br><em>Before it's claimed.</em></h2>
       <p class="s-p r">Access is not guaranteed. Availability is limited per territory. We assess your category, your market, and your operating context — then confirm whether access is available. Not automated. Not self-serve.</p>
-      <p class="s-p r" style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.05rem;margin-top:8px;color:rgba(168,168,160,.55)">This is not a purchase decision. It is a position decision.</p>
+      <p class="s-p r" style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.05rem;margin-top:8px;color:rgba(168,168,160,.68)">This is not a purchase decision. It is a position decision.</p>
       <div class="c-meta r">
         <div class="cm"><label>Licensing Model</label><span>Reviewed individually — not automated</span></div>
         <div class="cm"><label>Commitment</label><span>3-month minimum, then month-to-month</span></div>
@@ -2064,9 +2252,9 @@ body::before{
           <label for="tier">Licence Level of Interest</label>
           <select id="tier" name="tier" required>
             <option value="">Select…</option>
-            <option value="starter" @selected(old('tier') === 'starter')>Starter — apply for access &amp; pricing</option>
-            <option value="5k" @selected(old('tier') === '5k')>5,000 URLs — $2,995/mo</option>
-            <option value="10k" @selected(old('tier') === '10k')>10,000 URLs — $4,799/mo</option>
+            <option value="starter" @selected(old('tier') === 'starter')>Entry Allocation — apply for access</option>
+            <option value="5k" @selected(old('tier') === '5k')>Strategic Territory — $2,995/mo</option>
+            <option value="10k" @selected(old('tier') === '10k')>Dominant Territory — $4,799/mo</option>
             <option value="legacy" @selected(old('tier') === 'legacy')>Legacy build — re-licence required</option>
           </select>
           @error('tier') <span class="field-error">{{ $message }}</span> @enderror
@@ -2272,19 +2460,210 @@ body::before{
       {region:'Southeast',         states:'FL · GA · NC · SC',  status:'limited'},
       {region:'Northeast',         states:'NY · NJ · CT · MA',  status:'allocated'},
     ];
-    var labels = {allocated:'Allocated',limited:'Limited Availability',open:'Open'};
+    var labels = {allocated:'Active',limited:'Selective Access',open:'Expansion Available'};
     var grid = document.getElementById('allocGrid');
     if(!grid) return;
-    grid.innerHTML = markets.map(function(m){
+    grid.innerHTML = markets.map(function(m, i){
+      var delay = (i * 0.37).toFixed(2) + 's';
       return '<div class="alloc-cell">'
         + '<p class="alloc-region">' + m.region + '</p>'
         + '<p class="alloc-states">' + m.states + '</p>'
         + '<div class="alloc-status">'
-        +   '<span class="alloc-dot ' + m.status + '"></span>'
+        +   '<span class="alloc-dot ' + m.status + '" style="animation-delay:' + delay + '"></span>'
         +   '<span class="alloc-status-label ' + m.status + '">' + labels[m.status] + '</span>'
         + '</div>'
         + '</div>';
     }).join('');
+  })();
+
+  /* ── Offer / Licensing section ambient canvas ── */
+  (function(){
+    var canvas = document.getElementById('offerCanvas');
+    if(!canvas) return;
+    var ctx = canvas.getContext('2d');
+    var DPR = window.devicePixelRatio || 1;
+    var G = '200,168,75';
+    var reduced = window.matchMedia('(prefers-reduced-motion:reduce)').matches;
+    var nodes=[], raf, W, H;
+    var COUNT, LINK, mobile;
+    var tick = 0;
+    /* Mouse proximity tracking (CSS-pixel coordinates) */
+    var mouseX = -9999, mouseY = -9999;
+    var HOVER_R = 180;
+    var section = canvas.closest ? canvas.closest('section') : canvas.parentElement.parentElement.parentElement;
+    if(section){
+      section.addEventListener('mousemove', function(e){
+        var r = canvas.getBoundingClientRect();
+        mouseX = e.clientX - r.left;
+        mouseY = e.clientY - r.top;
+      },{passive:true});
+      section.addEventListener('mouseleave', function(){
+        mouseX = -9999; mouseY = -9999;
+      },{passive:true});
+    }
+    function resize(){
+      mobile = window.innerWidth < 700;
+      COUNT  = mobile ? 27 : 42;
+      LINK   = mobile ? 195 : 250;
+      var r = canvas.getBoundingClientRect();
+      W = r.width; H = r.height;
+      if(!W || !H) return;
+      canvas.width  = Math.round(W * DPR);
+      canvas.height = Math.round(H * DPR);
+      ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
+    }
+    function init(){
+      resize(); nodes = [];
+      for(var i = 0; i < COUNT; i++){
+        nodes.push({
+          x:  Math.random() * W,
+          y:  Math.random() * H,
+          vx: (Math.random() - .5) * .26,
+          vy: (Math.random() - .5) * .26,
+          r:  Math.random() * 2.1 + 1.05,  /* larger: range 1.05–3.15 */
+          phase:    Math.random() * Math.PI * 2,
+          glowMult: Math.random() * .9 + .55  /* depth: 0.55–1.45 */
+        });
+      }
+    }
+    function frame(){
+      if(!W || !H){ raf = requestAnimationFrame(frame); return; }
+      ctx.clearRect(0, 0, W, H);
+      tick += 0.013;  /* slow, elegant sine cycle */
+      /* ── Connection lines ── */
+      for(var i = 0; i < nodes.length; i++){
+        for(var j = i+1; j < nodes.length; j++){
+          var dx = nodes[j].x - nodes[i].x;
+          var dy = nodes[j].y - nodes[i].y;
+          var d  = Math.sqrt(dx*dx + dy*dy);
+          if(d < LINK){
+            ctx.beginPath();
+            ctx.moveTo(nodes[i].x, nodes[i].y);
+            ctx.lineTo(nodes[j].x, nodes[j].y);
+            ctx.strokeStyle = 'rgba('+G+','+(1 - d/LINK)*.42+')';
+            ctx.lineWidth = .65;
+            ctx.stroke();
+          }
+        }
+      }
+      /* ── Nodes ── */
+      for(var i = 0; i < nodes.length; i++){
+        var n = nodes[i];
+        var pulse = .44 + Math.sin(tick + n.phase) * .12;  /* range 0.32–0.56 */
+        var glow  = n.glowMult;
+        /* proximity boost — subtle card hover effect */
+        var mdx = n.x - mouseX;
+        var mdy = n.y - mouseY;
+        var md  = Math.sqrt(mdx*mdx + mdy*mdy);
+        var boost = md < HOVER_R ? (1 - md / HOVER_R) * .55 : 0;
+        ctx.shadowBlur  = (glow + boost) * 12;
+        ctx.shadowColor = 'rgba('+G+','+((glow + boost) * .52).toFixed(2)+')';
+        ctx.beginPath();
+        ctx.arc(n.x, n.y, n.r * (1 + boost * .3), 0, Math.PI*2);
+        ctx.fillStyle = 'rgba('+G+','+(pulse + boost * .24).toFixed(3)+')';
+        ctx.fill();
+        ctx.shadowBlur = 0;
+        if(!reduced){
+          n.x += n.vx * .58;  /* slow, smooth */
+          n.y += n.vy * .58;
+          if(n.x < 0) n.x = W;  if(n.x > W) n.x = 0;
+          if(n.y < 0) n.y = H;  if(n.y > H) n.y = 0;
+        }
+      }
+      raf = requestAnimationFrame(frame);
+    }
+    /* IntersectionObserver: only run when section is visible */
+    if('IntersectionObserver' in window){
+      var io = new IntersectionObserver(function(entries){
+        if(entries[0].isIntersecting){ init(); raf = requestAnimationFrame(frame); io.disconnect(); }
+      },{threshold:.05});
+      io.observe(canvas);
+    } else {
+      init(); raf = requestAnimationFrame(frame);
+    }
+    window.addEventListener('resize', function(){
+      cancelAnimationFrame(raf); init(); raf = requestAnimationFrame(frame);
+    });
+  })();
+
+  /* ── Infrastructure Principle canvas ── */
+  (function(){
+    var canvas = document.getElementById('infraCanvas');
+    if(!canvas) return;
+    var ctx = canvas.getContext('2d');
+    var nodes=[], raf, W, H;
+    var COUNT=32, LINK=215, G='200,168,75';
+    var reduced = window.matchMedia('(prefers-reduced-motion:reduce)').matches;
+    var tick=0;
+
+    function resize(){
+      W = canvas.width  = canvas.offsetWidth;
+      H = canvas.height = canvas.offsetHeight;
+    }
+    function init(){
+      resize(); nodes=[];
+      for(var i=0;i<COUNT;i++){
+        nodes.push({
+          x:Math.random()*W, y:Math.random()*H,
+          vx:(Math.random()-.5)*.26, vy:(Math.random()-.5)*.26,
+          r:Math.random()*1.6+.8,
+          phase:Math.random()*Math.PI*2,      // per-node sine offset
+          glowMult:Math.random()*.9+.55       // depth variation: 0.55–1.45
+        });
+      }
+    }
+    function frame(){
+      ctx.clearRect(0,0,W,H);
+      tick += 0.016;  // slightly faster sine cycle
+
+      /* connection lines */
+      for(var i=0;i<nodes.length;i++){
+        for(var j=i+1;j<nodes.length;j++){
+          var dx=nodes[j].x-nodes[i].x, dy=nodes[j].y-nodes[i].y;
+          var d=Math.sqrt(dx*dx+dy*dy);
+          if(d<LINK){
+            ctx.beginPath();
+            ctx.moveTo(nodes[i].x,nodes[i].y);
+            ctx.lineTo(nodes[j].x,nodes[j].y);
+            ctx.strokeStyle='rgba('+G+','+(1-d/LINK)*.26+')';
+            ctx.lineWidth=.55;
+            ctx.stroke();
+          }
+        }
+      }
+
+      /* nodes */
+      for(var i=0;i<nodes.length;i++){
+        var n = nodes[i];
+        // breathing range 0.23–0.41, per-node phase so no two nodes sync
+        var pulse = .32 + Math.sin(tick + n.phase) * .09;
+        var glow  = n.glowMult;
+
+        ctx.shadowBlur  = glow * 8;
+        ctx.shadowColor = 'rgba('+G+','+(glow*.32).toFixed(2)+')';
+        ctx.beginPath();
+        ctx.arc(n.x, n.y, n.r, 0, Math.PI*2);
+        ctx.fillStyle   = 'rgba('+G+','+pulse.toFixed(3)+')';
+        ctx.fill();
+        ctx.shadowBlur  = 0;
+
+        if(!reduced){
+          n.x += n.vx * .75;  // effective velocity ∼0.195
+          n.y += n.vy * .75;
+          if(n.x<0)n.x=W; if(n.x>W)n.x=0;
+          if(n.y<0)n.y=H; if(n.y>H)n.y=0;
+        }
+      }
+
+      raf = requestAnimationFrame(frame);
+    }
+    init();
+    // use rAF unconditionally; reduced-motion nodes just don't move
+    raf = requestAnimationFrame(frame);
+    window.addEventListener('resize',function(){
+      cancelAnimationFrame(raf); init();
+      raf = requestAnimationFrame(frame);
+    });
   })();
 </script>
 
