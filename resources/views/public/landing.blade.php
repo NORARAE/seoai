@@ -1056,12 +1056,22 @@ body::before{
   to{transform:translate(3%,2%) scale(1.12)}
 }
 
-/* ── Hero sequence ── */
+/* ── Hero stage — fixed-height headline container ── */
+.hero-stage{
+  /* font-size mirrors the h1 so em units here = h1 font size */
+  font-size:clamp(4.4rem,9.5vw,8.5rem);
+  /* 2-line reserve: handles any headline that wraps at this font size */
+  height:calc(2em * 1.03);
+  position:relative;      /* positioning context for h1 */
+  width:100%;             /* fill flex parent so absolute h1 isn't clipped */
+  margin-bottom:40px;     /* gap to gold accent */
+}
 #heroSeq{
   font-family:'Cormorant Garamond',serif;
-  font-size:clamp(4.4rem,9.5vw,8.5rem);font-weight:300;line-height:1.03;
-  color:var(--ivory);letter-spacing:-.02em;
-  display:block;margin-bottom:40px;
+  font-size:inherit;font-weight:300;line-height:1.03;
+  color:var(--ivory);letter-spacing:-.02em;margin:0;
+  /* position:absolute removes from flow — animation is visual only */
+  position:absolute;top:0;left:0;width:100%;
   opacity:0;transform:translateY(24px);
   transition:opacity 560ms cubic-bezier(.16,1,.3,1),
              transform 560ms cubic-bezier(.16,1,.3,1);
@@ -1241,7 +1251,7 @@ body::before{
   .stmt-center{padding:44px 20px}
   .stmt-center-text{font-size:clamp(1.5rem,5.5vw,2rem)}
   .settlement{padding:36px 20px}
-  #heroSeq{font-size:clamp(3.2rem,11vw,5rem)}
+  .hero-stage{font-size:clamp(3.2rem,11vw,5rem)}
   .hero-gold-accent{font-size:clamp(1.1rem,4.5vw,1.4rem)}
   .exp-momentum-main{font-size:clamp(1.2rem,4.5vw,1.6rem)}
 }
@@ -1270,7 +1280,9 @@ body::before{
   <div class="hero-grid"></div>
   <div class="hero-orb"></div>
 
-  <h1 id="heroSeq" aria-label="Position is secured. Markets are claimed. Position compounds. One operator per market. Before they arrive.">Position is secured.</h1>
+  <div class="hero-stage">
+    <h1 id="heroSeq" aria-label="Position is secured. Markets are claimed. Position compounds. One operator per market. Before they arrive.">Position is secured.</h1>
+  </div>
   <p class="hero-gold-accent">Structured to secure position &mdash; not chase it.</p>
   <p class="hero-sub">We deploy infrastructure that captures your market and holds it.</p>
   <p class="hero-note">Access is licensed. Position is secured.</p>
