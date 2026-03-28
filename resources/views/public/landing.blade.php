@@ -170,6 +170,7 @@ nav.stuck{background:rgba(8,8,8,.95);backdrop-filter:blur(16px);border-color:var
   position:absolute;bottom:48px;left:64px;
   display:flex;flex-direction:column;align-items:center;gap:8px;
   opacity:0;animation:up .8s 1.1s forwards;
+  text-decoration:none;
 }
 .scroll-line{width:1px;height:28px;background:linear-gradient(to bottom,transparent,rgba(200,168,75,.35))}
 .scroll-caret{
@@ -1056,27 +1057,17 @@ body::before{
 }
 
 /* ── Hero sequence ── */
-.hero-seq-wrap{
-  position:relative;
-  margin-bottom:40px;
-}
-.hero-seq-line{
+#heroSeq{
   font-family:'Cormorant Garamond',serif;
   font-size:clamp(4.4rem,9.5vw,8.5rem);font-weight:300;line-height:1.03;
   color:var(--ivory);letter-spacing:-.02em;
-  position:absolute;top:0;left:0;width:100%;
-  opacity:0;transform:translateY(10px);
-  transition:opacity 700ms cubic-bezier(.16,1,.3,1),
-             transform 700ms cubic-bezier(.16,1,.3,1);
-  pointer-events:none;will-change:opacity,transform;
+  display:block;margin-bottom:40px;
+  opacity:0;transform:translateY(24px);
+  transition:opacity 560ms cubic-bezier(.16,1,.3,1),
+             transform 560ms cubic-bezier(.16,1,.3,1);
 }
-.hero-seq-line.hs-active{
-  opacity:1;transform:translateY(0);pointer-events:auto;
-}
-@media(prefers-reduced-motion:reduce){
-  .hero-seq-line{transition:none}
-  .hero-seq-line:not(.hs-active){display:none}
-}
+#heroSeq.hs-visible{opacity:1;transform:translateY(0)}
+#heroSeq.hs-out{opacity:0;transform:translateY(-8px)}
 .hero-gold-accent{
   font-family:'Cormorant Garamond',serif;font-style:italic;font-weight:300;
   font-size:clamp(1.2rem,2.4vw,1.85rem);
@@ -1250,7 +1241,7 @@ body::before{
   .stmt-center{padding:44px 20px}
   .stmt-center-text{font-size:clamp(1.5rem,5.5vw,2rem)}
   .settlement{padding:36px 20px}
-  .hero-seq-line{font-size:clamp(3.2rem,11vw,5rem)}
+  #heroSeq{font-size:clamp(3.2rem,11vw,5rem)}
   .hero-gold-accent{font-size:clamp(1.1rem,4.5vw,1.4rem)}
   .exp-momentum-main{font-size:clamp(1.2rem,4.5vw,1.6rem)}
 }
@@ -1279,13 +1270,7 @@ body::before{
   <div class="hero-grid"></div>
   <div class="hero-orb"></div>
 
-  <h1 class="hero-seq-wrap" id="heroSeq" aria-label="Position secured. Markets claimed. Position compounds. One operator per market. Before they even arrive.">
-    <span class="hero-seq-line">Position is secured.</span>
-    <span class="hero-seq-line">Markets are claimed.</span>
-    <span class="hero-seq-line">Position compounds.</span>
-    <span class="hero-seq-line">One operator per market.</span>
-    <span class="hero-seq-line">Before they even arrive.</span>
-  </h1>
+  <h1 id="heroSeq" aria-label="Position is secured. Markets are claimed. Position compounds. One operator per market. Before they arrive.">Position is secured.</h1>
   <p class="hero-gold-accent">Structured to secure position &mdash; not chase it.</p>
   <p class="hero-sub">We deploy infrastructure that captures your market and holds it.</p>
   <p class="hero-note">Access is licensed. Position is secured.</p>
@@ -1294,17 +1279,17 @@ body::before{
     <a href="#offer" class="btn-ghost">Review Licensing Structure</a>
   </div>
 
-  <div class="hero-scroll">
+  <a href="#alloc" class="hero-scroll" aria-label="Scroll to next section">
     <div class="scroll-line"></div>
     <div class="scroll-caret"></div>
-  </div>
+  </a>
 
 </section>
 
 <div class="gold-rule"></div>
 
 <!-- ════════════ MARKET ALLOCATION ════════════ -->
-<section class="alloc-section r">
+<section id="alloc" class="alloc-section r">
   <div class="alloc-layout">
 
     <!-- Left: editorial copy -->
@@ -2224,62 +2209,43 @@ body::before{
 
   /* ── Hero sequence ── */
   (function(){
-    var wrap = document.getElementById('heroSeq');
-    if(!wrap) return;
-    var lines = wrap.querySelectorAll('.hero-seq-line');
-    if(!lines.length) return;
-
-    // Lock container height to tallest variant — prevents layout shift
-    function lockHeight(){
-      lines.forEach(function(l){
-        l.style.setProperty('position','relative','important');
-        l.style.setProperty('opacity','1','important');
-        l.style.setProperty('transition','none','important');
-        l.style.setProperty('transform','none','important');
-      });
-      var maxH = 0;
-      lines.forEach(function(l){ if(l.offsetHeight > maxH) maxH = l.offsetHeight; });
-      lines.forEach(function(l){
-        l.style.removeProperty('position');
-        l.style.removeProperty('opacity');
-        l.style.removeProperty('transition');
-        l.style.removeProperty('transform');
-      });
-      wrap.style.height = maxH + 'px';
-    }
-    lockHeight();
-    var resizeTimer;
-    window.addEventListener('resize', function(){
-      clearTimeout(resizeTimer);
-      resizeTimer = setTimeout(lockHeight, 150);
-    });
-
-    // Reduced-motion: show first line only, no cycling
-    if(window.matchMedia('(prefers-reduced-motion:reduce)').matches){
-      lines[0].classList.add('hs-active');
-      return;
-    }
-
+    var el = document.getElementById('heroSeq');
+    if(!el) return;
+    var headlines = [
+      'Position is secured.',
+      'Markets are claimed.',
+      'Position compounds.',
+      'One operator per market.',
+      'Before they arrive.'
+    ];
     var current = 0;
-    var HOLD = 3000;  // ms each headline is fully visible
-    var OUT  = 600;   // ms fade-out duration
-    var GAP  = 300;   // ms dark pause (luxury spacing)
-    var IN   = 750;   // ms fade-in duration
-    var CYCLE = HOLD + OUT + GAP + IN;
+    var FADE  = 560;  // ms — must match CSS transition duration
+    var PAUSE = 100;  // ms invisible gap; text swaps here
+    var HOLD  = 3200; // ms fully visible per headline
 
-    // Show first line immediately
-    lines[0].classList.add('hs-active');
+    // Initial reveal — staggered to match rest of hero
+    setTimeout(function(){ el.classList.add('hs-visible'); }, 80);
 
-    setInterval(function(){
-      var outEl = lines[current];
-      current = (current + 1) % lines.length;
-      var inEl = lines[current];
-      // Step 1: fade out
-      outEl.classList.remove('hs-active');
-      // Step 2: after outgoing fade + gap, fade in next
-      // Two separate elements, never both active simultaneously
-      setTimeout(function(){ inEl.classList.add('hs-active'); }, OUT + GAP);
-    }, CYCLE);
+    // Reduced-motion: first headline only, no cycling
+    if(window.matchMedia('(prefers-reduced-motion:reduce)').matches) return;
+
+    // Start cycling after initial reveal + first hold period
+    setTimeout(function(){
+      (function cycle(){
+        // Fade out
+        el.classList.remove('hs-visible');
+        el.classList.add('hs-out');
+        setTimeout(function(){
+          // Swap text while invisible, then fade in
+          current = (current + 1) % headlines.length;
+          el.textContent = headlines[current];
+          el.classList.remove('hs-out');
+          el.classList.add('hs-visible');
+          // Schedule next cycle
+          setTimeout(cycle, HOLD);
+        }, FADE + PAUSE);
+      })();
+    }, 80 + HOLD);
   })();
 
   /* ── Market Allocation grid ── */
