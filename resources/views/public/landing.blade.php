@@ -1281,7 +1281,7 @@ body::before{
   <div class="hero-orb"></div>
 
   <div class="hero-stage">
-    <h1 id="heroSeq" aria-label="Own your market. Lock out competitors. Dominate every search. One business owns each market. Secure it before they do.">Own your market.</h1>
+    <h1 id="heroSeq" aria-label="Own your market. Capture your territory. Lock out competitors. One operator, one territory. Claim it before they do.">Own your<br>market.</h1>
   </div>
   <p class="hero-gold-accent">Your market. Your territory. One owner.</p>
   <p class="hero-sub">Full search coverage across every city you target — one business per territory, yours.</p>
@@ -2224,11 +2224,11 @@ body::before{
     var el = document.getElementById('heroSeq');
     if(!el) return;
     var headlines = [
-      'Own your market.',
-      'Lock out competitors.',
-      'Dominate every search.',
-      'One business owns each market.',
-      'Secure it before they do.'
+      'Own your<br>market.',
+      'Capture your<br>territory.',
+      'Lock out<br>competitors.',
+      'One operator.<br>One territory.',
+      'Claim it<br>before they do.'
     ];
     var current = 0;
     var FADE  = 560;  // ms — must match CSS transition duration
@@ -2248,9 +2248,9 @@ body::before{
         el.classList.remove('hs-visible');
         el.classList.add('hs-out');
         setTimeout(function(){
-          // Swap text while invisible, then fade in
+          // Swap HTML while invisible, then fade in
           current = (current + 1) % headlines.length;
-          el.textContent = headlines[current];
+          el.innerHTML = headlines[current];
           el.classList.remove('hs-out');
           el.classList.add('hs-visible');
           // Schedule next cycle
