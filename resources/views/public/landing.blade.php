@@ -68,7 +68,7 @@ nav.stuck{background:rgba(8,8,8,.95);backdrop-filter:blur(16px);border-color:var
 #hero{
   display:flex;flex-direction:column;
   justify-content:flex-start;align-items:flex-start;
-  padding:clamp(100px,13vh,148px) 64px 80px;position:relative;overflow:hidden;
+  padding:clamp(100px,13vh,148px) 64px 44px;position:relative;overflow:hidden;
   max-width:1200px;margin:0 auto;
 }
 .hero-grid{
@@ -1079,11 +1079,11 @@ body::before{
 #heroSeq.hs-visible{opacity:1;transform:translateY(0)}
 #heroSeq.hs-out{opacity:0;transform:translateY(-8px)}
 .hero-gold-accent{
-  font-family:'Cormorant Garamond',serif;font-style:italic;font-weight:300;
-  font-size:clamp(1.2rem,2.4vw,1.85rem);
-  color:var(--gold);letter-spacing:.02em;line-height:1.38;
+  font-family:'Cormorant Garamond',serif;font-style:italic;font-weight:400;
+  font-size:clamp(1.45rem,2.75vw,2.15rem);
+  color:var(--gold);letter-spacing:.025em;line-height:1.32;
   opacity:0;animation:up .75s .2s forwards;
-  margin-bottom:24px;
+  margin-bottom:22px;
 }
 .hero-sub{
   font-size:clamp(.98rem,1.4vw,1.1rem);line-height:1.75;
@@ -1093,9 +1093,9 @@ body::before{
 }
 .hero-note{
   font-size:.74rem;letter-spacing:.22em;text-transform:uppercase;
-  color:rgba(200,168,75,.32);
+  color:rgba(200,168,75,.5);
   opacity:0;animation:up .8s .46s forwards;
-  margin-bottom:56px;
+  margin-bottom:28px;
 }
 
 /* ── Market decision trigger ── */
@@ -1281,14 +1281,14 @@ body::before{
   <div class="hero-orb"></div>
 
   <div class="hero-stage">
-    <h1 id="heroSeq" aria-label="Position is secured. Markets are claimed. Position compounds. One operator per market. Before they arrive.">Position is secured.</h1>
+    <h1 id="heroSeq" aria-label="Own your market. Lock out competitors. Dominate every search. One business owns each market. Secure it before they do.">Own your market.</h1>
   </div>
-  <p class="hero-gold-accent">Structured to secure position &mdash; not chase it.</p>
-  <p class="hero-sub">We deploy infrastructure that captures your market and holds it.</p>
-  <p class="hero-note">Access is licensed. Position is secured.</p>
+  <p class="hero-gold-accent">Your market. Your territory. One owner.</p>
+  <p class="hero-sub">Full search coverage across every city you target — one business per territory, yours.</p>
+  <p class="hero-note">One operator per market &mdash; select territories only.</p>
   <div class="hero-actions" style="opacity:0;animation:up .85s .52s forwards">
-    <a href="#contact" class="btn-primary">Apply for Position Access</a>
-    <a href="#offer" class="btn-ghost">Review Licensing Structure</a>
+    <a href="#contact" class="btn-primary">Claim Your Territory</a>
+    <a href="#offer" class="btn-ghost">View the Offer</a>
   </div>
 
   <a href="#alloc" class="hero-scroll" aria-label="Scroll to next section">
@@ -2224,11 +2224,11 @@ body::before{
     var el = document.getElementById('heroSeq');
     if(!el) return;
     var headlines = [
-      'Position is secured.',
-      'Markets are claimed.',
-      'Position compounds.',
-      'One operator per market.',
-      'Before they arrive.'
+      'Own your market.',
+      'Lock out competitors.',
+      'Dominate every search.',
+      'One business owns each market.',
+      'Secure it before they do.'
     ];
     var current = 0;
     var FADE  = 560;  // ms — must match CSS transition duration
