@@ -7,6 +7,7 @@ use App\Mail\BookingConfirmed;
 use App\Models\Booking;
 use App\Models\BookingAvailability;
 use App\Models\ConsultType;
+use App\Models\Lead;
 use App\Services\GoogleCalendarService;
 use Carbon\Carbon;
 use Illuminate\Http\JsonResponse;
@@ -117,6 +118,19 @@ class BookingController extends Controller
         }
 
         $booking->refresh()->load('consultType');
+
+        // ── CRM: create or update lead record ────────────────────────────────
+        try {
+            Lead::syncFromBooking(
+                $booking,
+                $booking->consultType->is_free ? 'free' : null
+            );
+        } catch (\Exception $e) {
+            Log::channel('booking')->error('Lead sync failed', [
+                'booking_id' => $booking->id,
+                'error'      => $e->getMessage(),
+            ]);
+        }
 
         // Send confirmation emails
         try {
@@ -294,6 +308,16 @@ class BookingController extends Controller
         }
 
         $booking->refresh()->load('consultType');
+
+        // ── CRM: create or update lead — mark as paid ────────────────────────
+        try {
+            Lead::syncFromBooking($booking, 'paid');
+        } catch (\Exception $e) {
+            Log::channel('booking')->error('Lead sync failed for paid booking', [
+                'booking_id' => $booking->id,
+                'error'      => $e->getMessage(),
+            ]);
+        }
 
         try {
             Mail::to($booking->email)->queue(new BookingConfirmed($booking));

@@ -6,6 +6,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\LocationPagePreviewController;
 use App\Http\Controllers\MarketingPageController;
 use App\Http\Controllers\MarketingSitemapController;
+use App\Http\Controllers\OnboardingController;
 use App\Http\Controllers\PublicController;
 use App\Http\Controllers\PublicSitemapController;
 use App\Http\Controllers\SeoController;
@@ -52,6 +53,14 @@ Route::get('/book/payment-return/{booking}', [BookingController::class, 'handleP
 Route::get('/book/confirm/{booking}', [BookingController::class, 'confirm'])->name('book.confirm');
 Route::get('/book/cancel/{booking}', [BookingController::class, 'cancel'])->name('book.cancel');
 Route::post('/book/cancel/{booking}', [BookingController::class, 'processCancel'])->name('book.processCancel');
+
+// ── Onboarding Flow ──
+// Throttle submit to 5 requests per minute to prevent abuse.
+Route::get('/onboarding/start', [OnboardingController::class, 'start'])->name('onboarding.start');
+Route::post('/onboarding/submit', [OnboardingController::class, 'submit'])->middleware('throttle:5,1')->name('onboarding.submit');
+Route::get('/onboarding/done', [OnboardingController::class, 'done'])->name('onboarding.done');
+// Admin-only secure license file download (auth required — never served publicly)
+Route::middleware(['auth'])->get('/onboarding/license/{submission}', [OnboardingController::class, 'downloadLicense'])->name('onboarding.license.download');
 
 Route::get('/sitemaps/{site}.xml', [PublicSitemapController::class, 'index'])
     ->whereNumber('site')

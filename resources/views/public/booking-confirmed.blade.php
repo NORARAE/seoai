@@ -233,8 +233,14 @@ body {
         . ($booking->google_meet_link ? '&location=' . urlencode($booking->google_meet_link) : '')
         . '&details=' . urlencode('Booked via seoaico.com');
     @endphp
-    <a href="{{ $gcalUrl }}" target="_blank" rel="noopener" class="conf-cta-primary">
-      + Add to Google Calendar
+
+    {{-- Primary CTA: onboarding --}}
+    <a href="{{ route('onboarding.start', ['booking' => $booking->id]) }}" class="conf-cta-primary">
+      Complete Your Onboarding &rarr;
+    </a>
+
+    <a href="{{ $gcalUrl }}" target="_blank" rel="noopener" class="conf-cta-secondary">
+      <span>+</span> Add to Google Calendar
     </a>
     <a href="{{ url('/') }}#contact" class="conf-cta-secondary">
       <span>&#8594;</span> Questions? Contact us
