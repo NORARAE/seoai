@@ -264,7 +264,7 @@ footer{border-top:1px solid var(--border);padding:36px 64px;display:flex;flex-di
   <h1 class="hero-h1">{{ $page->h1 }}</h1>
 
   @if($page->hook)
-  <p class="hero-hook">{{ Str::limit($page->hook, 280) }}</p>
+  <p class="hero-hook">{{ $page->hook }}</p>
   @endif
 
   @if(!empty($page->cta_top['text']))
@@ -306,11 +306,11 @@ footer{border-top:1px solid var(--border);padding:36px 64px;display:flex;flex-di
 <div class="statement r" id="explore">
   <div class="stmt-quote">
     <span class="sq-mark">&ldquo;</span>
-    <p class="sq-text">{{ Str::limit($page->system_explanation, 260) }}</p>
+    <p class="sq-text">{{ $page->system_explanation }}</p>
   </div>
   <div class="stmt-body">
-    @foreach(array_filter(explode('. ', $page->system_explanation)) as $i => $sentence)
-      @if($i < 4 && strlen($sentence) > 20)
+    @foreach(array_filter(explode('. ', $page->system_explanation)) as $sentence)
+      @if(strlen(trim($sentence)) > 20)
       <p>{{ trim($sentence) }}{{ str_ends_with(trim($sentence), '.') ? '' : '.' }}</p>
       @endif
     @endforeach
