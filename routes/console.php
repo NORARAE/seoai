@@ -55,4 +55,10 @@ Schedule::command('crawl:dispatch --limit=50')
     ->withoutOverlapping()
     ->runInBackground();
 
+// Booking SMS reminders (24h + 1h before session)
+Schedule::command('bookings:dispatch-reminders')
+    ->everyFifteenMinutes()
+    ->name('booking_reminders')
+    ->withoutOverlapping()
+    ->runInBackground();
 

@@ -75,4 +75,10 @@ return [
         'property_id' => env('GA4_PROPERTY_ID'),
     ],
 
+    'twilio' => [
+        'sid'   => env('TWILIO_ACCOUNT_SID'),
+        'token' => env('TWILIO_AUTH_TOKEN'),
+        'from'  => env('TWILIO_FROM_NUMBER'),
+    ],
+
 ];

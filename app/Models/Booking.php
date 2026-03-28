@@ -24,14 +24,18 @@ class Booking extends Model
         'cancelled_at',
         'stripe_checkout_session_id',
         'stripe_payment_intent_id',
+        'reminder_sent_at',
+        'sms_opted_out',
     ];
 
     protected function casts(): array
     {
         return [
-            'preferred_date' => 'date',
-            'confirmed_at' => 'datetime',
-            'cancelled_at' => 'datetime',
+            'preferred_date'   => 'date',
+            'confirmed_at'     => 'datetime',
+            'cancelled_at'     => 'datetime',
+            'reminder_sent_at' => 'datetime',
+            'sms_opted_out'    => 'boolean',
         ];
     }
 
