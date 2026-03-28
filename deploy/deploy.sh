@@ -65,7 +65,7 @@ chmod -R 775 storage bootstrap/cache database
 
 # Restart services
 systemctl restart php8.3-fpm
-supervisorctl restart seoai-queue
+supervisorctl restart seoai-queue:*
 supervisorctl restart seoai-scheduler
 
 echo ""
