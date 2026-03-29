@@ -107,7 +107,10 @@ class OnboardingController extends Controller
         ]);
 
         // ── Advance CRM status ────────────────────────────────────────────────
-        $lead->update(['onboarding_status' => 'submitted']);
+        $lead->update([
+            'onboarding_status' => 'submitted',
+            'lifecycle_stage'   => \App\Models\Lead::STAGE_ONBOARDING_SUBMITTED,
+        ]);
 
         // ── Send confirmation email ───────────────────────────────────────────
         try {

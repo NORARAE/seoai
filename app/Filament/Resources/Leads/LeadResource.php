@@ -85,6 +85,25 @@ class LeadResource extends Resource
                     })
                     ->placeholder('—'),
 
+                TextColumn::make('lifecycle_stage')
+                    ->label('Stage')
+                    ->badge()
+                    ->sortable()
+                    ->color(fn (?string $state): string => match ($state) {
+                        Lead::STAGE_ACTIVE               => 'success',
+                        Lead::STAGE_APPROVED             => 'success',
+                        Lead::STAGE_ONBOARDING_SUBMITTED => 'info',
+                        Lead::STAGE_PAID                 => 'warning',
+                        Lead::STAGE_BOOKED               => 'gray',
+                        Lead::STAGE_REJECTED             => 'danger',
+                        Lead::STAGE_LOST                 => 'danger',
+                        default                          => 'gray',
+                    })
+                    ->formatStateUsing(fn (?string $state) => match ($state) {
+                        Lead::STAGE_ONBOARDING_SUBMITTED => 'Onboarding',
+                        default                          => ucwords(str_replace('_', ' ', $state ?? 'new')),
+                    }),
+
                 TextColumn::make('onboarding_status')
                     ->label('Onboarding')
                     ->badge()
@@ -102,6 +121,19 @@ class LeadResource extends Resource
                     ->sortable(),
             ])
             ->filters([
+                SelectFilter::make('lifecycle_stage')
+                    ->label('Pipeline Stage')
+                    ->options([
+                        Lead::STAGE_NEW                  => 'New',
+                        Lead::STAGE_BOOKED               => 'Booked',
+                        Lead::STAGE_PAID                 => 'Paid',
+                        Lead::STAGE_ONBOARDING_SUBMITTED => 'Onboarding Submitted',
+                        Lead::STAGE_APPROVED             => 'Approved',
+                        Lead::STAGE_ACTIVE               => 'Active',
+                        Lead::STAGE_REJECTED             => 'Rejected',
+                        Lead::STAGE_LOST                 => 'Lost',
+                    ]),
+
                 SelectFilter::make('onboarding_status')
                     ->options([
                         'pending'   => 'Pending',

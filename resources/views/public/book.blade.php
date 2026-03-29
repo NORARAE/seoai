@@ -29,6 +29,12 @@ h1 em{font-style:italic;color:var(--gold)}
   <h1>Book a <em>Consult</em></h1>
   <p class="book-sub">Choose a session below and pick a time that works.</p>
 
+  @if(request('payment') === 'cancelled')
+  <div style="background:#1a0a0a;border:1px solid rgba(200,80,80,.35);border-radius:8px;padding:14px 20px;margin-bottom:24px;font-size:.88rem;color:#f0a0a0;text-align:center;max-width:480px;margin-left:auto;margin-right:auto">
+    Your payment was not completed &mdash; your spot was not reserved. Please select a session below to try again.
+  </div>
+  @endif
+
   @include('components.booking-modal')
 
   <script>

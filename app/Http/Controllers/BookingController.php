@@ -123,7 +123,8 @@ class BookingController extends Controller
         try {
             Lead::syncFromBooking(
                 $booking,
-                $booking->consultType->is_free ? 'free' : null
+                $booking->consultType->is_free ? 'free' : null,
+                \App\Models\Lead::STAGE_BOOKED
             );
         } catch (\Exception $e) {
             Log::channel('booking')->error('Lead sync failed', [
@@ -233,7 +234,7 @@ class BookingController extends Controller
                 ]],
                 'metadata'    => ['booking_id' => $booking->id],
                 'success_url' => url('/book/payment-return/' . $booking->id) . '?session_id={CHECKOUT_SESSION_ID}',
-                'cancel_url'  => url('/'),
+                'cancel_url'  => url('/book?payment=cancelled'),
                 'expires_at'  => now()->addMinutes(30)->timestamp,
             ]);
         } catch (\Exception $e) {
@@ -311,7 +312,7 @@ class BookingController extends Controller
 
         // ── CRM: create or update lead — mark as paid ────────────────────────
         try {
-            Lead::syncFromBooking($booking, 'paid');
+            Lead::syncFromBooking($booking, 'paid', \App\Models\Lead::STAGE_PAID);
         } catch (\Exception $e) {
             Log::channel('booking')->error('Lead sync failed for paid booking', [
                 'booking_id' => $booking->id,

@@ -81,4 +81,9 @@ return [
         'from'  => env('TWILIO_FROM_NUMBER'),
     ],
 
+    // Stripe webhook secret for the booking payment flow (separate from license webhook).
+    'stripe_booking' => [
+        'webhook_secret' => env('STRIPE_BOOKING_WEBHOOK_SECRET'),
+    ],
+
 ];

@@ -3,6 +3,7 @@
 namespace App\Filament\Resources\Leads\Pages;
 
 use App\Filament\Resources\Leads\LeadResource;
+use App\Models\Lead;
 use App\Models\OnboardingSubmission;
 use Filament\Actions\Action;
 use Filament\Infolists\Components\TextEntry;
@@ -28,12 +29,35 @@ class ViewLead extends ViewRecord
                 ->visible(fn () => $this->record->onboarding_status === 'submitted')
                 ->requiresConfirmation()
                 ->modalHeading('Approve this onboarding?')
-                ->modalDescription('The lead will be marked as approved. You can follow up with them to activate their account.')
+                ->modalDescription('The lead will be marked as approved. Use "Activate Client" once their account is set up.')
                 ->action(function () {
-                    $this->record->update(['onboarding_status' => 'approved']);
+                    $this->record->update([
+                        'onboarding_status' => 'approved',
+                        'lifecycle_stage'   => Lead::STAGE_APPROVED,
+                    ]);
                     Notification::make()
                         ->title('Onboarding approved')
                         ->success()
+                        ->send();
+                }),
+
+            // Activate client (approved → active)
+            Action::make('activate')
+                ->label('Activate Client')
+                ->icon('heroicon-o-bolt')
+                ->color('warning')
+                ->visible(fn () => $this->record->onboarding_status === 'approved'
+                    && $this->record->lifecycle_stage !== Lead::STAGE_ACTIVE)
+                ->requiresConfirmation()
+                ->modalHeading('Activate this client?')
+                ->modalDescription('The lead will be marked as an active client. This should be done once their account / campaign is live.')
+                ->action(function () {
+                    $this->record->update([
+                        'lifecycle_stage' => Lead::STAGE_ACTIVE,
+                    ]);
+                    Notification::make()
+                        ->title('Client activated')
+                        ->color('warning')
                         ->send();
                 }),
 
@@ -47,7 +71,10 @@ class ViewLead extends ViewRecord
                 ->modalHeading('Reject this onboarding?')
                 ->modalDescription('The lead will be marked as rejected.')
                 ->action(function () {
-                    $this->record->update(['onboarding_status' => 'rejected']);
+                    $this->record->update([
+                        'onboarding_status' => 'rejected',
+                        'lifecycle_stage'   => Lead::STAGE_REJECTED,
+                    ]);
                     Notification::make()
                         ->title('Onboarding rejected')
                         ->danger()
@@ -90,6 +117,23 @@ class ViewLead extends ViewRecord
             Section::make('Booking & Payment')
                 ->columns(2)
                 ->schema([
+                    TextEntry::make('lifecycle_stage')
+                        ->label('Pipeline Stage')
+                        ->badge()
+                        ->color(fn (?string $state): string => match ($state) {
+                            Lead::STAGE_ACTIVE               => 'success',
+                            Lead::STAGE_APPROVED             => 'success',
+                            Lead::STAGE_ONBOARDING_SUBMITTED => 'info',
+                            Lead::STAGE_PAID                 => 'warning',
+                            Lead::STAGE_BOOKED               => 'gray',
+                            Lead::STAGE_REJECTED             => 'danger',
+                            Lead::STAGE_LOST                 => 'danger',
+                            default                          => 'gray',
+                        })
+                        ->formatStateUsing(fn (?string $state) => match ($state) {
+                            Lead::STAGE_ONBOARDING_SUBMITTED => 'Onboarding Submitted',
+                            default                          => ucwords(str_replace('_', ' ', $state ?? 'new')),
+                        }),
                     TextEntry::make('session_type')->label('Session Type')->placeholder('—'),
                     TextEntry::make('payment_status')->label('Payment')
                         ->badge()
