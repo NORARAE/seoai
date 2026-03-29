@@ -44,6 +44,15 @@ return [
         'client_id'      => env('GOOGLE_CLIENT_ID'),
         'client_secret'  => env('GOOGLE_CLIENT_SECRET'),
         'redirect_uri'   => env('GOOGLE_REDIRECT_URI', env('APP_URL') . '/admin/gsc/callback'),
+        // Socialite callback for Google login (separate from GSC redirect_uri)
+        'redirect'      => env('GOOGLE_LOGIN_REDIRECT', env('APP_URL') . '/auth/google/callback'),
+    ],
+
+    'google_login' => [
+        'enabled'         => env('GOOGLE_LOGIN_ENABLED', true),
+        'auto_provision'  => env('GOOGLE_AUTO_PROVISION_USERS', false),
+        'allowed_domains' => env('GOOGLE_ALLOWED_DOMAINS', ''),
+        'default_role'    => env('GOOGLE_DEFAULT_ROLE', 'viewer'),
     ],
 
     'booking' => [

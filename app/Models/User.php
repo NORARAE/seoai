@@ -42,6 +42,9 @@ class User extends Authenticatable
         'onboarding_completed_at',
         'is_active',
         'approved',
+        'google_id',
+        'google_avatar',
+        'auth_provider',
     ];
 
     /**

@@ -12,6 +12,22 @@ use Illuminate\Validation\ValidationException;
 class Login extends BaseLogin
 {
     /**
+     * Show any Google OAuth error returned via session flash as a danger notification.
+     */
+    public function mount(): void
+    {
+        parent::mount();
+
+        if ($error = session('google_error')) {
+            Notification::make()
+                ->danger()
+                ->title($error)
+                ->persistent()
+                ->send();
+        }
+    }
+
+    /**
      * Extra login throttle: 5 attempts per minute keyed by email+IP.
      * This runs *before* Filament's own rateLimit(), giving us a finer-grained
      * per-credential bucket in addition to the global Filament limiter.

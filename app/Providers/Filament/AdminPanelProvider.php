@@ -68,6 +68,31 @@ class AdminPanelProvider extends PanelProvider
                     . '<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>'
                     . '<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600&family=DM+Sans:wght@300;400&display=swap" rel="stylesheet">'
                 )
+            )
+            ->renderHook(
+                PanelsRenderHook::AUTH_LOGIN_FORM_AFTER,
+                function (): HtmlString {
+                    if (! config('services.google_login.enabled', false)) {
+                        return new HtmlString('');
+                    }
+                    $url  = url('/auth/google/redirect');
+                    $svg  = '<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 48 48">'
+                          . '<path fill="#FFC107" d="M43.6 20H24v8h11.3c-1.6 4.7-6.1 8-11.3 8-6.6 0-12-5.4-12-12s5.4-12 12-12c3 0 5.8 1.2 8 3l5.7-5.7C34 6.1 29.3 4 24 4 13 4 4 13 4 24s9 20 20 20 20-9 20-20c0-1.3-.1-2.7-.4-4z"/>'
+                          . '<path fill="#FF3D00" d="M6.3 14.7l6.6 4.8C14.6 15.1 19 12 24 12c3 0 5.8 1.2 8 3l5.7-5.7C34 6.1 29.3 4 24 4 16.3 4 9.7 8.3 6.3 14.7z"/>'
+                          . '<path fill="#4CAF50" d="M24 44c5.2 0 9.9-2 13.4-5.2l-6.2-5.2C29.5 35 26.9 36 24 36c-5.2 0-9.6-3.3-11.3-8l-6.5 5C9.5 39.6 16.2 44 24 44z"/>'
+                          . '<path fill="#1976D2" d="M43.6 20H24v8h11.3c-.7 2-2 3.8-3.6 5.2l6.2 5.2C41 35.2 44 30 44 24c0-1.3-.1-2.7-.4-4z"/>'
+                          . '</svg>';
+                    $html  = '<div style="margin-top:1.25rem;display:flex;flex-direction:column;align-items:stretch;gap:.75rem;">';
+                    $html .= '<div style="display:flex;align-items:center;gap:.75rem;">';
+                    $html .= '<div style="flex:1;height:1px;background:rgba(128,128,128,.2);"></div>';
+                    $html .= '<span style="font-size:.78rem;color:rgba(128,128,128,.6);text-transform:uppercase;letter-spacing:.08em;">or</span>';
+                    $html .= '<div style="flex:1;height:1px;background:rgba(128,128,128,.2);"></div>';
+                    $html .= '</div>';
+                    $html .= '<a href="' . e($url) . '" style="display:flex;align-items:center;justify-content:center;gap:.625rem;padding:.625rem 1rem;background:#fff;border:1px solid #dadce0;border-radius:6px;box-shadow:0 1px 2px rgba(0,0,0,.05);text-decoration:none;font-family:Roboto,Arial,sans-serif;font-size:.875rem;font-weight:500;color:#3c4043;">';
+                    $html .= $svg . '<span>Continue with Google</span></a>';
+                    $html .= '</div>';
+                    return new HtmlString($html);
+                }
             );
 
         if (File::exists(public_path('build/manifest.json'))) {
