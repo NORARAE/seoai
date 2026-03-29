@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Auth;
 
 class GA4SessionsTrendWidget extends ChartWidget
 {
-    protected static ?string $heading = 'Sessions Trend';
+    protected ?string $heading = 'Sessions Trend';
 
     protected static ?int $sort = 4;
 
