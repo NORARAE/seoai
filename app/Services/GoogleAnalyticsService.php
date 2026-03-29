@@ -12,11 +12,11 @@ use Illuminate\Support\Facades\Log;
 class GoogleAnalyticsService
 {
     protected ?BetaAnalyticsDataClient $client = null;
-    protected string $propertyId;
+    protected string $propertyId = '';
 
     public function __construct()
     {
-        $this->propertyId = config('services.ga4.property_id', '');
+        $this->propertyId = (string) (config('services.ga4.property_id') ?? '');
 
         $credentialsPath = config('services.gsc.credentials_path');
         if ($credentialsPath && file_exists($credentialsPath)) {
