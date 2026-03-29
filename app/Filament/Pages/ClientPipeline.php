@@ -12,6 +12,8 @@ class ClientPipeline extends Dashboard
 {
     use FrontendDevRestricted;
 
+    protected static string $routePath = '/client-pipeline';
+
     protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-funnel';
 
     protected static ?string $navigationLabel = 'Client Pipeline';

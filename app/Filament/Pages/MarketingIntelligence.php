@@ -14,6 +14,8 @@ class MarketingIntelligence extends Dashboard
 {
     use FrontendDevRestricted;
 
+    protected static string $routePath = '/marketing-intelligence';
+
     protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-chart-bar';
 
     protected static ?string $navigationLabel = 'Marketing Intelligence';
