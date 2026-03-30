@@ -175,7 +175,7 @@ class BookingController extends Controller
     {
         $booking = Booking::with('consultType')
             ->where('id', (int) $request->query('booking'))
-            ->whereIn('status', ['confirmed', 'pending'])
+            ->whereIn('status', ['confirmed', 'pending', 'awaiting_payment'])
             ->firstOrFail();
 
         return view('public.booking-confirmed', compact('booking'));
@@ -414,7 +414,7 @@ class BookingController extends Controller
         $end = $date->copy()->setTimeFromTimeString($availability->end_time);
 
         $booked = Booking::whereDate('preferred_date', $date->toDateString())
-            ->whereIn('status', ['pending', 'confirmed'])
+            ->whereIn('status', ['pending', 'confirmed', 'awaiting_payment'])
             ->pluck('preferred_time')
             ->map(fn($t) => Carbon::parse($t)->format('H:i'))
             ->toArray();

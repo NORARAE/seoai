@@ -51,20 +51,20 @@ class AdminPanelProvider extends PanelProvider
             ])
             ->renderHook(
                 PanelsRenderHook::BODY_START,
-                fn (): HtmlString => auth()->check() && auth()->user()->isFrontendDev()
-                    ? new HtmlString(
-                        '<div style="background:#110e00;border-bottom:1px solid rgba(111,84,29,.2);'
-                        . 'padding:10px 24px;font-size:.78rem;color:#7c6127;letter-spacing:.06em;'
-                        . 'text-align:center;font-family:\'DM Sans\',sans-serif;">'
-                        . '&#128274;&nbsp; Your account has <strong>limited access</strong>. '
-                        . 'Only the homepage editor and dashboard are available to you.'
-                        . '</div>'
-                    )
-                    : new HtmlString('')
+                fn(): HtmlString => auth()->check() && auth()->user()->isFrontendDev()
+                ? new HtmlString(
+                    '<div style="background:#110e00;border-bottom:1px solid rgba(111,84,29,.2);'
+                    . 'padding:10px 24px;font-size:.78rem;color:#7c6127;letter-spacing:.06em;'
+                    . 'text-align:center;font-family:\'DM Sans\',sans-serif;">'
+                    . '&#128274;&nbsp; Your account has <strong>limited access</strong>. '
+                    . 'Only the homepage editor and dashboard are available to you.'
+                    . '</div>'
+                )
+                : new HtmlString('')
             )
             ->renderHook(
                 PanelsRenderHook::HEAD_END,
-                fn (): HtmlString => new HtmlString(
+                fn(): HtmlString => new HtmlString(
                     '<link rel="preconnect" href="https://fonts.googleapis.com">'
                     . '<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>'
                     . '<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600&family=DM+Sans:wght@300;400&display=swap" rel="stylesheet">'
@@ -89,32 +89,32 @@ class AdminPanelProvider extends PanelProvider
             ->renderHook(
                 PanelsRenderHook::AUTH_LOGIN_FORM_BEFORE,
                 function (): HtmlString {
-                    if (! config('services.google_login.enabled', false)) {
+                    if (!config('services.google_login.enabled', false)) {
                         return new HtmlString('');
                     }
                     $url = url('/auth/google/redirect');
                     $svg = '<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 48 48">'
-                         . '<path fill="#FFC107" d="M43.6 20H24v8h11.3c-1.6 4.7-6.1 8-11.3 8-6.6 0-12-5.4-12-12s5.4-12 12-12c3 0 5.8 1.2 8 3l5.7-5.7C34 6.1 29.3 4 24 4 13 4 4 13 4 24s9 20 20 20 20-9 20-20c0-1.3-.1-2.7-.4-4z"/>'
-                         . '<path fill="#FF3D00" d="M6.3 14.7l6.6 4.8C14.6 15.1 19 12 24 12c3 0 5.8 1.2 8 3l5.7-5.7C34 6.1 29.3 4 24 4 16.3 4 9.7 8.3 6.3 14.7z"/>'
-                         . '<path fill="#4CAF50" d="M24 44c5.2 0 9.9-2 13.4-5.2l-6.2-5.2C29.5 35 26.9 36 24 36c-5.2 0-9.6-3.3-11.3-8l-6.5 5C9.5 39.6 16.2 44 24 44z"/>'
-                         . '<path fill="#1976D2" d="M43.6 20H24v8h11.3c-.7 2-2 3.8-3.6 5.2l6.2 5.2C41 35.2 44 30 44 24c0-1.3-.1-2.7-.4-4z"/>'
-                         . '</svg>';
+                        . '<path fill="#FFC107" d="M43.6 20H24v8h11.3c-1.6 4.7-6.1 8-11.3 8-6.6 0-12-5.4-12-12s5.4-12 12-12c3 0 5.8 1.2 8 3l5.7-5.7C34 6.1 29.3 4 24 4 13 4 4 13 4 24s9 20 20 20 20-9 20-20c0-1.3-.1-2.7-.4-4z"/>'
+                        . '<path fill="#FF3D00" d="M6.3 14.7l6.6 4.8C14.6 15.1 19 12 24 12c3 0 5.8 1.2 8 3l5.7-5.7C34 6.1 29.3 4 24 4 16.3 4 9.7 8.3 6.3 14.7z"/>'
+                        . '<path fill="#4CAF50" d="M24 44c5.2 0 9.9-2 13.4-5.2l-6.2-5.2C29.5 35 26.9 36 24 36c-5.2 0-9.6-3.3-11.3-8l-6.5 5C9.5 39.6 16.2 44 24 44z"/>'
+                        . '<path fill="#1976D2" d="M43.6 20H24v8h11.3c-.7 2-2 3.8-3.6 5.2l6.2 5.2C41 35.2 44 30 44 24c0-1.3-.1-2.7-.4-4z"/>'
+                        . '</svg>';
                     return $this->buildGoogleBlock($url, $svg);
                 }
             )
             ->renderHook(
                 PanelsRenderHook::AUTH_REGISTER_FORM_BEFORE,
                 function (): HtmlString {
-                    if (! config('services.google_login.enabled', false)) {
+                    if (!config('services.google_login.enabled', false)) {
                         return new HtmlString('');
                     }
                     $url = url('/auth/google/redirect');
                     $svg = '<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 48 48">'
-                         . '<path fill="#FFC107" d="M43.6 20H24v8h11.3c-1.6 4.7-6.1 8-11.3 8-6.6 0-12-5.4-12-12s5.4-12 12-12c3 0 5.8 1.2 8 3l5.7-5.7C34 6.1 29.3 4 24 4 13 4 4 13 4 24s9 20 20 20 20-9 20-20c0-1.3-.1-2.7-.4-4z"/>'
-                         . '<path fill="#FF3D00" d="M6.3 14.7l6.6 4.8C14.6 15.1 19 12 24 12c3 0 5.8 1.2 8 3l5.7-5.7C34 6.1 29.3 4 24 4 16.3 4 9.7 8.3 6.3 14.7z"/>'
-                         . '<path fill="#4CAF50" d="M24 44c5.2 0 9.9-2 13.4-5.2l-6.2-5.2C29.5 35 26.9 36 24 36c-5.2 0-9.6-3.3-11.3-8l-6.5 5C9.5 39.6 16.2 44 24 44z"/>'
-                         . '<path fill="#1976D2" d="M43.6 20H24v8h11.3c-.7 2-2 3.8-3.6 5.2l6.2 5.2C41 35.2 44 30 44 24c0-1.3-.1-2.7-.4-4z"/>'
-                         . '</svg>';
+                        . '<path fill="#FFC107" d="M43.6 20H24v8h11.3c-1.6 4.7-6.1 8-11.3 8-6.6 0-12-5.4-12-12s5.4-12 12-12c3 0 5.8 1.2 8 3l5.7-5.7C34 6.1 29.3 4 24 4 13 4 4 13 4 24s9 20 20 20 20-9 20-20c0-1.3-.1-2.7-.4-4z"/>'
+                        . '<path fill="#FF3D00" d="M6.3 14.7l6.6 4.8C14.6 15.1 19 12 24 12c3 0 5.8 1.2 8 3l5.7-5.7C34 6.1 29.3 4 24 4 16.3 4 9.7 8.3 6.3 14.7z"/>'
+                        . '<path fill="#4CAF50" d="M24 44c5.2 0 9.9-2 13.4-5.2l-6.2-5.2C29.5 35 26.9 36 24 36c-5.2 0-9.6-3.3-11.3-8l-6.5 5C9.5 39.6 16.2 44 24 44z"/>'
+                        . '<path fill="#1976D2" d="M43.6 20H24v8h11.3c-.7 2-2 3.8-3.6 5.2l6.2 5.2C41 35.2 44 30 44 24c0-1.3-.1-2.7-.4-4z"/>'
+                        . '</svg>';
                     return $this->buildGoogleBlock($url, $svg, 'Sign up with Google instead', 'One click — no form required.');
                 }
             );
@@ -156,7 +156,7 @@ class AdminPanelProvider extends PanelProvider
                 NavigationItem::make('Bookings')
                     ->icon('heroicon-o-calendar-days')
                     ->url('/admin/bookings')
-                    ->isActiveWhen(fn () => request()->is('admin/bookings*'))
+                    ->isActiveWhen(fn() => request()->is('admin/bookings*'))
                     ->group('CRM')
                     ->sort(1),
             ])
@@ -189,17 +189,17 @@ class AdminPanelProvider extends PanelProvider
         string $url,
         string $svg,
         string $buttonLabel = 'Continue with Google',
-        string $helperText  = 'Faster. Verified. Secure.'
+        string $helperText = 'Faster. Verified. Secure.'
     ): HtmlString {
-        $html  = '<div style="display:flex;flex-direction:column;align-items:stretch;gap:0;margin-bottom:1.25rem;">';
+        $html = '<div style="display:flex;flex-direction:column;align-items:stretch;gap:0;margin-bottom:1.25rem;">';
         $html .= '<div style="text-align:center;margin-bottom:.75rem;">';
         $html .= '<span style="display:inline-block;padding:.22rem .75rem;border:1px solid rgba(111,84,29,.28);border-radius:20px;font-size:.67rem;letter-spacing:.12em;text-transform:uppercase;color:rgba(168,120,40,.9);font-family:\'DM Sans\',sans-serif;font-weight:500;">&#10003;&nbsp;Recommended</span>';
         $html .= '</div>';
 
         $html .= '<a href="' . e($url) . '" '
-              . 'style="display:flex;align-items:center;justify-content:center;gap:.65rem;padding:.88rem 1.1rem;background:#ffffff;border:1px solid #dadce0;border-radius:8px;box-shadow:0 2px 8px rgba(0,0,0,.18),0 0 0 1px rgba(0,0,0,.04);text-decoration:none;font-family:\'DM Sans\',ui-sans-serif,sans-serif;font-size:.92rem;font-weight:600;color:#111111;transition:box-shadow .2s ease,background .18s ease,transform .15s ease;" '
-              . 'onmouseover="this.style.background=\'#f8f9fa\';this.style.boxShadow=\'0 4px 16px rgba(0,0,0,.22),0 0 0 1px rgba(0,0,0,.06)\';this.style.transform=\'translateY(-1px)\'" '
-              . 'onmouseout="this.style.background=\'#ffffff\';this.style.boxShadow=\'0 2px 8px rgba(0,0,0,.18),0 0 0 1px rgba(0,0,0,.04)\';this.style.transform=\'translateY(0)\'">';
+            . 'style="display:flex;align-items:center;justify-content:center;gap:.65rem;padding:.88rem 1.1rem;background:#ffffff;border:1px solid #dadce0;border-radius:8px;box-shadow:0 2px 8px rgba(0,0,0,.18),0 0 0 1px rgba(0,0,0,.04);text-decoration:none;font-family:\'DM Sans\',ui-sans-serif,sans-serif;font-size:.92rem;font-weight:600;color:#111111;transition:box-shadow .2s ease,background .18s ease,transform .15s ease;" '
+            . 'onmouseover="this.style.background=\'#f8f9fa\';this.style.boxShadow=\'0 4px 16px rgba(0,0,0,.22),0 0 0 1px rgba(0,0,0,.06)\';this.style.transform=\'translateY(-1px)\'" '
+            . 'onmouseout="this.style.background=\'#ffffff\';this.style.boxShadow=\'0 2px 8px rgba(0,0,0,.18),0 0 0 1px rgba(0,0,0,.04)\';this.style.transform=\'translateY(0)\'">';
         $html .= $svg . '<span style="color:#111111;font-weight:600;">' . e($buttonLabel) . '</span>';
         $html .= '</a>';
 

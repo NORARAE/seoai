@@ -50,8 +50,8 @@ return new class extends Migration
             // For opportunity detection (high impressions, low CTR)
             $table->index(['impressions', 'ctr']);
             
-            // Unique constraint to prevent duplicate imports
-            $table->unique(['site_id', 'url', 'query', 'date', 'device', 'country'], 'performance_unique');
+            // Unique constraint to prevent duplicate imports (hash to avoid key length limits)
+            $table->string('import_hash', 64)->nullable()->unique('performance_unique')->comment('SHA256 of site_id|url|query|date|device|country');
         });
     }
 

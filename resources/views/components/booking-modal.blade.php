@@ -6,6 +6,7 @@
 <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 
 <style>
+[x-cloak]{display:none!important}
 .bk-overlay{position:fixed;inset:0;z-index:9000;background:rgba(0,0,0,.72);backdrop-filter:blur(6px);display:flex;align-items:center;justify-content:center;padding:20px;opacity:0;pointer-events:none;transition:opacity .35s}
 .bk-overlay.open{opacity:1;pointer-events:auto}
 .bk-box{background:#111;border:1px solid #222;border-radius:12px;width:100%;max-width:640px;max-height:90vh;overflow-y:auto;padding:40px 36px;position:relative;transform:translateY(20px);transition:transform .35s}
@@ -84,7 +85,9 @@
 }
 </style>
 
-<div x-data="bookingModal()" x-cloak @open-booking.window="open($event.detail); window._bkPending = undefined;">
+<div x-data="bookingModal()" x-cloak
+     @open-booking.window="open($event.detail); window._bkPending = undefined;"
+     @keydown.escape.window="if (isOpen) close()">
   {{-- Overlay --}}
   <div class="bk-overlay" :class="{ open: isOpen }" @click.self="close()">
     <div class="bk-box">
@@ -249,10 +252,7 @@ document.addEventListener('alpine:init', () => {
     close() {
       this.isOpen = false;
       document.body.style.overflow = '';
-      // Reset if completed
-      if (this.step === 4) {
-        this.resetForm();
-      }
+      this.resetForm();
     },
 
     resetForm() {
@@ -285,15 +285,22 @@ document.addEventListener('alpine:init', () => {
     initDatepicker() {
       if (this.flatpickrInstance) {
         this.flatpickrInstance.destroy();
+        this.flatpickrInstance = null;
       }
       const avail = this.availableDays;
       this.flatpickrInstance = flatpickr(this.$refs.datepicker, {
-        theme: 'dark',
         minDate: 'today',
         maxDate: new Date().fp_incr(60),
         dateFormat: 'Y-m-d',
         altInput: true,
         altFormat: 'l, F j, Y',
+        disableMobile: true,
+        onReady: (_dates, _str, instance) => {
+          // Keep Flatpickr calendar above the modal overlay (z-index 9000)
+          instance.calendarContainer.style.zIndex = '99999';
+          // Prevent altInput from stealing focus and silently opening the calendar
+          if (instance.altInput) instance.altInput.blur();
+        },
         disable: [
           function(date) {
             return !avail.includes(date.getDay());

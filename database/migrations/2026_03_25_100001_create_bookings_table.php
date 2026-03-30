@@ -19,7 +19,7 @@ return new class extends Migration
             $table->text('message')->nullable();
             $table->date('preferred_date');
             $table->time('preferred_time');
-            $table->enum('status', ['pending', 'confirmed', 'cancelled', 'completed'])->default('pending');
+            $table->enum('status', ['pending', 'confirmed', 'cancelled', 'completed', 'awaiting_payment'])->default('pending');
             $table->string('google_event_id')->nullable();
             $table->string('google_meet_link')->nullable();
             $table->timestamp('confirmed_at')->nullable();

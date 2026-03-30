@@ -343,4 +343,101 @@ class BookingFlowTest extends TestCase
         }
         return $date->toDateString();
     }
+
+    // -------------------------------------------------------------------------
+    // Paid booking — /book/checkout
+    // -------------------------------------------------------------------------
+
+    public function test_checkout_rejects_when_stripe_not_configured(): void
+    {
+        // With no Stripe secret set in test env, Cashier::stripe() will throw.
+        // The controller catches the exception and returns 500.
+        // This test verifies the route exists and the payload is validated.
+        $date = $this->nextWeekday(Carbon::MONDAY);
+
+        // Validation still runs before Stripe is touched, so a missing field = 422
+        $this->postJson('/book/checkout', [
+            'consult_type_id' => $this->paidType->id,
+            // missing required fields
+        ])->assertUnprocessable()
+            ->assertJsonValidationErrors(['name', 'email', 'preferred_date', 'preferred_time']);
+    }
+
+    public function test_checkout_rejects_free_type(): void
+    {
+        $date = $this->nextWeekday(Carbon::MONDAY);
+
+        $this->postJson('/book/checkout', [
+            'consult_type_id' => $this->freeType->id,
+            'name' => 'Alice Free',
+            'email' => 'alice@example.com',
+            'preferred_date' => $date,
+            'preferred_time' => '10:00',
+        ])->assertUnprocessable()
+            ->assertJsonFragment(['message' => 'This consult type does not require payment.']);
+    }
+
+    public function test_checkout_duplicate_slot_guard_includes_awaiting_payment(): void
+    {
+        $date = $this->nextWeekday(Carbon::MONDAY);
+
+        // Seed an awaiting_payment booking for the same slot
+        Booking::create([
+            'consult_type_id' => $this->paidType->id,
+            'name' => 'Existing Payer',
+            'email' => 'existing@example.com',
+            'preferred_date' => $date,
+            'preferred_time' => '10:00',
+            'status' => 'awaiting_payment',
+        ]);
+
+        // A NEW checkout should be rejected because the slot is reserved
+        $this->postJson('/book/checkout', [
+            'consult_type_id' => $this->paidType->id,
+            'name' => 'New Person',
+            'email' => 'new@example.com',
+            'preferred_date' => $date,
+            'preferred_time' => '10:00',
+        ])->assertUnprocessable()
+            ->assertJsonFragment(['message' => 'That time slot was just taken. Please pick another.']);
+    }
+
+    public function test_awaiting_payment_slot_excluded_from_available_slots(): void
+    {
+        $date = $this->nextWeekday(Carbon::MONDAY);
+
+        // Seed an awaiting_payment booking
+        Booking::create([
+            'consult_type_id' => $this->paidType->id,
+            'name' => 'Paying Person',
+            'email' => 'pay@example.com',
+            'preferred_date' => $date,
+            'preferred_time' => '09:00',
+            'status' => 'awaiting_payment',
+        ]);
+
+        $response = $this->getJson('/book/slots?' . http_build_query([
+            'date' => $date,
+            'consult_type_id' => $this->paidType->id,
+        ]));
+
+        $response->assertOk();
+        $this->assertNotContains('09:00', $response->json('slots'));
+    }
+
+    public function test_confirmed_page_renders_for_awaiting_payment_booking(): void
+    {
+        $booking = Booking::create([
+            'consult_type_id' => $this->paidType->id,
+            'name' => 'Pay Wait',
+            'email' => 'paywait@example.com',
+            'preferred_date' => $this->nextWeekday(Carbon::THURSDAY),
+            'preferred_time' => '14:00',
+            'status' => 'awaiting_payment',
+        ]);
+
+        $this->get('/book/confirmed?booking=' . $booking->id)
+            ->assertOk()
+            ->assertSee('Paid Strategy Consult');
+    }
 }

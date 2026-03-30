@@ -54,6 +54,11 @@ class Booking extends Model
         return $this->status === 'confirmed';
     }
 
+    public function isAwaitingPayment(): bool
+    {
+        return $this->status === 'awaiting_payment';
+    }
+
     public function isCancelled(): bool
     {
         return $this->status === 'cancelled';
