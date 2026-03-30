@@ -134,22 +134,20 @@ body.filament-panel {
 /* Labels */
 .fi-fo-field-wrp label,
 .fi-fo-label {
-    color: #94a3b8 !important;
+    color: #b0bec8 !important;
 }
 
 /* "Remember me" text */
 .fi-fo-checkbox-input + label,
 .fi-fo-field-wrp .fi-fo-checkbox label {
-    color: #94a3b8 !important;
+    color: #b0bec8 !important;
 }
 
 /* Forgot password / links — readable bronze on dark card */
-.fi-link,
-.fi-simple-main a:not([style]) {
+.fi-link {
     color: #a87828 !important;
 }
-.fi-link:hover,
-.fi-simple-main a:not([style]):hover {
+.fi-link:hover {
     color: #c49235 !important;
 }
 
@@ -186,7 +184,7 @@ body.filament-panel {
 }
 .fi-simple-main p,
 .fi-simple-main .fi-simple-page-subheading {
-    color: #64748b !important;
+    color: #94a3b8 !important;
 }
 
 /* Brand logo brightness boost in auth header */
@@ -203,7 +201,7 @@ body.filament-panel {
 }
 
 .fi-simple-header-subheading {
-    color: #94a3b8 !important;
+    color: #c8d4e0 !important;
     font-size: .9rem !important;
 }
 
@@ -217,13 +215,26 @@ body.filament-panel {
     color: #7c6127 !important;
 }
 
-/* Any other text inside the card */
+/* Any other text inside the card — labels & base copy */
 .fi-simple-main,
-.fi-simple-main label,
-.fi-simple-main span,
-.fi-simple-main p {
+.fi-simple-main label {
     color: #d1d5db;
 }
+/* Paragraphs and secondary text — readable but clearly secondary */
+.fi-simple-main p {
+    color: #b0bec8;
+}
+/* Links must always win — gold, higher specificity */
+.fi-simple-main a,
+.fi-link {
+    color: #a87828 !important;
+}
+.fi-simple-main a:hover,
+.fi-link:hover {
+    color: #c49235 !important;
+}
+
+/* Headings inside card */
 .fi-simple-main h1,
 .fi-simple-main h2,
 .fi-simple-main h3 {

@@ -18,9 +18,14 @@ class Register extends BaseRegister
 {
     // ─── Heading ──────────────────────────────────────────────────────────────
 
+    public function getHeading(): string|Htmlable|null
+    {
+        return 'Create your account';
+    }
+
     public function getSubheading(): string|Htmlable|null
     {
-        return 'Access is curated. All registrations are subject to approval.';
+        return 'Access is curated. All accounts are reviewed before activation';
     }
 
     // ─── Form ─────────────────────────────────────────────────────────────────
@@ -120,8 +125,12 @@ class Register extends BaseRegister
             && $accessCode !== ''
             && hash_equals((string) $validCode, $accessCode);
 
-        $data['approved'] = $approved;
-        $data['role']     = 'buyer';
+        $data['approved']        = $approved;
+        $data['role']             = 'buyer';
+        $data['signup_ip']        = request()->ip();
+        $data['signup_user_agent'] = substr((string) request()->userAgent(), 0, 512);
+        $data['signup_referrer']  = substr((string) request()->headers->get('referer', ''), 0, 512) ?: null;
+        $data['signup_source']    = 'web-register';
 
         // Strip — never persisted to the database
         unset($data['access_code']);

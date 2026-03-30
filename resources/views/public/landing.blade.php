@@ -1429,7 +1429,11 @@ body::before{
   <div class="nav-right">
     <a href="#wyl" class="nav-link">The System</a>
     <a href="#offer" class="nav-link">Licensing</a>
-    <a href="/dashboard" class="nav-btn nav-account" style="background:linear-gradient(90deg,var(--gold),var(--gold-lt));color:var(--deep);box-shadow:0 2px 12px 0 rgba(200,168,75,.13);font-weight:500;letter-spacing:.18em;"><span class="nav-account-full">Sign Up / Account</span><span class="nav-account-short">Account</span></a>
+    @auth
+      <a href="/dashboard" class="nav-btn nav-account" style="background:linear-gradient(90deg,var(--gold),var(--gold-lt));color:var(--deep);box-shadow:0 2px 12px 0 rgba(200,168,75,.13);font-weight:500;letter-spacing:.18em;"><span class="nav-account-full">My Dashboard</span><span class="nav-account-short">Dashboard</span></a>
+    @else
+      <a href="/admin/register" class="nav-btn nav-account" style="background:linear-gradient(90deg,var(--gold),var(--gold-lt));color:var(--deep);box-shadow:0 2px 12px 0 rgba(200,168,75,.13);font-weight:500;letter-spacing:.18em;"><span class="nav-account-full">Request Access</span><span class="nav-account-short">Sign Up</span></a>
+    @endauth
     <a href="#contact" class="nav-btn">Request Licensing Access</a>
   </div>
 </nav>

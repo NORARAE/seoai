@@ -48,6 +48,10 @@ class User extends Authenticatable
         'google_id',
         'google_avatar',
         'auth_provider',
+        'signup_ip',
+        'signup_user_agent',
+        'signup_referrer',
+        'signup_source',
     ];
 
     /**

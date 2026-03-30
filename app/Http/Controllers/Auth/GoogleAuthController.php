@@ -112,6 +112,10 @@ class GoogleAuthController extends Controller
                 'role'              => config('services.google_login.default_role', 'viewer'),
                 'approved'          => false,
                 'last_login_at'     => now(),
+                'signup_ip'         => request()->ip(),
+                'signup_user_agent' => substr((string) request()->userAgent(), 0, 512),
+                'signup_referrer'   => substr((string) request()->headers->get('referer', ''), 0, 512) ?: null,
+                'signup_source'     => 'google-oauth',
             ]);
 
             Log::info('Google OAuth: auto-provisioned new user', ['email' => $email]);

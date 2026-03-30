@@ -8,6 +8,16 @@ use Illuminate\Support\Facades\RateLimiter;
 
 class RequestPasswordReset extends BaseRequestPasswordReset
 {
+    public function getHeading(): string|\Illuminate\Contracts\Support\Htmlable|null
+    {
+        return 'Reset your access';
+    }
+
+    public function getSubheading(): string|\Illuminate\Contracts\Support\Htmlable|null
+    {
+        return "We'll send a secure reset link to your email address.";
+    }
+
     /**
      * Extra per-IP bucket (3 per 15 min) on top of Filament's built-in
      * per-email throttle, preventing mass enumeration from a single IP.
