@@ -899,7 +899,7 @@ nav.stuck{background:rgba(8,8,8,.95);backdrop-filter:blur(16px);border-color:var
 .fg input:focus-visible,.fg textarea:focus-visible,.fg select:focus-visible{outline:none}
 .btn-primary:focus-visible,.btn-ghost:focus-visible,.aud-cta:focus-visible,.fsub:focus-visible,.tier-cta:focus-visible,.tier-book:focus-visible,.nav-btn:focus-visible,.gate-cta:focus-visible,.gate-skip:focus-visible,.btt:focus-visible{outline:2px solid var(--gold);outline-offset:3px}
 .fg textarea{resize:vertical;min-height:100px}
-.fg select option{background:var(--bg)}
+.fg select option{background:var(--bg);color:var(--ivory)}
 .frow{display:grid;grid-template-columns:1fr 1fr;gap:12px}
 .fsub{
   background:var(--gold);color:var(--bg);border:none;

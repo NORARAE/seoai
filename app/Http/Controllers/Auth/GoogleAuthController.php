@@ -148,7 +148,13 @@ class GoogleAuthController extends Controller
             return redirect()->route('user.onboarding');
         }
 
-        return redirect()->intended('/admin');
+        // Privileged staff (super_admin, admin, owner, account_manager) → Filament panel
+        if ($user->isPrivilegedStaff()) {
+            return redirect()->intended('/admin');
+        }
+
+        // Regular approved + onboarded user → SaaS dashboard
+        return redirect()->intended('/dashboard');
     }
 
     // ─── Private Helpers ────────────────────────────────────────────────────
