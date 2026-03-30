@@ -31,11 +31,11 @@ class Booking extends Model
     protected function casts(): array
     {
         return [
-            'preferred_date'   => 'date',
-            'confirmed_at'     => 'datetime',
-            'cancelled_at'     => 'datetime',
+            'preferred_date' => 'date',
+            'confirmed_at' => 'datetime',
+            'cancelled_at' => 'datetime',
             'reminder_sent_at' => 'datetime',
-            'sms_opted_out'    => 'boolean',
+            'sms_opted_out' => 'boolean',
         ];
     }
 

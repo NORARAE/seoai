@@ -26,5 +26,8 @@ class DatabaseSeeder extends Seeder
 
         // Seed location data (states, counties, cities, services)
         $this->call(LocationSeeder::class);
+
+        // Seed consult types and booking availability
+        $this->call(BookingSeeder::class);
     }
 }
