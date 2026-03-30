@@ -10,13 +10,17 @@
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
-  --bg:#080808;--card:#101010;--border:#1a1a1a;
-  --gold:#c8a84b;--gold-lt:#e2c97d;--gold-dim:#9a7a30;
-  --ivory:#ede8de;--muted:#a8a8a0;
+  --bg:#0c0c0c;
+  --card-bg:linear-gradient(160deg,#1f1f1f 0%,#161616 100%);
+  --border:rgba(111,84,29,.3);
+  --gold:#6f541d;--gold-lt:#a87828;--gold-dim:#5b4416;
+  --ivory:#f1f5f9;--muted:#94a3b8;
 }
 html{font-size:18px}
 body{
-  background:var(--bg);color:var(--ivory);
+  background:var(--bg);
+  background-image:radial-gradient(ellipse 70% 50% at 50% -5%,rgba(111,84,29,.07),transparent);
+  color:var(--ivory);
   font-family:'DM Sans',sans-serif;font-weight:300;
   min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;
   padding:40px 20px;
@@ -34,9 +38,11 @@ body{
   display:inline-block;transform:skewX(-11deg) translateY(-1px);
 }
 .logo-co{font-family:'DM Sans',sans-serif;font-weight:300;font-size:1.05rem;color:rgba(255,255,255,.45);letter-spacing:.04em}
+.logo-ai{color:var(--gold-lt) !important}
 
 .card{
-  background:var(--card);border:1px solid var(--border);border-radius:12px;
+  background:var(--card-bg);border:1px solid var(--border);border-radius:14px;
+  box-shadow:0 24px 64px rgba(0,0,0,.65),0 0 0 1px rgba(111,84,29,.1),inset 0 1px 0 rgba(255,255,255,.04);
   padding:48px 40px;
 }
 .status-icon{
@@ -59,7 +65,7 @@ body{
   font-size:1rem;color:var(--muted);line-height:1.8;margin-bottom:28px;
 }
 .card-body strong{color:var(--ivory);font-weight:400}
-.divider{width:40px;height:1px;background:var(--border);margin:28px auto}
+.divider{width:40px;height:1px;background:rgba(111,84,29,.3);margin:28px auto}
 .support-line{
   font-size:.78rem;color:var(--muted);line-height:1.7;
 }

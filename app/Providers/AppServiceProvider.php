@@ -2,7 +2,9 @@
 
 namespace App\Providers;
 
+use Filament\Auth\Http\Responses\Contracts\LoginResponse;
 use Filament\Auth\Http\Responses\Contracts\RegistrationResponse;
+use Filament\Facades\Filament;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\RateLimiter;
@@ -26,9 +28,30 @@ class AppServiceProvider extends ServiceProvider
     {
         Cashier::ignoreRoutes();
 
-        // After registering via Filament, send new users to the pending-approval
-        // page rather than the /admin panel home. Bound in boot() so it runs
-        // after FilamentServiceProvider::register() and wins the binding.
+        // After login: gate on approval + onboarding completion.
+        $this->app->bind(LoginResponse::class, function (): object {
+            return new class implements LoginResponse {
+                public function toResponse($request)
+                {
+                    $user = Filament::auth()->user();
+
+                    // Unapproved non-privileged users go to pending page
+                    if ($user && ! $user->isPrivilegedStaff() && ! $user->isApproved()) {
+                        return redirect()->route('pending-approval');
+                    }
+
+                    // Approved but onboarding not yet done
+                    if ($user && ! $user->isPrivilegedStaff() && $user->isApproved() && is_null($user->onboarding_completed_at)) {
+                        return redirect()->route('user.onboarding');
+                    }
+
+                    return redirect()->intended(Filament::getUrl());
+                }
+            };
+        });
+
+        // After registering via Filament, always send to pending-approval
+        // (Register.php itself handles the approved→onboarding redirect directly).
         $this->app->bind(RegistrationResponse::class, function (): object {
             return new class implements RegistrationResponse {
                 public function toResponse($request)

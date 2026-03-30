@@ -48,6 +48,10 @@ return [
         'redirect'      => env('GOOGLE_LOGIN_REDIRECT', env('APP_URL') . '/auth/google/callback'),
     ],
 
+    'registration' => [
+        'access_code' => env('REGISTRATION_ACCESS_CODE'),
+    ],
+
     'google_login' => [
         'enabled'         => env('GOOGLE_LOGIN_ENABLED', true),
         'auto_provision'  => env('GOOGLE_AUTO_PROVISION_USERS', false),

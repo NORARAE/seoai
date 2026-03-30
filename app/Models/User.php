@@ -2,12 +2,14 @@
 
 namespace App\Models;
 
+use App\Models\UserProfile;
 use App\Notifications\AdminPasswordResetNotification;
 use App\Support\ActiveSiteContext;
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Collection;
@@ -42,6 +44,7 @@ class User extends Authenticatable
         'onboarding_completed_at',
         'is_active',
         'approved',
+        'use_case',
         'google_id',
         'google_avatar',
         'auth_provider',
@@ -81,6 +84,14 @@ class User extends Authenticatable
     public function client(): BelongsTo
     {
         return $this->belongsTo(Client::class);
+    }
+
+    /**
+     * Onboarding profile collected during workspace setup.
+     */
+    public function profile(): HasOne
+    {
+        return $this->hasOne(UserProfile::class);
     }
 
     /**

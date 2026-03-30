@@ -8,6 +8,8 @@ use App\Http\Controllers\MarketingPageController;
 use App\Http\Controllers\MarketingSitemapController;
 use App\Http\Controllers\OnboardingController;
 use App\Http\Controllers\PublicController;
+use App\Http\Controllers\UserOnboardingController;
+use App\Http\Middleware\EnsureOnboardingComplete;
 use App\Http\Controllers\PublicSitemapController;
 use App\Http\Controllers\Auth\GoogleAuthController;
 use App\Http\Controllers\SeoController;
@@ -84,7 +86,13 @@ Route::get('/sitemaps/{site}/pages-{page}.xml', [PublicSitemapController::class,
 Route::middleware('auth')->get('/pending-approval', fn () => view('pending-approval'))
     ->name('pending-approval');
 
-Route::middleware(['auth', EnsureUserIsApproved::class])->prefix('dashboard')->name('app.')->group(function () {
+// Post-approval user onboarding (workspace setup)
+Route::middleware(['auth', EnsureUserIsApproved::class])->group(function () {
+    Route::get('/setup', [UserOnboardingController::class, 'show'])->name('user.onboarding');
+    Route::post('/setup', [UserOnboardingController::class, 'store'])->name('user.onboarding.store');
+});
+
+Route::middleware(['auth', EnsureUserIsApproved::class, EnsureOnboardingComplete::class])->prefix('dashboard')->name('app.')->group(function () {
     
     // Dashboard / Home
     Route::get('/', [DashboardController::class, 'index'])->name('dashboard');

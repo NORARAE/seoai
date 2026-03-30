@@ -143,6 +143,11 @@ class GoogleAuthController extends Controller
             return redirect()->route('pending-approval');
         }
 
+        // Approved but onboarding not yet complete
+        if (! $user->isPrivilegedStaff() && $user->isApproved() && is_null($user->onboarding_completed_at)) {
+            return redirect()->route('user.onboarding');
+        }
+
         return redirect()->intended('/admin');
     }
 

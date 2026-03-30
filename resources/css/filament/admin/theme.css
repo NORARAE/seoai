@@ -11,6 +11,7 @@
     --seoai-panel-2: #1f2937;
     --seoai-green: #22c55e;
     --seoai-blue: #3b82f6;
+    --seoai-gold: #6f541d;
 }
 
 body.filament-panel {
@@ -68,6 +69,7 @@ body.filament-panel {
     --c-400: var(--seoai-blue);
     --c-500: var(--seoai-blue);
     --c-600: #2563eb;
+    --seoai-gold: #8f6f2a;
 }
 
 .fi-badge-color-success {
@@ -87,4 +89,198 @@ body.filament-panel {
 .fi-topbar,
 .fi-sidebar {
     backdrop-filter: blur(8px);
+}
+
+/* ─── Login / Auth pages ─────────────────────────────────────── */
+
+/* Full-page background — pure dark with subtle gold bloom */
+.fi-simple-layout {
+    position: relative;
+    z-index: 1;
+    background-color: #0c0c0c !important;
+    background-image: radial-gradient(ellipse 70% 50% at 50% -5%, rgba(111,84,29,.07), transparent) !important;
+    background-size: auto !important;
+    min-height: 100vh;
+}
+
+/* Login card */
+.fi-simple-main {
+    position: relative;
+    z-index: 2;
+    background: linear-gradient(160deg, #1f1f1f 0%, #161616 100%) !important;
+    border: 1px solid rgba(111,84,29,.3) !important;
+    box-shadow: 0 24px 64px rgba(0,0,0,.65), 0 0 0 1px rgba(111,84,29,.1), inset 0 1px 0 rgba(255,255,255,.04) !important;
+    border-radius: 14px !important;
+}
+
+/* Input fields */
+.fi-input,
+.fi-fo-field-wrp input,
+.fi-fo-field-wrp textarea,
+.fi-input-wrp {
+    background-color: #232323 !important;
+    border-color: rgba(255,255,255,.13) !important;
+    color: #f1f5f9 !important;
+    transition: border-color .2s ease, box-shadow .2s ease !important;
+}
+
+.fi-input:focus,
+.fi-fo-field-wrp input:focus {
+    border-color: rgba(111,84,29,.7) !important;
+    box-shadow: 0 0 0 3px rgba(111,84,29,.13), 0 1px 3px rgba(0,0,0,.3) !important;
+    outline: none !important;
+}
+
+/* Labels */
+.fi-fo-field-wrp label,
+.fi-fo-label {
+    color: #94a3b8 !important;
+}
+
+/* "Remember me" text */
+.fi-fo-checkbox-input + label,
+.fi-fo-field-wrp .fi-fo-checkbox label {
+    color: #94a3b8 !important;
+}
+
+/* Forgot password / links — readable bronze on dark card */
+.fi-link,
+.fi-simple-main a:not([style]) {
+    color: #a87828 !important;
+}
+.fi-link:hover,
+.fi-simple-main a:not([style]):hover {
+    color: #c49235 !important;
+}
+
+/* Sign In button — deep bronze, strong contrast */
+.fi-btn-color-primary {
+    background: linear-gradient(180deg, #7a5e22 0%, #5b4416 100%) !important;
+    border-color: #4a3610 !important;
+    box-shadow: 0 2px 8px rgba(0,0,0,.45), inset 0 1px 0 rgba(255,255,255,.09) !important;
+    color: #ffffff !important;
+    font-weight: 600 !important;
+    letter-spacing: .03em !important;
+    transition: background .2s ease, box-shadow .2s ease !important;
+}
+.fi-btn-color-primary:hover {
+    background: linear-gradient(180deg, #896827 0%, #6a501c 100%) !important;
+    border-color: #5a4418 !important;
+    box-shadow: 0 4px 14px rgba(0,0,0,.55), inset 0 1px 0 rgba(255,255,255,.12) !important;
+    color: #ffffff !important;
+}
+/* Force bright white text on Sign In button — covers all Filament v5 button structures */
+.fi-simple-main .fi-btn-color-primary span,
+.fi-simple-main .fi-btn-color-primary .fi-btn-label,
+.fi-simple-main button[type="submit"],
+.fi-simple-main button[type="submit"] span,
+.fi-simple-main button[type="submit"] * {
+    color: #ffffff !important;
+    text-shadow: 0 1px 2px rgba(0,0,0,.35) !important;
+}
+
+/* Page heading & subheading */
+.fi-simple-main h1,
+.fi-simple-main .fi-simple-page-heading {
+    color: #f1f5f9 !important;
+}
+.fi-simple-main p,
+.fi-simple-main .fi-simple-page-subheading {
+    color: #64748b !important;
+}
+
+/* Brand logo brightness boost in auth header */
+.fi-simple-header .fi-logo {
+    filter: brightness(1.05);
+}
+
+/* Auth header: heading + subheading */
+.fi-simple-header-heading {
+    color: #f1f5f9 !important;
+    font-size: 1.35rem !important;
+    font-weight: 600 !important;
+    letter-spacing: .01em !important;
+}
+
+.fi-simple-header-subheading {
+    color: #94a3b8 !important;
+    font-size: .9rem !important;
+}
+
+/* Logo brand text — force white/gold so it's visible on dark bg */
+.fi-simple-header .fi-logo,
+.fi-simple-header .fi-logo * {
+    color: #f1f5f9 !important;
+}
+/* The gold "AI" span uses inline color already — protect it */
+.fi-simple-header .fi-logo span[style*="7c6127"] {
+    color: #7c6127 !important;
+}
+
+/* Any other text inside the card */
+.fi-simple-main,
+.fi-simple-main label,
+.fi-simple-main span,
+.fi-simple-main p {
+    color: #d1d5db;
+}
+.fi-simple-main h1,
+.fi-simple-main h2,
+.fi-simple-main h3 {
+    color: #f1f5f9 !important;
+}
+
+/* Validation error messages */
+.fi-fo-field-wrp [data-validation-error],
+.fi-simple-main .fi-fo-field-wrp p.text-sm {
+    color: #f87171 !important;
+}
+
+/* ─── Select / Dropdown components on auth pages ────────────────────────── */
+
+/* Trigger button */
+.fi-simple-main .fi-select-input,
+.fi-simple-main .fi-select > button,
+.fi-simple-main [role="combobox"] {
+    background-color: #232323 !important;
+    border-color: rgba(255,255,255,.13) !important;
+    color: #f1f5f9 !important;
+}
+
+/* Selected-value span inside the trigger */
+.fi-simple-main .fi-select-input span,
+.fi-simple-main .fi-select > button span,
+.fi-simple-main [role="combobox"] span {
+    color: #f1f5f9 !important;
+}
+
+/* Placeholder text in select trigger */
+.fi-simple-main .fi-select-input [data-placeholder],
+.fi-simple-main [role="combobox"][aria-expanded="false"] span:first-child {
+    color: rgba(148,163,184,.55) !important;
+}
+
+/* Options dropdown panel — teleported outside .fi-simple-main */
+[data-headlessui-portal] [role="listbox"],
+[data-headlessui-portal] .fi-select-option-list {
+    background-color: #1c1c1c !important;
+    border: 1px solid rgba(111,84,29,.25) !important;
+    box-shadow: 0 8px 32px rgba(0,0,0,.55) !important;
+    border-radius: 8px !important;
+}
+
+/* Option items */
+[data-headlessui-portal] [role="option"],
+[data-headlessui-portal] .fi-select-option {
+    color: #e2e8f0 !important;
+    background-color: transparent !important;
+}
+
+/* Option hover and selected state */
+[data-headlessui-portal] [role="option"]:hover,
+[data-headlessui-portal] [role="option"][aria-selected="true"],
+[data-headlessui-portal] .fi-select-option:hover,
+[data-headlessui-portal] .fi-select-option[data-active-option] {
+    background-color: rgba(111,84,29,.2) !important;
+    color: #f1f5f9 !important;
 }
