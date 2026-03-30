@@ -105,7 +105,7 @@
         <h3 class="bk-title">Choose Your Consult</h3>
         <p class="bk-sub">Select the type of session that fits your needs.</p>
         <div class="bk-types">
-          @foreach(\App\Models\ConsultType::active()->get() as $ct)
+          @foreach(($types ?? collect()) as $ct)
           <div class="bk-type"
                :class="{ selected: selectedType === {{ $ct->id }} }"
                @click="selectType({{ $ct->id }}, {{ $ct->duration_minutes }}, {{ json_encode($ct->name) }}, {{ $ct->is_free ? 'true' : 'false' }})">
@@ -225,8 +225,9 @@ document.addEventListener('alpine:init', () => {
     form: { name: '', email: '', phone: '', company: '', website: '', message: '' },
     confirmation: { consult_type: '', date: '', time: '', duration: 0, meet_link: '' },
 
-    // Available days (0=Sun..6=Sat) — populated from DB availability
-    availableDays: @json(\App\Models\BookingAvailability::active()->pluck('day_of_week')->toArray()),
+    // Available days (0=Sun..6=Sat) — supplied by the controller, never re-queried in the view.
+    availableDays: @json($availableDays ?? []),
+
 
     init() {
       if (window._bkPending !== undefined) {

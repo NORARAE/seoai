@@ -22,8 +22,9 @@ class BookingController extends Controller
     public function index()
     {
         $types = ConsultType::active()->get();
+        $availableDays = BookingAvailability::active()->pluck('day_of_week')->toArray();
 
-        return view('public.book', compact('types'));
+        return view('public.book', compact('types', 'availableDays'));
     }
 
     /**
@@ -44,17 +45,21 @@ class BookingController extends Controller
             ->where('day_of_week', $date->dayOfWeek)
             ->first();
 
-        if (! $availability) {
+        if (!$availability) {
             return response()->json(['slots' => [], 'message' => 'No availability on this day.']);
         }
 
-        try {
-            $calendarService = app(GoogleCalendarService::class);
-            $slots = $calendarService->getAvailableSlots($date, $type->duration_minutes);
-        } catch (\Exception $e) {
-            Log::channel('booking')->warning('Calendar unavailable, falling back to DB-only slots', [
-                'error' => $e->getMessage(),
-            ]);
+        if (config('services.google.calendar_enabled', false)) {
+            try {
+                $calendarService = app(GoogleCalendarService::class);
+                $slots = $calendarService->getAvailableSlots($date, $type->duration_minutes);
+            } catch (\Exception $e) {
+                Log::channel('booking')->warning('Calendar unavailable, falling back to DB-only slots', [
+                    'error' => $e->getMessage(),
+                ]);
+                $slots = $this->getFallbackSlots($date, $type->duration_minutes);
+            }
+        } else {
             $slots = $this->getFallbackSlots($date, $type->duration_minutes);
         }
 
@@ -82,7 +87,8 @@ class BookingController extends Controller
         $date = Carbon::parse($validated['preferred_date']);
 
         // Race condition guard: check slot still available
-        $existing = Booking::where('preferred_date', $date->toDateString())
+        // whereDate() works correctly on both MySQL (DATE column) and SQLite (text column).
+        $existing = Booking::whereDate('preferred_date', $date->toDateString())
             ->where('preferred_time', $validated['preferred_time'])
             ->whereIn('status', ['pending', 'confirmed'])
             ->exists();
@@ -99,22 +105,24 @@ class BookingController extends Controller
         ]);
 
         // Attempt Google Calendar integration
-        try {
-            $calendarService = app(GoogleCalendarService::class);
-            $result = $calendarService->createBookingEvent($booking);
+        if (config('services.google.calendar_enabled', false)) {
+            try {
+                $calendarService = app(GoogleCalendarService::class);
+                $result = $calendarService->createBookingEvent($booking);
 
-            $booking->update([
-                'google_event_id' => $result['event_id'],
-                'google_meet_link' => $result['meet_link'],
-                'status' => 'confirmed',
-                'confirmed_at' => now(),
-            ]);
-        } catch (\Exception $e) {
-            Log::channel('booking')->error('Google Calendar event creation failed — booking saved as pending', [
-                'booking_id' => $booking->id,
-                'error' => $e->getMessage(),
-            ]);
-            // Booking stays as 'pending' for manual review
+                $booking->update([
+                    'google_event_id' => $result['event_id'],
+                    'google_meet_link' => $result['meet_link'],
+                    'status' => 'confirmed',
+                    'confirmed_at' => now(),
+                ]);
+            } catch (\Exception $e) {
+                Log::channel('booking')->error('Google Calendar event creation failed — booking saved as pending', [
+                    'booking_id' => $booking->id,
+                    'error' => $e->getMessage(),
+                ]);
+                // Booking stays as 'pending' for manual review
+            }
         }
 
         $booking->refresh()->load('consultType');
@@ -129,7 +137,7 @@ class BookingController extends Controller
         } catch (\Exception $e) {
             Log::channel('booking')->error('Lead sync failed', [
                 'booking_id' => $booking->id,
-                'error'      => $e->getMessage(),
+                'error' => $e->getMessage(),
             ]);
         }
 
@@ -181,14 +189,14 @@ class BookingController extends Controller
     {
         $validated = $request->validate([
             'consult_type_id' => 'required|exists:consult_types,id',
-            'name'            => 'required|string|max:255',
-            'email'           => 'required|email|max:255',
-            'phone'           => 'nullable|string|max:50',
-            'company'         => 'nullable|string|max:255',
-            'website'         => 'nullable|url|max:500',
-            'message'         => 'nullable|string|max:2000',
-            'preferred_date'  => 'required|date|after_or_equal:today',
-            'preferred_time'  => 'required|date_format:H:i',
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|max:255',
+            'phone' => 'nullable|string|max:50',
+            'company' => 'nullable|string|max:255',
+            'website' => 'nullable|url|max:500',
+            'message' => 'nullable|string|max:2000',
+            'preferred_date' => 'required|date|after_or_equal:today',
+            'preferred_time' => 'required|date_format:H:i',
         ]);
 
         $type = ConsultType::findOrFail($validated['consult_type_id']);
@@ -197,13 +205,13 @@ class BookingController extends Controller
             return response()->json(['message' => 'This consult type does not require payment.'], 422);
         }
 
-        if (! $type->price || $type->price <= 0) {
+        if (!$type->price || $type->price <= 0) {
             return response()->json(['message' => 'Price not configured for this consult type. Contact support.'], 422);
         }
 
         $date = Carbon::parse($validated['preferred_date']);
 
-        $existing = Booking::where('preferred_date', $date->toDateString())
+        $existing = Booking::whereDate('preferred_date', $date->toDateString())
             ->where('preferred_time', $validated['preferred_time'])
             ->whereIn('status', ['pending', 'confirmed', 'awaiting_payment'])
             ->exists();
@@ -219,23 +227,25 @@ class BookingController extends Controller
 
         try {
             $session = Cashier::stripe()->checkout->sessions->create([
-                'mode'           => 'payment',
+                'mode' => 'payment',
                 'customer_email' => $booking->email,
-                'line_items'     => [[
-                    'price_data' => [
-                        'currency'     => 'usd',
-                        'unit_amount'  => (int) ($type->price * 100),
-                        'product_data' => [
-                            'name'        => $type->name,
-                            'description' => $type->formattedDuration() . ' consultation — seoaico.com',
+                'line_items' => [
+                    [
+                        'price_data' => [
+                            'currency' => 'usd',
+                            'unit_amount' => (int) ($type->price * 100),
+                            'product_data' => [
+                                'name' => $type->name,
+                                'description' => $type->formattedDuration() . ' consultation — seoaico.com',
+                            ],
                         ],
-                    ],
-                    'quantity' => 1,
-                ]],
-                'metadata'    => ['booking_id' => $booking->id],
+                        'quantity' => 1,
+                    ]
+                ],
+                'metadata' => ['booking_id' => $booking->id],
                 'success_url' => url('/book/payment-return/' . $booking->id) . '?session_id={CHECKOUT_SESSION_ID}',
-                'cancel_url'  => url('/book?payment=cancelled'),
-                'expires_at'  => now()->addMinutes(30)->timestamp,
+                'cancel_url' => url('/book?payment=cancelled'),
+                'expires_at' => now()->addMinutes(30)->timestamp,
             ]);
         } catch (\Exception $e) {
             $booking->delete();
@@ -259,7 +269,7 @@ class BookingController extends Controller
     {
         $sessionId = (string) $request->query('session_id', '');
 
-        if (! $sessionId || $booking->stripe_checkout_session_id !== $sessionId) {
+        if (!$sessionId || $booking->stripe_checkout_session_id !== $sessionId) {
             abort(403, 'Invalid payment return.');
         }
 
@@ -273,7 +283,7 @@ class BookingController extends Controller
 
             if ($session->payment_status !== 'paid') {
                 Log::channel('booking')->warning('Payment return with unpaid session', [
-                    'booking_id'     => $booking->id,
+                    'booking_id' => $booking->id,
                     'payment_status' => $session->payment_status,
                 ]);
 
@@ -284,27 +294,31 @@ class BookingController extends Controller
         } catch (\Exception $e) {
             Log::channel('booking')->error('Stripe session retrieval failed on payment return', [
                 'booking_id' => $booking->id,
-                'error'      => $e->getMessage(),
+                'error' => $e->getMessage(),
             ]);
             // Proceed cautiously — charge likely succeeded, confirm the booking
         }
 
         // Attempt Google Calendar integration
-        try {
-            $calendarService = app(GoogleCalendarService::class);
-            $result = $calendarService->createBookingEvent($booking);
+        if (config('services.google.calendar_enabled', false)) {
+            try {
+                $calendarService = app(GoogleCalendarService::class);
+                $result = $calendarService->createBookingEvent($booking);
 
-            $booking->update([
-                'google_event_id'  => $result['event_id'],
-                'google_meet_link' => $result['meet_link'],
-                'status'           => 'confirmed',
-                'confirmed_at'     => now(),
-            ]);
-        } catch (\Exception $e) {
-            Log::channel('booking')->error('Google Calendar event creation failed for paid booking', [
-                'booking_id' => $booking->id,
-                'error'      => $e->getMessage(),
-            ]);
+                $booking->update([
+                    'google_event_id' => $result['event_id'],
+                    'google_meet_link' => $result['meet_link'],
+                    'status' => 'confirmed',
+                    'confirmed_at' => now(),
+                ]);
+            } catch (\Exception $e) {
+                Log::channel('booking')->error('Google Calendar event creation failed for paid booking', [
+                    'booking_id' => $booking->id,
+                    'error' => $e->getMessage(),
+                ]);
+                $booking->update(['status' => 'confirmed', 'confirmed_at' => now()]);
+            }
+        } else {
             $booking->update(['status' => 'confirmed', 'confirmed_at' => now()]);
         }
 
@@ -316,7 +330,7 @@ class BookingController extends Controller
         } catch (\Exception $e) {
             Log::channel('booking')->error('Lead sync failed for paid booking', [
                 'booking_id' => $booking->id,
-                'error'      => $e->getMessage(),
+                'error' => $e->getMessage(),
             ]);
         }
 
@@ -327,7 +341,7 @@ class BookingController extends Controller
         } catch (\Exception $e) {
             Log::channel('booking')->error('Booking email failed for paid booking', [
                 'booking_id' => $booking->id,
-                'error'      => $e->getMessage(),
+                'error' => $e->getMessage(),
             ]);
         }
 
@@ -392,17 +406,17 @@ class BookingController extends Controller
             ->where('day_of_week', $date->dayOfWeek)
             ->first();
 
-        if (! $availability) {
+        if (!$availability) {
             return [];
         }
 
         $start = $date->copy()->setTimeFromTimeString($availability->start_time);
         $end = $date->copy()->setTimeFromTimeString($availability->end_time);
 
-        $booked = Booking::where('preferred_date', $date->toDateString())
+        $booked = Booking::whereDate('preferred_date', $date->toDateString())
             ->whereIn('status', ['pending', 'confirmed'])
             ->pluck('preferred_time')
-            ->map(fn ($t) => Carbon::parse($t)->format('H:i'))
+            ->map(fn($t) => Carbon::parse($t)->format('H:i'))
             ->toArray();
 
         $slots = [];
@@ -410,7 +424,7 @@ class BookingController extends Controller
 
         while ($cursor->copy()->addMinutes($durationMinutes)->lte($end)) {
             $time = $cursor->format('H:i');
-            if (! in_array($time, $booked)) {
+            if (!in_array($time, $booked)) {
                 $slots[] = $time;
             }
             $cursor->addMinutes(30);

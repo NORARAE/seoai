@@ -18,7 +18,8 @@ class PublicController extends Controller
 {
     public function __construct(
         private readonly InquiryEnrichmentService $enrichment,
-    ) {}
+    ) {
+    }
 
     /**
      * Show the public landing page
@@ -26,7 +27,9 @@ class PublicController extends Controller
     public function landing(): View
     {
         $consultTypes = \App\Models\ConsultType::active()->get()->keyBy('slug');
-        return view('public.landing', compact('consultTypes'));
+        $types = $consultTypes->values();
+        $availableDays = \App\Models\BookingAvailability::active()->pluck('day_of_week')->toArray();
+        return view('public.landing', compact('consultTypes', 'types', 'availableDays'));
     }
 
     /**
@@ -48,34 +51,34 @@ class PublicController extends Controller
 
         // ── 1. Validate ────────────────────────────────────────────────────────
         $validated = $request->validate([
-            'name'            => ['required', 'string', 'max:120'],
-            'company'         => ['required', 'string', 'max:120'],
-            'email'           => ['required', 'email:rfc,dns', 'max:255'],
-            'website'         => ['nullable', 'url:http,https', 'max:255'],
-            'type'            => ['required', 'in:agency,business,both'],
-            'tier'            => ['required', 'in:starter,5k,10k,legacy'],
-            'niche'           => ['nullable', 'string', 'max:255'],
-            'message'         => ['required', 'string', 'max:5000'],
+            'name' => ['required', 'string', 'max:120'],
+            'company' => ['required', 'string', 'max:120'],
+            'email' => ['required', 'email:rfc,dns', 'max:255'],
+            'website' => ['nullable', 'url:http,https', 'max:255'],
+            'type' => ['required', 'in:agency,business,both'],
+            'tier' => ['required', 'in:starter,5k,10k,legacy'],
+            'niche' => ['nullable', 'string', 'max:255'],
+            'message' => ['required', 'string', 'max:5000'],
             // Spam signals — present in form but not stored on model
             // Honeypot — allow any value through; step 2 detects a fill and silently rejects
             'website_confirm' => ['nullable', 'string', 'max:512'],
-            'form_loaded_at'  => ['nullable', 'integer'],
+            'form_loaded_at' => ['nullable', 'integer'],
             'g-recaptcha-response' => ['nullable', 'string', 'max:2048'],
         ]);
 
         $ip = $request->ip() ?? '0.0.0.0';
 
         // ── 2. Honeypot ────────────────────────────────────────────────────────
-        $honeypotTriggered = ! empty($validated['website_confirm']);
+        $honeypotTriggered = !empty($validated['website_confirm']);
 
         // Also check legacy honeypot field name if still present in request
-        if (! $honeypotTriggered && $request->filled('website_url')) {
+        if (!$honeypotTriggered && $request->filled('website_url')) {
             $honeypotTriggered = true;
         }
 
         // ── 3. Duplicate suppression ────────────────────────────────────────────
         $emailKey = 'inquiry_email:' . md5(strtolower($validated['email']));
-        $ipKey    = 'inquiry_ip:' . md5($ip);
+        $ipKey = 'inquiry_ip:' . md5($ip);
 
         $isDuplicate = Cache::has($emailKey) || Cache::has($ipKey);
 
@@ -84,21 +87,21 @@ class PublicController extends Controller
         $recaptchaToken = $validated['g-recaptcha-response'] ?? '';
 
         $inquiry = Inquiry::create([
-            'name'               => $validated['name'],
-            'company'            => $validated['company'],
-            'email'              => $validated['email'],
-            'website'            => $validated['website'] ?? null,
-            'type'               => $validated['type'],
-            'tier'               => $validated['tier'],
-            'niche'              => $validated['niche'] ?? null,
-            'message'            => $validated['message'],
-            'ip_address'         => $ip,
-            'status'             => 'new',
+            'name' => $validated['name'],
+            'company' => $validated['company'],
+            'email' => $validated['email'],
+            'website' => $validated['website'] ?? null,
+            'type' => $validated['type'],
+            'tier' => $validated['tier'],
+            'niche' => $validated['niche'] ?? null,
+            'message' => $validated['message'],
+            'ip_address' => $ip,
+            'status' => 'new',
             'honeypot_triggered' => $honeypotTriggered,
         ]);
 
         // Mark duplicate caches so next submission in the window is suppressed
-        if (! $isDuplicate) {
+        if (!$isDuplicate) {
             Cache::put($emailKey, 1, now()->addMinutes(10));
             Cache::put($ipKey, 1, now()->addMinutes(10));
         }
@@ -124,7 +127,7 @@ class PublicController extends Controller
             // Enrichment failure must NOT stop form processing
             Log::error('InquiryEnrichment: pipeline exception (non-fatal)', [
                 'inquiry_id' => $inquiry->id,
-                'error'      => $e->getMessage(),
+                'error' => $e->getMessage(),
             ]);
             $enrichData = [];
         }
@@ -133,9 +136,9 @@ class PublicController extends Controller
         $enrichData['honeypot_triggered'] = $honeypotTriggered;
 
         $riskResult = $this->enrichment->scoreSpamRisk($enrichData);
-        $spamRisk   = $riskResult['spam_risk'];
-        $riskScore  = $riskResult['_score'];
-        $signals    = $riskResult['_signals'];
+        $spamRisk = $riskResult['spam_risk'];
+        $riskScore = $riskResult['_score'];
+        $signals = $riskResult['_signals'];
 
         $inquiry->update(['spam_risk' => $spamRisk]);
 
@@ -152,26 +155,26 @@ class PublicController extends Controller
 
             SpamLog::create([
                 'inquiry_id' => $inquiry->id,
-                'reason'     => $reason,
-                'spam_risk'  => $spamRisk,
+                'reason' => $reason,
+                'spam_risk' => $spamRisk,
                 'risk_score' => $riskScore,
                 'ip_address' => $ip,
-                'email'      => $validated['email'],
-                'signals'    => $signals,
+                'email' => $validated['email'],
+                'signals' => $signals,
             ]);
 
             Log::info('Inquiry silently rejected', [
-                'id'      => $inquiry->id,
-                'reason'  => $reason,
-                'risk'    => $spamRisk,
-                'score'   => $riskScore,
+                'id' => $inquiry->id,
+                'reason' => $reason,
+                'risk' => $spamRisk,
+                'score' => $riskScore,
                 'signals' => $signals,
-                'email'   => $validated['email'],
-                'ip'      => $ip,
+                'email' => $validated['email'],
+                'ip' => $ip,
             ]);
 
             // Return normal success — do NOT reveal rejection to submitter
-            return redirect(url('/').'#contact')->with('inquiry_success', $successMsg);
+            return redirect(url('/') . '#contact')->with('inquiry_success', $successMsg);
         }
 
         // ── 8. Send emails ──────────────────────────────────────────────────────
@@ -191,14 +194,14 @@ class PublicController extends Controller
         }
 
         Log::info('Licensing inquiry accepted and emails queued', [
-            'id'         => $inquiry->id,
-            'company'    => $inquiry->company,
-            'email'      => $inquiry->email,
-            'tier'       => $inquiry->tier,
-            'spam_risk'  => $spamRisk,
+            'id' => $inquiry->id,
+            'company' => $inquiry->company,
+            'email' => $inquiry->email,
+            'tier' => $inquiry->tier,
+            'spam_risk' => $spamRisk,
         ]);
 
-        return redirect(url('/').'#contact')->with('inquiry_success', $successMsg);
+        return redirect(url('/') . '#contact')->with('inquiry_success', $successMsg);
     }
 
     public function privacy(): View
