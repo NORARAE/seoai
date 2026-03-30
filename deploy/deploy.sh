@@ -65,8 +65,14 @@ chmod -R 775 storage bootstrap/cache database
 
 # Restart services
 systemctl restart php8.3-fpm
-supervisorctl restart seoai-queue:*
-supervisorctl restart seoai-scheduler
+
+# Queue worker — booking confirmation emails and admin alerts are queued.
+# Supervisor manages seoai-queue (see deploy/supervisor/seoai-runtime.conf).
+# If supervisor is NOT installed, set QUEUE_CONNECTION=sync in .env so that
+# Mail::queue() falls back to synchronous sending (no worker needed, but
+# each booking request will block briefly on the mail server).
+supervisorctl restart seoai-queue:* 2>/dev/null || echo "⚠  supervisorctl not available — ensure QUEUE_CONNECTION=sync in .env if no queue worker is running"
+supervisorctl restart seoai-scheduler 2>/dev/null || true
 
 echo ""
 echo "✓ Deploy complete!"
