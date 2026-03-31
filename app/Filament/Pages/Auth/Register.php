@@ -168,7 +168,7 @@ class Register extends BaseRegister
 
         // Timezone — set by JS cookie on first page load
         $rawTz = request()->cookie('tz', '');
-        $data['signup_timezone'] = preg_match('/^[A-Za-z_\/\-+]{1,64}$/', (string) $rawTz)
+        $data['signup_timezone'] = preg_match('/^[A-Za-z0-9_\/\-+]{1,64}$/', (string) $rawTz)
             ? $rawTz
             : null;
 

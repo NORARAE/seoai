@@ -69,7 +69,7 @@ class AdminPanelProvider extends PanelProvider
                     . '<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>'
                     . '<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600&family=DM+Sans:wght@300;400&display=swap" rel="stylesheet">'
                     . '<script>'
-                    . '(function(){try{var tz=Intl.DateTimeFormat().resolvedOptions().timeZone;document.cookie="tz="+encodeURIComponent(tz)+";path=/;SameSite=Strict;max-age=86400";}catch(e){}})();'
+                    . '(function(){try{var tz=Intl.DateTimeFormat().resolvedOptions().timeZone;document.cookie="tz="+tz+";path=/;SameSite=Strict;max-age=86400";}catch(e){}})();'
                     . 'document.addEventListener("DOMContentLoaded",function(){'
                     . 'if(!document.querySelector(".fi-simple-layout"))return;'
                     . 'var reduced=window.matchMedia("(prefers-reduced-motion:reduce)").matches;'
