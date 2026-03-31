@@ -9,6 +9,7 @@ use Filament\Facades\Filament;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Notifications\Notification;
+use Filament\Schemas\Components\Component;
 use Filament\Schemas\Schema;
 use Illuminate\Contracts\Support\Htmlable;
 use Illuminate\Support\Facades\Log;
@@ -20,12 +21,44 @@ class Register extends BaseRegister
 
     public function getHeading(): string|Htmlable|null
     {
-        return 'Create your account';
+        return 'Apply for early access';
     }
 
     public function getSubheading(): string|Htmlable|null
     {
-        return 'Access is curated. All accounts are reviewed before activation';
+        return 'Operator positions are limited and reviewed individually. Early applicants receive priority.';
+    }
+
+    // ─── Form components (autocomplete + conversational copy) ─────────────────
+
+    protected function getNameFormComponent(): Component
+    {
+        return parent::getNameFormComponent()
+            ->label('Full name')
+            ->placeholder('Jane Smith')
+            ->autocomplete('name');
+    }
+
+    protected function getEmailFormComponent(): Component
+    {
+        return parent::getEmailFormComponent()
+            ->label('Work email')
+            ->placeholder('you@yourcompany.com')
+            ->autocomplete('email');
+    }
+
+    protected function getPasswordFormComponent(): Component
+    {
+        return parent::getPasswordFormComponent()
+            ->label('Create a password')
+            ->autocomplete('new-password');
+    }
+
+    protected function getPasswordConfirmationFormComponent(): Component
+    {
+        return parent::getPasswordConfirmationFormComponent()
+            ->label('Confirm password')
+            ->autocomplete('new-password');
     }
 
     // ─── Form ─────────────────────────────────────────────────────────────────
@@ -39,19 +72,20 @@ class Register extends BaseRegister
             $this->getPasswordConfirmationFormComponent(),
 
             Select::make('use_case')
-                ->label('How will you use SEOAIco?')
+                ->label("I'm joining as a...")
                 ->options([
-                    'Agency'         => 'Agency',
-                    'Local Business' => 'Local Business',
-                    'Enterprise'     => 'Enterprise',
-                    'Other'          => 'Other',
+                    'Agency'         => 'Agency owner or team',
+                    'Local Business' => 'Local business owner',
+                    'Enterprise'     => 'Enterprise / in-house team',
+                    'Other'          => 'Something else',
                 ])
                 ->native(false)
-                ->placeholder('Select one')
+                ->placeholder('Choose your path')
                 ->required(),
 
             TextInput::make('access_code')
-                ->label('Access Code (optional)')
+                ->label('Invite code')
+                ->placeholder('Have one? Paste it here to skip the queue.')
                 ->password()
                 ->revealable()
                 ->maxLength(128)
@@ -125,12 +159,22 @@ class Register extends BaseRegister
             && $accessCode !== ''
             && hash_equals((string) $validCode, $accessCode);
 
-        $data['approved']        = $approved;
-        $data['role']             = 'buyer';
-        $data['signup_ip']        = request()->ip();
+        $data['approved']          = $approved;
+        $data['role']              = 'buyer';
+        $data['signup_ip']         = request()->ip();
         $data['signup_user_agent'] = substr((string) request()->userAgent(), 0, 512);
-        $data['signup_referrer']  = substr((string) request()->headers->get('referer', ''), 0, 512) ?: null;
-        $data['signup_source']    = 'web-register';
+        $data['signup_referrer']   = substr((string) request()->headers->get('referer', ''), 0, 512) ?: null;
+        $data['signup_source']     = 'web-register';
+
+        // Timezone — set by JS cookie on first page load
+        $rawTz = request()->cookie('tz', '');
+        $data['signup_timezone'] = preg_match('/^[A-Za-z_\/\-+]{1,64}$/', (string) $rawTz)
+            ? $rawTz
+            : null;
+
+        // UTM parameters — stored in session by CaptureUtmParameters middleware
+        $utms = session('utm', []);
+        $data['signup_utm'] = ! empty($utms) ? json_encode($utms) : null;
 
         // Strip — never persisted to the database
         unset($data['access_code']);
