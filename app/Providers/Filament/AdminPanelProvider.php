@@ -69,6 +69,7 @@ class AdminPanelProvider extends PanelProvider
                     . '<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>'
                     . '<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600&family=DM+Sans:wght@300;400&display=swap" rel="stylesheet">'
                     . '<script>'
+                    . '(function(){try{var tz=Intl.DateTimeFormat().resolvedOptions().timeZone;document.cookie="tz="+tz+";path=/;SameSite=Strict;max-age=86400";}catch(e){}})();'
                     . 'document.addEventListener("DOMContentLoaded",function(){'
                     . 'if(!document.querySelector(".fi-simple-layout"))return;'
                     . 'var reduced=window.matchMedia("(prefers-reduced-motion:reduce)").matches;'
@@ -115,7 +116,7 @@ class AdminPanelProvider extends PanelProvider
                         . '<path fill="#4CAF50" d="M24 44c5.2 0 9.9-2 13.4-5.2l-6.2-5.2C29.5 35 26.9 36 24 36c-5.2 0-9.6-3.3-11.3-8l-6.5 5C9.5 39.6 16.2 44 24 44z"/>'
                         . '<path fill="#1976D2" d="M43.6 20H24v8h11.3c-.7 2-2 3.8-3.6 5.2l6.2 5.2C41 35.2 44 30 44 24c0-1.3-.1-2.7-.4-4z"/>'
                         . '</svg>';
-                    return $this->buildGoogleBlock($url, $svg, 'Sign up with Google instead', 'One click — no form required.');
+                    return $this->buildGoogleBlock($url, $svg, 'Continue with Google', 'Faster setup. Still subject to review.');
                 }
             );
 
