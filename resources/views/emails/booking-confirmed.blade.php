@@ -40,9 +40,18 @@
     </p>
 
     <hr style="border:none;border-top:1px solid #eee;margin:24px 0">
+    @if($manageUrl)
+    <p style="font-size:13px;color:#666;margin:0 0 12px;line-height:1.6">
+      Need to reschedule or cancel? Use your self-service booking link:
+    </p>
+    <div style="text-align:center;margin:0 0 20px">
+      <a href="{{ $manageUrl }}" style="display:inline-block;background:#f5f5f4;color:#333;font-size:13px;font-weight:500;text-decoration:none;padding:10px 24px;border-radius:6px;border:1px solid #e0e0e0">Manage my booking</a>
+    </div>
+    @else
     <p style="font-size:12px;color:#999;margin:0">
       Need to reschedule or cancel? Reply to this email or visit <a href="{{ url('/') }}" style="color:#c8a84b">seoaico.com</a>.
     </p>
+    @endif
   </div>
 </div>
 </body></html>

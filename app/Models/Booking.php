@@ -25,7 +25,12 @@ class Booking extends Model
         'stripe_checkout_session_id',
         'stripe_payment_intent_id',
         'reminder_sent_at',
+        'reminder_24h_sent_at',
+        'reminder_2h_sent_at',
         'sms_opted_out',
+        'public_booking_token',
+        'reschedule_count',
+        'last_rescheduled_at',
     ];
 
     protected function casts(): array
@@ -35,6 +40,10 @@ class Booking extends Model
             'confirmed_at' => 'datetime',
             'cancelled_at' => 'datetime',
             'reminder_sent_at' => 'datetime',
+            'reminder_24h_sent_at' => 'datetime',
+            'reminder_2h_sent_at' => 'datetime',
+            'last_rescheduled_at' => 'datetime',
+            'reschedule_count' => 'integer',
             'sms_opted_out' => 'boolean',
         ];
     }

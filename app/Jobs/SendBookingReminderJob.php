@@ -3,13 +3,13 @@
 namespace App\Jobs;
 
 use App\Models\Booking;
+use App\Services\Sms\TwilioSmsService;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Log;
-use Twilio\Rest\Client as TwilioClient;
 
 class SendBookingReminderJob implements ShouldQueue
 {
@@ -18,81 +18,97 @@ class SendBookingReminderJob implements ShouldQueue
     public int $tries = 2;
     public int $backoff = 60;
 
+    /**
+     * @param  int     $bookingId
+     * @param  string  $reminderType  '24h' | '2h' | '1h'
+     */
     public function __construct(
         public readonly int $bookingId,
-        public readonly string $reminderType = '24h', // '24h' | '1h'
-    ) {}
+        public readonly string $reminderType = '24h',
+    ) {
+    }
 
-    public function handle(): void
+    public function handle(TwilioSmsService $sms): void
     {
-        $booking = Booking::with('consultType')->find($this->bookingId);
-
-        if (! $booking) {
-            Log::channel('booking')->warning('SendBookingReminderJob: booking not found', [
-                'booking_id' => $this->bookingId,
-            ]);
-            return;
-        }
-
-        // Guard: skip if cancelled, or no phone, or already reminded, or opted out
-        if (
-            in_array($booking->status, ['cancelled', 'completed']) ||
-            $booking->sms_opted_out ||
-            $booking->reminder_sent_at !== null ||
-            empty($booking->phone)
-        ) {
-            return;
-        }
-
-        $sid   = config('services.twilio.sid');
-        $token = config('services.twilio.token');
-        $from  = config('services.twilio.from');
-
-        if (! $sid || ! $token || ! $from) {
+        if (!config('services.twilio.sid') || !config('services.twilio.token') || !config('services.twilio.from')) {
             Log::channel('booking')->info('SMS reminders skipped — Twilio not configured', [
                 'booking_id' => $this->bookingId,
             ]);
             return;
         }
 
+        $booking = Booking::with('consultType')->find($this->bookingId);
+
+        if (!$booking) {
+            Log::channel('booking')->warning('SendBookingReminderJob: booking not found', [
+                'booking_id' => $this->bookingId,
+            ]);
+            return;
+        }
+
+        // Guard: skip cancelled/completed, no phone, opted out
+        if (
+            in_array($booking->status, ['cancelled', 'completed']) ||
+            $booking->sms_opted_out ||
+            empty($booking->phone)
+        ) {
+            return;
+        }
+
+        // Per-type idempotency guard
+        $sentAtField = $this->sentAtField();
+        if ($booking->$sentAtField !== null) {
+            return;
+        }
+
         $message = $this->buildMessage($booking);
 
         try {
-            $twilio = new TwilioClient($sid, $token);
-            $twilio->messages->create($booking->phone, [
-                'from' => $from,
-                'body' => $message,
+            $sms->send($booking->phone, $message);
+
+            $booking->update([
+                $sentAtField => now(),
+                'reminder_sent_at' => now(), // legacy field kept up-to-date
             ]);
 
-            $booking->update(['reminder_sent_at' => now()]);
-
             Log::channel('booking')->info('Booking reminder SMS sent', [
-                'booking_id'    => $booking->id,
+                'booking_id' => $booking->id,
                 'reminder_type' => $this->reminderType,
-                'phone'         => substr($booking->phone, 0, 4) . '****',
+                'phone' => substr($booking->phone, 0, 4) . '****',
             ]);
         } catch (\Exception $e) {
             Log::channel('booking')->error('Booking reminder SMS failed', [
                 'booking_id' => $booking->id,
-                'error'      => $e->getMessage(),
+                'error' => $e->getMessage(),
             ]);
-            // Re-throw to let the queue retry (respects $tries / $backoff)
             throw $e;
         }
+    }
+
+    /**
+     * Map reminderType to the corresponding DB column name.
+     */
+    private function sentAtField(): string
+    {
+        return match ($this->reminderType) {
+            '24h' => 'reminder_24h_sent_at',
+            '2h' => 'reminder_2h_sent_at',
+            default => 'reminder_2h_sent_at', // '1h' treated same as '2h'
+        };
     }
 
     private function buildMessage(Booking $booking): string
     {
         $sessionName = $booking->consultType?->name ?? 'Your consult';
-        $date        = $booking->preferred_date->format('l, F j');
-        $time        = \Carbon\Carbon::parse($booking->preferred_time)->format('g:i A') . ' PT';
-        $meet        = $booking->google_meet_link;
+        $date = $booking->preferred_date->format('l, F j');
+        $time = \Carbon\Carbon::parse($booking->preferred_time)->format('g:i A') . ' PT';
+        $meet = $booking->google_meet_link;
 
-        if ($this->reminderType === '1h') {
-            $body = "Reminder: {$sessionName} starts in 1 hour — {$time} today.";
-        } else {
-            $body = "Reminder: {$sessionName} tomorrow, {$date} at {$time}.";
-        }
+        $body = match ($this->reminderType) {
+            '24h' => "Reminder: {$sessionName} is tomorrow, {$date} at {$time}.",
+            '2h' => "Reminder: {$sessionName} starts in 2 hours — {$time} today.",
+            default => "Reminder: {$sessionName} starts in 1 hour — {$time} today.",
+        };
 
         if ($meet) {
             $body .= " Join: {$meet}";
@@ -103,14 +119,11 @@ class SendBookingReminderJob implements ShouldQueue
         return $body;
     }
 
-    /**
-     * Handle a job failure.
-     */
     public function failed(\Throwable $exception): void
     {
         Log::channel('booking')->error('SendBookingReminderJob permanently failed', [
             'booking_id' => $this->bookingId,
-            'error'      => $exception->getMessage(),
+            'error' => $exception->getMessage(),
         ]);
     }
 }
