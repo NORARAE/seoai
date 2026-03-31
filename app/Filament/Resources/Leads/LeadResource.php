@@ -119,6 +119,22 @@ class LeadResource extends Resource
                     ->label('Created')
                     ->date('M j, Y')
                     ->sortable(),
+
+                TextColumn::make('grade')
+                    ->label('Grade')
+                    ->badge()
+                    ->sortable()
+                    ->color(fn (?string $state): string => match ($state) {
+                        'A'     => 'success',
+                        'B'     => 'info',
+                        'C'     => 'warning',
+                        default => 'gray',
+                    }),
+
+                TextColumn::make('score')
+                    ->label('Score')
+                    ->suffix('/100')
+                    ->sortable(),
             ])
             ->filters([
                 SelectFilter::make('lifecycle_stage')

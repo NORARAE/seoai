@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AdminBookingController;
 use App\Http\Controllers\BookingController;
+use App\Http\Controllers\BookingManageController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\LocationPagePreviewController;
 use App\Http\Controllers\MarketingPageController;
@@ -35,7 +36,7 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', [PublicController::class, 'landing'])->name('home');
 
 // Auth middleware redirects here when unauthenticated; forward to Filament login.
-Route::get('/login', fn () => redirect('/admin/login'))->name('login');
+Route::get('/login', fn() => redirect('/admin/login'))->name('login');
 
 // Google OAuth sign-in — routes registered regardless of enabled flag;
 // the controller itself returns 404 when GOOGLE_LOGIN_ENABLED=false.
@@ -46,10 +47,10 @@ Route::get('/terms', [PublicController::class, 'terms'])->name('terms');
 Route::post('/licensing-inquiry', [PublicController::class, 'storeLicensingInquiry'])
     ->middleware('throttle:inquiry')
     ->name('licensing-inquiry.store');
-Route::get('/licensing-inquiry', fn () => redirect(url('/').'#contact'))->name('licensing-inquiry.get');
+Route::get('/licensing-inquiry', fn() => redirect(url('/') . '#contact'))->name('licensing-inquiry.get');
 
-Route::get('/checkout/success', fn () => view('public.checkout-success'))->name('checkout.success');
-Route::get('/checkout/cancelled', fn () => view('public.checkout-cancelled'))->name('checkout.cancelled');
+Route::get('/checkout/success', fn() => view('public.checkout-success'))->name('checkout.success');
+Route::get('/checkout/cancelled', fn() => view('public.checkout-cancelled'))->name('checkout.cancelled');
 
 // ── Booking / Consult System ──
 Route::get('/book', [BookingController::class, 'index'])->name('book.index');
@@ -61,6 +62,11 @@ Route::get('/book/payment-return/{booking}', [BookingController::class, 'handleP
 Route::get('/book/confirm/{booking}', [BookingController::class, 'confirm'])->name('book.confirm');
 Route::get('/book/cancel/{booking}', [BookingController::class, 'cancel'])->name('book.cancel');
 Route::post('/book/cancel/{booking}', [BookingController::class, 'processCancel'])->name('book.processCancel');
+
+// Self-service booking management (token-based, no auth required)
+Route::get('/booking/manage/{token}', [BookingManageController::class, 'show'])->name('booking.manage');
+Route::post('/booking/reschedule/{token}', [BookingManageController::class, 'reschedule'])->middleware('throttle:10,1')->name('booking.reschedule');
+Route::delete('/booking/cancel/{token}', [BookingManageController::class, 'cancel'])->middleware('throttle:5,1')->name('booking.cancel');
 
 // ── Onboarding Flow ──
 // Throttle submit to 5 requests per minute to prevent abuse.
@@ -83,7 +89,7 @@ Route::get('/sitemaps/{site}/pages-{page}.xml', [PublicSitemapController::class,
 // ============================================================================
 
 // Authenticated-but-unapproved users land here. No approval check to avoid loops.
-Route::middleware('auth')->get('/pending-approval', fn () => view('pending-approval'))
+Route::middleware('auth')->get('/pending-approval', fn() => view('pending-approval'))
     ->name('pending-approval');
 
 // Post-approval user onboarding (workspace setup)
@@ -93,34 +99,34 @@ Route::middleware(['auth', EnsureUserIsApproved::class])->group(function () {
 });
 
 Route::middleware(['auth', EnsureUserIsApproved::class, EnsureOnboardingComplete::class])->prefix('dashboard')->name('app.')->group(function () {
-    
+
     // Dashboard / Home
     Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
-    
+
     // Sites Management (future)
     // Route::get('/sites', [SiteController::class, 'index'])->name('sites.index');
     // Route::get('/sites/{site}', [SiteController::class, 'show'])->name('sites.show');
-    
+
     // Pages Management (future - different from /admin/location-pages)
     // Route::get('/pages', [PageController::class, 'index'])->name('pages.index');
     // Route::get('/pages/{page}', [PageController::class, 'show'])->name('pages.show');
-    
+
     // Internal Links (future)
     // Route::get('/internal-links', [InternalLinkController::class, 'index'])->name('internal-links.index');
-    
+
     // Reports (future)
     // Route::get('/reports', [ReportController::class, 'index'])->name('reports.index');
     // Route::get('/reports/{report}', [ReportController::class, 'show'])->name('reports.show');
-    
+
     // Automations (future)
     // Route::get('/automations', [AutomationController::class, 'index'])->name('automations.index');
-    
+
     // Sitemaps (future)
     // Route::get('/sitemaps', [SitemapController::class, 'index'])->name('sitemaps.index');
-    
+
     // Schema Management (future)
     // Route::get('/schema', [SchemaController::class, 'index'])->name('schema.index');
-    
+
     // Settings (future)
     // Route::get('/settings', [SettingController::class, 'index'])->name('settings.index');
 });

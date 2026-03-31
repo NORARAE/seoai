@@ -15,6 +15,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Str;
 use Laravel\Cashier\Cashier;
 
 class BookingController extends Controller
@@ -102,6 +103,7 @@ class BookingController extends Controller
         $booking = Booking::create([
             ...$validated,
             'status' => 'pending',
+            'public_booking_token' => Str::random(64),
         ]);
 
         // Attempt Google Calendar integration
@@ -223,6 +225,7 @@ class BookingController extends Controller
         $booking = Booking::create([
             ...$validated,
             'status' => 'awaiting_payment',
+            'public_booking_token' => Str::random(64),
         ]);
 
         try {

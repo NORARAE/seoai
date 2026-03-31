@@ -1,0 +1,136 @@
+<?php
+
+namespace App\Filament\Resources\Bookings;
+
+use App\Filament\Concerns\FrontendDevRestricted;
+use App\Filament\Resources\Bookings\Pages\ListBookings;
+use App\Filament\Resources\Bookings\Pages\ViewBooking;
+use App\Models\Booking;
+use App\Models\ConsultType;
+use BackedEnum;
+use Filament\Resources\Resource;
+use Filament\Support\Icons\Heroicon;
+use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Filters\SelectFilter;
+use Filament\Tables\Table;
+use Filament\Tables\Actions\Action;
+
+class BookingResource extends Resource
+{
+    use FrontendDevRestricted;
+
+    protected static ?string $model = Booking::class;
+
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedCalendar;
+
+    protected static ?string $navigationLabel = 'Bookings';
+
+    protected static string|\UnitEnum|null $navigationGroup = 'Operations';
+
+    protected static ?int $navigationSort = 3;
+
+    public static function table(Table $table): Table
+    {
+        return $table
+            ->defaultSort('preferred_date', 'desc')
+            ->columns([
+                TextColumn::make('id')
+                    ->label('ID')
+                    ->sortable()
+                    ->searchable(),
+
+                TextColumn::make('name')
+                    ->label('Name')
+                    ->searchable()
+                    ->sortable(),
+
+                TextColumn::make('email')
+                    ->label('Email')
+                    ->searchable(),
+
+                TextColumn::make('consultType.name')
+                    ->label('Session Type')
+                    ->sortable(),
+
+                TextColumn::make('preferred_date')
+                    ->label('Date')
+                    ->date('M j, Y')
+                    ->sortable(),
+
+                TextColumn::make('preferred_time')
+                    ->label('Time')
+                    ->formatStateUsing(fn(string $state) => \Carbon\Carbon::parse($state)->format('g:i A') . ' PT'),
+
+                TextColumn::make('status')
+                    ->label('Status')
+                    ->badge()
+                    ->sortable()
+                    ->color(fn(string $state): string => match ($state) {
+                        'confirmed' => 'success',
+                        'pending' => 'warning',
+                        'awaiting_payment' => 'info',
+                        'cancelled' => 'danger',
+                        'completed' => 'gray',
+                        default => 'gray',
+                    }),
+
+                TextColumn::make('company')
+                    ->label('Company')
+                    ->searchable()
+                    ->toggleable(isToggledHiddenByDefault: true),
+
+                TextColumn::make('phone')
+                    ->label('Phone')
+                    ->toggleable(isToggledHiddenByDefault: true),
+
+                TextColumn::make('reschedule_count')
+                    ->label('Rescheduled')
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
+
+                TextColumn::make('created_at')
+                    ->label('Submitted')
+                    ->dateTime('M j, Y g:i A')
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
+            ])
+            ->filters([
+                SelectFilter::make('status')
+                    ->label('Status')
+                    ->options([
+                        'pending' => 'Pending',
+                        'confirmed' => 'Confirmed',
+                        'awaiting_payment' => 'Awaiting Payment',
+                        'cancelled' => 'Cancelled',
+                        'completed' => 'Completed',
+                    ]),
+
+                SelectFilter::make('consult_type_id')
+                    ->label('Session Type')
+                    ->options(fn() => ConsultType::orderBy('sort_order')->pluck('name', 'id')),
+            ])
+            ->actions([
+                Action::make('cancel')
+                    ->label('Cancel')
+                    ->icon('heroicon-o-x-circle')
+                    ->color('danger')
+                    ->requiresConfirmation()
+                    ->visible(fn(Booking $record) => !in_array($record->status, ['cancelled', 'completed']))
+                    ->action(function (Booking $record) {
+                        $record->update([
+                            'status' => 'cancelled',
+                            'cancelled_at' => now(),
+                        ]);
+                    }),
+            ])
+            ->bulkActions([]);
+    }
+
+    public static function getPages(): array
+    {
+        return [
+            'index' => ListBookings::route('/'),
+            'view' => ViewBooking::route('/{record}'),
+        ];
+    }
+}
