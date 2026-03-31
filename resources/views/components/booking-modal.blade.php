@@ -341,12 +341,14 @@ document.addEventListener('alpine:init', () => {
       this.errorMsg = '';
       try {
         const endpoint = this.selectedTypeIsFree ? '/book' : '/book/checkout';
+        const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content')
+              || '{{ csrf_token() }}';
         const resp = await fetch(endpoint, {
           method: 'POST',
+          credentials: 'include',
           headers: {
             'Content-Type': 'application/json',
-            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.content
-              || '{{ csrf_token() }}',
+            'X-CSRF-TOKEN': csrfToken,
             'Accept': 'application/json',
           },
           body: JSON.stringify({
@@ -357,6 +359,13 @@ document.addEventListener('alpine:init', () => {
           })
         });
         const data = await resp.json();
+        if (resp.status === 419) {
+          // Session expired — CSRF token is stale. Reload the page to get a fresh token.
+          this.errorMsg = 'Your session has expired. The page will reload — please try again.';
+          this.submitting = false;
+          setTimeout(() => window.location.reload(), 2500);
+          return;
+        }
         if (!resp.ok) {
           this.errorMsg = data.message || 'Something went wrong. Please try again.';
           this.submitting = false;

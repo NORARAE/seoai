@@ -136,6 +136,9 @@ server {
         fastcgi_pass unix:/var/run/php/php8.3-fpm.sock;
         fastcgi_param SCRIPT_FILENAME $realpath_root$fastcgi_script_name;
         include fastcgi_params;
+        # Tell PHP the connection is HTTPS so $request->isSecure() is correct
+        # after certbot rewrites this block to sit behind SSL termination.
+        fastcgi_param HTTPS on;
         fastcgi_hide_header X-Powered-By;
     }
 
