@@ -52,6 +52,8 @@ class User extends Authenticatable
         'signup_user_agent',
         'signup_referrer',
         'signup_source',
+        'signup_timezone',
+        'signup_utm',
     ];
 
     /**
