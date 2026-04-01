@@ -1005,14 +1005,15 @@ footer{border-top:1px solid var(--border);padding:36px 64px;display:flex;flex-di
 
 /* Slide-out drawer */
 .nav-drawer{
-  position:fixed;top:0;right:0;bottom:0;z-index:9200;
-  width:min(340px,92vw);
+  position:fixed;top:0;right:0;height:100vh;z-index:9200;
+  width:85vw;max-width:420px;
   background:#0a0905;
   border-left:1px solid rgba(200,168,75,.12);
   display:flex;flex-direction:column;
   transform:translateX(100%);
-  transition:transform .38s cubic-bezier(.23,1,.32,1);
+  transition:transform .3s ease;
   overflow-y:auto;
+  overflow-x:hidden;
 }
 .nav-drawer.is-open{transform:translateX(0)}
 
