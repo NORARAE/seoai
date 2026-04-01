@@ -979,99 +979,93 @@ footer{border-top:1px solid var(--border);padding:36px 64px;display:flex;flex-di
   .nav-account-short{display:inline}
 }
 
-/* ── Mobile hamburger & drawer ── */
+/* ── Mobile hamburger ── */
 .nav-hamburger{
   display:none;
   flex-direction:column;justify-content:center;align-items:center;gap:5px;
   width:44px;height:44px;background:none;border:none;cursor:pointer;
-  padding:8px;z-index:201;position:relative;flex-shrink:0;
+  padding:8px;z-index:9300;position:relative;flex-shrink:0;
 }
 .nav-hamburger span{
   display:block;width:22px;height:1.5px;background:var(--ivory);
-  transition:transform .3s cubic-bezier(.23,1,.32,1),opacity .3s,width .3s;
+  transition:transform .25s ease,opacity .2s,width .2s;
   transform-origin:center;
 }
 .nav-hamburger.is-open span:nth-child(1){transform:translateY(6.5px) rotate(45deg)}
 .nav-hamburger.is-open span:nth-child(2){opacity:0;width:0}
 .nav-hamburger.is-open span:nth-child(3){transform:translateY(-6.5px) rotate(-45deg)}
 
-/* Drawer overlay backdrop */
-.nav-drawer-overlay{
-  display:none;position:fixed;inset:0;z-index:9100;
-  background:rgba(0,0,0,.62);backdrop-filter:blur(4px);
-  opacity:0;transition:opacity .3s;
+/* Compact dropdown menu */
+.nav-menu{
+  display:none;
+  position:fixed;
+  top:72px;right:16px;
+  width:290px;
+  z-index:9200;
+  background:#0d0c08;
+  border:1px solid rgba(200,168,75,.18);
+  border-radius:6px;
+  box-shadow:0 8px 40px rgba(0,0,0,.72),0 2px 12px rgba(0,0,0,.4);
+  overflow:hidden;
+  opacity:0;
+  transform:translateY(-8px) scale(.98);
+  transform-origin:top right;
+  transition:opacity .22s ease,transform .22s ease;
+  pointer-events:none;
 }
-.nav-drawer-overlay.visible{opacity:1}
-
-/* Slide-out drawer */
-.nav-drawer{
-  position:fixed;top:0;right:0;height:100vh;z-index:9200;
-  width:85vw;max-width:420px;
-  background:#0a0905;
-  border-left:1px solid rgba(200,168,75,.12);
-  display:flex;flex-direction:column;
-  transform:translateX(100%);
-  transition:transform .3s ease;
-  overflow-y:auto;
-  overflow-x:hidden;
+.nav-menu.is-open{
+  opacity:1;
+  transform:translateY(0) scale(1);
+  pointer-events:auto;
 }
-.nav-drawer.is-open{transform:translateX(0)}
+.nav-menu-inner{
+  padding:8px 0;
+}
 
-/* Drawer header */
-.nd-header{
+/* Menu links */
+.nm-link{
   display:flex;align-items:center;justify-content:space-between;
-  padding:22px 28px 20px;
-  border-bottom:1px solid rgba(200,168,75,.07);
-  flex-shrink:0;
+  padding:13px 20px;
+  font-family:'DM Sans',sans-serif;
+  font-size:.82rem;letter-spacing:.07em;
+  color:rgba(168,168,160,.85);text-decoration:none;
+  transition:color .18s,background .18s;
 }
-.nd-close{
-  background:none;border:none;cursor:pointer;
-  width:40px;height:40px;display:flex;align-items:center;justify-content:center;
-  color:rgba(168,168,160,.6);font-size:1.3rem;transition:color .2s;
-  padding:0;
-}
-.nd-close:hover{color:var(--ivory)}
-
-/* Nav links */
-.nd-link{
-  display:flex;align-items:center;justify-content:space-between;
-  padding:14px 28px;
-  font-size:.86rem;letter-spacing:.08em;
-  color:rgba(168,168,160,.82);text-decoration:none;
-  transition:color .2s,background .2s;
-  position:relative;
-}
-.nd-link::after{
+.nm-link::after{
   content:'›';
-  color:rgba(200,168,75,.35);
-  font-size:1rem;transition:color .2s,transform .2s;
+  color:rgba(200,168,75,.3);
+  font-size:.95rem;transition:color .18s,transform .18s;
 }
-.nd-link:hover{color:var(--ivory);background:rgba(200,168,75,.04)}
-.nd-link:hover::after{color:var(--gold);transform:translateX(3px)}
-.nd-link.nd-featured{
-  color:var(--gold);font-weight:500;letter-spacing:.1em;
+.nm-link:hover{color:var(--ivory);background:rgba(200,168,75,.05)}
+.nm-link:hover::after{color:var(--gold);transform:translateX(2px)}
+.nm-link.nm-featured{
+  color:var(--gold);font-weight:500;letter-spacing:.09em;
 }
-.nd-link.nd-featured::after{color:var(--gold)}
+.nm-link.nm-featured::after{color:var(--gold)}
 
-/* Portal CTA at drawer bottom */
-.nd-footer{
-  margin-top:auto;padding:24px 28px 32px;
-  border-top:1px solid rgba(200,168,75,.08);
-  flex-shrink:0;
+/* Divider */
+.nm-divider{
+  height:1px;
+  background:rgba(200,168,75,.08);
+  margin:6px 0;
 }
-.nd-portal-btn{
+
+/* Portal row */
+.nm-portal{
   display:flex;align-items:center;justify-content:center;
-  width:100%;padding:14px 20px;
-  background:linear-gradient(135deg,rgba(200,168,75,.12),rgba(200,168,75,.06));
-  border:1px solid rgba(200,168,75,.28);
-  color:var(--gold);font-size:.78rem;font-weight:500;
-  letter-spacing:.18em;text-transform:uppercase;
-  text-decoration:none;border-radius:3px;
-  transition:background .3s,border-color .3s,color .3s;
+  margin:8px 16px 14px;
+  padding:12px 16px;
+  background:linear-gradient(135deg,rgba(200,168,75,.1),rgba(200,168,75,.05));
+  border:1px solid rgba(200,168,75,.22);
+  border-radius:3px;
+  color:var(--gold);font-family:'DM Sans',sans-serif;
+  font-size:.74rem;font-weight:500;letter-spacing:.16em;text-transform:uppercase;
+  text-decoration:none;
+  transition:background .25s,border-color .25s,color .25s;
 }
-.nd-portal-btn:hover{
-  background:rgba(200,168,75,.16);
-  border-color:rgba(200,168,75,.5);
+.nm-portal:hover{
+  background:rgba(200,168,75,.15);
+  border-color:rgba(200,168,75,.42);
   color:var(--ivory);
 }
 
@@ -1544,32 +1538,24 @@ body::before{
       <a href="/admin/login" class="nav-btn nav-account" style="background:linear-gradient(90deg,var(--gold),var(--gold-lt));color:var(--deep);box-shadow:0 2px 12px 0 rgba(200,168,75,.13);font-weight:500;letter-spacing:.18em;"><span class="nav-account-full">Portal</span><span class="nav-account-short">Portal</span></a>
     @endauth
   </div>
-  <button class="nav-hamburger" id="navHamburger" aria-label="Open menu" aria-expanded="false" aria-controls="navDrawer">
+  <button class="nav-hamburger" id="navHamburger" aria-label="Open menu" aria-expanded="false" aria-controls="navMenu">
     <span></span><span></span><span></span>
   </button>
 </nav>
 
-<!-- ════════════ MOBILE DRAWER ════════════ -->
-<div class="nav-drawer-overlay" id="navOverlay" aria-hidden="true"></div>
-<nav class="nav-drawer" id="navDrawer" aria-label="Site navigation" aria-hidden="true">
-  <div class="nd-header">
-    <a href="/" style="text-decoration:none;display:inline-flex;align-items:baseline;gap:0;line-height:1">
-      <span style="font-family:'DM Sans',sans-serif;font-weight:300;font-size:1.05rem;letter-spacing:.06em;color:var(--ivory)">SEO</span><span style="font-family:'Cormorant Garamond',serif;font-weight:600;font-size:1.25rem;color:#c8a84b">AI</span><span style="font-family:'DM Sans',sans-serif;font-weight:300;font-size:.9rem;color:rgba(150,150,150,.6);letter-spacing:.04em">co</span>
-    </a>
-    <button class="nd-close" id="navDrawerClose" aria-label="Close menu">&times;</button>
-  </div>
-
-  <a href="/how-it-works" class="nd-link" data-drawer-close>How It Works</a>
-  <a href="/book" class="nd-link nd-featured" data-drawer-close>Book a Session</a>
-
-  <div class="nd-footer">
+<!-- ════════════ MOBILE DROPDOWN MENU ════════════ -->
+<div id="navMenu" class="nav-menu" aria-hidden="true" role="dialog" aria-label="Site navigation">
+  <div class="nav-menu-inner">
+    <a href="/how-it-works" class="nm-link" data-menu-close>How It Works</a>
+    <a href="/book" class="nm-link nm-featured" data-menu-close>Book a Session</a>
+    <div class="nm-divider"></div>
     @auth
-      <a href="/dashboard" class="nd-portal-btn">My Dashboard</a>
+      <a href="/dashboard" class="nm-portal" data-menu-close>My Dashboard</a>
     @else
-      <a href="/admin/login" class="nd-portal-btn">Portal — Sign In &rarr;</a>
+      <a href="/admin/login" class="nm-portal" data-menu-close>Portal — Sign In &rarr;</a>
     @endauth
   </div>
-</nav>
+</div>
 
 <!-- ════════════ HERO ════════════ -->
 <section id="hero">
@@ -2804,43 +2790,61 @@ body::before{
     });
   })();
 
-  /* ── Mobile drawer ── */
+  /* ── Mobile dropdown menu ── */
   (function(){
-    var btn      = document.getElementById('navHamburger');
-    var drawer   = document.getElementById('navDrawer');
-    var overlay  = document.getElementById('navOverlay');
-    var closeBtn = document.getElementById('navDrawerClose');
-    if(!btn || !drawer) return;
+    var btn  = document.getElementById('navHamburger');
+    var menu = document.getElementById('navMenu');
+    var nav  = document.getElementById('nav');
+    if(!btn || !menu) return;
 
-    function openDrawer(){
-      drawer.classList.add('is-open');
-      overlay.style.display = 'block';
-      requestAnimationFrame(function(){ overlay.classList.add('visible'); });
-      overlay.removeAttribute('aria-hidden');
-      drawer.removeAttribute('aria-hidden');
+    function positionMenu(){
+      var navH = nav ? nav.offsetHeight : 64;
+      menu.style.top = (navH + 8) + 'px';
+    }
+
+    function openMenu(){
+      positionMenu();
+      menu.style.display = 'block';
+      requestAnimationFrame(function(){
+        requestAnimationFrame(function(){
+          menu.classList.add('is-open');
+        });
+      });
+      menu.removeAttribute('aria-hidden');
       btn.classList.add('is-open');
       btn.setAttribute('aria-expanded','true');
-      document.body.style.overflow = 'hidden';
     }
-    function closeDrawer(){
-      drawer.classList.remove('is-open');
-      overlay.classList.remove('visible');
+    function closeMenu(){
+      menu.classList.remove('is-open');
       btn.classList.remove('is-open');
       btn.setAttribute('aria-expanded','false');
-      overlay.setAttribute('aria-hidden','true');
-      drawer.setAttribute('aria-hidden','true');
-      document.body.style.overflow = '';
-      setTimeout(function(){ overlay.style.display=''; },320);
+      menu.setAttribute('aria-hidden','true');
+      setTimeout(function(){ menu.style.display=''; }, 240);
+    }
+    function toggleMenu(){
+      menu.classList.contains('is-open') ? closeMenu() : openMenu();
     }
 
-    btn.addEventListener('click', function(){ drawer.classList.contains('is-open') ? closeDrawer() : openDrawer(); });
-    closeBtn.addEventListener('click', closeDrawer);
-    overlay.addEventListener('click', closeDrawer);
-    document.addEventListener('keydown', function(e){ if(e.key==='Escape') closeDrawer(); });
+    btn.addEventListener('click', function(e){
+      e.stopPropagation();
+      toggleMenu();
+    });
 
-    // Auto-close on any anchor link inside the drawer
-    drawer.querySelectorAll('[data-drawer-close]').forEach(function(el){
-      el.addEventListener('click', closeDrawer);
+    // Close on outside click
+    document.addEventListener('click', function(e){
+      if(menu.classList.contains('is-open') && !menu.contains(e.target) && e.target !== btn){
+        closeMenu();
+      }
+    });
+
+    // Close on Escape
+    document.addEventListener('keydown', function(e){
+      if(e.key === 'Escape') closeMenu();
+    });
+
+    // Close on link click
+    menu.querySelectorAll('[data-menu-close]').forEach(function(el){
+      el.addEventListener('click', closeMenu);
     });
   })();
 </script>
