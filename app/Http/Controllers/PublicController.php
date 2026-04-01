@@ -213,4 +213,24 @@ class PublicController extends Controller
     {
         return view('public.terms');
     }
+
+    public function howItWorks(): View
+    {
+        return view('public.how-it-works');
+    }
+
+    public function solutions(): View
+    {
+        return view('public.solutions');
+    }
+
+    public function solutionsAgencies(): View
+    {
+        return view('public.solutions-agencies');
+    }
+
+    public function solutionsBusinessOwners(): View
+    {
+        return view('public.solutions-business-owners');
+    }
 }

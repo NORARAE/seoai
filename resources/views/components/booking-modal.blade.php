@@ -69,6 +69,19 @@
 .bk-gcal-link:hover{text-decoration:underline}
 .bk-conf-note{font-size:.82rem;color:#666;margin-top:16px;line-height:1.6}
 
+/* Add-on cards */
+.bk-enhance-title{font-size:.78rem;letter-spacing:.14em;text-transform:uppercase;color:#666;margin:20px 0 10px}
+.bk-addon-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:18px}
+.bk-addon-card{background:#0b0b0b;border:1px solid #1a1a1a;border-radius:8px;padding:12px 14px;cursor:pointer;transition:border-color .25s,background .25s;display:flex;align-items:flex-start;gap:10px}
+.bk-addon-card:hover{border-color:#333;background:#0f0f0f}
+.bk-addon-card.selected{border-color:var(--gold,#c8a84b);background:rgba(200,168,75,.05)}
+.bk-addon-check{width:16px;height:16px;border:1px solid #333;border-radius:3px;flex-shrink:0;margin-top:2px;display:flex;align-items:center;justify-content:center;font-size:.7rem;color:var(--gold,#c8a84b);transition:background .2s,border-color .2s}
+.bk-addon-card.selected .bk-addon-check{background:rgba(200,168,75,.15);border-color:var(--gold,#c8a84b)}
+.bk-addon-name{font-size:.84rem;color:#ede8de;display:block}
+.bk-addon-price{font-size:.76rem;color:var(--gold,#c8a84b)}
+.bk-addon-desc{font-size:.72rem;color:#666;margin-top:2px}
+@media(max-width:600px){.bk-addon-grid{grid-template-columns:1fr}}
+
 /* Loading spinner */
 .bk-spinner{display:inline-block;width:18px;height:18px;border:2px solid #333;border-top-color:var(--gold,#c8a84b);border-radius:50%;animation:bkspin .6s linear infinite;vertical-align:middle;margin-right:8px}
 @keyframes bkspin{to{transform:rotate(360deg)}}
@@ -190,6 +203,41 @@
           <label for="bk-message">Message / Goals</label>
           <textarea id="bk-message" x-model="form.message" placeholder="Tell us what you'd like to discuss…"></textarea>
         </div>
+        {{-- Add-ons (paid bookings only) --}}
+        <div x-show="!selectedTypeIsFree">
+          <p class="bk-enhance-title">Enhance Your Session <span style="color:#555;font-size:.72rem;letter-spacing:0;text-transform:none">— optional</span></p>
+          <div class="bk-addon-grid">
+            <div class="bk-addon-card" :class="{selected: addOns.includes('seo_audit')}" @click="toggleAddOn('seo_audit')">
+              <div class="bk-addon-check" x-text="addOns.includes('seo_audit') ? '✓' : ''"></div>
+              <div>
+                <span class="bk-addon-name">SEO Audit <span class="bk-addon-price">+$150</span></span>
+                <div class="bk-addon-desc">Full site audit delivered post-session</div>
+              </div>
+            </div>
+            <div class="bk-addon-card" :class="{selected: addOns.includes('competitor_analysis')}" @click="toggleAddOn('competitor_analysis')">
+              <div class="bk-addon-check" x-text="addOns.includes('competitor_analysis') ? '✓' : ''"></div>
+              <div>
+                <span class="bk-addon-name">Competitor Analysis <span class="bk-addon-price">+$100</span></span>
+                <div class="bk-addon-desc">Top 5 competitor gap breakdown</div>
+              </div>
+            </div>
+            <div class="bk-addon-card" :class="{selected: addOns.includes('thirty_day_plan')}" @click="toggleAddOn('thirty_day_plan')">
+              <div class="bk-addon-check" x-text="addOns.includes('thirty_day_plan') ? '✓' : ''"></div>
+              <div>
+                <span class="bk-addon-name">30-Day SEO Plan <span class="bk-addon-price">+$250</span></span>
+                <div class="bk-addon-desc">Custom roadmap with prioritised actions</div>
+              </div>
+            </div>
+            <div class="bk-addon-card" :class="{selected: addOns.includes('strategy_followup')}" @click="toggleAddOn('strategy_followup')">
+              <div class="bk-addon-check" x-text="addOns.includes('strategy_followup') ? '✓' : ''"></div>
+              <div>
+                <span class="bk-addon-name">Strategy Follow-up <span class="bk-addon-price">+$75</span></span>
+                <div class="bk-addon-desc">30-min check-in call 2 weeks after session</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
         <button class="bk-submit" :disabled="submitting || !form.name || !form.email" @click="submit()">
           <span x-show="submitting"><span class="bk-spinner"></span> Booking…</span>
           <span x-show="!submitting">Confirm Booking</span>
@@ -226,6 +274,7 @@ document.addEventListener('alpine:init', () => {
     flatpickrInstance: null,
 
     form: { name: '', email: '', phone: '', company: '', website: '', message: '' },
+    addOns: [],
     confirmation: { consult_type: '', date: '', time: '', duration: 0, meet_link: '' },
 
     // Available days (0=Sun..6=Sat) — supplied by the controller, never re-queried in the view.
@@ -264,6 +313,7 @@ document.addEventListener('alpine:init', () => {
       this.selectedTime = '';
       this.slots = [];
       this.form = { name: '', email: '', phone: '', company: '', website: '', message: '' };
+      this.addOns = [];
       this.confirmation = { consult_type: '', date: '', time: '', duration: 0, meet_link: '' };
       this.errorMsg = '';
       if (this.flatpickrInstance) {
@@ -356,6 +406,7 @@ document.addEventListener('alpine:init', () => {
             preferred_date: this.selectedDate,
             preferred_time: this.selectedTime,
             ...this.form,
+            add_ons: this.addOns,
           })
         });
         const data = await resp.json();
@@ -400,6 +451,15 @@ document.addEventListener('alpine:init', () => {
       if (!this.selectedDate) return '';
       const d = new Date(this.selectedDate + 'T12:00:00');
       return d.toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' });
+    },
+
+    toggleAddOn(slug) {
+      const idx = this.addOns.indexOf(slug);
+      if (idx === -1) {
+        this.addOns.push(slug);
+      } else {
+        this.addOns.splice(idx, 1);
+      }
     },
 
     googleCalendarLink() {

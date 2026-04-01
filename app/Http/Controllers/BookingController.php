@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Mail\BookingAlert;
 use App\Mail\BookingConfirmed;
+use App\Mail\BookingFollowUp;
+use App\Mail\BookingPreCall;
 use App\Models\Booking;
 use App\Models\BookingAvailability;
 use App\Models\ConsultType;
@@ -155,6 +157,23 @@ class BookingController extends Controller
             ]);
         }
 
+        // Schedule pre-call primer 24 h before the session
+        try {
+            $sessionDateTime = Carbon::parse(
+                $booking->preferred_date->toDateString() . ' ' . $booking->preferred_time
+            );
+            $preCallDelay = $sessionDateTime->copy()->subHours(24);
+            if ($preCallDelay->isFuture()) {
+                Mail::to($booking->email)
+                    ->later($preCallDelay, new BookingPreCall($booking));
+            }
+        } catch (\Exception $e) {
+            Log::channel('booking')->warning('Pre-call email scheduling failed', [
+                'booking_id' => $booking->id,
+                'error' => $e->getMessage(),
+            ]);
+        }
+
         return response()->json([
             'success' => true,
             'booking' => [
@@ -184,6 +203,20 @@ class BookingController extends Controller
     }
 
     /**
+     * Upgrade / prep page — shown after payment before full confirmation.
+     * Landing → /book → checkout → /book/upgrade → /book/confirmed
+     */
+    public function upgrade(Request $request)
+    {
+        $booking = Booking::with('consultType')
+            ->where('id', (int) $request->query('booking'))
+            ->whereIn('status', ['confirmed', 'pending', 'awaiting_payment'])
+            ->firstOrFail();
+
+        return view('public.book-upgrade', compact('booking'));
+    }
+
+    /**
      * Initiate a Stripe Checkout session for a paid consult booking.
      * Creates the booking in awaiting_payment status and returns the checkout URL.
      */
@@ -199,6 +232,8 @@ class BookingController extends Controller
             'message' => 'nullable|string|max:2000',
             'preferred_date' => 'required|date|after_or_equal:today',
             'preferred_time' => 'required|date_format:H:i',
+            'add_ons' => 'nullable|array|max:4',
+            'add_ons.*' => 'string|in:seo_audit,competitor_analysis,thirty_day_plan,strategy_followup',
         ]);
 
         $type = ConsultType::findOrFail($validated['consult_type_id']);
@@ -228,23 +263,48 @@ class BookingController extends Controller
             'public_booking_token' => Str::random(64),
         ]);
 
+        // Build Stripe line items — consult type + any selected add-ons
+        $addonCatalog = [
+            'seo_audit' => ['name' => 'SEO Audit', 'price' => 150],
+            'competitor_analysis' => ['name' => 'Competitor Analysis', 'price' => 100],
+            'thirty_day_plan' => ['name' => '30-Day SEO Plan', 'price' => 250],
+            'strategy_followup' => ['name' => 'Strategy Follow-up', 'price' => 75],
+        ];
+
+        $lineItems = [
+            [
+                'price_data' => [
+                    'currency' => 'usd',
+                    'unit_amount' => (int) ($type->price * 100),
+                    'product_data' => [
+                        'name' => $type->name,
+                        'description' => $type->formattedDuration() . ' consultation — seoaico.com',
+                    ],
+                ],
+                'quantity' => 1,
+            ],
+        ];
+
+        $selectedAddOns = $validated['add_ons'] ?? [];
+        foreach ($selectedAddOns as $slug) {
+            if (isset($addonCatalog[$slug])) {
+                $addon = $addonCatalog[$slug];
+                $lineItems[] = [
+                    'price_data' => [
+                        'currency' => 'usd',
+                        'unit_amount' => $addon['price'] * 100,
+                        'product_data' => ['name' => $addon['name']],
+                    ],
+                    'quantity' => 1,
+                ];
+            }
+        }
+
         try {
             $session = Cashier::stripe()->checkout->sessions->create([
                 'mode' => 'payment',
                 'customer_email' => $booking->email,
-                'line_items' => [
-                    [
-                        'price_data' => [
-                            'currency' => 'usd',
-                            'unit_amount' => (int) ($type->price * 100),
-                            'product_data' => [
-                                'name' => $type->name,
-                                'description' => $type->formattedDuration() . ' consultation — seoaico.com',
-                            ],
-                        ],
-                        'quantity' => 1,
-                    ]
-                ],
+                'line_items' => $lineItems,
                 'metadata' => ['booking_id' => $booking->id],
                 'success_url' => url('/book/payment-return/' . $booking->id) . '?session_id={CHECKOUT_SESSION_ID}',
                 'cancel_url' => url('/book?payment=cancelled'),
@@ -276,9 +336,9 @@ class BookingController extends Controller
             abort(403, 'Invalid payment return.');
         }
 
-        // Already confirmed — safe to redirect (handles double-hits / webhook races)
+        // Already confirmed — safe to redirect to upgrade (handles double-hits / webhook races)
         if ($booking->status === 'confirmed') {
-            return redirect()->route('book.confirmed', ['booking' => $booking->id]);
+            return redirect()->route('book.upgrade', ['booking' => $booking->id]);
         }
 
         try {
@@ -348,7 +408,24 @@ class BookingController extends Controller
             ]);
         }
 
-        return redirect()->route('book.confirmed', ['booking' => $booking->id]);
+        // Schedule pre-call primer 24 h before the session
+        try {
+            $sessionDateTime = Carbon::parse(
+                $booking->preferred_date->toDateString() . ' ' . $booking->preferred_time
+            );
+            $preCallDelay = $sessionDateTime->copy()->subHours(24);
+            if ($preCallDelay->isFuture()) {
+                Mail::to($booking->email)
+                    ->later($preCallDelay, new BookingPreCall($booking));
+            }
+        } catch (\Exception $e) {
+            Log::channel('booking')->warning('Pre-call email scheduling failed for paid booking', [
+                'booking_id' => $booking->id,
+                'error' => $e->getMessage(),
+            ]);
+        }
+
+        return redirect()->route('book.upgrade', ['booking' => $booking->id]);
     }
 
     /**

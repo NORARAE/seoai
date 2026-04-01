@@ -15,6 +15,7 @@ class Booking extends Model
         'company',
         'website',
         'message',
+        'add_ons',
         'preferred_date',
         'preferred_time',
         'status',
@@ -36,6 +37,7 @@ class Booking extends Model
     protected function casts(): array
     {
         return [
+            'add_ons' => 'array',
             'preferred_date' => 'date',
             'confirmed_at' => 'datetime',
             'cancelled_at' => 'datetime',

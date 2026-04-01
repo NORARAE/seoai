@@ -1,7 +1,21 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-LNPGQ0GN69"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-LNPGQ0GN69');
+</script>
 <meta charset="UTF-8">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="manifest" href="/site.webmanifest">
+<meta name="theme-color" content="#080808">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Consult Confirmed — SEOAIco</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -153,6 +167,44 @@ body {
 .conf-cta-secondary:hover { color: var(--ivory); }
 .conf-cta-secondary span { color: var(--gold-dim); margin-right: 4px; }
 
+/* ── Post-payment upsell ── */
+.conf-upsell {
+  background: rgba(200,168,75,.04);
+  border: 1px solid rgba(200,168,75,.12);
+  border-radius: 8px;
+  padding: 24px 28px;
+  margin: 32px 0;
+}
+.conf-upsell-eyebrow {
+  font-size: .7rem;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  color: var(--gold-dim);
+  margin-bottom: 8px;
+}
+.conf-upsell-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.35rem;
+  font-weight: 400;
+  color: var(--ivory);
+  margin-bottom: 8px;
+}
+.conf-upsell-body {
+  font-size: .84rem;
+  color: var(--muted);
+  line-height: 1.7;
+  margin-bottom: 18px;
+}
+.conf-upsell-link {
+  font-size: .78rem;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--gold);
+  text-decoration: none;
+  transition: color .25s;
+}
+.conf-upsell-link:hover { color: var(--gold-lt); }
+
 /* ── Email note ── */
 .conf-email-note {
   font-size: .78rem;
@@ -247,6 +299,18 @@ body {
     </a>
   </div>
 
+  @if(!$booking->consultType->is_free)
+  <div class="conf-upsell">
+    <p class="conf-upsell-eyebrow">Want to go deeper?</p>
+    <h2 class="conf-upsell-title">Add deliverables to your session</h2>
+    <p class="conf-upsell-body">
+      Pair your consult with a full SEO audit, competitor analysis, or a custom 30-day action plan.
+      Add them before your session date and we'll have everything ready.
+    </p>
+    <a href="{{ url('/book') }}?upgrade={{ $booking->id }}" class="conf-upsell-link">Browse add-ons &rarr;</a>
+  </div>
+  @endif
+
   <p class="conf-email-note">
     A confirmation email has been sent to {{ $booking->email }}.
   </p>
@@ -254,5 +318,18 @@ body {
   <a href="{{ url('/') }}" class="conf-home">&larr; seoaico.com</a>
 
 </div>
+<script>
+  if(typeof gtag==='function'){
+    gtag('event','view_confirmation',{booking_id:'{{ $booking->id }}'});
+    @if(!$booking->consultType->is_free)
+    gtag('event','purchase',{
+      transaction_id:'{{ $booking->id }}',
+      value:{{ $booking->consultType->price ?? 0 }},
+      currency:'USD',
+      items:[{item_name:'{{ addslashes($booking->consultType->name) }}'}]
+    });
+    @endif
+  }
+</script>
 </body>
 </html>

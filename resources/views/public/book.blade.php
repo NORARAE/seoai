@@ -1,7 +1,21 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-LNPGQ0GN69"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-LNPGQ0GN69');
+</script>
 <meta charset="UTF-8">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="manifest" href="/site.webmanifest">
+<meta name="theme-color" content="#080808">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="csrf-token" content="{{ csrf_token() }}">
 <title>Book a Consult — SEOAIco</title>
@@ -26,7 +40,7 @@ h1 em{font-style:italic;color:var(--gold)}
   <a href="/" class="book-logo">
     <span class="l-seo">SEO</span><span class="l-ai">AI</span><span class="l-co">co</span>
   </a>
-  <h1>Book a <em>Consult</em></h1>
+  <h1><a href="/" style="color:inherit;text-decoration:none">Book a <em>Consult</em></a></h1>
   <p class="book-sub">Choose a session below and pick a time that works.</p>
 
   @if(request('payment') === 'cancelled')
@@ -45,5 +59,8 @@ h1 em{font-style:italic;color:var(--gold)}
     }, 300);
   });
   </script>
+<script>
+  if(typeof gtag==='function'){gtag('event','view_book',{page_location:window.location.href});}
+</script>
 </body>
 </html>

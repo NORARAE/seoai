@@ -23,6 +23,14 @@ class OnboardingController extends Controller
     {
         $bookingId = (int) $request->query('booking', 0);
 
+        // Preview mode — no booking required
+        if ($bookingId === 0) {
+            return view('public.onboarding-start', [
+                'booking' => null,
+                'isPreview' => true,
+            ]);
+        }
+
         $booking = Booking::with('consultType')
             ->where('id', $bookingId)
             ->whereIn('status', ['confirmed', 'pending'])
@@ -30,7 +38,8 @@ class OnboardingController extends Controller
 
         // If they already submitted, send them to done
         $existing = OnboardingSubmission::whereHas(
-            'lead', fn ($q) => $q->where('booking_id', $booking->id)
+            'lead',
+            fn($q) => $q->where('booking_id', $booking->id)
         )->first();
 
         if ($existing) {
@@ -38,7 +47,10 @@ class OnboardingController extends Controller
                 ->with('already_submitted', true);
         }
 
-        return view('public.onboarding-start', compact('booking'));
+        return view('public.onboarding-start', [
+            'booking' => $booking,
+            'isPreview' => false,
+        ]);
     }
 
     /**
@@ -48,25 +60,52 @@ class OnboardingController extends Controller
     public function submit(Request $request): RedirectResponse
     {
         $validated = $request->validate([
-            'booking_id'           => 'required|integer|exists:bookings,id',
-            'business_name'        => 'required|string|max:255',
-            'website'              => 'nullable|url|max:500',
-            'service_area'         => 'nullable|string|max:1000',
-            'license'              => 'required|file|mimes:pdf,jpg,jpeg,png|max:5120',
-            'primary_contact'      => 'required|string|max:255',
-            'phone'                => 'required|string|max:50',
-            'ad_budget_ready'      => 'required|in:0,1',
+            'booking_id' => 'nullable|integer|exists:bookings,id',
+            'email' => 'nullable|email|max:255',
+            'business_name' => 'required|string|max:255',
+            'website' => 'nullable|url|max:500',
+            'service_area' => 'nullable|string|max:1000',
+            'license' => 'required|file|mimes:pdf,jpg,jpeg,png|max:5120',
+            'primary_contact' => 'required|string|max:255',
+            'phone' => 'required|string|max:50',
+            'ad_budget_ready' => 'required|in:0,1',
             'payment_method_for_ads' => 'nullable|string|max:255',
+            'analytics_access' => 'nullable|in:0,1',
+            'search_console_access' => 'nullable|in:0,1',
+            'platform_type' => 'nullable|in:wordpress,shopify,other',
+            'access_method' => 'required|in:invite_email,provide_later,need_help',
+            'add_ons' => 'nullable|array|max:10',
+            'add_ons.*' => 'string|max:100',
         ], [
-            'license.required'     => 'Business license upload is required.',
-            'license.mimes'        => 'License must be a PDF, JPG, or PNG file.',
-            'license.max'          => 'License file must be under 5 MB.',
+            'license.required' => 'Business license upload is required.',
+            'license.mimes' => 'License must be a PDF, JPG, or PNG file.',
+            'license.max' => 'License file must be under 5 MB.',
             'ad_budget_ready.required' => 'Please indicate your ad budget readiness.',
+            'access_method.required' => 'Please choose how you would like to set up access.',
         ]);
 
-        // Verify booking belongs to an existing lead (lead created at booking time)
-        $lead = Lead::where('booking_id', $validated['booking_id'])
-            ->firstOrFail();
+        $isPreview = empty($validated['booking_id']);
+
+        if ($isPreview) {
+            // Preview mode — create lead directly from form data
+            $request->validate(['email' => 'required|email|max:255']);
+            $lead = Lead::create([
+                'booking_id' => null,
+                'name' => $validated['primary_contact'],
+                'email' => $validated['email'],
+                'company' => $validated['business_name'],
+                'website' => $validated['website'] ?? null,
+                'phone' => $validated['phone'],
+                'session_type' => 'preview',
+                'payment_status' => 'none',
+                'source' => 'preview',
+                'lifecycle_stage' => Lead::STAGE_NEW,
+            ]);
+        } else {
+            // Verify booking belongs to an existing lead (lead created at booking time)
+            $lead = Lead::where('booking_id', $validated['booking_id'])
+                ->firstOrFail();
+        }
 
         // Block duplicate submissions
         if (OnboardingSubmission::where('lead_id', $lead->id)->exists()) {
@@ -77,11 +116,12 @@ class OnboardingController extends Controller
         // ── Secure file storage ───────────────────────────────────────────────
         // Files go to storage/app/private/onboarding/{booking_id}/ — never public.
         $file = $request->file('license');
-        $ext  = strtolower($file->getClientOriginalExtension());
+        $ext = strtolower($file->getClientOriginalExtension());
 
         // Unpredictable filename — prevents enumeration
         $storedName = Str::random(32) . '.' . $ext;
-        $storagePath = 'onboarding/' . $validated['booking_id'] . '/' . $storedName;
+        $folderKey = $validated['booking_id'] ?? ('preview-' . $lead->id);
+        $storagePath = 'licenses/' . $folderKey . '/' . $storedName;
 
         Storage::disk('local')->put(
             $storagePath,
@@ -90,26 +130,31 @@ class OnboardingController extends Controller
 
         // ── Create submission record ──────────────────────────────────────────
         $submission = OnboardingSubmission::create([
-            'lead_id'                => $lead->id,
-            'booking_id'             => $validated['booking_id'],
-            'business_name'          => $validated['business_name'],
-            'website'                => $validated['website'],
-            'service_area'           => $validated['service_area'],
-            'license_path'           => $storagePath,
-            'license_original_name'  => $file->getClientOriginalName(),
-            'license_size_bytes'     => $file->getSize(),
-            'license_mime'           => $file->getMimeType(),
-            'primary_contact'        => $validated['primary_contact'],
-            'phone'                  => $validated['phone'],
-            'ad_budget_ready'        => (bool) $validated['ad_budget_ready'],
-            'payment_method_for_ads' => $validated['payment_method_for_ads'],
-            'submitted_at'           => now(),
+            'lead_id' => $lead->id,
+            'booking_id' => $validated['booking_id'] ?? null,
+            'business_name' => $validated['business_name'],
+            'website' => $validated['website'],
+            'service_area' => $validated['service_area'],
+            'license_path' => $storagePath,
+            'license_original_name' => $file->getClientOriginalName(),
+            'license_size_bytes' => $file->getSize(),
+            'license_mime' => $file->getMimeType(),
+            'primary_contact' => $validated['primary_contact'],
+            'phone' => $validated['phone'],
+            'ad_budget_ready' => (bool) ($validated['ad_budget_ready'] ?? false),
+            'payment_method_for_ads' => $validated['payment_method_for_ads'] ?? null,
+            'analytics_access' => (bool) ($validated['analytics_access'] ?? false),
+            'search_console_access' => (bool) ($validated['search_console_access'] ?? false),
+            'platform_type' => $validated['platform_type'] ?? null,
+            'access_method' => $validated['access_method'],
+            'add_ons' => $validated['add_ons'] ?? null,
+            'submitted_at' => now(),
         ]);
 
         // ── Advance CRM status ────────────────────────────────────────────────
         $lead->update([
             'onboarding_status' => 'submitted',
-            'lifecycle_stage'   => \App\Models\Lead::STAGE_ONBOARDING_SUBMITTED,
+            'lifecycle_stage' => \App\Models\Lead::STAGE_ONBOARDING_SUBMITTED,
         ]);
 
         // ── Send confirmation email ───────────────────────────────────────────
@@ -118,13 +163,13 @@ class OnboardingController extends Controller
         } catch (\Exception $e) {
             Log::channel('booking')->error('Onboarding confirmation email failed', [
                 'lead_id' => $lead->id,
-                'error'   => $e->getMessage(),
+                'error' => $e->getMessage(),
             ]);
         }
 
         Log::channel('booking')->info('Onboarding submitted', [
-            'lead_id'       => $lead->id,
-            'booking_id'    => $validated['booking_id'],
+            'lead_id' => $lead->id,
+            'booking_id' => $validated['booking_id'],
             'submission_id' => $submission->id,
         ]);
 
@@ -155,9 +200,9 @@ class OnboardingController extends Controller
             403
         );
 
-        abort_if(! $submission->license_path, 404, 'No license file on record.');
+        abort_if(!$submission->license_path, 404, 'No license file on record.');
         abort_if(
-            ! Storage::disk('local')->exists($submission->license_path),
+            !Storage::disk('local')->exists($submission->license_path),
             404,
             'License file not found in storage.'
         );

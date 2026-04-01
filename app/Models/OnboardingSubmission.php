@@ -21,6 +21,11 @@ class OnboardingSubmission extends Model
         'phone',
         'ad_budget_ready',
         'payment_method_for_ads',
+        'analytics_access',
+        'search_console_access',
+        'platform_type',
+        'access_method',
+        'add_ons',
         'submitted_at',
     ];
 
@@ -28,7 +33,10 @@ class OnboardingSubmission extends Model
     {
         return [
             'ad_budget_ready' => 'boolean',
-            'submitted_at'    => 'datetime',
+            'analytics_access' => 'boolean',
+            'search_console_access' => 'boolean',
+            'add_ons' => 'array',
+            'submitted_at' => 'datetime',
         ];
     }
 

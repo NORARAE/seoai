@@ -52,12 +52,21 @@ Route::get('/licensing-inquiry', fn() => redirect(url('/') . '#contact'))->name(
 Route::get('/checkout/success', fn() => view('public.checkout-success'))->name('checkout.success');
 Route::get('/checkout/cancelled', fn() => view('public.checkout-cancelled'))->name('checkout.cancelled');
 
+// ── Sitemap: static/scaffold pages (all routes in the locked sitemap) ──
+Route::get('/how-it-works', [PublicController::class, 'howItWorks'])->name('how-it-works');
+Route::get('/solutions', [PublicController::class, 'solutions'])->name('solutions');
+Route::get('/solutions/agencies', [PublicController::class, 'solutionsAgencies'])->name('solutions.agencies');
+Route::get('/solutions/business-owners', [PublicController::class, 'solutionsBusinessOwners'])->name('solutions.business-owners');
+Route::get('/access', fn() => redirect('/onboarding/start'))->name('access');
+
 // ── Booking / Consult System ──
 Route::get('/book', [BookingController::class, 'index'])->name('book.index');
 Route::get('/book/slots', [BookingController::class, 'getSlots'])->middleware('throttle:booking')->name('book.slots');
 Route::post('/book', [BookingController::class, 'store'])->middleware('throttle:booking')->name('book.store');
 Route::post('/book/checkout', [BookingController::class, 'initiateCheckout'])->middleware('throttle:booking')->name('book.checkout');
 Route::get('/book/confirmed', [BookingController::class, 'confirmed'])->name('book.confirmed');
+Route::get('/book/upgrade', [BookingController::class, 'upgrade'])->name('book.upgrade');
+Route::get('/book/confirmation', fn() => redirect()->route('book.confirmed', ['booking' => request('booking')]))->name('book.confirmation');
 Route::get('/book/payment-return/{booking}', [BookingController::class, 'handlePaymentReturn'])->name('book.payment-return');
 Route::get('/book/confirm/{booking}', [BookingController::class, 'confirm'])->name('book.confirm');
 Route::get('/book/cancel/{booking}', [BookingController::class, 'cancel'])->name('book.cancel');

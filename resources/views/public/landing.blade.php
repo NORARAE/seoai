@@ -10,6 +10,12 @@
   gtag('config', 'G-LNPGQ0GN69');
 </script>
 <meta charset="UTF-8">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="manifest" href="/site.webmanifest">
+<meta name="theme-color" content="#080808">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>SEOAIco — Programmatic Search Infrastructure. Licensed. Controlled. Exclusive.</title>
 <meta name="description" content="SEOAIco is programmatic search infrastructure—deploying structured content, internal link architecture, and structured data across 1,000+ U.S. cities. Access is licensed. One operator per market.">
@@ -63,6 +69,13 @@ nav.stuck{background:rgba(8,8,8,.95);backdrop-filter:blur(16px);border-color:var
 }
 .nav-btn:hover{background:var(--gold-lt)}
 .nav-account-short{display:none}
+/* Book CTA — gold outline, distinct from gold-fill Portal */
+.nav-btn.nav-book{
+  background:transparent;color:var(--gold);
+  border:1px solid rgba(200,168,75,.45);
+  transition:background .25s,border-color .25s,color .25s;
+}
+.nav-btn.nav-book:hover{background:rgba(200,168,75,.08);border-color:var(--gold);color:var(--ivory)}
 
 /* ── Hero ── */
 #hero{
@@ -966,14 +979,109 @@ footer{border-top:1px solid var(--border);padding:36px 64px;display:flex;flex-di
   .nav-account-short{display:inline}
 }
 
+/* ── Mobile hamburger & drawer ── */
+.nav-hamburger{
+  display:none;
+  flex-direction:column;justify-content:center;align-items:center;gap:5px;
+  width:44px;height:44px;background:none;border:none;cursor:pointer;
+  padding:8px;z-index:201;position:relative;flex-shrink:0;
+}
+.nav-hamburger span{
+  display:block;width:22px;height:1.5px;background:var(--ivory);
+  transition:transform .3s cubic-bezier(.23,1,.32,1),opacity .3s,width .3s;
+  transform-origin:center;
+}
+.nav-hamburger.is-open span:nth-child(1){transform:translateY(6.5px) rotate(45deg)}
+.nav-hamburger.is-open span:nth-child(2){opacity:0;width:0}
+.nav-hamburger.is-open span:nth-child(3){transform:translateY(-6.5px) rotate(-45deg)}
+
+/* Drawer overlay backdrop */
+.nav-drawer-overlay{
+  display:none;position:fixed;inset:0;z-index:9100;
+  background:rgba(0,0,0,.62);backdrop-filter:blur(4px);
+  opacity:0;transition:opacity .3s;
+}
+.nav-drawer-overlay.visible{opacity:1}
+
+/* Slide-out drawer */
+.nav-drawer{
+  position:fixed;top:0;right:0;bottom:0;z-index:9200;
+  width:min(340px,92vw);
+  background:#0a0905;
+  border-left:1px solid rgba(200,168,75,.12);
+  display:flex;flex-direction:column;
+  transform:translateX(100%);
+  transition:transform .38s cubic-bezier(.23,1,.32,1);
+  overflow-y:auto;
+}
+.nav-drawer.is-open{transform:translateX(0)}
+
+/* Drawer header */
+.nd-header{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:22px 28px 20px;
+  border-bottom:1px solid rgba(200,168,75,.07);
+  flex-shrink:0;
+}
+.nd-close{
+  background:none;border:none;cursor:pointer;
+  width:40px;height:40px;display:flex;align-items:center;justify-content:center;
+  color:rgba(168,168,160,.6);font-size:1.3rem;transition:color .2s;
+  padding:0;
+}
+.nd-close:hover{color:var(--ivory)}
+
+/* Nav links */
+.nd-link{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:14px 28px;
+  font-size:.86rem;letter-spacing:.08em;
+  color:rgba(168,168,160,.82);text-decoration:none;
+  transition:color .2s,background .2s;
+  position:relative;
+}
+.nd-link::after{
+  content:'›';
+  color:rgba(200,168,75,.35);
+  font-size:1rem;transition:color .2s,transform .2s;
+}
+.nd-link:hover{color:var(--ivory);background:rgba(200,168,75,.04)}
+.nd-link:hover::after{color:var(--gold);transform:translateX(3px)}
+.nd-link.nd-featured{
+  color:var(--gold);font-weight:500;letter-spacing:.1em;
+}
+.nd-link.nd-featured::after{color:var(--gold)}
+
+/* Portal CTA at drawer bottom */
+.nd-footer{
+  margin-top:auto;padding:24px 28px 32px;
+  border-top:1px solid rgba(200,168,75,.08);
+  flex-shrink:0;
+}
+.nd-portal-btn{
+  display:flex;align-items:center;justify-content:center;
+  width:100%;padding:14px 20px;
+  background:linear-gradient(135deg,rgba(200,168,75,.12),rgba(200,168,75,.06));
+  border:1px solid rgba(200,168,75,.28);
+  color:var(--gold);font-size:.78rem;font-weight:500;
+  letter-spacing:.18em;text-transform:uppercase;
+  text-decoration:none;border-radius:3px;
+  transition:background .3s,border-color .3s,color .3s;
+}
+.nd-portal-btn:hover{
+  background:rgba(200,168,75,.16);
+  border-color:rgba(200,168,75,.5);
+  color:var(--ivory);
+}
+
 /* ── Mobile ── */
 @media(max-width:900px){
   html{font-size:17px;-webkit-text-size-adjust:100%}
   body{-webkit-overflow-scrolling:touch}
   nav{padding:14px 20px}nav.stuck{padding:10px 20px}.nav-link{display:none}
   .nav-btn{display:none}
-  .nav-account{display:inline-flex;padding:12px 24px;font-size:.78rem;letter-spacing:.14em;border-radius:3px;min-height:44px;align-items:center}
-  .nav-account-full{display:none}.nav-account-short{display:inline}
+  .nav-account{display:none}
+  .nav-hamburger{display:flex}
   #hero{padding:88px 24px 60px}
   .hero-actions{flex-direction:column;gap:16px;width:100%}
   .btn-primary{width:100%;text-align:center;padding:16px 24px}
@@ -1423,18 +1531,42 @@ body::before{
 
 <!-- ════════════ NAV ════════════ -->
 <nav id="nav">
-  <a href="#" class="logo">
+  <a href="/" class="logo">
     <span class="logo-seo">SEO</span><span class="logo-ai">AI</span><span class="logo-co">co</span>
   </a>
   <div class="nav-right">
-    <a href="#wyl" class="nav-link">The System</a>
-    <a href="#offer" class="nav-link">Licensing</a>
+    <a href="/how-it-works" class="nav-link">How It Works</a>
+    <a href="/book" class="nav-btn nav-book">Book</a>
     @auth
       <a href="/dashboard" class="nav-btn nav-account" style="background:linear-gradient(90deg,var(--gold),var(--gold-lt));color:var(--deep);box-shadow:0 2px 12px 0 rgba(200,168,75,.13);font-weight:500;letter-spacing:.18em;"><span class="nav-account-full">My Dashboard</span><span class="nav-account-short">Dashboard</span></a>
     @else
-      <a href="/admin/register" class="nav-btn nav-account" style="background:linear-gradient(90deg,var(--gold),var(--gold-lt));color:var(--deep);box-shadow:0 2px 12px 0 rgba(200,168,75,.13);font-weight:500;letter-spacing:.18em;"><span class="nav-account-full">Request Access</span><span class="nav-account-short">Sign Up</span></a>
+      <a href="/admin/login" class="nav-btn nav-account" style="background:linear-gradient(90deg,var(--gold),var(--gold-lt));color:var(--deep);box-shadow:0 2px 12px 0 rgba(200,168,75,.13);font-weight:500;letter-spacing:.18em;"><span class="nav-account-full">Portal</span><span class="nav-account-short">Portal</span></a>
     @endauth
-    <a href="#contact" class="nav-btn">Request Licensing Access</a>
+  </div>
+  <button class="nav-hamburger" id="navHamburger" aria-label="Open menu" aria-expanded="false" aria-controls="navDrawer">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<!-- ════════════ MOBILE DRAWER ════════════ -->
+<div class="nav-drawer-overlay" id="navOverlay" aria-hidden="true"></div>
+<nav class="nav-drawer" id="navDrawer" aria-label="Site navigation" aria-hidden="true">
+  <div class="nd-header">
+    <a href="/" style="text-decoration:none;display:inline-flex;align-items:baseline;gap:0;line-height:1">
+      <span style="font-family:'DM Sans',sans-serif;font-weight:300;font-size:1.05rem;letter-spacing:.06em;color:var(--ivory)">SEO</span><span style="font-family:'Cormorant Garamond',serif;font-weight:600;font-size:1.25rem;color:#c8a84b">AI</span><span style="font-family:'DM Sans',sans-serif;font-weight:300;font-size:.9rem;color:rgba(150,150,150,.6);letter-spacing:.04em">co</span>
+    </a>
+    <button class="nd-close" id="navDrawerClose" aria-label="Close menu">&times;</button>
+  </div>
+
+  <a href="/how-it-works" class="nd-link" data-drawer-close>How It Works</a>
+  <a href="/book" class="nd-link nd-featured" data-drawer-close>Book a Session</a>
+
+  <div class="nd-footer">
+    @auth
+      <a href="/dashboard" class="nd-portal-btn">My Dashboard</a>
+    @else
+      <a href="/admin/login" class="nd-portal-btn">Portal — Sign In &rarr;</a>
+    @endauth
   </div>
 </nav>
 
@@ -2186,6 +2318,14 @@ body::before{
 })();
 </script>
 
+<!-- ════════════ LOOKY-LOO CAPTURE ════════════ -->
+<section id="preview" style="padding:80px 40px;text-align:center;border-top:1px solid rgba(200,168,75,.06)">
+  <p style="font-size:.72rem;letter-spacing:.2em;text-transform:uppercase;color:rgba(200,168,75,.55);margin-bottom:14px">Not ready to book?</p>
+  <h2 style="font-family:'Cormorant Garamond',serif;font-size:clamp(1.7rem,4vw,2.5rem);font-weight:400;color:#ede8de;margin-bottom:16px;line-height:1.2">See what's possible<br><em>for your market.</em></h2>
+  <p style="font-size:.9rem;color:rgba(168,168,160,.7);max-width:460px;margin:0 auto 28px;line-height:1.75">Share your site and we'll map the opportunity — rankings you're missing, competitors ahead of you, and the territory you could claim. No commitment.</p>
+  <a href="{{ route('onboarding.start') }}" style="display:inline-block;background:transparent;border:1px solid rgba(200,168,75,.35);color:#c8a84b;font-size:.78rem;font-weight:400;letter-spacing:.18em;text-transform:uppercase;padding:14px 36px;border-radius:4px;text-decoration:none;transition:background .3s,border-color .3s,color .3s" onmouseover="this.style.background='rgba(200,168,75,.08)';this.style.borderColor='rgba(200,168,75,.6)'" onmouseout="this.style.background='transparent';this.style.borderColor='rgba(200,168,75,.35)'">Preview your opportunity &rarr;</a>
+</section>
+
 <!-- ════════════ CONTACT ════════════ -->
 <section id="contact">
   <div class="contact-inner">
@@ -2662,9 +2802,52 @@ body::before{
       raf = requestAnimationFrame(frame);
     });
   })();
+
+  /* ── Mobile drawer ── */
+  (function(){
+    var btn      = document.getElementById('navHamburger');
+    var drawer   = document.getElementById('navDrawer');
+    var overlay  = document.getElementById('navOverlay');
+    var closeBtn = document.getElementById('navDrawerClose');
+    if(!btn || !drawer) return;
+
+    function openDrawer(){
+      drawer.classList.add('is-open');
+      overlay.style.display = 'block';
+      requestAnimationFrame(function(){ overlay.classList.add('visible'); });
+      overlay.removeAttribute('aria-hidden');
+      drawer.removeAttribute('aria-hidden');
+      btn.classList.add('is-open');
+      btn.setAttribute('aria-expanded','true');
+      document.body.style.overflow = 'hidden';
+    }
+    function closeDrawer(){
+      drawer.classList.remove('is-open');
+      overlay.classList.remove('visible');
+      btn.classList.remove('is-open');
+      btn.setAttribute('aria-expanded','false');
+      overlay.setAttribute('aria-hidden','true');
+      drawer.setAttribute('aria-hidden','true');
+      document.body.style.overflow = '';
+      setTimeout(function(){ overlay.style.display=''; },320);
+    }
+
+    btn.addEventListener('click', function(){ drawer.classList.contains('is-open') ? closeDrawer() : openDrawer(); });
+    closeBtn.addEventListener('click', closeDrawer);
+    overlay.addEventListener('click', closeDrawer);
+    document.addEventListener('keydown', function(e){ if(e.key==='Escape') closeDrawer(); });
+
+    // Auto-close on any anchor link inside the drawer
+    drawer.querySelectorAll('[data-drawer-close]').forEach(function(el){
+      el.addEventListener('click', closeDrawer);
+    });
+  })();
 </script>
 
 @include('components.booking-modal')
 
+<script>
+  if(typeof gtag==='function'){gtag('event','view_landing',{page_location:window.location.href});}
+</script>
 </body>
 </html>
