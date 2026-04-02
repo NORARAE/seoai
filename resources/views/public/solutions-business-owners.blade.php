@@ -9,7 +9,7 @@
 <link rel="manifest" href="/site.webmanifest">
 <meta name="theme-color" content="#080808">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>For Business Owners — SEOAIco</title>
+<title>For Business Owners — SEO AI Co™</title>
 <meta name="description" content="Own your local market. Territory-locked SEO for service businesses — one operator per category per city.">
 <link rel="canonical" href="{{ url('/solutions/business-owners') }}">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -84,7 +84,7 @@ footer{border-top:1px solid var(--border);padding:32px 64px;display:flex;align-i
 <main class="page">
   <span class="page-eye">For Business Owners</span>
   <h1 class="page-title">Own your city.<br><em>Lock out your competitors.</em></h1>
-  <p class="page-intro">You run a service business in a local market. You need to be found first — and stay there. But traditional SEO is slow, competitive, and shared. The SEOAIco territory system changes the equation.</p>
+  <p class="page-intro">You run a service business in a local market. You need to be found first — and stay there. But traditional SEO is slow, competitive, and shared. The SEO AI Co™ territory system changes the equation.</p>
 
   <div class="proof-stats">
     <div class="stat-item">
@@ -147,7 +147,9 @@ footer{border-top:1px solid var(--border);padding:32px 64px;display:flex;align-i
   <a href="/" class="logo" style="opacity:.5">
     <span class="logo-seo">SEO</span><span class="logo-ai">AI</span><span class="logo-co">co</span>
   </a>
-  <span class="footer-copy">&copy; {{ date('Y') }} SEOAIco</span>
+  <span class="footer-copy">&copy; {{ date('Y') }} SEO AI Co™ &middot; Programmatic AI SEO Systems</span>
+  <a href="mailto:hello@seoaico.com" class="footer-copy" style="display:block;margin-top:4px;text-decoration:none">hello@seoaico.com</a>
+  <p class="footer-copy" style="font-size:.65em;opacity:.48;max-width:420px;line-height:1.5;margin-top:4px">SEO AI Co™ and associated systems, processes, and methodologies are proprietary and may not be reproduced without permission.</p>
   <nav class="footer-links">
     <a href="/solutions">Solutions</a>
     <a href="/how-it-works">How It Works</a>

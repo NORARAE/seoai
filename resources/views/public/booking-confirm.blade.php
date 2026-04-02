@@ -9,7 +9,7 @@
 <link rel="manifest" href="/site.webmanifest">
 <meta name="theme-color" content="#080808">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Booking Confirmed — SEOAIco</title>
+<title>Booking Confirmed — SEO AI Co™</title>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 body{background:#080808;color:#ede8de;font-family:'DM Sans',sans-serif;min-height:100vh;display:flex;align-items:center;justify-content:center;padding:40px 20px}

@@ -17,8 +17,8 @@
 <link rel="manifest" href="/site.webmanifest">
 <meta name="theme-color" content="#080808">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>SEOAIco — Programmatic Search Infrastructure. Licensed. Controlled. Exclusive.</title>
-<meta name="description" content="SEOAIco is programmatic search infrastructure—deploying structured content, internal link architecture, and structured data across 1,000+ U.S. cities. Access is licensed. One operator per market.">
+<title>SEO AI Co™ — Programmatic Search Infrastructure. Licensed. Controlled. Exclusive.</title>
+<meta name="description" content="SEO AI Co™ is programmatic search infrastructure—deploying structured content, internal link architecture, and structured data across 1,000+ U.S. cities. Access is licensed. One operator per market.">
 <link rel="canonical" href="{{ url('/') }}">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -2723,11 +2723,17 @@ body::before{
 <!-- ════════════ FOOTER — privacy/terms at very bottom ════════════ -->
 <footer>
   <div class="footer-main">
-    <a href="#" class="logo">
+    <a href="{{ url('/') }}" class="logo">
       <span class="logo-seo">SEO</span><span class="logo-ai">AI</span><span class="logo-co">co</span>
     </a>
-    <span class="footer-copy">&copy; 2026 SEOAIco. Licensed Ranking Infrastructure.</span>
+    <span class="footer-copy">&copy; 2026 SEO AI Co™ &middot; Programmatic AI SEO Systems</span>
   </div>
+  <p style="text-align:center;font-size:.72rem;color:var(--muted);margin:6px 0 4px">
+    <a href="mailto:hello@seoaico.com" style="color:var(--muted);text-decoration:none">hello@seoaico.com</a>
+  </p>
+  <p style="text-align:center;font-size:.62rem;color:rgba(168,168,160,.35);max-width:520px;margin:0 auto 12px;line-height:1.5">
+    SEO AI Co™ and associated systems, processes, and methodologies are proprietary and may not be reproduced without permission.
+  </p>
   <nav class="footer-legal">
     <a href="{{ route('privacy') }}">Privacy</a>
     <a href="{{ route('terms') }}">Terms</a>

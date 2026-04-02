@@ -9,7 +9,7 @@
 <link rel="manifest" href="/site.webmanifest">
 <meta name="theme-color" content="#080808">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>For Agencies — SEOAIco</title>
+<title>For Agencies — SEO AI Co™</title>
 <meta name="description" content="White-label SEO infrastructure for agencies. Deploy territory-locked coverage under your brand — own the territory, retain the margin.">
 <link rel="canonical" href="{{ url('/solutions/agencies') }}">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -89,7 +89,7 @@ footer{border-top:1px solid var(--border);padding:32px 64px;display:flex;align-i
 <main class="page">
   <span class="page-eye">For Agencies</span>
   <h1 class="page-title">Infrastructure you deploy.<br><em>Margin you keep.</em></h1>
-  <p class="page-intro">The SEOAIco system is designed to be operated by agencies at scale. White-label it, brand it as your own, and deploy across all your clients — while holding exclusive territory on their behalf.</p>
+  <p class="page-intro">The SEO AI Co™ system is designed to be operated by agencies at scale. White-label it, brand it as your own, and deploy across all your clients — while holding exclusive territory on their behalf.</p>
 
   <div class="vp-grid">
     <div class="vp-item">
@@ -137,7 +137,9 @@ footer{border-top:1px solid var(--border);padding:32px 64px;display:flex;align-i
   <a href="/" class="logo" style="opacity:.5">
     <span class="logo-seo">SEO</span><span class="logo-ai">AI</span><span class="logo-co">co</span>
   </a>
-  <span class="footer-copy">&copy; {{ date('Y') }} SEOAIco</span>
+  <span class="footer-copy">&copy; {{ date('Y') }} SEO AI Co™ &middot; Programmatic AI SEO Systems</span>
+  <a href="mailto:hello@seoaico.com" class="footer-copy" style="display:block;margin-top:4px;text-decoration:none">hello@seoaico.com</a>
+  <p class="footer-copy" style="font-size:.65em;opacity:.48;max-width:420px;line-height:1.5;margin-top:4px">SEO AI Co™ and associated systems, processes, and methodologies are proprietary and may not be reproduced without permission.</p>
   <nav class="footer-links">
     <a href="/solutions">Solutions</a>
     <a href="/how-it-works">How It Works</a>

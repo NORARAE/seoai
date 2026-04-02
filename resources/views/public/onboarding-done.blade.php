@@ -9,7 +9,7 @@
 <link rel="manifest" href="/site.webmanifest">
 <meta name="theme-color" content="#080808">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Onboarding Complete — SEOAIco</title>
+<title>Onboarding Complete — SEO AI Co™</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
@@ -285,8 +285,7 @@ body {
     @else
       We've received your intake form and business license. Our team will review everything and be in touch within 1–2 business days.
     @endif
-  </p>
-  <p class="done-email-note">Questions? Reach us at <a href="mailto:hello@seoaico.com" style="color:rgba(168,168,160,.7);text-decoration:none">hello@seoaico.com</a></p>
+  </p>  <p class="done-sub" style="font-size:.82rem;opacity:.7;margin-top:0">The SEO AI Co™ system combines structured content, local relevance, internal link architecture, search signals, and ongoing optimization &mdash; designed to strengthen every signal that drives local visibility.</p>  <p class="done-email-note">Questions? Reach us at <a href="mailto:hello@seoaico.com" style="color:rgba(168,168,160,.7);text-decoration:none">hello@seoaico.com</a></p>
   <a href="{{ url('/') }}" class="done-home">&larr; seoaico.com</a>
 
   <!-- WHAT HAPPENS NEXT -->

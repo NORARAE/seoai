@@ -25,7 +25,7 @@
 <body>
 <div class="wrap">
   <div class="header">
-    <div class="logo">SEO<strong>AI</strong>co</div>
+    <div class="logo">SEO AI Co™</div>
     <h1>Onboarding received,<br>{{ $lead->name }}.</h1>
     <p>Thank you — your intake form has been submitted. Our team will review your information and be in touch within 1–2 business days.</p>
   </div>
@@ -75,7 +75,11 @@
 
   <div class="footer">
     <p>
-      This email was sent to {{ $lead->email }} because you completed an onboarding form on seoaico.com.<br>
+      <strong style="color:#1a1a1a">SEO AI Co™</strong> &nbsp;&middot;&nbsp; Programmatic AI SEO Systems<br>
+      <a href="mailto:hello@seoaico.com">hello@seoaico.com</a>
+    </p>
+    <p style="margin-top:10px">
+      This email was sent to {{ $lead->email }} because you submitted an onboarding form on seoaico.com.<br>
       <a href="{{ url('/') }}">seoaico.com</a>
     </p>
   </div>

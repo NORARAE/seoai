@@ -30,7 +30,7 @@
 <body>
 <div class="wrap">
   <div class="header">
-    <div class="logo">SEO<strong>AI</strong>co</div>
+    <div class="logo">SEO AI Co™</div>
     <h1>Next steps for<br>{{ $submission->business_name }}.</h1>
     <p>Your review is underway. Here is what happens from this point forward.</p>
   </div>
@@ -86,6 +86,10 @@
 
   <div class="footer">
     <p>
+      <strong style="color:#1a1a1a">SEO AI Co™</strong> &nbsp;&middot;&nbsp; Programmatic AI SEO Systems<br>
+      <a href="mailto:hello@seoaico.com">hello@seoaico.com</a>
+    </p>
+    <p style="margin-top:10px">
       This email was sent to {{ $lead->email }} as part of your onboarding review at seoaico.com.<br>
       <a href="{{ url('/') }}">seoaico.com</a>
     </p>

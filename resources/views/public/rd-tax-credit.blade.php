@@ -18,7 +18,7 @@
 <meta name="theme-color" content="#080808">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="csrf-token" content="{{ csrf_token() }}">
-<title>R&amp;D Tax Credit — SEOAIco</title>
+<title>R&amp;D Tax Credit — SEO AI Co™</title>
 <meta name="description" content="Development-focused SEO systems, automation, and AI-driven infrastructure may qualify for federal R&D tax credits under Section 41.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -153,9 +153,9 @@ body{background:var(--bg);color:var(--ivory);font-family:'DM Sans',sans-serif;fo
 
       <hr class="rd-divider">
 
-      {{-- How SEOAIco Fits --}}
+      {{-- How SEO AI Co™ Fits --}}
       <section class="rd-section">
-        <p class="rd-section-label">How SEOAIco Fits</p>
+        <p class="rd-section-label">How SEO AI Co™ Fits</p>
         <h2>Our systems are built — not bought.</h2>
         <p>What we build for clients is custom software infrastructure. Every engagement involves technical development, experimentation, and systems that did not exist before we built them.</p>
 
@@ -167,7 +167,7 @@ body{background:var(--bg);color:var(--ivory);font-family:'DM Sans',sans-serif;fo
         </ul>
 
         <div class="rd-disclaimer">
-          <p><strong>Important:</strong> SEOAIco does not provide tax advice. The information on this page is general in nature and does not constitute legal, tax, or financial guidance. Please consult a qualified CPA or tax advisor to determine whether your specific engagement qualifies for R&amp;D credits.</p>
+          <p><strong>Important:</strong> SEO AI Co™ does not provide tax advice. The information on this page is general in nature and does not constitute legal, tax, or financial guidance. Please consult a qualified CPA or tax advisor to determine whether your specific engagement qualifies for R&amp;D credits.</p>
         </div>
       </section>
 

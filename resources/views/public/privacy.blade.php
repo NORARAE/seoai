@@ -9,8 +9,8 @@
 <link rel="manifest" href="/site.webmanifest">
 <meta name="theme-color" content="#080808">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Privacy Policy — SEOAIco</title>
-<meta name="description" content="SEOAIco Privacy Policy — how we collect, use, and protect your information.">
+<title>Privacy Policy — SEO AI Co™</title>
+<meta name="description" content="SEO AI Co™ Privacy Policy — how we collect, use, and protect your information.">
 <link rel="canonical" href="{{ url('/privacy') }}">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -75,7 +75,7 @@ footer{border-top:1px solid var(--border);padding:36px 64px;display:flex;flex-di
   <h1>Privacy Policy</h1>
   <span class="effective">Effective Date: March 25, 2026</span>
 
-  <p>SEOAIco ("we," "us," or "our") operates the seoaico.com website and related services. This Privacy Policy explains what information we collect, how we use it, and your choices regarding that information.</p>
+  <p>SEO AI Co™ ("we," "us," or "our") operates the seoaico.com website and related services. This Privacy Policy explains what information we collect, how we use it, and your choices regarding that information.</p>
 
   <h2>1. Information We Collect</h2>
 
@@ -155,8 +155,14 @@ footer{border-top:1px solid var(--border);padding:36px 64px;display:flex;flex-di
     <a href="{{ url('/') }}" class="logo">
       <span class="logo-seo">SEO</span><span class="logo-ai">AI</span><span class="logo-co">co</span>
     </a>
-    <span class="footer-copy">&copy; 2026 SEOAIco. Licensed Ranking Infrastructure.</span>
+    <span class="footer-copy">&copy; 2026 SEO AI Co™ &middot; Programmatic AI SEO Systems</span>
   </div>
+  <p style="text-align:center;font-size:.72rem;color:var(--muted);margin:6px 0 4px">
+    <a href="mailto:hello@seoaico.com" style="color:var(--muted);text-decoration:none">hello@seoaico.com</a>
+  </p>
+  <p style="text-align:center;font-size:.62rem;color:rgba(168,168,160,.35);max-width:520px;margin:0 auto 12px;line-height:1.5">
+    SEO AI Co™ and associated systems, processes, and methodologies are proprietary and may not be reproduced without permission.
+  </p>
   <nav class="footer-legal">
     <a href="{{ route('privacy') }}">Privacy</a>
     <a href="{{ route('terms') }}">Terms</a>

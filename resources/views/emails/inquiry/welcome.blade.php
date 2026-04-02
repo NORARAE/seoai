@@ -58,7 +58,7 @@
     <p style="color:#666;font-size:.85rem">This is a confirmation that your message was received — not an approval. We will be in touch once we have reviewed your application.</p>
   </div>
   <div class="footer">
-    &copy; {{ date('Y') }} SEOAIco &nbsp;·&nbsp; <a href="https://seoaico.com">seoaico.com</a>
+    &copy; {{ date('Y') }} SEO AI Co™ &nbsp;·&nbsp; <a href="https://seoaico.com">seoaico.com</a>
   </div>
 </div>
 </body>

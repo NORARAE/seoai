@@ -17,7 +17,7 @@
 <link rel="manifest" href="/site.webmanifest">
 <meta name="theme-color" content="#080808">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Client Onboarding — SEOAIco</title>
+<title>Client Onboarding — SEO AI Co™</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
@@ -1100,9 +1100,10 @@ body {
         <a href="/book" class="ob-setup-link">Book Setup Session &rarr;</a>
       </div>
 
-      {{-- ── Recommended Enhancements ── --}}
-      <div class="ob-section" style="margin-top:40px">Recommended Enhancements</div>
-      <p class="ob-enhancements-intro">Enhancements can be added now or confirmed later based on your rollout needs. No charges are applied without your explicit approval.</p>
+      {{-- ── Growth & Support Options ── --}}
+      <div class="ob-section" style="margin-top:40px">Growth &amp; Support Options</div>
+      <p class="ob-enhancements-intro">Optional — expand your system, visibility, and marketing support at any time. No charges are applied without your explicit approval.</p>
+      <p class="ob-enhancements-intro" style="margin-top:-6px;font-size:.8rem;opacity:.7">Built for businesses ready to expand — whether you operate one location or multiple markets. Our system supports multi-location and multi-site deployment for businesses scaling across territories.</p>
 
       <div class="ob-addons-grid">
         <div>
@@ -1168,6 +1169,23 @@ body {
             <span class="ob-addon-desc">Analysis of your top competitors — coverage gaps, link structure, and positioning — so your system is calibrated from the start.</span>
           </label>
         </div>
+
+        <div style="grid-column:1/-1">
+          <input type="checkbox" class="ob-addon-opt" id="addon_full_service" name="add_ons[]" value="full_service_marketing"
+                 {{ in_array('full_service_marketing', old('add_ons', [])) ? 'checked' : '' }}>
+          <label class="ob-addon-card" for="addon_full_service">
+            <div class="ob-addon-header">
+              <span style="display:flex;align-items:center;gap:4px">
+                <span class="ob-addon-name">Full-Service Marketing Support</span>
+                <span class="ob-info-btn" data-tip="For clients who want ongoing support beyond SEO.">i</span>
+              </span>
+              <span class="ob-addon-check"></span>
+            </div>
+            <span class="ob-addon-price">Custom pricing</span>
+            <span class="ob-addon-desc">For clients who want ongoing support beyond SEO: website updates &amp; maintenance, design &amp; branding assets, campaign planning, and marketing systems &amp; automation. We can support or fully manage your marketing as your system grows.</span>
+            <span style="display:inline-block;margin-top:6px;font-size:.72rem;color:var(--gold);letter-spacing:.06em;text-transform:uppercase">Most popular for growing businesses</span>
+          </label>
+        </div>
       </div>
 
       {{-- ── Federal Research Credit (informational, optional) ── --}}
@@ -1175,7 +1193,7 @@ body {
         <span class="ob-rd-eye">Additional Opportunities — Optional</span>
         <h3 class="ob-rd-hed">Federal Research Credit (Form 6765)</h3>
         <p class="ob-rd-body">Some businesses choose to review IRS Form 6765 and its instructions to better understand the federal research credit.</p>
-        <p class="ob-rd-body">SEOAIco does not determine eligibility and does not provide tax, legal, or accounting advice.</p>
+        <p class="ob-rd-body">SEO AI Co™ does not determine eligibility and does not provide tax, legal, or accounting advice.</p>
         <div class="ob-rd-links">
           <a href="https://www.irs.gov/pub/irs-pdf/f6765.pdf" target="_blank" rel="noopener noreferrer" class="ob-rd-link">View Form 6765 &rarr;</a>
           <a href="https://www.irs.gov/instructions/i6765" target="_blank" rel="noopener noreferrer" class="ob-rd-link">View IRS Instructions &rarr;</a>
@@ -1192,6 +1210,7 @@ body {
       <p class="ob-activation-note">
         <em>Access enables activation.</em> Positions are not reserved without activation.
       </p>
+      <p style="font-size:.78rem;color:var(--muted);text-align:center;margin-bottom:12px">Scaling beyond a single market? Ask about multi-location deployment.</p>
 
       <div class="ob-nav" style="margin-top:24px">
         <button type="submit" class="ob-submit" id="submit-btn">

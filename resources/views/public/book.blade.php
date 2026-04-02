@@ -18,7 +18,7 @@
 <meta name="theme-color" content="#080808">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="csrf-token" content="{{ csrf_token() }}">
-<title>Strategy Session — SEOAIco</title>
+<title>Strategy Session — SEO AI Co™</title>
 <meta name="description" content="A focused market opportunity session — not a sales call. We identify where your business can expand and how to take it.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -58,7 +58,7 @@ body{background:var(--bg);color:var(--ivory);font-family:'DM Sans',sans-serif;fo
 .bk-section{padding:var(--section-gap) 0}
 .bk-section-label{font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:var(--gold);margin-bottom:20px;font-weight:400}
 .bk-section h2{font-family:'Cormorant Garamond',serif;font-size:clamp(1.6rem,3.5vw,2.2rem);font-weight:400;line-height:1.3;margin-bottom:24px}
-.bk-section p{font-size:.95rem;color:var(--muted);line-height:1.95;max-width:620px}
+.bk-section p{font-size:.97rem;color:var(--muted);line-height:1.95;max-width:620px}
 
 /* ── What You Get ── */
 .bk-gets{list-style:none;margin-top:32px;display:flex;flex-direction:column;gap:16px}
@@ -106,8 +106,9 @@ body{background:var(--bg);color:var(--ivory);font-family:'DM Sans',sans-serif;fo
 
       {{-- Hero --}}
       <section class="bk-hero">
-        <h1>This is not a consultation.<br>This is a <em>market opportunity session.</em></h1>
-        <p class="hero-sub">We map your territory, expose your coverage gaps, and tell you honestly whether there is a real case to expand — and exactly how to move on it.</p>
+        <h1>This is a <em>market opportunity session.</em></h1>
+        <p class="hero-sub">We map your territory, identify coverage gaps, and give you a direct answer on whether there&rsquo;s a real case to expand &mdash; and how to move on it.</p>
+        <p class="hero-sub" style="margin-top:-18px;font-size:.9rem">We look at territory availability, competitive position, signal architecture, and programmatic AI SEO coverage across your service area. This is not basic SEO advice &mdash; this is market-level visibility strategy.</p>
 
         @if(request('payment') === 'cancelled')
         <div class="bk-notice">
@@ -126,8 +127,7 @@ body{background:var(--bg);color:var(--ivory);font-family:'DM Sans',sans-serif;fo
         <p class="bk-section-label">What This Is</p>
         <h2>A focused analysis. A straight answer.</h2>
         <p>Before anyone builds anything, we need to know what is actually there. The Strategy Session is a focused examination of your local market — where the opportunity exists, what your current footprint looks like, and whether there is a real case to expand.</p>
-        <p style="margin-top:16px">We do not pitch programs on this session. We tell you the truth. If the opportunity is there, you will leave knowing exactly what it is and how to pursue it. If it is not, you will know that too.</p>
-      </section>
+        <p style="margin-top:16px">We do not pitch programs on this session. We tell you the truth. If the opportunity is there, you will leave knowing exactly what it is and how to pursue it. If it is not, you will know that too.</p>        <p style="margin-top:16px;font-size:.88rem;color:var(--muted)">Most businesses don&rsquo;t need more SEO &mdash; they need the right signals working together. &rarr; <a href="/how-it-works" style="color:var(--gold);text-decoration:none">See how the system works</a></p>      </section>
 
       <hr class="bk-divider">
 
@@ -165,7 +165,10 @@ body{background:var(--bg);color:var(--ivory);font-family:'DM Sans',sans-serif;fo
   </main>
 
   <footer class="bk-footer">
-    <a href="/">seoaico.com</a> &nbsp;&mdash;&nbsp; All rights reserved
+    <div style="margin-bottom:8px;font-size:.82rem"><strong style="color:var(--ivory)">SEO AI Co™</strong> &nbsp;&middot;&nbsp; Programmatic AI SEO Systems</div>
+    <div style="margin-bottom:8px"><a href="mailto:hello@seoaico.com">hello@seoaico.com</a></div>
+    <p style="font-size:.63rem;color:rgba(168,168,160,.38);max-width:440px;margin:0 auto 12px;line-height:1.5">SEO AI Co™ and associated systems, processes, and methodologies are proprietary and may not be reproduced without permission.</p>
+    <div><a href="/">seoaico.com</a> &nbsp;&mdash;&nbsp; <a href="{{ route('privacy') }}">Privacy</a> &nbsp;&mdash;&nbsp; <a href="{{ route('terms') }}">Terms</a></div>
   </footer>
 
   <script>

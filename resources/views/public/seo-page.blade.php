@@ -29,7 +29,7 @@
 <meta property="og:url" content="{{ $page->canonical_url }}">
 <meta property="og:title" content="{{ $page->og_title ?? $page->meta_title }}">
 <meta property="og:description" content="{{ $page->og_description ?? $page->meta_description }}">
-<meta property="og:site_name" content="SEOAIco">
+<meta property="og:site_name" content="SEO AI Co™">
 
 {{-- JSON-LD Schema --}}
 <script type="application/ld+json">{!! json_encode($page->resolved_schema, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT) !!}</script>
@@ -512,8 +512,14 @@ footer{border-top:1px solid var(--border);padding:36px 64px;display:flex;flex-di
     <a href="{{ url('/') }}" class="logo">
       <span class="logo-seo">SEO</span><span class="logo-ai">AI</span><span class="logo-co">co</span>
     </a>
-    <span class="footer-copy">&copy; {{ date('Y') }} SEOAIco. Licensed Ranking Infrastructure.</span>
+    <span class="footer-copy">&copy; {{ date('Y') }} SEO AI Co™ &middot; Programmatic AI SEO Systems</span>
   </div>
+  <p style="text-align:center;font-size:.72rem;color:var(--muted);margin:6px 0 4px">
+    <a href="mailto:hello@seoaico.com" style="color:var(--muted);text-decoration:none">hello@seoaico.com</a>
+  </p>
+  <p style="text-align:center;font-size:.62rem;color:rgba(168,168,160,.35);max-width:520px;margin:0 auto 12px;line-height:1.5">
+    SEO AI Co™ and associated systems, processes, and methodologies are proprietary and may not be reproduced without permission.
+  </p>
   <nav class="footer-legal">
     <a href="{{ route('privacy') }}">Privacy</a>
     <a href="{{ route('terms') }}">Terms</a>
