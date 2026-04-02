@@ -54,20 +54,18 @@ body{background:var(--bg);color:var(--ivory);font-family:'DM Sans',sans-serif;fo
 /* ── Divider ── */
 .bk-divider{border:none;border-top:1px solid var(--border);margin:0}
 
-/* ── Section ── */
-.bk-section{padding:var(--section-gap) 0}
-.bk-section-label{font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:var(--gold);margin-bottom:20px;font-weight:400}
-.bk-section h2{font-family:'Cormorant Garamond',serif;font-size:clamp(1.6rem,3.5vw,2.2rem);font-weight:400;line-height:1.3;margin-bottom:24px}
-.bk-section p{font-size:.97rem;color:var(--muted);line-height:1.95;max-width:620px}
+/* ── What Happens ── */
+.bk-happens{padding:64px 0 40px;text-align:left}
+.bk-happens ul{list-style:none;display:flex;flex-direction:column;gap:14px;margin-top:20px}
+.bk-happens li{display:flex;align-items:flex-start;gap:14px;font-size:.93rem;color:var(--ivory);line-height:1.7}
+.bk-happens li::before{content:'·';color:var(--gold);flex-shrink:0;font-size:1.6rem;line-height:1.1}
 
-/* ── What You Get ── */
-.bk-gets{list-style:none;margin-top:32px;display:flex;flex-direction:column;gap:16px}
-.bk-gets li{display:flex;align-items:flex-start;gap:16px;font-size:.9rem;color:var(--ivory);line-height:1.7}
-.bk-gets li::before{content:'→';color:var(--gold);flex-shrink:0;font-size:1rem;margin-top:2px}
-
-/* ── Promise ── */
-.bk-promise{padding:64px 0;text-align:center}
-.bk-promise blockquote{font-family:'Cormorant Garamond',serif;font-size:clamp(1.3rem,3vw,1.75rem);font-weight:400;font-style:italic;color:var(--ivory);line-height:1.5;max-width:580px;margin:0 auto;border-left:2px solid var(--gold);padding-left:28px;text-align:left}
+/* ── Authority ── */
+.bk-authority{padding:40px 0 64px;border-top:1px solid var(--border);text-align:center}
+.bk-authority .auth-brand{font-family:'Cormorant Garamond',serif;font-size:clamp(1.3rem,3vw,1.8rem);font-weight:400;color:var(--ivory);line-height:1.3;margin-bottom:10px}
+.bk-authority .auth-brand em{font-style:italic;color:var(--gold)}
+.bk-authority .auth-sub{font-size:.78rem;letter-spacing:.14em;text-transform:uppercase;color:var(--gold);margin-bottom:18px;font-weight:400}
+.bk-authority .auth-body{font-size:.9rem;color:var(--muted);max-width:460px;margin:0 auto;line-height:1.85}
 
 /* ── Footer ── */
 .bk-footer{padding:32px 40px;border-top:1px solid var(--border);text-align:center;font-size:.75rem;color:var(--muted);letter-spacing:.02em}
@@ -85,7 +83,6 @@ body{background:var(--bg);color:var(--ivory);font-family:'DM Sans',sans-serif;fo
   .bk-nav{padding:20px 24px}
   .bk-wrap{padding:0 24px}
   :root{--section-gap:64px}
-  .bk-promise blockquote{padding-left:20px}
   .bk-entry-intro{padding:56px 24px 36px}
 }
 </style>
@@ -106,9 +103,9 @@ body{background:var(--bg);color:var(--ivory);font-family:'DM Sans',sans-serif;fo
 
       {{-- Hero --}}
       <section class="bk-hero">
-        <h1>This is a <em>market opportunity session.</em></h1>
-        <p class="hero-sub">We map your territory, identify coverage gaps, and give you a direct answer on whether there&rsquo;s a real case to expand &mdash; and how to move on it.</p>
-        <p class="hero-sub" style="margin-top:-18px;font-size:.9rem">We look at territory availability, competitive position, signal architecture, and programmatic AI SEO coverage across your service area. This is not basic SEO advice &mdash; this is market-level visibility strategy.</p>
+        <h1>This is not a consultation.<br>This is a <em>market opportunity session.</em></h1>
+        <p class="hero-sub">We analyze your market, identify gaps, and tell you &mdash; clearly &mdash; if there is real opportunity to dominate your area.</p>
+        <p class="hero-sub" style="margin-top:-18px;font-size:.9rem;letter-spacing:.01em">No fluff. No pitch. Just clarity.</p>
 
         @if(request('payment') === 'cancelled')
         <div class="bk-notice">
@@ -122,34 +119,27 @@ body{background:var(--bg);color:var(--ivory);font-family:'DM Sans',sans-serif;fo
 
       <hr class="bk-divider">
 
-      {{-- What This Is --}}
-      <section class="bk-section">
-        <p class="bk-section-label">What This Is</p>
-        <h2>A focused analysis. A straight answer.</h2>
-        <p>Before anyone builds anything, we need to know what is actually there. The Strategy Session is a focused examination of your local market — where the opportunity exists, what your current footprint looks like, and whether there is a real case to expand.</p>
-        <p style="margin-top:16px">We do not pitch programs on this session. We tell you the truth. If the opportunity is there, you will leave knowing exactly what it is and how to pursue it. If it is not, you will know that too.</p>        <p style="margin-top:16px;font-size:.88rem;color:var(--muted)">Most businesses don&rsquo;t need more SEO &mdash; they need the right signals working together. &rarr; <a href="/how-it-works" style="color:var(--gold);text-decoration:none">See how the system works</a></p>      </section>
+      {{-- What Happens --}}
+      <div class="bk-happens">
+        <p class="bk-section-label">What happens on this call</p>
+        <ul>
+          <li>We map your local market</li>
+          <li>We identify missed visibility opportunities</li>
+          <li>We assess your current position vs competitors</li>
+          <li>We tell you if scaling makes sense &mdash; or not</li>
+        </ul>
+      </div>
 
       <hr class="bk-divider">
 
-      {{-- What You Get --}}
-      <section class="bk-section">
-        <p class="bk-section-label">What You Leave With</p>
-        <h2>Clarity, not a proposal.</h2>
-        <ul class="bk-gets">
-          <li>A clear picture of your target territory and its current coverage gaps</li>
-          <li>An honest assessment of where your business stands in local search</li>
-          <li>A direct answer — is there real, actionable opportunity here or not</li>
-          <li>If yes: a recommended path forward with specifics, not generalities</li>
-        </ul>
-      </section>
-
-    </div>
-
-    {{-- Promise --}}
-    <div class="bk-wrap">
-      <div class="bk-promise">
-        <blockquote>If there&rsquo;s no real opportunity, we&rsquo;ll tell you. If there is &mdash; we&rsquo;ll show you exactly how to move on it.</blockquote>
+      {{-- Authority --}}
+      <div class="bk-authority">
+        <p class="auth-sub">Powered by</p>
+        <p class="auth-brand"><em>SEO AI Co™</em></p>
+        <p class="auth-sub" style="margin-bottom:14px">Programmatic AI SEO Systems</p>
+        <p class="auth-body">Built to strengthen every signal that drives<br>local visibility and market dominance.</p>
       </div>
+
     </div>
 
     {{-- Booking entry section --}}
@@ -157,7 +147,7 @@ body{background:var(--bg);color:var(--ivory);font-family:'DM Sans',sans-serif;fo
       <div class="bk-entry-intro">
         <p class="bk-section-label">Reserve Your Session</p>
         <h2>Choose where you want to start.</h2>
-        <p>All our work begins with a real conversation about your market. Pick the session that fits where you are.</p>
+        <p>One conversation. A direct answer about your market.</p>
       </div>
       @include('components.booking-modal', ['disableOverlayDismiss' => true, 'panelMode' => true])
     </section>
