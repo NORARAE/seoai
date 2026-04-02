@@ -23,6 +23,7 @@ p{color:#a8a8a0;font-size:.92rem;line-height:1.7;margin-bottom:16px}
 .meet:hover{background:#e2c97d}
 .home{color:#c8a84b;font-size:.82rem;text-decoration:none;display:inline-block;margin-top:16px}
 </style>
+@include('partials.clarity')
 </head>
 <body>
 <div class="box">

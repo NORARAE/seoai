@@ -24,6 +24,7 @@ p{color:#a8a8a0;font-size:.92rem;line-height:1.7;margin-bottom:16px}
 .home{color:#c8a84b;font-size:.82rem;text-decoration:none;display:inline-block;margin-top:16px}
 .msg{background:rgba(200,168,75,.1);border:1px solid rgba(200,168,75,.2);border-radius:6px;padding:12px 16px;color:#c8a84b;font-size:.88rem;margin-bottom:16px;display:none}
 </style>
+@include('partials.clarity')
 </head>
 <body>
 <div class="box">

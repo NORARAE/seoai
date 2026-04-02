@@ -11,14 +11,19 @@ class BookingSeeder extends Seeder
     public function run(): void
     {
         $types = [
-            ['name' => 'Free Discovery Call', 'slug' => 'discovery', 'description' => 'A quick 15-minute call to see if we\'re a fit.', 'duration_minutes' => 15, 'price' => null, 'is_free' => true, 'sort_order' => 1],
-            ['name' => 'Paid Strategy Consult', 'slug' => 'strategy', 'description' => 'Deep-dive into your SEO strategy and growth roadmap.', 'duration_minutes' => 60, 'price' => 250.00, 'is_free' => false, 'sort_order' => 2],
-            ['name' => 'Agency License Review', 'slug' => 'agency-review', 'description' => 'Review your current setup and plan your agency licence rollout.', 'duration_minutes' => 60, 'price' => 250.00, 'is_free' => false, 'sort_order' => 3],
-            ['name' => 'Full SEO Audit Session', 'slug' => 'seo-audit', 'description' => 'Comprehensive audit of your site\'s SEO health and opportunities.', 'duration_minutes' => 90, 'price' => 400.00, 'is_free' => false, 'sort_order' => 4],
-            ['name' => 'Custom Project Scoping', 'slug' => 'project-scoping', 'description' => 'Scope out a custom build or integration project.', 'duration_minutes' => 60, 'price' => 250.00, 'is_free' => false, 'sort_order' => 5],
-            ['name' => 'Graphic Design Consult', 'slug' => 'design', 'description' => 'Discuss branding, layout, and visual direction for your project.', 'duration_minutes' => 45, 'price' => 200.00, 'is_free' => false, 'sort_order' => 6],
-            ['name' => 'Art & Creative Dev', 'slug' => 'creative', 'description' => 'Explore creative development needs — from concept to execution.', 'duration_minutes' => 45, 'price' => 200.00, 'is_free' => false, 'sort_order' => 7],
-            ['name' => 'Media & Video Production', 'slug' => 'media', 'description' => 'Plan your video, media, or content production pipeline.', 'duration_minutes' => 60, 'price' => 300.00, 'is_free' => false, 'sort_order' => 8],
+            // ── PRIMARY FUNNEL ENTRIES (bookable) ───────────────────────────
+            ['name' => 'Free Discovery Call', 'slug' => 'discovery', 'description' => 'A quick fit check to see if we\'re aligned. No strategy delivered.', 'duration_minutes' => 30, 'price' => null, 'is_free' => true, 'is_active' => true, 'sort_order' => 1],
+            // PRIMARY entry point — Market Opportunity Audit
+            ['name' => 'Market Opportunity Audit', 'slug' => 'audit', 'description' => 'We analyze your current market positioning, identify missed opportunities, and outline where growth is realistically achievable.', 'duration_minutes' => 75, 'price' => 500.00, 'is_free' => false, 'is_active' => true, 'sort_order' => 2],
+
+            // ── SECONDARY / LEGACY TYPES (retain for direct-link access) ────
+            ['name' => 'Paid Strategy Consult', 'slug' => 'strategy', 'description' => 'Deep-dive into your SEO strategy and growth roadmap.', 'duration_minutes' => 60, 'price' => 250.00, 'is_free' => false, 'is_active' => false, 'sort_order' => 10],
+            ['name' => 'Agency License Review', 'slug' => 'agency-review', 'description' => 'Review your current setup and plan your agency licence rollout.', 'duration_minutes' => 60, 'price' => 250.00, 'is_free' => false, 'is_active' => false, 'sort_order' => 11],
+            ['name' => 'Full SEO Audit Session', 'slug' => 'seo-audit', 'description' => 'Comprehensive audit of your site\'s SEO health and opportunities.', 'duration_minutes' => 90, 'price' => 400.00, 'is_free' => false, 'is_active' => false, 'sort_order' => 12],
+            ['name' => 'Custom Project Scoping', 'slug' => 'project-scoping', 'description' => 'Scope out a custom build or integration project.', 'duration_minutes' => 60, 'price' => 250.00, 'is_free' => false, 'is_active' => false, 'sort_order' => 13],
+            ['name' => 'Graphic Design Consult', 'slug' => 'design', 'description' => 'Discuss branding, layout, and visual direction for your project.', 'duration_minutes' => 45, 'price' => 200.00, 'is_free' => false, 'is_active' => false, 'sort_order' => 14],
+            ['name' => 'Art & Creative Dev', 'slug' => 'creative', 'description' => 'Explore creative development needs — from concept to execution.', 'duration_minutes' => 45, 'price' => 200.00, 'is_free' => false, 'is_active' => false, 'sort_order' => 15],
+            ['name' => 'Media & Video Production', 'slug' => 'media', 'description' => 'Plan your video, media, or content production pipeline.', 'duration_minutes' => 60, 'price' => 300.00, 'is_free' => false, 'is_active' => false, 'sort_order' => 16],
         ];
 
         foreach ($types as $type) {

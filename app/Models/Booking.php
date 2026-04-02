@@ -4,11 +4,14 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Booking extends Model
 {
     protected $fillable = [
         'consult_type_id',
+        'booking_type',
         'name',
         'email',
         'phone',
@@ -37,6 +40,7 @@ class Booking extends Model
     protected function casts(): array
     {
         return [
+            'booking_type' => 'string',
             'add_ons' => 'array',
             'preferred_date' => 'date',
             'confirmed_at' => 'datetime',
@@ -53,6 +57,16 @@ class Booking extends Model
     public function consultType(): BelongsTo
     {
         return $this->belongsTo(ConsultType::class);
+    }
+
+    public function lead(): HasOne
+    {
+        return $this->hasOne(Lead::class, 'booking_id');
+    }
+
+    public function emailLogs(): HasMany
+    {
+        return $this->hasMany(EmailLog::class);
     }
 
     public function isPending(): bool

@@ -63,25 +63,26 @@ class OnboardingController extends Controller
             'booking_id' => 'nullable|integer|exists:bookings,id',
             'email' => 'nullable|email|max:255',
             'business_name' => 'required|string|max:255',
-            'website' => 'nullable|url|max:500',
+            'website' => 'nullable|string|max:500',
             'service_area' => 'nullable|string|max:1000',
-            'license' => 'required|file|mimes:pdf,jpg,jpeg,png|max:5120',
+            'goals' => 'nullable|string|max:2000',
+            'challenges' => 'nullable|string|max:2000',
+            'growth_intent' => 'nullable|in:aggressive,steady,unsure',
+            'ads_status' => 'nullable|in:running,has_budget,no_budget,not_interested',
+            'license' => 'nullable|file|mimes:pdf,jpg,jpeg,png|max:5120',
             'primary_contact' => 'required|string|max:255',
-            'phone' => 'required|string|max:50',
-            'ad_budget_ready' => 'required|in:0,1',
+            'phone' => 'nullable|string|max:50',
+            'ad_budget_ready' => 'nullable|in:0,1',
             'payment_method_for_ads' => 'nullable|string|max:255',
             'analytics_access' => 'nullable|in:0,1',
             'search_console_access' => 'nullable|in:0,1',
             'platform_type' => 'nullable|in:wordpress,shopify,other',
-            'access_method' => 'required|in:invite_email,provide_later,need_help',
+            'access_method' => 'nullable|in:invite_email,provide_later,need_help',
             'add_ons' => 'nullable|array|max:10',
             'add_ons.*' => 'string|max:100',
         ], [
-            'license.required' => 'Business license upload is required.',
             'license.mimes' => 'License must be a PDF, JPG, or PNG file.',
             'license.max' => 'License file must be under 5 MB.',
-            'ad_budget_ready.required' => 'Please indicate your ad budget readiness.',
-            'access_method.required' => 'Please choose how you would like to set up access.',
         ]);
 
         $isPreview = empty($validated['booking_id']);
@@ -113,48 +114,62 @@ class OnboardingController extends Controller
                 ->with('already_submitted', true);
         }
 
-        // ── Secure file storage ───────────────────────────────────────────────
-        // Files go to storage/app/private/onboarding/{booking_id}/ — never public.
-        $file = $request->file('license');
-        $ext = strtolower($file->getClientOriginalExtension());
+        // ── Secure file storage (optional) ───────────────────────────────────
+        $storagePath = null;
+        $origName = null;
+        $fileSize = null;
+        $fileMime = null;
 
-        // Unpredictable filename — prevents enumeration
-        $storedName = Str::random(32) . '.' . $ext;
-        $folderKey = $validated['booking_id'] ?? ('preview-' . $lead->id);
-        $storagePath = 'licenses/' . $folderKey . '/' . $storedName;
+        if ($request->hasFile('license') && $request->file('license')->isValid()) {
+            $file = $request->file('license');
+            $ext = strtolower($file->getClientOriginalExtension());
+            $storedName = Str::random(32) . '.' . $ext;
+            $folderKey = $validated['booking_id'] ?? ('preview-' . $lead->id);
+            $storagePath = 'licenses/' . $folderKey . '/' . $storedName;
 
-        Storage::disk('local')->put(
-            $storagePath,
-            file_get_contents($file->getRealPath())
-        );
+            Storage::disk('local')->put(
+                $storagePath,
+                file_get_contents($file->getRealPath())
+            );
+
+            $origName = $file->getClientOriginalName();
+            $fileSize = $file->getSize();
+            $fileMime = $file->getMimeType();
+        }
 
         // ── Create submission record ──────────────────────────────────────────
         $submission = OnboardingSubmission::create([
             'lead_id' => $lead->id,
             'booking_id' => $validated['booking_id'] ?? null,
             'business_name' => $validated['business_name'],
-            'website' => $validated['website'],
-            'service_area' => $validated['service_area'],
+            'website' => $validated['website'] ?? null,
+            'service_area' => $validated['service_area'] ?? null,
+            'goals' => $validated['goals'] ?? null,
+            'challenges' => $validated['challenges'] ?? null,
+            'growth_intent' => $validated['growth_intent'] ?? null,
+            'ads_status' => $validated['ads_status'] ?? null,
             'license_path' => $storagePath,
-            'license_original_name' => $file->getClientOriginalName(),
-            'license_size_bytes' => $file->getSize(),
-            'license_mime' => $file->getMimeType(),
+            'license_original_name' => $origName,
+            'license_size_bytes' => $fileSize,
+            'license_mime' => $fileMime,
             'primary_contact' => $validated['primary_contact'],
-            'phone' => $validated['phone'],
+            'phone' => $validated['phone'] ?? null,
             'ad_budget_ready' => (bool) ($validated['ad_budget_ready'] ?? false),
             'payment_method_for_ads' => $validated['payment_method_for_ads'] ?? null,
             'analytics_access' => (bool) ($validated['analytics_access'] ?? false),
             'search_console_access' => (bool) ($validated['search_console_access'] ?? false),
             'platform_type' => $validated['platform_type'] ?? null,
-            'access_method' => $validated['access_method'],
+            'access_method' => $validated['access_method'] ?? null,
             'add_ons' => $validated['add_ons'] ?? null,
             'submitted_at' => now(),
         ]);
 
         // ── Advance CRM status ────────────────────────────────────────────────
+        $existingTags = $lead->tags ?? [];
         $lead->update([
             'onboarding_status' => 'submitted',
-            'lifecycle_stage' => \App\Models\Lead::STAGE_ONBOARDING_SUBMITTED,
+            'lifecycle_stage' => \App\Models\Lead::STAGE_OPPORTUNITY_IDENTIFIED,
+            'tags' => array_values(array_unique(array_merge($existingTags, ['qualified']))),
         ]);
 
         // ── Send confirmation email ───────────────────────────────────────────

@@ -90,6 +90,7 @@ footer{border-top:1px solid var(--border);padding:32px 64px;display:flex;align-i
 /* deep: needed for CTA button foreground */
 .deep{color:#0b0b0b}
 </style>
+@include('partials.clarity')
 </head>
 <body>
 

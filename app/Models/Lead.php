@@ -20,6 +20,7 @@ class Lead extends Model
         'source',
         'lifecycle_stage',
         'onboarding_status',
+        'tags',
         'notes',
         'score',
         'grade',
@@ -31,6 +32,7 @@ class Lead extends Model
         return [
             'score' => 'integer',
             'scored_at' => 'datetime',
+            'tags' => 'array',
         ];
     }
 
@@ -39,6 +41,7 @@ class Lead extends Model
     public const STAGE_BOOKED = 'booked';
     public const STAGE_PAID = 'paid';
     public const STAGE_ONBOARDING_SUBMITTED = 'onboarding_submitted';
+    public const STAGE_OPPORTUNITY_IDENTIFIED = 'opportunity_identified';
     public const STAGE_APPROVED = 'approved';
     public const STAGE_ACTIVE = 'active';
     public const STAGE_REJECTED = 'rejected';

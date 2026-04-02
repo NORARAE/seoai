@@ -76,6 +76,7 @@ body{background:var(--bg);color:var(--ivory);font-family:'DM Sans',sans-serif;fo
   body{padding:40px 20px 60px}
 }
 </style>
+@include('partials.clarity')
 </head>
 <body>
 

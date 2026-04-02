@@ -6,9 +6,11 @@ use App\Mail\BookingAlert;
 use App\Mail\BookingConfirmed;
 use App\Mail\BookingFollowUp;
 use App\Mail\BookingPreCall;
+use App\Mail\AuditWhatToPrepare;
 use App\Models\Booking;
 use App\Models\BookingAvailability;
 use App\Models\ConsultType;
+use App\Models\EmailLog;
 use App\Models\Lead;
 use App\Services\GoogleCalendarService;
 use Carbon\Carbon;
@@ -36,7 +38,7 @@ class BookingController extends Controller
     public function getSlots(Request $request): JsonResponse
     {
         $request->validate([
-            'date' => 'required|date|after_or_equal:today',
+            'date' => 'required|date|after:today',
             'consult_type_id' => 'required|exists:consult_types,id',
         ]);
 
@@ -74,6 +76,11 @@ class BookingController extends Controller
      */
     public function store(Request $request): JsonResponse
     {
+        // Normalize website — auto-prefix https:// if no scheme provided and value looks like a domain
+        if ($request->filled('website') && !preg_match('#^https?://#i', $request->website) && str_contains($request->website, '.')) {
+            $request->merge(['website' => 'https://' . $request->website]);
+        }
+
         $validated = $request->validate([
             'consult_type_id' => 'required|exists:consult_types,id',
             'name' => 'required|string|max:255',
@@ -82,7 +89,7 @@ class BookingController extends Controller
             'company' => 'nullable|string|max:255',
             'website' => 'nullable|url|max:500',
             'message' => 'nullable|string|max:2000',
-            'preferred_date' => 'required|date|after_or_equal:today',
+            'preferred_date' => 'required|date|after:today',
             'preferred_time' => 'required|date_format:H:i',
         ]);
 
@@ -104,6 +111,7 @@ class BookingController extends Controller
 
         $booking = Booking::create([
             ...$validated,
+            'booking_type' => $this->resolveBookingType($type->slug),
             'status' => 'pending',
             'public_booking_token' => Str::random(64),
         ]);
@@ -133,11 +141,16 @@ class BookingController extends Controller
 
         // ── CRM: create or update lead record ────────────────────────────────
         try {
-            Lead::syncFromBooking(
+            $lead = Lead::syncFromBooking(
                 $booking,
                 $booking->consultType->is_free ? 'free' : null,
                 \App\Models\Lead::STAGE_BOOKED
             );
+            // Pipeline tag: Booked Call
+            $existing_tags = $lead->tags ?? [];
+            if (!in_array('lead:booked', $existing_tags)) {
+                $lead->update(['tags' => array_merge($existing_tags, ['lead:booked'])]);
+            }
         } catch (\Exception $e) {
             Log::channel('booking')->error('Lead sync failed', [
                 'booking_id' => $booking->id,
@@ -150,10 +163,24 @@ class BookingController extends Controller
             Mail::to($booking->email)->queue(new BookingConfirmed($booking));
             Mail::to(config('services.booking.owner_email', 'hello@seoaico.com'))
                 ->queue(new BookingAlert($booking));
+            EmailLog::create([
+                'booking_id' => $booking->id,
+                'email_type' => 'confirmation',
+                'recipient_email' => $booking->email,
+                'sent_at' => now(),
+                'status' => 'sent',
+            ]);
         } catch (\Exception $e) {
             Log::channel('booking')->error('Booking email failed', [
                 'booking_id' => $booking->id,
                 'error' => $e->getMessage(),
+            ]);
+            EmailLog::create([
+                'booking_id' => $booking->id,
+                'email_type' => 'confirmation',
+                'recipient_email' => $booking->email,
+                'status' => 'failed',
+                'error_message' => $e->getMessage(),
             ]);
         }
 
@@ -166,6 +193,13 @@ class BookingController extends Controller
             if ($preCallDelay->isFuture()) {
                 Mail::to($booking->email)
                     ->later($preCallDelay, new BookingPreCall($booking));
+                EmailLog::create([
+                    'booking_id' => $booking->id,
+                    'email_type' => 'pre_call',
+                    'recipient_email' => $booking->email,
+                    'sent_at' => $preCallDelay,
+                    'status' => 'scheduled',
+                ]);
             }
         } catch (\Exception $e) {
             Log::channel('booking')->warning('Pre-call email scheduling failed', [
@@ -222,6 +256,11 @@ class BookingController extends Controller
      */
     public function initiateCheckout(Request $request): JsonResponse
     {
+        // Normalize website — auto-prefix https:// if no scheme provided and value looks like a domain
+        if ($request->filled('website') && !preg_match('#^https?://#i', $request->website) && str_contains($request->website, '.')) {
+            $request->merge(['website' => 'https://' . $request->website]);
+        }
+
         $validated = $request->validate([
             'consult_type_id' => 'required|exists:consult_types,id',
             'name' => 'required|string|max:255',
@@ -230,7 +269,7 @@ class BookingController extends Controller
             'company' => 'nullable|string|max:255',
             'website' => 'nullable|url|max:500',
             'message' => 'nullable|string|max:2000',
-            'preferred_date' => 'required|date|after_or_equal:today',
+            'preferred_date' => 'required|date|after:today',
             'preferred_time' => 'required|date_format:H:i',
             'add_ons' => 'nullable|array|max:4',
             'add_ons.*' => 'string|in:seo_audit,competitor_analysis,thirty_day_plan,strategy_followup',
@@ -259,6 +298,7 @@ class BookingController extends Controller
 
         $booking = Booking::create([
             ...$validated,
+            'booking_type' => $this->resolveBookingType($type->slug),
             'status' => 'awaiting_payment',
             'public_booking_token' => Str::random(64),
         ]);
@@ -401,10 +441,24 @@ class BookingController extends Controller
             Mail::to($booking->email)->queue(new BookingConfirmed($booking));
             Mail::to(config('services.booking.owner_email', 'hello@seoaico.com'))
                 ->queue(new BookingAlert($booking));
+            EmailLog::create([
+                'booking_id' => $booking->id,
+                'email_type' => 'confirmation',
+                'recipient_email' => $booking->email,
+                'sent_at' => now(),
+                'status' => 'sent',
+            ]);
         } catch (\Exception $e) {
             Log::channel('booking')->error('Booking email failed for paid booking', [
                 'booking_id' => $booking->id,
                 'error' => $e->getMessage(),
+            ]);
+            EmailLog::create([
+                'booking_id' => $booking->id,
+                'email_type' => 'confirmation',
+                'recipient_email' => $booking->email,
+                'status' => 'failed',
+                'error_message' => $e->getMessage(),
             ]);
         }
 
@@ -417,12 +471,49 @@ class BookingController extends Controller
             if ($preCallDelay->isFuture()) {
                 Mail::to($booking->email)
                     ->later($preCallDelay, new BookingPreCall($booking));
+                EmailLog::create([
+                    'booking_id' => $booking->id,
+                    'email_type' => 'pre_call',
+                    'recipient_email' => $booking->email,
+                    'sent_at' => $preCallDelay,
+                    'status' => 'scheduled',
+                ]);
             }
         } catch (\Exception $e) {
             Log::channel('booking')->warning('Pre-call email scheduling failed for paid booking', [
                 'booking_id' => $booking->id,
                 'error' => $e->getMessage(),
             ]);
+        }
+
+        // ── Audit-specific email sequence ────────────────────────────────────
+        // "What to Prepare" email sent 48 h before session (falls back to 24 h)
+        if ($booking->booking_type === 'audit') {
+            try {
+                $sessionDateTime = Carbon::parse(
+                    $booking->preferred_date->toDateString() . ' ' . $booking->preferred_time
+                );
+                $prepDelay = $sessionDateTime->copy()->subHours(48);
+                if (!$prepDelay->isFuture()) {
+                    $prepDelay = $sessionDateTime->copy()->subHours(24);
+                }
+                if ($prepDelay->isFuture()) {
+                    Mail::to($booking->email)
+                        ->later($prepDelay, new AuditWhatToPrepare($booking));
+                    EmailLog::create([
+                        'booking_id' => $booking->id,
+                        'email_type' => 'audit_prep',
+                        'recipient_email' => $booking->email,
+                        'sent_at' => $prepDelay,
+                        'status' => 'scheduled',
+                    ]);
+                }
+            } catch (\Exception $e) {
+                Log::channel('booking')->warning('Audit prep email scheduling failed', [
+                    'booking_id' => $booking->id,
+                    'error' => $e->getMessage(),
+                ]);
+            }
         }
 
         return redirect()->route('book.upgrade', ['booking' => $booking->id]);
@@ -475,6 +566,21 @@ class BookingController extends Controller
         ]);
 
         return response()->json(['success' => true, 'message' => 'Booking cancelled.']);
+    }
+
+    /**
+     * Map a ConsultType slug to the booking_type enum value.
+     */
+    private function resolveBookingType(string $slug): string
+    {
+        return match ($slug) {
+            'discovery' => 'discovery',
+            'audit' => 'audit',
+            'strategy', 'agency-review',
+            'seo-audit', 'project-scoping' => 'strategy',
+            'build' => 'build',
+            default => 'discovery',
+        };
     }
 
     /**

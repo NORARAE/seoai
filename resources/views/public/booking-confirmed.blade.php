@@ -17,7 +17,7 @@
 <link rel="manifest" href="/site.webmanifest">
 <meta name="theme-color" content="#080808">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Consult Confirmed — SEOAIco</title>
+<title>Session Confirmed — SEOAIco</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
@@ -105,11 +105,11 @@ body {
 .conf-details {
   border-top: 1px solid var(--border);
   border-bottom: 1px solid var(--border);
-  padding: 28px 0;
-  margin-bottom: 36px;
+  padding: 36px 0;
+  margin-bottom: 40px;
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 14px;
 }
 .conf-detail-row {
   display: flex;
@@ -133,28 +133,31 @@ body {
 .conf-ctas {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 16px;
   margin-bottom: 40px;
 }
 .conf-cta-primary {
   display: inline-flex;
   align-items: center;
+  justify-content: center;
   gap: 8px;
   background: var(--gold);
   color: #080808;
-  font-size: .78rem;
+  font-size: .82rem;
   font-weight: 500;
   letter-spacing: .14em;
   text-transform: uppercase;
-  padding: 14px 28px;
+  padding: 16px 32px;
+  min-height: 52px;
   text-decoration: none;
-  border-radius: 4px;
-  transition: background .3s, transform .2s;
+  border-radius: 12px;
+  transition: background .3s, transform .2s, box-shadow .2s;
   align-self: flex-start;
 }
 .conf-cta-primary:hover {
   background: var(--gold-lt);
   transform: translateY(-1px);
+  box-shadow: 0 4px 20px rgba(200,168,75,.22);
 }
 .conf-cta-secondary {
   font-size: .82rem;
@@ -233,16 +236,17 @@ body {
   .conf-cta-primary { width: 100%; justify-content: center; }
 }
 </style>
+@include('partials.clarity')
 </head>
 <body>
 <div class="conf-wrap">
 
-  <span class="conf-eye">Booking Confirmed</span>
+  <span class="conf-eye">Session Confirmed</span>
 
   <div class="conf-mark">&#10003;</div>
 
-  <h1 class="conf-hed">Your consult<br><em>is confirmed.</em></h1>
-  <p class="conf-sub">We've reserved your time. Confirmation details are on the way.</p>
+  <h1 class="conf-hed">Your session<br><em>is confirmed.</em></h1>
+  <p class="conf-sub">Next step: complete your onboarding so we can prepare properly for your call.</p>
 
   <div class="conf-details">
     <div class="conf-detail-row">
@@ -288,8 +292,9 @@ body {
 
     {{-- Primary CTA: onboarding --}}
     <a href="{{ route('onboarding.start', ['booking' => $booking->id]) }}" class="conf-cta-primary">
-      Complete Your Onboarding &rarr;
+      Continue to Onboarding &rarr;
     </a>
+    <p style="font-size:.78rem;color:#666;margin-top:-8px;letter-spacing:.01em;">This helps us prepare your session.</p>
 
     <a href="{{ $gcalUrl }}" target="_blank" rel="noopener" class="conf-cta-secondary">
       <span>+</span> Add to Google Calendar
@@ -321,6 +326,11 @@ body {
 <script>
   if(typeof gtag==='function'){
     gtag('event','view_confirmation',{booking_id:'{{ $booking->id }}'});
+    gtag('event','booking_completed',{
+      booking_id:'{{ $booking->id }}',
+      booking_type:'{{ addslashes($booking->booking_type ?? $booking->consultType->name) }}',
+      is_free:{{ $booking->consultType->is_free ? 'true' : 'false' }},
+    });
     @if(!$booking->consultType->is_free)
     gtag('event','purchase',{
       transaction_id:'{{ $booking->id }}',

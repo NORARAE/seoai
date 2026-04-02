@@ -20,6 +20,7 @@
         a{color:#c8a84b;text-decoration:none;font-weight:600}
         a:hover{text-decoration:underline}
     </style>
+@include('partials.clarity')
 </head>
 <body>
     <div class="card">

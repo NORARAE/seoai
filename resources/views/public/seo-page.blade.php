@@ -246,6 +246,7 @@ footer{border-top:1px solid var(--border);padding:36px 64px;display:flex;flex-di
   .ai-discovery{padding:44px 20px}
 }
 </style>
+@include('partials.clarity')
 </head>
 <body>
 

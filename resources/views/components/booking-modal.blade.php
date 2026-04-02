@@ -7,38 +7,63 @@
 
 <style>
 [x-cloak]{display:none!important}
-.bk-overlay{position:fixed;inset:0;z-index:9000;background:rgba(0,0,0,.72);backdrop-filter:blur(6px);display:flex;align-items:center;justify-content:center;padding:20px;opacity:0;pointer-events:none;transition:opacity .35s}
+.bk-overlay{position:fixed;inset:0;z-index:9000;background:rgba(0,0,0,.75);backdrop-filter:blur(6px);display:flex;align-items:center;justify-content:center;padding:16px;opacity:0;pointer-events:none;transition:opacity .35s}
 .bk-overlay.open{opacity:1;pointer-events:auto}
-.bk-box{background:#111;border:1px solid #222;border-radius:12px;width:100%;max-width:640px;max-height:90vh;overflow-y:auto;padding:40px 36px;position:relative;transform:translateY(20px);transition:transform .35s}
+.bk-box{background:#111;border:1px solid #222;border-radius:16px;width:100%;max-width:640px;max-height:92vh;overflow-y:auto;padding:40px 36px;position:relative;transform:translateY(20px);transition:transform .35s}
 .bk-overlay.open .bk-box{transform:none}
-.bk-close{position:absolute;top:16px;right:16px;background:none;border:none;color:#8a8a8a;font-size:1.4rem;cursor:pointer;line-height:1;padding:4px 8px;transition:color .2s}
-.bk-close:hover{color:#ede8de}
+.bk-close{position:absolute;top:14px;right:14px;background:rgba(255,255,255,.04);border:1px solid #222;border-radius:50%;width:36px;height:36px;color:#8a8a8a;font-size:1.2rem;cursor:pointer;line-height:1;padding:0;display:flex;align-items:center;justify-content:center;transition:color .2s,background .2s}
+.bk-close:hover{color:#ede8de;background:rgba(255,255,255,.08)}
 .bk-progress{display:flex;gap:8px;margin-bottom:28px}
 .bk-dot{width:100%;height:3px;border-radius:2px;background:#222;transition:background .3s}
 .bk-dot.active{background:var(--gold,#c8a84b)}
 .bk-dot.done{background:var(--gold-dim,#9a7a30)}
-.bk-title{font-family:'Cormorant Garamond',serif;font-size:1.6rem;font-weight:400;color:#ede8de;margin-bottom:6px}
-.bk-sub{font-size:.88rem;color:#a8a8a0;margin-bottom:24px;line-height:1.7}
-.bk-back{background:none;border:none;color:#a8a8a0;font-size:.78rem;letter-spacing:.14em;text-transform:uppercase;cursor:pointer;margin-bottom:16px;transition:color .2s;padding:0}
+.bk-title{font-family:'Cormorant Garamond',serif;font-size:1.7rem;font-weight:400;color:#ede8de;margin-bottom:6px;line-height:1.15}
+.bk-sub{font-size:.9rem;color:#a8a8a0;margin-bottom:24px;line-height:1.75}
+.bk-back{background:none;border:none;color:#a8a8a0;font-size:.76rem;letter-spacing:.14em;text-transform:uppercase;cursor:pointer;margin-bottom:18px;transition:color .2s;padding:6px 0;min-height:36px}
 .bk-back:hover{color:#ede8de}
 
 /* Step 1 — Consult type cards */
-.bk-types{display:grid;gap:10px}
-.bk-type{background:#0b0b0b;border:1px solid #1a1a1a;border-radius:8px;padding:18px 20px;cursor:pointer;transition:border-color .25s,background .25s;display:flex;justify-content:space-between;align-items:center}
-.bk-type:hover{border-color:#333;background:#0f0f0f}
+.bk-types{display:grid;gap:12px}
+.bk-type{background:#0b0b0b;border:1px solid #1a1a1a;border-radius:8px;padding:18px 20px;cursor:pointer;transition:border-color .25s,background .25s;display:flex;justify-content:space-between;align-items:flex-start;position:relative}
+.bk-type:hover{border-color:#2a2a2a;background:#0e0e0e}
 .bk-type.selected{border-color:var(--gold,#c8a84b);background:rgba(200,168,75,.04)}
-.bk-type-name{font-size:.95rem;color:#ede8de;font-weight:400}
-.bk-type-meta{display:flex;gap:14px;align-items:center}
+/* Secondary (free) — visually de-emphasised */
+.bk-type.secondary{opacity:.7}
+.bk-type.secondary:hover{opacity:1;border-color:#2a2a2a}
+.bk-type.secondary.selected{opacity:1;border-color:var(--gold,#c8a84b);background:rgba(200,168,75,.04)}
+/* Featured (audit) — gold accent */
+.bk-type.featured{border-color:rgba(200,168,75,.30);background:rgba(200,168,75,.03);box-shadow:inset 3px 0 0 rgba(200,168,75,.45)}
+.bk-type.featured:hover{border-color:rgba(200,168,75,.55);background:rgba(200,168,75,.06);box-shadow:inset 3px 0 0 rgba(200,168,75,.65)}
+.bk-type.featured.selected{border-color:var(--gold,#c8a84b);background:rgba(200,168,75,.08);box-shadow:inset 3px 0 0 var(--gold,#c8a84b)}
+.bk-type-badge{display:inline-flex;align-items:center;gap:5px;background:var(--gold,#c8a84b);color:#080808;font-size:.62rem;font-weight:600;letter-spacing:.10em;text-transform:uppercase;padding:3px 8px;border-radius:20px;margin-bottom:6px}
+.bk-type-name{font-size:1rem;color:#ede8de;font-weight:400}
+.bk-type-meta{display:flex;gap:14px;align-items:center;flex-shrink:0;margin-left:12px}
 .bk-type-dur{font-size:.76rem;color:#a8a8a0}
-.bk-type-price{font-size:.82rem;color:var(--gold,#c8a84b);font-weight:500}
-.bk-type-desc{font-size:.78rem;color:#777;margin-top:4px}
+.bk-type-price{font-size:.92rem;color:var(--gold,#c8a84b);font-weight:500}
+.bk-type-desc{font-size:.78rem;color:#777;margin-top:4px;line-height:1.55}
+.bk-type-microcopy{font-size:.72rem;color:#a8a8a0;margin-top:5px;font-style:italic}
+/* R&D tax microcopy */
+.bk-rd-note{font-size:.70rem;color:#4a4a42;margin-top:20px;line-height:1.6;text-align:center}
+.bk-rd-note a{color:#7a6a3a;text-decoration:none;border-bottom:1px solid #3a3020}
+.bk-rd-note a:hover{color:#c8a84b;border-color:#c8a84b}
+
+/* Anchor pricing tiers (non-bookable — visual / price anchoring only) */
+.bk-anchor-label{font-size:.68rem;letter-spacing:.14em;text-transform:uppercase;color:#444;margin:20px 0 8px}
+.bk-anchor-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.bk-anchor-card{background:#080808;border:1px solid #161616;border-radius:8px;padding:15px 16px;position:relative;overflow:hidden;cursor:default}
+.bk-anchor-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,rgba(200,168,75,.2),rgba(200,168,75,.06))}
+.bk-anchor-name{font-size:.80rem;color:#555;display:block;margin-bottom:3px}
+.bk-anchor-price{font-size:.92rem;color:#4a4032;font-weight:500}
+.bk-anchor-note{font-size:.68rem;color:#333;margin-top:4px;display:block;line-height:1.5}
+.bk-anchor-label-tag{font-size:.60rem;letter-spacing:.08em;text-transform:uppercase;color:#3a3028;display:inline-block;margin-top:6px}
+@media(max-width:480px){.bk-anchor-grid{grid-template-columns:1fr}}
 
 /* Step 2 — Date & Time */
 .bk-datepicker{margin-bottom:20px}
 .bk-datepicker input{width:100%;background:#0b0b0b;border:1px solid #1a1a1a;border-radius:6px;color:#ede8de;font-size:.92rem;padding:14px 16px;font-family:'DM Sans',sans-serif}
 .bk-tz{font-size:.72rem;color:#666;margin-top:4px;margin-bottom:16px}
 .bk-slots{display:grid;grid-template-columns:repeat(auto-fill,minmax(90px,1fr));gap:8px}
-.bk-slot{background:#0b0b0b;border:1px solid #1a1a1a;border-radius:6px;padding:10px 4px;text-align:center;font-size:.84rem;color:#a8a8a0;cursor:pointer;transition:all .2s}
+.bk-slot{background:#0b0b0b;border:1px solid #1a1a1a;border-radius:8px;padding:13px 6px;min-height:44px;text-align:center;font-size:.84rem;color:#a8a8a0;cursor:pointer;transition:all .2s;display:flex;align-items:center;justify-content:center}
 .bk-slot:hover{border-color:#333;color:#ede8de}
 .bk-slot.picked{border-color:var(--gold,#c8a84b);color:var(--gold,#c8a84b);background:rgba(200,168,75,.04)}
 .bk-no-slots{font-size:.88rem;color:#666;text-align:center;padding:24px 0}
@@ -47,15 +72,15 @@
 .bk-summary{background:#0b0b0b;border:1px solid #1a1a1a;border-radius:8px;padding:14px 18px;margin-bottom:20px;display:flex;gap:20px;flex-wrap:wrap}
 .bk-sum-item{font-size:.82rem;color:#a8a8a0}
 .bk-sum-item strong{color:#ede8de;font-weight:400}
-.bk-field{margin-bottom:14px}
-.bk-field label{display:block;font-size:.76rem;letter-spacing:.12em;text-transform:uppercase;color:#a8a8a0;margin-bottom:6px}
-.bk-field input,.bk-field textarea{width:100%;background:#0b0b0b;border:1px solid #1a1a1a;border-radius:6px;color:#ede8de;font-size:.92rem;padding:12px 14px;font-family:'DM Sans',sans-serif;transition:border-color .2s}
-.bk-field input:focus,.bk-field textarea:focus{outline:none;border-color:var(--gold,#c8a84b)}
-.bk-field textarea{min-height:80px;resize:vertical}
+.bk-field{margin-bottom:18px}
+.bk-field label{display:block;font-size:.76rem;letter-spacing:.12em;text-transform:uppercase;color:#a8a8a0;margin-bottom:7px}
+.bk-field input,.bk-field textarea{width:100%;background:#0b0b0b;border:1px solid #1a1a1a;border-radius:8px;color:#ede8de;font-size:.95rem;padding:14px 16px;min-height:50px;font-family:'DM Sans',sans-serif;transition:border-color .2s,box-shadow .2s}
+.bk-field input:focus,.bk-field textarea:focus{outline:none;border-color:var(--gold,#c8a84b);box-shadow:0 0 0 3px rgba(200,168,75,.08)}
+.bk-field textarea{min-height:88px;resize:vertical}
 .bk-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-.bk-submit{width:100%;background:var(--gold,#c8a84b);color:#080808;font-size:.82rem;font-weight:500;letter-spacing:.14em;text-transform:uppercase;padding:16px;border:none;border-radius:6px;cursor:pointer;transition:background .3s,transform .2s;margin-top:8px}
-.bk-submit:hover{background:var(--gold-lt,#e2c97d);transform:translateY(-1px)}
-.bk-submit:disabled{opacity:.5;cursor:not-allowed;transform:none}
+.bk-submit{width:100%;background:var(--gold,#c8a84b);color:#080808;font-size:.82rem;font-weight:500;letter-spacing:.14em;text-transform:uppercase;padding:16px;border:none;border-radius:12px;min-height:52px;cursor:pointer;transition:background .3s,transform .2s,box-shadow .2s;margin-top:8px}
+.bk-submit:hover{background:var(--gold-lt,#e2c97d);transform:translateY(-1px);box-shadow:0 4px 20px rgba(200,168,75,.22)}
+.bk-submit:disabled{opacity:.5;cursor:not-allowed;transform:none;box-shadow:none}
 
 /* Step 4 — Confirmation */
 .bk-check{font-size:2.4rem;margin-bottom:12px}
@@ -91,20 +116,28 @@
 
 /* Mobile */
 @media(max-width:600px){
-  .bk-box{padding:28px 20px}
+  .bk-box{padding:24px 18px;border-radius:12px}
   .bk-row{grid-template-columns:1fr}
   .bk-slots{grid-template-columns:repeat(3,1fr)}
   .bk-summary{flex-direction:column;gap:8px}
+  .bk-submit{border-radius:12px}
+  .bk-datepicker input,.bk-field input[type="date"]{font-size:1rem}
+  .bk-type{padding:16px 16px}
 }
+
+/* ── Panel / inline mode (used on /book) ───────────────────── */
+.bk-overlay.bk-panel{position:static;background:transparent;backdrop-filter:none;z-index:auto;display:block;opacity:1;pointer-events:auto;padding:0 32px 80px;transition:none}
+.bk-overlay.bk-panel .bk-box{max-width:640px;max-height:none;overflow-y:visible;overflow-x:visible;transform:none;transition:none;margin:0 auto;padding:48px 44px;background:#0d0c09;border:1px solid rgba(200,168,75,.12);border-top:2px solid rgba(200,168,75,.30);border-radius:12px;box-shadow:0 0 80px rgba(200,168,75,.03),0 24px 80px rgba(0,0,0,.4)}
+@media(max-width:600px){.bk-overlay.bk-panel{padding:0 16px 60px}.bk-overlay.bk-panel .bk-box{border-radius:8px;padding:32px 22px}}
 </style>
 
 <div x-data="bookingModal()" x-cloak
      @open-booking.window="open($event.detail); window._bkPending = undefined;"
-     @keydown.escape.window="if (isOpen) close()">
+     @keydown.escape.window="if (isOpen && !disableOverlayDismiss) close()">
   {{-- Overlay --}}
-  <div class="bk-overlay" :class="{ open: isOpen }" @click.self="close()">
+  <div class="bk-overlay" :class="{ open: isOpen, 'bk-panel': disableOverlayDismiss }" @click.self="if (!disableOverlayDismiss) close()">
     <div class="bk-box">
-      <button class="bk-close" @click="close()">&times;</button>
+      <button class="bk-close" x-show="!disableOverlayDismiss" @click="close()">&times;</button>
 
       {{-- Progress dots --}}
       <div class="bk-progress">
@@ -118,16 +151,26 @@
 
       {{-- ═══ STEP 1: Choose consult type ═══ --}}
       <div x-show="step === 1">
-        <h3 class="bk-title">Choose Your Consult</h3>
-        <p class="bk-sub">Select the type of session that fits your needs.</p>
+        @if(!($panelMode ?? false))
+        <h3 class="bk-title">Choose Your Session Type</h3>
+        <p class="bk-sub">Reserve your spot &mdash; takes under 2 minutes.</p>
+        @endif
         <div class="bk-types">
           @foreach(($types ?? collect()) as $ct)
-          <div class="bk-type"
+          <div class="bk-type {{ $ct->slug === 'audit' ? 'featured' : ($ct->is_free ? 'secondary' : '') }}"
                :class="{ selected: selectedType === {{ $ct->id }} }"
                @click="selectType({{ $ct->id }}, {{ $ct->duration_minutes }}, {{ json_encode($ct->name) }}, {{ $ct->is_free ? 'true' : 'false' }})">
-            <div>
+            <div style="flex:1;min-width:0">
+              @if($ct->slug === 'audit')
+              <div class="bk-type-badge">Recommended</div>
+              @endif
               <div class="bk-type-name">{{ $ct->name }}</div>
               <div class="bk-type-desc">{{ $ct->description }}</div>
+              @if($ct->slug === 'audit')
+              <div class="bk-type-microcopy">This is where we identify real growth opportunity — not just SEO advice. Most clients start here.</div>
+              @elseif($ct->slug === 'discovery')
+              <div class="bk-type-microcopy">Not sure where to start? A short call to see if there&rsquo;s fit before going deeper.</div>
+              @endif
             </div>
             <div class="bk-type-meta">
               <span class="bk-type-dur">{{ $ct->formattedDuration() }}</span>
@@ -136,6 +179,26 @@
           </div>
           @endforeach
         </div>
+
+        {{-- ── Price anchors (visual only — price anchoring) ── --}}
+        <p class="bk-anchor-label">Full-service engagements</p>
+        <div class="bk-anchor-grid">
+          <div class="bk-anchor-card">
+            <span class="bk-anchor-name">Strategy Session</span>
+            <span class="bk-anchor-price">$1,500–$2,500</span>
+            <span class="bk-anchor-note">Deep analysis + prioritised growth roadmap</span>
+            <span class="bk-anchor-label-tag">Contact to discuss</span>
+          </div>
+          <div class="bk-anchor-card">
+            <span class="bk-anchor-name">Full Market Expansion System</span>
+            <span class="bk-anchor-price">$5,000–$15,000+</span>
+            <span class="bk-anchor-note">Complete build — done-for-you</span>
+            <span class="bk-anchor-label-tag">Contact to discuss</span>
+          </div>
+        </div>
+
+        {{-- R&D tax microcopy --}}
+        <p class="bk-rd-note">Development-focused SEO systems may qualify for R&amp;D tax credits.&nbsp; <a href="/rd-tax-credit">Learn more &rarr;</a></p>
       </div>
 
       {{-- ═══ STEP 2: Pick date & time ═══ --}}
@@ -170,6 +233,7 @@
       <div x-show="step === 3">
         <button class="bk-back" @click="step = 2">&larr; Back</button>
         <h3 class="bk-title">Your Details</h3>
+        <p class="bk-sub" style="margin-bottom:14px">Last step — fill in your details below.</p>
         <div class="bk-summary">
           <div class="bk-sum-item"><strong x-text="selectedTypeName"></strong></div>
           <div class="bk-sum-item" x-text="formatDateDisplay()"></div>
@@ -197,7 +261,7 @@
         </div>
         <div class="bk-field">
           <label for="bk-website">Website</label>
-          <input type="url" id="bk-website" x-model="form.website" placeholder="https://…">
+          <input type="text" id="bk-website" x-model="form.website" placeholder="yoursite.com" @blur="prefixWebsite()">
         </div>
         <div class="bk-field">
           <label for="bk-message">Message / Goals</label>
@@ -277,6 +341,9 @@ document.addEventListener('alpine:init', () => {
     addOns: [],
     confirmation: { consult_type: '', date: '', time: '', duration: 0, meet_link: '' },
 
+    // When true, overlay click and Escape will not close the modal (used on /book).
+    disableOverlayDismiss: {{ json_encode($disableOverlayDismiss ?? false) }},
+
     // Available days (0=Sun..6=Sat) — supplied by the controller, never re-queried in the view.
     availableDays: @json($availableDays ?? []),
 
@@ -292,7 +359,22 @@ document.addEventListener('alpine:init', () => {
 
     open(preselect) {
       this.isOpen = true;
-      document.body.style.overflow = 'hidden';
+      if (!this.disableOverlayDismiss) {
+        document.body.style.overflow = 'hidden';
+      }
+      if (typeof gtag === 'function') {
+        gtag('event', 'open_booking_modal', { page_location: window.location.href });
+      }
+      // Fire-and-forget — record intent flag server-side
+      fetch('/track/modal-open', {
+        method: 'POST',
+        credentials: 'include',
+        headers: {
+          'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') ?? '',
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+        },
+      }).catch(() => {});
       if (preselect) {
         this.selectType(preselect.id, preselect.duration, preselect.name, preselect.isFree ?? false);
       }
@@ -327,6 +409,9 @@ document.addEventListener('alpine:init', () => {
       this.selectedTypeName = name;
       this.selectedTypeIsFree = isFree;
       this.errorMsg = '';
+      if (typeof gtag === 'function') {
+        gtag('event', 'select_booking_type', { booking_type: name, is_free: isFree });
+      }
       this.step = 2;
 
       this.$nextTick(() => this.initDatepicker());
@@ -339,7 +424,7 @@ document.addEventListener('alpine:init', () => {
       }
       const avail = this.availableDays;
       this.flatpickrInstance = flatpickr(this.$refs.datepicker, {
-        minDate: 'today',
+        minDate: new Date(Date.now() + 86400000),
         maxDate: new Date().fp_incr(60),
         dateFormat: 'Y-m-d',
         altInput: true,
@@ -430,6 +515,13 @@ document.addEventListener('alpine:init', () => {
         // Free booking — flash step 4 then redirect to confirmed page
         this.confirmation = data.booking;
         this.step = 4;
+        if (typeof gtag === 'function') {
+          gtag('event', 'booking_completed', {
+            booking_type: this.selectedTypeName,
+            booking_id: data.booking.id,
+            is_free: this.selectedTypeIsFree,
+          });
+        }
         setTimeout(() => {
           window.location.href = '/book/confirmed?booking=' + data.booking.id;
         }, 900);
@@ -451,6 +543,12 @@ document.addEventListener('alpine:init', () => {
       if (!this.selectedDate) return '';
       const d = new Date(this.selectedDate + 'T12:00:00');
       return d.toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' });
+    },
+
+    prefixWebsite() {
+      if (this.form.website && !/^https?:\/\//i.test(this.form.website)) {
+        this.form.website = 'https://' + this.form.website;
+      }
     },
 
     toggleAddOn(slug) {

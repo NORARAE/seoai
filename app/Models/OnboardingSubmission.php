@@ -26,6 +26,10 @@ class OnboardingSubmission extends Model
         'platform_type',
         'access_method',
         'add_ons',
+        'goals',
+        'challenges',
+        'growth_intent',
+        'ads_status',
         'submitted_at',
     ];
 

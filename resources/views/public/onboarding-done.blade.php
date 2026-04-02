@@ -93,6 +93,7 @@ body {
   body { padding: 40px 20px; }
 }
 </style>
+@include('partials.clarity')
 </head>
 <body>
 <div class="done-wrap">

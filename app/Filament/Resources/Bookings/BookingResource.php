@@ -52,6 +52,23 @@ class BookingResource extends Resource
                     ->label('Session Type')
                     ->sortable(),
 
+                TextColumn::make('booking_type')
+                    ->label('Type')
+                    ->badge()
+                    ->sortable()
+                    ->color(fn(?string $state): string => match ($state) {
+                        'audit' => 'warning',
+                        'strategy' => 'info',
+                        'build' => 'success',
+                        default => 'gray',
+                    })
+                    ->formatStateUsing(fn(?string $state): string => match ($state) {
+                        'audit' => 'Audit $500',
+                        'strategy' => 'Strategy',
+                        'build' => 'Build',
+                        default => 'Discovery',
+                    }),
+
                 TextColumn::make('preferred_date')
                     ->label('Date')
                     ->date('M j, Y')
@@ -88,6 +105,34 @@ class BookingResource extends Resource
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
 
+                TextColumn::make('email_confirmation')
+                    ->label('✉ Confirmation')
+                    ->state(
+                        fn(Booking $record): string =>
+                        $record->emailLogs()->where('email_type', 'confirmation')->where('status', 'sent')->latest()->value('sent_at')
+                        ? \Carbon\Carbon::parse($record->emailLogs()->where('email_type', 'confirmation')->where('status', 'sent')->latest()->value('sent_at'))->format('M j g:i A')
+                        : ($record->emailLogs()->where('email_type', 'confirmation')->where('status', 'failed')->exists() ? 'Failed' : '—')
+                    )
+                    ->toggleable(isToggledHiddenByDefault: true),
+
+                TextColumn::make('email_pre_call')
+                    ->label('✉ Pre-Call')
+                    ->state(
+                        fn(Booking $record): string =>
+                        $record->emailLogs()->where('email_type', 'pre_call')->where('status', 'scheduled')->latest()->value('sent_at')
+                        ? 'Sched ' . \Carbon\Carbon::parse($record->emailLogs()->where('email_type', 'pre_call')->where('status', 'scheduled')->latest()->value('sent_at'))->format('M j g:i A')
+                        : ($record->emailLogs()->where('email_type', 'pre_call')->where('status', 'sent')->exists() ? 'Sent' : '—')
+                    )
+                    ->toggleable(isToggledHiddenByDefault: true),
+
+                TextColumn::make('email_follow_up')
+                    ->label('✉ Follow-Up')
+                    ->state(
+                        fn(Booking $record): string =>
+                        $record->emailLogs()->where('email_type', 'follow_up')->where('status', 'sent')->exists() ? 'Sent' : '—'
+                    )
+                    ->toggleable(isToggledHiddenByDefault: true),
+
                 TextColumn::make('created_at')
                     ->label('Submitted')
                     ->dateTime('M j, Y g:i A')
@@ -95,6 +140,15 @@ class BookingResource extends Resource
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
+                SelectFilter::make('booking_type')
+                    ->label('Booking Type')
+                    ->options([
+                        'discovery' => 'Discovery (Free)',
+                        'audit' => 'Audit ($500)',
+                        'strategy' => 'Strategy',
+                        'build' => 'Build',
+                    ]),
+
                 SelectFilter::make('status')
                     ->label('Status')
                     ->options([

@@ -76,6 +76,7 @@ footer{border-top:1px solid var(--border);padding:32px 64px;display:flex;align-i
   footer{padding:24px;flex-direction:column;gap:16px;text-align:center}
 }
 </style>
+@include('partials.clarity')
 </head>
 <body>
 <div class="top-bar">

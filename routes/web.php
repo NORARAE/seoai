@@ -9,6 +9,7 @@ use App\Http\Controllers\MarketingPageController;
 use App\Http\Controllers\MarketingSitemapController;
 use App\Http\Controllers\OnboardingController;
 use App\Http\Controllers\PublicController;
+use App\Http\Controllers\TrackingController;
 use App\Http\Controllers\UserOnboardingController;
 use App\Http\Middleware\EnsureOnboardingComplete;
 use App\Http\Controllers\PublicSitemapController;
@@ -51,6 +52,7 @@ Route::get('/licensing-inquiry', fn() => redirect(url('/') . '#contact'))->name(
 
 Route::get('/checkout/success', fn() => view('public.checkout-success'))->name('checkout.success');
 Route::get('/checkout/cancelled', fn() => view('public.checkout-cancelled'))->name('checkout.cancelled');
+Route::get('/rd-tax-credit', fn() => view('public.rd-tax-credit'))->name('rd-tax-credit');
 
 // ── Sitemap: static/scaffold pages (all routes in the locked sitemap) ──
 Route::get('/how-it-works', [PublicController::class, 'howItWorks'])->name('how-it-works');
@@ -60,6 +62,7 @@ Route::get('/solutions/business-owners', [PublicController::class, 'solutionsBus
 Route::get('/access', fn() => redirect('/onboarding/start'))->name('access');
 
 // ── Booking / Consult System ──
+Route::post('/track/modal-open', [TrackingController::class, 'modalOpen'])->middleware('throttle:30,1')->name('track.modal-open');
 Route::get('/book', [BookingController::class, 'index'])->name('book.index');
 Route::get('/book/slots', [BookingController::class, 'getSlots'])->middleware('throttle:booking')->name('book.slots');
 Route::post('/book', [BookingController::class, 'store'])->middleware('throttle:booking')->name('book.store');

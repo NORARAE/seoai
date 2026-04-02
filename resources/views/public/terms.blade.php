@@ -60,6 +60,7 @@ footer{border-top:1px solid var(--border);padding:36px 64px;display:flex;flex-di
   footer{padding:28px 24px}
 }
 </style>
+@include('partials.clarity')
 </head>
 <body>
 
