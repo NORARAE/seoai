@@ -323,8 +323,7 @@ body {
   <!-- ADDITIONAL OPPORTUNITIES -->
   <div class="done-next" style="margin-top:44px">
     <span class="done-next-eye">Additional Opportunities</span>
-    <p class="done-next-body" style="font-size:.94rem">Some operators may qualify for R&amp;D tax credits related to technical and digital development.</p>
-    <a href="#" class="done-learn-link">Learn more &rarr;</a>
+    <p class="done-next-body" style="font-size:.94rem">Some operators may qualify for R&amp;D tax credits related to technical and digital development. See official IRS resources: <a href="https://www.irs.gov/instructions/i6765" target="_blank" rel="noopener noreferrer" style="color:var(--gold);text-decoration:none">Form 6765 Instructions</a> or <a href="https://www.irs.gov/pub/irs-pdf/f6765.pdf" target="_blank" rel="noopener noreferrer" style="color:var(--gold);text-decoration:none">Form 6765 PDF</a>. This is not tax advice — consult a qualified CPA.</p>
   </div>
 
 </div>

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Jobs\SendOnboardingFollowUpJob;
 use App\Mail\OnboardingReceived;
 use App\Models\Booking;
 use App\Models\Lead;
@@ -80,6 +81,7 @@ class OnboardingController extends Controller
             'access_method' => 'nullable|in:invite_email,provide_later,need_help',
             'add_ons' => 'nullable|array|max:10',
             'add_ons.*' => 'string|max:100',
+            'rd_referral_interest' => 'nullable|boolean',
         ], [
             'license.mimes' => 'License must be a PDF, JPG, or PNG file.',
             'license.max' => 'License file must be under 5 MB.',
@@ -161,6 +163,7 @@ class OnboardingController extends Controller
             'platform_type' => $validated['platform_type'] ?? null,
             'access_method' => $validated['access_method'] ?? null,
             'add_ons' => $validated['add_ons'] ?? null,
+            'rd_referral_interest' => (bool) ($validated['rd_referral_interest'] ?? false),
             'submitted_at' => now(),
         ]);
 
@@ -181,6 +184,13 @@ class OnboardingController extends Controller
                 'error' => $e->getMessage(),
             ]);
         }
+
+        // ── Queue follow-up emails (+24h and +48h) ────────────────────────────
+        SendOnboardingFollowUpJob::dispatch($lead->id, $submission->id, 2)
+            ->delay(now()->addHours(24));
+
+        SendOnboardingFollowUpJob::dispatch($lead->id, $submission->id, 3)
+            ->delay(now()->addHours(48));
 
         Log::channel('booking')->info('Onboarding submitted', [
             'lead_id' => $lead->id,

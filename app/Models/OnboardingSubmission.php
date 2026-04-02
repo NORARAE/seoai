@@ -30,6 +30,7 @@ class OnboardingSubmission extends Model
         'challenges',
         'growth_intent',
         'ads_status',
+        'rd_referral_interest',
         'submitted_at',
     ];
 
@@ -40,6 +41,7 @@ class OnboardingSubmission extends Model
             'analytics_access' => 'boolean',
             'search_console_access' => 'boolean',
             'add_ons' => 'array',
+            'rd_referral_interest' => 'boolean',
             'submitted_at' => 'datetime',
         ];
     }

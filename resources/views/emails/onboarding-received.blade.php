@@ -33,7 +33,7 @@
   <div class="divider"></div>
 
   <div class="body">
-    <p>Here's a summary of what you submitted:</p>
+    <p>We accept a limited number of new clients per market. Submissions are reviewed individually — your position in {{ $submission->service_area ?: 'your service area' }} is now under evaluation.</p>
 
     <div class="detail-block">
       <p><strong>Business:</strong> {{ $submission->business_name }}</p>
@@ -46,12 +46,31 @@
       <p><strong>Primary Contact:</strong> {{ $submission->primary_contact }}</p>
       <p><strong>Phone:</strong> {{ $submission->phone }}</p>
       <p><strong>Ad Budget Ready:</strong> {{ $submission->ad_budget_ready ? 'Yes' : 'No' }}</p>
-      <p><strong>License Uploaded:</strong> {{ $submission->license_original_name ?? 'Yes' }}</p>
+      @if($submission->license_original_name)
+      <p><strong>License Uploaded:</strong> {{ $submission->license_original_name }}</p>
+      @endif
     </div>
 
-    <p>If you have questions before then, reply to this email or reach us at <a href="mailto:{{ config('services.booking.owner_email', 'hello@seoaico.com') }}">{{ config('services.booking.owner_email', 'hello@seoaico.com') }}</a>.</p>
+    <p>Our team will review your intake and be in touch within 1–2 business days. In the meantime, you can learn more about how we work or schedule a strategy session:</p>
 
-    <p>We look forward to working with you.</p>
+    <p style="margin: 20px 0;">
+      &bull; <a href="{{ url('/book') }}" style="color:#c8a84b;">Schedule a strategy session &rarr;</a><br>
+      &bull; <a href="{{ url('/#how') }}" style="color:#c8a84b;">How it works &rarr;</a>
+    </p>
+
+    @if($submission->rd_referral_interest)
+    <div style="background:#f0f7f0; border-left:3px solid #4a7c59; padding:18px 20px; margin:24px 0;">
+      <p style="font-size:.82rem; color:#2d5a3d; font-weight:600; margin:0 0 8px; letter-spacing:.05em; text-transform:uppercase;">Research &amp; Development Reference</p>
+      <p style="font-size:.85rem; color:#444; line-height:1.7; margin:0 0 10px;">You indicated interest in R&amp;D documentation practices. This is informational only — we are not tax advisors and this is not tax advice. Official IRS resources on Form 6765:</p>
+      <p style="font-size:.85rem; color:#444; line-height:1.7; margin:0;">
+        &bull; <a href="https://www.irs.gov/instructions/i6765" style="color:#4a7c59;">Form 6765 Instructions — irs.gov</a><br>
+        &bull; <a href="https://www.irs.gov/pub/irs-pdf/f6765.pdf" style="color:#4a7c59;">Form 6765 PDF — irs.gov</a>
+      </p>
+      <p style="font-size:.78rem; color:#777; margin:10px 0 0;">Consult a qualified CPA or tax attorney for guidance specific to your situation.</p>
+    </div>
+    @endif
+
+    <p>Questions? Reply to this email or reach us at <a href="mailto:{{ config('services.booking.owner_email', 'hello@seoaico.com') }}" style="color:#c8a84b;">{{ config('services.booking.owner_email', 'hello@seoaico.com') }}</a>.</p>
   </div>
 
   <div class="footer">

@@ -1015,7 +1015,7 @@ body {
           <label class="ob-radio-btn" for="ga_no" @click="gaHasIt = false">No / Not sure</label>
         </div>
         <p class="ob-trust-microcopy">Access will be required later to verify tracking, performance, and system accuracy.</p>
-        <a href="#" class="ob-learn-link">Learn how to grant access →</a>
+        <a href="https://support.google.com/analytics/answer/1009702" target="_blank" rel="noopener noreferrer" class="ob-learn-link">Learn how to grant access →</a>
         <div x-show="gaHasIt" x-transition.opacity.duration.200ms class="ob-access-hint">
           If your GA4 property is already active, we may need setup access to connect and verify your system. We'll ask you to add <strong>hello@seoaico.com</strong> — our team will confirm the appropriate access level with you before you make any changes.
         </div>
@@ -1036,7 +1036,7 @@ body {
           <label class="ob-radio-btn" for="sc_no" @click="gscHasIt = false">No / Not sure</label>
         </div>
         <p class="ob-trust-microcopy">Access will be required later to verify tracking, performance, and system accuracy.</p>
-        <a href="#" class="ob-learn-link">Learn how to grant access →</a>
+        <a href="https://support.google.com/webmasters/answer/2453966" target="_blank" rel="noopener noreferrer" class="ob-learn-link">Learn how to grant access →</a>
         <div x-show="gscHasIt" x-transition.opacity.duration.200ms class="ob-access-hint">
           If Search Console is already active on your site, we may need setup access to connect and verify coverage. We'll ask you to add <strong>hello@seoaico.com</strong> — our team confirms the appropriate role with you before anything is changed.
         </div>
@@ -1209,7 +1209,7 @@ body {
         </span>
         <div>
           <p>Your information is securely handled and used only for system setup and activation. We never share access or data with third parties.</p>
-          <a href="#" class="ob-privacy-link">Privacy Policy →</a>
+          <a href="{{ route('privacy') }}" class="ob-privacy-link">Privacy Policy →</a>
         </div>
       </div>
     </div>
