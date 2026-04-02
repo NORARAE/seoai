@@ -11,6 +11,7 @@ use App\Models\Booking;
 use App\Models\BookingAvailability;
 use App\Models\ConsultType;
 use App\Models\EmailLog;
+use App\Models\FunnelEvent;
 use App\Models\Lead;
 use App\Services\GoogleCalendarService;
 use Carbon\Carbon;
@@ -28,6 +29,8 @@ class BookingController extends Controller
     {
         $types = ConsultType::active()->get();
         $availableDays = BookingAvailability::active()->pluck('day_of_week')->toArray();
+
+        FunnelEvent::fire(FunnelEvent::BOOKING_VIEWED);
 
         return view('public.book', compact('types', 'availableDays'));
     }
@@ -54,6 +57,9 @@ class BookingController extends Controller
             return response()->json(['slots' => [], 'message' => 'No availability on this day.']);
         }
 
+        // Strip slots within the 24-hour advance booking window
+        $cutoff = now()->addHours(24);
+
         if (config('services.google.calendar_enabled', false)) {
             try {
                 $calendarService = app(GoogleCalendarService::class);
@@ -68,6 +74,11 @@ class BookingController extends Controller
             $slots = $this->getFallbackSlots($date, $type->duration_minutes);
         }
 
+        // Filter out slots inside the 24-hour advance window
+        $slots = array_values(array_filter($slots, function (string $time) use ($date, $cutoff) {
+            return Carbon::parse($date->toDateString() . ' ' . $time)->greaterThan($cutoff);
+        }));
+
         return response()->json(['slots' => $slots]);
     }
 
@@ -76,6 +87,11 @@ class BookingController extends Controller
      */
     public function store(Request $request): JsonResponse
     {
+        // Honeypot — bots fill hidden fields; legitimate users never do
+        if ($request->filled('website_confirm')) {
+            return response()->json(['message' => 'Invalid request.'], 422);
+        }
+
         // Normalize website — auto-prefix https:// if no scheme provided and value looks like a domain
         if ($request->filled('website') && !preg_match('#^https?://#i', $request->website) && str_contains($request->website, '.')) {
             $request->merge(['website' => 'https://' . $request->website]);
@@ -95,6 +111,14 @@ class BookingController extends Controller
 
         $type = ConsultType::findOrFail($validated['consult_type_id']);
         $date = Carbon::parse($validated['preferred_date']);
+
+        // 24-hour advance booking rule
+        $bookingDateTime = Carbon::parse($date->toDateString() . ' ' . $validated['preferred_time']);
+        if ($bookingDateTime->lessThanOrEqualTo(now()->addHours(24))) {
+            return response()->json([
+                'message' => 'This session must be scheduled at least 24 hours in advance.',
+            ], 422);
+        }
 
         // Race condition guard: check slot still available
         // whereDate() works correctly on both MySQL (DATE column) and SQLite (text column).
@@ -208,6 +232,9 @@ class BookingController extends Controller
             ]);
         }
 
+        // Funnel tracking
+        FunnelEvent::fire(FunnelEvent::BOOKING_CREATED, $booking->id);
+
         return response()->json([
             'success' => true,
             'booking' => [
@@ -256,6 +283,11 @@ class BookingController extends Controller
      */
     public function initiateCheckout(Request $request): JsonResponse
     {
+        // Honeypot
+        if ($request->filled('website_confirm')) {
+            return response()->json(['message' => 'Invalid request.'], 422);
+        }
+
         // Normalize website — auto-prefix https:// if no scheme provided and value looks like a domain
         if ($request->filled('website') && !preg_match('#^https?://#i', $request->website) && str_contains($request->website, '.')) {
             $request->merge(['website' => 'https://' . $request->website]);
@@ -287,6 +319,14 @@ class BookingController extends Controller
 
         $date = Carbon::parse($validated['preferred_date']);
 
+        // 24-hour advance booking rule
+        $bookingDateTime = Carbon::parse($date->toDateString() . ' ' . $validated['preferred_time']);
+        if ($bookingDateTime->lessThanOrEqualTo(now()->addHours(24))) {
+            return response()->json([
+                'message' => 'This session must be scheduled at least 24 hours in advance.',
+            ], 422);
+        }
+
         $existing = Booking::whereDate('preferred_date', $date->toDateString())
             ->where('preferred_time', $validated['preferred_time'])
             ->whereIn('status', ['pending', 'confirmed', 'awaiting_payment'])
@@ -304,6 +344,8 @@ class BookingController extends Controller
         ]);
 
         // Build Stripe line items — consult type + any selected add-ons
+        FunnelEvent::fire(FunnelEvent::BOOKING_CREATED, $booking->id);
+
         $addonCatalog = [
             'seo_audit' => ['name' => 'SEO Audit', 'price' => 150],
             'competitor_analysis' => ['name' => 'Competitor Analysis', 'price' => 100],
@@ -515,6 +557,9 @@ class BookingController extends Controller
                 ]);
             }
         }
+
+        // Funnel tracking
+        FunnelEvent::fire(FunnelEvent::BOOKING_PAID, $booking->id);
 
         return redirect()->route('book.upgrade', ['booking' => $booking->id]);
     }

@@ -806,7 +806,7 @@ body {
     @if($isPreview ?? false)
       Let's map your<br><em>opportunity.</em>
     @else
-      Let's prepare<br><em>your strategy session.</em>
+      Let's prepare<br><em>your market opportunity session.</em>
     @endif
   </h1>
   <p class="ob-sub">Takes about 2 minutes. This helps us prepare everything before your call.</p>
@@ -857,7 +857,7 @@ body {
     <div x-show="step === 1" x-transition:enter="ob-step-enter" x-transition:enter-start="ob-step-from" x-transition:enter-end="ob-step-to">
       <span class="ob-step-eye">Step 1 of 3</span>
       <h2 class="ob-step-title">Tell us about your business.</h2>
-      <p class="ob-step-hint">This helps us prepare your strategy session — takes about 60 seconds.</p>
+      <p class="ob-step-hint">This helps us prepare your market opportunity session — takes about 60 seconds.</p>
 
       <div class="ob-field">
         <label class="ob-label" for="business_name">Business Name <span class="req">*</span></label>
@@ -934,6 +934,24 @@ body {
         <textarea class="ob-textarea" id="challenges" name="challenges" maxlength="2000"
                   placeholder="e.g. Low traffic, no conversions, no time to create content…">{{ old('challenges') }}</textarea>
         @error('challenges')<span class="ob-error">{{ $message }}</span>@enderror
+      </div>
+
+      <div class="ob-field">
+        <label class="ob-label">Do you operate in multiple locations?</label>
+        <div class="ob-btn-group">
+          <input type="radio" class="ob-btn-opt" id="lt_single" name="lead_type" value="single_location"
+                 {{ old('lead_type', 'single_location') === 'single_location' ? 'checked' : '' }}>
+          <label class="ob-btn-label" for="lt_single">No — single location</label>
+
+          <input type="radio" class="ob-btn-opt" id="lt_multi" name="lead_type" value="multi_location"
+                 {{ old('lead_type') === 'multi_location' ? 'checked' : '' }}>
+          <label class="ob-btn-label" for="lt_multi">Yes — multiple markets</label>
+
+          <input type="radio" class="ob-btn-opt" id="lt_agency" name="lead_type" value="agency"
+                 {{ old('lead_type') === 'agency' ? 'checked' : '' }}>
+          <label class="ob-btn-label" for="lt_agency">Yes — I'm an agency</label>
+        </div>
+        @error('lead_type')<span class="ob-error">{{ $message }}</span>@enderror
       </div>
 
       <div class="ob-field">

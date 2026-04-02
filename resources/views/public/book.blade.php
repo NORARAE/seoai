@@ -18,7 +18,7 @@
 <meta name="theme-color" content="#080808">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="csrf-token" content="{{ csrf_token() }}">
-<title>Strategy Session — SEO AI Co™</title>
+<title>Market Opportunity Session — SEO AI Co™</title>
 <meta name="description" content="A focused market opportunity session — not a sales call. We identify where your business can expand and how to take it.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>

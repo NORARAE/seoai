@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Jobs\SendOnboardingFollowUpJob;
 use App\Mail\OnboardingReceived;
 use App\Models\Booking;
+use App\Models\FunnelEvent;
 use App\Models\Lead;
 use App\Models\OnboardingSubmission;
 use Illuminate\Http\RedirectResponse;
@@ -26,6 +27,7 @@ class OnboardingController extends Controller
 
         // Preview mode — no booking required
         if ($bookingId === 0) {
+            FunnelEvent::fire(FunnelEvent::ONBOARDING_STARTED);
             return view('public.onboarding-start', [
                 'booking' => null,
                 'isPreview' => true,
@@ -48,6 +50,7 @@ class OnboardingController extends Controller
                 ->with('already_submitted', true);
         }
 
+        FunnelEvent::fire(FunnelEvent::ONBOARDING_STARTED, null, null, ['booking_id' => $booking->id]);
         return view('public.onboarding-start', [
             'booking' => $booking,
             'isPreview' => false,
@@ -60,6 +63,11 @@ class OnboardingController extends Controller
      */
     public function submit(Request $request): RedirectResponse
     {
+        // Honeypot — bots fill hidden fields; legitimate users never do
+        if ($request->filled('website_confirm')) {
+            return redirect()->route('onboarding.done');
+        }
+
         $validated = $request->validate([
             'booking_id' => 'nullable|integer|exists:bookings,id',
             'email' => 'nullable|email|max:255',
@@ -82,6 +90,7 @@ class OnboardingController extends Controller
             'add_ons' => 'nullable|array|max:10',
             'add_ons.*' => 'string|max:100',
             'rd_referral_interest' => 'nullable|boolean',
+            'lead_type' => 'nullable|in:single_location,multi_location,agency',
         ], [
             'license.mimes' => 'License must be a PDF, JPG, or PNG file.',
             'license.max' => 'License file must be under 5 MB.',
@@ -164,6 +173,7 @@ class OnboardingController extends Controller
             'access_method' => $validated['access_method'] ?? null,
             'add_ons' => $validated['add_ons'] ?? null,
             'rd_referral_interest' => (bool) ($validated['rd_referral_interest'] ?? false),
+            'lead_type' => $validated['lead_type'] ?? null,
             'submitted_at' => now(),
         ]);
 
@@ -174,6 +184,9 @@ class OnboardingController extends Controller
             'lifecycle_stage' => \App\Models\Lead::STAGE_OPPORTUNITY_IDENTIFIED,
             'tags' => array_values(array_unique(array_merge($existingTags, ['qualified']))),
         ]);
+
+        // Funnel tracking
+        FunnelEvent::fire(FunnelEvent::ONBOARDING_COMPLETED, null, $lead->id, ['submission_id' => $submission->id]);
 
         // ── Send confirmation email ───────────────────────────────────────────
         try {

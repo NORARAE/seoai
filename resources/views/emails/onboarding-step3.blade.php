@@ -77,8 +77,8 @@
     @endif
 
     <div class="cta-block">
-      <p>If you have not yet scheduled your strategy session, you may do so now. Priority onboarding is available for confirmed clients.</p>
-      <a href="{{ url('/book') }}">Book a Strategy Session</a>
+      <p>If you have not yet scheduled your market opportunity session, you may do so now. Priority onboarding is available for confirmed clients.</p>
+      <a href="{{ url('/book') }}">Book Your Market Opportunity Session</a>
     </div>
 
     <p style="font-size:.85rem; color:#888; line-height:1.7;">Have a question in the meantime? Reply directly to this email or contact us at <a href="mailto:{{ config('services.booking.owner_email', 'hello@seoaico.com') }}" style="color:#c8a84b;">{{ config('services.booking.owner_email', 'hello@seoaico.com') }}</a>.</p>

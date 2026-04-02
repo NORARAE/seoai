@@ -31,6 +31,7 @@ class OnboardingSubmission extends Model
         'growth_intent',
         'ads_status',
         'rd_referral_interest',
+        'lead_type',
         'submitted_at',
     ];
 

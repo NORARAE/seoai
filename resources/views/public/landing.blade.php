@@ -1881,8 +1881,8 @@ body::before{
       <p class="alloc-urgency">If your market is still available,<br><em>claim it before the window closes.</em></p>
       <span class="alloc-convert-label">Access is reserved. Not open.</span>
       <div class="alloc-actions">
-        <a href="#contact" class="btn-primary">Apply for Market Access</a>
-        <a href="#offer" class="btn-ghost">Review Licensing Structure</a>
+        <a href="/onboarding/start" class="btn-primary">Claim Your Territory</a>
+        <a href="#how" class="btn-ghost">See How It Works</a>
       </div>
     </div>
 
@@ -2014,7 +2014,7 @@ body::before{
       <div class="aud-card r">
         <span class="aud-tag">For Agencies</span>
         <h3 class="aud-title">Own search<br><em>for every client.</em></h3>
-        <p class="aud-body">White-label deployment, entirely under your brand — complete search coverage across your client portfolio, exclusive by territory, with no SEOAIco attribution anywhere.</p>
+        <p class="aud-body">White-label deployment, entirely under your brand — complete search coverage across your client portfolio, exclusive by territory, with no third-party attribution anywhere.</p>
         <ul class="aud-list">
           <li><strong>Zero attribution</strong> — invisible to clients and competitors alike</li>
           <li><strong>One licence covers your full portfolio</strong></li>
@@ -2084,7 +2084,7 @@ body::before{
         <div class="wyl-card r">
           <span class="wyl-icon">◼</span>
           <h3 class="wyl-title">Zero-Attribution Deployment</h3>
-          <p class="wyl-desc">Everything deploys under your brand identity. No SEOAIco attribution in code, content, or metadata. Your clients see your agency's work. The platform behind it remains invisible.</p>
+          <p class="wyl-desc">Everything deploys under your brand identity. No third-party attribution in code, content, or metadata. Your clients see your agency's work. The platform behind it remains invisible.</p>
         </div>
         <div class="wyl-card r">
           <span class="wyl-icon">◈</span>
@@ -2259,7 +2259,7 @@ body::before{
         <div class="step r">
           <div class="step-n">03</div>
           <h3 class="step-title">Deploy Under Your Brand</h3>
-          <p class="step-desc">Pages deploy across your licensed territory — white-label from top to bottom, no SEOAIco branding anywhere.</p>
+          <p class="step-desc">Pages deploy across your licensed territory — white-label from top to bottom, no third-party branding on any client-facing page.</p>
         </div>
         <div class="step r">
           <div class="step-n">04</div>
@@ -2295,7 +2295,7 @@ body::before{
       </div>
       <div class="ul-note">
         <p><strong>Need more pages?</strong> Upgrade to the next tier — your existing pages carry over.</p>
-        <p><strong>Already have pages built outside SEOAIco?</strong> You can bring them under the licensed platform at the 10,000 page tier — full structured coverage, link architecture, and search signals across your entire footprint.</p>
+        <p><strong>Already have pages built outside this platform?</strong> You can bring them under the licensed platform at the 10,000 page tier — full structured coverage, link architecture, and search signals across your entire footprint.</p>
       </div>
     </div>
   </div>
@@ -2715,7 +2715,7 @@ body::before{
         <div class="gate-tier-urls">Preferred · Priority access</div>
       </div>
     </div>
-    <a href="#contact" class="gate-cta" id="gateCta">Request Licensing Access</a>
+    <a href="#contact" class="gate-cta" id="gateCta">Claim Your Territory</a>
     <button class="gate-skip" id="gateSkip">Continue browsing</button>
   </div>
 </div>

@@ -305,10 +305,10 @@ body {
   <!-- PREPARE NEXT STEP -->
   <div class="done-actions">
     <span class="done-actions-eye">Prepare your next step</span>
-    <a href="/book" class="done-cta-primary">Prepare for your onboarding call &rarr;</a>
+    <a href="/book" class="done-cta-primary">Book your market opportunity session &rarr;</a>
     <a href="/#how" class="done-cta-secondary">Review how the system works &rarr;</a>
     <div class="done-priority-wrap">
-      <a href="/book" class="done-cta-tertiary">Secure a priority onboarding session &rarr;</a>
+      <a href="/book" class="done-cta-tertiary">Secure a priority slot &rarr;</a>
       <p class="done-priority-note">Priority sessions ensure faster activation and guided setup.</p>
     </div>
   </div>

@@ -111,6 +111,10 @@
 .bk-spinner{display:inline-block;width:18px;height:18px;border:2px solid #333;border-top-color:var(--gold,#c8a84b);border-radius:50%;animation:bkspin .6s linear infinite;vertical-align:middle;margin-right:8px}
 @keyframes bkspin{to{transform:rotate(360deg)}}
 
+/* AI polish button */
+.bk-ai-btn{background:none;border:1px solid #2a2a2a;border-radius:4px;color:#666;font-size:.64rem;letter-spacing:.08em;text-transform:uppercase;padding:3px 8px;cursor:pointer;transition:color .2s,border-color .2s;white-space:nowrap}
+.bk-ai-btn:hover{color:var(--gold,#c8a84b);border-color:rgba(200,168,75,.3)}
+
 /* Error */
 .bk-error{background:rgba(184,64,64,.1);border:1px solid rgba(184,64,64,.25);border-radius:6px;padding:12px 16px;color:#d46060;font-size:.84rem;margin-bottom:16px}
 
@@ -242,30 +246,47 @@
         <div class="bk-row">
           <div class="bk-field">
             <label for="bk-name">Full Name *</label>
-            <input type="text" id="bk-name" x-model="form.name" required>
+            <input type="text" id="bk-name" x-model="form.name" required
+                   autocomplete="name" maxlength="255">
           </div>
           <div class="bk-field">
             <label for="bk-email">Email *</label>
-            <input type="email" id="bk-email" x-model="form.email" required>
+            <input type="email" id="bk-email" x-model="form.email" required
+                   autocomplete="email" maxlength="255">
           </div>
         </div>
         <div class="bk-row">
           <div class="bk-field">
             <label for="bk-phone">Phone</label>
-            <input type="tel" id="bk-phone" x-model="form.phone">
+            <input type="tel" id="bk-phone" x-model="form.phone"
+                   autocomplete="tel" maxlength="50">
           </div>
           <div class="bk-field">
             <label for="bk-company">Company</label>
-            <input type="text" id="bk-company" x-model="form.company">
+            <input type="text" id="bk-company" x-model="form.company"
+                   autocomplete="organization" maxlength="255">
           </div>
         </div>
         <div class="bk-field">
           <label for="bk-website">Website</label>
-          <input type="text" id="bk-website" x-model="form.website" placeholder="yoursite.com" @blur="prefixWebsite()">
+          <input type="text" id="bk-website" x-model="form.website" placeholder="yoursite.com"
+                 autocomplete="url" maxlength="500" @blur="prefixWebsite()">
         </div>
-        <div class="bk-field">
-          <label for="bk-message">Message / Goals</label>
-          <textarea id="bk-message" x-model="form.message" placeholder="Tell us what you'd like to discuss…"></textarea>
+        <div class="bk-field" style="position:relative">
+          <label for="bk-message" style="display:flex;align-items:center;justify-content:space-between">
+            <span>Message / Goals</span>
+            <button type="button" class="bk-ai-btn" @click="polishMessage()" title="Polish with AI">
+              <span style="font-size:.88rem">✦</span> Polish with AI
+            </button>
+          </label>
+          <textarea id="bk-message" x-model="form.message" maxlength="1000" spellcheck="true"
+                    placeholder="Tell us what you want to improve, where you feel stuck, and what growth would look like for your business."></textarea>
+          <div class="bk-char-count" x-text="(form.message || '').length + ' / 1000'" style="font-size:.68rem;color:#555;text-align:right;margin-top:2px"></div>
+        </div>
+        {{-- Honeypot — invisible to real users, filled by bots --}}
+        <div style="position:absolute;left:-9999px;top:-9999px;height:0;overflow:hidden" aria-hidden="true">
+          <label for="bk-hp">Website</label>
+          <input type="text" id="bk-hp" x-model="form.website_confirm" name="website_confirm" tabindex="-1" autocomplete="off">
         </div>
         {{-- Add-ons (paid bookings only) --}}
         <div x-show="!selectedTypeIsFree">
@@ -337,7 +358,7 @@ document.addEventListener('alpine:init', () => {
     slots: [],
     flatpickrInstance: null,
 
-    form: { name: '', email: '', phone: '', company: '', website: '', message: '' },
+    form: { name: '', email: '', phone: '', company: '', website: '', website_confirm: '', message: '' },
     addOns: [],
     confirmation: { consult_type: '', date: '', time: '', duration: 0, meet_link: '' },
 
@@ -394,7 +415,7 @@ document.addEventListener('alpine:init', () => {
       this.selectedDate = '';
       this.selectedTime = '';
       this.slots = [];
-      this.form = { name: '', email: '', phone: '', company: '', website: '', message: '' };
+        this.form = { name: '', email: '', phone: '', company: '', website: '', website_confirm: '', message: '' };
       this.addOns = [];
       this.confirmation = { consult_type: '', date: '', time: '', duration: 0, meet_link: '' };
       this.errorMsg = '';
@@ -460,7 +481,13 @@ document.addEventListener('alpine:init', () => {
         });
         const resp = await fetch(`/book/slots?${params}`);
         const data = await resp.json();
-        this.slots = data.slots || [];
+        // Filter client-side: strip any slot within 24 h of now (belt-and-suspenders)
+        const cutoff = Date.now() + 24 * 60 * 60 * 1000;
+        const [yr, mo, dy] = this.selectedDate.split('-').map(Number);
+        this.slots = (data.slots || []).filter(slot => {
+          const [h, m] = slot.split(':').map(Number);
+          return new Date(yr, mo - 1, dy, h, m).getTime() > cutoff;
+        });
       } catch (e) {
         this.errorMsg = 'Could not load available times. Please try again.';
       }
@@ -470,6 +497,10 @@ document.addEventListener('alpine:init', () => {
     async submit() {
       if (!this.form.name || !this.form.email) {
         this.errorMsg = 'Name and email are required.';
+        return;
+      }
+      // Honeypot check
+      if (this.form.website_confirm) {
         return;
       }
       this.submitting = true;
@@ -549,6 +580,17 @@ document.addEventListener('alpine:init', () => {
       if (this.form.website && !/^https?:\/\//i.test(this.form.website)) {
         this.form.website = 'https://' + this.form.website;
       }
+    },
+
+    // ── AI assist stub ────────────────────────────────────────────────────────
+    // Full AI rewrite requires a backend endpoint (e.g. POST /api/ai/polish)
+    // connected to OpenAI or similar. This stub does basic text cleanup only.
+    polishMessage() {
+      if (!this.form.message || !this.form.message.trim()) return;
+      this.form.message = this.form.message
+        .trim()
+        .replace(/\s{2,}/g, ' ')
+        .replace(/([.!?])\s{0,}([A-Za-z])/g, '$1 $2');
     },
 
     toggleAddOn(slug) {
