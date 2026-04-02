@@ -100,7 +100,7 @@ return [
     ],
 
     'clarity' => [
-        'project_id' => env('CLARITY_PROJECT_ID', ''),
+        'project_id' => env('CLARITY_PROJECT_ID', 'w5480s37m6'),
     ],
 
 ];
