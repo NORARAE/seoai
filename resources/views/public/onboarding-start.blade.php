@@ -1174,21 +1174,18 @@ body {
       <div class="ob-rd-section">
         <span class="ob-rd-eye">Additional Opportunities — Optional</span>
         <h3 class="ob-rd-hed">Federal Research Credit (Form 6765)</h3>
-        <p class="ob-rd-body">Some businesses may perform activities that are evaluated under the Internal Revenue Code Section 41, commonly referred to as the &ldquo;Credit for Increasing Research Activities.&rdquo;</p>
-        <p class="ob-rd-body">This credit is calculated using IRS Form 6765 and is based on Qualified Research Expenses (QREs), which may include certain wages, supplies, and contract research costs associated with developing or improving products, processes, or software.</p>
-        <p class="ob-rd-body">The IRS applies a specific four-part test to determine whether activities meet the definition of qualified research.</p>
-        <p class="ob-rd-body">We do not determine eligibility or provide tax advice. Qualification must be assessed by a licensed CPA or qualified tax professional based on your specific facts and documentation.</p>
-        <p class="ob-rd-body">If you are interested, we can refer you to a third-party firm that specializes in evaluating and preparing research credit documentation in accordance with IRS guidance.</p>
+        <p class="ob-rd-body">Some businesses choose to review IRS Form 6765 and its instructions to better understand the federal research credit.</p>
+        <p class="ob-rd-body">SEOAIco does not determine eligibility and does not provide tax, legal, or accounting advice.</p>
         <div class="ob-rd-links">
+          <a href="https://www.irs.gov/pub/irs-pdf/f6765.pdf" target="_blank" rel="noopener noreferrer" class="ob-rd-link">View Form 6765 &rarr;</a>
           <a href="https://www.irs.gov/instructions/i6765" target="_blank" rel="noopener noreferrer" class="ob-rd-link">View IRS Instructions &rarr;</a>
-          <a href="https://www.irs.gov/pub/irs-pdf/f6765.pdf" target="_blank" rel="noopener noreferrer" class="ob-rd-link">Download Form 6765 &rarr;</a>
         </div>
         <label class="ob-rd-referral">
           <input type="checkbox" name="rd_referral_interest" value="1"
                  {{ old('rd_referral_interest') ? 'checked' : '' }}>
-          <span>I&rsquo;d like a referral to a research credit specialist</span>
+          <span>I&rsquo;d like a referral for further review</span>
         </label>
-        <p class="ob-rd-disclaimer">This information is provided for general awareness only and does not constitute tax, legal, or financial advice. SEOAIco does not prepare or file tax credits. All determinations must be made by a qualified tax professional.</p>
+        <p class="ob-rd-disclaimer">This information is provided for general awareness only and does not constitute tax, legal, or accounting advice.</p>
       </div>
 
       {{-- ── Submit ── --}}
