@@ -1025,11 +1025,12 @@ footer{border-top:1px solid var(--border);padding:36px 64px;display:flex;flex-di
 /* Menu links */
 .nm-link{
   display:flex;align-items:center;justify-content:space-between;
-  padding:13px 20px;
+  padding:15px 20px;
   font-family:'DM Sans',sans-serif;
   font-size:.82rem;letter-spacing:.07em;
   color:rgba(168,168,160,.85);text-decoration:none;
   transition:color .18s,background .18s;
+  min-height:48px;
 }
 .nm-link::after{
   content:'›';
@@ -1042,6 +1043,13 @@ footer{border-top:1px solid var(--border);padding:36px 64px;display:flex;flex-di
   color:var(--gold);font-weight:500;letter-spacing:.09em;
 }
 .nm-link.nm-featured::after{color:var(--gold)}
+/* Secondary CTA link — slightly muted vs featured, still gold-tinted */
+.nm-link.nm-cta-secondary{
+  color:rgba(200,168,75,.7);font-weight:400;letter-spacing:.07em;
+}
+.nm-link.nm-cta-secondary::after{color:rgba(200,168,75,.45)}
+.nm-link.nm-cta-secondary:hover{color:var(--gold)}
+.nm-link.nm-cta-secondary:hover::after{color:var(--gold)}
 
 /* Divider */
 .nm-divider{
@@ -1517,6 +1525,271 @@ body::before{
   .hero-gold-accent{font-size:clamp(1.1rem,4.5vw,1.4rem)}
   .exp-momentum-main{font-size:clamp(1.2rem,4.5vw,1.6rem)}
 }
+
+/* ═══════════════════════════════════════════════════════════
+   MOBILE REFINEMENT PASS
+   Scope: max-width:768px (phone-first, 375–430px primary)
+   Rule: zero desktop impact — all selectors inside media queries
+═══════════════════════════════════════════════════════════ */
+
+/* ── 1. Typography ── */
+@media(max-width:768px){
+  /* Body copy — lift to ≥16px at 17px root */
+  .wyl-desc{font-size:.95rem;line-height:1.76;color:rgba(168,168,160,.92)}
+  .step-desc{font-size:.95rem;line-height:1.74;color:rgba(168,168,160,.92)}
+  .tier-features li{font-size:.93rem;line-height:1.72}
+  .tier-commitment{font-size:.86rem;line-height:1.82}
+  .tier-urls{font-size:.86rem;line-height:1.7}
+  .ul-body{font-size:.97rem;line-height:1.76}
+  .ul-state-desc{font-size:.9rem;line-height:1.76}
+  .pos-support{font-size:.97rem;line-height:1.74}
+  .pos-proof li{font-size:.97rem;line-height:1.72}
+  .alloc-reinforce span{font-size:.97rem;line-height:1.76}
+  .alloc-sub p{font-size:1rem;line-height:1.82}
+  .offer-note{font-size:.95rem;line-height:1.84}
+  .settle-body{font-size:.93rem;line-height:1.84}
+  .settle-trust-text{font-size:.9rem;line-height:1.76}
+  .alloc-avail-note{font-size:.91rem;line-height:1.86}
+  .exp-body{font-size:.93rem;line-height:1.76}
+  .ac-body{font-size:.93rem;line-height:1.76}
+  .stmt-body p{font-size:.97rem;line-height:1.8}
+  .hb-line{font-size:1rem;line-height:1.74}
+  .hb-rule{font-size:.97rem;line-height:1.74}
+
+  /* Small uppercase labels — reduce letter-spacing */
+  .s-eye{letter-spacing:.18em;font-size:.72rem}
+  .tier-flag{letter-spacing:.16em}
+  .alloc-eyebrow{letter-spacing:.2em;font-size:.66rem}
+  .access-eyebrow{letter-spacing:.2em;font-size:.68rem}
+  .infra-eyebrow{letter-spacing:.24em;font-size:.6rem}
+  .alloc-convert-label{letter-spacing:.16em;font-size:.74rem}
+  .alloc-panel-label{letter-spacing:.18em;font-size:.7rem}
+
+  /* Display headings — tighter so wrapping is intentional, not accidental */
+  .pos-h2{line-height:1.07}
+  .alloc-hed{line-height:1.11}
+  .access-headline{line-height:1.13}
+  .wyl-title{font-size:1.28rem}
+  .step-title{font-size:1.18rem}
+
+  /* Hero supporting copy */
+  .hero-gold-accent{margin-bottom:14px;line-height:1.3}
+  .hero-sub{margin-bottom:10px}
+  .hero-note{margin-bottom:22px}
+}
+
+/* ── 2. Section spacing ── */
+@media(max-width:768px){
+  .wyl-card{padding:32px 22px}
+  .step{padding:32px 22px}
+  .ac-card{padding:36px 26px}
+  .settle-trust-item{padding:18px 20px}
+  .stmt-split-card{padding:18px 20px}
+  .stmt-split-card .split-body{font-size:.91rem;line-height:1.76}
+  .aud-list{gap:18px}
+  .aud-list li{line-height:1.76;padding-left:20px}
+  .alloc-cell{padding:22px 18px}
+  .licence-stmt-principle{font-size:clamp(1.08rem,3.8vw,1.28rem)}
+  .licence-stmt-body p{font-size:.9rem;letter-spacing:.03em;line-height:1.88}
+  #preview{padding:56px 22px}
+  #preview p{font-size:.93rem}
+}
+
+/* ── 3. CTA hierarchy ── */
+@media(max-width:768px){
+  /* Primary — dominant, thumb-friendly */
+  .btn-primary{
+    min-height:56px;padding:18px 28px;font-size:.84rem;
+    display:flex;align-items:center;justify-content:center;
+  }
+  /* Secondary — quieter, still accessible */
+  .btn-ghost{opacity:.68;font-size:.78rem;letter-spacing:.13em;padding-bottom:3px}
+  .hero-actions{gap:20px}
+  .alloc-actions{gap:22px}
+  /* Audience CTAs — full-width on card */
+  .aud-cta{
+    display:flex;align-items:center;justify-content:center;
+    width:100%;text-align:center;padding:17px 24px;min-height:54px;
+  }
+  /* Tier CTAs */
+  .tier-cta{
+    padding:17px 16px;min-height:52px;font-size:.78rem;
+    display:flex;align-items:center;justify-content:center;
+  }
+  .tier-book{padding:15px 16px;min-height:48px;font-size:.74rem}
+}
+
+/* ── 4. Sticky mobile CTA bar ── */
+.mob-sticky-cta{display:none} /* hidden everywhere by default */
+@media(max-width:768px){
+  .mob-sticky-cta{
+    display:block;
+    position:fixed;bottom:0;left:0;right:0;
+    z-index:250;
+    background:rgba(8,8,8,.97);
+    backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);
+    border-top:1px solid rgba(200,168,75,.18);
+    padding:12px 20px calc(12px + env(safe-area-inset-bottom,0px));
+    transform:translateY(100%);
+    transition:transform .34s cubic-bezier(.23,1,.32,1);
+    will-change:transform;
+  }
+  .mob-sticky-cta.msc-visible{transform:translateY(0)}
+  .mob-sticky-cta.msc-hidden{transform:translateY(100%)}
+  .msc-inner{
+    display:flex;align-items:center;gap:14px;
+    max-width:480px;margin:0 auto;
+  }
+  .msc-primary{
+    flex:1;display:flex;align-items:center;justify-content:center;
+    background:var(--gold);color:var(--bg);
+    font-family:'DM Sans',sans-serif;
+    font-size:.79rem;font-weight:500;letter-spacing:.14em;text-transform:uppercase;
+    text-decoration:none;padding:16px 18px;min-height:52px;
+    transition:background .25s;white-space:nowrap;
+  }
+  .msc-primary:hover,.msc-primary:active{background:var(--gold-lt)}
+  .msc-primary:focus-visible{outline:2px solid var(--gold);outline-offset:3px}
+  .msc-secondary{
+    font-family:'DM Sans',sans-serif;
+    font-size:.68rem;letter-spacing:.12em;text-transform:uppercase;
+    color:rgba(200,168,75,.6);text-decoration:none;
+    padding:8px 2px;white-space:nowrap;flex-shrink:0;
+    transition:color .25s;
+  }
+  .msc-secondary:hover{color:var(--gold)}
+  .msc-secondary:focus-visible{outline:2px solid var(--gold);outline-offset:3px}
+  /* Nudge BTT above bar */
+  body.msc-active .btt{bottom:88px}
+}
+
+/* ── 5. Pricing card improvements ── */
+@media(max-width:768px){
+  .tier-price{margin-bottom:6px;line-height:1}
+  .tier-commitment{margin-bottom:22px}
+  .tier-features{gap:17px;margin-bottom:26px}
+  .tier-features li svg{width:15px;height:15px;margin-top:4px;flex-shrink:0}
+  .tier-gated{padding:14px 14px;font-size:.82rem;line-height:1.72}
+  .offer-scarcity-main{font-size:clamp(1.12rem,4vw,1.48rem)}
+  .offer-value{padding:18px 20px;margin:18px 0}
+  .offer-value-price{font-size:.98rem}
+  .offer-value-inline{font-size:.8rem}
+  .offer-positioning-bottom{font-size:clamp(.95rem,3.5vw,1.08rem)}
+}
+
+/* ── 6. Feature/bullet row cleanup ── */
+@media(max-width:768px){
+  .tier-features li{gap:13px;padding-bottom:1px}
+  .pos-proof{gap:13px}
+  .pos-proof li{padding-left:16px;font-size:.96rem;line-height:1.7}
+}
+
+/* ── 7. Territory status grid ── */
+@media(max-width:768px){
+  .alloc-grid{grid-template-columns:1fr}
+  .alloc-region{font-size:1.08rem}
+  .alloc-states{font-size:.8rem;margin-bottom:10px}
+  .alloc-status-label{font-size:.72rem;letter-spacing:.12em}
+  .alloc-legend{gap:16px;padding:14px 18px;flex-wrap:wrap}
+  .alloc-legend-label{font-size:.72rem;letter-spacing:.12em}
+  .alloc-dot{width:7px;height:7px}
+}
+
+/* ── 8. Back-to-top safe placement ── */
+@media(max-width:768px){
+  /* Always above sticky CTA bar */
+  .btt{bottom:84px;right:18px;width:42px;height:42px}
+}
+
+/* ── 9. Mobile nav refinements ── */
+@media(max-width:768px){
+  /* Keep Book visible alongside hamburger — direct conversion path */
+  .nav-btn.nav-book{
+    display:inline-flex;
+    font-size:.72rem;padding:10px 14px;
+    letter-spacing:.1em;min-height:36px;white-space:nowrap;
+  }
+}
+
+/* ── 10. Contact form — mobile refinements ── */
+@media(max-width:768px){
+  /* Field group: tighter inner gap (label→field) */
+  .fg{gap:5px}
+
+  /* Form vertical rhythm: slightly tighter between fields */
+  .cform{gap:10px}
+
+  /* Fields: ~52px touch height, readable font, consistent padding */
+  .fg input,.fg textarea,.fg select{
+    font-size:16px;            /* prevent iOS zoom */
+    padding:17px 16px;         /* 17+17 + ~18px line-height ≈ 52px */
+    min-height:52px;
+    line-height:1.2;
+  }
+
+  /* Textarea keeps its own min-height but obeys field rhythm */
+  .fg textarea{min-height:110px;padding:15px 16px}
+
+  /* Labels — lift brightness slightly, reduce letter-spacing for readability */
+  .fg label{
+    font-size:.76rem;
+    letter-spacing:.12em;
+    color:rgba(168,168,160,.78);  /* brighter than default var(--muted) .62 visual weight */
+  }
+
+  /* Placeholders — lift from .28 opacity to .42 for legibility on dark bg */
+  .fg input::placeholder,.fg textarea::placeholder{
+    color:rgba(168,168,160,.42);
+  }
+
+  /* Select — ensure arrow area is not clipped */
+  .fg select{padding-right:36px}
+
+  /* Helper / error text */
+  .field-error{font-size:.76rem;letter-spacing:.01em;margin-top:5px}
+
+  /* Form note above submit */
+  .cform > p[style]{
+    font-size:.84rem !important;
+    color:rgba(168,168,160,.68) !important;
+    line-height:1.7;
+    text-align:left;
+  }
+
+  /* Submit — full-width, clearly dominant, 56px min */
+  .fsub{
+    width:100%;
+    text-align:center;
+    padding:19px 24px;
+    min-height:56px;
+    font-size:.84rem;
+    letter-spacing:.16em;
+    margin-top:10px;
+    align-self:stretch;
+  }
+
+  /* 2-col frow already collapses to 1-col at ≤900px; tighten gap */
+  .frow{gap:10px}
+
+  /* Meta list in contact left col */
+  .c-meta{gap:14px;margin-top:20px}
+  .cm label{font-size:.68rem;letter-spacing:.14em;margin-bottom:2px}
+  .cm span{font-size:.92rem;line-height:1.6}
+}
+
+/* ── 11. Hero headline — very small phones (≤390px) ── */
+@media(max-width:390px){
+  /* Reduce font-size floor so 5-word headlines wrap to 2 lines max, not 3 */
+  .hero-stage{font-size:clamp(2.7rem,10.2vw,3.5rem)}
+  /* Compensate: stage height is 2em × line-height — keep reserve at 2 lines */
+  /* (height is set via JS-matchable clamp; CSS height:2.12em still correct) */
+
+  /* Gold accent — slightly tighter */
+  .hero-gold-accent{font-size:clamp(1rem,4.2vw,1.3rem);margin-bottom:12px}
+
+  /* Hero section padding — recover vertical space gained */
+  #hero{padding:76px 20px 44px}
+}
 </style>
 @if(config('services.recaptcha.site_key'))
 <script src="https://www.google.com/recaptcha/api.js?render={{ config('services.recaptcha.site_key') }}" async defer></script>
@@ -1547,8 +1820,10 @@ body::before{
 <!-- ════════════ MOBILE DROPDOWN MENU ════════════ -->
 <div id="navMenu" class="nav-menu" aria-hidden="true" role="dialog" aria-label="Site navigation">
   <div class="nav-menu-inner">
+    <a href="#contact" class="nm-link nm-featured" data-menu-close>Check Availability &rarr;</a>
+    <a href="/book" class="nm-link nm-cta-secondary" data-menu-close>Book a Session</a>
+    <div class="nm-divider"></div>
     <a href="/how-it-works" class="nm-link" data-menu-close>How It Works</a>
-    <a href="/book" class="nm-link nm-featured" data-menu-close>Book a Session</a>
     <div class="nm-divider"></div>
     @auth
       <a href="/dashboard" class="nm-portal" data-menu-close>My Dashboard</a>
@@ -1571,7 +1846,7 @@ body::before{
   <p class="hero-note">One operator per market &mdash; select territories only.</p>
   <div class="hero-actions" style="opacity:0;animation:up .85s .52s forwards">
     <a href="#contact" class="btn-primary">Claim Your Territory</a>
-    <a href="#offer" class="btn-ghost">View the Offer</a>
+    <a href="#offer" class="btn-ghost">Review the Structure</a>
   </div>
 
   <a href="#alloc" class="hero-scroll" aria-label="Scroll to next section">
@@ -1606,7 +1881,7 @@ body::before{
       <p class="alloc-urgency">If your market is still available,<br><em>claim it before the window closes.</em></p>
       <span class="alloc-convert-label">Access is reserved. Not open.</span>
       <div class="alloc-actions">
-        <a href="#contact" class="btn-primary">Request Licensing Access</a>
+        <a href="#contact" class="btn-primary">Apply for Market Access</a>
         <a href="#offer" class="btn-ghost">Review Licensing Structure</a>
       </div>
     </div>
@@ -1973,7 +2248,7 @@ body::before{
       <div class="steps-grid">
         <div class="step r">
           <div class="step-n">01</div>
-          <h3 class="step-title">Map Your Search Coverage</h3>
+          <h3 class="step-title">Map Your Territory</h3>
           <p class="step-desc">Your full search territory is mapped — every service, every city, every topic variation — establishing the complete coverage architecture before a single page is deployed.</p>
         </div>
         <div class="step r">
@@ -1988,7 +2263,7 @@ body::before{
         </div>
         <div class="step r">
           <div class="step-n">04</div>
-          <h3 class="step-title">Grow Your Footprint</h3>
+          <h3 class="step-title">Expand Your Position</h3>
           <p class="step-desc">As your licensed position compounds, your agreement accommodates controlled expansion — new services, additional cities, deeper coverage — all within the same licensed agreement.</p>
         </div>
       </div>
@@ -2064,7 +2339,7 @@ body::before{
       <!-- B. VALUE -->
       <div class="offer-value">
         <span class="offer-value-price">Annual engagements range from $36K&ndash;$60K+.</span>
-        <span class="offer-value-inline">Visibility.&ensp;Optimization.&ensp;Reporting.</span>
+        <span class="offer-value-inline">Position.&ensp;Coverage.&ensp;Performance.</span>
         <span class="offer-value-media">Paid media and ad management are separate.</span>
       </div>
 
@@ -2164,7 +2439,7 @@ body::before{
       </ul>
       <div class="tier-price"><sup>$</sup>4,799<sub>/mo</sub></div>
       <div class="tier-commitment">Priority processing. 3-month minimum, then month-to-month.</div>
-      <a href="#contact" class="tier-cta">Request Licensing Details</a>
+      <a href="#contact" class="tier-cta">Apply for Expansion Access</a>
       <button class="tier-book" onclick="window._bkPending={id:{{ $consultTypes->get('agency-review')?->id ?? $consultTypes->get('agency')?->id ?? 3 }},duration:{{ $consultTypes->get('agency-review')?->duration_minutes ?? $consultTypes->get('agency')?->duration_minutes ?? 60 }},name:{{ json_encode($consultTypes->get('agency-review')?->name ?? $consultTypes->get('agency')?->name ?? 'Agency Licence Review') }},isFree:{{ ($consultTypes->get('agency-review')?->is_free ?? $consultTypes->get('agency')?->is_free ?? false) ? 'true' : 'false' }}};window.dispatchEvent(new CustomEvent('open-booking',{detail:window._bkPending}))">Review My Agency Licence</button>
     </div>
 
@@ -2308,9 +2583,9 @@ body::before{
 
 <!-- ════════════ LOOKY-LOO CAPTURE ════════════ -->
 <section id="preview" style="padding:80px 40px;text-align:center;border-top:1px solid rgba(200,168,75,.06)">
-  <p style="font-size:.72rem;letter-spacing:.2em;text-transform:uppercase;color:rgba(200,168,75,.55);margin-bottom:14px">Not ready to book?</p>
-  <h2 style="font-family:'Cormorant Garamond',serif;font-size:clamp(1.7rem,4vw,2.5rem);font-weight:400;color:#ede8de;margin-bottom:16px;line-height:1.2">See what's possible<br><em>for your market.</em></h2>
-  <p style="font-size:.9rem;color:rgba(168,168,160,.7);max-width:460px;margin:0 auto 28px;line-height:1.75">Share your site and we'll map the opportunity — rankings you're missing, competitors ahead of you, and the territory you could claim. No commitment.</p>
+  <p style="font-size:.72rem;letter-spacing:.2em;text-transform:uppercase;color:rgba(200,168,75,.55);margin-bottom:14px">Not ready to apply?</p>
+  <h2 style="font-family:'Cormorant Garamond',serif;font-size:clamp(1.7rem,4vw,2.5rem);font-weight:400;color:#ede8de;margin-bottom:16px;line-height:1.2">See what's available<br><em>in your territory.</em></h2>
+  <p style="font-size:.9rem;color:rgba(168,168,160,.7);max-width:460px;margin:0 auto 28px;line-height:1.75">Share your site and we'll map what's available in your territory — coverage you're missing, ground competitors could take, and the position still open. Territories close as agreements are signed.</p>
   <a href="{{ route('onboarding.start') }}" style="display:inline-block;background:transparent;border:1px solid rgba(200,168,75,.35);color:#c8a84b;font-size:.78rem;font-weight:400;letter-spacing:.18em;text-transform:uppercase;padding:14px 36px;border-radius:4px;text-decoration:none;transition:background .3s,border-color .3s,color .3s" onmouseover="this.style.background='rgba(200,168,75,.08)';this.style.borderColor='rgba(200,168,75,.6)'" onmouseout="this.style.background='transparent';this.style.borderColor='rgba(200,168,75,.35)'">Preview your opportunity &rarr;</a>
 </section>
 
@@ -2391,7 +2666,7 @@ body::before{
         @error('niche') <span class="field-error">{{ $message }}</span> @enderror
       </div>
       <div class="fg">
-        <label for="message">Tell us about your current SEO situation and expansion goals</label>
+        <label for="message">Tell us about your market and what you're looking to own</label>
         <textarea id="message" name="message" placeholder="We're an agency managing SEO for local service businesses / We're a business that's hit a growth ceiling and need structured market coverage across…" required>{{ old('message') }}</textarea>
         @error('message') <span class="field-error">{{ $message }}</span> @enderror
       </div>
@@ -2407,6 +2682,14 @@ body::before{
     </form>
   </div>
 </section>
+
+<!-- ════════════ STICKY MOBILE CTA (mobile only — hidden on desktop via CSS) ════════════ -->
+<div id="mobStickyCta" class="mob-sticky-cta" role="complementary" aria-label="Quick access — assess market availability">
+  <div class="msc-inner">
+    <a href="#contact" class="msc-primary">Check My Market</a>
+    <a href="/book" class="msc-secondary">Book a Call</a>
+  </div>
+</div>
 
 <!-- ════════════ BACK TO TOP ════════════ -->
 <button class="btt" id="btt" aria-label="Back to top">
@@ -2487,6 +2770,45 @@ body::before{
   const btt = document.getElementById('btt');
   window.addEventListener('scroll', () => btt.classList.toggle('show', scrollY > 600), {passive:true});
   btt.addEventListener('click', () => window.scrollTo({top:0, behavior:'smooth'}));
+
+  // ── Sticky mobile CTA ──
+  (function(){
+    var bar = document.getElementById('mobStickyCta');
+    if (!bar) return;
+    var footer = document.querySelector('footer');
+    var visible = false;
+
+    function updateBar() {
+      // Only active on phones
+      if (window.innerWidth > 768) {
+        if (visible) { bar.classList.remove('msc-visible'); document.body.classList.remove('msc-active'); visible = false; }
+        return;
+      }
+      var sy = window.scrollY || window.pageYOffset;
+      var winH = window.innerHeight;
+      // Show after scrolling ~80% of first viewport
+      var shouldShow = sy > winH * 0.8;
+      // Hide when footer enters view (300px buffer)
+      if (footer) {
+        var ft = footer.getBoundingClientRect().top;
+        if (ft < winH + 150) shouldShow = false;
+      }
+      // Hide when gate overlay is active (avoids layering)
+      var gate = document.getElementById('gateOverlay');
+      if (gate && gate.classList.contains('active')) shouldShow = false;
+
+      if (shouldShow !== visible) {
+        visible = shouldShow;
+        bar.classList.toggle('msc-visible', visible);
+        bar.classList.toggle('msc-hidden', !visible);
+        document.body.classList.toggle('msc-active', visible);
+      }
+    }
+
+    window.addEventListener('scroll', updateBar, {passive:true});
+    window.addEventListener('resize', updateBar, {passive:true});
+    updateBar();
+  })();
 
   // ── Paywall Gate (placeholder) ──
   const gateOverlay = document.getElementById('gateOverlay');
