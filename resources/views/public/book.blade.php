@@ -103,9 +103,11 @@ body{background:var(--bg);color:var(--ivory);font-family:'DM Sans',sans-serif;fo
 
       {{-- Hero --}}
       <section class="bk-hero">
-        <h1>This is not a consultation.<br>This is a <em>market opportunity session.</em></h1>
-        <p class="hero-sub">We analyze your market, identify gaps, and tell you &mdash; clearly &mdash; if there is real opportunity to dominate your area.</p>
-        <p class="hero-sub" style="margin-top:-18px;font-size:.9rem;letter-spacing:.01em">No fluff. No pitch. Just clarity.</p>
+        <h1>This is a <em>market opportunity session.</em></h1>
+        <p class="hero-sub">We help you see what&rsquo;s actually happening in your market &mdash; where you&rsquo;re losing visibility, where competitors are winning, and where real opportunity exists.</p>
+        <p class="hero-sub" style="margin-top:-18px">Most businesses are stuck cycling through agencies without ever fixing the core problem.</p>
+        <p class="hero-sub" style="margin-top:-18px;font-weight:400;color:var(--ivory)">This is where that stops.</p>
+        <p class="hero-sub" style="margin-top:4px;font-size:.88rem;font-style:italic">Most businesses don&rsquo;t need another agency. They need clarity on what&rsquo;s actually happening.</p>
 
         @if(request('payment') === 'cancelled')
         <div class="bk-notice">
@@ -113,7 +115,7 @@ body{background:var(--bg);color:var(--ivory);font-family:'DM Sans',sans-serif;fo
         </div>
         @endif
 
-        <button class="bk-cta-btn" onclick="openSession()">Reserve Your Strategy Session &rarr;</button>
+        <button class="bk-cta-btn" onclick="openSession()">Reserve Your Market Opportunity Session &rarr;</button>
         <p class="bk-cta-note">Available to service-based businesses in select markets.</p>
       </section>
 
