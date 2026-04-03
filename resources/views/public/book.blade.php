@@ -25,7 +25,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
-:root{--bg:#080808;--deep:#0b0b0b;--gold:#c8a84b;--gold-lt:#e2c97d;--ivory:#ede8de;--muted:#a8a8a0;--border:#1a1a1a;--section-gap:96px}
+:root{--bg:#080808;--deep:#0b0b0b;--gold:#c8a84b;--gold-lt:#e2c97d;--ivory:#ede8de;--muted:#a8a8a0;--border:#1a1a1a;--section-gap:80px}
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html{font-size:18px;scroll-behavior:smooth}
 body{background:var(--bg);color:var(--ivory);font-family:'DM Sans',sans-serif;font-weight:300;line-height:1.85}
@@ -43,7 +43,7 @@ body{background:var(--bg);color:var(--ivory);font-family:'DM Sans',sans-serif;fo
 .bk-wrap{max-width:760px;margin:0 auto;padding:0 32px}
 
 /* ── Hero ── */
-.bk-hero{padding:var(--section-gap) 0 80px;text-align:center;position:relative}
+.bk-hero{padding:var(--section-gap) 0 44px;text-align:center;position:relative}
 .bk-hero h1{font-family:'Cormorant Garamond',serif;font-size:clamp(2rem,5vw,3.2rem);font-weight:400;line-height:1.2;letter-spacing:-.01em;margin-bottom:16px}
 .bk-hero h1 em{font-style:italic;color:var(--gold)}
 .bk-hero .hero-sub{font-size:1rem;color:var(--muted);max-width:520px;margin:0 auto 40px;line-height:1.9}
@@ -65,7 +65,7 @@ body{background:var(--bg);color:var(--ivory);font-family:'DM Sans',sans-serif;fo
 .bk-cta-btn:hover{background:var(--gold-lt);transform:translateY(-1px)}
 .bk-cta-note{font-size:.75rem;color:var(--muted);margin-top:14px;letter-spacing:.02em}
 .bk-cta-commitment{font-size:.80rem;color:rgba(168,168,160,.78);margin-top:8px;letter-spacing:.02em;font-style:italic}
-.bk-trust-source{font-size:.75rem;letter-spacing:.11em;text-transform:uppercase;color:rgba(168,168,160,.70);margin-top:22px;margin-bottom:6px;display:block}
+.bk-trust-source{font-size:.75rem;letter-spacing:.11em;text-transform:uppercase;color:rgba(168,168,160,.70);margin-top:14px;margin-bottom:4px;display:block}
 
 /* ── Divider ── */
 .bk-divider{border:none;border-top:1px solid var(--border);margin:0}
@@ -77,7 +77,7 @@ body{background:var(--bg);color:var(--ivory);font-family:'DM Sans',sans-serif;fo
 .bk-happens li::before{content:'·';color:var(--gold);flex-shrink:0;font-size:1.6rem;line-height:1.1}
 
 /* ── Authority (signature mark) ── */
-.bk-authority{padding:18px 0 30px;border-top:1px solid rgba(26,26,26,.7);text-align:center}
+.bk-authority{padding:10px 0 14px;border-top:1px solid rgba(26,26,26,.7);text-align:center}
 .bk-authority .auth-brand{font-family:'Cormorant Garamond',serif;font-size:.8rem;font-weight:300;color:rgba(237,232,222,.18);line-height:1.4;letter-spacing:.04em}
 .bk-authority .auth-brand em{font-style:italic;color:rgba(200,168,75,.18)}
 .bk-authority .auth-sub{font-size:.52rem;letter-spacing:.18em;text-transform:uppercase;color:rgba(200,168,75,.12);margin-bottom:4px;font-weight:400;display:block}
@@ -90,7 +90,7 @@ body{background:var(--bg);color:var(--ivory);font-family:'DM Sans',sans-serif;fo
 
 /* ── Booking entry section ── */
 #book-now{background:var(--deep);border-top:1px solid var(--border);scroll-margin-top:80px}
-.bk-entry-intro{max-width:640px;margin:0 auto;padding:80px 32px 48px;text-align:center}
+.bk-entry-intro{max-width:640px;margin:0 auto;padding:52px 32px 40px;text-align:center}
 .bk-entry-intro .bk-section-label{font-size:.75rem;letter-spacing:.16em;text-transform:uppercase;color:rgba(200,168,75,.78);font-weight:400;margin-bottom:10px;display:block}
 .bk-entry-intro h2{font-family:'Cormorant Garamond',serif;font-size:clamp(1.7rem,4vw,2.3rem);font-weight:400;line-height:1.2;margin-bottom:14px;color:rgba(237,232,222,.95);letter-spacing:-.01em}
 .bk-entry-intro p{font-size:.9rem;color:var(--muted);line-height:1.9;max-width:500px;margin:0 auto}
@@ -98,15 +98,15 @@ body{background:var(--bg);color:var(--ivory);font-family:'DM Sans',sans-serif;fo
 
 @keyframes active-pulse{0%,100%{opacity:.65}50%{opacity:1}}
 @keyframes sys-pulse{0%,100%{opacity:.55}50%{opacity:.85}}
-.bk-active-indicator{display:inline-flex;align-items:center;justify-content:center;gap:5px;font-size:.68rem;letter-spacing:.14em;text-transform:uppercase;color:rgba(168,168,160,.70);margin-top:16px;margin-bottom:2px}
+.bk-active-indicator{display:inline-flex;align-items:center;justify-content:center;gap:5px;font-size:.68rem;letter-spacing:.14em;text-transform:uppercase;color:rgba(168,168,160,.70);margin-top:10px;margin-bottom:2px}
 .bk-active-dot{color:#22c55e;animation:active-pulse 3s ease-in-out infinite;line-height:1}
-.bk-sys-signal{font-size:.75rem;letter-spacing:.11em;text-transform:uppercase;color:rgba(168,168,160,.65);margin-top:14px;animation:sys-pulse 4.5s ease-in-out infinite}
+.bk-sys-signal{font-size:.75rem;letter-spacing:.11em;text-transform:uppercase;color:rgba(168,168,160,.65);margin-top:8px;animation:sys-pulse 4.5s ease-in-out infinite}
 
 @media(max-width:600px){
   .bk-nav{padding:20px 24px}
   .bk-wrap{padding:0 24px}
-  :root{--section-gap:64px}
-  .bk-entry-intro{padding:56px 24px 32px}
+  :root{--section-gap:52px}
+  .bk-entry-intro{padding:40px 24px 28px}
 }
 </style>
 @include('partials.clarity')
