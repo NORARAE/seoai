@@ -31,7 +31,7 @@
 <body>
 <div class="wrap">
   <div class="header">
-    <span class="header-title">SEOAIco — New Inquiry</span>
+    <span class="header-title">SEO AI Co™ — New Inquiry</span>
     <span class="badge">{{ strtoupper($inquiry->tier) }}</span>
     @php
       $riskClass = match($inquiry->spam_risk ?? 'low') {
@@ -238,7 +238,7 @@
       @endif
     </div>
   </div>
-  <div class="footer">SEOAIco internal notification &nbsp;·&nbsp; Do not reply to this address</div>
+  <div class="footer">SEO AI Co™ internal notification &nbsp;·&nbsp; Do not reply to this address</div>
 </div>
 </body>
 </html>

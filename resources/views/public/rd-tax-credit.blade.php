@@ -19,7 +19,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="csrf-token" content="{{ csrf_token() }}">
 <title>R&amp;D Tax Credit — SEO AI Co™</title>
-<meta name="description" content="Development-focused SEO systems, automation, and AI-driven infrastructure may qualify for federal R&D tax credits under Section 41.">
+<meta name="description" content="Some technical activities associated with custom software development, AI systems, and automation may be relevant to federal research credit considerations.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
@@ -34,7 +34,7 @@ body{background:var(--bg);color:var(--ivory);font-family:'DM Sans',sans-serif;fo
 .rd-logo{text-decoration:none;display:inline-flex;align-items:baseline;gap:0}
 .rd-logo .l-seo{font-weight:300;font-size:1.1rem;letter-spacing:.06em;color:#fff}
 .rd-logo .l-ai{color:var(--gold);font-weight:500;font-size:1.25rem;letter-spacing:.02em}
-.rd-logo .l-co{font-weight:300;font-size:.95rem;letter-spacing:.04em;color:#fff}
+.rd-logo .l-co{font-weight:300;font-size:.95rem;letter-spacing:.04em;color:rgba(150,150,150,.5)}
 .rd-nav-back{font-size:.8rem;color:var(--muted);text-decoration:none;letter-spacing:.04em;transition:color .2s}
 .rd-nav-back:hover{color:var(--gold)}
 
@@ -119,79 +119,55 @@ body{background:var(--bg);color:var(--ivory);font-family:'DM Sans',sans-serif;fo
       {{-- Hero --}}
       <section class="rd-hero">
         <p class="rd-hero-label">R&amp;D Tax Credit</p>
-        <h1>Your SEO investment may qualify as R&amp;D.</h1>
-        <p class="hero-sub">Development-focused SEO systems, automation, and AI-driven infrastructure may qualify for federal R&amp;D tax credits under Section 41 of the Internal Revenue Code.</p>
+        <h1>Some operators review additional opportunities alongside their deployment.</h1>
+        <p class="hero-sub">Certain technical activities &mdash; particularly those involving custom software development, automation systems, and AI-driven infrastructure &mdash; may be reviewed for potential eligibility under the federal research credit.</p>
       </section>
 
       <hr class="rd-divider">
 
-      {{-- What Qualifies --}}
+      {{-- General context --}}
       <section class="rd-section">
-        <p class="rd-section-label">What Qualifies</p>
-        <h2>The IRS recognises software development as qualifying R&amp;D activity.</h2>
-        <p>To qualify, activities must involve a process of experimentation to eliminate technical uncertainty — developing and testing new approaches to achieve a result in a way that was not known upfront.</p>
+        <p class="rd-section-label">General Context</p>
+        <h2>Technical development and research credit eligibility.</h2>
+        <p>In some cases, systems involving custom-built automation, programmatic generation engines, AI-assisted workflows, or experimental system development may involve elements of technical uncertainty and iterative development.</p>
+        <p>Whether any specific engagement qualifies for the federal research credit depends on the particular activities involved and the applicable requirements. SEO AI Co™ does not determine eligibility and does not provide tax, legal, or accounting advice.</p>
 
-        <div class="rd-two-col" style="margin-top:32px">
-          <div class="rd-two-col-item">
-            <span class="rd-item-name">Custom Software Development</span>
-            <span class="rd-item-desc">Building proprietary systems rather than using off-the-shelf tools</span>
-          </div>
-          <div class="rd-two-col-item">
-            <span class="rd-item-name">Automation Systems</span>
-            <span class="rd-item-desc">Automated workflows and processes developed to reduce manual work</span>
-          </div>
-          <div class="rd-two-col-item">
-            <span class="rd-item-name">Experimental Builds</span>
-            <span class="rd-item-desc">Systems built through trial, iteration, and technical uncertainty</span>
-          </div>
-          <div class="rd-two-col-item">
-            <span class="rd-item-name">AI &amp; Programmatic Systems</span>
-            <span class="rd-item-desc">AI-assisted generation, inference pipelines, and programmatic outputs</span>
-          </div>
+        <div class="rd-disclaimer" style="margin-top:36px">
+          <p><strong>Important:</strong> The information on this page is general in nature and is provided for awareness only. It does not constitute legal, tax, or financial guidance. Please consult a qualified CPA or tax advisor to determine whether your specific activities and engagements may qualify.</p>
         </div>
       </section>
 
       <hr class="rd-divider">
 
-      {{-- How SEO AI Co™ Fits --}}
+      {{-- Referral trigger --}}
       <section class="rd-section">
-        <p class="rd-section-label">How SEO AI Co™ Fits</p>
-        <h2>Our systems are built — not bought.</h2>
-        <p>What we build for clients is custom software infrastructure. Every engagement involves technical development, experimentation, and systems that did not exist before we built them.</p>
-
-        <ul class="rd-list" style="margin-top:28px">
-          <li>Programmatic page generation engines — custom-built per market and vertical</li>
-          <li>Internal linking systems built through iterative development and testing</li>
-          <li>Schema automation and structured data pipelines</li>
-          <li>AI-assisted content and metadata generation systems</li>
-        </ul>
-
-        <div class="rd-disclaimer">
-          <p><strong>Important:</strong> SEO AI Co™ does not provide tax advice. The information on this page is general in nature and does not constitute legal, tax, or financial guidance. Please consult a qualified CPA or tax advisor to determine whether your specific engagement qualifies for R&amp;D credits.</p>
-        </div>
+        <p class="rd-section-label">Next Step</p>
+        <h2>If you are actively reviewing this credit.</h2>
+        <p>Share the IRS resources below with your tax advisor. If you would like a referral for further review, let us know when you reach out.</p>
+        <p style="margin-top:14px;font-size:.88rem;color:rgba(168,168,160,.5)">I’d like a referral for further review &rarr; <a href="/book" style="color:var(--gold);text-decoration:none;letter-spacing:.02em">Contact us</a></p>
       </section>
 
       <hr class="rd-divider">
 
-      {{-- Authority Links --}}
+      {{-- IRS Links --}}
       <section class="rd-section" style="padding-bottom:0">
-        <p class="rd-section-label">Primary Sources</p>
-        <h2>Read the official guidance.</h2>
-        <p>The following IRS resources define what qualifies and how to claim the credit.</p>
+        <p class="rd-section-label">Official IRS Resources</p>
+        <h2>Primary source documents.</h2>
+        <p>The following IRS forms and instructions define how the credit is calculated and claimed.</p>
 
         <div class="rd-links" style="margin-top:28px">
-          <a href="https://www.irs.gov/businesses/corporations/research-credit" target="_blank" rel="noopener noreferrer" class="rd-link-item">
-            <span class="rd-link-arrow">↗</span>
-            <span>
-              <span style="display:block">IRS Research Credit — Official Overview</span>
-              <span class="rd-link-meta">irs.gov/businesses/corporations/research-credit</span>
-            </span>
-          </a>
           <a href="https://www.irs.gov/forms-pubs/about-form-6765" target="_blank" rel="noopener noreferrer" class="rd-link-item">
             <span class="rd-link-arrow">&nearr;</span>
             <span>
               <span style="display:block">Form 6765 &mdash; Credit for Increasing Research Activities</span>
-              <span class="rd-link-meta">irs.gov/forms-pubs/about-form-6765 &mdash; the filing form for Section 41 R&amp;D credits</span>
+              <span class="rd-link-meta">irs.gov/forms-pubs/about-form-6765</span>
+            </span>
+          </a>
+          <a href="https://www.irs.gov/instructions/i6765" target="_blank" rel="noopener noreferrer" class="rd-link-item">
+            <span class="rd-link-arrow">&nearr;</span>
+            <span>
+              <span style="display:block">Instructions for Form 6765</span>
+              <span class="rd-link-meta">irs.gov/instructions/i6765</span>
             </span>
           </a>
         </div>
@@ -204,8 +180,8 @@ body{background:var(--bg);color:var(--ivory);font-family:'DM Sans',sans-serif;fo
       <div class="rd-cta">
         <p class="rd-cta-label">Get Started</p>
         <h2>Every engagement begins with a conversation about your market.</h2>
-        <a href="/book" class="rd-cta-btn">Book a Market Opportunity Audit &rarr;</a>
-        <p class="rd-cta-note">Available to service-based businesses in select markets.</p>
+        <a href="/book" class="rd-cta-btn">Reserve a Market Session</a>
+        <p class="rd-cta-note">Available to operators in structured markets.</p>
       </div>
     </div>
 

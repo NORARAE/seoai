@@ -33,7 +33,7 @@
   <div class="divider"></div>
 
   <div class="body">
-    <p>We accept a limited number of new clients per market. Submissions are reviewed individually — your position in {{ $submission->service_area ?: 'your service area' }} is now under evaluation.</p>
+    <p>We accept a limited number of operators per market. Submissions are reviewed individually &mdash; your position is now under evaluation.</p>
 
     <div class="detail-block">
       <p><strong>Business:</strong> {{ $submission->business_name }}</p>

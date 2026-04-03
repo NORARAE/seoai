@@ -2305,12 +2305,13 @@ body::before{
 <!-- ════════════ LICENCE STATEMENT ════════════ -->
 <section>
   <div class="licence-stmt-section">
-    <p class="licence-stmt-principle r">Position is held under licence — not by default.</p>
+    <p class="licence-stmt-principle r">Position is held under licence &mdash; not by default.</p>
     <div class="licence-stmt-body r">
       <p>Active licences protect your position.</p>
       <p>Unlicensed builds do not carry forward.</p>
     </div>
   </div>
+  <p style="text-align:center;font-size:.7rem;color:rgba(168,168,160,.35);max-width:560px;margin:0 auto;padding:0 24px 32px;line-height:1.8">The SEO AI Co™ system combines structured content, local relevance, internal link architecture, search signals, and ongoing optimization &mdash; designed to strengthen every signal that drives local visibility and market dominance.</p>
 </section>
 
 <!-- ════════════ PRICING ════════════ -->
@@ -2410,7 +2411,7 @@ body::before{
         </li>
       </ul>
       <div class="tier-price"><sup>$</sup>2,995<sub>/mo</sub></div>
-      <div class="tier-commitment">3-month minimum. Month-to-month thereafter.</div>
+      <div class="tier-commitment">Structured 4-month deployment cycle.</div>
       <a href="#contact" class="tier-cta">Apply for Market Position</a>
       <button class="tier-book" onclick="window._bkPending={id:{{ $consultTypes->get('strategy')?->id ?? 2 }},duration:{{ $consultTypes->get('strategy')?->duration_minutes ?? 30 }},name:{{ json_encode($consultTypes->get('strategy')?->name ?? 'Strategy Call') }},isFree:{{ ($consultTypes->get('strategy')?->is_free ?? false) ? 'true' : 'false' }}};window.dispatchEvent(new CustomEvent('open-booking',{detail:window._bkPending}))">Book a Strategy Call</button>
     </div>
@@ -2438,7 +2439,7 @@ body::before{
         </li>
       </ul>
       <div class="tier-price"><sup>$</sup>4,799<sub>/mo</sub></div>
-      <div class="tier-commitment">Priority processing. 3-month minimum, then month-to-month.</div>
+      <div class="tier-commitment">Priority processing. Structured 4-month deployment cycle.</div>
       <a href="#contact" class="tier-cta">Apply for Expansion Access</a>
       <button class="tier-book" onclick="window._bkPending={id:{{ $consultTypes->get('agency-review')?->id ?? $consultTypes->get('agency')?->id ?? 3 }},duration:{{ $consultTypes->get('agency-review')?->duration_minutes ?? $consultTypes->get('agency')?->duration_minutes ?? 60 }},name:{{ json_encode($consultTypes->get('agency-review')?->name ?? $consultTypes->get('agency')?->name ?? 'Agency Licence Review') }},isFree:{{ ($consultTypes->get('agency-review')?->is_free ?? $consultTypes->get('agency')?->is_free ?? false) ? 'true' : 'false' }}};window.dispatchEvent(new CustomEvent('open-booking',{detail:window._bkPending}))">Review My Agency Licence</button>
     </div>
@@ -2599,7 +2600,7 @@ body::before{
       <p class="s-p r" style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.05rem;margin-top:8px;color:rgba(168,168,160,.68)">This is not a purchase decision. It is a position decision.</p>
       <div class="c-meta r">
         <div class="cm"><label>Licensing Model</label><span>Reviewed individually — not automated</span></div>
-        <div class="cm"><label>Commitment</label><span>3-month minimum, then month-to-month</span></div>
+        <div class="cm"><label>Commitment</label><span>Structured 4-month deployment cycle</span></div>
         <div class="cm"><label>Legacy Builds</label><span>Re-entry at 10K tier required</span></div>
       </div>
     </div>
@@ -2731,6 +2732,16 @@ body::before{
   <p style="text-align:center;font-size:.72rem;color:var(--muted);margin:6px 0 4px">
     <a href="mailto:hello@seoaico.com" style="color:var(--muted);text-decoration:none">hello@seoaico.com</a>
   </p>
+  <p style="text-align:center;font-size:.6rem;color:rgba(168,168,160,.28);max-width:540px;margin:0 auto 8px;line-height:1.65">SEO AI Co™ is a programmatic SEO and market intelligence system for operators competing in active markets. This platform maps local search visibility and identifies expansion opportunities.</p>
+  <div style="display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:6px 14px;opacity:.22;margin-bottom:10px" aria-label="Platform integrations">
+    <span style="font-size:.52rem;letter-spacing:.12em;text-transform:uppercase;color:#c8a84b">Google Analytics</span>
+    <span style="color:#c8a84b;font-size:.5rem">&middot;</span>
+    <span style="font-size:.52rem;letter-spacing:.12em;text-transform:uppercase;color:#c8a84b">Search Console</span>
+    <span style="color:#c8a84b;font-size:.5rem">&middot;</span>
+    <span style="font-size:.52rem;letter-spacing:.12em;text-transform:uppercase;color:#c8a84b">Google Business Profile</span>
+    <span style="color:#c8a84b;font-size:.5rem">&middot;</span>
+    <span style="font-size:.52rem;letter-spacing:.12em;text-transform:uppercase;color:#c8a84b">Microsoft Bing Ads</span>
+  </div>
   <p style="text-align:center;font-size:.62rem;color:rgba(168,168,160,.35);max-width:520px;margin:0 auto 12px;line-height:1.5">
     SEO AI Co™ and associated systems, processes, and methodologies are proprietary and may not be reproduced without permission.
   </p>

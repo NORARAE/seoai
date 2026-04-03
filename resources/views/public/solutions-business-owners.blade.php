@@ -84,7 +84,7 @@ footer{border-top:1px solid var(--border);padding:32px 64px;display:flex;align-i
 <main class="page">
   <span class="page-eye">For Business Owners</span>
   <h1 class="page-title">Own your city.<br><em>Lock out your competitors.</em></h1>
-  <p class="page-intro">You run a service business in a local market. You need to be found first — and stay there. But traditional SEO is slow, competitive, and shared. The SEO AI Co™ territory system changes the equation.</p>
+  <p class="page-intro">You operate in a local market and need to hold your position. Traditional SEO is slow, competitive, and shared. The SEO AI Co™ territory system changes the equation.</p>
 
   <div class="proof-stats">
     <div class="stat-item">
@@ -120,7 +120,7 @@ footer{border-top:1px solid var(--border);padding:32px 64px;display:flex;align-i
       <span></span>
       <div>
         <span class="benefit-title">Structural advantage — not a campaign</span>
-        <span class="benefit-body">This isn't a 3-month SEO package. The infrastructure compounds. The longer it runs, the harder it is for anyone to displace you — even if they try.</span>
+        <span class="benefit-body">The system operates in structured 4-month cycles — build, stabilization, expansion, and growth. The infrastructure compounds. The longer it runs, the harder it is for anyone to displace you — even if they try.</span>
       </div>
     </li>
     <li>

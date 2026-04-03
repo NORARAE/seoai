@@ -97,9 +97,9 @@ class OnboardingSubmission extends Model
         return Attribute::make(
             get: fn() => match ($this->recommended_tier) {
                 'multi_market_standard' => '$8K–$14K structured rollout',
-                'multi_market_custom'   => '$14K–$18K custom deployment',
-                'agency_partner'        => '$18K–$25K+ system-level deployment',
-                default                 => '$3K–$8K entry',
+                'multi_market_custom' => '$14K–$18K custom deployment',
+                'agency_partner' => '$18K–$25K+ system-level deployment',
+                default => '$3K–$8K entry',
             }
         );
     }
@@ -108,9 +108,9 @@ class OnboardingSubmission extends Model
     {
         return Attribute::make(
             get: fn() => match ($this->recommended_tier) {
-                'agency_partner'                          => 'partner_review',
+                'agency_partner' => 'partner_review',
                 'multi_market_standard', 'multi_market_custom' => 'high_value',
-                default                                   => 'standard',
+                default => 'standard',
             }
         );
     }
@@ -139,10 +139,10 @@ class OnboardingSubmission extends Model
     {
         return Attribute::make(
             get: fn() => match ($this->recommended_tier) {
-                'agency_partner'        => 'Move directly into partner-level engagement — do not scope small',
+                'agency_partner' => 'Move directly into partner-level engagement — do not scope small',
                 'multi_market_custom',
                 'multi_market_standard' => 'Frame as structured rollout — do not present single-site option',
-                default                 => 'Establish clarity, then position expansion immediately',
+                default => 'Establish clarity, then position expansion immediately',
             }
         );
     }
@@ -207,11 +207,50 @@ class OnboardingSubmission extends Model
     {
         return Attribute::make(
             get: fn() => match ($this->recommended_tier) {
-                'agency_partner'        => 'Partner acquisition close',
+                'agency_partner' => 'Partner acquisition close',
                 'multi_market_custom',
                 'multi_market_standard' => 'Structured rollout close',
-                default                 => 'Consultative close',
+                default => 'Consultative close',
+            }
+        );
+    }
+
+    public function expansionOpportunity(): Attribute
+    {
+        return Attribute::make(
+            get: function () {
+                if (in_array($this->lead_type, ['multi_location', 'agency'])) {
+                    return true;
+                }
+                $addOns = $this->add_ons ?? [];
+                if (is_array($addOns) && count($addOns) >= 2) {
+                    return true;
+                }
+                return false;
+            }
+        );
+    }
+
+    public function upsellPath(): Attribute
+    {
+        return Attribute::make(
+            get: function () {
+                if ($this->lead_type === 'agency') {
+                    return 'agency';
+                }
+                if ($this->lead_type === 'multi_location') {
+                    return in_array($this->number_of_locations, ['6_to_10', '11_to_20', '20_plus'])
+                        ? 'agency'
+                        : 'multi';
+                }
+                // Single-location: high add-on interest signals multi potential
+                $addOns = $this->add_ons ?? [];
+                if (is_array($addOns) && count($addOns) >= 2) {
+                    return 'multi';
+                }
+                return 'core';
             }
         );
     }
 }
+

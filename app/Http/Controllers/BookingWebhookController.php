@@ -32,15 +32,15 @@ use UnexpectedValueException;
  *
  * Register this endpoint in your Stripe Dashboard as:
  *   https://seoaico.com/api/v1/book/stripe-webhook
- * Events to send: checkout.session.completed
+ * Events to send: checkout.session.completed, invoice.payment_failed
  */
 class BookingWebhookController extends Controller
 {
     public function handle(Request $request): JsonResponse
     {
-        $payload   = $request->getContent();
+        $payload = $request->getContent();
         $sigHeader = $request->header('Stripe-Signature');
-        $secret    = (string) config('services.stripe_booking.webhook_secret', '');
+        $secret = (string) config('services.stripe_booking.webhook_secret', '');
 
         // ── Signature verification ────────────────────────────────────────────
         if ($secret === '') {
@@ -65,16 +65,20 @@ class BookingWebhookController extends Controller
             return response()->json(['message' => 'Invalid signature.'], Response::HTTP_BAD_REQUEST);
         }
 
-        // ── Only handle one-time payment checkout completions ─────────────────
+        // ── Route by event type ────────────────────────────────────────────────
+        if ($event->type === 'invoice.payment_failed') {
+            return $this->handleInvoicePaymentFailed($event->data->object);
+        }
+
         if ($event->type !== 'checkout.session.completed') {
             return response()->json(['message' => 'Event type not handled.', 'event' => $event->type]);
         }
 
         $session = $event->data->object;
 
-        // This webhook covers booking payments (mode=payment), not subscriptions.
-        if (($session->mode ?? null) !== 'payment') {
-            return response()->json(['message' => 'Not a payment-mode session.']);
+        // Handle both one-time payment and subscription checkout completions.
+        if (!in_array($session->mode ?? null, ['payment', 'subscription'])) {
+            return response()->json(['message' => 'Unsupported checkout mode.']);
         }
 
         if (($session->payment_status ?? null) !== 'paid') {
@@ -85,7 +89,7 @@ class BookingWebhookController extends Controller
 
         $bookingId = (int) ($session->metadata?->booking_id ?? 0);
 
-        if (! $bookingId) {
+        if (!$bookingId) {
             Log::channel('booking')->warning('Booking webhook: missing booking_id in metadata', [
                 'session_id' => $session->id,
             ]);
@@ -96,7 +100,7 @@ class BookingWebhookController extends Controller
         // ── Find and confirm the booking ──────────────────────────────────────
         $booking = Booking::with('consultType')->find($bookingId);
 
-        if (! $booking) {
+        if (!$booking) {
             Log::channel('booking')->error('Booking webhook: booking not found', [
                 'booking_id' => $bookingId,
                 'session_id' => $session->id,
@@ -111,31 +115,45 @@ class BookingWebhookController extends Controller
             return response()->json(['message' => 'Already confirmed.', 'booking_id' => $bookingId]);
         }
 
-        // Store payment intent if not already set (return handler may have beaten us).
-        if (! $booking->stripe_payment_intent_id && $session->payment_intent) {
-            $booking->stripe_payment_intent_id = (string) $session->payment_intent;
+        // Store payment reference if not already set (return handler may have beaten us).
+        if (!$booking->stripe_payment_intent_id) {
+            $reference = ($session->mode === 'subscription')
+                ? ($session->subscription ?? null)
+                : ($session->payment_intent ?? null);
+            if ($reference) {
+                $booking->stripe_payment_intent_id = (string) $reference;
+            }
         }
 
         // ── Google Calendar event (if not already created) ────────────────────
         try {
-            if (! $booking->google_event_id) {
+            if (!$booking->google_event_id) {
                 $calendarService = app(GoogleCalendarService::class);
                 $result = $calendarService->createBookingEvent($booking);
 
                 $booking->fill([
-                    'google_event_id'  => $result['event_id'],
+                    'google_event_id' => $result['event_id'],
                     'google_meet_link' => $result['meet_link'],
                 ]);
             }
         } catch (\Exception $e) {
             Log::channel('booking')->error('Booking webhook: Calendar event creation failed', [
                 'booking_id' => $bookingId,
-                'error'      => $e->getMessage(),
+                'error' => $e->getMessage(),
             ]);
             // Calendar failure must not block confirmation.
         }
 
-        $booking->fill(['status' => 'confirmed', 'confirmed_at' => now()]);
+        $deploymentFields = [];
+        if (!$booking->activation_date) {
+            $deploymentFields = [
+                'activation_date' => now(),
+                'cycle_end_date' => now()->addMonths(4),
+                'deployment_status' => 'active_deployment',
+            ];
+        }
+
+        $booking->fill(array_merge(['status' => 'confirmed', 'confirmed_at' => now()], $deploymentFields));
         $booking->save();
 
         $booking->refresh()->loadMissing('consultType');
@@ -146,7 +164,7 @@ class BookingWebhookController extends Controller
         } catch (\Exception $e) {
             Log::channel('booking')->error('Booking webhook: Lead sync failed', [
                 'booking_id' => $bookingId,
-                'error'      => $e->getMessage(),
+                'error' => $e->getMessage(),
             ]);
         }
 
@@ -156,5 +174,33 @@ class BookingWebhookController extends Controller
         ]);
 
         return response()->json(['message' => 'Booking confirmed.', 'booking_id' => $bookingId]);
+    }
+
+    /**
+     * Mark the booking's deployment as payment_failed when a subscription renewal fails.
+     */
+    private function handleInvoicePaymentFailed(object $invoice): JsonResponse
+    {
+        $subscriptionId = (string) ($invoice->subscription ?? '');
+
+        if (!$subscriptionId) {
+            return response()->json(['message' => 'No subscription ID on failed invoice.']);
+        }
+
+        $booking = Booking::where('stripe_payment_intent_id', $subscriptionId)->first();
+
+        if (!$booking) {
+            // Not a booking subscription — ignore.
+            return response()->json(['message' => 'No booking found for subscription.']);
+        }
+
+        $booking->update(['deployment_status' => 'payment_failed']);
+
+        Log::channel('booking')->warning('Booking subscription payment failed', [
+            'booking_id' => $booking->id,
+            'subscription_id' => $subscriptionId,
+        ]);
+
+        return response()->json(['message' => 'Booking deployment status updated to payment_failed.']);
     }
 }

@@ -16,7 +16,8 @@ class OnboardingStep3Mail extends Mailable
     public function __construct(
         public readonly Lead $lead,
         public readonly OnboardingSubmission $submission,
-    ) {}
+    ) {
+    }
 
     public function envelope(): Envelope
     {

@@ -24,11 +24,11 @@ class FunnelEvent extends Model
     }
 
     // ── Event name constants ──────────────────────────────────────────────────
-    public const ONBOARDING_STARTED     = 'onboarding_started';
-    public const ONBOARDING_COMPLETED   = 'onboarding_completed';
-    public const BOOKING_VIEWED         = 'booking_viewed';
-    public const BOOKING_CREATED        = 'booking_created';
-    public const BOOKING_PAID           = 'booking_paid';
+    public const ONBOARDING_STARTED = 'onboarding_started';
+    public const ONBOARDING_COMPLETED = 'onboarding_completed';
+    public const BOOKING_VIEWED = 'booking_viewed';
+    public const BOOKING_CREATED = 'booking_created';
+    public const BOOKING_PAID = 'booking_paid';
 
     // ── Relationships ─────────────────────────────────────────────────────────
 
@@ -56,11 +56,11 @@ class FunnelEvent extends Model
     ): void {
         try {
             static::create([
-                'event_name'    => $eventName,
+                'event_name' => $eventName,
                 'session_token' => session()->getId(),
-                'booking_id'    => $bookingId,
-                'lead_id'       => $leadId,
-                'metadata'      => $metadata ?: null,
+                'booking_id' => $bookingId,
+                'lead_id' => $leadId,
+                'metadata' => $metadata ?: null,
             ]);
         } catch (\Throwable $e) {
             // Non-fatal — log and continue

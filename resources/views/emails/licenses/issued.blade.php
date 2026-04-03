@@ -1,6 +1,6 @@
 <p>Hello {{ $license->customer_name ?: 'there' }},</p>
 
-<p>Your SEOAico Core Content Engine license is ready.</p>
+<p>Your SEO AI Co™ Core Content Engine license is ready.</p>
 
 <p><strong>License key:</strong> {{ $license->license_key }}</p>
 <p><strong>Plan:</strong> {{ ucfirst($license->plan) }}</p>

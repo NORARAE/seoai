@@ -91,6 +91,9 @@ class OnboardingController extends Controller
             'add_ons.*' => 'string|max:100',
             'rd_referral_interest' => 'nullable|boolean',
             'lead_type' => 'nullable|in:single_location,multi_location,agency',
+            'number_of_locations' => 'nullable|in:1,2_to_5,6_to_10,11_to_20,20_plus',
+            'commitment_length' => 'nullable|in:4_month,3_month,2_month',
+            'payment_structure' => 'nullable|in:full_prepay,50_50_split,activation_plus_subscription',
         ], [
             'license.mimes' => 'License must be a PDF, JPG, or PNG file.',
             'license.max' => 'License file must be under 5 MB.',
@@ -174,6 +177,28 @@ class OnboardingController extends Controller
             'add_ons' => $validated['add_ons'] ?? null,
             'rd_referral_interest' => (bool) ($validated['rd_referral_interest'] ?? false),
             'lead_type' => $validated['lead_type'] ?? null,
+            'number_of_locations' => $validated['number_of_locations'] ?? null,
+            // Commitment & routing — inferred from lead_type if not explicitly submitted
+            'commitment_length' => $validated['commitment_length'] ?? '4_month',
+            'payment_structure' => $validated['payment_structure'] ?? 'full_prepay',
+            'offer_path' => match ($validated['lead_type'] ?? null) {
+                'single_location' => 'core',
+                'multi_location' => 'multi_market',
+                'agency' => 'agency',
+                default => 'core',
+            },
+            'rollout_scope' => match ($validated['lead_type'] ?? null) {
+                'single_location' => 'single',
+                'multi_location' => 'multi',
+                'agency' => 'enterprise',
+                default => 'single',
+            },
+            'agency_review_required' => ($validated['lead_type'] ?? null) === 'agency',
+            'ads_management_required' => in_array(
+                $validated['ads_status'] ?? null,
+                ['running', 'has_budget']
+            ) || in_array('google_ads_setup', $validated['add_ons'] ?? []),
+            'ads_account_control' => 'not_configured',
             'submitted_at' => now(),
         ]);
 
@@ -211,7 +236,8 @@ class OnboardingController extends Controller
             'submission_id' => $submission->id,
         ]);
 
-        return redirect()->route('onboarding.done');
+        return redirect()->route('onboarding.done')
+            ->with('lead_type', $validated['lead_type'] ?? 'single_location');
     }
 
     /**
@@ -222,6 +248,7 @@ class OnboardingController extends Controller
     {
         return view('public.onboarding-done', [
             'alreadySubmitted' => $request->session()->get('already_submitted', false),
+            'leadType' => $request->session()->get('lead_type', 'single_location'),
         ]);
     }
 

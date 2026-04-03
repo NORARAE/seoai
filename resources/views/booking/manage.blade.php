@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Manage Your Booking — SEOAIco</title>
+  <title>Manage Your Booking — SEO AI Co™</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <style>
     *, *::before, *::after { box-sizing: border-box; }
@@ -18,7 +18,8 @@
     .detail-table td { padding: 8px 0; border-bottom: 1px solid #eee; vertical-align: top; }
     .detail-table td:first-child { font-weight: 600; white-space: nowrap; padding-right: 16px; width: 110px; }
     .status-badge { display: inline-block; padding: 3px 10px; border-radius: 99px; font-size: 12px; font-weight: 500; text-transform: capitalize; }
-    .status-confirmed { background: #dcfce7; color: #166534; }
+    @keyframes status-pulse { 0%,100% { box-shadow: 0 0 0 0 rgba(34,197,94,.30); } 60% { box-shadow: 0 0 0 5px rgba(34,197,94,0); } }
+    .status-confirmed { background: rgba(34,197,94,.12); color: #22c55e; animation: status-pulse 2.4s ease-in-out infinite; }
     .status-pending   { background: #fef9c3; color: #854d0e; }
     .status-cancelled { background: #fee2e2; color: #991b1b; }
     .alert { padding: 12px 16px; border-radius: 6px; font-size: 14px; margin-bottom: 20px; }

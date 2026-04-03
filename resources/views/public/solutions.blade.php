@@ -82,8 +82,8 @@ footer{border-top:1px solid var(--border);padding:32px 64px;display:flex;align-i
 
 <main class="page">
   <span class="page-eye">Solutions</span>
-  <h1 class="page-title">Built for agencies and<br><em>service businesses</em><br>ready to scale.</h1>
-  <p class="page-intro">SEO AI Co™ is a territory-locked SEO infrastructure system. The system is built for two distinct operators — agencies and local service businesses. Choose your path.</p>
+  <h1 class="page-title">Built for agencies and<br><em>operators in active markets.</em></h1>
+  <p class="page-intro">SEO AI Co™ is a territory-locked SEO infrastructure system. Built for two types of operators — agencies and independent market operators. Choose your path.</p>
 
   <div class="sol-grid">
     <a href="/solutions/agencies" class="sol-card">

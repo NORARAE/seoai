@@ -25,7 +25,7 @@ class FunnelDashboard extends Dashboard
 
     public static function canAccess(): bool
     {
-        if (! auth()->user()?->canApproveUsers()) {
+        if (!auth()->user()?->canApproveUsers()) {
             return false;
         }
 

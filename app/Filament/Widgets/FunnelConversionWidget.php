@@ -25,7 +25,7 @@ class FunnelConversionWidget extends BaseWidget
 
     protected function getStats(): array
     {
-        if (! Auth::user()?->canApproveUsers()) {
+        if (!Auth::user()?->canApproveUsers()) {
             return [];
         }
 
@@ -34,12 +34,12 @@ class FunnelConversionWidget extends BaseWidget
             ->groupBy('event_name')
             ->pluck('count', 'event_name');
 
-        $get = fn (string $event): int => (int) ($counts[$event] ?? 0);
+        $get = fn(string $event): int => (int) ($counts[$event] ?? 0);
 
-        $started   = $get(FunnelEvent::ONBOARDING_STARTED);
+        $started = $get(FunnelEvent::ONBOARDING_STARTED);
         $completed = $get(FunnelEvent::ONBOARDING_COMPLETED);
-        $created   = $get(FunnelEvent::BOOKING_CREATED);
-        $paid      = $get(FunnelEvent::BOOKING_PAID);
+        $created = $get(FunnelEvent::BOOKING_CREATED);
+        $paid = $get(FunnelEvent::BOOKING_PAID);
 
         $pct = function (int $num, int $den): string {
             return $den > 0 ? round($num / $den * 100, 1) . '%' : '—';

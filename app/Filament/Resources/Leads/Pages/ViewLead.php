@@ -398,33 +398,33 @@ class ViewLead extends ViewRecord
                     TextEntry::make('recommended_tier_label')
                         ->label('Recommended Tier')
                         ->getStateUsing(fn($record) => match ($record->onboardingSubmission?->recommended_tier) {
-                            'core'                  => 'Core Build Candidate',
+                            'core' => 'Core Build Candidate',
                             'multi_market_standard' => 'Multi-Market Rollout',
-                            'multi_market_custom'   => 'Custom Deployment',
-                            'agency_partner'        => 'Agency / Partner',
-                            default                 => '—',
+                            'multi_market_custom' => 'Custom Deployment',
+                            'agency_partner' => 'Agency / Partner',
+                            default => '—',
                         })
                         ->badge()
                         ->color(fn($state) => match ($state) {
-                            'Core Build Candidate'  => 'gray',
-                            'Multi-Market Rollout'  => 'info',
-                            'Custom Deployment'     => 'warning',
-                            'Agency / Partner'      => 'danger',
-                            default                 => 'gray',
+                            'Core Build Candidate' => 'gray',
+                            'Multi-Market Rollout' => 'info',
+                            'Custom Deployment' => 'warning',
+                            'Agency / Partner' => 'danger',
+                            default => 'gray',
                         }),
 
                     TextEntry::make('booking_priority_label')
                         ->label('Booking Priority')
                         ->getStateUsing(fn($record) => match ($record->onboardingSubmission?->booking_priority) {
-                            'high_value'     => 'High Value',
+                            'high_value' => 'High Value',
                             'partner_review' => 'Partner Review',
-                            default          => 'Standard',
+                            default => 'Standard',
                         })
                         ->badge()
                         ->color(fn($state) => match ($state) {
-                            'High Value'     => 'warning',
+                            'High Value' => 'warning',
                             'Partner Review' => 'danger',
-                            default          => 'gray',
+                            default => 'gray',
                         }),
 
                     // ── Commitment & revenue structure ───────────────────────
@@ -432,16 +432,16 @@ class ViewLead extends ViewRecord
                         ->label('Revenue Structure')
                         ->getStateUsing(fn($record) => match ($record->onboardingSubmission?->payment_structure) {
                             'activation_plus_subscription' => 'Activation + Monthly Subscription',
-                            '50_50_split'                  => '50/50 Split (one-time)',
-                            'full_prepay'                  => 'Full Prepay (one-time)',
-                            default                        => 'Not yet determined',
+                            '50_50_split' => '50/50 Split (one-time)',
+                            'full_prepay' => 'Full Prepay (one-time)',
+                            default => 'Not yet determined',
                         })
                         ->badge()
                         ->color(fn($state) => match ($state) {
                             'Activation + Monthly Subscription' => 'success',
-                            '50/50 Split (one-time)'            => 'info',
-                            'Full Prepay (one-time)'            => 'gray',
-                            default                             => 'gray',
+                            '50/50 Split (one-time)' => 'info',
+                            'Full Prepay (one-time)' => 'gray',
+                            default => 'gray',
                         }),
 
                     TextEntry::make('commitment_length_label')
@@ -450,7 +450,7 @@ class ViewLead extends ViewRecord
                             '4_month' => '4-month structured cycle',
                             '3_month' => '3 months',
                             '2_month' => '2 months',
-                            default   => '4-month structured cycle',
+                            default => '4-month structured cycle',
                         }),
 
                     // ── Stripe tier mapping ──────────────────────────────────
@@ -458,14 +458,14 @@ class ViewLead extends ViewRecord
                         ->label('Stripe Tier')
                         ->getStateUsing(fn($record) => match ($record->onboardingSubmission?->recommended_tier) {
                             'multi_market_standard', 'multi_market_custom' => 'Multi',
-                            'agency_partner'                               => 'Agency',
-                            default                                        => 'Core',
+                            'agency_partner' => 'Agency',
+                            default => 'Core',
                         })
                         ->badge()
                         ->color(fn($state) => match ($state) {
-                            'Multi'   => 'info',
-                            'Agency'  => 'danger',
-                            default   => 'gray',
+                            'Multi' => 'info',
+                            'Agency' => 'danger',
+                            default => 'gray',
                         }),
 
                     // ── Value range ──────────────────────────────────────────
@@ -480,9 +480,9 @@ class ViewLead extends ViewRecord
                         ->badge()
                         ->color(fn($state) => match ($state) {
                             'System-level deployment' => 'danger',
-                            'Market expansion'        => 'warning',
-                            'Growth-stage'            => 'info',
-                            default                   => 'gray',
+                            'Market expansion' => 'warning',
+                            'Growth-stage' => 'info',
+                            default => 'gray',
                         }),
 
                     TextEntry::make('booking_intent_strength')
@@ -490,10 +490,10 @@ class ViewLead extends ViewRecord
                         ->getStateUsing(fn($record) => $record->onboardingSubmission?->booking_intent_strength ?? '—')
                         ->badge()
                         ->color(fn($state) => match ($state) {
-                            'partner-level'    => 'danger',
-                            'expansion-ready'  => 'warning',
-                            'serious'          => 'info',
-                            default            => 'gray',
+                            'partner-level' => 'danger',
+                            'expansion-ready' => 'warning',
+                            'serious' => 'info',
+                            default => 'gray',
                         }),
 
                     TextEntry::make('recommended_close_style')
@@ -540,6 +540,72 @@ class ViewLead extends ViewRecord
                         ->label('Suggested Next Step')
                         ->getStateUsing(fn($record) => $record->onboardingSubmission?->suggested_next_step ?? '—')
                         ->columnSpanFull(),
+
+                    // ── Upsell engine ────────────────────────────────────────
+                    TextEntry::make('upsell_path')
+                        ->label('Upsell Path')
+                        ->getStateUsing(fn($record) => match ($record->onboardingSubmission?->upsell_path) {
+                            'multi' => 'Multi-Market',
+                            'agency' => 'Agency / Partner',
+                            'core' => 'Core (no upsell)',
+                            default => '—',
+                        })
+                        ->badge()
+                        ->color(fn($state) => match ($state) {
+                            'Multi-Market' => 'info',
+                            'Agency / Partner' => 'danger',
+                            default => 'gray',
+                        }),
+
+                    TextEntry::make('expansion_opportunity')
+                        ->label('Expansion Opportunity')
+                        ->getStateUsing(fn($record) => $record->onboardingSubmission?->expansion_opportunity ? 'Yes' : 'No')
+                        ->badge()
+                        ->color(fn($state) => $state === 'Yes' ? 'success' : 'gray'),
+                ]),
+
+            Section::make('Deployment Lifecycle')
+                ->schema([
+                    TextEntry::make('activation_date')
+                        ->label('Activation Date')
+                        ->getStateUsing(fn($record) => $record->booking?->activation_date?->format('M j, Y') ?? '—'),
+
+                    TextEntry::make('cycle_end_date')
+                        ->label('Cycle End Date')
+                        ->getStateUsing(fn($record) => $record->booking?->cycle_end_date?->format('M j, Y') ?? '—'),
+
+                    TextEntry::make('deployment_status_badge')
+                        ->label('Deployment Status')
+                        ->getStateUsing(fn($record) => match ($record->booking?->deployment_status) {
+                            'active_deployment' => 'Active Deployment',
+                            'payment_failed' => 'Payment Failed',
+                            'cycle_complete' => 'Cycle Complete',
+                            default => 'Not Started',
+                        })
+                        ->badge()
+                        ->color(fn($state) => match ($state) {
+                            'Active Deployment' => 'success',
+                            'Payment Failed' => 'danger',
+                            'Cycle Complete' => 'info',
+                            default => 'gray',
+                        }),
+
+                    TextEntry::make('deployment_milestone')
+                        ->label('Cycle Milestone')
+                        ->getStateUsing(function ($record) {
+                            $activation = $record->booking?->activation_date;
+                            if (!$activation) {
+                                return '—';
+                            }
+                            $month = (int) now()->diffInMonths($activation) + 1;
+                            return match (true) {
+                                $month <= 1 => 'Month 1 — Build',
+                                $month <= 2 => 'Month 2 — Stabilization',
+                                $month <= 3 => 'Month 3 — Expansion',
+                                $month <= 4 => 'Month 4 — Growth',
+                                default => 'Post-cycle',
+                            };
+                        }),
                 ]),
 
             Section::make('Internal Notes')

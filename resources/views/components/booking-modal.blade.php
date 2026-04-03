@@ -166,6 +166,8 @@
         <p class="bk-sub">Reserve your spot &mdash; takes under 2 minutes.</p>
         @endif
         <div class="bk-types">
+          <p style="font-size:.62rem;letter-spacing:.10em;text-transform:uppercase;color:rgba(168,168,160,.32);margin:0 0 4px">Each path represents a different level of system access.</p>
+          <p style="font-size:.60rem;letter-spacing:.06em;text-transform:uppercase;color:rgba(168,168,160,.20);margin:0 0 14px">Access is structured &mdash; not open.</p>
           @foreach(($types ?? collect()) as $ct)
           <div class="bk-type {{ $ct->slug === 'audit' ? 'featured' : ($ct->slug === 'agency-review' ? 'reserved' : ($ct->is_free ? 'secondary' : '')) }}"
                :class="{ selected: selectedType === {{ $ct->id }} }"
@@ -174,11 +176,11 @@
               <div class="bk-type-name">{{ $ct->name }}</div>
               <div class="bk-type-desc">{{ $ct->description }}</div>
               @if($ct->slug === 'discovery')
-              <div class="bk-type-qualify">For businesses seeking clarity before committing</div>
+              <div class="bk-type-qualify">For businesses evaluating their position before committing.</div>
               @elseif($ct->slug === 'audit')
-              <div class="bk-type-qualify">For operators ready to move with direction</div>
+              <div class="bk-type-qualify">For operators ready to move with structure and direction.</div>
               @elseif($ct->slug === 'agency-review')
-              <div class="bk-type-qualify">For teams prepared to execute at scale</div>
+              <div class="bk-type-qualify">For operators prepared for system-level control.</div>
               @endif
             </div>
             <div class="bk-type-meta">

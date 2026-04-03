@@ -305,6 +305,8 @@ class BookingController extends Controller
             'preferred_time' => 'required|date_format:H:i',
             'add_ons' => 'nullable|array|max:4',
             'add_ons.*' => 'string|in:seo_audit,competitor_analysis,thirty_day_plan,strategy_followup',
+            'payment_structure' => 'nullable|in:full_prepay,50_50_split,activation_plus_subscription',
+            'recommended_tier' => 'nullable|in:core,multi_market_standard,multi_market_custom,agency_partner',
         ]);
 
         $type = ConsultType::findOrFail($validated['consult_type_id']);
@@ -383,15 +385,79 @@ class BookingController extends Controller
         }
 
         try {
-            $session = Cashier::stripe()->checkout->sessions->create([
-                'mode' => 'payment',
-                'customer_email' => $booking->email,
-                'line_items' => $lineItems,
-                'metadata' => ['booking_id' => $booking->id],
-                'success_url' => url('/book/payment-return/' . $booking->id) . '?session_id={CHECKOUT_SESSION_ID}',
-                'cancel_url' => url('/book?payment=cancelled'),
-                'expires_at' => now()->addMinutes(30)->timestamp,
-            ]);
+            $isSubscription = ($validated['payment_structure'] ?? null) === 'activation_plus_subscription';
+
+            if ($isSubscription) {
+                // Resolve Stripe tier config key from recommended_tier
+                $tierConfigKey = match ($validated['recommended_tier'] ?? 'core') {
+                    'multi_market_standard', 'multi_market_custom' => 'multi',
+                    'agency_partner' => 'agency',
+                    default => 'core',
+                };
+
+                $monthlyPriceId = config('services.stripe_tiers.' . $tierConfigKey . '.monthly');
+                $activationPriceId = config('services.stripe_tiers.' . $tierConfigKey . '.activation');
+
+                // Build subscription line items — prefer pre-configured price IDs,
+                // fall back to inline price_data when IDs are not yet provisioned.
+                if ($monthlyPriceId) {
+                    $subscriptionLineItems = [['price' => $monthlyPriceId, 'quantity' => 1]];
+                } else {
+                    $subscriptionLineItems = [
+                        [
+                            'price_data' => [
+                                'currency' => 'usd',
+                                'unit_amount' => (int) ($type->price * 100),
+                                'recurring' => ['interval' => 'month'],
+                                'product_data' => [
+                                    'name' => config('services.stripe_tiers.' . $tierConfigKey . '.product_name', $type->name),
+                                    'description' => 'SEO AI Co™ — structured 4-month deployment cycle',
+                                ],
+                            ],
+                            'quantity' => 1,
+                        ],
+                    ];
+                }
+
+                // Activation fee — charged once on first invoice
+                $addInvoiceItems = [];
+                if ($activationPriceId) {
+                    $addInvoiceItems[] = ['price' => $activationPriceId, 'quantity' => 1];
+                }
+
+                $sessionParams = [
+                    'mode' => 'subscription',
+                    'customer_email' => $booking->email,
+                    'line_items' => $subscriptionLineItems,
+                    'metadata' => [
+                        'booking_id' => $booking->id,
+                        'payment_structure' => 'activation_plus_subscription',
+                        'tier' => $tierConfigKey,
+                    ],
+                    'subscription_data' => [
+                        'metadata' => ['booking_id' => $booking->id],
+                    ],
+                    'success_url' => url('/book/payment-return/' . $booking->id) . '?session_id={CHECKOUT_SESSION_ID}',
+                    'cancel_url' => url('/book?payment=cancelled'),
+                    'expires_at' => now()->addMinutes(30)->timestamp,
+                ];
+
+                if (!empty($addInvoiceItems)) {
+                    $sessionParams['add_invoice_items'] = $addInvoiceItems;
+                }
+
+                $session = Cashier::stripe()->checkout->sessions->create($sessionParams);
+            } else {
+                $session = Cashier::stripe()->checkout->sessions->create([
+                    'mode' => 'payment',
+                    'customer_email' => $booking->email,
+                    'line_items' => $lineItems,
+                    'metadata' => ['booking_id' => $booking->id],
+                    'success_url' => url('/book/payment-return/' . $booking->id) . '?session_id={CHECKOUT_SESSION_ID}',
+                    'cancel_url' => url('/book?payment=cancelled'),
+                    'expires_at' => now()->addMinutes(30)->timestamp,
+                ]);
+            }
         } catch (\Exception $e) {
             $booking->delete();
             Log::channel('booking')->error('Stripe checkout session creation failed', [
@@ -435,7 +501,18 @@ class BookingController extends Controller
                 return redirect('/')->with('booking_error', 'Payment was not completed. Please try again.');
             }
 
-            $booking->update(['stripe_payment_intent_id' => $session->payment_intent]);
+            // Store reference: payment_intent for one-time, subscription ID for recurring
+            $reference = ($session->mode === 'subscription')
+                ? ($session->subscription ?? null)
+                : ($session->payment_intent ?? null);
+
+            $booking->update([
+                'stripe_payment_intent_id' => $reference,
+                'payment_secured' => true,
+                'activation_date' => now(),
+                'cycle_end_date' => now()->addMonths(4),
+                'deployment_status' => 'active_deployment',
+            ]);
         } catch (\Exception $e) {
             Log::channel('booking')->error('Stripe session retrieval failed on payment return', [
                 'booking_id' => $booking->id,

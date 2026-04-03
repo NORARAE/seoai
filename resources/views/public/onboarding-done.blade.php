@@ -213,6 +213,28 @@ body {
   font-style: italic;
   margin-top: 4px;
 }
+/* ── Expectation note ── */
+.done-expect {
+  margin-top: 28px;
+  padding: 18px 20px;
+  border: 1px solid rgba(200,168,75,.07);
+  border-radius: 3px;
+  background: rgba(200,168,75,.025);
+}
+.done-expect-label {
+  font-size: .62rem;
+  letter-spacing: .22em;
+  text-transform: uppercase;
+  color: var(--gold-dim);
+  display: block;
+  margin-bottom: 8px;
+}
+.done-expect-body {
+  font-size: .82rem;
+  color: rgba(168,168,160,.55);
+  line-height: 1.7;
+}
+
 /* ── Future state ── */
 .done-future {
   margin-top: 36px;
@@ -285,7 +307,7 @@ body {
     @else
       We've received your intake form and business license. Our team will review everything and be in touch within 1–2 business days.
     @endif
-  </p>  <p class="done-sub" style="font-size:.82rem;opacity:.7;margin-top:0">The SEO AI Co™ system combines structured content, local relevance, internal link architecture, search signals, and ongoing optimization &mdash; designed to strengthen every signal that drives local visibility.</p>  <p class="done-email-note">Questions? Reach us at <a href="mailto:hello@seoaico.com" style="color:rgba(168,168,160,.7);text-decoration:none">hello@seoaico.com</a></p>
+  </p>  <p class="done-sub" style="font-size:.82rem;opacity:.7;margin-top:0">The SEO AI Co™ system combines structured content, local relevance, internal link architecture, search signals, and ongoing optimization &mdash; designed to strengthen every signal that drives local visibility and market dominance.</p>  <p style="font-size:.7rem;opacity:.32;margin-top:0;text-align:center;max-width:460px;margin-left:auto;margin-right:auto;line-height:1.65;color:var(--muted)">SEO AI Co™ is a programmatic SEO and market intelligence system for operators competing in active markets. This platform maps local search visibility and identifies expansion opportunities.</p>  <p class="done-email-note">Questions? Reach us at <a href="mailto:hello@seoaico.com" style="color:rgba(168,168,160,.7);text-decoration:none">hello@seoaico.com</a></p>
   <a href="{{ url('/') }}" class="done-home">&larr; seoaico.com</a>
 
   <!-- WHAT HAPPENS NEXT -->
@@ -302,10 +324,24 @@ body {
     <p class="done-next-close" style="margin-top:10px;opacity:.75">Review is typically completed within 1–2 business days.</p>
   </div>
 
+  <!-- EXPECTATION PROTECTION -->
+  <div class="done-expect">
+    <span class="done-expect-label">How this works</span>
+    <p class="done-expect-body">Market positioning and indexing require sustained signal development. Results compound over time — early interruption resets the compounding cycle rather than pausing it. The system operates in structured 4-month cycles for this reason: build, stabilization, expansion, and growth. Early interruption prevents full system performance. This is built for operators who understand that market position is built and held, not switched on.</p>
+  </div>
+
   <!-- PREPARE NEXT STEP -->
   <div class="done-actions">
     <span class="done-actions-eye">Prepare your next step</span>
-    <a href="/book" class="done-cta-primary">Book your market opportunity session &rarr;</a>
+    <a href="/book" class="done-cta-primary">
+      @if(($leadType ?? 'single_location') === 'agency')
+        Begin partner-level review &rarr;
+      @elseif(($leadType ?? 'single_location') === 'multi_location')
+        Review your rollout strategy &rarr;
+      @else
+        Start with a focused market session &rarr;
+      @endif
+    </a>
     <a href="/#how" class="done-cta-secondary">Review how the system works &rarr;</a>
     <div class="done-priority-wrap">
       <a href="/book" class="done-cta-tertiary">Secure a priority slot &rarr;</a>

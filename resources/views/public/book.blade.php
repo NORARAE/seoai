@@ -34,7 +34,7 @@ body{background:var(--bg);color:var(--ivory);font-family:'DM Sans',sans-serif;fo
 .bk-logo{text-decoration:none;display:inline-flex;align-items:baseline;gap:0}
 .bk-logo .l-seo{font-weight:300;font-size:1.1rem;letter-spacing:.06em;color:#fff}
 .bk-logo .l-ai{color:var(--gold);font-weight:500;font-size:1.25rem;letter-spacing:.02em}
-.bk-logo .l-co{font-weight:300;font-size:.95rem;letter-spacing:.04em;color:#fff}
+.bk-logo .l-co{font-weight:300;font-size:.95rem;letter-spacing:.04em;color:rgba(150,150,150,.5)}
 .bk-nav-back{font-size:.8rem;color:var(--muted);text-decoration:none;letter-spacing:.04em;transition:color .2s}
 .bk-nav-back:hover{color:var(--gold)}
 
@@ -52,7 +52,7 @@ body{background:var(--bg);color:var(--ivory);font-family:'DM Sans',sans-serif;fo
 .bk-signal-copy{font-family:'Cormorant Garamond',serif;font-size:clamp(.95rem,2vw,1.15rem);font-style:italic;color:var(--gold);opacity:.6;margin:0 0 28px;letter-spacing:.01em;font-weight:300}
 .bk-supporting-line{font-size:.83rem;color:rgba(168,168,160,.55);font-style:italic;margin:-12px auto 32px;max-width:480px;line-height:1.7}
 /* ── Platform trust row ── */
-.bk-trust-row{display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:10px 22px;margin-top:22px;opacity:.38}
+.bk-trust-row{display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:10px 22px;margin-top:0;opacity:.42}
 .bk-trust-item{display:inline-flex;align-items:center;gap:5px;font-size:.57rem;letter-spacing:.11em;text-transform:uppercase;color:var(--gold);font-weight:400;line-height:1}
 .bk-trust-item svg{flex-shrink:0;color:inherit}
 .bk-trust-dot{color:var(--gold);font-size:.5rem;opacity:.4;line-height:1;align-self:center}
@@ -63,6 +63,8 @@ body{background:var(--bg);color:var(--ivory);font-family:'DM Sans',sans-serif;fo
 .bk-cta-btn{display:inline-flex;align-items:center;gap:10px;background:var(--gold);color:#080808;font-family:'DM Sans',sans-serif;font-size:.88rem;font-weight:500;letter-spacing:.08em;text-transform:uppercase;text-decoration:none;padding:17px 44px;border-radius:4px;border:none;cursor:pointer;transition:background .2s,transform .15s}
 .bk-cta-btn:hover{background:var(--gold-lt);transform:translateY(-1px)}
 .bk-cta-note{font-size:.75rem;color:var(--muted);margin-top:14px;letter-spacing:.02em}
+.bk-cta-commitment{font-size:.72rem;color:rgba(168,168,160,.38);margin-top:8px;letter-spacing:.02em;font-style:italic}
+.bk-trust-source{font-size:.60rem;letter-spacing:.11em;text-transform:uppercase;color:rgba(168,168,160,.32);margin-top:22px;margin-bottom:6px;display:block}
 
 /* ── Divider ── */
 .bk-divider{border:none;border-top:1px solid var(--border);margin:0}
@@ -75,9 +77,9 @@ body{background:var(--bg);color:var(--ivory);font-family:'DM Sans',sans-serif;fo
 
 /* ── Authority (signature mark) ── */
 .bk-authority{padding:18px 0 30px;border-top:1px solid rgba(26,26,26,.7);text-align:center}
-.bk-authority .auth-brand{font-family:'Cormorant Garamond',serif;font-size:.9rem;font-weight:300;color:rgba(237,232,222,.45);line-height:1.4;letter-spacing:.04em}
-.bk-authority .auth-brand em{font-style:italic;color:rgba(200,168,75,.5)}
-.bk-authority .auth-sub{font-size:.56rem;letter-spacing:.18em;text-transform:uppercase;color:rgba(200,168,75,.35);margin-bottom:4px;font-weight:400;display:block}
+.bk-authority .auth-brand{font-family:'Cormorant Garamond',serif;font-size:.8rem;font-weight:300;color:rgba(237,232,222,.18);line-height:1.4;letter-spacing:.04em}
+.bk-authority .auth-brand em{font-style:italic;color:rgba(200,168,75,.18)}
+.bk-authority .auth-sub{font-size:.52rem;letter-spacing:.18em;text-transform:uppercase;color:rgba(200,168,75,.12);margin-bottom:4px;font-weight:400;display:block}
 .bk-authority .auth-body{font-size:.9rem;color:var(--muted);max-width:460px;margin:0 auto;line-height:1.85}
 
 /* ── Footer ── */
@@ -132,19 +134,19 @@ body{background:var(--bg);color:var(--ivory);font-family:'DM Sans',sans-serif;fo
           <circle cx="380" cy="148" r="225" stroke="#c8a84b" stroke-width=".35" stroke-opacity=".035" fill="none"/>
           <circle cx="380" cy="148" r="320" stroke="#c8a84b" stroke-width=".25" stroke-opacity=".02" fill="none"/>
           <!-- primary lines: center to satellites -->
-          <line x1="380" y1="148" x2="308" y2="84" stroke="#c8a84b" stroke-width=".9" stroke-opacity=".10"><animate attributeName="stroke-opacity" values=".10;.20;.10" dur="7s" repeatCount="indefinite"/></line>
-          <line x1="380" y1="148" x2="456" y2="90" stroke="#c8a84b" stroke-width=".9" stroke-opacity=".10"><animate attributeName="stroke-opacity" values=".10;.18;.10" dur="9s" begin="1s" repeatCount="indefinite"/></line>
-          <line x1="380" y1="148" x2="286" y2="172" stroke="#c8a84b" stroke-width=".8" stroke-opacity=".09"><animate attributeName="stroke-opacity" values=".09;.17;.09" dur="11s" begin="2s" repeatCount="indefinite"/></line>
-          <line x1="380" y1="148" x2="480" y2="175" stroke="#c8a84b" stroke-width=".8" stroke-opacity=".09"><animate attributeName="stroke-opacity" values=".09;.16;.09" dur="8s" begin="3.5s" repeatCount="indefinite"/></line>
-          <line x1="380" y1="148" x2="340" y2="228" stroke="#c8a84b" stroke-width=".7" stroke-opacity=".08"><animate attributeName="stroke-opacity" values=".08;.15;.08" dur="10s" begin="1.5s" repeatCount="indefinite"/></line>
-          <line x1="380" y1="148" x2="432" y2="52" stroke="#c8a84b" stroke-width=".7" stroke-opacity=".08"><animate attributeName="stroke-opacity" values=".08;.14;.08" dur="13s" begin="0.5s" repeatCount="indefinite"/></line>
-          <line x1="380" y1="148" x2="248" y2="110" stroke="#c8a84b" stroke-width=".65" stroke-opacity=".07"><animate attributeName="stroke-opacity" values=".07;.13;.07" dur="12s" begin="4s" repeatCount="indefinite"/></line>
-          <line x1="380" y1="148" x2="528" y2="136" stroke="#c8a84b" stroke-width=".65" stroke-opacity=".07"><animate attributeName="stroke-opacity" values=".07;.12;.07" dur="9.5s" begin="2.5s" repeatCount="indefinite"/></line>
+          <line x1="380" y1="148" x2="308" y2="84" stroke="#c8a84b" stroke-width=".9" stroke-opacity=".10"><animate attributeName="stroke-opacity" values=".10;.17;.10" dur="6s" repeatCount="indefinite"/></line>
+          <line x1="380" y1="148" x2="456" y2="90" stroke="#c8a84b" stroke-width=".9" stroke-opacity=".10"><animate attributeName="stroke-opacity" values=".10;.15;.10" dur="7.7s" begin="1s" repeatCount="indefinite"/></line>
+          <line x1="380" y1="148" x2="286" y2="172" stroke="#c8a84b" stroke-width=".8" stroke-opacity=".09"><animate attributeName="stroke-opacity" values=".09;.14;.09" dur="9.4s" begin="2s" repeatCount="indefinite"/></line>
+          <line x1="380" y1="148" x2="480" y2="175" stroke="#c8a84b" stroke-width=".8" stroke-opacity=".09"><animate attributeName="stroke-opacity" values=".09;.14;.09" dur="6.8s" begin="3.5s" repeatCount="indefinite"/></line>
+          <line x1="380" y1="148" x2="340" y2="228" stroke="#c8a84b" stroke-width=".7" stroke-opacity=".08"><animate attributeName="stroke-opacity" values=".08;.13;.08" dur="8.5s" begin="1.5s" repeatCount="indefinite"/></line>
+          <line x1="380" y1="148" x2="432" y2="52" stroke="#c8a84b" stroke-width=".7" stroke-opacity=".08"><animate attributeName="stroke-opacity" values=".08;.12;.08" dur="11.1s" begin="0.5s" repeatCount="indefinite"/></line>
+          <line x1="380" y1="148" x2="248" y2="110" stroke="#c8a84b" stroke-width=".65" stroke-opacity=".07"><animate attributeName="stroke-opacity" values=".07;.11;.07" dur="10.2s" begin="4s" repeatCount="indefinite"/></line>
+          <line x1="380" y1="148" x2="528" y2="136" stroke="#c8a84b" stroke-width=".65" stroke-opacity=".07"><animate attributeName="stroke-opacity" values=".07;.10;.07" dur="8.1s" begin="2.5s" repeatCount="indefinite"/></line>
           <!-- outer reach lines -->
-          <line x1="380" y1="148" x2="152" y2="104" stroke="#c8a84b" stroke-width=".5" stroke-opacity=".05"><animate attributeName="stroke-opacity" values=".05;.10;.05" dur="14s" begin="3s" repeatCount="indefinite"/></line>
-          <line x1="380" y1="148" x2="614" y2="108" stroke="#c8a84b" stroke-width=".5" stroke-opacity=".05"><animate attributeName="stroke-opacity" values=".05;.09;.05" dur="16s" begin="5s" repeatCount="indefinite"/></line>
-          <line x1="380" y1="148" x2="562" y2="278" stroke="#c8a84b" stroke-width=".4" stroke-opacity=".04"><animate attributeName="stroke-opacity" values=".04;.08;.04" dur="15s" begin="6s" repeatCount="indefinite"/></line>
-          <line x1="380" y1="148" x2="196" y2="262" stroke="#c8a84b" stroke-width=".4" stroke-opacity=".04"><animate attributeName="stroke-opacity" values=".04;.08;.04" dur="18s" begin="7s" repeatCount="indefinite"/></line>
+          <line x1="380" y1="148" x2="152" y2="104" stroke="#c8a84b" stroke-width=".5" stroke-opacity=".05"><animate attributeName="stroke-opacity" values=".05;.08;.05" dur="11.9s" begin="3s" repeatCount="indefinite"/></line>
+          <line x1="380" y1="148" x2="614" y2="108" stroke="#c8a84b" stroke-width=".5" stroke-opacity=".05"><animate attributeName="stroke-opacity" values=".05;.08;.05" dur="13.6s" begin="5s" repeatCount="indefinite"/></line>
+          <line x1="380" y1="148" x2="562" y2="278" stroke="#c8a84b" stroke-width=".4" stroke-opacity=".04"><animate attributeName="stroke-opacity" values=".04;.07;.04" dur="12.8s" begin="6s" repeatCount="indefinite"/></line>
+          <line x1="380" y1="148" x2="196" y2="262" stroke="#c8a84b" stroke-width=".4" stroke-opacity=".04"><animate attributeName="stroke-opacity" values=".04;.07;.04" dur="15.3s" begin="7s" repeatCount="indefinite"/></line>
           <line x1="380" y1="148" x2="68" y2="195" stroke="#c8a84b" stroke-width=".3" stroke-opacity=".03"/>
           <line x1="380" y1="148" x2="694" y2="200" stroke="#c8a84b" stroke-width=".3" stroke-opacity=".03"/>
           <!-- web connections -->
@@ -159,33 +161,34 @@ body{background:var(--bg);color:var(--ivory);font-family:'DM Sans',sans-serif;fo
           <line x1="562" y1="278" x2="480" y2="175" stroke="#c8a84b" stroke-width=".3" stroke-opacity=".03"/>
           <line x1="196" y1="262" x2="286" y2="172" stroke="#c8a84b" stroke-width=".3" stroke-opacity=".03"/>
           <!-- center node (primary pulse + halo) -->
-          <circle cx="380" cy="148" r="12" fill="none" stroke="#c8a84b" stroke-width=".5" stroke-opacity="0"><animate attributeName="r" values="5;20;5" dur="4s" repeatCount="indefinite"/><animate attributeName="stroke-opacity" values=".22;0;.22" dur="4s" repeatCount="indefinite"/></circle>
-          <circle cx="380" cy="148" r="3.5" fill="#c8a84b" fill-opacity=".32"><animate attributeName="fill-opacity" values=".32;.62;.32" dur="4s" repeatCount="indefinite"/><animate attributeName="r" values="3.5;5.2;3.5" dur="4s" repeatCount="indefinite"/></circle>
+          <circle cx="380" cy="148" r="12" fill="none" stroke="#c8a84b" stroke-width=".5" stroke-opacity="0"><animate attributeName="r" values="5;20;5" dur="3.4s" repeatCount="indefinite"/><animate attributeName="stroke-opacity" values=".30;0;.30" dur="3.4s" repeatCount="indefinite"/></circle>
+          <circle cx="380" cy="148" r="3.5" fill="#c8a84b" fill-opacity=".42"><animate attributeName="fill-opacity" values=".42;.72;.42" dur="3.4s" repeatCount="indefinite"/><animate attributeName="r" values="3.5;5.2;3.5" dur="3.4s" repeatCount="indefinite"/></circle>
           <!-- primary satellites -->
-          <circle cx="308" cy="84" r="2.5" fill="#c8a84b" fill-opacity=".20"><animate attributeName="fill-opacity" values=".20;.38;.20" dur="6s" begin="0.8s" repeatCount="indefinite"/></circle>
-          <circle cx="456" cy="90" r="2.2" fill="#c8a84b" fill-opacity=".18"><animate attributeName="fill-opacity" values=".18;.35;.18" dur="7s" begin="1.6s" repeatCount="indefinite"/></circle>
-          <circle cx="286" cy="172" r="2" fill="#c8a84b" fill-opacity=".16"><animate attributeName="fill-opacity" values=".16;.30;.16" dur="8s" begin="2.4s" repeatCount="indefinite"/></circle>
-          <circle cx="480" cy="175" r="2" fill="#c8a84b" fill-opacity=".16"><animate attributeName="fill-opacity" values=".16;.28;.16" dur="9s" begin="3.2s" repeatCount="indefinite"/></circle>
-          <circle cx="340" cy="228" r="1.8" fill="#c8a84b" fill-opacity=".14"><animate attributeName="fill-opacity" values=".14;.26;.14" dur="10s" begin="1s" repeatCount="indefinite"/></circle>
-          <circle cx="432" cy="52" r="1.8" fill="#c8a84b" fill-opacity=".14"><animate attributeName="fill-opacity" values=".14;.25;.14" dur="11s" begin="4s" repeatCount="indefinite"/></circle>
-          <circle cx="248" cy="110" r="1.6" fill="#c8a84b" fill-opacity=".12"><animate attributeName="fill-opacity" values=".12;.22;.12" dur="9s" begin="5s" repeatCount="indefinite"/></circle>
-          <circle cx="528" cy="136" r="1.6" fill="#c8a84b" fill-opacity=".12"><animate attributeName="fill-opacity" values=".12;.20;.12" dur="12s" begin="2s" repeatCount="indefinite"/></circle>
+          <circle cx="308" cy="84" r="2.5" fill="#c8a84b" fill-opacity=".20"><animate attributeName="fill-opacity" values=".20;.38;.20" dur="5.1s" begin="0.8s" repeatCount="indefinite"/></circle>
+          <circle cx="456" cy="90" r="2.2" fill="#c8a84b" fill-opacity=".18"><animate attributeName="fill-opacity" values=".18;.35;.18" dur="6s" begin="1.6s" repeatCount="indefinite"/></circle>
+          <circle cx="286" cy="172" r="2" fill="#c8a84b" fill-opacity=".16"><animate attributeName="fill-opacity" values=".16;.30;.16" dur="6.8s" begin="2.4s" repeatCount="indefinite"/></circle>
+          <circle cx="480" cy="175" r="2" fill="#c8a84b" fill-opacity=".16"><animate attributeName="fill-opacity" values=".16;.28;.16" dur="7.7s" begin="3.2s" repeatCount="indefinite"/></circle>
+          <circle cx="340" cy="228" r="1.8" fill="#c8a84b" fill-opacity=".14"><animate attributeName="fill-opacity" values=".14;.26;.14" dur="8.5s" begin="1s" repeatCount="indefinite"/></circle>
+          <circle cx="432" cy="52" r="1.8" fill="#c8a84b" fill-opacity=".14"><animate attributeName="fill-opacity" values=".14;.25;.14" dur="9.4s" begin="4s" repeatCount="indefinite"/></circle>
+          <circle cx="248" cy="110" r="1.6" fill="#c8a84b" fill-opacity=".12"><animate attributeName="fill-opacity" values=".12;.22;.12" dur="7.7s" begin="5s" repeatCount="indefinite"/></circle>
+          <circle cx="528" cy="136" r="1.6" fill="#c8a84b" fill-opacity=".12"><animate attributeName="fill-opacity" values=".12;.20;.12" dur="10.2s" begin="2s" repeatCount="indefinite"/></circle>
           <!-- outer / edge nodes -->
-          <circle cx="556" cy="165" r="1.2" fill="#c8a84b" fill-opacity=".08"><animate attributeName="fill-opacity" values=".08;.16;.08" dur="13s" begin="6s" repeatCount="indefinite"/></circle>
-          <circle cx="384" cy="36" r="1.2" fill="#c8a84b" fill-opacity=".07"><animate attributeName="fill-opacity" values=".07;.14;.07" dur="14s" begin="3s" repeatCount="indefinite"/></circle>
-          <circle cx="212" cy="130" r="1.1" fill="#c8a84b" fill-opacity=".07"><animate attributeName="fill-opacity" values=".07;.13;.07" dur="11s" begin="7s" repeatCount="indefinite"/></circle>
-          <circle cx="152" cy="104" r="1.3" fill="#c8a84b" fill-opacity=".07"><animate attributeName="fill-opacity" values=".07;.14;.07" dur="15s" begin="4s" repeatCount="indefinite"/></circle>
-          <circle cx="614" cy="108" r="1.3" fill="#c8a84b" fill-opacity=".07"><animate attributeName="fill-opacity" values=".07;.13;.07" dur="16s" begin="8s" repeatCount="indefinite"/></circle>
-          <circle cx="562" cy="278" r="1.1" fill="#c8a84b" fill-opacity=".05"><animate attributeName="fill-opacity" values=".05;.10;.05" dur="17s" begin="2s" repeatCount="indefinite"/></circle>
-          <circle cx="196" cy="262" r="1.1" fill="#c8a84b" fill-opacity=".05"><animate attributeName="fill-opacity" values=".05;.09;.05" dur="18s" begin="9s" repeatCount="indefinite"/></circle>
+          <circle cx="556" cy="165" r="1.2" fill="#c8a84b" fill-opacity=".08"><animate attributeName="fill-opacity" values=".08;.16;.08" dur="11.1s" begin="6s" repeatCount="indefinite"/></circle>
+          <circle cx="384" cy="36" r="1.2" fill="#c8a84b" fill-opacity=".07"><animate attributeName="fill-opacity" values=".07;.14;.07" dur="11.9s" begin="3s" repeatCount="indefinite"/></circle>
+          <circle cx="212" cy="130" r="1.1" fill="#c8a84b" fill-opacity=".07"><animate attributeName="fill-opacity" values=".07;.13;.07" dur="9.4s" begin="7s" repeatCount="indefinite"/></circle>
+          <circle cx="152" cy="104" r="1.3" fill="#c8a84b" fill-opacity=".07"><animate attributeName="fill-opacity" values=".07;.14;.07" dur="12.8s" begin="4s" repeatCount="indefinite"/></circle>
+          <circle cx="614" cy="108" r="1.3" fill="#c8a84b" fill-opacity=".07"><animate attributeName="fill-opacity" values=".07;.13;.07" dur="13.6s" begin="8s" repeatCount="indefinite"/></circle>
+          <circle cx="562" cy="278" r="1.1" fill="#c8a84b" fill-opacity=".05"><animate attributeName="fill-opacity" values=".05;.10;.05" dur="14.5s" begin="2s" repeatCount="indefinite"/></circle>
+          <circle cx="196" cy="262" r="1.1" fill="#c8a84b" fill-opacity=".05"><animate attributeName="fill-opacity" values=".05;.09;.05" dur="15.3s" begin="9s" repeatCount="indefinite"/></circle>
           <circle cx="68" cy="195" r="1" fill="#c8a84b" fill-opacity=".04"/>
           <circle cx="694" cy="200" r="1" fill="#c8a84b" fill-opacity=".04"/>
           <circle cx="318" cy="316" r="1" fill="#c8a84b" fill-opacity=".03"/>
           <circle cx="462" cy="310" r="1" fill="#c8a84b" fill-opacity=".03"/>
         </svg>
-        <h1>See exactly where your market stands.</h1>
-        <p class="hero-sub">A focused consultation that shows you what&rsquo;s happening &mdash; and what to do next.</p>
-        <p class="bk-supporting-line" style="margin:0 auto 32px">No guesswork. No recycled strategy. Just clarity based on real signals.</p>
+        <h1>See exactly where your market stands &mdash; and what to do next.</h1>
+        <p class="hero-sub">A focused session that reveals your position, your gaps, and your next move.</p>
+        <p class="bk-supporting-line" style="margin:0 auto 10px">No guesswork. No recycled strategy. Only real signal.</p>
+        <p class="bk-signal-copy" style="font-size:.78rem;opacity:.45;margin:22px auto 28px">Position is not held by default.</p>
 
         @if(request('payment') === 'cancelled')
         <div class="bk-notice">
@@ -193,8 +196,10 @@ body{background:var(--bg);color:var(--ivory);font-family:'DM Sans',sans-serif;fo
         </div>
         @endif
 
-        <button class="bk-cta-btn" onclick="openSession()">Reserve Your Market Opportunity Session &rarr;</button>
+        <button class="bk-cta-btn" onclick="openSession()">Reserve Your Market Opportunity Session</button>
+        <p class="bk-cta-commitment">You&rsquo;ll know exactly where you stand.</p>
         <p class="bk-cta-note">Qualified operators in active markets only.</p>
+        <span class="bk-trust-source">Validated through live search and platform signals</span>
         <div class="bk-trust-row" aria-label="Platform integrations">
           <span class="bk-trust-item">
             <svg width="12" height="12" viewBox="0 0 14 14" fill="currentColor" aria-hidden="true"><rect x="1" y="8" width="3" height="5"/><rect x="5.5" y="5" width="3" height="8"/><rect x="10" y="2" width="3" height="11"/></svg>
@@ -221,7 +226,7 @@ body{background:var(--bg);color:var(--ivory);font-family:'DM Sans',sans-serif;fo
 
       {{-- Authority --}}
       <div class="bk-authority">
-        <p class="auth-sub">Powered by</p>
+        <p class="auth-sub">System by</p>
         <p class="auth-brand"><em>SEO AI Co™</em></p>
         <p class="auth-sub" style="margin-bottom:0">Programmatic AI SEO Systems</p>
       </div>
@@ -232,7 +237,7 @@ body{background:var(--bg);color:var(--ivory);font-family:'DM Sans',sans-serif;fo
     <section id="book-now">
       <div class="bk-entry-intro">
         <p class="bk-section-label">Reserve Your Session</p>
-        <h2>Choose how you want to approach your market.</h2>
+        <h2>Select how you want your market position built.</h2>
         <p class="bk-entry-system-note">Each session is a structured entry point &mdash; part of a system, not a standalone service.</p>
       </div>
       @include('components.booking-modal', ['disableOverlayDismiss' => true, 'panelMode' => true])

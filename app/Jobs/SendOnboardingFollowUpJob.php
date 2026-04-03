@@ -30,14 +30,15 @@ class SendOnboardingFollowUpJob implements ShouldQueue
         public readonly int $leadId,
         public readonly int $submissionId,
         public readonly int $step,
-    ) {}
+    ) {
+    }
 
     public function handle(): void
     {
         $lead = Lead::find($this->leadId);
         $submission = OnboardingSubmission::find($this->submissionId);
 
-        if (! $lead || ! $submission) {
+        if (!$lead || !$submission) {
             Log::channel('booking')->warning('OnboardingFollowUp skipped — record not found', [
                 'lead_id' => $this->leadId,
                 'submission_id' => $this->submissionId,
@@ -46,7 +47,7 @@ class SendOnboardingFollowUpJob implements ShouldQueue
             return;
         }
 
-        if (! $lead->email) {
+        if (!$lead->email) {
             Log::channel('booking')->warning('OnboardingFollowUp skipped — no email on lead', [
                 'lead_id' => $this->leadId,
                 'step' => $this->step,
@@ -60,7 +61,7 @@ class SendOnboardingFollowUpJob implements ShouldQueue
             default => null,
         };
 
-        if (! $mailable) {
+        if (!$mailable) {
             Log::channel('booking')->error('OnboardingFollowUp — unknown step', ['step' => $this->step]);
             return;
         }

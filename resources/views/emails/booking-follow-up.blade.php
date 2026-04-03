@@ -5,7 +5,7 @@
 
   {{-- Header --}}
   <div style="background:#080808;padding:32px 28px;text-align:center">
-    <span style="font-size:18px;color:#ede8de;font-weight:300;letter-spacing:.04em">SEO<span style="color:#c8a84b;font-weight:500;font-size:20px">AI</span>co</span>
+    <span style="font-size:18px;color:#ede8de;font-weight:300;letter-spacing:.04em">SEO<span style="color:#c8a84b;font-weight:500;font-size:20px">AI</span> Co™</span>
   </div>
 
   {{-- Body --}}

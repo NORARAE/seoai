@@ -89,6 +89,14 @@ footer{border-top:1px solid var(--border);padding:32px 64px;display:flex;align-i
 
 /* deep: needed for CTA button foreground */
 .deep{color:#0b0b0b}
+
+/* ── TM superscript ── */
+sup{font-size:.55em;line-height:0;vertical-align:super}
+
+/* ── Active status badge ── */
+.step-active{display:inline-flex;align-items:center;gap:6px;font-size:.60rem;letter-spacing:.16em;text-transform:uppercase;color:#22c55e;margin-bottom:10px;font-weight:400}
+.step-active::before{content:'●';font-size:.55rem;animation:active-pulse 2.4s ease-in-out infinite}
+@keyframes active-pulse{0%,100%{opacity:.55}50%{opacity:1}}
 </style>
 @include('partials.clarity')
 </head>
@@ -103,8 +111,8 @@ footer{border-top:1px solid var(--border);padding:32px 64px;display:flex;align-i
 
 <main class="page">
   <span class="page-eye">The System</span>
-  <h1 class="page-title">How <em>SEO AI Co™</em><br>works.</h1>
-  <p class="page-intro">We build and hold territory-locked SEO coverage for a single operator per market. Here's exactly what that means — and how we do it.</p>
+  <h1 class="page-title">How <em>SEO AI Co<sup>™</sup></em><br>works.</h1>
+  <p class="page-intro">We build and hold territory-locked SEO coverage for a single operator per market. One licensee. One territory. Held under licence.</p>
 
   <div class="steps">
 
@@ -113,7 +121,7 @@ footer{border-top:1px solid var(--border);padding:32px 64px;display:flex;align-i
       <div class="step-body">
         <span class="step-label">Market Selection</span>
         <h2 class="step-hed">You choose your territory.</h2>
-        <p class="step-copy">We define your coverage area by city, region, or category. <strong>One licensee per market.</strong> Once you're active, no competitor in your category and geography can access the same system.</p>
+        <p class="step-copy">Coverage is defined by city, region, or category. <strong>One licensee per market.</strong> Once active, no competitor in your category and geography can access the same system.</p>
       </div>
     </div>
 
@@ -122,7 +130,7 @@ footer{border-top:1px solid var(--border);padding:32px 64px;display:flex;align-i
       <div class="step-body">
         <span class="step-label">Infrastructure Build</span>
         <h2 class="step-hed">We build your coverage foundation.</h2>
-        <p class="step-copy">Our system generates <strong>programmatic location pages</strong> targeting every city, borough, and neighbourhood in your market. Each page is structured, interlinked, and built to drive organic visibility — not just exist.</p>
+        <p class="step-copy">The system generates <strong>programmatic location pages</strong> across every city, borough, and neighbourhood in your market. Structured, interlinked, and built to rank — not just exist.</p>
       </div>
     </div>
 
@@ -131,7 +139,7 @@ footer{border-top:1px solid var(--border);padding:32px 64px;display:flex;align-i
       <div class="step-body">
         <span class="step-label">Search Coverage</span>
         <h2 class="step-hed">Your business appears where your customers search.</h2>
-        <p class="step-copy">Coverage is expanded continuously across high-intent local queries. <strong>The more markets you cover, the more surface area you hold.</strong> Competitors with no coverage infrastructure simply don't rank.</p>
+        <p class="step-copy">Coverage expands continuously across high-intent local queries. <strong>The more markets you hold, the more surface area you control.</strong> Competitors without coverage infrastructure don’t rank.</p>
       </div>
     </div>
 
@@ -139,8 +147,9 @@ footer{border-top:1px solid var(--border);padding:32px 64px;display:flex;align-i
       <span class="step-num">04</span>
       <div class="step-body">
         <span class="step-label">Territory Lock</span>
-        <h2 class="step-hed">Your position is held under agreement.</h2>
-        <p class="step-copy">Access is exclusive per category per market. We cannot serve a competing operator in the same space. <strong>Your territory is protected — not shared, not diluted.</strong></p>
+        <span class="step-active">Active</span>
+        <h2 class="step-hed">Your position is held under licence.</h2>
+        <p class="step-copy">Access is exclusive per category per market. Your position is held under licence — we cannot serve a competing operator in the same territory. <strong>Protected. Not shared. Not diluted.</strong></p>
       </div>
     </div>
 
@@ -149,15 +158,15 @@ footer{border-top:1px solid var(--border);padding:32px 64px;display:flex;align-i
       <div class="step-body">
         <span class="step-label">Ongoing Growth</span>
         <h2 class="step-hed">Coverage compounds over time.</h2>
-        <p class="step-copy">Search authority builds progressively. Pages already indexed keep ranking. New pages extend your reach. <strong>The system gets stronger the longer it runs</strong> — which is why early operators hold a structural advantage.</p>
+        <p class="step-copy">Search authority builds progressively. Pages already indexed keep ranking. New pages extend reach. <strong>The longer the system runs, the stronger it holds</strong> — early operators carry a structural advantage.</p>
       </div>
     </div>
 
   </div>
 
   <div class="page-cta">
-    <p>Ready to understand what's possible in your market?</p>
-    <a href="/book" class="cta-btn">Book a Strategy Session</a><br>
+    <p>Understand your market position and what’s available in your territory.</p>
+    <a href="/book" class="cta-btn">Reserve a Market Session</a><br>
     <a href="/access" class="cta-ghost">Request Access</a>
   </div>
 </main>

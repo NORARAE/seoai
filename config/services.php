@@ -99,6 +99,33 @@ return [
         'webhook_secret' => env('STRIPE_BOOKING_WEBHOOK_SECRET'),
     ],
 
+    // Stripe tier price IDs for commitment-based billing.
+    // monthly = recurring subscription price; activation = one-time invoice item.
+    // These are resolved by recommended_tier at checkout — never exposed to the UI.
+    // Stripe tier price IDs and canonical product naming.
+    // product_name / activation_name are used in Stripe Checkout line items when
+    // pre-configured price IDs are not yet live — keeping Stripe dashboard consistent.
+    'stripe_tiers' => [
+        'core' => [
+            'monthly' => env('STRIPE_PRICE_CORE_MONTHLY'),
+            'activation' => env('STRIPE_PRICE_ACTIVATION_CORE'),
+            'product_name' => 'SEO AI Co™ Core System — Monthly',
+            'activation_name' => 'SEO AI Co™ Core Activation',
+        ],
+        'multi' => [
+            'monthly' => env('STRIPE_PRICE_MULTI_MONTHLY'),
+            'activation' => env('STRIPE_PRICE_ACTIVATION_MULTI'),
+            'product_name' => 'SEO AI Co™ Multi-Market System — Monthly',
+            'activation_name' => 'SEO AI Co™ Multi-Market Activation',
+        ],
+        'agency' => [
+            'monthly' => env('STRIPE_PRICE_AGENCY_MONTHLY'),
+            'activation' => env('STRIPE_PRICE_ACTIVATION_AGENCY'),
+            'product_name' => 'SEO AI Co™ Partner System — Monthly',
+            'activation_name' => 'SEO AI Co™ Partner Activation',
+        ],
+    ],
+
     'clarity' => [
         'project_id' => env('CLARITY_PROJECT_ID', 'w5480s37m6'),
     ],
