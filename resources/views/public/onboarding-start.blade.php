@@ -533,6 +533,80 @@ body {
   margin-bottom: 20px;
 }
 
+/* ── Path note (conditional guidance by lead_type) ── */
+.ob-path-note {
+  margin: 14px 0 0;
+  padding: 12px 16px;
+  border-left: 2px solid rgba(200,168,75,.3);
+  font-size: .8rem;
+  color: rgba(226,201,125,.7);
+  line-height: 1.6;
+  background: rgba(200,168,75,.03);
+  border-radius: 0 6px 6px 0;
+}
+
+/* ── Tier ladder (decision frame) ── */
+.ob-tier-ladder {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  margin: 14px 0 22px;
+  padding: 0;
+}
+.ob-tier-item {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  font-size: .8rem;
+  color: var(--muted);
+  line-height: 1.55;
+}
+.ob-tier-item::before {
+  content: '—';
+  color: var(--gold);
+  opacity: .5;
+  flex-shrink: 0;
+}
+.ob-tier-item strong {
+  color: rgba(237,232,222,.7);
+  font-weight: 400;
+}
+
+/* ── Premium path rows (Multi-location, Agency) ── */
+.ob-premium-row {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 16px 20px;
+  border: 1px solid rgba(200,168,75,.15);
+  border-radius: 10px;
+  margin-top: 10px;
+  background: rgba(200,168,75,.015);
+}
+.ob-premium-row-body { display: flex; flex-direction: column; gap: 4px; }
+.ob-premium-row-name { font-size: .88rem; color: var(--ivory); font-weight: 400; }
+.ob-premium-row-label {
+  font-size: .62rem;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--gold);
+  opacity: .55;
+  font-weight: 400;
+}
+.ob-premium-row-desc { font-size: .78rem; color: #888; line-height: 1.55; max-width: 86%; }
+.ob-premium-row-badge {
+  font-size: .62rem;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--gold);
+  opacity: .45;
+  white-space: nowrap;
+  flex-shrink: 0;
+  padding-top: 2px;
+}
+
 /* ── Trust bar ── */
 .ob-trust {
   display: flex;
@@ -641,8 +715,16 @@ body {
 }
 
 /* ── R&D Credit informational section ── */
-.ob-rd-section {
+.ob-rd-preline {
+  font-size: .78rem;
+  color: rgba(168,168,160,.42);
+  line-height: 1.7;
   margin-top: 40px;
+  margin-bottom: 10px;
+  font-style: italic;
+}
+.ob-rd-section {
+  margin-top: 0;
   padding: 22px 24px;
   border: 1px solid rgba(200,168,75,.10);
   border-radius: 10px;
@@ -690,6 +772,13 @@ body {
   transition: border-color .2s, color .2s;
 }
 .ob-rd-link:hover { border-color: rgba(200,168,75,.4); color: var(--gold); }
+.ob-rd-microcopy {
+  font-size: .72rem;
+  color: rgba(168,168,160,.38);
+  font-style: italic;
+  line-height: 1.65;
+  margin-bottom: 6px;
+}
 .ob-rd-referral {
   display: flex;
   align-items: flex-start;
@@ -940,18 +1029,46 @@ body {
         <label class="ob-label">Do you operate in multiple locations?</label>
         <div class="ob-btn-group">
           <input type="radio" class="ob-btn-opt" id="lt_single" name="lead_type" value="single_location"
-                 {{ old('lead_type', 'single_location') === 'single_location' ? 'checked' : '' }}>
+                 {{ old('lead_type', 'single_location') === 'single_location' ? 'checked' : '' }}
+                 @change="leadType = 'single_location'">
           <label class="ob-btn-label" for="lt_single">No — single location</label>
 
           <input type="radio" class="ob-btn-opt" id="lt_multi" name="lead_type" value="multi_location"
-                 {{ old('lead_type') === 'multi_location' ? 'checked' : '' }}>
+                 {{ old('lead_type') === 'multi_location' ? 'checked' : '' }}
+                 @change="leadType = 'multi_location'">
           <label class="ob-btn-label" for="lt_multi">Yes — multiple markets</label>
 
           <input type="radio" class="ob-btn-opt" id="lt_agency" name="lead_type" value="agency"
-                 {{ old('lead_type') === 'agency' ? 'checked' : '' }}>
+                 {{ old('lead_type') === 'agency' ? 'checked' : '' }}
+                 @change="leadType = 'agency'">
           <label class="ob-btn-label" for="lt_agency">Yes — I'm an agency</label>
         </div>
         @error('lead_type')<span class="ob-error">{{ $message }}</span>@enderror
+
+        {{-- Conditional: scale question for multi-location and agency --}}
+        <div x-show="leadType === 'multi_location' || leadType === 'agency'" x-cloak style="margin-top:14px">
+          <label class="ob-label" style="font-size:.82rem;opacity:.8" for="number_of_locations">
+            How many locations or sites are involved?
+          </label>
+          <select class="ob-select" id="number_of_locations" name="number_of_locations" style="margin-top:6px">
+            <option value="" disabled selected>Select range</option>
+            <option value="2_to_5" {{ old('number_of_locations') === '2_to_5' ? 'selected' : '' }}>2 &ndash; 5</option>
+            <option value="6_to_10" {{ old('number_of_locations') === '6_to_10' ? 'selected' : '' }}>6 &ndash; 10</option>
+            <option value="11_to_20" {{ old('number_of_locations') === '11_to_20' ? 'selected' : '' }}>11 &ndash; 20</option>
+            <option value="20_plus" {{ old('number_of_locations') === '20_plus' ? 'selected' : '' }}>20+</option>
+          </select>
+        </div>
+
+        {{-- Identity + path notes --}}
+        <div class="ob-path-note" x-show="leadType === 'single_location'" x-cloak>
+          Single-market deployments are typically a starting point. The system is designed to scale — operators ready to grow often move into structured rollout.
+        </div>
+        <div class="ob-path-note" x-show="leadType === 'multi_location'" x-cloak>
+          You are operating across multiple markets. This requires structured deployment &mdash; not isolated SEO work. Most operators at this level move into structured multi-market rollout.
+        </div>
+        <div class="ob-path-note" x-show="leadType === 'agency'" x-cloak>
+          You are operating at a partner level. This is not a single deployment &mdash; this is a system rollout. Most operators at this level move into partner review.
+        </div>
       </div>
 
       <div class="ob-field">
@@ -1121,7 +1238,22 @@ body {
       {{-- ── Growth & Support Options ── --}}
       <div class="ob-section" style="margin-top:40px">Growth &amp; Support Options</div>
       <p class="ob-enhancements-intro">Optional — expand your system, visibility, and marketing support at any time. No charges are applied without your explicit approval.</p>
-      <p class="ob-enhancements-intro" style="margin-top:-6px;font-size:.8rem;opacity:.7">Built for businesses ready to expand — whether you operate one location or multiple markets. Our system supports multi-location and multi-site deployment for businesses scaling across territories.</p>
+
+      <p class="ob-enhancements-intro" style="margin-bottom:8px;font-size:.82rem;font-weight:400;color:rgba(237,232,222,.55)">Select how you want your market position built.</p>
+      <ul class="ob-tier-ladder">
+        <li class="ob-tier-item"><strong>Core:</strong> Start with your market and build a held position</li>
+        <li class="ob-tier-item"><strong>Growth:</strong> Add visibility support, paid traffic, and signal monitoring</li>
+        <li class="ob-tier-item"><strong>Multi-market:</strong> Structured rollout across territories and sites</li>
+        <li class="ob-tier-item"><strong>Agency / Partner:</strong> Custom review if you manage multiple brands or markets</li>
+      </ul>
+
+      {{-- Conditional path note in Step 3 --}}
+      <div class="ob-path-note" x-show="leadType === 'multi_location'" x-cloak style="margin-bottom:18px">
+        You are building across multiple markets. Structured multi-market rollout applies to your situation. Most operators at this level do not start with a single-site path.
+      </div>
+      <div class="ob-path-note" x-show="leadType === 'agency'" x-cloak style="margin-bottom:18px">
+        You are operating at a partner level. Agency &amp; Licensing Review below is the appropriate path. Most operators at this level move into formal partner review.
+      </div>
 
       <div class="ob-addons-grid">
         <div>
@@ -1206,16 +1338,38 @@ body {
         </div>
       </div>
 
+      {{-- Premium path rows — Multi-Location and Agency (always visible, styled as note rows) --}}
+      <div class="ob-premium-row">
+        <div class="ob-premium-row-body">
+          <span class="ob-premium-row-label">Scale tier</span>
+          <span class="ob-premium-row-name">Multi-Location / Rollout Support</span>
+          <span class="ob-premium-row-desc">Structured deployment across multiple territories and sites &mdash; scoped based on market complexity and page architecture.</span>
+        </div>
+        <span class="ob-premium-row-badge">Custom review</span>
+      </div>
+
+      <div class="ob-premium-row">
+        <div class="ob-premium-row-body">
+          <span class="ob-premium-row-label">Partner tier</span>
+          <span class="ob-premium-row-name">Agency &amp; Licensing Review</span>
+          <span class="ob-premium-row-desc">Partner-level deployment across multiple brands or markets &mdash; reviewed and structured, not self-serve.</span>
+        </div>
+        <span class="ob-premium-row-badge">By arrangement</span>
+      </div>
+
       {{-- ── Federal Research Credit (informational, optional) ── --}}
+      <p class="ob-rd-preline">Some operators choose to review additional opportunities alongside their deployment.</p>
       <div class="ob-rd-section">
         <span class="ob-rd-eye">Additional Opportunities — Optional</span>
         <h3 class="ob-rd-hed">Federal Research Credit (Form 6765)</h3>
-        <p class="ob-rd-body">Some businesses choose to review IRS Form 6765 and its instructions to better understand the federal research credit.</p>
-        <p class="ob-rd-body">SEO AI Co™ does not determine eligibility and does not provide tax, legal, or accounting advice.</p>
+        <p class="ob-rd-body">Some businesses choose to review IRS Form 6765 and its instructions to understand potential eligibility for the federal research credit.</p>
+        <p class="ob-rd-body">In certain cases, activities related to systems development, process improvement, or technical implementation may qualify &mdash; depending on how they are structured and documented.</p>
+        <p class="ob-rd-body">SEO AI Co&trade; does not determine eligibility and does not provide tax, legal, or accounting advice.</p>
         <div class="ob-rd-links">
           <a href="https://www.irs.gov/pub/irs-pdf/f6765.pdf" target="_blank" rel="noopener noreferrer" class="ob-rd-link">View Form 6765 &rarr;</a>
           <a href="https://www.irs.gov/instructions/i6765" target="_blank" rel="noopener noreferrer" class="ob-rd-link">View IRS Instructions &rarr;</a>
         </div>
+        <p class="ob-rd-microcopy">Commonly reviewed by businesses implementing technical systems and infrastructure.</p>
         <label class="ob-rd-referral">
           <input type="checkbox" name="rd_referral_interest" value="1"
                  {{ old('rd_referral_interest') ? 'checked' : '' }}>
@@ -1228,7 +1382,7 @@ body {
       <p class="ob-activation-note">
         <em>Access enables activation.</em> Positions are not reserved without activation.
       </p>
-      <p style="font-size:.78rem;color:var(--muted);text-align:center;margin-bottom:12px">Scaling beyond a single market? Ask about multi-location deployment.</p>
+      <p class="ob-activation-note" style="margin-top:8px;opacity:.75">This is not a short-term deployment. The system compounds over time.</p>
 
       <div class="ob-nav" style="margin-top:24px">
         <button type="submit" class="ob-submit" id="submit-btn">
@@ -1260,6 +1414,7 @@ document.addEventListener('alpine:init', () => {
     showAddons: {{ count(old('add_ons', [])) > 0 ? 'true' : 'false' }},
     gaHasIt: {{ old('analytics_access') === '1' ? 'true' : 'false' }},
     gscHasIt: {{ old('search_console_access') === '1' ? 'true' : 'false' }},
+    leadType: '{{ old('lead_type', 'single_location') }}',
 
     get showInstructions() {
       return this.accessMethod === 'invite_email' && !!this.platform;
