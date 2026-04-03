@@ -51,21 +51,21 @@ body{background:var(--bg);color:var(--ivory);font-family:'DM Sans',sans-serif;fo
 .bk-signal-bg{position:absolute;inset:0;pointer-events:none;z-index:-1;width:100%;height:100%;overflow:visible}
 /* ── Signal copy + supporting line ── */
 .bk-signal-copy{font-family:'Cormorant Garamond',serif;font-size:clamp(.95rem,2vw,1.15rem);font-style:italic;color:var(--gold);opacity:.6;margin:0 0 28px;letter-spacing:.01em;font-weight:300}
-.bk-supporting-line{font-size:.83rem;color:rgba(168,168,160,.55);font-style:italic;margin:-12px auto 32px;max-width:480px;line-height:1.7}
+.bk-supporting-line{font-size:.83rem;color:rgba(168,168,160,.75);font-style:italic;margin:-12px auto 32px;max-width:480px;line-height:1.7}
 /* ── Platform trust row ── */
-.bk-trust-row{display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:10px 22px;margin-top:0;opacity:.42}
+.bk-trust-row{display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:10px 22px;margin-top:0;opacity:.65}
 .bk-trust-item{display:inline-flex;align-items:center;gap:5px;font-size:.57rem;letter-spacing:.11em;text-transform:uppercase;color:var(--gold);font-weight:400;line-height:1}
 .bk-trust-item svg{flex-shrink:0;color:inherit}
 .bk-trust-dot{color:var(--gold);font-size:.5rem;opacity:.4;line-height:1;align-self:center}
 /* ── Internal how-link ── */
-.bk-how-link{display:inline-block;margin-top:18px;font-size:.72rem;letter-spacing:.1em;color:rgba(168,168,160,.45);text-decoration:none;transition:color .2s;text-transform:uppercase}
+.bk-how-link{display:inline-block;margin-top:18px;font-size:.75rem;letter-spacing:.1em;color:rgba(168,168,160,.72);text-decoration:none;transition:color .2s;text-transform:uppercase}
 .bk-how-link:hover{color:var(--gold)}
 .bk-notice{background:#1a0a0a;border:1px solid rgba(200,80,80,.35);border-radius:8px;padding:14px 20px;margin-bottom:40px;font-size:.85rem;color:#f0a0a0;text-align:center}
 .bk-cta-btn{display:inline-flex;align-items:center;gap:10px;background:var(--gold);color:#080808;font-family:'DM Sans',sans-serif;font-size:.88rem;font-weight:500;letter-spacing:.08em;text-transform:uppercase;text-decoration:none;padding:17px 44px;border-radius:4px;border:none;cursor:pointer;transition:background .2s,transform .15s}
 .bk-cta-btn:hover{background:var(--gold-lt);transform:translateY(-1px)}
 .bk-cta-note{font-size:.75rem;color:var(--muted);margin-top:14px;letter-spacing:.02em}
-.bk-cta-commitment{font-size:.72rem;color:rgba(168,168,160,.38);margin-top:8px;letter-spacing:.02em;font-style:italic}
-.bk-trust-source{font-size:.60rem;letter-spacing:.11em;text-transform:uppercase;color:rgba(168,168,160,.32);margin-top:22px;margin-bottom:6px;display:block}
+.bk-cta-commitment{font-size:.80rem;color:rgba(168,168,160,.78);margin-top:8px;letter-spacing:.02em;font-style:italic}
+.bk-trust-source{font-size:.75rem;letter-spacing:.11em;text-transform:uppercase;color:rgba(168,168,160,.70);margin-top:22px;margin-bottom:6px;display:block}
 
 /* ── Divider ── */
 .bk-divider{border:none;border-top:1px solid var(--border);margin:0}
@@ -91,16 +91,16 @@ body{background:var(--bg);color:var(--ivory);font-family:'DM Sans',sans-serif;fo
 /* ── Booking entry section ── */
 #book-now{background:var(--deep);border-top:1px solid var(--border);scroll-margin-top:80px}
 .bk-entry-intro{max-width:640px;margin:0 auto;padding:80px 32px 48px;text-align:center}
-.bk-entry-intro .bk-section-label{font-size:.64rem;letter-spacing:.16em;text-transform:uppercase;color:rgba(200,168,75,.55);font-weight:400;margin-bottom:10px;display:block}
+.bk-entry-intro .bk-section-label{font-size:.75rem;letter-spacing:.16em;text-transform:uppercase;color:rgba(200,168,75,.78);font-weight:400;margin-bottom:10px;display:block}
 .bk-entry-intro h2{font-family:'Cormorant Garamond',serif;font-size:clamp(1.7rem,4vw,2.3rem);font-weight:400;line-height:1.2;margin-bottom:14px;color:rgba(237,232,222,.95);letter-spacing:-.01em}
 .bk-entry-intro p{font-size:.9rem;color:var(--muted);line-height:1.9;max-width:500px;margin:0 auto}
-.bk-entry-intro .bk-entry-system-note{font-size:.74rem;color:rgba(168,168,160,.58);margin-top:8px;letter-spacing:.02em;line-height:1.6}
+.bk-entry-intro .bk-entry-system-note{font-size:.82rem;color:rgba(168,168,160,.80);margin-top:8px;letter-spacing:.02em;line-height:1.6}
 
 @keyframes active-pulse{0%,100%{opacity:.65}50%{opacity:1}}
 @keyframes sys-pulse{0%,100%{opacity:.55}50%{opacity:.85}}
-.bk-active-indicator{display:inline-flex;align-items:center;justify-content:center;gap:5px;font-size:.53rem;letter-spacing:.14em;text-transform:uppercase;color:rgba(168,168,160,.38);margin-top:16px;margin-bottom:2px}
+.bk-active-indicator{display:inline-flex;align-items:center;justify-content:center;gap:5px;font-size:.68rem;letter-spacing:.14em;text-transform:uppercase;color:rgba(168,168,160,.70);margin-top:16px;margin-bottom:2px}
 .bk-active-dot{color:#22c55e;animation:active-pulse 3s ease-in-out infinite;line-height:1}
-.bk-sys-signal{font-size:.55rem;letter-spacing:.11em;text-transform:uppercase;color:rgba(168,168,160,.28);margin-top:14px;animation:sys-pulse 4.5s ease-in-out infinite}
+.bk-sys-signal{font-size:.75rem;letter-spacing:.11em;text-transform:uppercase;color:rgba(168,168,160,.65);margin-top:14px;animation:sys-pulse 4.5s ease-in-out infinite}
 
 @media(max-width:600px){
   .bk-nav{padding:20px 24px}
@@ -267,8 +267,8 @@ body{background:var(--bg);color:var(--ivory);font-family:'DM Sans',sans-serif;fo
   <footer class="bk-footer">
     <div style="margin-bottom:8px;font-size:.82rem"><strong style="color:var(--ivory)">SEO AI Co™</strong> &nbsp;&middot;&nbsp; Programmatic AI SEO Systems</div>
     <div style="margin-bottom:8px"><a href="mailto:hello@seoaico.com">hello@seoaico.com</a></div>
-    <p style="font-size:.63rem;color:rgba(168,168,160,.38);max-width:440px;margin:0 auto 8px;line-height:1.5">SEO AI Co™ and associated systems, processes, and methodologies are proprietary and may not be reproduced without permission.</p>
-    <p style="font-size:.58rem;color:rgba(168,168,160,.26);max-width:440px;margin:0 auto 12px;line-height:1.5">Certain system builds may be eligible for independent research credit review.</p>
+    <p style="font-size:.72rem;color:rgba(168,168,160,.72);max-width:440px;margin:0 auto 8px;line-height:1.5">SEO AI Co™ and associated systems, processes, and methodologies are proprietary and may not be reproduced without permission.</p>
+    <p style="font-size:.75rem;color:rgba(168,168,160,.70);max-width:440px;margin:0 auto 12px;line-height:1.5">Certain system builds may be eligible for independent research credit review.</p>
     <div><a href="/">seoaico.com</a> &nbsp;&mdash;&nbsp; <a href="{{ route('privacy') }}">Privacy</a> &nbsp;&mdash;&nbsp; <a href="{{ route('terms') }}">Terms</a></div>
   </footer>
 

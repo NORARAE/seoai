@@ -39,40 +39,48 @@
 .bk-type.reserved{border-color:#1e1e1e;background:#090909}
 .bk-type.reserved:hover{border-color:#2e2e2a;background:#0b0b09;transform:translateY(-1px);box-shadow:0 4px 16px rgba(0,0,0,.3)}
 .bk-type.reserved.selected{border-color:var(--gold,#c8a84b);background:rgba(200,168,75,.04)}
-.bk-type-badge{display:inline-flex;align-items:center;gap:5px;background:var(--gold,#c8a84b);color:#080808;font-size:.62rem;font-weight:600;letter-spacing:.10em;text-transform:uppercase;padding:3px 8px;border-radius:20px;margin-bottom:6px}
+.bk-type-badge{display:inline-flex;align-items:center;gap:5px;background:var(--gold,#c8a84b);color:#080808;font-size:.75rem;font-weight:600;letter-spacing:.10em;text-transform:uppercase;padding:3px 8px;border-radius:20px;margin-bottom:6px}
 .bk-type-name{font-size:1rem;color:#ede8de;font-weight:400}
 .bk-type-meta{display:flex;gap:14px;align-items:center;flex-shrink:0;margin-left:12px}
 .bk-type-dur{font-size:.76rem;color:#a8a8a0}
 .bk-type-price{font-size:.92rem;color:var(--gold,#c8a84b);font-weight:500}
 .bk-type-desc{font-size:.78rem;color:#9a9a92;margin-top:4px;line-height:1.55}
 .bk-type-microcopy{font-size:.72rem;color:#a8a8a0;margin-top:5px;font-style:italic}
-.bk-type-qualify{font-size:.70rem;color:#7a7a72;margin-top:5px;letter-spacing:.01em;line-height:1.45}
-.bk-avail-note{font-size:.66rem;color:#3a3a35;text-align:center;margin:18px 0 0;letter-spacing:.08em;text-transform:uppercase}
-/* R&D tax microcopy */
-.bk-rd-note{font-size:.70rem;color:#4a4a42;margin-top:20px;line-height:1.6;text-align:center}
-.bk-rd-note a{color:#7a6a3a;text-decoration:none;border-bottom:1px solid #3a3020}
-.bk-rd-note a:hover{color:#c8a84b;border-color:#c8a84b}
+.bk-type-qualify{font-size:.76rem;color:#9a9a92;margin-top:5px;letter-spacing:.01em;line-height:1.45}
+.bk-avail-note{font-size:.72rem;color:#6a6a60;text-align:center;margin:18px 0 0;letter-spacing:.08em;text-transform:uppercase}
+/* R&D value block */
+.bk-rd-block{background:rgba(200,168,75,.02);border:1px solid rgba(200,168,75,.12);border-radius:8px;padding:16px 18px;margin-top:20px}
+.bk-rd-block-hed{font-size:.76rem;letter-spacing:.08em;text-transform:uppercase;color:rgba(200,168,75,.78);margin-bottom:6px;font-weight:500}
+.bk-rd-block-sub{font-size:.82rem;color:rgba(168,168,160,.78);margin-bottom:10px;line-height:1.6}
+.bk-rd-block-list{list-style:none;margin:0 0 8px;padding:0;display:flex;flex-direction:column;gap:5px}
+.bk-rd-block-list li{font-size:.80rem;color:rgba(168,168,160,.80);padding-left:14px;position:relative;line-height:1.5}
+.bk-rd-block-list li::before{content:'·';color:rgba(200,168,75,.65);position:absolute;left:0;font-size:1.2rem;line-height:1.1}
+.bk-rd-expand{background:none;border:none;cursor:pointer;font-size:.76rem;color:rgba(168,168,160,.70);letter-spacing:.06em;padding:0;margin-top:4px;display:inline-flex;align-items:center;gap:5px;transition:color .2s}
+.bk-rd-expand:hover{color:rgba(200,168,75,.85)}
+.bk-rd-expand-body{font-size:.80rem;color:rgba(168,168,160,.78);margin-top:10px;line-height:1.65;padding:10px 12px;background:rgba(0,0,0,.15);border-radius:6px;border-left:2px solid rgba(200,168,75,.28)}
+.bk-rd-cta{display:inline-block;margin-top:10px;font-size:.76rem;letter-spacing:.08em;color:rgba(200,168,75,.78);text-decoration:none;border:1px solid rgba(200,168,75,.24);border-radius:4px;padding:7px 14px;transition:color .2s,border-color .2s}
+.bk-rd-cta:hover{color:var(--gold,#c8a84b);border-color:rgba(200,168,75,.48)}
 
 /* Anchor pricing tiers (non-bookable — visual / price anchoring only) */
-.bk-anchor-label{font-size:.68rem;letter-spacing:.14em;text-transform:uppercase;color:#444;margin:20px 0 8px}
+.bk-anchor-label{font-size:.70rem;letter-spacing:.14em;text-transform:uppercase;color:#7a7272;margin:20px 0 8px}
 .bk-anchor-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
 .bk-anchor-card{background:#080808;border:1px solid #161616;border-radius:8px;padding:15px 16px;position:relative;overflow:hidden;cursor:default}
 .bk-anchor-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,rgba(200,168,75,.2),rgba(200,168,75,.06))}
-.bk-anchor-name{font-size:.80rem;color:#555;display:block;margin-bottom:3px}
-.bk-anchor-price{font-size:.92rem;color:#4a4032;font-weight:500}
-.bk-anchor-note{font-size:.68rem;color:#333;margin-top:4px;display:block;line-height:1.5}
-.bk-anchor-label-tag{font-size:.60rem;letter-spacing:.08em;text-transform:uppercase;color:#3a3028;display:inline-block;margin-top:6px}
+.bk-anchor-name{font-size:.80rem;color:#7a7a72;display:block;margin-bottom:3px}
+.bk-anchor-price{font-size:.92rem;color:#7a6030;font-weight:500}
+.bk-anchor-note{font-size:.68rem;color:#555050;margin-top:4px;display:block;line-height:1.5}
+.bk-anchor-label-tag{font-size:.66rem;letter-spacing:.08em;text-transform:uppercase;color:#5a5040;display:inline-block;margin-top:6px}
 @media(max-width:480px){.bk-anchor-grid{grid-template-columns:1fr}}
 
 /* Step 2 — Date & Time */
 .bk-datepicker{margin-bottom:20px}
 .bk-datepicker input{width:100%;background:#0b0b0b;border:1px solid #1a1a1a;border-radius:6px;color:#ede8de;font-size:.92rem;padding:14px 16px;font-family:'DM Sans',sans-serif}
-.bk-tz{font-size:.72rem;color:#666;margin-top:4px;margin-bottom:16px}
+.bk-tz{font-size:.76rem;color:#8a8a82;margin-top:4px;margin-bottom:16px}
 .bk-slots{display:grid;grid-template-columns:repeat(auto-fill,minmax(90px,1fr));gap:8px}
 .bk-slot{background:#0b0b0b;border:1px solid #1a1a1a;border-radius:8px;padding:13px 6px;min-height:44px;text-align:center;font-size:.84rem;color:#a8a8a0;cursor:pointer;transition:all .2s;display:flex;align-items:center;justify-content:center}
 .bk-slot:hover{border-color:#333;color:#ede8de}
 .bk-slot.picked{border-color:var(--gold,#c8a84b);color:var(--gold,#c8a84b);background:rgba(200,168,75,.04)}
-.bk-no-slots{font-size:.88rem;color:#666;text-align:center;padding:24px 0}
+.bk-no-slots{font-size:.88rem;color:#8a8a82;text-align:center;padding:24px 0}
 
 /* Step 3 — Details form */
 .bk-summary{background:#0b0b0b;border:1px solid #1a1a1a;border-radius:8px;padding:14px 18px;margin-bottom:20px;display:flex;gap:20px;flex-wrap:wrap}
@@ -98,10 +106,10 @@
 .bk-meet-btn:hover{background:var(--gold-lt,#e2c97d)}
 .bk-gcal-link{font-size:.78rem;color:var(--gold,#c8a84b);text-decoration:none;display:inline-block;margin-top:4px}
 .bk-gcal-link:hover{text-decoration:underline}
-.bk-conf-note{font-size:.82rem;color:#666;margin-top:16px;line-height:1.6}
+.bk-conf-note{font-size:.82rem;color:#8a8a82;margin-top:16px;line-height:1.6}
 
 /* Add-on cards */
-.bk-enhance-title{font-size:.78rem;letter-spacing:.14em;text-transform:uppercase;color:#666;margin:20px 0 10px}
+.bk-enhance-title{font-size:.78rem;letter-spacing:.14em;text-transform:uppercase;color:#8a8a82;margin:20px 0 10px}
 .bk-addon-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:18px}
 .bk-addon-card{background:#0b0b0b;border:1px solid #1a1a1a;border-radius:8px;padding:12px 14px;cursor:pointer;transition:border-color .25s,background .25s;display:flex;align-items:flex-start;gap:10px}
 .bk-addon-card:hover{border-color:#333;background:#0f0f0f}
@@ -110,7 +118,7 @@
 .bk-addon-card.selected .bk-addon-check{background:rgba(200,168,75,.15);border-color:var(--gold,#c8a84b)}
 .bk-addon-name{font-size:.84rem;color:#ede8de;display:block}
 .bk-addon-price{font-size:.76rem;color:var(--gold,#c8a84b)}
-.bk-addon-desc{font-size:.72rem;color:#666;margin-top:2px}
+.bk-addon-desc{font-size:.76rem;color:#8a8a82;margin-top:2px}
 @media(max-width:600px){.bk-addon-grid{grid-template-columns:1fr}}
 
 /* Loading spinner */
@@ -167,8 +175,8 @@
         <p class="bk-sub">Reserve your spot &mdash; takes under 2 minutes.</p>
         @endif
         <div class="bk-types">
-          <p style="font-size:.62rem;letter-spacing:.10em;text-transform:uppercase;color:rgba(168,168,160,.32);margin:0 0 4px">Each path represents a different level of system access.</p>
-          <p style="font-size:.60rem;letter-spacing:.06em;text-transform:uppercase;color:rgba(168,168,160,.20);margin:0 0 14px">Access is structured &mdash; not open.</p>
+          <p style="font-size:.78rem;letter-spacing:.08em;text-transform:uppercase;color:rgba(168,168,160,.75);margin:0 0 4px">Each path represents a different level of system access.</p>
+          <p style="font-size:.75rem;letter-spacing:.06em;text-transform:uppercase;color:rgba(168,168,160,.68);margin:0 0 14px">Access is structured &mdash; not open.</p>
           @foreach(($types ?? collect()) as $ct)
           <div class="bk-type {{ $ct->slug === 'audit' ? 'featured' : ($ct->slug === 'agency-review' ? 'reserved' : ($ct->is_free ? 'secondary' : '')) }}"
                :class="{ selected: selectedType === {{ $ct->id }} }"
@@ -212,8 +220,24 @@
         <p class="bk-avail-note">Limited availability based on active markets</p>
         <p class="bk-avail-note" style="margin-top:4px">Access is limited per territory.</p>
 
-        {{-- R&D tax microcopy --}}
-        <p class="bk-rd-note">Development-focused SEO systems may qualify for R&amp;D tax credits.&nbsp; <a href="/rd-tax-credit">Learn more &rarr;</a></p>
+        {{-- R&D value block --}}
+        <div class="bk-rd-block" x-data="{ rdOpen: false }">
+          <div class="bk-rd-block-hed">Potential Federal R&D Credit Opportunity</div>
+          <div class="bk-rd-block-sub">Often overlooked by operators deploying custom systems.</div>
+          <ul class="bk-rd-block-list">
+            <li>Custom systems development may qualify</li>
+            <li>Automation and AI infrastructure may qualify</li>
+            <li>Process experimentation may qualify</li>
+          </ul>
+          <button type="button" class="bk-rd-expand" @click="rdOpen = !rdOpen">
+            <span x-text="rdOpen ? 'Close ↑' : 'Learn more →'"></span>
+          </button>
+          <div class="bk-rd-expand-body" x-show="rdOpen" x-cloak>
+            This applies to businesses developing custom systems, automation, or AI-driven infrastructure.
+          </div>
+          <br>
+          <a href="/rd-tax-credit" class="bk-rd-cta">Request CPA Review &rarr;</a>
+        </div>
       </div>
 
       {{-- ═══ STEP 2: Pick date & time ═══ --}}
@@ -289,7 +313,7 @@
           </label>
           <textarea id="bk-message" x-model="form.message" maxlength="1000" spellcheck="true"
                     placeholder="Tell us what you want to improve, where you feel stuck, and what growth would look like for your business."></textarea>
-          <div class="bk-char-count" x-text="(form.message || '').length + ' / 1000'" style="font-size:.68rem;color:#555;text-align:right;margin-top:2px"></div>
+          <div class="bk-char-count" x-text="(form.message || '').length + ' / 1000'" style="font-size:.76rem;color:#7a7a72;text-align:right;margin-top:2px"></div>
         </div>
         {{-- Honeypot — invisible to real users, filled by bots --}}
         <div style="position:absolute;left:-9999px;top:-9999px;height:0;overflow:hidden" aria-hidden="true">

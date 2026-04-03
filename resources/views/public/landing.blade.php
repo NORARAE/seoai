@@ -675,19 +675,34 @@ nav.stuck{background:rgba(8,8,8,.95);backdrop-filter:blur(16px);border-color:var
   line-height:1.65;margin-bottom:18px;
 }
 .alloc-convert-label{
-  display:block;font-size:clamp(.78rem,.9vw,.82rem);letter-spacing:.22em;text-transform:uppercase;
-  color:rgba(168,168,160,.62);margin-bottom:18px;
+  display:block;font-size:clamp(.80rem,.9vw,.85rem);letter-spacing:.26em;text-transform:uppercase;
+  color:rgba(168,168,160,.88);margin-bottom:18px;
 }
 .alloc-actions{display:flex;gap:16px;align-items:center;flex-wrap:wrap}
 
 /* right panel */
 .alloc-panel{position:relative}
 .alloc-panel-label{
-  font-size:.72rem;letter-spacing:.24em;text-transform:uppercase;
-  color:rgba(168,168,160,.65);margin-bottom:18px;
+  font-size:.78rem;letter-spacing:.20em;text-transform:uppercase;
+  color:rgba(200,168,75,.85);margin-bottom:18px;
   display:flex;align-items:center;gap:10px;
 }
-.alloc-panel-label::after{content:'';flex:1;height:1px;background:rgba(200,168,75,.15)}
+.alloc-panel-label::after{content:'';flex:1;height:1px;background:rgba(200,168,75,.18)}
+/* hover tooltip on territory cells */
+.alloc-cell-tooltip{
+  position:absolute;bottom:calc(100% + 8px);left:50%;transform:translateX(-50%);
+  background:#131210;border:1px solid rgba(200,168,75,.28);border-radius:6px;
+  padding:8px 13px;font-size:.76rem;color:rgba(237,232,222,.88);line-height:1.4;
+  white-space:nowrap;pointer-events:none;z-index:20;
+  opacity:0;transition:opacity .18s;letter-spacing:.02em;
+}
+.alloc-cell:hover .alloc-cell-tooltip{opacity:1}
+@media(max-width:768px){.alloc-cell-tooltip{display:none}}
+/* trust line below grid */
+.alloc-trust-line{
+  font-size:.80rem;color:rgba(168,168,160,.82);margin-top:14px;line-height:1.65;
+  letter-spacing:.01em;
+}
 .alloc-grid{
   display:grid;grid-template-columns:1fr 1fr;
   gap:1px;background:rgba(200,168,75,.11);
@@ -711,39 +726,39 @@ nav.stuck{background:rgba(8,8,8,.95);backdrop-filter:blur(16px);border-color:var
 .alloc-status{display:flex;align-items:center;gap:9px}
 
 /* ── Status dot animations ── */
-@keyframes dotPulseOpen{
-  0%,100%{box-shadow:0 0 0 0 rgba(200,185,75,.5),0 0 6px rgba(200,185,75,.45)}
-  50%{box-shadow:0 0 0 4px rgba(200,185,75,.0),0 0 11px rgba(200,185,75,.6)}
+@keyframes dotPulseActive{
+  0%,100%{opacity:.70}
+  50%{opacity:1}
 }
 @keyframes dotGlowLimited{
-  0%,100%{box-shadow:0 0 4px rgba(210,148,60,.45)}
-  50%{box-shadow:0 0 9px rgba(210,148,60,.65)}
-}
-@keyframes dotStableAllocated{
-  0%,100%{opacity:.88;box-shadow:0 0 4px rgba(200,168,75,.35)}
-  50%{opacity:1;box-shadow:0 0 7px rgba(200,168,75,.52)}
+  0%,100%{box-shadow:0 0 4px rgba(245,158,11,.45)}
+  50%{box-shadow:0 0 9px rgba(245,158,11,.65)}
 }
 .alloc-dot{
   width:8px;height:8px;border-radius:50%;flex-shrink:0;
+  opacity:0;transition:opacity .4s;
 }
+.alloc-dot.alloc-dot-visible{opacity:1}
 .alloc-dot.allocated{
-  background:rgba(200,168,75,.72);
-  box-shadow:0 0 5px rgba(200,168,75,.35);
-  animation:dotStableAllocated 5s ease-in-out infinite;
+  background:#22c55e;
+  box-shadow:0 0 5px rgba(34,197,94,.35);
+  animation:dotPulseActive 3.5s ease-in-out infinite;
 }
 .alloc-dot.limited{
-  background:rgba(210,148,60,.85);
+  background:#f59e0b;
+  box-shadow:0 0 4px rgba(245,158,11,.40);
   animation:dotGlowLimited 3.8s ease-in-out infinite;
+  opacity:.95;
 }
 .alloc-dot.open{
-  background:rgba(200,195,80,.92);
-  animation:dotPulseOpen 2.6s ease-in-out infinite;
+  background:#84cc16;
+  box-shadow:0 0 5px rgba(132,204,22,.28);
 }
 
 .alloc-status-label{font-size:.74rem;letter-spacing:.15em;text-transform:uppercase;font-weight:400}
-.alloc-status-label.allocated{color:rgba(200,168,75,.82)}
-.alloc-status-label.limited{color:rgba(210,148,60,.9)}
-.alloc-status-label.open{color:rgba(200,195,80,.95);letter-spacing:.18em}
+.alloc-status-label.allocated{color:#22c55e}
+.alloc-status-label.limited{color:#f59e0b}
+.alloc-status-label.open{color:#84cc16;letter-spacing:.18em}
 .alloc-legend{
   margin-top:16px;padding:16px 22px;border:1px solid rgba(200,168,75,.18);
   display:flex;gap:24px;align-items:center;flex-wrap:wrap;
@@ -1562,8 +1577,8 @@ body::before{
   .alloc-eyebrow{letter-spacing:.2em;font-size:.66rem}
   .access-eyebrow{letter-spacing:.2em;font-size:.68rem}
   .infra-eyebrow{letter-spacing:.24em;font-size:.6rem}
-  .alloc-convert-label{letter-spacing:.16em;font-size:.74rem}
-  .alloc-panel-label{letter-spacing:.18em;font-size:.7rem}
+  .alloc-convert-label{letter-spacing:.16em;font-size:.75rem}
+  .alloc-panel-label{letter-spacing:.18em;font-size:.75rem}
 
   /* Display headings — tighter so wrapping is intentional, not accidental */
   .pos-h2{line-height:1.07}
@@ -1875,10 +1890,10 @@ body::before{
       </div>
       <div class="alloc-reinforce">
         <span>High-demand markets are secured first.</span>
-        <span>There is no overlap. There is no secondary access.</span>
+        <span>No overlap. No secondary access.</span>
         <span>Coverage is held under agreement — reinforced, where appropriate, through paid media.</span>
       </div>
-      <p class="alloc-urgency">If your market is still available,<br><em>claim it before the window closes.</em></p>
+      <p class="alloc-urgency">If your market is still available,<br><em>secure it before the window closes.</em></p>
       <span class="alloc-convert-label">Access is reserved. Not open.</span>
       <div class="alloc-actions">
         <a href="/onboarding/start" class="btn-primary">Claim Your Territory</a>
@@ -1888,6 +1903,7 @@ body::before{
 
     <!-- Right: regional allocation grid (data rendered from JS array below) -->
     <div class="alloc-panel">
+      <p style="font-size:.68rem;letter-spacing:.22em;text-transform:uppercase;color:rgba(200,168,75,.82);margin-bottom:6px;font-weight:500">Live Territory Status</p>
       <p class="alloc-panel-label">U.S. Territory Status</p>
       <div class="alloc-grid" id="allocGrid"></div>
       <div class="alloc-legend">
@@ -1904,6 +1920,7 @@ body::before{
           <span class="alloc-legend-label">Expansion Available</span>
         </div>
       </div>
+      <p class="alloc-trust-line">Territory status is continuously evaluated across live search, competitive signals, and platform data.</p>
       <p class="alloc-avail-note"><strong>Territory access is structured by industry and market.</strong> Availability reflects current operator coverage — not total capacity.<br><br>Access is reviewed individually based on market availability, operator readiness, and business fit. Approval is reserved for legitimate operators with the capacity to support deployment and, where appropriate, media amplification. Search visibility is secured through structured systems and reinforced over time.</p>
     </div>
 
@@ -2925,19 +2942,30 @@ body::before{
       {region:'Northeast',         states:'NY · NJ · CT · MA',  status:'allocated'},
     ];
     var labels = {allocated:'Active',limited:'Selective Access',open:'Expansion Available'};
+    var tooltips = {
+      allocated:'This territory is currently secured by an operator.',
+      limited:'Access is limited — subject to review and availability.',
+      open:'New operators may be considered in this region.'
+    };
     var grid = document.getElementById('allocGrid');
     if(!grid) return;
     grid.innerHTML = markets.map(function(m, i){
-      var delay = (i * 0.37).toFixed(2) + 's';
       return '<div class="alloc-cell">'
+        + '<span class="alloc-cell-tooltip">' + tooltips[m.status] + '</span>'
         + '<p class="alloc-region">' + m.region + '</p>'
         + '<p class="alloc-states">' + m.states + '</p>'
         + '<div class="alloc-status">'
-        +   '<span class="alloc-dot ' + m.status + '" style="animation-delay:' + delay + '"></span>'
+        +   '<span class="alloc-dot ' + m.status + '" data-delay="' + i + '"></span>'
         +   '<span class="alloc-status-label ' + m.status + '">' + labels[m.status] + '</span>'
         + '</div>'
         + '</div>';
     }).join('');
+    /* staggered fade-in of dots */
+    var dots = grid.querySelectorAll('.alloc-dot');
+    dots.forEach(function(dot){
+      var i = parseInt(dot.getAttribute('data-delay'), 10) || 0;
+      setTimeout(function(){ dot.classList.add('alloc-dot-visible'); }, 120 + i * 90);
+    });
   })();
 
   /* ── Offer / Licensing section ambient canvas ── */

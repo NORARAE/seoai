@@ -115,10 +115,10 @@ body {
   margin-bottom: 10px;
 }
 .ob-progress-label {
-  font-size: .68rem;
+  font-size: .75rem;
   letter-spacing: .12em;
   text-transform: uppercase;
-  color: #3a3a3a;
+  color: #6a6a62;
   transition: color .3s;
   font-weight: 400;
 }
@@ -385,7 +385,7 @@ body {
 .ob-addon-header { display: flex; align-items: flex-start; justify-content: space-between; }
 
 /* ── Navigation buttons ── */
-.ob-nav { display: flex; gap: 14px; align-items: center; margin-top: 36px; flex-wrap: wrap; }
+.ob-nav { display: flex; gap: 20px; align-items: center; margin-top: 36px; flex-wrap: wrap; }
 .ob-btn-next {
   display: inline-flex;
   align-items: center;
@@ -413,9 +413,9 @@ body {
 .ob-btn-back {
   background: none;
   border: none;
-  color: var(--muted);
-  font-size: .78rem;
-  letter-spacing: .1em;
+  color: rgba(168,168,160,.82);
+  font-size: .80rem;
+  letter-spacing: .10em;
   text-transform: uppercase;
   cursor: pointer;
   padding: 8px 0;
@@ -674,50 +674,212 @@ body {
 }
 .ob-learn-link:hover { color: var(--muted); }
 
-/* ── Addon info tooltip (CSS-only) ── */
+/* ── Addon info button ── */
 .ob-info-btn {
-  position: relative;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 15px; height: 15px;
-  border: 1px solid rgba(200,168,75,.2);
+  width: 16px; height: 16px;
+  border: 1px solid rgba(200,168,75,.25);
   border-radius: 50%;
-  cursor: default;
+  cursor: pointer;
   font-size: .60rem;
   font-style: normal;
-  color: rgba(200,168,75,.4);
+  color: rgba(200,168,75,.5);
   flex-shrink: 0;
   line-height: 1;
-  transition: border-color .2s, color .2s;
+  transition: border-color .2s, color .2s, background .2s;
+  user-select: none;
 }
-.ob-info-btn:hover { border-color: rgba(200,168,75,.45); color: rgba(200,168,75,.7); }
-.ob-info-btn:hover::after {
-  content: attr(data-tip);
-  position: absolute;
-  bottom: calc(100% + 7px);
-  left: 50%;
-  transform: translateX(-50%);
-  background: #111;
-  border: 1px solid rgba(200,168,75,.18);
-  border-radius: 5px;
-  padding: 8px 12px;
-  font-size: .72rem;
-  color: var(--muted);
-  white-space: normal;
-  width: 200px;
-  line-height: 1.55;
-  z-index: 20;
-  text-transform: none;
-  letter-spacing: 0;
-  font-weight: 300;
+.ob-info-btn:hover { border-color: rgba(200,168,75,.55); color: var(--gold); background: rgba(200,168,75,.05); }
+
+/* ── Addon detail panel overlay ── */
+.ob-detail-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 9500;
   pointer-events: none;
 }
+.ob-detail-overlay.is-open {
+  pointer-events: auto;
+}
+.ob-detail-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,.52);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  opacity: 0;
+  transition: opacity .3s ease;
+}
+.ob-detail-overlay.is-open .ob-detail-backdrop { opacity: 1; }
+.ob-detail-panel {
+  position: absolute;
+  top: 0; right: 0; bottom: 0;
+  width: min(420px, 100vw);
+  background: #0d0d0d;
+  border-left: 1px solid rgba(200,168,75,.13);
+  padding: 48px 32px 64px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  transform: translateX(100%);
+  transition: transform .32s cubic-bezier(.22,1,.36,1);
+}
+.ob-detail-overlay.is-open .ob-detail-panel { transform: translateX(0); }
+@media (max-width: 600px) {
+  .ob-detail-panel {
+    top: auto; right: 0; left: 0; bottom: 0;
+    width: 100%;
+    max-height: 84vh;
+    border-left: none;
+    border-top: 1px solid rgba(200,168,75,.13);
+    border-radius: 16px 16px 0 0;
+    padding: 32px 24px 56px;
+    transform: translateY(100%);
+  }
+  .ob-detail-overlay.is-open .ob-detail-panel { transform: translateY(0); }
+}
+.ob-detail-handle { display:none }
+@media (max-width: 600px) {
+  .ob-detail-handle {
+    display: block;
+    width: 36px; height: 4px;
+    border-radius: 2px;
+    background: rgba(200,168,75,.18);
+    margin: 0 auto 24px;
+    flex-shrink: 0;
+  }
+}
+.ob-detail-close {
+  position: absolute;
+  top: 16px; right: 16px;
+  background: rgba(255,255,255,.04);
+  border: 1px solid rgba(255,255,255,.08);
+  border-radius: 50%;
+  width: 34px; height: 34px;
+  color: #8a8a8a;
+  font-size: 1rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: color .2s, background .2s;
+  line-height: 1;
+  padding: 0;
+}
+.ob-detail-close:hover { color: #ede8de; background: rgba(255,255,255,.09); }
+.ob-detail-eyebrow {
+  font-size: .62rem;
+  letter-spacing: .22em;
+  text-transform: uppercase;
+  color: var(--gold-dim);
+  margin-bottom: 12px;
+  display: block;
+}
+.ob-detail-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.5rem;
+  font-weight: 300;
+  color: var(--ivory);
+  line-height: 1.2;
+  margin-bottom: 8px;
+}
+.ob-detail-price-badge {
+  display: inline-block;
+  font-size: .72rem;
+  color: var(--gold);
+  background: rgba(200,168,75,.07);
+  border: 1px solid rgba(200,168,75,.18);
+  border-radius: 4px;
+  padding: 4px 11px;
+  margin-bottom: 24px;
+  letter-spacing: .04em;
+}
+.ob-detail-divider {
+  border: none;
+  border-top: 1px solid rgba(200,168,75,.07);
+  margin: 18px 0;
+}
+.ob-detail-section { margin-bottom: 20px; }
+.ob-detail-section-label {
+  font-size: .62rem;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  color: rgba(168,168,160,.4);
+  margin-bottom: 7px;
+  display: block;
+}
+.ob-detail-body {
+  font-size: .84rem;
+  color: var(--muted);
+  line-height: 1.78;
+}
+.ob-detail-list {
+  list-style: none;
+  margin: 0; padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+.ob-detail-list li {
+  font-size: .82rem;
+  color: var(--muted);
+  line-height: 1.55;
+  padding-left: 16px;
+  position: relative;
+}
+.ob-detail-list li::before {
+  content: '—';
+  position: absolute; left: 0;
+  color: var(--gold-dim);
+  font-size: .70rem;
+}
+.ob-detail-rd-links {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 4px;
+}
+.ob-detail-rd-link {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: .78rem;
+  color: var(--gold-dim);
+  text-decoration: none;
+  border: 1px solid rgba(200,168,75,.15);
+  border-radius: 6px;
+  padding: 10px 14px;
+  letter-spacing: .06em;
+  transition: border-color .2s, color .2s, background .2s;
+}
+.ob-detail-rd-link:hover { border-color: rgba(200,168,75,.35); color: var(--gold); background: rgba(200,168,75,.04); }
+
+/* ── R&D section expand toggle ── */
+.ob-rd-toggle {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: .76rem;
+  color: rgba(168,168,160,.72);
+  letter-spacing: .08em;
+  padding: 0;
+  margin-top: 10px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition: color .2s;
+  text-decoration: none;
+}
+.ob-rd-toggle:hover { color: var(--muted); }
+.ob-rd-toggle-arrow { transition: transform .25s ease; display: inline-block; }
+.ob-rd-toggle-arrow.open { transform: rotate(90deg); }
 
 /* ── R&D Credit informational section ── */
 .ob-rd-preline {
-  font-size: .78rem;
-  color: rgba(168,168,160,.42);
+  font-size: .87rem;
+  color: rgba(168,168,160,.80);
   line-height: 1.7;
   margin-top: 40px;
   margin-bottom: 10px;
@@ -731,7 +893,7 @@ body {
   background: rgba(200,168,75,.015);
 }
 .ob-rd-eye {
-  font-size: .64rem;
+  font-size: .76rem;
   letter-spacing: .22em;
   text-transform: uppercase;
   color: var(--gold-dim);
@@ -761,7 +923,7 @@ body {
 .ob-rd-link {
   display: inline-flex;
   align-items: center;
-  font-size: .72rem;
+  font-size: .76rem;
   letter-spacing: .10em;
   text-transform: uppercase;
   color: var(--gold-dim);
@@ -773,12 +935,17 @@ body {
 }
 .ob-rd-link:hover { border-color: rgba(200,168,75,.4); color: var(--gold); }
 .ob-rd-microcopy {
-  font-size: .72rem;
-  color: rgba(168,168,160,.38);
+  font-size: .76rem;
+  color: rgba(168,168,160,.72);
   font-style: italic;
   line-height: 1.65;
   margin-bottom: 6px;
 }
+.ob-rd-bullets{list-style:none;margin:0 0 12px;padding:0;display:flex;flex-direction:column;gap:7px}
+.ob-rd-bullets li{font-size:.87rem;color:rgba(168,168,160,.85);padding-left:18px;position:relative;line-height:1.5}
+.ob-rd-bullets li::before{content:'·';color:rgba(200,168,75,.68);position:absolute;left:0;font-size:1.2rem;line-height:1.1}
+.ob-rd-cta-link{display:inline-block;margin-top:12px;font-size:.80rem;letter-spacing:.08em;color:rgba(200,168,75,.80);text-decoration:none;border:1px solid rgba(200,168,75,.26);border-radius:4px;padding:9px 18px;transition:color .2s,border-color .2s}
+.ob-rd-cta-link:hover{color:var(--gold);border-color:rgba(200,168,75,.52)}
 .ob-rd-referral {
   display: flex;
   align-items: flex-start;
@@ -799,8 +966,8 @@ body {
   cursor: pointer;
 }
 .ob-rd-disclaimer {
-  font-size: .74rem;
-  color: rgba(168,168,160,.44);
+  font-size: .76rem;
+  color: rgba(168,168,160,.68);
   line-height: 1.75;
   margin-top: 16px;
   padding-top: 14px;
@@ -810,14 +977,14 @@ body {
 
 /* ── Activation note ── */
 .ob-activation-note {
-  font-size: .78rem;
-  color: rgba(168,168,160,.38);
+  font-size: .87rem;
+  color: rgba(168,168,160,.80);
   line-height: 1.75;
   margin-top: 20px;
   padding-top: 16px;
   border-top: 1px solid rgba(200,168,75,.06);
 }
-.ob-activation-note em { font-style: normal; color: rgba(168,168,160,.58); }
+.ob-activation-note em { font-style: normal; color: rgba(168,168,160,.95); }
 
 /* ── Privacy block ── */
 .ob-privacy-block {
@@ -875,8 +1042,8 @@ body {
   .ob-section { font-size: .74rem; letter-spacing: .16em; }
   .ob-radio-btn-3 { font-size: .96rem; min-height: 88px; }
   .ob-radio-btn-3 span { font-size: .80rem; }
-  .ob-activation-note { font-size: .84rem; color: rgba(168,168,160,.52); }
-  .ob-activation-note em { color: rgba(168,168,160,.75); }
+  .ob-activation-note { font-size: .90rem; color: rgba(168,168,160,.85); }
+  .ob-activation-note em { color: rgba(168,168,160,.98); }
   .ob-privacy-block { font-size: .82rem; }
   .ob-trust-microcopy { font-size: .78rem; }
 }
@@ -891,6 +1058,9 @@ body {
   </a>
 
   <span class="ob-eye">{{ ($isPreview ?? false) ? 'SEO Opportunity Preview' : 'Client Onboarding' }}</span>
+  <p style="font-size:.78rem;letter-spacing:.06em;text-transform:uppercase;color:rgba(168,168,160,.38);margin:0 0 4px">You&rsquo;re now entering the intake process.</p>
+  <p style="font-size:.62rem;letter-spacing:.1em;text-transform:uppercase;color:rgba(168,168,160,.2);margin:0 0 4px">Access is granted selectively.</p>
+  <p style="font-size:.72rem;color:rgba(168,168,160,.28);margin:0 0 24px;letter-spacing:.03em">Your position is currently under evaluation.</p>
   <h1 class="ob-hed">
     @if($isPreview ?? false)
       Let's map your<br><em>opportunity.</em>
@@ -946,7 +1116,7 @@ body {
     <div x-show="step === 1" x-transition:enter="ob-step-enter" x-transition:enter-start="ob-step-from" x-transition:enter-end="ob-step-to">
       <span class="ob-step-eye">Step 1 of 3</span>
       <h2 class="ob-step-title">Tell us about your business.</h2>
-      <p class="ob-step-hint">This helps us prepare your market opportunity session — takes about 60 seconds.</p>
+      <p class="ob-step-hint">This helps us prepare your market opportunity session.</p>
 
       <div class="ob-field">
         <label class="ob-label" for="business_name">Business Name <span class="req">*</span></label>
@@ -1009,7 +1179,7 @@ body {
     <div x-show="step === 2" x-transition:enter="ob-step-enter" x-transition:enter-start="ob-step-from" x-transition:enter-end="ob-step-to">
       <span class="ob-step-eye">Step 2 of 3 — Almost there</span>
       <h2 class="ob-step-title">What are you working toward?</h2>
-      <p class="ob-step-hint">Be as honest as you like. We use this to prepare your strategy — not to judge.</p>
+      <p class="ob-step-hint">This calibrates your session and deployment approach.</p>
 
       <div class="ob-field">
         <label class="ob-label" for="goals">What's your primary goal right now?</label>
@@ -1061,13 +1231,13 @@ body {
 
         {{-- Identity + path notes --}}
         <div class="ob-path-note" x-show="leadType === 'single_location'" x-cloak>
-          Single-market deployments are typically a starting point. The system is designed to scale — operators ready to grow often move into structured rollout.
+          Single-market activation is the standard starting point. The system is designed to scale from here.
         </div>
         <div class="ob-path-note" x-show="leadType === 'multi_location'" x-cloak>
-          You are operating across multiple markets. This requires structured deployment &mdash; not isolated SEO work. Most operators at this level move into structured multi-market rollout.
+          Operating across multiple markets. Structured deployment applies &mdash; not single-site configuration.
         </div>
         <div class="ob-path-note" x-show="leadType === 'agency'" x-cloak>
-          You are operating at a partner level. This is not a single deployment &mdash; this is a system rollout. Most operators at this level move into partner review.
+          Operating at a partner level. Partner and licensing review is the appropriate path.
         </div>
       </div>
 
@@ -1237,22 +1407,16 @@ body {
 
       {{-- ── Growth & Support Options ── --}}
       <div class="ob-section" style="margin-top:40px">Growth &amp; Support Options</div>
-      <p class="ob-enhancements-intro">Optional — expand your system, visibility, and marketing support at any time. No charges are applied without your explicit approval.</p>
+      <p class="ob-enhancements-intro">Additional preparation layers (applied as needed). No charges are applied without your explicit approval.</p>
 
-      <p class="ob-enhancements-intro" style="margin-bottom:8px;font-size:.82rem;font-weight:400;color:rgba(237,232,222,.55)">Select how you want your market position built.</p>
-      <ul class="ob-tier-ladder">
-        <li class="ob-tier-item"><strong>Core:</strong> Start with your market and build a held position</li>
-        <li class="ob-tier-item"><strong>Growth:</strong> Add visibility support, paid traffic, and signal monitoring</li>
-        <li class="ob-tier-item"><strong>Multi-market:</strong> Structured rollout across territories and sites</li>
-        <li class="ob-tier-item"><strong>Agency / Partner:</strong> Custom review if you manage multiple brands or markets</li>
-      </ul>
+
 
       {{-- Conditional path note in Step 3 --}}
       <div class="ob-path-note" x-show="leadType === 'multi_location'" x-cloak style="margin-bottom:18px">
-        You are building across multiple markets. Structured multi-market rollout applies to your situation. Most operators at this level do not start with a single-site path.
+        Structured multi-market rollout applies to your situation.
       </div>
       <div class="ob-path-note" x-show="leadType === 'agency'" x-cloak style="margin-bottom:18px">
-        You are operating at a partner level. Agency &amp; Licensing Review below is the appropriate path. Most operators at this level move into formal partner review.
+        Agency &amp; Licensing Review below is the appropriate path.
       </div>
 
       <div class="ob-addons-grid">
@@ -1263,7 +1427,7 @@ body {
             <div class="ob-addon-header">
               <span style="display:flex;align-items:center;gap:4px">
                 <span class="ob-addon-name">Local SEO Setup</span>
-                <span class="ob-info-btn" data-tip="Establishes your local search presence and helps secure your territory early.">i</span>
+                <span class="ob-info-btn" @click.prevent.stop="openAddonDetail('local_seo')" aria-label="About Local SEO Setup">i</span>
               </span>
               <span class="ob-addon-check"></span>
             </div>
@@ -1279,7 +1443,7 @@ body {
             <div class="ob-addon-header">
               <span style="display:flex;align-items:center;gap:4px">
                 <span class="ob-addon-name">Google Ads Setup</span>
-                <span class="ob-info-btn" data-tip="Accelerates visibility while organic positioning builds.">i</span>
+                <span class="ob-info-btn" @click.prevent.stop="openAddonDetail('google_ads')" aria-label="About Google Ads Setup">i</span>
               </span>
               <span class="ob-addon-check"></span>
             </div>
@@ -1295,7 +1459,7 @@ body {
             <div class="ob-addon-header">
               <span style="display:flex;align-items:center;gap:4px">
                 <span class="ob-addon-name">Monthly Reporting</span>
-                <span class="ob-info-btn" data-tip="Tracks performance, rankings, and ROI over time.">i</span>
+                <span class="ob-info-btn" @click.prevent.stop="openAddonDetail('reporting')" aria-label="About Monthly Reporting">i</span>
               </span>
               <span class="ob-addon-check"></span>
             </div>
@@ -1311,7 +1475,7 @@ body {
             <div class="ob-addon-header">
               <span style="display:flex;align-items:center;gap:4px">
                 <span class="ob-addon-name">Territory Intelligence</span>
-                <span class="ob-info-btn" data-tip="Identifies competitive gaps and expansion opportunities.">i</span>
+                <span class="ob-info-btn" @click.prevent.stop="openAddonDetail('territory')" aria-label="About Territory Intelligence">i</span>
               </span>
               <span class="ob-addon-check"></span>
             </div>
@@ -1327,7 +1491,7 @@ body {
             <div class="ob-addon-header">
               <span style="display:flex;align-items:center;gap:4px">
                 <span class="ob-addon-name">Full-Service Marketing Support</span>
-                <span class="ob-info-btn" data-tip="For clients who want ongoing support beyond SEO.">i</span>
+                <span class="ob-info-btn" @click.prevent.stop="openAddonDetail('full_service')" aria-label="About Full-Service Marketing Support">i</span>
               </span>
               <span class="ob-addon-check"></span>
             </div>
@@ -1358,19 +1522,33 @@ body {
       </div>
 
       {{-- ── Federal Research Credit (informational, optional) ── --}}
-      <p class="ob-rd-preline">Some operators choose to review additional opportunities alongside their deployment.</p>
+      <p class="ob-rd-preline">Some system builds may qualify for federal research credit review.</p>
       <div class="ob-rd-section">
-        <span class="ob-rd-eye">Additional Opportunities — Optional</span>
-        <h3 class="ob-rd-hed">Federal Research Credit (Form 6765)</h3>
-        <p class="ob-rd-body">Some businesses choose to review IRS Form 6765 and its instructions to understand potential eligibility for the federal research credit.</p>
-        <p class="ob-rd-body">In certain cases, activities related to systems development, process improvement, or technical implementation may qualify &mdash; depending on how they are structured and documented.</p>
-        <p class="ob-rd-body">SEO AI Co™ does not determine eligibility and does not provide tax, legal, or accounting advice.</p>
-        <div class="ob-rd-links">
-          <a href="https://www.irs.gov/pub/irs-pdf/f6765.pdf" target="_blank" rel="noopener noreferrer" class="ob-rd-link">View Form 6765 &rarr;</a>
-          <a href="https://www.irs.gov/instructions/i6765" target="_blank" rel="noopener noreferrer" class="ob-rd-link">View IRS Instructions &rarr;</a>
+        <span class="ob-rd-eye">Additional Opportunity</span>
+        <h3 class="ob-rd-hed">Potential Federal R&D Credit Opportunity</h3>
+        <p class="ob-rd-body" style="font-size:.82rem;color:rgba(168,168,160,.78);margin-bottom:14px">Often overlooked by operators deploying custom systems.</p>
+
+        <div x-show="rdExpanded" x-cloak>
+          <ul class="ob-rd-bullets">
+            <li>Custom systems development may qualify</li>
+            <li>Automation and AI infrastructure may qualify</li>
+            <li>Process experimentation may qualify</li>
+          </ul>
+          <p class="ob-rd-body">This applies to businesses developing custom systems, automation, or AI-driven infrastructure. Formal eligibility is determined through independent review based on IRS filing criteria.</p>
+          <div class="ob-rd-links">
+            <a href="https://www.irs.gov/pub/irs-pdf/f6765.pdf" target="_blank" rel="noopener noreferrer" class="ob-rd-link">Form 6765 &mdash; Credit for Increasing Research Activities</a>
+            <a href="https://www.irs.gov/instructions/i6765" target="_blank" rel="noopener noreferrer" class="ob-rd-link">IRS Instructions for Form 6765</a>
+          </div>
         </div>
-        <p class="ob-rd-microcopy">Commonly reviewed by businesses implementing technical systems and infrastructure.</p>
-        <label class="ob-rd-referral">
+
+        <button type="button" class="ob-rd-toggle" @click="rdExpanded = !rdExpanded">
+          <span class="ob-rd-toggle-arrow" :class="{ open: rdExpanded }">›</span>
+          <span x-text="rdExpanded ? 'Collapse details' : 'Learn more →'"></span>
+        </button>
+
+        <a href="/rd-tax-credit" class="ob-rd-cta-link">Request CPA Review →</a>
+
+        <label class="ob-rd-referral" style="margin-top:18px">
           <input type="checkbox" name="rd_referral_interest" value="1"
                  {{ old('rd_referral_interest') ? 'checked' : '' }}>
           <span>I&rsquo;d like a referral for further review</span>
@@ -1380,9 +1558,10 @@ body {
 
       {{-- ── Submit ── --}}
       <p class="ob-activation-note">
-        <em>Access enables activation.</em> Positions are not reserved without activation.
+        <em>Access enables activation.</em> This is not a purchase decision — it is a position decision.
       </p>
-      <p class="ob-activation-note" style="margin-top:8px;opacity:.75">This is not a short-term deployment. The system compounds over time.</p>
+      <p class="ob-activation-note" style="margin-top:8px">This is not a short-term deployment. The system compounds over time.</p>
+      <p style="font-size:.80rem;color:rgba(168,168,160,.72);text-align:center;margin:16px 0 0;letter-spacing:.03em">Certain system builds may be eligible for independent research credit review.</p>
 
       <div class="ob-nav" style="margin-top:24px">
         <button type="submit" class="ob-submit" id="submit-btn">
@@ -1403,6 +1582,207 @@ body {
     </div>
 
   </form>
+
+  {{-- ── Enhancement Detail Panel Overlay ── --}}
+  <div class="ob-detail-overlay" :class="{ 'is-open': obDetailOpen }"
+       @keydown.escape.window="closeAddonDetail()" aria-hidden="true">
+    <div class="ob-detail-backdrop" @click="closeAddonDetail()"></div>
+    <div class="ob-detail-panel" role="dialog" aria-modal="true">
+      <div class="ob-detail-handle"></div>
+      <button type="button" class="ob-detail-close" @click="closeAddonDetail()" aria-label="Close">&times;</button>
+
+      {{-- Local SEO Setup --}}
+      <template x-if="obDetailId === 'local_seo'">
+        <div>
+          <span class="ob-detail-eyebrow">Enhancement — One-time</span>
+          <div class="ob-detail-title">Local SEO Setup</div>
+          <div class="ob-detail-price-badge">From $199</div>
+          <div class="ob-detail-section">
+            <span class="ob-detail-section-label">Outcome</span>
+            <p class="ob-detail-body">Establishes a defensible local search foundation across your territory.</p>
+          </div>
+          <div class="ob-detail-section" style="margin-top:10px">
+            <span class="ob-detail-section-label">Why it matters</span>
+            <p class="ob-detail-body">Without this layer, position cannot hold consistently — especially in markets where competitors have local signals in place.</p>
+          </div>
+          <div class="ob-detail-section" style="margin-top:10px">
+            <span class="ob-detail-section-label">Who it is for</span>
+            <p class="ob-detail-body">Recommended for operators entering or securing a local market from day one.</p>
+          </div>
+          <hr class="ob-detail-divider">
+          <div class="ob-detail-section">
+            <span class="ob-detail-section-label">What you get</span>
+            <ul class="ob-detail-list">
+              <li>Google Business profile optimisation</li>
+              <li>Local citation setup and consistency</li>
+              <li>Address and NAP schema markup</li>
+              <li>Verification support and access handoff</li>
+            </ul>
+          </div>
+        </div>
+      </template>
+
+      {{-- Google Ads Setup --}}
+      <template x-if="obDetailId === 'google_ads'">
+        <div>
+          <span class="ob-detail-eyebrow">Enhancement — One-time</span>
+          <div class="ob-detail-title">Google Ads Setup</div>
+          <div class="ob-detail-price-badge">From $299</div>
+          <div class="ob-detail-section">
+            <span class="ob-detail-section-label">Outcome</span>
+            <p class="ob-detail-body">Creates immediate paid coverage while your organic position builds.</p>
+          </div>
+          <div class="ob-detail-section" style="margin-top:10px">
+            <span class="ob-detail-section-label">Why it matters</span>
+            <p class="ob-detail-body">Organic signal compounds over time. Paid fills the gap — and continues to run alongside it once organic holds.</p>
+          </div>
+          <div class="ob-detail-section" style="margin-top:10px">
+            <span class="ob-detail-section-label">Who it is for</span>
+            <p class="ob-detail-body">Appropriate for operators in competitive markets, or those who want dual-channel coverage from activation.</p>
+          </div>
+          <hr class="ob-detail-divider">
+          <div class="ob-detail-section">
+            <span class="ob-detail-section-label">What you get</span>
+            <ul class="ob-detail-list">
+              <li>Campaign structure and ad copy built to your market</li>
+              <li>Audience and keyword targeting</li>
+              <li>Conversion tracking setup</li>
+              <li>Monthly campaign brief</li>
+            </ul>
+          </div>
+        </div>
+      </template>
+
+      {{-- Monthly Reporting --}}
+      <template x-if="obDetailId === 'reporting'">
+        <div>
+          <span class="ob-detail-eyebrow">Enhancement — Monthly</span>
+          <div class="ob-detail-title">Monthly Reporting</div>
+          <div class="ob-detail-price-badge">$99 / month</div>
+          <div class="ob-detail-section">
+            <span class="ob-detail-section-label">Outcome</span>
+            <p class="ob-detail-body">Delivers a clear performance view without requiring you to manage dashboards.</p>
+          </div>
+          <div class="ob-detail-section" style="margin-top:10px">
+            <span class="ob-detail-section-label">Why it matters</span>
+            <p class="ob-detail-body">System output compounds quietly. Without regular visibility, decisions are made without signal.</p>
+          </div>
+          <div class="ob-detail-section" style="margin-top:10px">
+            <span class="ob-detail-section-label">Who it is for</span>
+            <p class="ob-detail-body">Suited to operators who need a reliable performance record — or who report results to stakeholders.</p>
+          </div>
+          <hr class="ob-detail-divider">
+          <div class="ob-detail-section">
+            <span class="ob-detail-section-label">What you get</span>
+            <ul class="ob-detail-list">
+              <li>Branded PDF or online report</li>
+              <li>Rankings and keyword movement</li>
+              <li>Traffic and visibility overview</li>
+              <li>Territory position progress</li>
+            </ul>
+          </div>
+        </div>
+      </template>
+
+      {{-- Territory Intelligence --}}
+      <template x-if="obDetailId === 'territory'">
+        <div>
+          <span class="ob-detail-eyebrow">Enhancement — One-time</span>
+          <div class="ob-detail-title">Territory Intelligence</div>
+          <div class="ob-detail-price-badge">$149</div>
+          <div class="ob-detail-section">
+            <span class="ob-detail-section-label">Outcome</span>
+            <p class="ob-detail-body">Calibrates your system to the actual competitive structure of your market.</p>
+          </div>
+          <div class="ob-detail-section" style="margin-top:10px">
+            <span class="ob-detail-section-label">Why it matters</span>
+            <p class="ob-detail-body">Without competitive mapping, your positioning is generic — not strategic. Your system targets gaps, not assumptions.</p>
+          </div>
+          <div class="ob-detail-section" style="margin-top:10px">
+            <span class="ob-detail-section-label">Who it is for</span>
+            <p class="ob-detail-body">Appropriate for operators entering a contested market who want a calibrated starting position.</p>
+          </div>
+          <hr class="ob-detail-divider">
+          <div class="ob-detail-section">
+            <span class="ob-detail-section-label">What you get</span>
+            <ul class="ob-detail-list">
+              <li>Top 5 competitor territorial coverage map</li>
+              <li>Link and authority gap analysis</li>
+              <li>Keyword displacement opportunities</li>
+              <li>Market positioning brief</li>
+            </ul>
+          </div>
+        </div>
+      </template>
+
+      {{-- Full-Service Marketing Support --}}
+      <template x-if="obDetailId === 'full_service'">
+        <div>
+          <span class="ob-detail-eyebrow">Enhancement — Custom</span>
+          <div class="ob-detail-title">Full-Service Marketing Support</div>
+          <div class="ob-detail-price-badge">Custom pricing</div>
+          <div class="ob-detail-section">
+            <span class="ob-detail-section-label">Outcome</span>
+            <p class="ob-detail-body">Extends your infrastructure beyond organic search into a fully managed growth system.</p>
+          </div>
+          <div class="ob-detail-section" style="margin-top:10px">
+            <span class="ob-detail-section-label">Why it matters</span>
+            <p class="ob-detail-body">As the system scales, operational demand grows. Full-service support absorbs that complexity under a single point of accountability.</p>
+          </div>
+          <div class="ob-detail-section" style="margin-top:10px">
+            <span class="ob-detail-section-label">Who it is for</span>
+            <p class="ob-detail-body">Designed for operators who want a single point of accountability across all marketing infrastructure.</p>
+          </div>
+          <hr class="ob-detail-divider">
+          <div class="ob-detail-section">
+            <span class="ob-detail-section-label">What you get</span>
+            <ul class="ob-detail-list">
+              <li>Website updates and maintenance</li>
+              <li>Design and branding assets</li>
+              <li>Campaign planning and execution</li>
+              <li>Marketing systems and automation</li>
+            </ul>
+          </div>
+        </div>
+      </template>
+
+      {{-- R&D Detail Panel --}}
+      <template x-if="obDetailId === 'rd'">
+        <div>
+          <span class="ob-detail-eyebrow">Additional Opportunity — Optional</span>
+          <div class="ob-detail-title">Federal Research Credit (Form 6765)</div>
+          <div class="ob-detail-section" style="margin-top:8px">
+            <span class="ob-detail-section-label">Context</span>
+            <p class="ob-detail-body">The federal research credit (IRC Section 41) allows qualifying businesses to offset costs related to qualified research activities. Some operators with technical development, systems implementation, or infrastructure work review whether their activities may qualify.</p>
+            <p class="ob-detail-body" style="margin-top:10px">Eligibility depends on how activities are structured, documented, and categorised. A qualified CPA or tax advisor can review your specific situation.</p>
+          </div>
+          <hr class="ob-detail-divider">
+          <div class="ob-detail-section">
+            <span class="ob-detail-section-label">IRS Resources</span>
+            <div class="ob-detail-rd-links">
+              <a href="https://www.irs.gov/pub/irs-pdf/f6765.pdf" target="_blank" rel="noopener noreferrer" class="ob-detail-rd-link">
+                <svg width="13" height="13" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" aria-hidden="true"><path d="M2 13h10M7 2v8M4 7l3 4 3-4"/></svg>
+                Form 6765 &mdash; Credit for Increasing Research Activities
+              </a>
+              <a href="https://www.irs.gov/instructions/i6765" target="_blank" rel="noopener noreferrer" class="ob-detail-rd-link">
+                <svg width="13" height="13" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" aria-hidden="true"><rect x="2" y="1" width="10" height="12" rx="1.5"/><line x1="4.5" y1="5" x2="9.5" y2="5"/><line x1="4.5" y1="8" x2="9.5" y2="8"/><line x1="4.5" y1="11" x2="7" y2="11"/></svg>
+                IRS Instructions for Form 6765
+              </a>
+              <a href="/rd-tax-credit" class="ob-detail-rd-link">
+                <svg width="13" height="13" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" aria-hidden="true"><circle cx="7" cy="7" r="5"/><line x1="7" y1="5" x2="7" y2="7.5"/><circle cx="7" cy="9.5" r=".4" fill="currentColor" stroke="none"/></svg>
+                R&amp;D overview — seoaico.com
+              </a>
+            </div>
+          </div>
+          <hr class="ob-detail-divider">
+          <p style="font-size:.76rem;color:rgba(168,168,160,.4);line-height:1.7;margin-bottom:8px">Formal eligibility is determined through independent review based on IRS filing criteria.</p>
+          <p style="font-size:.74rem;color:rgba(168,168,160,.44);line-height:1.75;font-style:italic">SEO AI Co™ does not determine eligibility and does not provide tax, legal, or accounting advice. Review with a qualified CPA or tax advisor.</p>
+        </div>
+      </template>
+
+    </div>
+  </div>
+
 </div>
 
 <script>
@@ -1462,6 +1842,23 @@ document.addEventListener('alpine:init', () => {
 
     onAccessChange(value) {
       this.accessMethod = value;
+    },
+
+    // Enhancement detail panel
+    obDetailOpen: false,
+    obDetailId: null,
+    rdExpanded: false,
+
+    openAddonDetail(id) {
+      this.obDetailId = id;
+      this.obDetailOpen = true;
+      document.body.style.overflow = 'hidden';
+    },
+
+    closeAddonDetail() {
+      this.obDetailOpen = false;
+      setTimeout(() => { this.obDetailId = null; }, 350);
+      document.body.style.overflow = '';
     },
   }));
 });
