@@ -1546,23 +1546,21 @@ body {
           <span x-text="rdExpanded ? 'Collapse details' : 'Learn more →'"></span>
         </button>
 
-        <a href="/rd-tax-credit" class="ob-rd-cta-link">Request CPA R&amp;D Review &rarr;</a>
-        <p style="font-size:.70rem;letter-spacing:.04em;color:rgba(200,168,75,.82);margin-top:6px">Complimentary review available for qualified operators.</p>
-
         <label class="ob-rd-referral" style="margin-top:18px">
           <input type="checkbox" name="rd_referral_interest" value="1"
                  {{ old('rd_referral_interest') ? 'checked' : '' }}>
-          <span>I&rsquo;d like a referral for further review</span>
+          <span>Include CPA R&amp;D review referral with my intake</span>
         </label>
+        <p style="font-size:.70rem;letter-spacing:.04em;color:rgba(200,168,75,.82);margin-top:6px">Complimentary review available for qualified operators.</p>
         <p class="ob-rd-disclaimer">This information is provided for general awareness only and does not constitute tax, legal, or accounting advice.</p>
       </div>
 
       {{-- ── Submit ── --}}
       <p class="ob-activation-note">
-        <em>Access enables activation.</em> This is not a purchase decision — it is a position decision.
+        <em>Access is reviewed before activation.</em> This is a position decision.
       </p>
-      <p class="ob-activation-note" style="margin-top:8px">This is not a short-term deployment. The system compounds over time.</p>
-      <p style="font-size:.80rem;color:rgba(168,168,160,.72);text-align:center;margin:16px 0 0;letter-spacing:.03em">Certain system builds may be eligible for independent research credit review.</p>
+      <p class="ob-activation-note" style="margin-top:8px">This system is built to compound over time.</p>
+      <p style="font-size:.80rem;color:rgba(168,168,160,.72);text-align:center;margin:16px 0 0;letter-spacing:.03em">If relevant, CPA review can be included with your intake.</p>
 
       <div class="ob-nav" style="margin-top:24px">
         <button type="submit" class="ob-submit" id="submit-btn">
