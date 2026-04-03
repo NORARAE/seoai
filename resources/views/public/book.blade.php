@@ -42,10 +42,23 @@ body{background:var(--bg);color:var(--ivory);font-family:'DM Sans',sans-serif;fo
 .bk-wrap{max-width:760px;margin:0 auto;padding:0 32px}
 
 /* ── Hero ── */
-.bk-hero{padding:var(--section-gap) 0 80px;text-align:center}
-.bk-hero h1{font-family:'Cormorant Garamond',serif;font-size:clamp(2rem,5vw,3.2rem);font-weight:400;line-height:1.2;letter-spacing:-.01em;margin-bottom:24px}
+.bk-hero{padding:var(--section-gap) 0 80px;text-align:center;position:relative}
+.bk-hero h1{font-family:'Cormorant Garamond',serif;font-size:clamp(2rem,5vw,3.2rem);font-weight:400;line-height:1.2;letter-spacing:-.01em;margin-bottom:16px}
 .bk-hero h1 em{font-style:italic;color:var(--gold)}
 .bk-hero .hero-sub{font-size:1rem;color:var(--muted);max-width:520px;margin:0 auto 40px;line-height:1.9}
+/* ── Signal map background ── */
+.bk-signal-bg{position:absolute;inset:0;pointer-events:none;z-index:-1;width:100%;height:100%;overflow:visible}
+/* ── Signal copy + supporting line ── */
+.bk-signal-copy{font-family:'Cormorant Garamond',serif;font-size:clamp(.95rem,2vw,1.15rem);font-style:italic;color:var(--gold);opacity:.6;margin:0 0 28px;letter-spacing:.01em;font-weight:300}
+.bk-supporting-line{font-size:.83rem;color:rgba(168,168,160,.55);font-style:italic;margin:-12px auto 32px;max-width:480px;line-height:1.7}
+/* ── Platform trust row ── */
+.bk-trust-row{display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:10px 22px;margin-top:22px;opacity:.38}
+.bk-trust-item{display:inline-flex;align-items:center;gap:5px;font-size:.57rem;letter-spacing:.11em;text-transform:uppercase;color:var(--gold);font-weight:400;line-height:1}
+.bk-trust-item svg{flex-shrink:0;color:inherit}
+.bk-trust-dot{color:var(--gold);font-size:.5rem;opacity:.4;line-height:1;align-self:center}
+/* ── Internal how-link ── */
+.bk-how-link{display:inline-block;margin-top:18px;font-size:.72rem;letter-spacing:.1em;color:rgba(168,168,160,.45);text-decoration:none;transition:color .2s;text-transform:uppercase}
+.bk-how-link:hover{color:var(--gold)}
 .bk-notice{background:#1a0a0a;border:1px solid rgba(200,80,80,.35);border-radius:8px;padding:14px 20px;margin-bottom:40px;font-size:.85rem;color:#f0a0a0;text-align:center}
 .bk-cta-btn{display:inline-flex;align-items:center;gap:10px;background:var(--gold);color:#080808;font-family:'DM Sans',sans-serif;font-size:.88rem;font-weight:500;letter-spacing:.08em;text-transform:uppercase;text-decoration:none;padding:17px 44px;border-radius:4px;border:none;cursor:pointer;transition:background .2s,transform .15s}
 .bk-cta-btn:hover{background:var(--gold-lt);transform:translateY(-1px)}
@@ -60,11 +73,11 @@ body{background:var(--bg);color:var(--ivory);font-family:'DM Sans',sans-serif;fo
 .bk-happens li{display:flex;align-items:flex-start;gap:14px;font-size:.93rem;color:var(--ivory);line-height:1.7}
 .bk-happens li::before{content:'·';color:var(--gold);flex-shrink:0;font-size:1.6rem;line-height:1.1}
 
-/* ── Authority ── */
-.bk-authority{padding:40px 0 64px;border-top:1px solid var(--border);text-align:center}
-.bk-authority .auth-brand{font-family:'Cormorant Garamond',serif;font-size:clamp(1.3rem,3vw,1.8rem);font-weight:400;color:var(--ivory);line-height:1.3;margin-bottom:10px}
-.bk-authority .auth-brand em{font-style:italic;color:var(--gold)}
-.bk-authority .auth-sub{font-size:.78rem;letter-spacing:.14em;text-transform:uppercase;color:var(--gold);margin-bottom:18px;font-weight:400}
+/* ── Authority (signature mark) ── */
+.bk-authority{padding:18px 0 30px;border-top:1px solid rgba(26,26,26,.7);text-align:center}
+.bk-authority .auth-brand{font-family:'Cormorant Garamond',serif;font-size:.9rem;font-weight:300;color:rgba(237,232,222,.45);line-height:1.4;letter-spacing:.04em}
+.bk-authority .auth-brand em{font-style:italic;color:rgba(200,168,75,.5)}
+.bk-authority .auth-sub{font-size:.56rem;letter-spacing:.18em;text-transform:uppercase;color:rgba(200,168,75,.35);margin-bottom:4px;font-weight:400;display:block}
 .bk-authority .auth-body{font-size:.9rem;color:var(--muted);max-width:460px;margin:0 auto;line-height:1.85}
 
 /* ── Footer ── */
@@ -78,6 +91,7 @@ body{background:var(--bg);color:var(--ivory);font-family:'DM Sans',sans-serif;fo
 .bk-entry-intro .bk-section-label{margin-bottom:14px}
 .bk-entry-intro h2{font-family:'Cormorant Garamond',serif;font-size:clamp(1.5rem,3.5vw,2rem);font-weight:400;line-height:1.3;margin-bottom:18px}
 .bk-entry-intro p{font-size:.9rem;color:var(--muted);line-height:1.9;max-width:500px;margin:0 auto}
+.bk-entry-intro .bk-entry-system-note{font-size:.72rem;color:#4a4a42;margin-top:10px;letter-spacing:.02em;line-height:1.6}
 
 @media(max-width:600px){
   .bk-nav{padding:20px 24px}
@@ -103,11 +117,75 @@ body{background:var(--bg);color:var(--ivory);font-family:'DM Sans',sans-serif;fo
 
       {{-- Hero --}}
       <section class="bk-hero">
-        <h1>This is a <em>market opportunity session.</em></h1>
-        <p class="hero-sub">We help you see what&rsquo;s actually happening in your market &mdash; where you&rsquo;re losing visibility, where competitors are winning, and where real opportunity exists.</p>
-        <p class="hero-sub" style="margin-top:-18px">Most businesses are stuck cycling through agencies without ever fixing the core problem.</p>
-        <p class="hero-sub" style="margin-top:-18px;font-weight:400;color:var(--ivory)">This is where that stops.</p>
-        <p class="hero-sub" style="margin-top:4px;font-size:.88rem;font-style:italic">Most businesses don&rsquo;t need another agency. They need clarity on what&rsquo;s actually happening.</p>
+        {{-- Signal-map constellation — expanded, SMIL animated --}}
+        <svg class="bk-signal-bg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 360" width="100%" height="100%" fill="none" aria-hidden="true" focusable="false" preserveAspectRatio="xMidYMid slice">
+          <defs>
+            <radialGradient id="sg" cx="50%" cy="42%" r="58%">
+              <stop offset="0%" stop-color="#c8a84b" stop-opacity=".08"/>
+              <stop offset="100%" stop-color="#c8a84b" stop-opacity="0"/>
+            </radialGradient>
+          </defs>
+          <ellipse cx="380" cy="148" rx="360" ry="200" fill="url(#sg)"/>
+          <!-- orbit rings -->
+          <circle cx="380" cy="148" r="80" stroke="#c8a84b" stroke-width=".5" stroke-opacity=".07" fill="none"/>
+          <circle cx="380" cy="148" r="148" stroke="#c8a84b" stroke-width=".4" stroke-opacity=".05" fill="none"/>
+          <circle cx="380" cy="148" r="225" stroke="#c8a84b" stroke-width=".35" stroke-opacity=".035" fill="none"/>
+          <circle cx="380" cy="148" r="320" stroke="#c8a84b" stroke-width=".25" stroke-opacity=".02" fill="none"/>
+          <!-- primary lines: center to satellites -->
+          <line x1="380" y1="148" x2="308" y2="84" stroke="#c8a84b" stroke-width=".9" stroke-opacity=".10"><animate attributeName="stroke-opacity" values=".10;.20;.10" dur="7s" repeatCount="indefinite"/></line>
+          <line x1="380" y1="148" x2="456" y2="90" stroke="#c8a84b" stroke-width=".9" stroke-opacity=".10"><animate attributeName="stroke-opacity" values=".10;.18;.10" dur="9s" begin="1s" repeatCount="indefinite"/></line>
+          <line x1="380" y1="148" x2="286" y2="172" stroke="#c8a84b" stroke-width=".8" stroke-opacity=".09"><animate attributeName="stroke-opacity" values=".09;.17;.09" dur="11s" begin="2s" repeatCount="indefinite"/></line>
+          <line x1="380" y1="148" x2="480" y2="175" stroke="#c8a84b" stroke-width=".8" stroke-opacity=".09"><animate attributeName="stroke-opacity" values=".09;.16;.09" dur="8s" begin="3.5s" repeatCount="indefinite"/></line>
+          <line x1="380" y1="148" x2="340" y2="228" stroke="#c8a84b" stroke-width=".7" stroke-opacity=".08"><animate attributeName="stroke-opacity" values=".08;.15;.08" dur="10s" begin="1.5s" repeatCount="indefinite"/></line>
+          <line x1="380" y1="148" x2="432" y2="52" stroke="#c8a84b" stroke-width=".7" stroke-opacity=".08"><animate attributeName="stroke-opacity" values=".08;.14;.08" dur="13s" begin="0.5s" repeatCount="indefinite"/></line>
+          <line x1="380" y1="148" x2="248" y2="110" stroke="#c8a84b" stroke-width=".65" stroke-opacity=".07"><animate attributeName="stroke-opacity" values=".07;.13;.07" dur="12s" begin="4s" repeatCount="indefinite"/></line>
+          <line x1="380" y1="148" x2="528" y2="136" stroke="#c8a84b" stroke-width=".65" stroke-opacity=".07"><animate attributeName="stroke-opacity" values=".07;.12;.07" dur="9.5s" begin="2.5s" repeatCount="indefinite"/></line>
+          <!-- outer reach lines -->
+          <line x1="380" y1="148" x2="152" y2="104" stroke="#c8a84b" stroke-width=".5" stroke-opacity=".05"><animate attributeName="stroke-opacity" values=".05;.10;.05" dur="14s" begin="3s" repeatCount="indefinite"/></line>
+          <line x1="380" y1="148" x2="614" y2="108" stroke="#c8a84b" stroke-width=".5" stroke-opacity=".05"><animate attributeName="stroke-opacity" values=".05;.09;.05" dur="16s" begin="5s" repeatCount="indefinite"/></line>
+          <line x1="380" y1="148" x2="562" y2="278" stroke="#c8a84b" stroke-width=".4" stroke-opacity=".04"><animate attributeName="stroke-opacity" values=".04;.08;.04" dur="15s" begin="6s" repeatCount="indefinite"/></line>
+          <line x1="380" y1="148" x2="196" y2="262" stroke="#c8a84b" stroke-width=".4" stroke-opacity=".04"><animate attributeName="stroke-opacity" values=".04;.08;.04" dur="18s" begin="7s" repeatCount="indefinite"/></line>
+          <line x1="380" y1="148" x2="68" y2="195" stroke="#c8a84b" stroke-width=".3" stroke-opacity=".03"/>
+          <line x1="380" y1="148" x2="694" y2="200" stroke="#c8a84b" stroke-width=".3" stroke-opacity=".03"/>
+          <!-- web connections -->
+          <line x1="308" y1="84" x2="456" y2="90" stroke="#c8a84b" stroke-width=".5" stroke-opacity=".06"/>
+          <line x1="286" y1="172" x2="340" y2="228" stroke="#c8a84b" stroke-width=".5" stroke-opacity=".05"/>
+          <line x1="456" y1="90" x2="480" y2="175" stroke="#c8a84b" stroke-width=".45" stroke-opacity=".05"/>
+          <line x1="248" y1="110" x2="286" y2="172" stroke="#c8a84b" stroke-width=".45" stroke-opacity=".045"/>
+          <line x1="528" y1="136" x2="480" y2="175" stroke="#c8a84b" stroke-width=".45" stroke-opacity=".045"/>
+          <line x1="432" y1="52" x2="528" y2="136" stroke="#c8a84b" stroke-width=".35" stroke-opacity=".04"/>
+          <line x1="152" y1="104" x2="248" y2="110" stroke="#c8a84b" stroke-width=".35" stroke-opacity=".035"/>
+          <line x1="614" y1="108" x2="528" y2="136" stroke="#c8a84b" stroke-width=".35" stroke-opacity=".035"/>
+          <line x1="562" y1="278" x2="480" y2="175" stroke="#c8a84b" stroke-width=".3" stroke-opacity=".03"/>
+          <line x1="196" y1="262" x2="286" y2="172" stroke="#c8a84b" stroke-width=".3" stroke-opacity=".03"/>
+          <!-- center node (primary pulse + halo) -->
+          <circle cx="380" cy="148" r="12" fill="none" stroke="#c8a84b" stroke-width=".5" stroke-opacity="0"><animate attributeName="r" values="5;20;5" dur="4s" repeatCount="indefinite"/><animate attributeName="stroke-opacity" values=".22;0;.22" dur="4s" repeatCount="indefinite"/></circle>
+          <circle cx="380" cy="148" r="3.5" fill="#c8a84b" fill-opacity=".32"><animate attributeName="fill-opacity" values=".32;.62;.32" dur="4s" repeatCount="indefinite"/><animate attributeName="r" values="3.5;5.2;3.5" dur="4s" repeatCount="indefinite"/></circle>
+          <!-- primary satellites -->
+          <circle cx="308" cy="84" r="2.5" fill="#c8a84b" fill-opacity=".20"><animate attributeName="fill-opacity" values=".20;.38;.20" dur="6s" begin="0.8s" repeatCount="indefinite"/></circle>
+          <circle cx="456" cy="90" r="2.2" fill="#c8a84b" fill-opacity=".18"><animate attributeName="fill-opacity" values=".18;.35;.18" dur="7s" begin="1.6s" repeatCount="indefinite"/></circle>
+          <circle cx="286" cy="172" r="2" fill="#c8a84b" fill-opacity=".16"><animate attributeName="fill-opacity" values=".16;.30;.16" dur="8s" begin="2.4s" repeatCount="indefinite"/></circle>
+          <circle cx="480" cy="175" r="2" fill="#c8a84b" fill-opacity=".16"><animate attributeName="fill-opacity" values=".16;.28;.16" dur="9s" begin="3.2s" repeatCount="indefinite"/></circle>
+          <circle cx="340" cy="228" r="1.8" fill="#c8a84b" fill-opacity=".14"><animate attributeName="fill-opacity" values=".14;.26;.14" dur="10s" begin="1s" repeatCount="indefinite"/></circle>
+          <circle cx="432" cy="52" r="1.8" fill="#c8a84b" fill-opacity=".14"><animate attributeName="fill-opacity" values=".14;.25;.14" dur="11s" begin="4s" repeatCount="indefinite"/></circle>
+          <circle cx="248" cy="110" r="1.6" fill="#c8a84b" fill-opacity=".12"><animate attributeName="fill-opacity" values=".12;.22;.12" dur="9s" begin="5s" repeatCount="indefinite"/></circle>
+          <circle cx="528" cy="136" r="1.6" fill="#c8a84b" fill-opacity=".12"><animate attributeName="fill-opacity" values=".12;.20;.12" dur="12s" begin="2s" repeatCount="indefinite"/></circle>
+          <!-- outer / edge nodes -->
+          <circle cx="556" cy="165" r="1.2" fill="#c8a84b" fill-opacity=".08"><animate attributeName="fill-opacity" values=".08;.16;.08" dur="13s" begin="6s" repeatCount="indefinite"/></circle>
+          <circle cx="384" cy="36" r="1.2" fill="#c8a84b" fill-opacity=".07"><animate attributeName="fill-opacity" values=".07;.14;.07" dur="14s" begin="3s" repeatCount="indefinite"/></circle>
+          <circle cx="212" cy="130" r="1.1" fill="#c8a84b" fill-opacity=".07"><animate attributeName="fill-opacity" values=".07;.13;.07" dur="11s" begin="7s" repeatCount="indefinite"/></circle>
+          <circle cx="152" cy="104" r="1.3" fill="#c8a84b" fill-opacity=".07"><animate attributeName="fill-opacity" values=".07;.14;.07" dur="15s" begin="4s" repeatCount="indefinite"/></circle>
+          <circle cx="614" cy="108" r="1.3" fill="#c8a84b" fill-opacity=".07"><animate attributeName="fill-opacity" values=".07;.13;.07" dur="16s" begin="8s" repeatCount="indefinite"/></circle>
+          <circle cx="562" cy="278" r="1.1" fill="#c8a84b" fill-opacity=".05"><animate attributeName="fill-opacity" values=".05;.10;.05" dur="17s" begin="2s" repeatCount="indefinite"/></circle>
+          <circle cx="196" cy="262" r="1.1" fill="#c8a84b" fill-opacity=".05"><animate attributeName="fill-opacity" values=".05;.09;.05" dur="18s" begin="9s" repeatCount="indefinite"/></circle>
+          <circle cx="68" cy="195" r="1" fill="#c8a84b" fill-opacity=".04"/>
+          <circle cx="694" cy="200" r="1" fill="#c8a84b" fill-opacity=".04"/>
+          <circle cx="318" cy="316" r="1" fill="#c8a84b" fill-opacity=".03"/>
+          <circle cx="462" cy="310" r="1" fill="#c8a84b" fill-opacity=".03"/>
+        </svg>
+        <h1>See exactly where your market stands.</h1>
+        <p class="hero-sub">A focused consultation that shows you what&rsquo;s happening &mdash; and what to do next.</p>
+        <p class="bk-supporting-line" style="margin:0 auto 32px">No guesswork. No recycled strategy. Just clarity based on real signals.</p>
 
         @if(request('payment') === 'cancelled')
         <div class="bk-notice">
@@ -116,30 +194,36 @@ body{background:var(--bg);color:var(--ivory);font-family:'DM Sans',sans-serif;fo
         @endif
 
         <button class="bk-cta-btn" onclick="openSession()">Reserve Your Market Opportunity Session &rarr;</button>
-        <p class="bk-cta-note">Available to service-based businesses in select markets.</p>
+        <p class="bk-cta-note">Qualified operators in active markets only.</p>
+        <div class="bk-trust-row" aria-label="Platform integrations">
+          <span class="bk-trust-item">
+            <svg width="12" height="12" viewBox="0 0 14 14" fill="currentColor" aria-hidden="true"><rect x="1" y="8" width="3" height="5"/><rect x="5.5" y="5" width="3" height="8"/><rect x="10" y="2" width="3" height="11"/></svg>
+            Google Analytics
+          </span>
+          <span class="bk-trust-dot">&middot;</span>
+          <span class="bk-trust-item">
+            <svg width="12" height="12" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" aria-hidden="true"><circle cx="6.5" cy="6.5" r="4.5"/><line x1="9.7" y1="9.7" x2="13" y2="13"/></svg>
+            Search Console
+          </span>
+          <span class="bk-trust-dot">&middot;</span>
+          <span class="bk-trust-item">
+            <svg width="12" height="12" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 1a4.5 4.5 0 0 0-4.5 4.5C2.5 8.8 7 13 7 13s4.5-4.2 4.5-7.5A4.5 4.5 0 0 0 7 1z"/><circle cx="7" cy="5.5" r="1.5"/></svg>
+            Google Business
+          </span>
+          <span class="bk-trust-dot">&middot;</span>
+          <span class="bk-trust-item">
+            <svg width="12" height="12" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" aria-hidden="true"><circle cx="7" cy="7" r="1.2" fill="currentColor" stroke="none"/><path d="M4.5 9.5a3.5 3.5 0 0 1 0-5"/><path d="M9.5 9.5a3.5 3.5 0 0 0 0-5"/></svg>
+            Bing
+          </span>
+        </div>
       </section>
 
-      <hr class="bk-divider">
-
-      {{-- What Happens --}}
-      <div class="bk-happens">
-        <p class="bk-section-label">What happens on this call</p>
-        <ul>
-          <li>We map your local market</li>
-          <li>We identify missed visibility opportunities</li>
-          <li>We assess your current position vs competitors</li>
-          <li>We tell you if scaling makes sense &mdash; or not</li>
-        </ul>
-      </div>
-
-      <hr class="bk-divider">
 
       {{-- Authority --}}
       <div class="bk-authority">
         <p class="auth-sub">Powered by</p>
         <p class="auth-brand"><em>SEO AI Co™</em></p>
-        <p class="auth-sub" style="margin-bottom:14px">Programmatic AI SEO Systems</p>
-        <p class="auth-body">Built to strengthen every signal that drives<br>local visibility and market dominance.</p>
+        <p class="auth-sub" style="margin-bottom:0">Programmatic AI SEO Systems</p>
       </div>
 
     </div>
@@ -148,8 +232,8 @@ body{background:var(--bg);color:var(--ivory);font-family:'DM Sans',sans-serif;fo
     <section id="book-now">
       <div class="bk-entry-intro">
         <p class="bk-section-label">Reserve Your Session</p>
-        <h2>Choose where you want to start.</h2>
-        <p>One conversation. A direct answer about your market.</p>
+        <h2>Choose how you want to approach your market.</h2>
+        <p class="bk-entry-system-note">Each session is a structured entry point &mdash; part of a system, not a standalone service.</p>
       </div>
       @include('components.booking-modal', ['disableOverlayDismiss' => true, 'panelMode' => true])
     </section>

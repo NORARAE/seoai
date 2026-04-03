@@ -24,8 +24,8 @@
 
 /* Step 1 — Consult type cards */
 .bk-types{display:grid;gap:12px}
-.bk-type{background:#0b0b0b;border:1px solid #1a1a1a;border-radius:8px;padding:18px 20px;cursor:pointer;transition:border-color .25s,background .25s;display:flex;justify-content:space-between;align-items:flex-start;position:relative}
-.bk-type:hover{border-color:#2a2a2a;background:#0e0e0e}
+.bk-type{background:#0b0b0b;border:1px solid #1a1a1a;border-radius:8px;padding:18px 20px;cursor:pointer;transition:border-color .25s,background .25s,transform .2s,box-shadow .2s;display:flex;justify-content:space-between;align-items:flex-start;position:relative}
+.bk-type:hover{border-color:#2a2a2a;background:#0e0e0e;transform:translateY(-1px);box-shadow:0 4px 14px rgba(0,0,0,.2)}
 .bk-type.selected{border-color:var(--gold,#c8a84b);background:rgba(200,168,75,.04)}
 /* Secondary (free) — visually de-emphasised */
 .bk-type.secondary{opacity:.7}
@@ -33,8 +33,12 @@
 .bk-type.secondary.selected{opacity:1;border-color:var(--gold,#c8a84b);background:rgba(200,168,75,.04)}
 /* Featured (audit) — gold accent */
 .bk-type.featured{border-color:rgba(200,168,75,.30);background:rgba(200,168,75,.03);box-shadow:inset 3px 0 0 rgba(200,168,75,.45)}
-.bk-type.featured:hover{border-color:rgba(200,168,75,.55);background:rgba(200,168,75,.06);box-shadow:inset 3px 0 0 rgba(200,168,75,.65)}
+.bk-type.featured:hover{border-color:rgba(200,168,75,.55);background:rgba(200,168,75,.06);box-shadow:inset 3px 0 0 rgba(200,168,75,.65),0 4px 18px rgba(0,0,0,.25);transform:translateY(-1px)}
 .bk-type.featured.selected{border-color:var(--gold,#c8a84b);background:rgba(200,168,75,.08);box-shadow:inset 3px 0 0 var(--gold,#c8a84b)}
+/* Reserved (partner/agency) — authoritative, restrained */
+.bk-type.reserved{border-color:#1e1e1e;background:#090909}
+.bk-type.reserved:hover{border-color:#2e2e2a;background:#0b0b09;transform:translateY(-1px);box-shadow:0 4px 16px rgba(0,0,0,.3)}
+.bk-type.reserved.selected{border-color:var(--gold,#c8a84b);background:rgba(200,168,75,.04)}
 .bk-type-badge{display:inline-flex;align-items:center;gap:5px;background:var(--gold,#c8a84b);color:#080808;font-size:.62rem;font-weight:600;letter-spacing:.10em;text-transform:uppercase;padding:3px 8px;border-radius:20px;margin-bottom:6px}
 .bk-type-name{font-size:1rem;color:#ede8de;font-weight:400}
 .bk-type-meta{display:flex;gap:14px;align-items:center;flex-shrink:0;margin-left:12px}
@@ -42,6 +46,8 @@
 .bk-type-price{font-size:.92rem;color:var(--gold,#c8a84b);font-weight:500}
 .bk-type-desc{font-size:.78rem;color:#777;margin-top:4px;line-height:1.55}
 .bk-type-microcopy{font-size:.72rem;color:#a8a8a0;margin-top:5px;font-style:italic}
+.bk-type-qualify{font-size:.70rem;color:#555;margin-top:5px;letter-spacing:.01em;line-height:1.45}
+.bk-avail-note{font-size:.66rem;color:#3a3a35;text-align:center;margin:18px 0 0;letter-spacing:.08em;text-transform:uppercase}
 /* R&D tax microcopy */
 .bk-rd-note{font-size:.70rem;color:#4a4a42;margin-top:20px;line-height:1.6;text-align:center}
 .bk-rd-note a{color:#7a6a3a;text-decoration:none;border-bottom:1px solid #3a3020}
@@ -161,19 +167,18 @@
         @endif
         <div class="bk-types">
           @foreach(($types ?? collect()) as $ct)
-          <div class="bk-type {{ $ct->slug === 'audit' ? 'featured' : ($ct->is_free ? 'secondary' : '') }}"
+          <div class="bk-type {{ $ct->slug === 'audit' ? 'featured' : ($ct->slug === 'agency-review' ? 'reserved' : ($ct->is_free ? 'secondary' : '')) }}"
                :class="{ selected: selectedType === {{ $ct->id }} }"
                @click="selectType({{ $ct->id }}, {{ $ct->duration_minutes }}, {{ json_encode($ct->name) }}, {{ $ct->is_free ? 'true' : 'false' }})">
             <div style="flex:1;min-width:0">
-              @if($ct->slug === 'audit')
-              <div class="bk-type-badge">Recommended</div>
-              @endif
               <div class="bk-type-name">{{ $ct->name }}</div>
               <div class="bk-type-desc">{{ $ct->description }}</div>
-              @if($ct->slug === 'audit')
-              <div class="bk-type-microcopy">This is where we identify real growth opportunity — not just SEO advice. Most clients start here.</div>
-              @elseif($ct->slug === 'discovery')
-              <div class="bk-type-microcopy">Not sure where to start? A short call to see if there&rsquo;s fit before going deeper.</div>
+              @if($ct->slug === 'discovery')
+              <div class="bk-type-qualify">For businesses seeking clarity before committing</div>
+              @elseif($ct->slug === 'audit')
+              <div class="bk-type-qualify">For operators ready to move with direction</div>
+              @elseif($ct->slug === 'agency-review')
+              <div class="bk-type-qualify">For teams prepared to execute at scale</div>
               @endif
             </div>
             <div class="bk-type-meta">
@@ -200,6 +205,9 @@
             <span class="bk-anchor-label-tag">Contact to discuss</span>
           </div>
         </div>
+
+        <p class="bk-avail-note">Limited availability based on active markets</p>
+        <p class="bk-avail-note" style="margin-top:4px">Access is limited per territory.</p>
 
         {{-- R&D tax microcopy --}}
         <p class="bk-rd-note">Development-focused SEO systems may qualify for R&amp;D tax credits.&nbsp; <a href="/rd-tax-credit">Learn more &rarr;</a></p>
