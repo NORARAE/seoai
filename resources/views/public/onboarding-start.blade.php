@@ -1364,7 +1364,7 @@ body {
         <h3 class="ob-rd-hed">Federal Research Credit (Form 6765)</h3>
         <p class="ob-rd-body">Some businesses choose to review IRS Form 6765 and its instructions to understand potential eligibility for the federal research credit.</p>
         <p class="ob-rd-body">In certain cases, activities related to systems development, process improvement, or technical implementation may qualify &mdash; depending on how they are structured and documented.</p>
-        <p class="ob-rd-body">SEO AI Co&trade; does not determine eligibility and does not provide tax, legal, or accounting advice.</p>
+        <p class="ob-rd-body">SEO AI Co™ does not determine eligibility and does not provide tax, legal, or accounting advice.</p>
         <div class="ob-rd-links">
           <a href="https://www.irs.gov/pub/irs-pdf/f6765.pdf" target="_blank" rel="noopener noreferrer" class="ob-rd-link">View Form 6765 &rarr;</a>
           <a href="https://www.irs.gov/instructions/i6765" target="_blank" rel="noopener noreferrer" class="ob-rd-link">View IRS Instructions &rarr;</a>

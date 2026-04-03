@@ -10,6 +10,7 @@
 <meta name="theme-color" content="#080808">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Cancel Booking — SEO AI Co™</title>
+<meta name="robots" content="noindex,nofollow">
 <meta name="csrf-token" content="{{ csrf_token() }}">
 <style>
 *{box-sizing:border-box;margin:0;padding:0}

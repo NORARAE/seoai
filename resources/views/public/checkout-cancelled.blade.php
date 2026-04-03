@@ -10,6 +10,7 @@
 <meta name="theme-color" content="#080808">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <title>Checkout Cancelled — SEO AI Co™</title>
+    <meta name="robots" content="noindex,nofollow">
     <style>
         *{margin:0;padding:0;box-sizing:border-box}
         body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:#080808;color:#ede8de;display:flex;align-items:center;justify-content:center;min-height:100vh;padding:2rem}

@@ -121,14 +121,14 @@ footer{border-top:1px solid var(--border);padding:32px 64px;display:flex;align-i
     <li><strong>Do I need to re-brand anything?</strong> No. The system runs under your agency's domain and brand identity.</li>
     <li><strong>Can I hold multiple client territories?</strong> Yes. Each client gets their own territory lock under the same licensing framework.</li>
     <li><strong>What if I already run SEO services in-house?</strong> The system is additive. It handles programmatic coverage that would otherwise require significant manual effort.</li>
-    <li><strong>Is there a minimum commitment?</strong> We discuss licensing terms during your strategy session — structure varies by scale.</li>
+    <li><strong>Is there a minimum commitment?</strong> We discuss licensing terms during your market session — structure varies by scale.</li>
   </ul>
 
   <div class="page-cta">
     <span class="page-cta-eye">Ready to explore this?</span>
-    <h2>Book a <em>strategy session.</em></h2>
+    <h2>Reserve a <em>market session.</em></h2>
     <p>A 30-minute session to understand your current client base, territories you serve, and how this fits into your agency model.</p>
-    <a href="/book" class="cta-btn">Book a Strategy Session</a>
+    <a href="/book" class="cta-btn">Reserve a Market Session</a>
     <a href="/access" class="cta-ghost">Request access information</a>
   </div>
 </main>

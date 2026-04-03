@@ -41,6 +41,21 @@ class MarketingSitemapController extends Controller
                 'changefreq' => 'weekly',
                 'priority'   => '1.0',
             ];
+            // Static core pages — always included regardless of DB state
+            foreach ([
+                ['path' => '/book',           'changefreq' => 'weekly',  'priority' => '0.9'],
+                ['path' => '/how-it-works',   'changefreq' => 'monthly', 'priority' => '0.8'],
+                ['path' => '/solutions',      'changefreq' => 'monthly', 'priority' => '0.8'],
+                ['path' => '/rd-tax-credit',  'changefreq' => 'monthly', 'priority' => '0.6'],
+                ['path' => '/onboarding/start', 'changefreq' => 'monthly', 'priority' => '0.7'],
+            ] as $static) {
+                $entries[] = [
+                    'loc'        => url($static['path']),
+                    'lastmod'    => now()->toDateString(),
+                    'changefreq' => $static['changefreq'],
+                    'priority'   => $static['priority'],
+                ];
+            }
         }
 
         foreach ($pages as $page) {

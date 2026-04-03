@@ -101,8 +101,8 @@ footer{border-top:1px solid var(--border);padding:32px 64px;display:flex;align-i
   </div>
 
   <div class="page-cta">
-    <p>Not sure which fits? A strategy session will clarify your best path in under 30 minutes.</p>
-    <a href="/book" class="cta-btn">Book a Strategy Session</a>
+    <p>Not sure which fits? A market session will clarify your best path in under 30 minutes.</p>
+    <a href="/book" class="cta-btn">Reserve a Market Session</a>
   </div>
 </main>
 

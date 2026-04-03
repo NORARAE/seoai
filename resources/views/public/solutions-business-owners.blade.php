@@ -137,8 +137,8 @@ footer{border-top:1px solid var(--border);padding:32px 64px;display:flex;align-i
   <div class="page-cta">
     <span class="page-cta-eye">Is your territory still available?</span>
     <h2>Claim it before<br><em>someone else does.</em></h2>
-    <p>A strategy session confirms availability, maps your market, and outlines exactly what we'd build for your territory.</p>
-    <a href="/book" class="cta-btn">Book a Strategy Session</a>
+    <p>A market session confirms availability, maps your territory, and outlines exactly what we'd build for your position.</p>
+    <a href="/book" class="cta-btn">Reserve a Market Session</a>
     <span class="cta-note">One operator per market — select territories only.</span>
   </div>
 </main>

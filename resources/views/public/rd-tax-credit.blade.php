@@ -20,6 +20,7 @@
 <meta name="csrf-token" content="{{ csrf_token() }}">
 <title>R&amp;D Tax Credit — SEO AI Co™</title>
 <meta name="description" content="Some technical activities associated with custom software development, AI systems, and automation may be relevant to federal research credit considerations.">
+<link rel="canonical" href="{{ url('/rd-tax-credit') }}">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
