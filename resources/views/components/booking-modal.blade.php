@@ -240,7 +240,7 @@
         </div>
         <button class="bk-submit" style="margin-top:20px"
                 :disabled="!selectedDate || !selectedTime"
-                @click="step = 3">Continue &rarr;</button>
+                @click="step = 3">Continue</button>
       </div>
 
       {{-- ═══ STEP 3: Your details ═══ --}}
@@ -283,11 +283,8 @@
                  autocomplete="url" maxlength="500" @blur="prefixWebsite()">
         </div>
         <div class="bk-field" style="position:relative">
-          <label for="bk-message" style="display:flex;align-items:center;justify-content:space-between">
-            <span>Message / Goals</span>
-            <button type="button" class="bk-ai-btn" @click="polishMessage()" title="Polish with AI">
-              <span style="font-size:.88rem">✦</span> Polish with AI
-            </button>
+          <label for="bk-message" style="display:block">
+            Message / Goals
           </label>
           <textarea id="bk-message" x-model="form.message" maxlength="1000" spellcheck="true"
                     placeholder="Tell us what you want to improve, where you feel stuck, and what growth would look like for your business."></textarea>
@@ -300,34 +297,34 @@
         </div>
         {{-- Add-ons (paid bookings only) --}}
         <div x-show="!selectedTypeIsFree">
-          <p class="bk-enhance-title">Enhance Your Session <span style="color:#555;font-size:.72rem;letter-spacing:0;text-transform:none">— optional</span></p>
+          <p class="bk-enhance-title">Session Enhancements</p>
           <div class="bk-addon-grid">
             <div class="bk-addon-card" :class="{selected: addOns.includes('seo_audit')}" @click="toggleAddOn('seo_audit')">
               <div class="bk-addon-check" x-text="addOns.includes('seo_audit') ? '✓' : ''"></div>
               <div>
-                <span class="bk-addon-name">SEO Audit <span class="bk-addon-price">+$150</span></span>
-                <div class="bk-addon-desc">Full site audit delivered post-session</div>
+                <span class="bk-addon-name">Technical Visibility Snapshot <span class="bk-addon-price">+$175</span></span>
+                <div class="bk-addon-desc">Full-site crawl and signal analysis delivered within 48 hours of your session</div>
               </div>
             </div>
             <div class="bk-addon-card" :class="{selected: addOns.includes('competitor_analysis')}" @click="toggleAddOn('competitor_analysis')">
               <div class="bk-addon-check" x-text="addOns.includes('competitor_analysis') ? '✓' : ''"></div>
               <div>
-                <span class="bk-addon-name">Competitor Analysis <span class="bk-addon-price">+$100</span></span>
-                <div class="bk-addon-desc">Top 5 competitor gap breakdown</div>
+                <span class="bk-addon-name">Competitive Gap Snapshot <span class="bk-addon-price">+$200</span></span>
+                <div class="bk-addon-desc">Your top five market competitors mapped against your current position</div>
               </div>
             </div>
             <div class="bk-addon-card" :class="{selected: addOns.includes('thirty_day_plan')}" @click="toggleAddOn('thirty_day_plan')">
               <div class="bk-addon-check" x-text="addOns.includes('thirty_day_plan') ? '✓' : ''"></div>
               <div>
-                <span class="bk-addon-name">30-Day SEO Plan <span class="bk-addon-price">+$250</span></span>
-                <div class="bk-addon-desc">Custom roadmap with prioritised actions</div>
+                <span class="bk-addon-name">Priority Action Brief <span class="bk-addon-price">+$250</span></span>
+                <div class="bk-addon-desc">A structured document of your highest-impact actions, ready to deploy</div>
               </div>
             </div>
             <div class="bk-addon-card" :class="{selected: addOns.includes('strategy_followup')}" @click="toggleAddOn('strategy_followup')">
               <div class="bk-addon-check" x-text="addOns.includes('strategy_followup') ? '✓' : ''"></div>
               <div>
-                <span class="bk-addon-name">Strategy Follow-up <span class="bk-addon-price">+$75</span></span>
-                <div class="bk-addon-desc">30-min check-in call 2 weeks after session</div>
+                <span class="bk-addon-name">Executive Follow-Up Session <span class="bk-addon-price">+$150</span></span>
+                <div class="bk-addon-desc">A 30-minute review session two weeks after activation</div>
               </div>
             </div>
           </div>

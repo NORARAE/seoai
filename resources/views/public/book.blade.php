@@ -188,7 +188,7 @@ body{background:var(--bg);color:var(--ivory);font-family:'DM Sans',sans-serif;fo
         <h1>See exactly where your market stands &mdash; and what to do next.</h1>
         <p class="hero-sub">A focused session that reveals your position, your gaps, and your next move.</p>
         <p class="bk-supporting-line" style="margin:0 auto 10px">No guesswork. No recycled strategy. Only real signal.</p>
-        <p class="bk-signal-copy" style="font-size:.78rem;opacity:.45;margin:22px auto 28px">Position is not held by default.</p>
+        <p class="bk-signal-copy" style="font-size:.95rem;opacity:.68;letter-spacing:.03em;margin:28px auto 34px;color:var(--ivory,#ede8de)">Position is not held by default.</p>
 
         @if(request('payment') === 'cancelled')
         <div class="bk-notice">
@@ -198,7 +198,7 @@ body{background:var(--bg);color:var(--ivory);font-family:'DM Sans',sans-serif;fo
 
         <button class="bk-cta-btn" onclick="openSession()">Reserve Your Market Opportunity Session</button>
         <p class="bk-cta-commitment">You&rsquo;ll know exactly where you stand.</p>
-        <p class="bk-cta-note">Qualified operators in active markets only.</p>
+        <p class="bk-cta-note">Reserved for operators in active markets.</p>
         <span class="bk-trust-source">Validated through live search and platform signals</span>
         <div class="bk-trust-row" aria-label="Platform integrations">
           <span class="bk-trust-item">
@@ -220,6 +220,16 @@ body{background:var(--bg);color:var(--ivory);font-family:'DM Sans',sans-serif;fo
             <svg width="12" height="12" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" aria-hidden="true"><circle cx="7" cy="7" r="1.2" fill="currentColor" stroke="none"/><path d="M4.5 9.5a3.5 3.5 0 0 1 0-5"/><path d="M9.5 9.5a3.5 3.5 0 0 0 0-5"/></svg>
             Bing
           </span>
+          <span class="bk-trust-dot">&middot;</span>
+          <span class="bk-trust-item">
+            <svg width="12" height="12" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" aria-hidden="true"><circle cx="7" cy="2.5" r="1.2" fill="currentColor" stroke="none"/><circle cx="2.5" cy="11" r="1.2" fill="currentColor" stroke="none"/><circle cx="11.5" cy="11" r="1.2" fill="currentColor" stroke="none"/><line x1="7" y1="2.5" x2="2.5" y2="11"/><line x1="7" y1="2.5" x2="11.5" y2="11"/><line x1="2.5" y1="11" x2="11.5" y2="11"/></svg>
+            AI Visibility
+          </span>
+          <span class="bk-trust-dot">&middot;</span>
+          <span class="bk-trust-item">
+            <svg width="12" height="12" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" aria-hidden="true"><line x1="2" y1="4" x2="12" y2="4"/><line x1="2" y1="7" x2="9" y2="7"/><line x1="2" y1="10" x2="11" y2="10"/><circle cx="12" cy="10" r="1.2" fill="currentColor" stroke="none"/></svg>
+            LLM Discovery
+          </span>
         </div>
       </section>
 
@@ -237,8 +247,8 @@ body{background:var(--bg);color:var(--ivory);font-family:'DM Sans',sans-serif;fo
     <section id="book-now">
       <div class="bk-entry-intro">
         <p class="bk-section-label">Reserve Your Session</p>
-        <h2>Select how you want your market position built.</h2>
-        <p class="bk-entry-system-note">Each session is a structured entry point &mdash; part of a system, not a standalone service.</p>
+        <h2>Choose your starting point.</h2>
+        <p class="bk-entry-system-note">Start with clarity, then move with confidence.</p>
       </div>
       @include('components.booking-modal', ['disableOverlayDismiss' => true, 'panelMode' => true])
     </section>
