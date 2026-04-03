@@ -13,7 +13,7 @@
 .bk-overlay.open .bk-box{transform:none}
 .bk-close{position:absolute;top:14px;right:14px;background:rgba(255,255,255,.04);border:1px solid #222;border-radius:50%;width:36px;height:36px;color:#8a8a8a;font-size:1.2rem;cursor:pointer;line-height:1;padding:0;display:flex;align-items:center;justify-content:center;transition:color .2s,background .2s}
 .bk-close:hover{color:#ede8de;background:rgba(255,255,255,.08)}
-.bk-progress{display:flex;gap:8px;margin-bottom:28px}
+.bk-progress{display:flex;gap:8px;margin-bottom:28px;opacity:.5}
 .bk-dot{width:100%;height:3px;border-radius:2px;background:#222;transition:background .3s}
 .bk-dot.active{background:var(--gold,#c8a84b)}
 .bk-dot.done{background:var(--gold-dim,#9a7a30)}
@@ -27,8 +27,8 @@
 .bk-type{background:#0b0b0b;border:1px solid #1a1a1a;border-radius:8px;padding:18px 20px;cursor:pointer;transition:border-color .25s,background .25s,transform .2s,box-shadow .2s;display:flex;justify-content:space-between;align-items:flex-start;position:relative}
 .bk-type:hover{border-color:#2a2a2a;background:#0e0e0e;transform:translateY(-1px);box-shadow:0 4px 14px rgba(0,0,0,.2)}
 .bk-type.selected{border-color:var(--gold,#c8a84b);background:rgba(200,168,75,.04)}
-/* Secondary (free) — visually de-emphasised */
-.bk-type.secondary{opacity:.7}
+/* Secondary (free) — first-step card, readable but de-prioritised vs paid */
+.bk-type.secondary{opacity:.88}
 .bk-type.secondary:hover{opacity:1;border-color:#2a2a2a}
 .bk-type.secondary.selected{opacity:1;border-color:var(--gold,#c8a84b);background:rgba(200,168,75,.04)}
 /* Featured (audit) — gold accent */
@@ -44,9 +44,9 @@
 .bk-type-meta{display:flex;gap:14px;align-items:center;flex-shrink:0;margin-left:12px}
 .bk-type-dur{font-size:.76rem;color:#a8a8a0}
 .bk-type-price{font-size:.92rem;color:var(--gold,#c8a84b);font-weight:500}
-.bk-type-desc{font-size:.78rem;color:#777;margin-top:4px;line-height:1.55}
+.bk-type-desc{font-size:.78rem;color:#9a9a92;margin-top:4px;line-height:1.55}
 .bk-type-microcopy{font-size:.72rem;color:#a8a8a0;margin-top:5px;font-style:italic}
-.bk-type-qualify{font-size:.70rem;color:#555;margin-top:5px;letter-spacing:.01em;line-height:1.45}
+.bk-type-qualify{font-size:.70rem;color:#7a7a72;margin-top:5px;letter-spacing:.01em;line-height:1.45}
 .bk-avail-note{font-size:.66rem;color:#3a3a35;text-align:center;margin:18px 0 0;letter-spacing:.08em;text-transform:uppercase}
 /* R&D tax microcopy */
 .bk-rd-note{font-size:.70rem;color:#4a4a42;margin-top:20px;line-height:1.6;text-align:center}
@@ -132,7 +132,8 @@
   .bk-summary{flex-direction:column;gap:8px}
   .bk-submit{border-radius:12px}
   .bk-datepicker input,.bk-field input[type="date"]{font-size:1rem}
-  .bk-type{padding:16px 16px}
+  .bk-type{padding:16px 16px;border-color:#242424}
+  .bk-type.featured{border-color:rgba(200,168,75,.40)}
 }
 
 /* ── Panel / inline mode (used on /book) ───────────────────── */

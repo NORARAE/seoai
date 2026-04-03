@@ -91,16 +91,22 @@ body{background:var(--bg);color:var(--ivory);font-family:'DM Sans',sans-serif;fo
 /* ── Booking entry section ── */
 #book-now{background:var(--deep);border-top:1px solid var(--border);scroll-margin-top:80px}
 .bk-entry-intro{max-width:640px;margin:0 auto;padding:80px 32px 48px;text-align:center}
-.bk-entry-intro .bk-section-label{margin-bottom:14px}
-.bk-entry-intro h2{font-family:'Cormorant Garamond',serif;font-size:clamp(1.5rem,3.5vw,2rem);font-weight:400;line-height:1.3;margin-bottom:18px}
+.bk-entry-intro .bk-section-label{font-size:.64rem;letter-spacing:.16em;text-transform:uppercase;color:rgba(200,168,75,.55);font-weight:400;margin-bottom:10px;display:block}
+.bk-entry-intro h2{font-family:'Cormorant Garamond',serif;font-size:clamp(1.7rem,4vw,2.3rem);font-weight:400;line-height:1.2;margin-bottom:14px;color:rgba(237,232,222,.95);letter-spacing:-.01em}
 .bk-entry-intro p{font-size:.9rem;color:var(--muted);line-height:1.9;max-width:500px;margin:0 auto}
-.bk-entry-intro .bk-entry-system-note{font-size:.72rem;color:#4a4a42;margin-top:10px;letter-spacing:.02em;line-height:1.6}
+.bk-entry-intro .bk-entry-system-note{font-size:.74rem;color:rgba(168,168,160,.58);margin-top:8px;letter-spacing:.02em;line-height:1.6}
+
+@keyframes active-pulse{0%,100%{opacity:.65}50%{opacity:1}}
+@keyframes sys-pulse{0%,100%{opacity:.55}50%{opacity:.85}}
+.bk-active-indicator{display:inline-flex;align-items:center;justify-content:center;gap:5px;font-size:.53rem;letter-spacing:.14em;text-transform:uppercase;color:rgba(168,168,160,.38);margin-top:16px;margin-bottom:2px}
+.bk-active-dot{color:#22c55e;animation:active-pulse 3s ease-in-out infinite;line-height:1}
+.bk-sys-signal{font-size:.55rem;letter-spacing:.11em;text-transform:uppercase;color:rgba(168,168,160,.28);margin-top:14px;animation:sys-pulse 4.5s ease-in-out infinite}
 
 @media(max-width:600px){
   .bk-nav{padding:20px 24px}
   .bk-wrap{padding:0 24px}
   :root{--section-gap:64px}
-  .bk-entry-intro{padding:56px 24px 36px}
+  .bk-entry-intro{padding:56px 24px 32px}
 }
 </style>
 @include('partials.clarity')
@@ -189,7 +195,7 @@ body{background:var(--bg);color:var(--ivory);font-family:'DM Sans',sans-serif;fo
         <h1>See exactly where your market stands &mdash; and what to do next.</h1>
         <p class="hero-sub">A focused session that reveals your position, your gaps, and your next move.</p>
         <p class="bk-supporting-line" style="margin:0 auto 10px">No guesswork. No recycled strategy. Only real signal.</p>
-        <p class="bk-signal-copy" style="font-size:.95rem;opacity:.68;letter-spacing:.03em;margin:28px auto 34px;color:var(--ivory,#ede8de)">Position is not held by default.</p>
+        <p class="bk-signal-copy" style="font-size:1.14rem;opacity:.85;letter-spacing:0em;margin:28px auto 34px;color:var(--ivory,#ede8de)">Your position is not held unless secured.</p>
 
         @if(request('payment') === 'cancelled')
         <div class="bk-notice">
@@ -198,9 +204,10 @@ body{background:var(--bg);color:var(--ivory);font-family:'DM Sans',sans-serif;fo
         @endif
 
         <button class="bk-cta-btn" onclick="openSession()">Reserve Your Market Opportunity Session</button>
-        <p class="bk-cta-commitment">You&rsquo;ll know exactly where you stand.</p>
-        <p class="bk-cta-note">Reserved for operators in active markets.</p>
-        <span class="bk-trust-source">Validated through live search and platform signals</span>
+        <p class="bk-cta-commitment">Continue to secure your position &rarr;</p>
+        <p class="bk-cta-note">Intake takes ~2 minutes</p>
+        <span class="bk-active-indicator"><span class="bk-active-dot">&bull;</span> ACTIVE</span>
+        <span class="bk-trust-source">Validated through live search, platform signals, and AI-driven analysis</span>
         <div class="bk-trust-row" aria-label="Platform integrations">
           <span class="bk-trust-item">
             <svg width="12" height="12" viewBox="0 0 14 14" fill="currentColor" aria-hidden="true"><rect x="1" y="8" width="3" height="5"/><rect x="5.5" y="5" width="3" height="8"/><rect x="10" y="2" width="3" height="11"/></svg>
@@ -232,6 +239,7 @@ body{background:var(--bg);color:var(--ivory);font-family:'DM Sans',sans-serif;fo
             LLM Discovery
           </span>
         </div>
+        <p class="bk-sys-signal">System actively monitoring market signals.</p>
       </section>
 
 
@@ -248,7 +256,7 @@ body{background:var(--bg);color:var(--ivory);font-family:'DM Sans',sans-serif;fo
     <section id="book-now">
       <div class="bk-entry-intro">
         <p class="bk-section-label">Reserve Your Session</p>
-        <h2>Choose your starting point.</h2>
+        <h2>Select your entry point.</h2>
         <p class="bk-entry-system-note">Start with clarity, then move with confidence.</p>
       </div>
       @include('components.booking-modal', ['disableOverlayDismiss' => true, 'panelMode' => true])
@@ -259,7 +267,8 @@ body{background:var(--bg);color:var(--ivory);font-family:'DM Sans',sans-serif;fo
   <footer class="bk-footer">
     <div style="margin-bottom:8px;font-size:.82rem"><strong style="color:var(--ivory)">SEO AI Co™</strong> &nbsp;&middot;&nbsp; Programmatic AI SEO Systems</div>
     <div style="margin-bottom:8px"><a href="mailto:hello@seoaico.com">hello@seoaico.com</a></div>
-    <p style="font-size:.63rem;color:rgba(168,168,160,.38);max-width:440px;margin:0 auto 12px;line-height:1.5">SEO AI Co™ and associated systems, processes, and methodologies are proprietary and may not be reproduced without permission.</p>
+    <p style="font-size:.63rem;color:rgba(168,168,160,.38);max-width:440px;margin:0 auto 8px;line-height:1.5">SEO AI Co™ and associated systems, processes, and methodologies are proprietary and may not be reproduced without permission.</p>
+    <p style="font-size:.58rem;color:rgba(168,168,160,.26);max-width:440px;margin:0 auto 12px;line-height:1.5">Certain system builds may be eligible for independent research credit review.</p>
     <div><a href="/">seoaico.com</a> &nbsp;&mdash;&nbsp; <a href="{{ route('privacy') }}">Privacy</a> &nbsp;&mdash;&nbsp; <a href="{{ route('terms') }}">Terms</a></div>
   </footer>
 
