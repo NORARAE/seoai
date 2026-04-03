@@ -271,6 +271,277 @@ class ViewLead extends ViewRecord
                         ->placeholder('—'),
                 ]),
 
+            Section::make('Routing & Commitment')
+                ->columns(2)
+                ->schema([
+                    TextEntry::make('onboardingSubmission.lead_type')
+                        ->label('Lead Type')
+                        ->formatStateUsing(fn($state) => match ($state) {
+                            'single_location' => 'Single Location',
+                            'multi_location' => 'Multi-Location',
+                            'agency' => 'Agency / Partner',
+                            default => '—',
+                        })
+                        ->badge()
+                        ->color(fn($state) => match ($state) {
+                            'single_location' => 'gray',
+                            'multi_location' => 'info',
+                            'agency' => 'warning',
+                            default => 'gray',
+                        })
+                        ->placeholder('—'),
+
+                    TextEntry::make('onboardingSubmission.number_of_locations')
+                        ->label('No. of Locations')
+                        ->formatStateUsing(fn($state) => match ($state) {
+                            '1' => '1',
+                            '2_to_5' => '2–5',
+                            '6_to_10' => '6–10',
+                            '11_to_20' => '11–20',
+                            '20_plus' => '20+',
+                            default => '—',
+                        })
+                        ->placeholder('—'),
+
+                    TextEntry::make('onboardingSubmission.offer_path')
+                        ->label('Offer Path')
+                        ->formatStateUsing(fn($state) => match ($state) {
+                            'core' => 'Core',
+                            'growth' => 'Growth',
+                            'multi_market' => 'Multi-Market',
+                            'agency' => 'Agency–Partner',
+                            default => '—',
+                        })
+                        ->badge()
+                        ->color(fn($state) => match ($state) {
+                            'core' => 'gray',
+                            'growth' => 'info',
+                            'multi_market' => 'warning',
+                            'agency' => 'danger',
+                            default => 'gray',
+                        })
+                        ->placeholder('—'),
+
+                    TextEntry::make('onboardingSubmission.rollout_scope')
+                        ->label('Rollout Scope')
+                        ->formatStateUsing(fn($state) => match ($state) {
+                            'single' => 'Single',
+                            'multi' => 'Multi',
+                            'enterprise' => 'Enterprise',
+                            default => '—',
+                        })
+                        ->badge()
+                        ->color(fn($state) => match ($state) {
+                            'single' => 'gray',
+                            'multi' => 'info',
+                            'enterprise' => 'warning',
+                            default => 'gray',
+                        })
+                        ->placeholder('—'),
+
+                    TextEntry::make('onboardingSubmission.commitment_length')
+                        ->label('Commitment Length')
+                        ->formatStateUsing(fn($state) => match ($state) {
+                            '4_month' => '4 months',
+                            '3_month' => '3 months',
+                            '2_month' => '2 months',
+                            default => '—',
+                        })
+                        ->placeholder('—'),
+
+                    TextEntry::make('onboardingSubmission.payment_structure')
+                        ->label('Payment Structure')
+                        ->formatStateUsing(fn($state) => match ($state) {
+                            'full_prepay' => 'Full Prepay',
+                            '50_50_split' => '50/50 Split',
+                            'activation_plus_subscription' => 'Activation + Subscription',
+                            default => '—',
+                        })
+                        ->badge()
+                        ->color(fn($state) => match ($state) {
+                            'full_prepay' => 'success',
+                            '50_50_split' => 'info',
+                            'activation_plus_subscription' => 'warning',
+                            default => 'gray',
+                        })
+                        ->placeholder('—'),
+
+                    TextEntry::make('onboardingSubmission.agency_review_required')
+                        ->label('Agency Review Required')
+                        ->formatStateUsing(fn($state) => $state ? 'Yes — requires review' : 'No')
+                        ->badge()
+                        ->color(fn($state) => $state ? 'warning' : 'gray')
+                        ->placeholder('—'),
+
+                    TextEntry::make('onboardingSubmission.ads_management_required')
+                        ->label('Ads Management')
+                        ->formatStateUsing(fn($state) => $state ? 'Required' : 'Not required')
+                        ->badge()
+                        ->color(fn($state) => $state ? 'info' : 'gray')
+                        ->placeholder('—'),
+
+                    TextEntry::make('onboardingSubmission.ads_account_control')
+                        ->label('Ads Account Control')
+                        ->formatStateUsing(fn($state) => match ($state) {
+                            'client_owned' => 'Client-owned',
+                            'shared_access' => 'Shared access',
+                            'not_configured' => 'Not configured',
+                            default => '—',
+                        })
+                        ->placeholder('—'),
+                ]),
+
+            Section::make('Revenue Intelligence')
+                ->columns(2)
+                ->schema([
+                    // ── Tier classification ──────────────────────────────────
+                    TextEntry::make('recommended_tier_label')
+                        ->label('Recommended Tier')
+                        ->getStateUsing(fn($record) => match ($record->onboardingSubmission?->recommended_tier) {
+                            'core'                  => 'Core Build Candidate',
+                            'multi_market_standard' => 'Multi-Market Rollout',
+                            'multi_market_custom'   => 'Custom Deployment',
+                            'agency_partner'        => 'Agency / Partner',
+                            default                 => '—',
+                        })
+                        ->badge()
+                        ->color(fn($state) => match ($state) {
+                            'Core Build Candidate'  => 'gray',
+                            'Multi-Market Rollout'  => 'info',
+                            'Custom Deployment'     => 'warning',
+                            'Agency / Partner'      => 'danger',
+                            default                 => 'gray',
+                        }),
+
+                    TextEntry::make('booking_priority_label')
+                        ->label('Booking Priority')
+                        ->getStateUsing(fn($record) => match ($record->onboardingSubmission?->booking_priority) {
+                            'high_value'     => 'High Value',
+                            'partner_review' => 'Partner Review',
+                            default          => 'Standard',
+                        })
+                        ->badge()
+                        ->color(fn($state) => match ($state) {
+                            'High Value'     => 'warning',
+                            'Partner Review' => 'danger',
+                            default          => 'gray',
+                        }),
+
+                    // ── Commitment & revenue structure ───────────────────────
+                    TextEntry::make('revenue_structure')
+                        ->label('Revenue Structure')
+                        ->getStateUsing(fn($record) => match ($record->onboardingSubmission?->payment_structure) {
+                            'activation_plus_subscription' => 'Activation + Monthly Subscription',
+                            '50_50_split'                  => '50/50 Split (one-time)',
+                            'full_prepay'                  => 'Full Prepay (one-time)',
+                            default                        => 'Not yet determined',
+                        })
+                        ->badge()
+                        ->color(fn($state) => match ($state) {
+                            'Activation + Monthly Subscription' => 'success',
+                            '50/50 Split (one-time)'            => 'info',
+                            'Full Prepay (one-time)'            => 'gray',
+                            default                             => 'gray',
+                        }),
+
+                    TextEntry::make('commitment_length_label')
+                        ->label('Commitment Length')
+                        ->getStateUsing(fn($record) => match ($record->onboardingSubmission?->commitment_length) {
+                            '4_month' => '4-month structured cycle',
+                            '3_month' => '3 months',
+                            '2_month' => '2 months',
+                            default   => '4-month structured cycle',
+                        }),
+
+                    // ── Stripe tier mapping ──────────────────────────────────
+                    TextEntry::make('stripe_tier_mapping')
+                        ->label('Stripe Tier')
+                        ->getStateUsing(fn($record) => match ($record->onboardingSubmission?->recommended_tier) {
+                            'multi_market_standard', 'multi_market_custom' => 'Multi',
+                            'agency_partner'                               => 'Agency',
+                            default                                        => 'Core',
+                        })
+                        ->badge()
+                        ->color(fn($state) => match ($state) {
+                            'Multi'   => 'info',
+                            'Agency'  => 'danger',
+                            default   => 'gray',
+                        }),
+
+                    // ── Value range ──────────────────────────────────────────
+                    TextEntry::make('estimated_value_range')
+                        ->label('Estimated Value Range')
+                        ->getStateUsing(fn($record) => $record->onboardingSubmission?->estimated_value_range ?? '—'),
+
+                    // ── Close control ────────────────────────────────────────
+                    TextEntry::make('positioning_signal')
+                        ->label('Positioning Signal')
+                        ->getStateUsing(fn($record) => $record->onboardingSubmission?->positioning_signal ?? '—')
+                        ->badge()
+                        ->color(fn($state) => match ($state) {
+                            'System-level deployment' => 'danger',
+                            'Market expansion'        => 'warning',
+                            'Growth-stage'            => 'info',
+                            default                   => 'gray',
+                        }),
+
+                    TextEntry::make('booking_intent_strength')
+                        ->label('Booking Intent')
+                        ->getStateUsing(fn($record) => $record->onboardingSubmission?->booking_intent_strength ?? '—')
+                        ->badge()
+                        ->color(fn($state) => match ($state) {
+                            'partner-level'    => 'danger',
+                            'expansion-ready'  => 'warning',
+                            'serious'          => 'info',
+                            default            => 'gray',
+                        }),
+
+                    TextEntry::make('recommended_close_style')
+                        ->label('Close Style')
+                        ->getStateUsing(fn($record) => $record->onboardingSubmission?->recommended_close_style ?? '—'),
+
+                    TextEntry::make('deal_floor_enforced')
+                        ->label('Deal Floor Enforced')
+                        ->getStateUsing(fn($record) => $record->onboardingSubmission?->deal_floor_enforced ? 'Yes — do not close below tier floor' : 'No')
+                        ->badge()
+                        ->color(fn($state) => str_starts_with($state, 'Yes') ? 'warning' : 'gray'),
+
+                    // ── Risk flags ───────────────────────────────────────────
+                    TextEntry::make('ads_risk_flag')
+                        ->label('Ads Risk')
+                        ->getStateUsing(fn($record) => $record->onboardingSubmission?->ads_risk_note ?? 'None identified')
+                        ->columnSpanFull()
+                        ->color(fn($state) => $state !== 'None identified' ? 'warning' : 'gray'),
+
+                    TextEntry::make('churn_risk_flag')
+                        ->label('Churn Risk')
+                        ->getStateUsing(function ($record) {
+                            $sub = $record->onboardingSubmission;
+                            if (!$sub) {
+                                return 'Unknown — no submission';
+                            }
+                            $flags = [];
+                            if ($sub->commitment_length && $sub->commitment_length !== '4_month') {
+                                $flags[] = 'Short commitment selected';
+                            }
+                            if ($sub->payment_structure === 'full_prepay' && $sub->recommended_tier !== 'core') {
+                                $flags[] = 'One-time on high-value tier — no recurring lock-in';
+                            }
+                            if ($sub->ads_management_required && $sub->ads_account_control === 'not_configured') {
+                                $flags[] = 'Ads required but account control unresolved';
+                            }
+                            return empty($flags) ? 'Low' : implode(' · ', $flags);
+                        })
+                        ->columnSpanFull()
+                        ->color(fn($state) => $state === 'Low' ? 'success' : 'warning'),
+
+                    // ── Suggested close ──────────────────────────────────────
+                    TextEntry::make('suggested_next_step')
+                        ->label('Suggested Next Step')
+                        ->getStateUsing(fn($record) => $record->onboardingSubmission?->suggested_next_step ?? '—')
+                        ->columnSpanFull(),
+                ]),
+
             Section::make('Internal Notes')
                 ->schema([
                     TextEntry::make('notes')
