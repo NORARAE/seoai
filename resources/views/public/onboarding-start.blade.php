@@ -1526,7 +1526,7 @@ body {
       <div class="ob-rd-section">
         <span class="ob-rd-eye">Additional Opportunity</span>
         <h3 class="ob-rd-hed">Potential Federal R&D Credit Opportunity</h3>
-        <p class="ob-rd-body" style="font-size:.82rem;color:rgba(168,168,160,.78);margin-bottom:14px">Often overlooked by operators deploying custom systems.</p>
+        <p class="ob-rd-body" style="font-size:.82rem;color:rgba(168,168,160,.78);margin-bottom:14px">Some operators may qualify for a CPA-led review of eligible development activity.</p>
 
         <div x-show="rdExpanded" x-cloak>
           <ul class="ob-rd-bullets">
@@ -1546,7 +1546,8 @@ body {
           <span x-text="rdExpanded ? 'Collapse details' : 'Learn more →'"></span>
         </button>
 
-        <a href="/rd-tax-credit" class="ob-rd-cta-link">Request CPA Review →</a>
+        <a href="/rd-tax-credit" class="ob-rd-cta-link">Request CPA R&amp;D Review &rarr;</a>
+        <p style="font-size:.70rem;letter-spacing:.04em;color:rgba(200,168,75,.82);margin-top:6px">Complimentary review available for qualified operators.</p>
 
         <label class="ob-rd-referral" style="margin-top:18px">
           <input type="checkbox" name="rd_referral_interest" value="1"

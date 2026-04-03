@@ -223,7 +223,7 @@
         {{-- R&D value block --}}
         <div class="bk-rd-block" x-data="{ rdOpen: false }">
           <div class="bk-rd-block-hed">Potential Federal R&D Credit Opportunity</div>
-          <div class="bk-rd-block-sub">Often overlooked by operators deploying custom systems.</div>
+          <div class="bk-rd-block-sub">Some operators may qualify for a CPA-led review of eligible development activity.</div>
           <ul class="bk-rd-block-list">
             <li>Custom systems development may qualify</li>
             <li>Automation and AI infrastructure may qualify</li>
@@ -236,7 +236,8 @@
             This applies to businesses developing custom systems, automation, or AI-driven infrastructure.
           </div>
           <br>
-          <a href="/rd-tax-credit" class="bk-rd-cta">Request CPA Review &rarr;</a>
+          <a href="/rd-tax-credit" class="bk-rd-cta">Request CPA R&amp;D Review &rarr;</a>
+          <p style="font-size:.70rem;letter-spacing:.04em;color:rgba(200,168,75,.82);margin-top:6px">Complimentary review available for qualified operators.</p>
         </div>
       </div>
 
