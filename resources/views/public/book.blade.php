@@ -53,7 +53,8 @@ body{background:var(--bg);color:var(--ivory);font-family:'DM Sans',sans-serif;fo
 .bk-signal-copy{font-family:'Cormorant Garamond',serif;font-size:clamp(.95rem,2vw,1.15rem);font-style:italic;color:var(--gold);opacity:.6;margin:0 0 28px;letter-spacing:.01em;font-weight:300}
 .bk-supporting-line{font-size:.83rem;color:rgba(168,168,160,.75);font-style:italic;margin:-12px auto 32px;max-width:480px;line-height:1.7}
 /* ── Platform trust row ── */
-.bk-trust-row{display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:10px 22px;margin-top:0;opacity:.65}
+.bk-trust-row{display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:10px 22px;margin-top:14px;opacity:.75;position:relative}
+.bk-trust-row::before{content:'';position:absolute;inset:-12px -28px;background:radial-gradient(ellipse at center,rgba(200,168,75,.07) 0%,transparent 72%);pointer-events:none;z-index:-1}
 .bk-trust-item{display:inline-flex;align-items:center;gap:5px;font-size:.57rem;letter-spacing:.11em;text-transform:uppercase;color:var(--gold);font-weight:400;line-height:1}
 .bk-trust-item svg{flex-shrink:0;color:inherit}
 .bk-trust-dot{color:var(--gold);font-size:.5rem;opacity:.4;line-height:1;align-self:center}
@@ -96,17 +97,24 @@ body{background:var(--bg);color:var(--ivory);font-family:'DM Sans',sans-serif;fo
 .bk-entry-intro p{font-size:.9rem;color:var(--muted);line-height:1.9;max-width:500px;margin:0 auto}
 .bk-entry-intro .bk-entry-system-note{font-size:.82rem;color:rgba(168,168,160,.80);margin-top:8px;letter-spacing:.02em;line-height:1.6}
 
-@keyframes active-pulse{0%,100%{opacity:.65}50%{opacity:1}}
-@keyframes sys-pulse{0%,100%{opacity:.55}50%{opacity:.85}}
-.bk-active-indicator{display:inline-flex;align-items:center;justify-content:center;gap:5px;font-size:.68rem;letter-spacing:.14em;text-transform:uppercase;color:rgba(168,168,160,.70);margin-top:10px;margin-bottom:2px}
-.bk-active-dot{color:#22c55e;animation:active-pulse 3s ease-in-out infinite;line-height:1}
-.bk-sys-signal{font-size:.75rem;letter-spacing:.11em;text-transform:uppercase;color:rgba(168,168,160,.65);margin-top:8px;animation:sys-pulse 4.5s ease-in-out infinite}
+@keyframes active-pulse{0%,100%{opacity:.72}50%{opacity:1}}
+.bk-active-indicator{display:inline-flex;align-items:center;justify-content:center;gap:7px;font-size:.7rem;letter-spacing:.09em;text-transform:uppercase;color:rgba(168,168,160,.82);margin-top:18px;margin-bottom:6px}
+.bk-active-dot{color:#4a8c6e;animation:active-pulse 2.8s ease-in-out infinite;line-height:1}
+.bk-cta-support{font-size:.88rem;color:rgba(200,168,75,.82);letter-spacing:.04em;margin-top:16px;margin-bottom:4px;line-height:1.65}
+.bk-trust-caption{font-size:.74rem;color:rgba(168,168,160,.52);max-width:480px;margin:14px auto 0;line-height:1.7;letter-spacing:.01em}
+.bk-trust-item svg{filter:drop-shadow(0 0 5px rgba(200,168,75,.14))}
 
 @media(max-width:600px){
   .bk-nav{padding:20px 24px}
   .bk-wrap{padding:0 24px}
   :root{--section-gap:52px}
   .bk-entry-intro{padding:40px 24px 28px}
+  .bk-trust-row{opacity:.9;gap:10px 14px}
+  .bk-cta-support{font-size:.86rem}
+  .bk-active-indicator{font-size:.68rem;letter-spacing:.07em}
+  .bk-trust-caption{font-size:.71rem}
+  .bk-cta-btn{width:100%;padding:17px 24px;font-size:.84rem;justify-content:center}
+  .bk-trust-source{font-size:.72rem}
 }
 </style>
 @include('partials.clarity')
@@ -203,11 +211,11 @@ body{background:var(--bg);color:var(--ivory);font-family:'DM Sans',sans-serif;fo
         </div>
         @endif
 
-        <button class="bk-cta-btn" onclick="openSession()">Reserve Your Market Opportunity Session</button>
-        <p class="bk-cta-commitment">Continue to secure your position &rarr;</p>
-        <p class="bk-cta-note">Intake takes ~2 minutes</p>
-        <span class="bk-active-indicator"><span class="bk-active-dot">&bull;</span> ACTIVE</span>
-        <span class="bk-trust-source">Validated through live search, platform signals, and AI-driven analysis</span>
+        <button class="bk-cta-btn" onclick="openSession()">Reserve Your Market Position Session</button>
+        <p class="bk-cta-support">AI-powered search expansion. Branded market rollout. Limited access.</p>
+        <p class="bk-cta-note">Takes ~2 minutes to start</p>
+        <span class="bk-active-indicator"><span class="bk-active-dot">&bull;</span> Live system &mdash; tracking search signals in real time</span>
+        <span class="bk-trust-source">Powered by live search data, AI-driven analysis, and real market signals</span>
         <div class="bk-trust-row" aria-label="Platform integrations">
           <span class="bk-trust-item">
             <svg width="12" height="12" viewBox="0 0 14 14" fill="currentColor" aria-hidden="true"><rect x="1" y="8" width="3" height="5"/><rect x="5.5" y="5" width="3" height="8"/><rect x="10" y="2" width="3" height="11"/></svg>
@@ -239,7 +247,7 @@ body{background:var(--bg);color:var(--ivory);font-family:'DM Sans',sans-serif;fo
             LLM Discovery
           </span>
         </div>
-        <p class="bk-sys-signal">System actively monitoring market signals.</p>
+        <p class="bk-trust-caption">Deploy structured service + location expansion across your entire market &mdash; built for Google, AI search, and LLM discovery.</p>
       </section>
 
 
