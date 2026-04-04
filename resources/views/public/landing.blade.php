@@ -1310,6 +1310,75 @@ body::before{
   margin-bottom:28px;
 }
 
+/* ── Hero differentiation + supporting lines ── */
+.hero-diff{
+  font-size:.88rem;letter-spacing:.04em;
+  color:rgba(200,168,75,.70);line-height:1.68;
+  opacity:0;animation:up .8s .51s forwards;
+  margin-bottom:8px;max-width:600px;
+}
+.hero-supporting{
+  font-size:.82rem;letter-spacing:.02em;
+  color:rgba(168,168,160,.50);line-height:1.76;
+  opacity:0;animation:up .8s .58s forwards;
+  margin-bottom:22px;max-width:580px;
+}
+.hero-cta-note{
+  font-size:.68rem;letter-spacing:.16em;text-transform:uppercase;
+  color:rgba(168,168,160,.30);
+  opacity:0;animation:up .8s .65s forwards;
+  margin-top:12px;
+}
+
+/* ── Hero constellation overlay ── */
+.hero-net{
+  position:absolute;inset:0;width:100%;height:100%;
+  pointer-events:none;z-index:0;opacity:.052;
+}
+.hero-net-g{
+  animation:netDrift 44s ease-in-out infinite alternate;
+  transform-origin:600px 280px;
+}
+@keyframes netDrift{
+  from{transform:translate(0,0) scale(1)}
+  to{transform:translate(-1.5%,1.2%) scale(1.035)}
+}
+@media(prefers-reduced-motion:reduce){.hero-net-g{animation:none}}
+
+/* ── Hero → Section transition: animated shimmer line ── */
+.hero-transition{text-align:center;padding:14px 0 0}
+.hero-scroll-label{
+  display:block;font-size:.64rem;letter-spacing:.2em;text-transform:uppercase;
+  color:rgba(200,168,75,.28);margin-bottom:14px;
+  opacity:0;animation:up .8s 1.4s forwards;
+}
+.hero-rule-shimmer{
+  position:relative;overflow:hidden;height:1px;
+  background:linear-gradient(to right,transparent,rgba(154,122,48,.38),transparent);
+}
+.hero-rule-shimmer::after{
+  content:'';position:absolute;top:0;left:-120%;width:70%;height:100%;
+  background:linear-gradient(90deg,transparent,rgba(200,168,75,.58),transparent);
+  animation:shimmerSweep 5.4s ease-in-out 1.8s infinite;
+}
+@keyframes shimmerSweep{
+  0%{left:-120%}
+  40%{left:150%}
+  100%{left:150%}
+}
+.hero-scroll-arrow{
+  width:8px;height:8px;
+  border-right:1px solid rgba(200,168,75,.32);
+  border-bottom:1px solid rgba(200,168,75,.32);
+  transform:rotate(45deg);
+  margin:11px auto 0;
+  animation:arrowBob 2.8s ease-in-out infinite;
+}
+@keyframes arrowBob{
+  0%,100%{opacity:.30;transform:rotate(45deg) translateY(0)}
+  55%{opacity:.58;transform:rotate(45deg) translateY(3px)}
+}
+
 /* ── Market decision trigger ── */
 .alloc-decision{
   margin-top:56px;padding:40px 44px;
@@ -1648,7 +1717,12 @@ body::before{
   /* Hero supporting copy */
   .hero-gold-accent{margin-bottom:14px;line-height:1.3}
   .hero-sub{margin-bottom:10px}
-  .hero-note{margin-bottom:22px}
+  .hero-note{margin-bottom:18px}
+  .hero-diff{font-size:.84rem;margin-bottom:6px}
+  .hero-supporting{font-size:.79rem;margin-bottom:16px;max-width:100%}
+  .hero-cta-note{font-size:.64rem;letter-spacing:.12em}
+  .hero-net{opacity:.04}
+  .hero-scroll-label{font-size:.60rem;letter-spacing:.16em}
 }
 
 /* ── 2. Section spacing ── */
@@ -1910,25 +1984,59 @@ body::before{
 <section id="hero">
   <div class="hero-grid"></div>
 
+  {{-- Constellation network overlay --}}
+  <svg class="hero-net" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 560" aria-hidden="true" focusable="false" fill="none" preserveAspectRatio="xMidYMid slice">
+    <g class="hero-net-g" stroke="#c8a84b" fill="#c8a84b">
+      <line x1="140" y1="90" x2="340" y2="210" stroke-opacity=".55" stroke-width=".8"/>
+      <line x1="340" y1="210" x2="540" y2="150" stroke-opacity=".50" stroke-width=".7"/>
+      <line x1="540" y1="150" x2="700" y2="280" stroke-opacity=".46" stroke-width=".7"/>
+      <line x1="700" y1="280" x2="920" y2="195" stroke-opacity=".44" stroke-width=".65"/>
+      <line x1="920" y1="195" x2="1090" y2="340" stroke-opacity=".38" stroke-width=".6"/>
+      <line x1="340" y1="210" x2="460" y2="400" stroke-opacity=".36" stroke-width=".55"/>
+      <line x1="460" y1="400" x2="700" y2="280" stroke-opacity=".36" stroke-width=".55"/>
+      <line x1="700" y1="280" x2="800" y2="460" stroke-opacity=".30" stroke-width=".45"/>
+      <line x1="140" y1="90" x2="260" y2="340" stroke-opacity=".30" stroke-width=".45"/>
+      <line x1="260" y1="340" x2="460" y2="400" stroke-opacity=".30" stroke-width=".45"/>
+      <line x1="920" y1="195" x2="1000" y2="90" stroke-opacity=".34" stroke-width=".5"/>
+      <line x1="800" y1="460" x2="1090" y2="340" stroke-opacity=".26" stroke-width=".38"/>
+      <line x1="540" y1="150" x2="580" y2="45" stroke-opacity=".34" stroke-width=".5"/>
+      <line x1="1090" y1="340" x2="1160" y2="200" stroke-opacity=".22" stroke-width=".35"/>
+      <circle cx="140" cy="90" r="2" fill-opacity=".55"/>
+      <circle cx="340" cy="210" r="2.5" fill-opacity=".70"/>
+      <circle cx="540" cy="150" r="2" fill-opacity=".55"/>
+      <circle cx="700" cy="280" r="3" fill-opacity=".80"/>
+      <circle cx="920" cy="195" r="2" fill-opacity=".55"/>
+      <circle cx="1090" cy="340" r="1.8" fill-opacity=".48"/>
+      <circle cx="460" cy="400" r="1.8" fill-opacity=".48"/>
+      <circle cx="260" cy="340" r="1.5" fill-opacity=".40"/>
+      <circle cx="800" cy="460" r="1.5" fill-opacity=".40"/>
+      <circle cx="1000" cy="90" r="1.8" fill-opacity=".48"/>
+      <circle cx="580" cy="45" r="1.5" fill-opacity=".42"/>
+      <circle cx="1160" cy="200" r="1.2" fill-opacity=".34"/>
+    </g>
+  </svg>
+
   <div class="hero-stage">
-    <h1 id="heroSeq" aria-label="Own your market. Capture your territory. Lock out competitors. One operator, one territory. Claim it before they do.">Own your<br>market.</h1>
+    <h1 id="heroSeq" aria-label="Your market. Your territory. Every city, every service. Programmatic expansion. One brand, one territory. Built for AI search.">Your market.<br>Your territory.</h1>
   </div>
-  <p class="hero-gold-accent">Your market. Your territory. One owner.</p>
-  <p class="hero-sub">Full search coverage across every city you target — one business per territory, yours.</p>
-  <p class="hero-note">One operator per market &mdash; select territories only.</p>
+  <p class="hero-gold-accent">AI-powered hyper-local SEO expansion across every city in your market.</p>
+  <p class="hero-sub">Structured service + location deployment — expanding your reach across every city and every service you offer.</p>
+  <p class="hero-diff">Programmatic URL expansion — built to scale your visibility across every service and location.</p>
+  <p class="hero-supporting">Enhanced by live algorithm signals, search data, and continuous AI-driven optimization.</p>
+  <p class="hero-note">ONE BRAND PER MARKET &mdash; SELECT TERRITORIES ONLY</p>
   <div class="hero-actions" style="opacity:0;animation:up .85s .52s forwards">
     <a href="#contact" class="btn-primary">Claim Your Territory</a>
-    <a href="#offer" class="btn-ghost">Review the Structure</a>
+    <a href="#offer" class="btn-ghost">See How It Works</a>
   </div>
-
-  <a href="#alloc" class="hero-scroll" aria-label="Scroll to next section">
-    <div class="scroll-line"></div>
-    <div class="scroll-caret"></div>
-  </a>
+  <p class="hero-cta-note">AI-driven rollout. Limited market access.</p>
 
 </section>
 
-<div class="gold-rule"></div>
+<div class="hero-transition" aria-hidden="true">
+  <span class="hero-scroll-label">See how your market expands →</span>
+  <div class="hero-rule-shimmer"></div>
+  <div class="hero-scroll-arrow"></div>
+</div>
 
 <!-- ════════════ MARKET ALLOCATION ════════════ -->
 <section id="alloc" class="alloc-section r">
@@ -2959,11 +3067,11 @@ body::before{
     var el = document.getElementById('heroSeq');
     if(!el) return;
     var headlines = [
-      'Own your<br>market.',
-      'Capture your<br>territory.',
-      'Lock out<br>competitors.',
-      'One operator.<br>One territory.',
-      'Claim it<br>before they do.'
+      'Your market.<br>Your territory.',
+      'Every city.<br>Every service.',
+      'Programmatic<br>expansion.',
+      'One brand.<br>One territory.',
+      'Built for<br>AI search.'
     ];
     var current = 0;
     var FADE  = 560;  // ms — must match CSS transition duration
