@@ -1862,6 +1862,7 @@ body::before{
   </a>
   <div class="nav-right">
     <a href="/how-it-works" class="nav-link">How It Works</a>
+    <a href="/book" class="nav-btn nav-book">Book</a>
     @auth
       <a href="/dashboard" class="nav-btn nav-account" style="background:linear-gradient(90deg,var(--gold),var(--gold-lt));color:var(--deep);box-shadow:0 2px 12px 0 rgba(200,168,75,.13);font-weight:500;letter-spacing:.18em;"><span class="nav-account-full">My Dashboard</span><span class="nav-account-short">Dashboard</span></a>
     @else
