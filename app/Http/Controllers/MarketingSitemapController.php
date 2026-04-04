@@ -12,8 +12,8 @@ class MarketingSitemapController extends Controller
     /** Sitemap index listing all 5 cluster sitemaps */
     public function index(): Response
     {
-        $sitemaps = collect(self::VALID_CLUSTERS)->map(fn ($c) => [
-            'loc'     => url("/sitemaps/marketing-{$c}.xml"),
+        $sitemaps = collect(self::VALID_CLUSTERS)->map(fn($c) => [
+            'loc' => url("/sitemaps/marketing-{$c}.xml"),
             'lastmod' => now()->toDateString(),
         ]);
 
@@ -36,34 +36,34 @@ class MarketingSitemapController extends Controller
         $entries = [];
         if ($cluster === 'core') {
             $entries[] = [
-                'loc'        => url('/'),
-                'lastmod'    => now()->toDateString(),
+                'loc' => url('/'),
+                'lastmod' => now()->toDateString(),
                 'changefreq' => 'weekly',
-                'priority'   => '1.0',
+                'priority' => '1.0',
             ];
             // Static core pages — always included regardless of DB state
             foreach ([
-                ['path' => '/book',           'changefreq' => 'weekly',  'priority' => '0.9'],
-                ['path' => '/how-it-works',   'changefreq' => 'monthly', 'priority' => '0.8'],
-                ['path' => '/solutions',      'changefreq' => 'monthly', 'priority' => '0.8'],
-                ['path' => '/rd-tax-credit',  'changefreq' => 'monthly', 'priority' => '0.6'],
+                ['path' => '/book', 'changefreq' => 'weekly', 'priority' => '0.9'],
+                ['path' => '/how-it-works', 'changefreq' => 'monthly', 'priority' => '0.8'],
+                ['path' => '/solutions', 'changefreq' => 'monthly', 'priority' => '0.8'],
+                ['path' => '/rd-tax-credit', 'changefreq' => 'monthly', 'priority' => '0.6'],
                 ['path' => '/onboarding/start', 'changefreq' => 'monthly', 'priority' => '0.7'],
             ] as $static) {
                 $entries[] = [
-                    'loc'        => url($static['path']),
-                    'lastmod'    => now()->toDateString(),
+                    'loc' => url($static['path']),
+                    'lastmod' => now()->toDateString(),
                     'changefreq' => $static['changefreq'],
-                    'priority'   => $static['priority'],
+                    'priority' => $static['priority'],
                 ];
             }
         }
 
         foreach ($pages as $page) {
             $entries[] = [
-                'loc'        => url('/' . $page->url_slug),
-                'lastmod'    => $page->updated_at?->toDateString() ?? now()->toDateString(),
+                'loc' => url('/' . $page->url_slug),
+                'lastmod' => $page->updated_at?->toDateString() ?? now()->toDateString(),
                 'changefreq' => $page->sitemap_changefreq ?? 'monthly',
-                'priority'   => number_format((float) ($page->sitemap_priority ?? 0.7), 1),
+                'priority' => number_format((float) ($page->sitemap_priority ?? 0.7), 1),
             ];
         }
 

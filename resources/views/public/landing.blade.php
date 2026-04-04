@@ -183,63 +183,6 @@ nav.stuck{background:rgba(8,8,8,.95);backdrop-filter:blur(16px);border-color:var
 }
 /* ══ END AMBIENT SYSTEM ══ */
 
-/* ── Rotating headline ── */
-.hero-rotate{
-  position:relative;
-  width:100%;max-width:820px;
-  margin-bottom:16px;
-  opacity:0;animation:up .7s .1s forwards;
-}
-/*
-  Sizer: in-flow, invisible — its text matches the longest headline phrase.
-  This forces .hero-rotate to adopt the correct minimum height naturally,
-  so absolutely-positioned lines never overflow into content below.
-*/
-.hero-rotate-sizer{
-  display:block;visibility:hidden;pointer-events:none;user-select:none;
-  font-family:'Cormorant Garamond',serif;
-  font-size:clamp(3rem,7vw,6.8rem);font-weight:300;line-height:1.06;
-}
-.hero-rotate-line{
-  position:absolute;top:0;left:0;width:100%;
-  font-family:'Cormorant Garamond',serif;
-  font-size:clamp(3rem,7vw,6.8rem);font-weight:300;line-height:1.06;
-  color:var(--ivory);
-  opacity:0;transition:opacity 1.4s ease;
-  pointer-events:none;
-}
-.hero-rotate-line.active{opacity:1;pointer-events:auto}
-
-/* ── Static anchor ── */
-.hero-anchor{
-  font-family:'Cormorant Garamond',serif;font-weight:300;font-style:italic;
-  font-size:clamp(1.05rem,1.7vw,1.4rem);letter-spacing:.04em;
-  color:rgba(200,168,75,.5);line-height:1.5;
-  margin-bottom:28px;
-  opacity:0;animation:up .75s .32s forwards;
-}
-
-/* ── Body copy ── */
-.hero-body{
-  max-width:540px;margin-bottom:28px;
-  display:flex;flex-direction:column;gap:14px;
-  opacity:0;animation:up .85s .48s forwards;
-}
-.hb-line{font-size:.98rem;line-height:1.65;color:var(--muted)}
-.hb-rule{
-  padding-top:18px;margin-top:4px;
-  border-top:1px solid rgba(200,168,75,.14);
-  color:rgba(237,232,222,.5);
-}
-
-/* ── Conversion block ── */
-.hero-convert{opacity:0;animation:up .85s .62s forwards}
-.hc-alloc{
-  font-family:'Cormorant Garamond',serif;font-style:italic;font-weight:300;
-  font-size:clamp(1.2rem,1.9vw,1.65rem);color:var(--ivory);
-  letter-spacing:.02em;margin-bottom:28px;line-height:1.4;
-}
-
 /* ── CTAs ── */
 .hero-actions{display:flex;gap:20px;align-items:center}
 .btn-primary{
@@ -1670,8 +1613,6 @@ body::before{
   .exp-body{font-size:.93rem;line-height:1.76}
   .ac-body{font-size:.93rem;line-height:1.76}
   .stmt-body p{font-size:.97rem;line-height:1.8}
-  .hb-line{font-size:1rem;line-height:1.74}
-  .hb-rule{font-size:.97rem;line-height:1.74}
 
   /* Small uppercase labels — reduce letter-spacing */
   .s-eye{letter-spacing:.18em;font-size:.72rem}
@@ -2704,7 +2645,7 @@ body::before{
   <p style="font-family:'Cormorant Garamond',serif;font-size:clamp(1.7rem,4vw,2.5rem);font-weight:400;color:rgba(237,232,222,.95);margin-bottom:12px;line-height:1.2">Explore your territory first.</p>
   <p style="font-size:.84rem;letter-spacing:.12em;text-transform:uppercase;color:rgba(200,168,75,.88);margin-bottom:20px;font-weight:400">See what's available in your territory.</p>
   <p style="font-size:.92rem;color:rgba(168,168,160,.88);max-width:480px;margin:0 auto 28px;line-height:1.8">Share your site and we'll map what's available in your territory — including gaps, missed coverage, and positions competitors may take if left open.</p>
-  <a href="{{ route('onboarding.start') }}" style="display:inline-block;background:#c8a84b;color:#080808;font-family:'DM Sans',sans-serif;font-size:.82rem;font-weight:500;letter-spacing:.08em;text-transform:uppercase;padding:14px 36px;border-radius:4px;text-decoration:none;transition:background .2s,transform .15s" onmouseover="this.style.background='#e2c97d';this.style.transform='translateY(-1px)'" onmouseout="this.style.background='#c8a84b';this.style.transform='none'">Check Your Market Position &rarr;</a>
+  <a href="{{ route('onboarding.start') }}" class="btn-primary">Check Your Market Position &rarr;</a>
   <p style="font-size:.72rem;letter-spacing:.10em;text-transform:uppercase;color:rgba(200,168,75,.88);margin-top:14px;font-weight:400">Territories close as agreements are secured.</p>
 </section>
 
@@ -3190,8 +3131,12 @@ body::before{
     var tick=0;
 
     function resize(){
-      W = canvas.width  = canvas.offsetWidth;
-      H = canvas.height = canvas.offsetHeight;
+      var DPR = window.devicePixelRatio || 1;
+      W = canvas.offsetWidth;
+      H = canvas.offsetHeight;
+      canvas.width  = Math.round(W * DPR);
+      canvas.height = Math.round(H * DPR);
+      ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
     }
     function init(){
       resize(); nodes=[];
