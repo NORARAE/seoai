@@ -1003,94 +1003,111 @@ footer{border-top:1px solid var(--border);padding:36px 64px;display:flex;flex-di
 }
 .nav-hamburger span{
   display:block;width:22px;height:1.5px;background:var(--ivory);
-  transition:transform .25s ease,opacity .2s,width .2s;
+  transition:transform .28s ease,opacity .22s,width .22s;
   transform-origin:center;
 }
 .nav-hamburger.is-open span:nth-child(1){transform:translateY(6.5px) rotate(45deg)}
 .nav-hamburger.is-open span:nth-child(2){opacity:0;width:0}
 .nav-hamburger.is-open span:nth-child(3){transform:translateY(-6.5px) rotate(-45deg)}
 
-/* Compact dropdown menu */
-.nav-menu{
-  display:none;
-  position:fixed;
-  top:72px;right:16px;
-  width:290px;
-  z-index:9200;
-  background:#0d0c08;
-  border:1px solid rgba(200,168,75,.18);
-  border-radius:6px;
-  box-shadow:0 8px 40px rgba(0,0,0,.72),0 2px 12px rgba(0,0,0,.4);
-  overflow:hidden;
-  opacity:0;
-  transform:translateY(-8px) scale(.98);
-  transform-origin:top right;
-  transition:opacity .22s ease,transform .22s ease;
-  pointer-events:none;
+/* ── Panel backdrop ── */
+.nav-backdrop{
+  position:fixed;inset:0;
+  z-index:9100;
+  background:rgba(0,0,0,.62);
+  opacity:0;visibility:hidden;
+  transition:opacity .3s ease,visibility 0s .3s;
 }
-.nav-menu.is-open{
-  opacity:1;
-  transform:translateY(0) scale(1);
-  pointer-events:auto;
-}
-.nav-menu-inner{
-  padding:8px 0;
+.nav-backdrop.is-open{
+  opacity:1;visibility:visible;
+  transition:opacity .3s ease,visibility 0s 0s;
 }
 
-/* Menu links */
+/* ── Slide-in panel ── */
+.nav-menu{
+  position:fixed;
+  top:0;right:0;bottom:0;
+  width:300px;max-width:85vw;
+  z-index:9200;
+  background:#0d0c08;
+  border-left:1px solid rgba(200,168,75,.12);
+  box-shadow:-12px 0 48px rgba(0,0,0,.6);
+  overflow-y:auto;
+  display:flex;flex-direction:column;
+  transform:translateX(100%);
+  visibility:hidden;
+  transition:transform .3s cubic-bezier(.23,1,.32,1),visibility 0s .3s;
+}
+.nav-menu.is-open{
+  transform:translateX(0);
+  visibility:visible;
+  transition:transform .3s cubic-bezier(.23,1,.32,1),visibility 0s 0s;
+}
+.nav-menu-inner{
+  padding:88px 0 52px;
+  flex:1;display:flex;flex-direction:column;
+}
+
+/* Panel menu links */
 .nm-link{
   display:flex;align-items:center;justify-content:space-between;
-  padding:15px 20px;
+  padding:20px 32px;
   font-family:'DM Sans',sans-serif;
-  font-size:.82rem;letter-spacing:.07em;
+  font-size:.82rem;letter-spacing:.08em;
   color:rgba(168,168,160,.85);text-decoration:none;
   transition:color .18s,background .18s;
-  min-height:48px;
+  min-height:52px;
 }
 .nm-link::after{
   content:'›';
   color:rgba(200,168,75,.3);
-  font-size:.95rem;transition:color .18s,transform .18s;
+  font-size:1rem;transition:color .18s,transform .18s;
 }
-.nm-link:hover{color:var(--ivory);background:rgba(200,168,75,.05)}
-.nm-link:hover::after{color:var(--gold);transform:translateX(2px)}
+.nm-link:hover{color:var(--ivory);background:rgba(200,168,75,.04)}
+.nm-link:hover::after{color:var(--gold);transform:translateX(3px)}
 .nm-link.nm-featured{
-  color:var(--gold);font-weight:500;letter-spacing:.09em;
+  color:var(--gold);font-weight:500;letter-spacing:.1em;
 }
 .nm-link.nm-featured::after{color:var(--gold)}
-/* Secondary CTA link — slightly muted vs featured, still gold-tinted */
-.nm-link.nm-cta-secondary{
-  color:rgba(200,168,75,.7);font-weight:400;letter-spacing:.07em;
-}
-.nm-link.nm-cta-secondary::after{color:rgba(200,168,75,.45)}
-.nm-link.nm-cta-secondary:hover{color:var(--gold)}
-.nm-link.nm-cta-secondary:hover::after{color:var(--gold)}
 
 /* Divider */
 .nm-divider{
   height:1px;
   background:rgba(200,168,75,.08);
-  margin:6px 0;
+  margin:8px 0;
 }
 
 /* Portal row */
 .nm-portal{
-  display:flex;align-items:center;justify-content:center;
-  margin:8px 16px 14px;
-  padding:12px 16px;
-  background:linear-gradient(135deg,rgba(200,168,75,.1),rgba(200,168,75,.05));
-  border:1px solid rgba(200,168,75,.22);
-  border-radius:3px;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:20px 32px;
   color:var(--gold);font-family:'DM Sans',sans-serif;
-  font-size:.74rem;font-weight:500;letter-spacing:.16em;text-transform:uppercase;
+  font-size:.82rem;font-weight:500;letter-spacing:.1em;
   text-decoration:none;
-  transition:background .25s,border-color .25s,color .25s;
+  transition:color .18s,background .18s;
+  min-height:52px;
 }
-.nm-portal:hover{
-  background:rgba(200,168,75,.15);
-  border-color:rgba(200,168,75,.42);
-  color:var(--ivory);
+.nm-portal::after{
+  content:'›';
+  color:var(--gold);
+  font-size:1rem;transition:color .18s,transform .18s;
 }
+.nm-portal:hover{color:var(--ivory);background:rgba(200,168,75,.04)}
+.nm-portal:hover::after{color:var(--ivory);transform:translateX(3px)}
+
+/* Sign In secondary row */
+.nm-signin{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:16px 32px;
+  font-family:'DM Sans',sans-serif;
+  font-size:.74rem;letter-spacing:.1em;
+  color:rgba(168,168,160,.45);text-decoration:none;
+  transition:color .18s;
+  min-height:44px;
+}
+.nm-signin::after{content:'›';color:rgba(200,168,75,.2);font-size:.95rem;transition:color .18s}
+.nm-signin:hover{color:rgba(168,168,160,.8)}
+.nm-signin:hover::after{color:rgba(200,168,75,.5)}
 
 /* ── Mobile ── */
 @media(max-width:900px){
@@ -1717,14 +1734,7 @@ body::before{
 }
 
 /* ── 9. Mobile nav refinements ── */
-@media(max-width:768px){
-  /* Keep Book visible alongside hamburger — direct conversion path */
-  .nav-btn.nav-book{
-    display:inline-flex;
-    font-size:.72rem;padding:10px 14px;
-    letter-spacing:.1em;min-height:36px;white-space:nowrap;
-  }
-}
+/* Book button hidden on mobile — panel is the sole navigation path */
 
 /* ── 10. Contact form — mobile refinements ── */
 @media(max-width:768px){
@@ -1820,7 +1830,6 @@ body::before{
   </a>
   <div class="nav-right">
     <a href="/how-it-works" class="nav-link">How It Works</a>
-    <a href="/book" class="nav-btn nav-book">Book</a>
     @auth
       <a href="/dashboard" class="nav-btn nav-account" style="background:linear-gradient(90deg,var(--gold),var(--gold-lt));color:var(--deep);box-shadow:0 2px 12px 0 rgba(200,168,75,.13);font-weight:500;letter-spacing:.18em;"><span class="nav-account-full">My Dashboard</span><span class="nav-account-short">Dashboard</span></a>
     @else
@@ -1832,18 +1841,19 @@ body::before{
   </button>
 </nav>
 
-<!-- ════════════ MOBILE DROPDOWN MENU ════════════ -->
+<!-- ════════════ MOBILE SLIDE-IN PANEL ════════════ -->
+<div id="navBackdrop" class="nav-backdrop" aria-hidden="true"></div>
 <div id="navMenu" class="nav-menu" aria-hidden="true" role="dialog" aria-label="Site navigation">
   <div class="nav-menu-inner">
-    <a href="#contact" class="nm-link nm-featured" data-menu-close>Check Availability &rarr;</a>
-    <a href="/book" class="nm-link nm-cta-secondary" data-menu-close>Book a Session</a>
-    <div class="nm-divider"></div>
+    <a href="#contact" class="nm-link nm-featured" data-menu-close>Check Availability</a>
+    <a href="/book" class="nm-link" data-menu-close>Book a Session</a>
     <a href="/how-it-works" class="nm-link" data-menu-close>How It Works</a>
     <div class="nm-divider"></div>
     @auth
       <a href="/dashboard" class="nm-portal" data-menu-close>My Dashboard</a>
     @else
-      <a href="/admin/login" class="nm-portal" data-menu-close>Portal — Sign In &rarr;</a>
+      <a href="/admin/login" class="nm-portal" data-menu-close>Portal</a>
+      <a href="/admin/login" class="nm-signin" data-menu-close>Sign In</a>
     @endauth
   </div>
 </div>
@@ -3159,36 +3169,30 @@ body::before{
     });
   })();
 
-  /* ── Mobile dropdown menu ── */
+  /* ── Mobile slide-in panel ── */
   (function(){
-    var btn  = document.getElementById('navHamburger');
-    var menu = document.getElementById('navMenu');
-    var nav  = document.getElementById('nav');
+    var btn      = document.getElementById('navHamburger');
+    var menu     = document.getElementById('navMenu');
+    var backdrop = document.getElementById('navBackdrop');
     if(!btn || !menu) return;
 
-    function positionMenu(){
-      var navH = nav ? nav.offsetHeight : 64;
-      menu.style.top = (navH + 8) + 'px';
-    }
-
     function openMenu(){
-      positionMenu();
-      menu.style.display = 'block';
-      requestAnimationFrame(function(){
-        requestAnimationFrame(function(){
-          menu.classList.add('is-open');
-        });
-      });
+      backdrop.classList.add('is-open');
+      menu.classList.add('is-open');
       menu.removeAttribute('aria-hidden');
+      backdrop.removeAttribute('aria-hidden');
       btn.classList.add('is-open');
       btn.setAttribute('aria-expanded','true');
+      document.body.style.overflow = 'hidden';
     }
     function closeMenu(){
       menu.classList.remove('is-open');
+      backdrop.classList.remove('is-open');
       btn.classList.remove('is-open');
       btn.setAttribute('aria-expanded','false');
       menu.setAttribute('aria-hidden','true');
-      setTimeout(function(){ menu.style.display=''; }, 240);
+      backdrop.setAttribute('aria-hidden','true');
+      document.body.style.overflow = '';
     }
     function toggleMenu(){
       menu.classList.contains('is-open') ? closeMenu() : openMenu();
@@ -3199,19 +3203,15 @@ body::before{
       toggleMenu();
     });
 
-    // Close on outside click
-    document.addEventListener('click', function(e){
-      if(menu.classList.contains('is-open') && !menu.contains(e.target) && e.target !== btn){
-        closeMenu();
-      }
-    });
+    // Close on backdrop tap
+    backdrop.addEventListener('click', closeMenu);
 
     // Close on Escape
     document.addEventListener('keydown', function(e){
       if(e.key === 'Escape') closeMenu();
     });
 
-    // Close on link click
+    // Close on panel link tap
     menu.querySelectorAll('[data-menu-close]').forEach(function(el){
       el.addEventListener('click', closeMenu);
     });
