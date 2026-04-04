@@ -1500,6 +1500,14 @@ body::before{
   opacity:0;animation:up .8s .58s forwards;
   margin-bottom:22px;max-width:580px;
 }
+.hero-cities{
+  font-family:'Cormorant Garamond',serif;font-weight:300;
+  font-size:clamp(1.1rem,1.7vw,1.42rem);
+  color:var(--ivory);letter-spacing:.06em;line-height:1.5;
+  opacity:0;animation:up .8s .42s forwards;
+  margin-bottom:20px;
+}
+.hero-cities span{display:block}
 .hero-cta-note{
   font-size:.68rem;letter-spacing:.16em;text-transform:uppercase;
   color:rgba(168,168,160,.30);
@@ -1544,16 +1552,14 @@ body::before{
   100%{left:150%}
 }
 .hero-scroll-arrow{
-  width:8px;height:8px;
-  border-right:1px solid rgba(200,168,75,.32);
-  border-bottom:1px solid rgba(200,168,75,.32);
-  transform:rotate(45deg);
-  margin:11px auto 0;
-  animation:arrowBob 2.8s ease-in-out infinite;
+  width:6px;height:6px;border-radius:50%;
+  background:rgba(200,168,75,.28);
+  margin:14px auto 0;
+  animation:dotPulseScroll 3.4s ease-in-out infinite;
 }
-@keyframes arrowBob{
-  0%,100%{opacity:.30;transform:rotate(45deg) translateY(0)}
-  55%{opacity:.58;transform:rotate(45deg) translateY(3px)}
+@keyframes dotPulseScroll{
+  0%,100%{opacity:.16;box-shadow:0 0 0 0 rgba(200,168,75,.0)}
+  50%{opacity:.52;box-shadow:0 0 10px 3px rgba(200,168,75,.13)}
 }
 
 /* ── System Structure section ── */
@@ -1984,6 +1990,7 @@ body::before{
   .hero-sub{margin-bottom:10px}
   .hero-note{margin-bottom:18px}
   .hero-diff{font-size:.84rem;margin-bottom:6px}
+  .hero-cities{font-size:1.04rem;margin-bottom:14px}
   .hero-supporting{font-size:.79rem;margin-bottom:16px;max-width:100%}
   .hero-cta-note{font-size:.64rem;letter-spacing:.12em}
   .hero-net{opacity:.04}
@@ -2285,20 +2292,20 @@ body::before{
     <h1 id="heroSeq" aria-label="Your market. Your territory. Every city, every service. Programmatic expansion. One brand, one territory. Built for AI search.">Your market.<br>Your territory.</h1>
   </div>
   <p class="hero-gold-accent">AI-powered hyper-local SEO expansion across every city in your market.</p>
-  <p class="hero-sub">Structured service + location deployment — expanding your reach across every city and every service you offer.</p>
-  <p class="hero-diff">Programmatic URL expansion — built to scale your visibility across every service and location.</p>
+  <p class="hero-sub">Structured service + location deployment — expanding your visibility across every service you offer.</p>
+  <p class="hero-cities"><span>Every Service.</span><span>Every City.</span><span>Every Neighborhood.</span></p>
+  <p class="hero-diff">Programmatic URL expansion — scaling your presence across every service, every city, and every search surface.</p>
   <p class="hero-supporting">Enhanced by live algorithm signals, search data, and continuous AI-driven optimization.</p>
   <p class="hero-note">ONE BRAND PER MARKET &mdash; SELECT TERRITORIES ONLY</p>
   <div class="hero-actions" style="opacity:0;animation:up .85s .52s forwards">
     <a href="#contact" class="btn-primary">Claim Your Territory</a>
-    <a href="#offer" class="btn-ghost">See How It Works</a>
   </div>
   <p class="hero-cta-note">AI-driven rollout. Limited market access.</p>
 
 </section>
 
 <div class="hero-transition" aria-hidden="true">
-  <span class="hero-scroll-label">See how your market expands →</span>
+  <span class="hero-scroll-label">See how your market expands</span>
   <div class="hero-rule-shimmer"></div>
   <div class="hero-scroll-arrow"></div>
 </div>
@@ -2361,19 +2368,20 @@ body::before{
     <div class="alloc-copy">
       <p class="alloc-eyebrow">Market Status Overview</p>
       <h2 class="alloc-hed">
-        Current availability<br>by region.<br>
-        <em>Not every market<br>is still open.</em>
+        Where expansion<br>is active, limited,<br>
+        <em>and opening.</em>
       </h2>
       <div class="alloc-sub">
-        <p>Claimed access. One brand per market.</p>
-        <p><em>Selective access. Strategic search rollout.</em></p>
+        <p>Each region reflects real-time rollout status based on demand, competition, and expansion sequencing.</p>
+        <p>One brand positioned per market.</p>
+        <p><em>Selective access. Strategic expansion phases.</em></p>
       </div>
       <div class="alloc-reinforce">
-        <span>High-demand markets are claimed first.</span>
-        <span>AI-guided deployment. Branded local rollout.</span>
-        <span>Search presence is established through structured systems and expanded over time.</span>
+        <span>Markets activate as expansion progresses — early positioning secures long-term visibility.</span>
+        <span>AI-guided deployment. Structured local rollout.</span>
+        <span>Built to compound over time — continuous optimization across every active market.</span>
       </div>
-      <p class="alloc-urgency">If your market is still available,<br><em>claim it before expansion closes.</em></p>
+      <p class="alloc-urgency">Early access builds stronger position.<br><em>Structure your market as expansion phases open.</em></p>
       <span class="alloc-convert-label">Selective access. Launch-ready markets only.</span>
       <div class="alloc-actions">
         <a href="/onboarding/start" class="btn-primary">Claim Your Territory</a>
