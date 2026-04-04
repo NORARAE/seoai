@@ -665,6 +665,181 @@ nav.stuck{background:rgba(8,8,8,.95);backdrop-filter:blur(16px);border-color:var
 .tier-gated-icon{color:rgba(200,168,75,.4);flex-shrink:0;margin-top:1px;font-size:.8rem}
 .tier-gated strong{color:rgba(237,232,222,.7);font-weight:400}
 
+/* ── Tier position line ── */
+.tier-position{
+  font-size:.78rem;letter-spacing:.04em;color:rgba(168,168,160,.48);
+  line-height:1.6;font-style:italic;margin-bottom:20px;
+  border-left:2px solid rgba(200,168,75,.18);padding-left:12px;
+}
+
+/* ── Value anchor ── */
+.value-anchor{
+  padding:56px 64px;max-width:1200px;margin:0 auto;
+  border-top:1px solid rgba(200,168,75,.08);
+}
+.value-anchor-inner{
+  max-width:760px;margin:0 auto;text-align:center;
+}
+.va-main{
+  font-family:'Cormorant Garamond',serif;
+  font-size:clamp(1.5rem,2.6vw,2rem);font-weight:300;
+  line-height:1.4;color:var(--ivory);margin-bottom:16px;letter-spacing:-.01em;
+}
+.va-main em{font-style:italic;color:var(--gold)}
+.va-sub{
+  font-size:.96rem;color:rgba(168,168,160,.68);line-height:1.85;
+  max-width:600px;margin:0 auto;
+}
+
+/* ── Execution services ── */
+.exec-services{
+  padding:56px 64px;max-width:1200px;margin:0 auto;
+  border-top:1px solid var(--border);
+}
+.exec-eyebrow{
+  font-size:.68rem;letter-spacing:.28em;text-transform:uppercase;
+  color:var(--gold);display:flex;align-items:center;gap:14px;margin-bottom:22px;
+}
+.exec-eyebrow::before{content:'';width:28px;height:1px;background:var(--gold)}
+.exec-hed{
+  font-family:'Cormorant Garamond',serif;
+  font-size:clamp(1.8rem,2.8vw,2.5rem);font-weight:300;
+  line-height:1.1;color:var(--ivory);margin-bottom:12px;
+}
+.exec-hed em{font-style:italic;color:var(--gold)}
+.exec-intro{font-size:.92rem;color:rgba(168,168,160,.60);margin-bottom:36px;max-width:560px;line-height:1.76}
+.exec-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:1px;background:rgba(200,168,75,.08)}
+.exec-card{
+  background:var(--bg);padding:36px 32px;position:relative;overflow:hidden;
+  transition:background .28s;
+}
+.exec-card::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:1px;
+  background:linear-gradient(90deg,transparent,rgba(200,168,75,.10),transparent);
+}
+.exec-card:hover{background:rgba(14,13,10,1)}
+.exec-label{
+  font-size:.65rem;letter-spacing:.24em;text-transform:uppercase;
+  color:var(--gold-dim);display:block;margin-bottom:14px;
+}
+.exec-title{
+  font-family:'Cormorant Garamond',serif;
+  font-size:1.5rem;font-weight:400;color:var(--ivory);margin-bottom:10px;line-height:1.2;
+}
+.exec-body{font-size:.88rem;color:var(--muted);line-height:1.72}
+.exec-positioning{
+  margin-top:32px;padding:22px 28px;
+  border:1px solid rgba(200,168,75,.12);
+  font-size:.88rem;font-style:italic;
+  color:rgba(168,168,160,.62);line-height:1.76;
+  text-align:center;
+}
+
+/* ── Positioning block ── */
+.access-position{
+  padding:52px 64px;max-width:1200px;margin:0 auto;
+  border-top:1px solid var(--border);
+  display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:center;
+}
+.ap-main{
+  font-family:'Cormorant Garamond',serif;
+  font-size:clamp(1.6rem,2.5vw,2.1rem);font-weight:300;
+  line-height:1.35;color:var(--ivory);margin-bottom:18px;
+}
+.ap-main em{font-style:italic;color:var(--gold)}
+.ap-qualifier{
+  font-size:.86rem;line-height:1.82;
+  color:rgba(168,168,160,.58);
+  border-left:2px solid rgba(200,168,75,.18);padding-left:16px;
+}
+
+/* ── Access model ── */
+.access-model{
+  padding:52px 64px;max-width:1200px;margin:0 auto;
+  border-top:1px solid var(--border);
+}
+.am-eyebrow{
+  font-size:.68rem;letter-spacing:.28em;text-transform:uppercase;
+  color:rgba(200,168,75,.55);margin-bottom:14px;
+}
+.am-hed{
+  font-family:'Cormorant Garamond',serif;
+  font-size:clamp(1.4rem,2.2vw,1.9rem);font-weight:300;
+  color:var(--ivory);margin-bottom:20px;line-height:1.2;
+}
+.am-body{display:flex;flex-direction:column;gap:12px;max-width:640px}
+.am-line{
+  font-size:.94rem;color:rgba(168,168,160,.74);line-height:1.78;
+  display:flex;align-items:flex-start;gap:12px;
+}
+.am-line::before{
+  content:'—';color:rgba(200,168,75,.35);flex-shrink:0;
+  font-family:'Cormorant Garamond',serif;margin-top:1px;
+}
+
+/* ── Decision guide ── */
+.decision-guide{
+  padding:44px 64px;max-width:1200px;margin:0 auto;
+  border-top:1px solid var(--border);
+}
+.dg-hed{
+  font-family:'Cormorant Garamond',serif;
+  font-size:clamp(1.3rem,2vw,1.7rem);font-weight:300;
+  color:rgba(237,232,222,.75);margin-bottom:22px;letter-spacing:.01em;
+}
+.dg-rows{display:flex;flex-direction:column;gap:13px}
+.dg-row{
+  display:flex;align-items:baseline;gap:16px;
+  font-size:.88rem;line-height:1.6;color:rgba(168,168,160,.78);
+}
+.dg-if{color:rgba(168,168,160,.44);font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;flex-shrink:0;width:62px}
+.dg-goal{color:rgba(168,168,160,.62);flex:1}
+.dg-arrow{color:rgba(200,168,75,.4);flex-shrink:0;align-self:center}
+.dg-tier{color:var(--gold);font-weight:400;min-width:80px;text-align:right}
+
+/* ── Pricing CTA ── */
+.pricing-cta{
+  padding:52px 64px;max-width:1200px;margin:0 auto;text-align:center;
+  border-top:1px solid rgba(200,168,75,.08);
+}
+.pricing-cta-actions{display:flex;align-items:center;justify-content:center;gap:24px;margin-bottom:16px}
+.pricing-cta-meta{font-size:.68rem;letter-spacing:.14em;text-transform:uppercase;color:rgba(168,168,160,.30)}
+
+/* ── Final close ── */
+.final-close{
+  padding:52px 64px 64px;max-width:1200px;margin:0 auto;text-align:center;
+  border-top:1px solid rgba(200,168,75,.08);
+}
+.fc-main{
+  font-family:'Cormorant Garamond',serif;
+  font-size:clamp(1.6rem,3vw,2.4rem);font-weight:300;line-height:1.3;
+  color:var(--ivory);margin-bottom:8px;
+}
+.fc-question{
+  font-family:'Cormorant Garamond',serif;
+  font-size:clamp(1.6rem,3vw,2.4rem);font-weight:300;font-style:italic;
+  color:rgba(237,232,222,.55);margin-bottom:28px;
+}
+.fc-tagline{
+  font-size:.72rem;letter-spacing:.24em;text-transform:uppercase;
+  color:rgba(200,168,75,.45);
+}
+
+/* ── Responsive pricing/services ── */
+@media(max-width:900px){
+  .value-anchor,.exec-services,.access-position,.access-model,.decision-guide,.pricing-cta,.final-close{padding:48px 24px}
+  .exec-grid{grid-template-columns:1fr}
+  .access-position{grid-template-columns:1fr;gap:28px}
+}
+@media(max-width:520px){
+  .value-anchor,.exec-services,.access-position,.access-model,.decision-guide,.pricing-cta,.final-close{padding:36px 20px}
+  .dg-row{flex-wrap:wrap;gap:8px}
+  .dg-tier{text-align:left;min-width:auto}
+  .dg-if{width:auto}
+  .pricing-cta-actions{flex-direction:column;gap:16px}
+  .pricing-cta-actions .btn-primary{width:100%;text-align:center;justify-content:center}
+}
+
 /* ── Market Allocation ── */
 .alloc-section{padding:68px 64px;max-width:1200px;margin:0 auto;position:relative}
 .alloc-layout{display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:start}
@@ -2652,11 +2827,11 @@ body::before{
   </div>
   <div class="offer-intro r">
     <div>
-      <p class="s-eye">Licensing Positions</p>
+      <p class="s-eye">Market Access Plans</p>
       <h2 class="s-h offer-hed-split">
-        <span>Your market will be owned.</span>
-        <span class="offer-hed-mid">The only question is:</span>
-        <em>by you — or someone else.</em>
+        <span>Access is structured by level</span>
+        <span class="offer-hed-mid">of expansion —</span>
+        <em>not generic packages.</em>
       </h2>
     </div>
     <div class="offer-panel">
@@ -2683,94 +2858,94 @@ body::before{
   </div>
 
   <div class="offer-guide r">
-    <p class="offer-guide-line">Start with the market you need to own. Expand from there.</p>
+    <p class="offer-guide-line">Select the level of expansion your market requires.</p>
   </div>
 
   <div class="tier-grid-3" id="tierGrid">
 
     <div class="tier starter">
-      <span class="tier-flag">Entry — By Application</span>
-      <h3 class="tier-name">Market Entry</h3>
-      <div class="tier-urls">For approved operators entering a market selectively.</div>
+      <span class="tier-flag">Market Launch Access</span>
+      <h3 class="tier-name">Launch</h3>
+      <p class="tier-position">For businesses establishing their first market presence</p>
       <ul class="tier-features">
         <li>
           <svg fill="none" stroke="currentColor" stroke-width="1.4" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064"/></svg>
-          Search coverage across your assigned market
+          Initial system deployment
         </li>
         <li>
           <svg fill="none" stroke="currentColor" stroke-width="1.4" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
-          Single-operator exclusivity
+          Structured service + location rollout
         </li>
         <li>
           <svg fill="none" stroke="currentColor" stroke-width="1.4" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
-          Ongoing visibility management included
+          AI-driven setup and foundation
         </li>
         <li>
           <svg fill="none" stroke="currentColor" stroke-width="1.4" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/></svg>
-          Upgradeable to Market Position or Expansion
+          Upgradeable as your market grows
         </li>
       </ul>
       <div class="tier-gated">
         <span class="tier-gated-icon">◈</span>
-        <span><strong>Not publicly priced.</strong> Entry access is reviewed individually. Apply below.</span>
+        <span><strong>Access reviewed individually.</strong> Apply below to confirm availability.</span>
       </div>
-      <a href="#contact" class="tier-cta">Apply for Entry Access</a>
+      <a href="#contact" class="tier-cta">Apply for Launch Access</a>
       <button class="tier-book" onclick="window._bkPending={id:{{ $consultTypes->get('discovery')?->id ?? 1 }},duration:{{ $consultTypes->get('discovery')?->duration_minutes ?? 15 }},name:{{ json_encode($consultTypes->get('discovery')?->name ?? 'Free Discovery Call') }},isFree:{{ ($consultTypes->get('discovery')?->is_free ?? true) ? 'true' : 'false' }}};window.dispatchEvent(new CustomEvent('open-booking',{detail:window._bkPending}))">Book a Discovery Call</button>
     </div>
 
     <div class="tier focal">
-      <span class="tier-flag">Most Selected</span>
-      <h3 class="tier-name">Market Position</h3>
-      <div class="tier-urls">For businesses securing full search coverage across a target market.</div>
+      <span class="tier-flag">Market Expansion Access</span>
+      <h3 class="tier-name">Expansion</h3>
+      <p class="tier-position">For businesses actively scaling visibility</p>
       <ul class="tier-features">
         <li>
           <svg fill="none" stroke="currentColor" stroke-width="1.4" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
-          <strong>Exclusive market</strong> — one operator, protected coverage
+          <strong>Expanded service and city coverage</strong>
         </li>
         <li>
           <svg fill="none" stroke="currentColor" stroke-width="1.4" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064"/></svg>
-          Full search coverage across services and locations
+          Continuous rollout and optimization
         </li>
         <li>
           <svg fill="none" stroke="currentColor" stroke-width="1.4" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
-          <strong>Your brand only</strong> — zero attribution
+          <strong>Competitive reinforcement</strong> — active position held
         </li>
         <li>
           <svg fill="none" stroke="currentColor" stroke-width="1.4" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/></svg>
-          Ongoing optimization and reporting included
+          Ongoing reporting and performance tracking
         </li>
       </ul>
       <div class="tier-price"><sup>$</sup>2,995<sub>/mo</sub></div>
       <div class="tier-commitment">Structured 4-month deployment cycle.</div>
-      <a href="#contact" class="tier-cta">Apply for Market Position</a>
+      <a href="#contact" class="tier-cta">Apply for Expansion Access</a>
       <button class="tier-book" onclick="window._bkPending={id:{{ $consultTypes->get('strategy')?->id ?? 2 }},duration:{{ $consultTypes->get('strategy')?->duration_minutes ?? 30 }},name:{{ json_encode($consultTypes->get('strategy')?->name ?? 'Strategy Call') }},isFree:{{ ($consultTypes->get('strategy')?->is_free ?? false) ? 'true' : 'false' }}};window.dispatchEvent(new CustomEvent('open-booking',{detail:window._bkPending}))">Book a Strategy Call</button>
     </div>
 
     <div class="tier prime">
-      <span class="tier-flag">Full Scale</span>
-      <h3 class="tier-name">Market Expansion</h3>
-      <div class="tier-urls">For operators expanding coverage, scale, and protected reach.</div>
+      <span class="tier-flag">Market Dominance Access</span>
+      <h3 class="tier-name">Dominance</h3>
+      <p class="tier-position">For businesses securing and holding market leadership</p>
       <ul class="tier-features">
         <li>
           <svg fill="none" stroke="currentColor" stroke-width="1.4" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
-          Everything in Market Position
+          Full market expansion across services and locations
         </li>
         <li>
           <svg fill="none" stroke="currentColor" stroke-width="1.4" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064"/></svg>
-          <strong>Expanded coverage</strong> — broader market footprint
+          <strong>Priority deployment and optimization</strong>
         </li>
         <li>
           <svg fill="none" stroke="currentColor" stroke-width="1.4" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/></svg>
-          Priority processing and dedicated support
+          Advanced signal reinforcement
         </li>
         <li>
           <svg fill="none" stroke="currentColor" stroke-width="1.4" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>
-          For full-scale market ownership and expansion
+          Strategic oversight and market lock
         </li>
       </ul>
       <div class="tier-price"><sup>$</sup>4,799<sub>/mo</sub></div>
       <div class="tier-commitment">Priority processing. Structured 4-month deployment cycle.</div>
-      <a href="#contact" class="tier-cta">Apply for Expansion Access</a>
+      <a href="#contact" class="tier-cta">Apply for Dominance Access</a>
       <button class="tier-book" onclick="window._bkPending={id:{{ $consultTypes->get('agency-review')?->id ?? $consultTypes->get('agency')?->id ?? 3 }},duration:{{ $consultTypes->get('agency-review')?->duration_minutes ?? $consultTypes->get('agency')?->duration_minutes ?? 60 }},name:{{ json_encode($consultTypes->get('agency-review')?->name ?? $consultTypes->get('agency')?->name ?? 'Agency Licence Review') }},isFree:{{ ($consultTypes->get('agency-review')?->is_free ?? $consultTypes->get('agency')?->is_free ?? false) ? 'true' : 'false' }}};window.dispatchEvent(new CustomEvent('open-booking',{detail:window._bkPending}))">Review My Agency Licence</button>
     </div>
 
@@ -2794,6 +2969,112 @@ body::before{
   }
 })();
 </script>
+
+<!-- ════════════ VALUE ANCHOR ════════════ -->
+<div class="value-anchor r">
+  <div class="value-anchor-inner">
+    <p class="va-main">This is not traditional SEO.<br><em>This is structured, system-driven market expansion</em> — designed to scale your visibility across every service and every city simultaneously.</p>
+    <p class="va-sub">Businesses that implement early establish position before competitors can react.</p>
+  </div>
+</div>
+
+<div class="gold-rule"></div>
+
+<!-- ════════════ EXECUTION SERVICES ════════════ -->
+<section class="exec-services r">
+  <p class="exec-eyebrow">Build, Launch, and Scale</p>
+  <h2 class="exec-hed">Everything your expansion <em>requires.</em></h2>
+  <p class="exec-intro">All services align with your market expansion — not disconnected marketing efforts.</p>
+  <div class="exec-grid">
+    <div class="exec-card r">
+      <span class="exec-label">Development &amp; Design</span>
+      <h3 class="exec-title">Websites &amp; Builds</h3>
+      <p class="exec-body">Websites, redesigns, and performance-driven builds aligned with your expansion strategy.</p>
+    </div>
+    <div class="exec-card r">
+      <span class="exec-label">Advertising</span>
+      <h3 class="exec-title">Search &amp; Local Campaigns</h3>
+      <p class="exec-body">Search and local campaigns designed to reinforce your market position while your organic presence compounds.</p>
+    </div>
+    <div class="exec-card r">
+      <span class="exec-label">Brand &amp; Print</span>
+      <h3 class="exec-title">Brand Systems</h3>
+      <p class="exec-body">Business cards, collateral, and brand systems aligned with your growth — not generic templates.</p>
+    </div>
+  </div>
+  <p class="exec-positioning">All services align with your market expansion strategy — not disconnected marketing efforts.</p>
+</section>
+
+<div class="gold-rule"></div>
+
+<!-- ════════════ POSITIONING ════════════ -->
+<div class="access-position r">
+  <div>
+    <p class="ap-main">This system is not limited to the largest companies.<br><em>It rewards those who move first.</em></p>
+    <p style="font-size:.96rem;color:rgba(168,168,160,.70);line-height:1.82;margin-top:14px">A smaller, faster business can establish market presence before larger competitors — and hold it.</p>
+  </div>
+  <div>
+    <p class="ap-qualifier">Built for growth-focused businesses — from emerging operators to established teams scaling beyond their current reach.</p>
+  </div>
+</div>
+
+<div class="gold-rule"></div>
+
+<!-- ════════════ ACCESS MODEL ════════════ -->
+<div class="access-model r">
+  <p class="am-eyebrow">Access is limited by market</p>
+  <h2 class="am-hed">One territory. One brand.</h2>
+  <div class="am-body">
+    <p class="am-line">Each territory supports one primary brand.</p>
+    <p class="am-line">Once a market is active, expansion is restricted.</p>
+    <p class="am-line">Access is released in controlled phases based on demand and system capacity.</p>
+  </div>
+</div>
+
+<div class="gold-rule"></div>
+
+<!-- ════════════ DECISION GUIDE ════════════ -->
+<div class="decision-guide r">
+  <h2 class="dg-hed">Not sure where to start?</h2>
+  <div class="dg-rows">
+    <div class="dg-row">
+      <span class="dg-if">If</span>
+      <span class="dg-goal">your goal is visibility</span>
+      <span class="dg-arrow">→</span>
+      <span class="dg-tier">Launch</span>
+    </div>
+    <div class="dg-row">
+      <span class="dg-if">If</span>
+      <span class="dg-goal">your goal is growth</span>
+      <span class="dg-arrow">→</span>
+      <span class="dg-tier">Expansion</span>
+    </div>
+    <div class="dg-row">
+      <span class="dg-if">If</span>
+      <span class="dg-goal">your goal is market control</span>
+      <span class="dg-arrow">→</span>
+      <span class="dg-tier">Dominance</span>
+    </div>
+  </div>
+</div>
+
+<div class="gold-rule"></div>
+
+<!-- ════════════ PRICING CTA ════════════ -->
+<div class="pricing-cta r">
+  <div class="pricing-cta-actions">
+    <a href="{{ route('onboarding.start') }}" class="btn-primary">Check Your Market Availability</a>
+    <a href="#contact" class="btn-ghost">Request Access</a>
+  </div>
+  <p class="pricing-cta-meta">Takes ~2 minutes &nbsp;&middot;&nbsp; No commitment required</p>
+</div>
+
+<!-- ════════════ FINAL CLOSE ════════════ -->
+<div class="final-close r">
+  <p class="fc-main">Your market will be claimed.</p>
+  <p class="fc-question">The only question is — by whom.</p>
+  <p class="fc-tagline">First to structure. First to deploy. First to rank.</p>
+</div>
 
 <!-- ════════════ SETTLEMENT ════════════ -->
 <div class="settlement">
