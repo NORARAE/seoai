@@ -233,11 +233,8 @@
             <span x-text="rdOpen ? 'Close ↑' : 'Learn more →'"></span>
           </button>
           <div class="bk-rd-expand-body" x-show="rdOpen" x-cloak>
-            This applies to businesses developing custom systems, automation, or AI-driven infrastructure.
+            This applies to businesses developing custom systems, automation, or AI-driven infrastructure. To include a CPA review with your intake, complete onboarding and check the relevant option.
           </div>
-          <br>
-          <a href="/rd-tax-credit" class="bk-rd-cta">Request CPA R&amp;D Review &rarr;</a>
-          <p style="font-size:.70rem;letter-spacing:.04em;color:rgba(200,168,75,.82);margin-top:6px">Complimentary review available for qualified operators.</p>
         </div>
       </div>
 

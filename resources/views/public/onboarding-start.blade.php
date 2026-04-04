@@ -1767,10 +1767,6 @@ body {
                 <svg width="13" height="13" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" aria-hidden="true"><rect x="2" y="1" width="10" height="12" rx="1.5"/><line x1="4.5" y1="5" x2="9.5" y2="5"/><line x1="4.5" y1="8" x2="9.5" y2="8"/><line x1="4.5" y1="11" x2="7" y2="11"/></svg>
                 IRS Instructions for Form 6765
               </a>
-              <a href="/rd-tax-credit" class="ob-detail-rd-link">
-                <svg width="13" height="13" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" aria-hidden="true"><circle cx="7" cy="7" r="5"/><line x1="7" y1="5" x2="7" y2="7.5"/><circle cx="7" cy="9.5" r=".4" fill="currentColor" stroke="none"/></svg>
-                R&amp;D overview — seoaico.com
-              </a>
             </div>
           </div>
           <hr class="ob-detail-divider">

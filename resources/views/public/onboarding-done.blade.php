@@ -289,8 +289,10 @@ body {
 }
 </style>
 @include('partials.clarity')
+<script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
 </head>
 <body>
+<div x-data="{ howOpen: false }">
 <div class="done-bg" aria-hidden="true"></div>
 <div class="done-wrap">
   <span class="done-eye">Onboarding</span>
@@ -308,7 +310,7 @@ body {
     @else
       We've received your intake form and business license. Our team will review everything and be in touch within 1–2 business days.
     @endif
-  </p>  <p class="done-sub" style="font-size:.82rem;opacity:.7;margin-top:0">The SEO AI Co™ system combines structured content, local relevance, internal link architecture, search signals, and ongoing optimization &mdash; designed to strengthen every signal that drives local visibility and market dominance.</p>  <p style="font-size:.7rem;opacity:.32;margin-top:0;text-align:center;max-width:460px;margin-left:auto;margin-right:auto;line-height:1.65;color:var(--muted)">SEO AI Co™ is a programmatic SEO and market intelligence system for operators competing in active markets. This platform maps local search visibility and identifies expansion opportunities.</p>  <p class="done-email-note">Questions? Reach us at <a href="mailto:hello@seoaico.com" style="color:rgba(168,168,160,.7);text-decoration:none">hello@seoaico.com</a></p>
+  </p>  <p class="done-sub" style="font-size:.82rem;color:rgba(168,168,160,.80);margin-top:0">The SEO AI Co™ system combines structured content, local relevance, internal link architecture, search signals, and ongoing optimization &mdash; designed to strengthen every signal that drives local visibility and market dominance.</p>  <p style="font-size:.70rem;color:rgba(168,168,160,.68);margin-top:0;text-align:center;max-width:460px;margin-left:auto;margin-right:auto;line-height:1.65">SEO AI Co™ is a programmatic SEO and market intelligence system for operators competing in active markets. This platform maps local search visibility and identifies expansion opportunities.</p>  <p class="done-email-note">Questions? Reach us at <a href="mailto:hello@seoaico.com" style="color:rgba(168,168,160,.7);text-decoration:none">hello@seoaico.com</a></p>
   <a href="{{ url('/') }}" class="done-home">&larr; seoaico.com</a>
 
   <!-- WHAT HAPPENS NEXT -->
@@ -331,22 +333,31 @@ body {
     <p class="done-expect-body">Market positioning and indexing require sustained signal development. Results compound over time — early interruption resets the compounding cycle rather than pausing it. The system operates in structured 4-month cycles for this reason: build, stabilization, expansion, and growth. Early interruption prevents full system performance. This is built for operators who understand that market position is built and held, not switched on.</p>
   </div>
 
-  <!-- PREPARE NEXT STEP -->
+  <!-- OPTIONAL ACCELERATION -->
   <div class="done-actions">
-    <span class="done-actions-eye">Prepare your next step</span>
-    <a href="/book" class="done-cta-primary">
-      @if(($leadType ?? 'single_location') === 'agency')
-        Begin partner-level review &rarr;
-      @elseif(($leadType ?? 'single_location') === 'multi_location')
-        Review your rollout strategy &rarr;
-      @else
-        Start with a focused market session &rarr;
-      @endif
-    </a>
-    <a href="/#how" class="done-cta-secondary">Review how the system works &rarr;</a>
-    <div class="done-priority-wrap">
-      <a href="/book" class="done-cta-tertiary">Secure a priority slot &rarr;</a>
-      <p class="done-priority-note">Priority sessions ensure faster activation and guided setup.</p>
+    <span class="done-actions-eye">Optional: accelerate your review</span>
+    <a href="/book" class="done-cta-primary">Secure a Priority Review Session &rarr;</a>
+    <p style="font-size:.82rem;color:rgba(168,168,160,.85);line-height:1.65;margin-top:2px">Priority sessions provide faster activation and guided setup.</p>
+    <button type="button" class="done-cta-tertiary" style="margin-top:6px;background:none;border:none;cursor:pointer;font-family:'DM Sans',sans-serif" @click="howOpen = true">Review how the system works &rarr;</button>
+  </div>
+
+  <!-- HOW IT WORKS OVERLAY -->
+  <div x-show="howOpen" @keydown.escape.window="howOpen = false" x-cloak
+       style="position:fixed;inset:0;z-index:100;display:flex;align-items:center;justify-content:center;padding:24px">
+    <div style="position:absolute;inset:0;background:rgba(0,0,0,.86)" @click="howOpen = false"></div>
+    <div style="position:relative;z-index:1;background:#0e0e0e;border:1px solid rgba(200,168,75,.14);border-radius:8px;padding:36px 32px;max-width:500px;width:100%;max-height:80vh;overflow-y:auto">
+      <button type="button" @click="howOpen = false"
+              style="position:absolute;top:16px;right:16px;background:none;border:none;color:rgba(168,168,160,.6);font-size:1.1rem;cursor:pointer;line-height:1" aria-label="Close">&times;</button>
+      <p style="font-size:.64rem;letter-spacing:.2em;text-transform:uppercase;color:var(--gold-dim);margin-bottom:14px">How the system works</p>
+      <h2 style="font-family:'Cormorant Garamond',serif;font-size:1.6rem;font-weight:400;color:var(--ivory);margin-bottom:18px;line-height:1.2">Structured deployment.<br><em style="color:var(--gold-lt)">Compounding results.</em></h2>
+      <p style="font-size:.88rem;color:rgba(168,168,160,.88);line-height:1.8;margin-bottom:18px">The system operates in structured 4-month deployment cycles. Each phase builds on the last — content, signals, architecture, and authority compound progressively.</p>
+      <ul style="list-style:none;display:flex;flex-direction:column;gap:10px;margin-bottom:20px">
+        <li style="font-size:.86rem;color:var(--ivory);line-height:1.6;padding-left:18px;position:relative"><span style="position:absolute;left:0;color:var(--gold-dim)">&ndash;</span>Build &mdash; structural content and signal foundation</li>
+        <li style="font-size:.86rem;color:var(--ivory);line-height:1.6;padding-left:18px;position:relative"><span style="position:absolute;left:0;color:var(--gold-dim)">&ndash;</span>Stabilization &mdash; indexing, coverage, and compounding</li>
+        <li style="font-size:.86rem;color:var(--ivory);line-height:1.6;padding-left:18px;position:relative"><span style="position:absolute;left:0;color:var(--gold-dim)">&ndash;</span>Expansion &mdash; territory depth and competitive positioning</li>
+        <li style="font-size:.86rem;color:var(--ivory);line-height:1.6;padding-left:18px;position:relative"><span style="position:absolute;left:0;color:var(--gold-dim)">&ndash;</span>Growth &mdash; sustained market authority</li>
+      </ul>
+      <p style="font-size:.80rem;color:rgba(168,168,160,.72);font-style:italic;line-height:1.7">Early interruption resets the compounding cycle. This is built for operators who understand that market position is built and held, not switched on.</p>
     </div>
   </div>
 
@@ -362,6 +373,6 @@ body {
     <p class="done-next-body" style="font-size:.94rem">Some operators may qualify for R&amp;D tax credits related to technical and digital development. See official IRS resources: <a href="https://www.irs.gov/instructions/i6765" target="_blank" rel="noopener noreferrer" style="color:var(--gold);text-decoration:none">Form 6765 Instructions</a> or <a href="https://www.irs.gov/pub/irs-pdf/f6765.pdf" target="_blank" rel="noopener noreferrer" style="color:var(--gold);text-decoration:none">Form 6765 PDF</a>. This is not tax advice — consult a qualified CPA.</p>
   </div>
 
-</div>
+</div>{{-- /x-data --}}
 </body>
 </html>
