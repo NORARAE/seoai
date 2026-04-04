@@ -81,7 +81,7 @@ nav.stuck{background:rgba(8,8,8,.95);backdrop-filter:blur(16px);border-color:var
 #hero{
   display:flex;flex-direction:column;
   justify-content:flex-start;align-items:flex-start;
-  padding:clamp(100px,13vh,148px) 64px 44px;position:relative;overflow:hidden;
+  padding:clamp(100px,13vh,148px) 64px 44px;position:relative;
   max-width:1200px;margin:0 auto;
 }
 .hero-grid{
@@ -91,15 +91,69 @@ nav.stuck{background:rgba(8,8,8,.95);backdrop-filter:blur(16px);border-color:var
     linear-gradient(90deg,rgba(200,168,75,.03) 1px,transparent 1px);
   background-size:88px 88px;
 }
-.hero-orb{
-  position:absolute;top:30%;right:-10%;width:600px;height:600px;border-radius:50%;
-  background:radial-gradient(ellipse,rgba(200,168,75,.07) 0%,transparent 65%);
-  pointer-events:none;
-  animation:orbDrift 22s ease-in-out infinite alternate;
+
+/* ── Ambient atmospheric layers (fixed, full-viewport, GPU-composited) ──
+   Wrappers carry JS parallax translate.
+   Inner orbs carry CSS drift animation.
+   These layers never touch the hero container, so no clip/seam is possible.
+── */
+.amb-wrap{position:fixed;pointer-events:none;z-index:0;will-change:transform}
+.amb-wrap-a{top:-8%;right:-6%}
+.amb-wrap-b{bottom:6%;left:-10%}
+.amb-orb-a{
+  width:min(72vw,900px);height:min(72vw,900px);
+  border-radius:50%;
+  background:radial-gradient(ellipse at center,rgba(200,168,75,.07) 0%,transparent 62%);
+  animation:ambDriftA 28s ease-in-out infinite alternate;
+  will-change:transform;
 }
-@keyframes orbDrift{
+.amb-orb-b{
+  width:min(55vw,700px);height:min(55vw,700px);
+  border-radius:50%;
+  background:radial-gradient(ellipse at center,rgba(200,168,75,.04) 0%,transparent 60%);
+  animation:ambDriftB 38s ease-in-out infinite alternate;
+  will-change:transform;
+}
+/* Focal bloom — reinforces hero text area composition */
+.amb-bloom{
+  position:fixed;top:8%;left:50%;
+  width:min(110vw,1100px);height:60vh;
+  transform:translateX(-50%);
+  border-radius:50%;
+  background:radial-gradient(ellipse at 42% 46%,rgba(200,168,75,.038) 0%,transparent 65%);
+  pointer-events:none;z-index:0;
+}
+/* Shimmer — barely-visible slow tonal breathing */
+.amb-shimmer{
+  position:fixed;top:0;left:0;right:0;height:72vh;
+  background:linear-gradient(158deg,transparent 28%,rgba(200,168,75,.022) 50%,transparent 72%);
+  pointer-events:none;z-index:0;
+  opacity:0;
+  animation:shimmerBreath 16s ease-in-out infinite;
+  display:none;
+}
+@keyframes ambDriftA{
   from{transform:translate(0,0) scale(1)}
-  to{transform:translate(-5%,4%) scale(1.1)}
+  to{transform:translate(-5%,4%) scale(1.09)}
+}
+@keyframes ambDriftB{
+  from{transform:translate(0,0) scale(1)}
+  to{transform:translate(5%,-4%) scale(1.07)}
+}
+@keyframes shimmerBreath{
+  0%,100%{opacity:0}
+  50%{opacity:1}
+}
+/* Desktop: keep orb-b and bloom restrained */
+@media(min-width:901px){
+  .amb-orb-b{opacity:.55}
+  .amb-bloom{opacity:.65}
+  .amb-shimmer{display:none}
+}
+/* Respect reduced-motion preference */
+@media(prefers-reduced-motion:reduce){
+  .amb-orb-a,.amb-orb-b{animation:none}
+  .amb-shimmer{display:none!important}
 }
 
 /* ── Rotating headline ── */
@@ -1121,7 +1175,11 @@ footer{border-top:1px solid var(--border);padding:36px 64px;display:flex;flex-di
   .hero-actions{flex-direction:column;gap:16px;width:100%}
   .btn-primary{width:100%;text-align:center;padding:16px 24px}
   .btn-ghost{text-align:center}
-  .hero-orb{display:none}
+  /* Mobile: stronger ambient atmosphere for cinematic first-screen feel */
+  .amb-orb-a{background:radial-gradient(ellipse at center,rgba(200,168,75,.11) 0%,transparent 62%)}
+  .amb-orb-b{background:radial-gradient(ellipse at center,rgba(200,168,75,.07) 0%,transparent 60%);opacity:1}
+  .amb-bloom{background:radial-gradient(ellipse at 42% 46%,rgba(200,168,75,.07) 0%,transparent 65%);opacity:1}
+  .amb-shimmer{display:block}
   .hero-scroll{left:20px;bottom:32px}
   .alloc-section{padding:64px 24px}
   .alloc-layout{grid-template-columns:1fr;gap:48px}
@@ -1823,6 +1881,12 @@ body::before{
 </head>
 <body>
 
+<!-- ════════════ AMBIENT ATMOSPHERIC LAYERS ════════════ -->
+<div class="amb-wrap amb-wrap-a" aria-hidden="true"><div class="amb-orb-a"></div></div>
+<div class="amb-wrap amb-wrap-b" aria-hidden="true"><div class="amb-orb-b"></div></div>
+<div class="amb-bloom" aria-hidden="true"></div>
+<div class="amb-shimmer" aria-hidden="true"></div>
+
 <!-- ════════════ NAV ════════════ -->
 <nav id="nav">
   <a href="/" class="logo">
@@ -1861,7 +1925,6 @@ body::before{
 <!-- ════════════ HERO ════════════ -->
 <section id="hero">
   <div class="hero-grid"></div>
-  <div class="hero-orb"></div>
 
   <div class="hero-stage">
     <h1 id="heroSeq" aria-label="Own your market. Capture your territory. Lock out competitors. One operator, one territory. Claim it before they do.">Own your<br>market.</h1>
@@ -3215,6 +3278,27 @@ body::before{
     menu.querySelectorAll('[data-menu-close]').forEach(function(el){
       el.addEventListener('click', closeMenu);
     });
+  })();
+
+  /* ── Ambient parallax — restrained, GPU-only transforms ── */
+  (function(){
+    if(window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    var wA   = document.querySelector('.amb-wrap-a');
+    var wB   = document.querySelector('.amb-wrap-b');
+    var grid = document.querySelector('.hero-grid');
+    var ticking = false;
+    function update(){
+      var y = window.scrollY;
+      /* Orb-a rises slightly on scroll (0.08x); orb-b descends (0.05x) */
+      if(wA)  wA.style.transform  = 'translateY('+(-y*.08).toFixed(1)+'px)';
+      if(wB)  wB.style.transform  = 'translateY('+(y*.05).toFixed(1)+'px)';
+      /* Grid shifts 0.03x — creates subtle depth separation from content */
+      if(grid) grid.style.backgroundPosition = '0 '+(-y*.03).toFixed(1)+'px';
+      ticking = false;
+    }
+    window.addEventListener('scroll',function(){
+      if(!ticking){requestAnimationFrame(update);ticking=true;}
+    },{passive:true});
   })();
 </script>
 
