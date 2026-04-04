@@ -2599,12 +2599,13 @@ body::before{
 })();
 </script>
 
-<!-- ════════════ LOOKY-LOO CAPTURE ════════════ -->
-<section id="preview" style="padding:80px 40px;text-align:center;border-top:1px solid rgba(200,168,75,.06)">
-  <p style="font-size:.72rem;letter-spacing:.2em;text-transform:uppercase;color:rgba(200,168,75,.55);margin-bottom:14px">Not ready to apply?</p>
-  <h2 style="font-family:'Cormorant Garamond',serif;font-size:clamp(1.7rem,4vw,2.5rem);font-weight:400;color:#ede8de;margin-bottom:16px;line-height:1.2">See what's available<br><em>in your territory.</em></h2>
-  <p style="font-size:.9rem;color:rgba(168,168,160,.7);max-width:460px;margin:0 auto 28px;line-height:1.75">Share your site and we'll map what's available in your territory — coverage you're missing, ground competitors could take, and the position still open. Territories close as agreements are signed.</p>
-  <a href="{{ route('onboarding.start') }}" style="display:inline-block;background:transparent;border:1px solid rgba(200,168,75,.35);color:#c8a84b;font-size:.78rem;font-weight:400;letter-spacing:.18em;text-transform:uppercase;padding:14px 36px;border-radius:4px;text-decoration:none;transition:background .3s,border-color .3s,color .3s" onmouseover="this.style.background='rgba(200,168,75,.08)';this.style.borderColor='rgba(200,168,75,.6)'" onmouseout="this.style.background='transparent';this.style.borderColor='rgba(200,168,75,.35)'">Preview your opportunity &rarr;</a>
+<!-- ════════════ TERRITORY PREVIEW ════════════ -->
+<section id="preview" style="padding:56px 40px;text-align:center;border-top:1px solid rgba(200,168,75,.06)">
+  <p style="font-family:'Cormorant Garamond',serif;font-size:clamp(1.7rem,4vw,2.5rem);font-weight:400;color:rgba(237,232,222,.95);margin-bottom:12px;line-height:1.2">Explore your territory first.</p>
+  <p style="font-size:.84rem;letter-spacing:.12em;text-transform:uppercase;color:rgba(200,168,75,.88);margin-bottom:20px;font-weight:400">See what's available in your territory.</p>
+  <p style="font-size:.92rem;color:rgba(168,168,160,.88);max-width:480px;margin:0 auto 28px;line-height:1.8">Share your site and we'll map what's available in your territory — including gaps, missed coverage, and positions competitors may take if left open.</p>
+  <a href="{{ route('onboarding.start') }}" style="display:inline-block;background:#c8a84b;color:#080808;font-family:'DM Sans',sans-serif;font-size:.82rem;font-weight:500;letter-spacing:.08em;text-transform:uppercase;padding:14px 36px;border-radius:4px;text-decoration:none;transition:background .2s,transform .15s" onmouseover="this.style.background='#e2c97d';this.style.transform='translateY(-1px)'" onmouseout="this.style.background='#c8a84b';this.style.transform='none'">Check Your Market Position &rarr;</a>
+  <p style="font-size:.72rem;letter-spacing:.10em;text-transform:uppercase;color:rgba(200,168,75,.88);margin-top:14px;font-weight:400">Territories close as agreements are secured.</p>
 </section>
 
 <!-- ════════════ CONTACT ════════════ -->
