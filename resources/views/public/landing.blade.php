@@ -1472,40 +1472,42 @@ body::before{
   font-size:clamp(1.45rem,2.75vw,2.15rem);
   color:var(--gold);letter-spacing:.025em;line-height:1.32;
   opacity:0;animation:up .75s .2s forwards;
-  margin-bottom:22px;
+  margin-bottom:28px;
 }
 .hero-sub{
-  font-size:clamp(.98rem,1.4vw,1.1rem);line-height:1.75;
-  color:rgba(168,168,160,.75);max-width:560px;
-  opacity:0;animation:up .8s .35s forwards;
-  margin-bottom:12px;
+  font-size:clamp(.98rem,1.4vw,1.1rem);line-height:1.82;
+  color:rgba(168,168,160,.72);max-width:540px;
+  opacity:0;animation:up .8s .31s forwards;
+  margin-bottom:32px;
 }
 .hero-note{
-  font-size:.74rem;letter-spacing:.22em;text-transform:uppercase;
-  color:rgba(200,168,75,.5);
-  opacity:0;animation:up .8s .46s forwards;
-  margin-bottom:28px;
+  font-size:.72rem;letter-spacing:.24em;text-transform:uppercase;
+  color:rgba(200,168,75,.44);
+  opacity:0;animation:up .8s .62s forwards;
+  margin-top:4px;margin-bottom:32px;
 }
 
 /* ── Hero differentiation + supporting lines ── */
 .hero-diff{
-  font-size:.88rem;letter-spacing:.04em;
-  color:rgba(200,168,75,.70);line-height:1.68;
-  opacity:0;animation:up .8s .51s forwards;
-  margin-bottom:8px;max-width:600px;
+  font-size:.86rem;letter-spacing:.05em;
+  color:rgba(200,168,75,.62);line-height:1.74;
+  opacity:0;animation:up .8s .50s forwards;
+  margin-bottom:10px;max-width:580px;
 }
 .hero-supporting{
-  font-size:.82rem;letter-spacing:.02em;
-  color:rgba(168,168,160,.50);line-height:1.76;
-  opacity:0;animation:up .8s .58s forwards;
-  margin-bottom:22px;max-width:580px;
+  font-size:.8rem;letter-spacing:.03em;
+  color:rgba(168,168,160,.42);line-height:1.80;
+  opacity:0;animation:up .8s .57s forwards;
+  margin-bottom:28px;max-width:560px;
 }
+/* Micro-type — elegant 3-line stacked serif moment */
 .hero-cities{
   font-family:'Cormorant Garamond',serif;font-weight:300;
-  font-size:clamp(1.1rem,1.7vw,1.42rem);
-  color:var(--ivory);letter-spacing:.06em;line-height:1.5;
-  opacity:0;animation:up .8s .42s forwards;
-  margin-bottom:20px;
+  font-size:clamp(1rem,1.55vw,1.28rem);
+  color:rgba(237,232,222,.62);letter-spacing:.12em;line-height:1.72;
+  opacity:0;animation:up .8s .44s forwards;
+  margin-bottom:28px;
+  border-left:1px solid rgba(200,168,75,.18);padding-left:18px;
 }
 .hero-cities span{display:block}
 .hero-cta-note{
@@ -1518,48 +1520,67 @@ body::before{
 /* ── Hero constellation overlay ── */
 .hero-net{
   position:absolute;inset:0;width:100%;height:100%;
-  pointer-events:none;z-index:0;opacity:.052;
+  pointer-events:none;z-index:0;opacity:.072;
 }
 .hero-net-g{
-  animation:netDrift 44s ease-in-out infinite alternate;
+  animation:netDrift 50s ease-in-out infinite alternate;
   transform-origin:600px 280px;
 }
 @keyframes netDrift{
   from{transform:translate(0,0) scale(1)}
-  to{transform:translate(-1.5%,1.2%) scale(1.035)}
+  to{transform:translate(-2%,1.4%) scale(1.04)}
 }
 @media(prefers-reduced-motion:reduce){.hero-net-g{animation:none}}
 
 /* ── Hero → Section transition: animated shimmer line ── */
-.hero-transition{text-align:center;padding:14px 0 0}
+.hero-transition{text-align:center;padding:24px 0 0}
 .hero-scroll-label{
-  display:block;font-size:.64rem;letter-spacing:.2em;text-transform:uppercase;
-  color:rgba(200,168,75,.28);margin-bottom:14px;
-  opacity:0;animation:up .8s 1.4s forwards;
+  display:block;font-size:.64rem;letter-spacing:.22em;text-transform:uppercase;
+  color:rgba(200,168,75,.36);margin-bottom:18px;
+  opacity:0;animation:up .9s 1.4s forwards;
 }
 .hero-rule-shimmer{
   position:relative;overflow:hidden;height:1px;
-  background:linear-gradient(to right,transparent,rgba(154,122,48,.38),transparent);
+  background:linear-gradient(to right,transparent,rgba(154,122,48,.28),rgba(200,168,75,.42),rgba(154,122,48,.28),transparent);
 }
 .hero-rule-shimmer::after{
-  content:'';position:absolute;top:0;left:-120%;width:70%;height:100%;
-  background:linear-gradient(90deg,transparent,rgba(200,168,75,.58),transparent);
-  animation:shimmerSweep 5.4s ease-in-out 1.8s infinite;
+  content:'';position:absolute;top:0;left:-120%;width:55%;height:100%;
+  background:linear-gradient(90deg,transparent,rgba(200,168,75,.82),rgba(237,210,130,.6),rgba(200,168,75,.82),transparent);
+  animation:shimmerSweep 6.2s ease-in-out 2s infinite;
 }
 @keyframes shimmerSweep{
-  0%{left:-120%}
-  40%{left:150%}
-  100%{left:150%}
+  0%{left:-120%;opacity:0}
+  8%{opacity:1}
+  42%{left:150%;opacity:0}
+  100%{left:150%;opacity:0}
 }
+/* refined descent indicator — two stacked chevron strokes */
 .hero-scroll-arrow{
-  width:6px;height:6px;border-radius:50%;
-  background:rgba(200,168,75,.28);
-  margin:14px auto 0;
-  animation:dotPulseScroll 3.4s ease-in-out infinite;
+  position:relative;width:18px;height:12px;
+  margin:16px auto 0;
+  animation:chevronFade 3.6s ease-in-out infinite;
 }
-@keyframes dotPulseScroll{
-  0%,100%{opacity:.16;box-shadow:0 0 0 0 rgba(200,168,75,.0)}
-  50%{opacity:.52;box-shadow:0 0 10px 3px rgba(200,168,75,.13)}
+.hero-scroll-arrow::before,
+.hero-scroll-arrow::after{
+  content:'';
+  position:absolute;left:50%;width:8px;height:1px;
+  background:rgba(200,168,75,.38);
+  transform-origin:center;
+}
+.hero-scroll-arrow::before{
+  top:2px;
+  transform:translateX(-100%) rotate(40deg);
+  box-shadow:4px 0 0 rgba(200,168,75,.38);
+}
+.hero-scroll-arrow::after{
+  top:7px;
+  transform:translateX(-100%) rotate(40deg);
+  box-shadow:4px 0 0 rgba(200,168,75,.22);
+  opacity:.6;
+}
+@keyframes chevronFade{
+  0%,100%{opacity:.28;transform:translateY(0)}
+  50%{opacity:.62;transform:translateY(4px)}
 }
 
 /* ── System Structure section ── */
@@ -1986,12 +2007,12 @@ body::before{
   .step-title{font-size:1.18rem}
 
   /* Hero supporting copy */
-  .hero-gold-accent{margin-bottom:14px;line-height:1.3}
-  .hero-sub{margin-bottom:10px}
-  .hero-note{margin-bottom:18px}
-  .hero-diff{font-size:.84rem;margin-bottom:6px}
-  .hero-cities{font-size:1.04rem;margin-bottom:14px}
-  .hero-supporting{font-size:.79rem;margin-bottom:16px;max-width:100%}
+  .hero-gold-accent{margin-bottom:18px;line-height:1.3}
+  .hero-sub{margin-bottom:20px}
+  .hero-note{margin-bottom:20px}
+  .hero-diff{font-size:.82rem;margin-bottom:8px}
+  .hero-cities{font-size:.96rem;margin-bottom:20px;letter-spacing:.09em;padding-left:14px}
+  .hero-supporting{font-size:.77rem;margin-bottom:20px;max-width:100%}
   .hero-cta-note{font-size:.64rem;letter-spacing:.12em}
   .hero-net{opacity:.04}
   .hero-scroll-label{font-size:.60rem;letter-spacing:.16em}
@@ -2372,16 +2393,15 @@ body::before{
         <em>and opening.</em>
       </h2>
       <div class="alloc-sub">
-        <p>Each region reflects real-time rollout status based on demand, competition, and expansion sequencing.</p>
-        <p>One brand positioned per market.</p>
-        <p><em>Selective access. Strategic expansion phases.</em></p>
+        <p>Each region reflects real-time rollout status — driven by demand, competition, and phased expansion sequencing.</p>
+        <p><em>One brand positioned per market. Strategic expansion phases.</em></p>
       </div>
       <div class="alloc-reinforce">
         <span>Markets activate as expansion progresses — early positioning secures long-term visibility.</span>
         <span>AI-guided deployment. Structured local rollout.</span>
         <span>Built to compound over time — continuous optimization across every active market.</span>
       </div>
-      <p class="alloc-urgency">Early access builds stronger position.<br><em>Structure your market as expansion phases open.</em></p>
+      <p class="alloc-urgency">Position established early compounds. <em>Structure your market as phases open.</em></p>
       <span class="alloc-convert-label">Selective access. Launch-ready markets only.</span>
       <div class="alloc-actions">
         <a href="/onboarding/start" class="btn-primary">Claim Your Territory</a>
