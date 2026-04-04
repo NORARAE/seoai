@@ -751,12 +751,16 @@ nav.stuck{background:rgba(8,8,8,.95);backdrop-filter:blur(16px);border-color:var
 
 /* ── Status dot animations ── */
 @keyframes dotPulseActive{
-  0%,100%{opacity:.70}
+  0%,100%{opacity:.72}
   50%{opacity:1}
 }
 @keyframes dotGlowLimited{
-  0%,100%{box-shadow:0 0 4px rgba(245,158,11,.45)}
-  50%{box-shadow:0 0 9px rgba(245,158,11,.65)}
+  0%,100%{box-shadow:0 0 4px rgba(200,155,58,.45)}
+  50%{box-shadow:0 0 10px rgba(200,155,58,.72)}
+}
+@keyframes dotPulseOpen{
+  0%,100%{opacity:.55;box-shadow:0 0 4px rgba(112,152,184,.32)}
+  50%{opacity:.88;box-shadow:0 0 9px rgba(112,152,184,.55)}
 }
 .alloc-dot{
   width:8px;height:8px;border-radius:50%;flex-shrink:0;
@@ -764,32 +768,43 @@ nav.stuck{background:rgba(8,8,8,.95);backdrop-filter:blur(16px);border-color:var
 }
 .alloc-dot.alloc-dot-visible{opacity:1}
 .alloc-dot.allocated{
-  background:#22c55e;
-  box-shadow:0 0 5px rgba(34,197,94,.35);
+  background:#4a8c6e;
+  box-shadow:0 0 5px rgba(74,140,110,.35);
   animation:dotPulseActive 3.5s ease-in-out infinite;
 }
 .alloc-dot.limited{
-  background:#f59e0b;
-  box-shadow:0 0 4px rgba(245,158,11,.40);
+  background:#c8993a;
+  box-shadow:0 0 4px rgba(200,155,58,.40);
   animation:dotGlowLimited 3.8s ease-in-out infinite;
-  opacity:.95;
 }
 .alloc-dot.open{
-  background:#84cc16;
-  box-shadow:0 0 5px rgba(132,204,22,.28);
+  background:#7098b8;
+  box-shadow:0 0 5px rgba(112,152,184,.32);
+  animation:dotPulseOpen 4s ease-in-out infinite;
 }
 
 .alloc-status-label{font-size:.74rem;letter-spacing:.15em;text-transform:uppercase;font-weight:400}
-.alloc-status-label.allocated{color:#22c55e}
-.alloc-status-label.limited{color:#f59e0b}
-.alloc-status-label.open{color:#84cc16;letter-spacing:.18em}
+.alloc-status-label.allocated{color:#6aaf90}
+.alloc-status-label.limited{color:#c8993a}
+.alloc-status-label.open{color:#88b0cc;letter-spacing:.18em}
+/* ── Card micro-icon ── */
+.alloc-cell-icon{
+  position:absolute;top:18px;right:18px;
+  color:var(--gold);opacity:.18;
+  transition:opacity .3s;pointer-events:none;
+}
+.alloc-cell:hover .alloc-cell-icon{opacity:.36}
+/* ── Legend layout ── */
 .alloc-legend{
-  margin-top:16px;padding:16px 22px;border:1px solid rgba(200,168,75,.18);
-  display:flex;gap:24px;align-items:center;flex-wrap:wrap;
+  margin-top:16px;padding:18px 22px;border:1px solid rgba(200,168,75,.18);
+  display:flex;gap:22px;align-items:flex-start;flex-wrap:wrap;
   background:rgba(8,8,8,.6);
 }
-.alloc-legend-item{display:flex;align-items:center;gap:9px}
-.alloc-legend-label{font-size:.75rem;letter-spacing:.13em;text-transform:uppercase;color:rgba(168,168,160,.75)}
+.alloc-legend-item{display:flex;align-items:flex-start;gap:10px;padding-top:2px}
+.alloc-legend-item .alloc-dot{margin-top:3px;flex-shrink:0}
+.alloc-legend-text{display:flex;flex-direction:column;gap:3px}
+.alloc-legend-label{font-size:.72rem;letter-spacing:.15em;text-transform:uppercase;color:rgba(168,168,160,.85)}
+.alloc-legend-desc{font-size:.67rem;color:rgba(168,168,160,.46);letter-spacing:.03em;line-height:1.5}
 .alloc-avail-note{
   margin-top:14px;padding:20px 24px;
   border:1px solid rgba(200,168,75,.18);
@@ -1921,49 +1936,57 @@ body::before{
 
     <!-- Left: editorial copy -->
     <div class="alloc-copy">
-      <p class="alloc-eyebrow">Market Allocation</p>
+      <p class="alloc-eyebrow">Market Status Overview</p>
       <h2 class="alloc-hed">
-        Market allocation<br>is active.<br>
-        <em>Not every territory<br>is available.</em>
+        Current availability<br>by region.<br>
+        <em>Not every market<br>is still open.</em>
       </h2>
       <div class="alloc-sub">
-        <p>Each market is assigned to a single operator.</p>
-        <p>Once active, <em>access is exclusive.</em></p>
+        <p>Claimed access. One brand per market.</p>
+        <p><em>Selective access. Strategic search rollout.</em></p>
       </div>
       <div class="alloc-reinforce">
-        <span>High-demand markets are secured first.</span>
-        <span>No overlap. No secondary access.</span>
-        <span>Coverage is held under agreement — reinforced, where appropriate, through paid media.</span>
+        <span>High-demand markets are claimed first.</span>
+        <span>AI-guided deployment. Branded local rollout.</span>
+        <span>Search presence is established through structured systems and expanded over time.</span>
       </div>
-      <p class="alloc-urgency">If your market is still available,<br><em>secure it before the window closes.</em></p>
-      <span class="alloc-convert-label">Access is reserved. Not open.</span>
+      <p class="alloc-urgency">If your market is still available,<br><em>claim it before expansion closes.</em></p>
+      <span class="alloc-convert-label">Selective access. Launch-ready markets only.</span>
       <div class="alloc-actions">
         <a href="/onboarding/start" class="btn-primary">Claim Your Territory</a>
-        <a href="#how" class="btn-ghost">See How It Works</a>
       </div>
     </div>
 
     <!-- Right: regional allocation grid (data rendered from JS array below) -->
     <div class="alloc-panel">
-      <p style="font-size:.68rem;letter-spacing:.22em;text-transform:uppercase;color:rgba(200,168,75,.82);margin-bottom:6px;font-weight:500">Live Territory Status</p>
-      <p class="alloc-panel-label">U.S. Territory Status</p>
+      <p style="font-size:.68rem;letter-spacing:.22em;text-transform:uppercase;color:rgba(200,168,75,.82);margin-bottom:6px;font-weight:500">Live Market Status</p>
+      <p class="alloc-panel-label">U.S. Market Coverage</p>
       <div class="alloc-grid" id="allocGrid"></div>
       <div class="alloc-legend">
         <div class="alloc-legend-item">
           <span class="alloc-dot allocated"></span>
-          <span class="alloc-legend-label">Active</span>
+          <div class="alloc-legend-text">
+            <span class="alloc-legend-label">Active</span>
+            <span class="alloc-legend-desc">Search position claimed &middot; Rollout live</span>
+          </div>
         </div>
         <div class="alloc-legend-item">
           <span class="alloc-dot limited"></span>
-          <span class="alloc-legend-label">Selective Access</span>
+          <div class="alloc-legend-text">
+            <span class="alloc-legend-label">Selective Access</span>
+            <span class="alloc-legend-desc">Limited entry &middot; Strategic review</span>
+          </div>
         </div>
         <div class="alloc-legend-item">
           <span class="alloc-dot open"></span>
-          <span class="alloc-legend-label">Expansion Available</span>
+          <div class="alloc-legend-text">
+            <span class="alloc-legend-label">Expansion Available</span>
+            <span class="alloc-legend-desc">Launch-ready &middot; Search market open</span>
+          </div>
         </div>
       </div>
-      <p class="alloc-trust-line">Territory status is continuously evaluated across live search, competitive signals, and platform data.</p>
-      <p class="alloc-avail-note"><strong>Territory access is structured by industry and market.</strong> Availability reflects current operator coverage — not total capacity.<br><br>Access is reviewed individually based on market availability, operator readiness, and business fit. Approval is reserved for legitimate operators with the capacity to support deployment and, where appropriate, media amplification. Search visibility is secured through structured systems and reinforced over time.</p>
+      <p class="alloc-trust-line">These regions show where access is active, limited, or currently available for expansion. Status reflects live search coverage and market positioning.</p>
+      <p class="alloc-avail-note"><strong>AI-guided deployment. One brand per market.</strong> Each position covers structured service and location pages — built for organic search, AI-assisted visibility, and LLM-aware discovery across your full territory.<br><br>Access is reviewed individually based on market availability and strategic fit. Search presence is established through structured systems and expanded over time.</p>
     </div>
 
   </div>
@@ -2986,14 +3009,20 @@ body::before{
     ];
     var labels = {allocated:'Active',limited:'Selective Access',open:'Expansion Available'};
     var tooltips = {
-      allocated:'This territory is currently secured by an operator.',
-      limited:'Access is limited — subject to review and availability.',
-      open:'New operators may be considered in this region.'
+      allocated:'Search position claimed. Branded rollout active.',
+      limited:'Limited entry window. Strategic review required.',
+      open:'Expansion available. Search market open for rollout.'
+    };
+    var icons = {
+      allocated:'<svg class="alloc-cell-icon" width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><rect x="1" y="10" width="3" height="5" rx=".6" fill="currentColor"/><rect x="6" y="6" width="3" height="9" rx=".6" fill="currentColor"/><rect x="11" y="2" width="3" height="13" rx=".6" fill="currentColor"/></svg>',
+      limited:'<svg class="alloc-cell-icon" width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><circle cx="8" cy="8" r="6.5" stroke="currentColor" stroke-width="1"/><path d="M8 4.5V8.5L10.5 10" stroke="currentColor" stroke-width="1" stroke-linecap="round"/></svg>',
+      open:'<svg class="alloc-cell-icon" width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M2.5 8h11M9 4l4.5 4L9 12" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/></svg>'
     };
     var grid = document.getElementById('allocGrid');
     if(!grid) return;
     grid.innerHTML = markets.map(function(m, i){
       return '<div class="alloc-cell">'
+        + (icons[m.status] || '')
         + '<span class="alloc-cell-tooltip">' + tooltips[m.status] + '</span>'
         + '<p class="alloc-region">' + m.region + '</p>'
         + '<p class="alloc-states">' + m.states + '</p>'
