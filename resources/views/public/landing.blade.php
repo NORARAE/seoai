@@ -747,20 +747,22 @@ nav.stuck{background:rgba(8,8,8,.95);backdrop-filter:blur(16px);border-color:var
 .alloc-states{
   font-size:.82rem;color:rgba(168,168,160,.72);letter-spacing:.05em;margin-bottom:13px;
 }
-.alloc-status{display:flex;align-items:center;gap:9px}
+.alloc-status{display:flex;flex-direction:column;gap:5px}
+.alloc-status-row{display:flex;align-items:center;gap:9px}
+.alloc-status-sub{font-size:.67rem;letter-spacing:.06em;color:rgba(168,168,160,.40);margin-left:17px;line-height:1.3}
 
 /* ── Status dot animations ── */
 @keyframes dotPulseActive{
-  0%,100%{opacity:.72}
-  50%{opacity:1}
+  0%,100%{opacity:.65;box-shadow:0 0 5px rgba(74,140,110,.40)}
+  50%{opacity:1;box-shadow:0 0 12px rgba(74,140,110,.75),0 0 24px rgba(74,140,110,.22)}
 }
 @keyframes dotGlowLimited{
-  0%,100%{box-shadow:0 0 4px rgba(200,155,58,.45)}
-  50%{box-shadow:0 0 10px rgba(200,155,58,.72)}
+  0%,100%{opacity:.72;box-shadow:0 0 5px rgba(200,168,75,.45)}
+  50%{opacity:1;box-shadow:0 0 12px rgba(200,168,75,.82),0 0 22px rgba(200,168,75,.24)}
 }
 @keyframes dotPulseOpen{
-  0%,100%{opacity:.55;box-shadow:0 0 4px rgba(112,152,184,.32)}
-  50%{opacity:.88;box-shadow:0 0 9px rgba(112,152,184,.55)}
+  0%,100%{opacity:.55;box-shadow:0 0 5px rgba(112,152,184,.36)}
+  50%{opacity:.90;box-shadow:0 0 12px rgba(112,152,184,.68),0 0 22px rgba(112,152,184,.22)}
 }
 .alloc-dot{
   width:8px;height:8px;border-radius:50%;flex-shrink:0;
@@ -1379,6 +1381,89 @@ body::before{
   55%{opacity:.58;transform:rotate(45deg) translateY(3px)}
 }
 
+/* ── System Structure section ── */
+.sys-struct{padding:72px 64px;max-width:1200px;margin:0 auto;position:relative}
+.sys-struct-inner{display:grid;grid-template-columns:1fr 1.15fr;gap:68px;align-items:start}
+.sys-eyebrow{
+  font-size:.68rem;letter-spacing:.28em;text-transform:uppercase;
+  color:var(--gold);display:flex;align-items:center;gap:14px;margin-bottom:18px;
+}
+.sys-eyebrow::before{content:'';width:28px;height:1px;background:var(--gold)}
+.sys-hed{
+  font-family:'Cormorant Garamond',serif;
+  font-size:clamp(2rem,3.2vw,3rem);font-weight:300;line-height:1.08;
+  color:var(--ivory);margin-bottom:16px;
+}
+.sys-hed em{font-style:italic;color:var(--gold)}
+.sys-sub{
+  font-size:clamp(.95rem,1.25vw,1.04rem);line-height:1.78;
+  color:rgba(168,168,160,.78);margin-bottom:18px;max-width:480px;
+}
+.sys-diff{
+  font-size:.94rem;line-height:1.68;
+  color:rgba(168,168,160,.60);letter-spacing:.01em;margin-bottom:12px;
+}
+.sys-system-line{
+  font-size:.82rem;line-height:1.68;
+  color:rgba(200,168,75,.58);letter-spacing:.01em;margin-bottom:24px;
+}
+.sys-trust{
+  font-size:.72rem;letter-spacing:.04em;color:rgba(168,168,160,.44);
+  line-height:1.85;border-top:1px solid rgba(200,168,75,.12);padding-top:16px;
+}
+.sys-trust strong{
+  color:rgba(168,168,160,.60);font-weight:400;letter-spacing:.1em;
+  text-transform:uppercase;font-size:.62rem;display:block;margin-bottom:7px;
+}
+/* URL tree */
+.sys-url-wrap{
+  background:#050505;border:1px solid rgba(200,168,75,.15);
+  padding:28px 32px 22px;position:relative;
+}
+.sys-url-wrap::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:1px;
+  background:linear-gradient(90deg,transparent,rgba(200,168,75,.22),transparent);
+}
+.sys-url-label{
+  font-size:.60rem;letter-spacing:.22em;text-transform:uppercase;
+  color:rgba(200,168,75,.40);margin-bottom:14px;
+  display:flex;align-items:center;gap:10px;
+}
+.sys-url-label::after{content:'';flex:1;height:1px;background:rgba(200,168,75,.09)}
+.sys-url-root{
+  font-family:monospace;font-size:.94rem;color:rgba(237,232,222,.48);
+  margin-bottom:16px;letter-spacing:.02em;display:flex;align-items:center;gap:8px;
+}
+.sys-url-root-dot{
+  width:6px;height:6px;border-radius:50%;
+  background:var(--gold);opacity:.55;flex-shrink:0;
+  animation:blink 3s ease-in-out infinite;
+}
+.sys-url-list{
+  border-left:1px solid rgba(200,168,75,.13);
+  margin-left:10px;display:flex;flex-direction:column;gap:0;
+}
+.sys-url-group{margin-bottom:10px}
+.sys-url-group:last-child{margin-bottom:0}
+.sys-url-item{
+  display:flex;align-items:center;padding:6px 14px;
+  font-family:monospace;font-size:.83rem;color:rgba(168,168,160,.62);
+  position:relative;transition:background .2s,color .2s;cursor:default;
+}
+.sys-url-item::before{
+  content:'';position:absolute;left:-1px;top:50%;
+  width:10px;height:1px;background:rgba(200,168,75,.15);
+}
+.sys-url-item:hover{background:rgba(200,168,75,.04);color:rgba(237,232,222,.80)}
+.sys-url-svc{color:rgba(237,232,222,.82)}
+.sys-url-loc{color:var(--gold);opacity:.70}
+.sys-url-item:hover .sys-url-loc{opacity:.95}
+.sys-url-foot{
+  font-size:.68rem;letter-spacing:.08em;color:rgba(168,168,160,.30);
+  text-align:center;margin-top:12px;
+  border-top:1px solid rgba(200,168,75,.07);padding-top:10px;
+}
+
 /* ── Market decision trigger ── */
 .alloc-decision{
   margin-top:56px;padding:40px 44px;
@@ -1659,6 +1744,9 @@ body::before{
   .settle-trust{grid-template-columns:1fr}
   .settle-icons{gap:20px}
   .alloc-decision{padding:28px 24px;max-width:100%}
+  .sys-struct{padding:52px 24px}
+  .sys-struct-inner{grid-template-columns:1fr;gap:32px}
+  .sys-url-wrap{padding:22px 24px 18px}
 }
 @media(max-width:520px){
   .infra-principle{padding:72px 20px}
@@ -1668,6 +1756,8 @@ body::before{
   .hero-stage{font-size:clamp(3.2rem,11vw,5rem)}
   .hero-gold-accent{font-size:clamp(1.1rem,4.5vw,1.4rem)}
   .exp-momentum-main{font-size:clamp(1.2rem,4.5vw,1.6rem)}
+  .sys-struct{padding:36px 20px}
+  .sys-url-item{font-size:.79rem;padding:5px 12px}
 }
 
 /* ═══════════════════════════════════════════════════════════
@@ -2038,6 +2128,56 @@ body::before{
   <div class="hero-scroll-arrow"></div>
 </div>
 
+<!-- ════════════ SYSTEM STRUCTURE ════════════ -->
+<section class="sys-struct r">
+  <div class="sys-struct-inner">
+
+    {{-- Left: copy --}}
+    <div>
+      <p class="sys-eyebrow">System Structure</p>
+      <h2 class="sys-hed">Every service. Every city.<br><em>One structured system.</em></h2>
+      <p class="sys-sub">Programmatic URL expansion — scaling your visibility across every service, every city, and every search surface.</p>
+      <p class="sys-diff">Structured, scalable, and continuously optimized for search visibility.</p>
+      <p class="sys-system-line">Powered by a proprietary deployment system — continuously updated with live search signals, AI modeling, and evolving algorithm patterns.</p>
+      <div class="sys-trust">
+        <strong>Built on real search infrastructure</strong>
+        Google indexing signals &middot; AI-driven analysis &middot; LLM discovery &middot; structured data &middot; local ranking patterns
+      </div>
+    </div>
+
+    {{-- Right: URL tree --}}
+    <div class="sys-url-wrap r">
+      <div class="sys-url-label">Live Deployment &mdash; Multi-Industry Example</div>
+      <div class="sys-url-root">
+        <span class="sys-url-root-dot"></span>
+        client.com/
+      </div>
+      <div class="sys-url-list">
+        <div class="sys-url-group">
+          <div class="sys-url-item"><span class="sys-url-svc">personal-injury-lawyer-</span><span class="sys-url-loc">seattle</span></div>
+          <div class="sys-url-item"><span class="sys-url-svc">personal-injury-lawyer-</span><span class="sys-url-loc">tacoma</span></div>
+        </div>
+        <div class="sys-url-group">
+          <div class="sys-url-item"><span class="sys-url-svc">emergency-plumber-</span><span class="sys-url-loc">seattle</span></div>
+          <div class="sys-url-item"><span class="sys-url-svc">hvac-repair-</span><span class="sys-url-loc">seattle</span></div>
+        </div>
+        <div class="sys-url-group">
+          <div class="sys-url-item"><span class="sys-url-svc">cosmetic-dentist-</span><span class="sys-url-loc">seattle</span></div>
+          <div class="sys-url-item"><span class="sys-url-svc">dental-implants-</span><span class="sys-url-loc">bellevue</span></div>
+        </div>
+        <div class="sys-url-group">
+          <div class="sys-url-item"><span class="sys-url-svc">roof-replacement-</span><span class="sys-url-loc">seattle</span></div>
+          <div class="sys-url-item"><span class="sys-url-svc">water-damage-restoration-</span><span class="sys-url-loc">everett</span></div>
+        </div>
+      </div>
+      <div class="sys-url-foot">+ coverage across every service and location combination</div>
+    </div>
+
+  </div>
+</section>
+
+<div class="gold-rule"></div>
+
 <!-- ════════════ MARKET ALLOCATION ════════════ -->
 <section id="alloc" class="alloc-section r">
   <div class="alloc-layout">
@@ -2075,21 +2215,21 @@ body::before{
           <span class="alloc-dot allocated"></span>
           <div class="alloc-legend-text">
             <span class="alloc-legend-label">Active</span>
-            <span class="alloc-legend-desc">Search position claimed &middot; Rollout live</span>
+            <span class="alloc-legend-desc">Established and expanding</span>
           </div>
         </div>
         <div class="alloc-legend-item">
           <span class="alloc-dot limited"></span>
           <div class="alloc-legend-text">
             <span class="alloc-legend-label">Selective Access</span>
-            <span class="alloc-legend-desc">Limited entry &middot; Strategic review</span>
+            <span class="alloc-legend-desc">Limited strategic entry</span>
           </div>
         </div>
         <div class="alloc-legend-item">
           <span class="alloc-dot open"></span>
           <div class="alloc-legend-text">
             <span class="alloc-legend-label">Expansion Available</span>
-            <span class="alloc-legend-desc">Launch-ready &middot; Search market open</span>
+            <span class="alloc-legend-desc">Open for structured rollout</span>
           </div>
         </div>
       </div>
@@ -3116,6 +3256,7 @@ body::before{
       {region:'Northeast',         states:'NY · NJ · CT · MA',  status:'allocated'},
     ];
     var labels = {allocated:'Active',limited:'Selective Access',open:'Expansion Available'};
+    var subLabels = {allocated:'Live and expanding',limited:'Limited strategic entry',open:'Launch-ready market'};
     var tooltips = {
       allocated:'Search position claimed. Branded rollout active.',
       limited:'Limited entry window. Strategic review required.',
@@ -3135,8 +3276,11 @@ body::before{
         + '<p class="alloc-region">' + m.region + '</p>'
         + '<p class="alloc-states">' + m.states + '</p>'
         + '<div class="alloc-status">'
-        +   '<span class="alloc-dot ' + m.status + '" data-delay="' + i + '"></span>'
-        +   '<span class="alloc-status-label ' + m.status + '">' + labels[m.status] + '</span>'
+        +   '<div class="alloc-status-row">'
+        +     '<span class="alloc-dot ' + m.status + '" data-delay="' + i + '"></span>'
+        +     '<span class="alloc-status-label ' + m.status + '">' + labels[m.status] + '</span>'
+        +   '</div>'
+        +   '<span class="alloc-status-sub">' + subLabels[m.status] + '</span>'
         + '</div>'
         + '</div>';
     }).join('');
