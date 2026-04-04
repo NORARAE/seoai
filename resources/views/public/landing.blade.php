@@ -69,13 +69,6 @@ nav.stuck{background:rgba(8,8,8,.95);backdrop-filter:blur(16px);border-color:var
 }
 .nav-btn:hover{background:var(--gold-lt)}
 .nav-account-short{display:none}
-/* Book CTA — gold outline, distinct from gold-fill Portal */
-.nav-btn.nav-book{
-  background:transparent;color:var(--gold);
-  border:1px solid rgba(200,168,75,.45);
-  transition:background .25s,border-color .25s,color .25s;
-}
-.nav-btn.nav-book:hover{background:rgba(200,168,75,.08);border-color:var(--gold);color:var(--ivory)}
 
 /* ── Hero ── */
 #hero{
@@ -92,14 +85,39 @@ nav.stuck{background:rgba(8,8,8,.95);backdrop-filter:blur(16px);border-color:var
   background-size:88px 88px;
 }
 
-/* ── Ambient atmospheric layers (fixed, full-viewport, GPU-composited) ──
-   Wrappers carry JS parallax translate.
-   Inner orbs carry CSS drift animation.
-   These layers never touch the hero container, so no clip/seam is possible.
-── */
-.amb-wrap{position:fixed;pointer-events:none;z-index:0;will-change:transform}
+/* ══════════════════════════════════════════════════════
+   AMBIENT SYSTEM — DO NOT MODIFY WITHOUT REVIEW
+   ──────────────────────────────────────────────────────
+   Architecture:
+     .amb-wrap-* — position:fixed wrappers, receive JS
+                   parallax translateY only.
+     .amb-orb-*  — inner divs, carry CSS drift animation
+                   only. Transforms do not conflict.
+     .amb-bloom  — centred focal glow, static transform,
+                   no JS parallax applied.
+     .amb-shimmer— mobile-only tonal breathing overlay.
+   Rendering:
+     All layers use transform + opacity — compositor
+     thread only, zero layout/paint cost.
+     -webkit-backface-visibility:hidden locks iOS Safari
+     GPU layer to prevent address-bar-resize flicker.
+   Layering:
+     z-index:0 — ambient layers in DOM before content,
+     so all content sections naturally stack above.
+   Reduced-motion:
+     CSS: animations set to none.
+     JS:  matchMedia check exits handler before bind.
+══════════════════════════════════════════════════════ */
+
+.amb-wrap{
+  position:fixed;pointer-events:none;z-index:0;
+  will-change:transform;
+  -webkit-backface-visibility:hidden;
+  backface-visibility:hidden;
+}
 .amb-wrap-a{top:-8%;right:-6%}
 .amb-wrap-b{bottom:6%;left:-10%}
+
 .amb-orb-a{
   width:min(72vw,900px);height:min(72vw,900px);
   border-radius:50%;
@@ -114,7 +132,8 @@ nav.stuck{background:rgba(8,8,8,.95);backdrop-filter:blur(16px);border-color:var
   animation:ambDriftB 38s ease-in-out infinite alternate;
   will-change:transform;
 }
-/* Focal bloom — reinforces hero text area composition */
+
+/* Focal bloom — centred, reinforces hero headline composition */
 .amb-bloom{
   position:fixed;top:8%;left:50%;
   width:min(110vw,1100px);height:60vh;
@@ -122,16 +141,21 @@ nav.stuck{background:rgba(8,8,8,.95);backdrop-filter:blur(16px);border-color:var
   border-radius:50%;
   background:radial-gradient(ellipse at 42% 46%,rgba(200,168,75,.038) 0%,transparent 65%);
   pointer-events:none;z-index:0;
+  will-change:opacity;
+  -webkit-backface-visibility:hidden;
+  backface-visibility:hidden;
 }
-/* Shimmer — barely-visible slow tonal breathing */
+
+/* Shimmer — mobile-only barely-visible tonal breathing */
 .amb-shimmer{
   position:fixed;top:0;left:0;right:0;height:72vh;
   background:linear-gradient(158deg,transparent 28%,rgba(200,168,75,.022) 50%,transparent 72%);
   pointer-events:none;z-index:0;
   opacity:0;
   animation:shimmerBreath 16s ease-in-out infinite;
-  display:none;
+  display:none; /* enabled per media query below */
 }
+
 @keyframes ambDriftA{
   from{transform:translate(0,0) scale(1)}
   to{transform:translate(-5%,4%) scale(1.09)}
@@ -144,17 +168,20 @@ nav.stuck{background:rgba(8,8,8,.95);backdrop-filter:blur(16px);border-color:var
   0%,100%{opacity:0}
   50%{opacity:1}
 }
-/* Desktop: keep orb-b and bloom restrained */
+
+/* Desktop ≥901px: restrained opacity, shimmer off */
 @media(min-width:901px){
   .amb-orb-b{opacity:.55}
   .amb-bloom{opacity:.65}
   .amb-shimmer{display:none}
 }
-/* Respect reduced-motion preference */
+
+/* Reduced-motion: kill all CSS animations */
 @media(prefers-reduced-motion:reduce){
   .amb-orb-a,.amb-orb-b{animation:none}
   .amb-shimmer{display:none!important}
 }
+/* ══ END AMBIENT SYSTEM ══ */
 
 /* ── Rotating headline ── */
 .hero-rotate{
@@ -3280,20 +3307,32 @@ body::before{
     });
   })();
 
-  /* ── Ambient parallax — restrained, GPU-only transforms ── */
+  /* ══════════════════════════════════════════════════════
+     AMBIENT PARALLAX
+     ──────────────────────────────────────────────────────
+     GPU-only: transform + backgroundPosition only.
+     Throttled: single rAF per scroll event, ticking flag.
+     Passive listener: cannot block scroll thread.
+     Reduced-motion: exits before any binding.
+     Mobile (≤900px): rates halved to prevent iOS jitter.
+     DO NOT add layout-triggering reads inside update().
+  ══════════════════════════════════════════════════════ */
   (function(){
     if(window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
     var wA   = document.querySelector('.amb-wrap-a');
     var wB   = document.querySelector('.amb-wrap-b');
     var grid = document.querySelector('.hero-grid');
+    /* Halved rates on mobile prevent iOS Safari touch-scroll jitter */
+    var mob  = window.innerWidth <= 900;
+    var rA   = mob ? 0.04  : 0.08;
+    var rB   = mob ? 0.025 : 0.05;
+    var rG   = mob ? 0.015 : 0.03;
     var ticking = false;
     function update(){
       var y = window.scrollY;
-      /* Orb-a rises slightly on scroll (0.08x); orb-b descends (0.05x) */
-      if(wA)  wA.style.transform  = 'translateY('+(-y*.08).toFixed(1)+'px)';
-      if(wB)  wB.style.transform  = 'translateY('+(y*.05).toFixed(1)+'px)';
-      /* Grid shifts 0.03x — creates subtle depth separation from content */
-      if(grid) grid.style.backgroundPosition = '0 '+(-y*.03).toFixed(1)+'px';
+      if(wA)   wA.style.transform   = 'translateY('+(-y*rA).toFixed(1)+'px)';
+      if(wB)   wB.style.transform   = 'translateY('+(y*rB).toFixed(1)+'px)';
+      if(grid) grid.style.backgroundPosition = '0 '+(-y*rG).toFixed(1)+'px';
       ticking = false;
     }
     window.addEventListener('scroll',function(){
