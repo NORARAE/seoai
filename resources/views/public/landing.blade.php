@@ -171,8 +171,8 @@ nav.stuck{background:rgba(8,8,8,.95);backdrop-filter:blur(16px);border-color:var
 
 /* Desktop ≥901px: restrained opacity, shimmer off */
 @media(min-width:901px){
-  .amb-orb-b{opacity:.55}
-  .amb-bloom{opacity:.65}
+  .amb-orb-b{opacity:.60}
+  .amb-bloom{opacity:.78}
   .amb-shimmer{display:none}
 }
 
@@ -1520,7 +1520,7 @@ body::before{
 /* ── Hero constellation overlay ── */
 .hero-net{
   position:absolute;inset:0;width:100%;height:100%;
-  pointer-events:none;z-index:0;opacity:.072;
+  pointer-events:none;z-index:0;opacity:.14;
 }
 .hero-net-g{
   animation:netDrift 50s ease-in-out infinite alternate;
@@ -1539,9 +1539,9 @@ body::before{
 .np-4{animation:nodePulse 5.6s ease-in-out 4.6s infinite}
 @keyframes nodePulse{
   0%,100%{opacity:0}
-  45%{opacity:0}
-  52%{opacity:.50}
-  59%{opacity:0}
+  38%{opacity:0}
+  50%{opacity:.72}
+  62%{opacity:0}
 }
 @media(prefers-reduced-motion:reduce){.hero-net-pulse circle{animation:none}}
 
@@ -1720,7 +1720,7 @@ body::before{
 .infra-principle::before{
   content:'';
   position:absolute;inset:0;
-  background:radial-gradient(ellipse 72% 68% at 50% 50%,rgba(200,168,75,.07) 0%,transparent 68%);
+  background:radial-gradient(ellipse 72% 68% at 50% 50%,rgba(200,168,75,.13) 0%,transparent 68%);
   pointer-events:none;
   animation:infraGlow 7s ease-in-out infinite;
 }
@@ -1735,7 +1735,7 @@ body::before{
   pointer-events:none;
 }
 @keyframes infraGlow{
-  0%,100%{opacity:.65}
+  0%,100%{opacity:.74}
   50%{opacity:1}
 }
 .infra-inner{
@@ -1753,15 +1753,15 @@ body::before{
 .infra-hed{
   font-family:'Cormorant Garamond',serif;font-weight:200;
   line-height:1.1;margin-bottom:48px;
-  display:flex;flex-direction:column;gap:0;
+  display:flex;flex-direction:column;gap:.22em;
 }
 .infra-hed-1{
   font-size:clamp(3rem,5.8vw,5.6rem);
-  color:var(--ivory);letter-spacing:-.018em;
+  color:var(--ivory);letter-spacing:-.018em;font-weight:300;
 }
 .infra-hed-2{
-  font-size:clamp(3rem,5.8vw,5.6rem);
-  color:rgba(237,232,222,.68);letter-spacing:-.018em;font-style:italic;
+  font-size:clamp(2.8rem,5.2vw,5.0rem);
+  color:rgba(237,232,222,.52);letter-spacing:-.018em;font-style:italic;
 }
 .infra-gold{
   font-family:'Cormorant Garamond',serif;font-weight:300;font-style:italic;
@@ -1948,6 +1948,7 @@ body::before{
 
 @media(max-width:900px){
   .infra-principle{padding:96px 24px}
+  .infra-hed-1,.infra-hed-2{font-size:clamp(1.8rem,4.5vw,2.6rem)}
   .settlement{padding:36px 24px}
   .settle-trust{grid-template-columns:1fr}
   .settle-icons{gap:20px}
@@ -1958,7 +1959,7 @@ body::before{
 }
 @media(max-width:520px){
   .infra-principle{padding:72px 20px}
-  .infra-hed-1,.infra-hed-2{font-size:clamp(2.4rem,9.5vw,3.4rem)}
+  .infra-hed-1,.infra-hed-2{font-size:clamp(1.45rem,6.8vw,2.1rem)}
   .infra-gold{font-size:clamp(1.6rem,5.8vw,2.2rem)}
   .settlement{padding:28px 20px}
   .hero-stage{font-size:clamp(3.2rem,11vw,5rem)}
@@ -2018,7 +2019,7 @@ body::before{
   .hero-diff{font-size:.82rem;margin-bottom:20px}
   .hero-cities{font-size:.96rem;margin-bottom:24px;letter-spacing:.09em;padding-left:14px}
   .hero-cta-note{font-size:.64rem;letter-spacing:.12em}
-  .hero-net{opacity:.04}
+  .hero-net{opacity:.06}
   .hero-scroll-label{font-size:.60rem;letter-spacing:.16em}
 }
 
@@ -2298,6 +2299,9 @@ body::before{
       <line x1="800" y1="460" x2="1090" y2="340" stroke-opacity=".26" stroke-width=".38"/>
       <line x1="540" y1="150" x2="580" y2="45" stroke-opacity=".34" stroke-width=".5"/>
       <line x1="1090" y1="340" x2="1160" y2="200" stroke-opacity=".22" stroke-width=".35"/>
+      <line x1="580" y1="45" x2="1000" y2="90" stroke-opacity=".28" stroke-width=".4"/>
+      <line x1="460" y1="400" x2="1090" y2="340" stroke-opacity=".24" stroke-width=".36"/>
+      <line x1="260" y1="340" x2="700" y2="280" stroke-opacity=".26" stroke-width=".38"/>
       <circle cx="140" cy="90" r="2" fill-opacity=".55"/>
       <circle cx="340" cy="210" r="2.5" fill-opacity=".70"/>
       <circle cx="540" cy="150" r="2" fill-opacity=".55"/>
@@ -3730,7 +3734,7 @@ body::before{
     if(!canvas) return;
     var ctx = canvas.getContext('2d');
     var nodes=[], raf, W, H;
-    var COUNT=32, LINK=215, G='200,168,75';
+    var COUNT=40, LINK=240, G='200,168,75';
     var reduced = window.matchMedia('(prefers-reduced-motion:reduce)').matches;
     var tick=0;
 
@@ -3767,7 +3771,7 @@ body::before{
             ctx.beginPath();
             ctx.moveTo(nodes[i].x,nodes[i].y);
             ctx.lineTo(nodes[j].x,nodes[j].y);
-            ctx.strokeStyle='rgba('+G+','+(1-d/LINK)*.26+')';
+            ctx.strokeStyle='rgba('+G+','+(1-d/LINK)*.36+')';
             ctx.lineWidth=.55;
             ctx.stroke();
           }
@@ -3777,12 +3781,12 @@ body::before{
       /* nodes */
       for(var i=0;i<nodes.length;i++){
         var n = nodes[i];
-        // breathing range 0.23–0.41, per-node phase so no two nodes sync
-        var pulse = .32 + Math.sin(tick + n.phase) * .09;
+        // breathing range 0.26–0.50, per-node phase so no two nodes sync
+        var pulse = .38 + Math.sin(tick + n.phase) * .12;
         var glow  = n.glowMult;
 
-        ctx.shadowBlur  = glow * 8;
-        ctx.shadowColor = 'rgba('+G+','+(glow*.32).toFixed(2)+')';
+        ctx.shadowBlur  = glow * 12;
+        ctx.shadowColor = 'rgba('+G+','+(glow*.42).toFixed(2)+')';
         ctx.beginPath();
         ctx.arc(n.x, n.y, n.r, 0, Math.PI*2);
         ctx.fillStyle   = 'rgba('+G+','+pulse.toFixed(3)+')';
