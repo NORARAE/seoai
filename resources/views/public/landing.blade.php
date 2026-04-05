@@ -1511,10 +1511,10 @@ body::before{
 }
 .hero-cities span{display:block}
 .hero-cta-note{
-  font-size:.68rem;letter-spacing:.16em;text-transform:uppercase;
-  color:rgba(168,168,160,.30);
-  opacity:0;animation:up .8s .65s forwards;
-  margin-top:12px;
+  font-size:.64rem;letter-spacing:.22em;text-transform:uppercase;
+  color:rgba(200,168,75,.30);
+  opacity:0;animation:up .8s .70s forwards;
+  margin-top:14px;
 }
 
 /* ── Hero constellation overlay ── */
@@ -1531,6 +1531,19 @@ body::before{
   to{transform:translate(-2%,1.4%) scale(1.04)}
 }
 @media(prefers-reduced-motion:reduce){.hero-net-g{animation:none}}
+/* ── Node intelligence pulse — hub intersections ── */
+.hero-net-pulse circle{fill:#c8a84b;opacity:0}
+.np-1{animation:nodePulse 5.6s ease-in-out 0.4s infinite}
+.np-2{animation:nodePulse 5.6s ease-in-out 1.8s infinite}
+.np-3{animation:nodePulse 5.6s ease-in-out 3.2s infinite}
+.np-4{animation:nodePulse 5.6s ease-in-out 4.6s infinite}
+@keyframes nodePulse{
+  0%,100%{opacity:0}
+  45%{opacity:0}
+  52%{opacity:.50}
+  59%{opacity:0}
+}
+@media(prefers-reduced-motion:reduce){.hero-net-pulse circle{animation:none}}
 
 /* ── Hero → Section transition: animated shimmer line ── */
 .hero-transition{text-align:center;padding:24px 0 0}
@@ -1554,33 +1567,26 @@ body::before{
   42%{left:150%;opacity:0}
   100%{left:150%;opacity:0}
 }
-/* refined descent indicator — two stacked chevron strokes */
+/* refined descent indicator — double V-chevron */
 .hero-scroll-arrow{
-  position:relative;width:18px;height:12px;
-  margin:16px auto 0;
-  animation:chevronFade 3.6s ease-in-out infinite;
+  display:flex;flex-direction:column;align-items:center;gap:4px;
+  margin:16px auto 0;width:20px;
+  animation:chevronFade 3.8s ease-in-out infinite;
 }
 .hero-scroll-arrow::before,
 .hero-scroll-arrow::after{
-  content:'';
-  position:absolute;left:50%;width:8px;height:1px;
-  background:rgba(200,168,75,.38);
-  transform-origin:center;
-}
-.hero-scroll-arrow::before{
-  top:2px;
-  transform:translateX(-100%) rotate(40deg);
-  box-shadow:4px 0 0 rgba(200,168,75,.38);
+  content:'';display:block;
+  width:9px;height:9px;
+  border-right:1px solid rgba(200,168,75,.45);
+  border-bottom:1px solid rgba(200,168,75,.45);
+  transform:rotate(45deg);
 }
 .hero-scroll-arrow::after{
-  top:7px;
-  transform:translateX(-100%) rotate(40deg);
-  box-shadow:4px 0 0 rgba(200,168,75,.22);
-  opacity:.6;
+  opacity:.40;margin-top:-2px;
 }
 @keyframes chevronFade{
-  0%,100%{opacity:.28;transform:translateY(0)}
-  50%{opacity:.62;transform:translateY(4px)}
+  0%,100%{opacity:.20;transform:translateY(0)}
+  50%{opacity:.54;transform:translateY(5px)}
 }
 
 /* ── System Structure section ── */
@@ -2307,6 +2313,13 @@ body::before{
       <circle cx="580" cy="45" r="1.5" fill-opacity=".42"/>
       <circle cx="1160" cy="200" r="1.2" fill-opacity=".34"/>
     </g>
+    {{-- Intelligence pulse — hub intersection nodes --}}
+    <g class="hero-net-pulse" fill="#c8a84b">
+      <circle class="np-1" cx="340" cy="210" r="5.5"/>
+      <circle class="np-2" cx="700" cy="280" r="7"/>
+      <circle class="np-3" cx="460" cy="400" r="5"/>
+      <circle class="np-4" cx="920" cy="195" r="4.5"/>
+    </g>
   </svg>
 
   <div class="hero-stage">
@@ -2316,12 +2329,12 @@ body::before{
   <p class="hero-sub">Structured service + location deployment — expanding your visibility across every service you offer.</p>
   <p class="hero-cities"><span>Every Service.</span><span>Every City.</span><span>Every Neighborhood.</span></p>
   <p class="hero-diff">Programmatic URL expansion — scaling your presence across every service, every city, and every search surface.</p>
-  <p class="hero-supporting">Enhanced by live algorithm signals, search data, and continuous AI-driven optimization.</p>
+  <p class="hero-supporting">Continuously refined through live algorithm signals, search data, and AI-driven modeling.</p>
   <p class="hero-note">ONE BRAND PER MARKET &mdash; SELECT TERRITORIES ONLY</p>
   <div class="hero-actions" style="opacity:0;animation:up .85s .52s forwards">
     <a href="#contact" class="btn-primary">Claim Your Territory</a>
   </div>
-  <p class="hero-cta-note">AI-driven rollout. Limited market access.</p>
+  <p class="hero-cta-note">Signal-aware. Continuously adapting.</p>
 
 </section>
 
