@@ -3247,25 +3247,26 @@ body::before{
     <div class="tier starter">
       <span class="tier-flag">Market Launch Access</span>
       <h3 class="tier-name">Launch</h3>
-      <p class="tier-position">The structured entry path — establish your first market position.</p>
+      <p class="tier-position">Structured entry into your market — foundation coverage, initial build, and a position to grow from.</p>
       <ul class="tier-features">
         <li>
           <svg fill="none" stroke="currentColor" stroke-width="1.4" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064"/></svg>
-          Initial system deployment
+          Core services and primary city coverage
         </li>
         <li>
           <svg fill="none" stroke="currentColor" stroke-width="1.4" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
-          Structured service + location rollout
+          Structured 4-month foundation build
         </li>
         <li>
           <svg fill="none" stroke="currentColor" stroke-width="1.4" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
-          AI-driven setup and foundation
+          AI signals, schema, and search infrastructure
         </li>
         <li>
           <svg fill="none" stroke="currentColor" stroke-width="1.4" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/></svg>
-          Upgradeable as your market grows
+          Upgradeable as your market demands grow
         </li>
       </ul>
+      <div class="tier-commitment">Standard 4-month build. Foundation licensing maintained thereafter.</div>
       <div class="tier-gated">
         <span class="tier-gated-icon">◈</span>
         <span><strong>Access reviewed individually.</strong> Apply below to confirm availability.</span>
@@ -3277,27 +3278,27 @@ body::before{
     <div class="tier focal">
       <span class="tier-flag">Market Expansion Access</span>
       <h3 class="tier-name">Expansion</h3>
-      <p class="tier-position">The standard growth path — real coverage, real expansion.</p>
+      <p class="tier-position">The most common serious-growth path — broader coverage, active reinforcement, continuous rollout.</p>
       <ul class="tier-features">
         <li>
           <svg fill="none" stroke="currentColor" stroke-width="1.4" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
-          <strong>Expanded service and city coverage</strong>
+          <strong>Deeper service and city coverage</strong> — more surface area, more reach
         </li>
         <li>
           <svg fill="none" stroke="currentColor" stroke-width="1.4" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064"/></svg>
-          Continuous rollout and optimization
+          Continuous rollout across your active market
         </li>
         <li>
           <svg fill="none" stroke="currentColor" stroke-width="1.4" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
-          <strong>Competitive reinforcement</strong> — active position held
+          <strong>Competitive reinforcement</strong> — active position maintained monthly
         </li>
         <li>
           <svg fill="none" stroke="currentColor" stroke-width="1.4" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/></svg>
-          Ongoing reporting and performance tracking
+          Performance tracking and ongoing signal optimization
         </li>
       </ul>
       <div class="tier-price"><sup>$</sup>2,995<sub>/mo</sub></div>
-      <div class="tier-commitment">Structured 4-month deployment cycle.</div>
+      <div class="tier-commitment">Structured 4-month build. Active licensing maintains coverage and reinforcement.</div>
       <a href="{{ route('onboarding.start', ['tier' => 'expansion']) }}" class="tier-cta">Start Expansion Planning</a>
       <button class="tier-book" onclick="window._bkPending={id:{{ $consultTypes->get('strategy')?->id ?? 2 }},duration:{{ $consultTypes->get('strategy')?->duration_minutes ?? 30 }},name:{{ json_encode($consultTypes->get('strategy')?->name ?? 'Strategy Call') }},isFree:{{ ($consultTypes->get('strategy')?->is_free ?? false) ? 'true' : 'false' }}};window.dispatchEvent(new CustomEvent('open-booking',{detail:window._bkPending}));if(typeof gtag==='function')gtag('event','cta_click',{cta_location:'pricing_section',cta_label:'book_strategy_call'});">Book a Strategy Call</button>
     </div>
@@ -3305,27 +3306,27 @@ body::before{
     <div class="tier prime">
       <span class="tier-flag">Market Dominance Access</span>
       <h3 class="tier-name">Dominance</h3>
-      <p class="tier-position">Full market control — maximum speed and coverage.</p>
+      <p class="tier-position">The fastest, deepest option — for businesses that want maximum coverage, priority speed, and full market depth.</p>
       <ul class="tier-features">
         <li>
           <svg fill="none" stroke="currentColor" stroke-width="1.4" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
-          Full market expansion across services and locations
+          <strong>Maximum coverage depth</strong> — broadest service and city matrix available
         </li>
         <li>
           <svg fill="none" stroke="currentColor" stroke-width="1.4" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064"/></svg>
-          <strong>Priority deployment and optimization</strong>
+          <strong>Priority deployment</strong> — faster build, faster market presence
         </li>
         <li>
           <svg fill="none" stroke="currentColor" stroke-width="1.4" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/></svg>
-          Advanced signal reinforcement
+          Advanced signal reinforcement — strongest ongoing position maintenance
         </li>
         <li>
           <svg fill="none" stroke="currentColor" stroke-width="1.4" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>
-          Strategic oversight and market lock
+          Strategic oversight across your full coverage footprint
         </li>
       </ul>
       <div class="tier-price"><sup>$</sup>4,799<sub>/mo</sub></div>
-      <div class="tier-commitment">Priority processing. Structured 4-month deployment cycle.</div>
+      <div class="tier-commitment">Priority processing. Structured 4-month build. Maximum ongoing reinforcement.</div>
       <a href="{{ route('onboarding.start', ['tier' => 'dominance']) }}" class="tier-cta">Review Dominance Setup</a>
       <button class="tier-book" onclick="window._bkPending={id:{{ $consultTypes->get('agency-review')?->id ?? $consultTypes->get('agency')?->id ?? 3 }},duration:{{ $consultTypes->get('agency-review')?->duration_minutes ?? $consultTypes->get('agency')?->duration_minutes ?? 60 }},name:{{ json_encode($consultTypes->get('agency-review')?->name ?? $consultTypes->get('agency')?->name ?? 'Agency Licence Review') }},isFree:{{ ($consultTypes->get('agency-review')?->is_free ?? $consultTypes->get('agency')?->is_free ?? false) ? 'true' : 'false' }}};window.dispatchEvent(new CustomEvent('open-booking',{detail:window._bkPending}));if(typeof gtag==='function')gtag('event','cta_click',{cta_location:'pricing_section',cta_label:'book_agency_review'});">Book a Market Review</button>
     </div>
