@@ -1539,7 +1539,7 @@ body {
       {{-- ── Growth & Support Options ── --}}
       <div class="ob-section" style="margin-top:40px">Strategic Acceleration</div>
       <p class="ob-session-secured">You’ve secured your session.<br><br>Now we prepare your market.</p>
-      <p class="ob-session-secured-sub">The selections below determine how fast your system deploys, how accurately it is structured, and how strongly your position builds over time. No charges are added without your direct approval.</p>
+      <p class="ob-session-secured-sub">These selections determine how fast your system deploys, how precise your structure is, and how strong your position becomes. No charges are added without your direct approval.</p>
       @if(!empty($tier))
       <p class="ob-session-secured-sub" style="color:rgba(200,168,75,.62);margin-top:-10px;margin-bottom:20px">{{ $tier === 'launch' ? 'Your Launch path is set. These decisions shape how quickly your market position takes hold.' : ($tier === 'expansion' ? 'Your Expansion path is set. These decisions determine how broadly and how fast your system scales.' : 'Your Dominance path is set. These decisions drive the speed and depth of full-market coverage.') }}</p>
       @endif

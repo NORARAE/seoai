@@ -2643,9 +2643,9 @@ body::before{
   <canvas class="hero-anim-canvas" id="heroAnimCanvas" aria-hidden="true"></canvas>
 
   <div class="hero-stage">
-    <h1 id="heroSeq" aria-label="Your market. Your territory. Every city, every service. Programmatic expansion. One brand, one territory. Built for AI search.">Your market.<br>Your territory.</h1>
+    <h1 id="heroSeq" aria-label="Your market. Your territory. Every city, every service. Programmatic expansion. Maximum coverage. Built for search and AI discovery.">Your market.<br>Your territory.</h1>
   </div>
-  <p class="hero-gold-accent">AI-powered hyper-local SEO expansion across every city in your market.</p>
+  <p class="hero-gold-accent">AI-powered hyper-local market expansion across every city in your market.</p>
   <p class="hero-cities"><span>Every Service.</span><span>Every City.</span><span>Every Neighborhood.</span></p>
   <p class="hero-diff">Programmatic URL expansion — expanding your visibility across every service and every city.</p>
   <p class="hero-note">Position early. Expand everywhere.</p>
@@ -2697,7 +2697,7 @@ body::before{
     {{-- Left: domain expansion copy --}}
     <div>
       <p class="sys-eyebrow">Your Domain. Expanded.</p>
-      <h2 class="sys-hed">You are not buying<br>marketing.<br><em>You are expanding your domain.</em></h2>
+      <h2 class="sys-hed">This is how your<br>domain takes position.<br><em>Built on your URL. Expanded across your market.</em></h2>
       <p class="sys-gold-line">Every service. Every city. Every search that matters.</p>
       <p class="sys-sub">We build structured, hyper-local pages on your domain — so you show up where your competitors don’t.</p>
       <p class="sys-clarity">We do not replace your existing website. We expand it — increasing visibility, reach, and authority.</p>
@@ -2828,7 +2828,7 @@ body::before{
       </h2>
       <div class="alloc-sub">
         <p>Each region reflects real-time rollout status — driven by demand, competition, and phased expansion sequencing.</p>
-        <p><em>One brand positioned per market. Strategic expansion phases.</em></p>
+        <p><em>Structured market positioning at scale. Strategic expansion phases.</em></p>
       </div>
       <p class="alloc-urgency">Position established early compounds. <em>Structure your market as phases open.</em></p>
       <span class="alloc-convert-label">Selective access. Launch-ready markets only.</span>
@@ -2948,15 +2948,15 @@ body::before{
       <div class="aud-card r">
         <span class="aud-tag">For Agencies</span>
         <h3 class="aud-title">Own search<br><em>for every client.</em></h3>
-        <p class="aud-body">White-label deployment, entirely under your brand — complete search coverage across your client portfolio, exclusive by territory, with no third-party attribution anywhere.</p>
+        <p class="aud-body">White-label deployment, entirely under your brand — complete market coverage across your client portfolio, with no third-party attribution anywhere.</p>
         <ul class="aud-list">
           <li><strong>Zero attribution</strong> — invisible to clients and competitors alike</li>
-          <li><strong>One licence covers your full portfolio</strong></li>
+          <li><strong>Full portfolio coverage under one agreement</strong></li>
           <li><strong>Structured coverage per client</strong> — depth that builds retention</li>
           <li><strong>Search presence is tied to your agreement</strong> — retention by design</li>
         </ul>
         <p style="font-size:.82rem;color:var(--muted);letter-spacing:.04em;margin-bottom:12px">Not ads. Not campaigns. Ownership.</p>
-        <a href="#offer" class="aud-cta">Review Agency Licensing &rarr;</a>
+        <a href="#offer" class="aud-cta">Review Agency Deployment &rarr;</a>
       </div>
 
       <div class="aud-card r">
@@ -2981,49 +2981,39 @@ body::before{
 <section id="wyl">
   <div class="wyl-section">
     <div class="wyl-inner">
-      <p class="s-eye r">What the Licence Includes</p>
-      <h2 class="s-h r">The system behind<br><em>every page in your territory.</em></h2>
-      <p class="s-p r" style="max-width:640px">Every service page, every location page — structured headlines, intelligent FAQs, localized data, internal link architecture. <strong>This is not a tool. This is what holds your position.</strong></p>
+      <p class="s-eye r">What Your Deployment Delivers</p>
+      <h2 class="s-h r">The system behind<br><em>every page, every market.</em></h2>
+      <p class="s-p r" style="max-width:640px">Every result this system produces comes from structure — not effort. <strong>This is what takes and keeps your market position.</strong></p>
       <div class="wyl-grid">
         <div class="wyl-card r">
           <span class="wyl-icon">⬡</span>
-          <h3 class="wyl-title">Precision Page Assembly</h3>
-          <p class="wyl-desc">Every page is constructed through an automated pipeline — pairing a targeted headline, service-specific body, FAQ signal, and conversion elements to the exact search intent it targets. Zero manual composition.</p>
+          <h3 class="wyl-title">You show up everywhere.</h3>
+          <p class="wyl-desc">Every service and city in your market covered by dedicated, structured pages — built to perform across every relevant search.</p>
         </div>
         <div class="wyl-card r">
           <span class="wyl-icon">◈</span>
-          <h3 class="wyl-title">Topical Authority Architecture</h3>
-          <p class="wyl-desc">Related services, adjacent cities, category hubs, and breadcrumb trails are woven into every page at build time — forming a structured link graph that signals topical authority and domain depth across search engines, AI systems, and language models.</p>
+          <h3 class="wyl-title">Built on your domain.</h3>
+          <p class="wyl-desc">Pages expand your own URL footprint — increasing domain authority and reach without replacing anything you already have.</p>
         </div>
         <div class="wyl-card r">
           <span class="wyl-icon">⊹</span>
-          <h3 class="wyl-title">Structured Data Injection</h3>
-          <p class="wyl-desc">Rich business markup, FAQ schema, and breadcrumb signals are generated and embedded on every page automatically — no manual entry, no missed signals for organic search, AI-generated answers, or language model citations.</p>
+          <h3 class="wyl-title">Visible to AI systems.</h3>
+          <p class="wyl-desc">Structured data, schema signals, and semantic architecture built to surface across LLMs, AI assistants, and every emerging discovery layer.</p>
         </div>
         <div class="wyl-card r">
           <span class="wyl-icon">◎</span>
-          <h3 class="wyl-title">Location-Aware Content Generation</h3>
-          <p class="wyl-desc">Each page is independently generated around its specific city and service combination — producing content that reads and ranks as locally distinct. Not a city-name swap. Genuinely differentiated output at scale.</p>
+          <h3 class="wyl-title">Position compounds over time.</h3>
+          <p class="wyl-desc">Authority builds with every page deployed — position that deepens, widens, and becomes harder to displace each month.</p>
         </div>
         <div class="wyl-card r">
           <span class="wyl-icon">⬧</span>
-          <h3 class="wyl-title">Semantic Cluster Architecture</h3>
-          <p class="wyl-desc">Services, sub-services, and locations are mapped into topical clusters — building a coherent, authoritative site structure that positions your domain as the definitive resource in your niche.</p>
-        </div>
-        <div class="wyl-card r">
-          <span class="wyl-icon">◻</span>
-          <h3 class="wyl-title">Crawl-Safe Rendering</h3>
-          <p class="wyl-desc">Every page is delivered with clean URL structure, stable server-side output, and proper fallback logic — ensuring consistent, indexable delivery to every crawler and discovery system that reads the web.</p>
+          <h3 class="wyl-title">Coverage they can't replicate.</h3>
+          <p class="wyl-desc">Hyper-local depth and breadth at a scale and structure that cannot be quickly built or matched by competitors.</p>
         </div>
         <div class="wyl-card r">
           <span class="wyl-icon">◼</span>
-          <h3 class="wyl-title">Zero-Attribution Deployment</h3>
-          <p class="wyl-desc">Everything deploys under your brand identity. No third-party attribution in code, content, or metadata. Your clients see your agency's work. The platform behind it remains invisible.</p>
-        </div>
-        <div class="wyl-card r">
-          <span class="wyl-icon">◈</span>
-          <h3 class="wyl-title">Capacity-Controlled Growth</h3>
-          <p class="wyl-desc">Your licence defines a precise page inventory. Expansion is planned and incremental — protecting per-page quality and ensuring coverage scales without diluting the authority already earned.</p>
+          <h3 class="wyl-title">The system runs itself.</h3>
+          <p class="wyl-desc">Maintained, optimized, and expanded under your active agreement — no dashboards, no management overhead required.</p>
         </div>
       </div>
     </div>
@@ -3252,7 +3242,7 @@ body::before{
     <div class="tier starter">
       <span class="tier-flag">Market Launch Access</span>
       <h3 class="tier-name">Launch</h3>
-      <p class="tier-position">For businesses establishing their first market presence</p>
+      <p class="tier-position">The structured entry path — establish your first market position.</p>
       <ul class="tier-features">
         <li>
           <svg fill="none" stroke="currentColor" stroke-width="1.4" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064"/></svg>
@@ -3282,7 +3272,7 @@ body::before{
     <div class="tier focal">
       <span class="tier-flag">Market Expansion Access</span>
       <h3 class="tier-name">Expansion</h3>
-      <p class="tier-position">For businesses actively scaling visibility</p>
+      <p class="tier-position">The standard growth path — real coverage, real expansion.</p>
       <ul class="tier-features">
         <li>
           <svg fill="none" stroke="currentColor" stroke-width="1.4" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
@@ -3310,7 +3300,7 @@ body::before{
     <div class="tier prime">
       <span class="tier-flag">Market Dominance Access</span>
       <h3 class="tier-name">Dominance</h3>
-      <p class="tier-position">For businesses securing and holding market leadership</p>
+      <p class="tier-position">Full market control — maximum speed and coverage.</p>
       <ul class="tier-features">
         <li>
           <svg fill="none" stroke="currentColor" stroke-width="1.4" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
@@ -3332,12 +3322,13 @@ body::before{
       <div class="tier-price"><sup>$</sup>4,799<sub>/mo</sub></div>
       <div class="tier-commitment">Priority processing. Structured 4-month deployment cycle.</div>
       <a href="{{ route('onboarding.start', ['tier' => 'dominance']) }}" class="tier-cta">Review Dominance Setup</a>
-      <button class="tier-book" onclick="window._bkPending={id:{{ $consultTypes->get('agency-review')?->id ?? $consultTypes->get('agency')?->id ?? 3 }},duration:{{ $consultTypes->get('agency-review')?->duration_minutes ?? $consultTypes->get('agency')?->duration_minutes ?? 60 }},name:{{ json_encode($consultTypes->get('agency-review')?->name ?? $consultTypes->get('agency')?->name ?? 'Agency Licence Review') }},isFree:{{ ($consultTypes->get('agency-review')?->is_free ?? $consultTypes->get('agency')?->is_free ?? false) ? 'true' : 'false' }}};window.dispatchEvent(new CustomEvent('open-booking',{detail:window._bkPending}));if(typeof gtag==='function')gtag('event','cta_click',{cta_location:'pricing_section',cta_label:'book_agency_review'});">Review My Agency Licence</button>
+      <button class="tier-book" onclick="window._bkPending={id:{{ $consultTypes->get('agency-review')?->id ?? $consultTypes->get('agency')?->id ?? 3 }},duration:{{ $consultTypes->get('agency-review')?->duration_minutes ?? $consultTypes->get('agency')?->duration_minutes ?? 60 }},name:{{ json_encode($consultTypes->get('agency-review')?->name ?? $consultTypes->get('agency')?->name ?? 'Agency Licence Review') }},isFree:{{ ($consultTypes->get('agency-review')?->is_free ?? $consultTypes->get('agency')?->is_free ?? false) ? 'true' : 'false' }}};window.dispatchEvent(new CustomEvent('open-booking',{detail:window._bkPending}));if(typeof gtag==='function')gtag('event','cta_click',{cta_location:'pricing_section',cta_label:'book_agency_review'});">Book a Market Review</button>
     </div>
 
   </div>
 
-  <p style="text-align:center;font-size:.74rem;color:rgba(168,168,160,.32);letter-spacing:.04em;padding:28px 0 8px;position:relative;z-index:2">Applying selects your market level — not a payment. We review your inquiry, confirm availability, and guide activation personally.</p>
+  <p style="text-align:center;font-size:.82rem;color:rgba(168,168,160,.48);letter-spacing:.03em;padding:12px 0 2px;position:relative;z-index:2;font-style:italic">Most businesses begin with Expansion. Dominance is used when speed and coverage matter most.</p>
+  <p style="text-align:center;font-size:.74rem;color:rgba(168,168,160,.32);letter-spacing:.04em;padding:6px 0 8px;position:relative;z-index:2">Applying selects your market level — not a payment. We review your inquiry, confirm availability, and guide activation personally.</p>
 
 </section>
 <script>
