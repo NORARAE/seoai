@@ -1472,48 +1472,36 @@ body::before{
   font-size:clamp(1.45rem,2.75vw,2.15rem);
   color:var(--gold);letter-spacing:.025em;line-height:1.32;
   opacity:0;animation:up .75s .2s forwards;
-  margin-bottom:28px;
-}
-.hero-sub{
-  font-size:clamp(.98rem,1.4vw,1.1rem);line-height:1.82;
-  color:rgba(168,168,160,.72);max-width:540px;
-  opacity:0;animation:up .8s .31s forwards;
   margin-bottom:32px;
 }
 .hero-note{
   font-size:.72rem;letter-spacing:.24em;text-transform:uppercase;
   color:rgba(200,168,75,.44);
-  opacity:0;animation:up .8s .62s forwards;
+  opacity:0;animation:up .8s .54s forwards;
   margin-top:4px;margin-bottom:32px;
 }
 
-/* ── Hero differentiation + supporting lines ── */
+/* ── Hero differentiation line ── */
 .hero-diff{
-  font-size:.86rem;letter-spacing:.05em;
-  color:rgba(200,168,75,.62);line-height:1.74;
-  opacity:0;animation:up .8s .50s forwards;
-  margin-bottom:10px;max-width:580px;
-}
-.hero-supporting{
-  font-size:.8rem;letter-spacing:.03em;
-  color:rgba(168,168,160,.42);line-height:1.80;
-  opacity:0;animation:up .8s .57s forwards;
-  margin-bottom:28px;max-width:560px;
+  font-size:.88rem;letter-spacing:.04em;
+  color:rgba(200,168,75,.64);line-height:1.74;
+  opacity:0;animation:up .8s .44s forwards;
+  margin-bottom:28px;max-width:580px;
 }
 /* Micro-type — elegant 3-line stacked serif moment */
 .hero-cities{
   font-family:'Cormorant Garamond',serif;font-weight:300;
   font-size:clamp(1rem,1.55vw,1.28rem);
   color:rgba(237,232,222,.62);letter-spacing:.12em;line-height:1.72;
-  opacity:0;animation:up .8s .44s forwards;
-  margin-bottom:28px;
+  opacity:0;animation:up .8s .32s forwards;
+  margin-bottom:32px;
   border-left:1px solid rgba(200,168,75,.18);padding-left:18px;
 }
 .hero-cities span{display:block}
 .hero-cta-note{
   font-size:.64rem;letter-spacing:.22em;text-transform:uppercase;
   color:rgba(200,168,75,.30);
-  opacity:0;animation:up .8s .70s forwards;
+  opacity:0;animation:up .8s .68s forwards;
   margin-top:14px;
 }
 
@@ -1546,10 +1534,10 @@ body::before{
 @media(prefers-reduced-motion:reduce){.hero-net-pulse circle{animation:none}}
 
 /* ── Hero → Section transition: animated shimmer line ── */
-.hero-transition{text-align:center;padding:24px 0 0}
+.hero-transition{text-align:center;padding:28px 0 0}
 .hero-scroll-label{
   display:block;font-size:.64rem;letter-spacing:.22em;text-transform:uppercase;
-  color:rgba(200,168,75,.36);margin-bottom:18px;
+  color:rgba(200,168,75,.44);margin-bottom:18px;
   opacity:0;animation:up .9s 1.4s forwards;
 }
 .hero-rule-shimmer{
@@ -2013,12 +2001,10 @@ body::before{
   .step-title{font-size:1.18rem}
 
   /* Hero supporting copy */
-  .hero-gold-accent{margin-bottom:18px;line-height:1.3}
-  .hero-sub{margin-bottom:20px}
-  .hero-note{margin-bottom:20px}
-  .hero-diff{font-size:.82rem;margin-bottom:8px}
-  .hero-cities{font-size:.96rem;margin-bottom:20px;letter-spacing:.09em;padding-left:14px}
-  .hero-supporting{font-size:.77rem;margin-bottom:20px;max-width:100%}
+  .hero-gold-accent{margin-bottom:22px;line-height:1.3}
+  .hero-note{margin-bottom:22px}
+  .hero-diff{font-size:.82rem;margin-bottom:20px}
+  .hero-cities{font-size:.96rem;margin-bottom:24px;letter-spacing:.09em;padding-left:14px}
   .hero-cta-note{font-size:.64rem;letter-spacing:.12em}
   .hero-net{opacity:.04}
   .hero-scroll-label{font-size:.60rem;letter-spacing:.16em}
@@ -2326,10 +2312,8 @@ body::before{
     <h1 id="heroSeq" aria-label="Your market. Your territory. Every city, every service. Programmatic expansion. One brand, one territory. Built for AI search.">Your market.<br>Your territory.</h1>
   </div>
   <p class="hero-gold-accent">AI-powered hyper-local SEO expansion across every city in your market.</p>
-  <p class="hero-sub">Structured service + location deployment — expanding your visibility across every service you offer.</p>
   <p class="hero-cities"><span>Every Service.</span><span>Every City.</span><span>Every Neighborhood.</span></p>
-  <p class="hero-diff">Programmatic URL expansion — scaling your presence across every service, every city, and every search surface.</p>
-  <p class="hero-supporting">Continuously refined through live algorithm signals, search data, and AI-driven modeling.</p>
+  <p class="hero-diff">Programmatic URL expansion — expanding your visibility across every service and every city.</p>
   <p class="hero-note">ONE BRAND PER MARKET &mdash; SELECT TERRITORIES ONLY</p>
   <div class="hero-actions" style="opacity:0;animation:up .85s .52s forwards">
     <a href="#contact" class="btn-primary">Claim Your Territory</a>
