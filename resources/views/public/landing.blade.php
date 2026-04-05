@@ -3230,6 +3230,7 @@ body::before{
       <!-- C. FINAL POSITIONING -->
       <div class="offer-positioning">
         <p class="offer-positioning-bottom">Not a deliverable.<br>A position that is actively held.</p>
+        <p style="font-size:.78rem;color:rgba(168,168,160,.48);letter-spacing:.04em;margin-top:14px;line-height:1.68">Anyone can create pages.<br>Very few can make them rank &mdash; and fewer still can hold that position over time.</p>
       </div>
 
     </div>
@@ -3238,6 +3239,7 @@ body::before{
   <div class="offer-guide r">
     <p class="offer-guide-line">Select the level that matches your goal.</p>
     <p style="font-size:.86rem;color:rgba(168,168,160,.65);text-align:center;margin-top:12px;letter-spacing:.02em">Access begins with onboarding.<br>We review your market, confirm availability, and activate your system with you.</p>
+    <p style="font-size:.76rem;color:rgba(168,168,160,.38);text-align:center;margin-top:10px;letter-spacing:.03em;font-style:italic">Your expansion system is maintained under an active licensing agreement.</p>
   </div>
 
   <div class="tier-grid-3" id="tierGrid">
@@ -3331,7 +3333,8 @@ body::before{
   </div>
 
   <p style="text-align:center;font-size:.82rem;color:rgba(168,168,160,.48);letter-spacing:.03em;padding:12px 0 2px;position:relative;z-index:2;font-style:italic">Most businesses begin with Expansion. Dominance is used when speed and coverage matter most.</p>
-  <p style="text-align:center;font-size:.74rem;color:rgba(168,168,160,.32);letter-spacing:.04em;padding:6px 0 8px;position:relative;z-index:2">Applying selects your market level — not a payment. We review your inquiry, confirm availability, and guide activation personally.</p>
+  <p style="text-align:center;font-size:.74rem;color:rgba(168,168,160,.32);letter-spacing:.04em;padding:6px 0 4px;position:relative;z-index:2">Applying selects your market level — not a payment. We review your inquiry, confirm availability, and guide activation personally.</p>
+  <p style="text-align:center;font-size:.72rem;color:rgba(168,168,160,.26);letter-spacing:.04em;padding:4px 0 12px;position:relative;z-index:2;line-height:1.72">Initial deployment is structured over a 4-month build phase.<br>Ongoing expansion, optimization, and position strength are maintained through continued licensing.<br><em>Pages remain live, but ranking strength depends on active system maintenance.</em></p>
 
 </section>
 <script>
