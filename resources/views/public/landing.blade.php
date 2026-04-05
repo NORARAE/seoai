@@ -3223,8 +3223,8 @@ body::before{
 
       <!-- A. SCARCITY -->
       <div class="offer-scarcity">
-        <p class="offer-scarcity-main">Territories are not open by default.</p>
-        <p class="offer-scarcity-sub">Access is selective. Capacity is limited.</p>
+        <p class="offer-scarcity-main">Capacity is selective. Access is guided.</p>
+        <p class="offer-scarcity-sub">Market position is confirmed before activation.</p>
       </div>
 
       <!-- B. VALUE -->
@@ -3380,7 +3380,7 @@ body::before{
         <p class="va-col-item">Compounds continuously over time.</p>
       </div>
     </div>
-    <p class="va-close">You are not buying SEO.<br><em>You are entering a system designed to grow your market.</em></p>
+    <p class="va-close">This is not marketing spend.<br><em>This is structured market expansion — built and compounded over time.</em></p>
   </div>
 </div>
 

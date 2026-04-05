@@ -266,7 +266,7 @@ footer{border-top:1px solid var(--border);padding:36px 64px;display:flex;flex-di
   <div class="hero-grid"></div>
   <div class="hero-orb"></div>
 
-  <div class="hero-cluster">{{ ucfirst($page->cluster) }} · Exclusive Territory</div>
+  <div class="hero-cluster">{{ ucfirst($page->cluster) }} · Structured Market Expansion</div>
 
   <h1 class="hero-h1">{{ $page->h1 }}</h1>
 

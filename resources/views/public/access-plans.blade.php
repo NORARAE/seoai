@@ -43,7 +43,7 @@
       "name": "AI-Powered Programmatic SEO System",
       "provider": {"@type": "Organization", "name": "SEO AI Co"},
       "serviceType": "Programmatic SEO Infrastructure",
-      "description": "Hyper-local programmatic SEO infrastructure for local service businesses. Structured service and location pages deployed at scale — one brand per market, one licensee per territory. Access tiers: Launch, Expansion, and Dominance.",
+      "description": "Hyper-local programmatic SEO infrastructure for local service businesses. Structured service and location pages deployed at scale — structured hyper-local authority at scale. Access tiers: Launch, Expansion, and Dominance.",
       "url": "{{ url('/access-plans') }}",
       "areaServed": {"@type": "Country", "name": "United States"},
       "offers": [
@@ -180,10 +180,10 @@ footer{border-top:1px solid var(--border);padding:32px 64px;display:flex;align-i
 
   <span class="page-eye">Market Access Plans</span>
   <h1 class="page-title">Access is structured<br><em>by expansion level.</em></h1>
-  <p class="page-intro">The SEO AI Co™ system deploys AI-powered programmatic SEO infrastructure for local service businesses. One brand per market. One licensee per territory. Structured pages, internal link architecture, and search signals deployed at scale — and held.</p>
+  <p class="page-intro">The SEO AI Co™ system deploys AI-powered programmatic SEO infrastructure for local service businesses. Structured pages, internal link architecture, and search signals deployed at scale — and held through execution.</p>
 
   <div class="how-it-works-note">
-    <strong>How access works:</strong> Markets are not open by default. Each territory supports one primary brand. Access is reviewed individually based on market availability and strategic fit. Once a market is active, expansion is restricted. Your position is built and held — not rented.
+    <strong>How access works:</strong> Access is reviewed individually based on market availability and strategic fit. Your position is built, deployed, and held — not rented. We confirm what's available in your market and activate your system with you.
   </div>
 
   <!-- ── TIER CARDS ── -->
@@ -255,8 +255,8 @@ footer{border-top:1px solid var(--border);padding:32px 64px;display:flex;align-i
     <div class="sys-cap-grid">
       <div class="sys-cap-item">
         <svg class="sys-cap-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
-        <span class="sys-cap-label">One Brand Per Market</span>
-        <p class="sys-cap-desc">No competitor can hold the same territory under the same system. Your market is exclusively yours.</p>
+        <span class="sys-cap-label">Structured Market Position</span>
+        <p class="sys-cap-desc">Your position is structured for depth and coverage — built to compound and hold through ongoing execution.</p>
       </div>
       <div class="sys-cap-item">
         <svg class="sys-cap-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><path stroke-linecap="round" stroke-linejoin="round" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"/></svg>
@@ -301,7 +301,7 @@ footer{border-top:1px solid var(--border);padding:32px 64px;display:flex;align-i
   </div>
 
   <div class="ai-note">
-    <strong>About access plans:</strong> SEO AI Co™ offers three market access tiers — Launch (entry-level, reviewed individually), Expansion ($2,995/mo, 5,000 URL foundation licence), and Dominance ($4,799/mo, 10,000 URL preferred licence). All tiers include programmatic SEO infrastructure deployment across structured service and location pages for local service businesses in the United States. Access is limited to one licensee per market territory. Execution services (web design, ads management, branding, WordPress support) are available separately through the Growth Services program.
+    <strong>About access plans:</strong> SEO AI Co™ offers three market access tiers — Launch (entry-level, reviewed individually), Expansion ($2,995/mo, 5,000 URL foundation deployment), and Dominance ($4,799/mo, 10,000 URL priority deployment). All tiers include programmatic SEO infrastructure deployment across structured service and location pages for local service businesses in the United States. Access is reviewed individually per market. Execution services (web design, ads management, branding, WordPress support) are available separately through the Growth Services program.
   </div>
 
 </main>

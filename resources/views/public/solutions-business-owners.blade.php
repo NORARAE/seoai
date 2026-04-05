@@ -139,7 +139,7 @@ footer{border-top:1px solid var(--border);padding:32px 64px;display:flex;align-i
     <h2>Claim it before<br><em>someone else does.</em></h2>
     <p>A market session confirms availability, maps your territory, and outlines exactly what we'd build for your position.</p>
     <a href="/book" class="cta-btn">Reserve a Market Session</a>
-    <span class="cta-note">One operator per market — select territories only.</span>
+    <span class="cta-note">Access reviewed. Market position confirmed.</span>
   </div>
 </main>
 

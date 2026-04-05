@@ -1615,7 +1615,7 @@ body {
               </span>
               <span class="ob-addon-check"></span>
             </div>
-            <span class="ob-addon-price">Setup from $750 &middot; ad spend paid directly to platform</span>
+            <span class="ob-addon-price">Setup from $750&ndash;$1,500+ &middot; ad spend paid directly to platform</span>
             <span class="ob-addon-desc">We build your full paid acquisition setup — campaigns, targeting, and conversion tracking — structured around your market. Ad spend goes directly to the platform. Ongoing management scoped separately after your session.</span>
             <span style="display:inline-block;margin-top:6px;font-size:.72rem;color:var(--gold);letter-spacing:.06em;text-transform:uppercase">Used by growth-focused clients</span>
           </label>
@@ -1632,7 +1632,7 @@ body {
               </span>
               <span class="ob-addon-check"></span>
             </div>
-            <span class="ob-addon-price">$349/month</span>
+            <span class="ob-addon-price">$349&ndash;$749/month</span>
             <span class="ob-addon-desc">Strategic position tracking — not automated output. Clear, branded, and structured to show exactly how your market position is building month over month.</span>
           </label>
         </div>
@@ -1648,7 +1648,7 @@ body {
               </span>
               <span class="ob-addon-check"></span>
             </div>
-            <span class="ob-addon-price">From $349</span>
+            <span class="ob-addon-price">$349–$749+</span>
             <span class="ob-addon-desc">A research report on your market — who ranks, where they’re weak, and exactly where your business can grow first. Delivered before deployment begins so we target real opportunities from day one.</span>
           </label>
         </div>
@@ -1858,7 +1858,7 @@ body {
         <div>
           <span class="ob-detail-eyebrow">Enhancement — Expert Build</span>
           <div class="ob-detail-title">Market Activation Campaign</div>
-          <div class="ob-detail-price-badge">Setup from $750 &middot; Ad spend direct to platform &middot; Management scoped separately</div>
+          <div class="ob-detail-price-badge">Setup from $750&ndash;$1,500+ &middot; Ad spend direct to platform &middot; Management scoped separately</div>
           <div class="ob-detail-section">
             <span class="ob-detail-section-label">What this includes</span>
             <p class="ob-detail-body">A professionally built Google Ads account — campaign structure, targeting, ad copy, and conversion tracking — set up to run in your specific market and service area.</p>
@@ -1896,7 +1896,7 @@ body {
         <div>
           <span class="ob-detail-eyebrow">Enhancement — Monthly</span>
           <div class="ob-detail-title">SEOAIco™ Market Position Tracking</div>
-          <div class="ob-detail-price-badge">$349 / month</div>
+          <div class="ob-detail-price-badge">$349&ndash;$749 / month</div>
           <div class="ob-detail-section">
             <span class="ob-detail-section-label">What this does</span>
             <p class="ob-detail-body">Delivers a clear, branded report each month showing where your system is performing — so you don't have to log into dashboards or figure it out yourself.</p>
@@ -1928,7 +1928,7 @@ body {
         <div>
           <span class="ob-detail-eyebrow">Enhancement — One-time</span>
           <div class="ob-detail-title">SEOAIco™ Market Intelligence Report</div>
-          <div class="ob-detail-price-badge">From $349</div>
+          <div class="ob-detail-price-badge">$349&ndash;$749+</div>
           <div class="ob-detail-section">
             <span class="ob-detail-section-label">What this does</span>
             <p class="ob-detail-body">Before your system deploys, we research your market — who ranks, where they’re winning, and where there are clear gaps your business can take. You get a written report with specific direction, not a generic overview.</p>

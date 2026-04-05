@@ -89,7 +89,7 @@ footer{border-top:1px solid var(--border);padding:32px 64px;display:flex;align-i
 <main class="page">
   <span class="page-eye">For Agencies</span>
   <h1 class="page-title">Infrastructure you deploy.<br><em>Margin you keep.</em></h1>
-  <p class="page-intro">The SEO AI Co™ system is designed to be operated by agencies at scale. White-label it, brand it as your own, and deploy across all your clients — while holding exclusive territory on their behalf.</p>
+  <p class="page-intro">The SEO AI Co™ system is designed to be operated by agencies at scale. White-label it, brand it as your own, and deploy across all your clients — building structured market position on their behalf.</p>
 
   <div class="vp-grid">
     <div class="vp-item">
@@ -98,9 +98,9 @@ footer{border-top:1px solid var(--border);padding:32px 64px;display:flex;align-i
       <p class="vp-body">Deploy the system under your agency brand. Clients see your work; you own the relationship.</p>
     </div>
     <div class="vp-item">
-      <span class="vp-label">Exclusive Territory</span>
-      <h2 class="vp-hed">One agency per market.</h2>
-      <p class="vp-body">Each territory is locked to a single operator. Competitors cannot access the same system in your client's category and geography.</p>
+      <span class="vp-label">Market Position Lock</span>
+      <h2 class="vp-hed">Your clients' markets. Held.</h2>
+      <p class="vp-body">Each client's market gets a structured position — deployed at scale and held through ongoing execution. No dilution, no overlap.</p>
     </div>
     <div class="vp-item">
       <span class="vp-label">Recurring Revenue</span>
