@@ -1,0 +1,61 @@
+# SEO AI Co™
+
+> AI-powered programmatic SEO infrastructure for local service businesses in the United States. One brand per market. One licensee per territory. Structured service and location pages deployed at scale — built to hold search position and expand over time.
+
+## What This System Does
+
+SEO AI Co™ builds and deploys programmatic SEO infrastructure for local service businesses. The system generates hyper-local structured pages for every service-city combination in a licensed territory, establishing search presence across an operator's full market before competitors can claim the same ground.
+
+This is not a content tool or an SEO plugin. It is infrastructure — structured page architecture, internal link systems, search signals, and ongoing optimization deployed under a single territory licence.
+
+## Core Principles
+
+- **One licensee per market.** Each territory supports one primary brand. Once secured, no competitor can hold the same market position under the same system.
+- **Hyper-local URL architecture.** Every service-city combination in the licensed territory receives a dedicated structured page.
+- **LLM-aware structure.** Pages are built for organic search, AI-assisted visibility, and discovery across AI tools and search assistants.
+- **Compounding position.** Search presence compounds over time as the system expands coverage and strengthens signals across the territory.
+- **AI-guided deployment.** Pages are generated, deployed, and optimized systematically at scale.
+
+## Access Tiers
+
+- **Launch** — Entry-level market access. Initial system deployment, structured rollout, AI-driven foundation. Reviewed individually based on market availability.
+- **Expansion** — $2,995/mo. Expanded service and city coverage, continuous rollout, competitive reinforcement, performance tracking. Structured 4-month deployment cycle.
+- **Dominance** — $4,799/mo. Full market expansion, priority deployment, advanced signal reinforcement, strategic oversight and market lock. Structured 4-month deployment cycle with priority processing.
+
+Access is limited. Markets are not open by default.
+
+## Execution Services (Separate from the SEO System)
+
+Available execution services complement the SEO infrastructure but are not included in access plans:
+
+- **Web Design & Development** — Custom websites, redesigns, landing pages, and technical alignment with the SEO system
+- **WordPress Support** — WordPress development, maintenance, performance optimization, and content management
+- **Ads Management** — Google Ads, local search campaigns, LSAs, and paid advertising aligned with market expansion
+- **Branding & Print** — Brand identity systems, business cards, collateral, signage design, and brand refresh
+
+## Key Pages
+
+- Homepage + system overview: https://seoaico.com/
+- How the system works: https://seoaico.com/how-it-works
+- Access plans: https://seoaico.com/access-plans
+- Growth services overview: https://seoaico.com/growth-services
+- Web design & development: https://seoaico.com/web-design-development
+- WordPress support: https://seoaico.com/wordpress-support
+- Ads management: https://seoaico.com/ads-management
+- Branding & print: https://seoaico.com/branding-print
+- Solutions overview: https://seoaico.com/solutions
+- Check market availability (onboarding): https://seoaico.com/onboarding/start
+- Privacy policy: https://seoaico.com/privacy
+- Terms of service: https://seoaico.com/terms
+
+## Sitemap
+
+https://seoaico.com/sitemap.xml
+
+## Who This Is For
+
+Local service businesses in the United States that need to establish and hold search presence across multiple cities and service categories — HVAC, roofing, plumbing, landscaping, electrical, pest control, cleaning, and similar industries. Businesses moving to establish market position before competitors claim the same ground.
+
+## Who Operates This System
+
+SEO AI Co™ is the operator and infrastructure provider. Access is licensed on a per-territory basis. The company is based in the United States and serves local service businesses nationwide.

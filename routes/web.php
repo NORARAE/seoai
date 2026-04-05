@@ -61,6 +61,14 @@ Route::get('/solutions/agencies', [PublicController::class, 'solutionsAgencies']
 Route::get('/solutions/business-owners', [PublicController::class, 'solutionsBusinessOwners'])->name('solutions.business-owners');
 Route::get('/access', fn() => redirect('/onboarding/start'))->name('access');
 
+// ── Execution service pages ──
+Route::get('/growth-services', [PublicController::class, 'growthServices'])->name('growth-services');
+Route::get('/web-design-development', [PublicController::class, 'webDesignDevelopment'])->name('web-design-development');
+Route::get('/wordpress-support', [PublicController::class, 'wordpressSupport'])->name('wordpress-support');
+Route::get('/ads-management', [PublicController::class, 'adsManagement'])->name('ads-management');
+Route::get('/branding-print', [PublicController::class, 'brandingPrint'])->name('branding-print');
+Route::get('/access-plans', [PublicController::class, 'accessPlans'])->name('access-plans');
+
 // ── Booking / Consult System ──
 Route::post('/track/modal-open', [TrackingController::class, 'modalOpen'])->middleware('throttle:30,1')->name('track.modal-open');
 Route::get('/book', [BookingController::class, 'index'])->name('book.index');

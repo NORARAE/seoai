@@ -233,4 +233,34 @@ class PublicController extends Controller
     {
         return view('public.solutions-business-owners');
     }
+
+    public function growthServices(): View
+    {
+        return view('public.growth-services');
+    }
+
+    public function webDesignDevelopment(): View
+    {
+        return view('public.web-design-development');
+    }
+
+    public function wordpressSupport(): View
+    {
+        return view('public.wordpress-support');
+    }
+
+    public function adsManagement(): View
+    {
+        return view('public.ads-management');
+    }
+
+    public function brandingPrint(): View
+    {
+        return view('public.branding-print');
+    }
+
+    public function accessPlans(): View
+    {
+        return view('public.access-plans');
+    }
 }

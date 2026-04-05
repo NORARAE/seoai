@@ -727,6 +727,18 @@ nav.stuck{background:rgba(8,8,8,.95);backdrop-filter:blur(16px);border-color:var
   font-size:1.5rem;font-weight:400;color:var(--ivory);margin-bottom:10px;line-height:1.2;
 }
 .exec-body{font-size:.88rem;color:var(--muted);line-height:1.72}
+.exec-learn{
+  display:inline-block;margin-top:14px;
+  font-size:.66rem;letter-spacing:.16em;text-transform:uppercase;
+  color:rgba(200,168,75,.42);text-decoration:none;transition:color .25s;
+}
+.exec-learn:hover{color:var(--gold)}
+.exec-all{
+  display:block;text-align:center;margin-top:28px;
+  font-size:.72rem;letter-spacing:.16em;text-transform:uppercase;
+  color:rgba(168,168,160,.38);text-decoration:none;transition:color .25s;
+}
+.exec-all:hover{color:var(--gold)}
 .exec-positioning{
   margin-top:32px;padding:22px 28px;
   border:1px solid rgba(200,168,75,.12);
@@ -3015,18 +3027,22 @@ body::before{
       <span class="exec-label">Development &amp; Design</span>
       <h3 class="exec-title">Websites &amp; Builds</h3>
       <p class="exec-body">Websites, redesigns, and performance-driven builds aligned with your expansion strategy.</p>
+      <a href="{{ route('web-design-development') }}" class="exec-learn">Learn more &rarr;</a>
     </div>
     <div class="exec-card r">
       <span class="exec-label">Advertising</span>
       <h3 class="exec-title">Search &amp; Local Campaigns</h3>
       <p class="exec-body">Search and local campaigns designed to reinforce your market position while your organic presence compounds.</p>
+      <a href="{{ route('ads-management') }}" class="exec-learn">Learn more &rarr;</a>
     </div>
     <div class="exec-card r">
       <span class="exec-label">Brand &amp; Print</span>
       <h3 class="exec-title">Brand Systems</h3>
       <p class="exec-body">Business cards, collateral, and brand systems aligned with your growth — not generic templates.</p>
+      <a href="{{ route('branding-print') }}" class="exec-learn">Learn more &rarr;</a>
     </div>
   </div>
+  <a href="{{ route('growth-services') }}" class="exec-all">See all services &rarr;</a>
   <p class="exec-positioning">All services align with your market expansion strategy — not disconnected marketing efforts.</p>
 </section>
 
