@@ -232,6 +232,28 @@ class BookingController extends Controller
             ]);
         }
 
+        // Schedule post-session follow-up 24 h after the session
+        try {
+            $sessionDateTime = Carbon::parse(
+                $booking->preferred_date->toDateString() . ' ' . $booking->preferred_time
+            );
+            $followUpDelay = $sessionDateTime->copy()->addHours(24);
+            Mail::to($booking->email)
+                ->later($followUpDelay, new BookingFollowUp($booking));
+            EmailLog::create([
+                'booking_id' => $booking->id,
+                'email_type' => 'follow_up',
+                'recipient_email' => $booking->email,
+                'sent_at' => $followUpDelay,
+                'status' => 'scheduled',
+            ]);
+        } catch (\Exception $e) {
+            Log::channel('booking')->warning('Follow-up email scheduling failed', [
+                'booking_id' => $booking->id,
+                'error' => $e->getMessage(),
+            ]);
+        }
+
         // Funnel tracking
         FunnelEvent::fire(FunnelEvent::BOOKING_CREATED, $booking->id);
 
@@ -609,6 +631,28 @@ class BookingController extends Controller
             }
         } catch (\Exception $e) {
             Log::channel('booking')->warning('Pre-call email scheduling failed for paid booking', [
+                'booking_id' => $booking->id,
+                'error' => $e->getMessage(),
+            ]);
+        }
+
+        // Schedule post-session follow-up 24 h after the session
+        try {
+            $sessionDateTime = Carbon::parse(
+                $booking->preferred_date->toDateString() . ' ' . $booking->preferred_time
+            );
+            $followUpDelay = $sessionDateTime->copy()->addHours(24);
+            Mail::to($booking->email)
+                ->later($followUpDelay, new BookingFollowUp($booking));
+            EmailLog::create([
+                'booking_id' => $booking->id,
+                'email_type' => 'follow_up',
+                'recipient_email' => $booking->email,
+                'sent_at' => $followUpDelay,
+                'status' => 'scheduled',
+            ]);
+        } catch (\Exception $e) {
+            Log::channel('booking')->warning('Follow-up email scheduling failed for paid booking', [
                 'booking_id' => $booking->id,
                 'error' => $e->getMessage(),
             ]);
