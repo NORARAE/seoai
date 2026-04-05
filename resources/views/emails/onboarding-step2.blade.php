@@ -71,7 +71,7 @@
     @if($submission->rd_referral_interest)
     <div style="background:#f0f7f0; border-left:3px solid #4a7c59; padding:18px 20px; margin:24px 0;">
       <p style="font-size:.82rem; color:#2d5a3d; font-weight:600; margin:0 0 8px; letter-spacing:.05em; text-transform:uppercase;">Research &amp; Development Note</p>
-      <p style="font-size:.85rem; color:#444; line-height:1.7; margin:0 0 10px;">You indicated interest in R&amp;D documentation practices. This is an independent area outside of SEO services. We are providing informational links to official IRS resources only — this is not tax advice and we are not tax advisors.</p>
+      <p style="font-size:.85rem; color:#444; line-height:1.7; margin:0 0 10px;">You indicated interest in R&amp;D documentation practices. This is an independent area outside of our market expansion system. We are providing informational links to official IRS resources only &mdash; this is not tax advice and we are not tax advisors.</p>
       <p style="font-size:.85rem; color:#444; line-height:1.7; margin:0;">
         Official IRS resources:<br>
         &bull; <a href="https://www.irs.gov/instructions/i6765" style="color:#4a7c59;">IRS Form 6765 Instructions (irs.gov)</a><br>

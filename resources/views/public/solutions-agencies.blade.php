@@ -120,7 +120,7 @@ footer{border-top:1px solid var(--border);padding:32px 64px;display:flex;align-i
   <ul class="ob-list">
     <li><strong>Do I need to re-brand anything?</strong> No. The system runs under your agency's domain and brand identity.</li>
     <li><strong>Can I hold multiple client territories?</strong> Yes. Each client gets their own territory lock under the same licensing framework.</li>
-    <li><strong>What if I already run SEO services in-house?</strong> The system is additive. It handles programmatic coverage that would otherwise require significant manual effort.</li>
+    <li><strong>What if our agency already handles search visibility?</strong> The system is additive. It handles programmatic structure and hyper-local coverage that would otherwise require significant manual effort.</li>
     <li><strong>Is there a minimum commitment?</strong> We discuss licensing terms during your market session — structure varies by scale.</li>
   </ul>
 

@@ -307,13 +307,13 @@ body {
 
   @if(!$booking->consultType->is_free)
   <div class="conf-upsell">
-    <p class="conf-upsell-eyebrow">Want to go deeper?</p>
-    <h2 class="conf-upsell-title">Add deliverables to your session</h2>
+    <p class="conf-upsell-eyebrow">Strengthen your session</p>
+    <h2 class="conf-upsell-title">Prepare your market before we meet</h2>
     <p class="conf-upsell-body">
-      Pair your consult with a full SEO audit, competitor analysis, or a custom 30-day action plan.
-      Add them before your session date and we'll have everything ready.
+      Add a visibility snapshot, competitive gap analysis, or priority action brief before your session.
+      We'll have everything structured and ready before we meet.
     </p>
-    <a href="{{ url('/book') }}?upgrade={{ $booking->id }}" class="conf-upsell-link">Browse add-ons &rarr;</a>
+    <a href="{{ url('/book') }}?upgrade={{ $booking->id }}" class="conf-upsell-link">Add session preparation &rarr;</a>
   </div>
   @endif
 

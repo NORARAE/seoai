@@ -333,7 +333,7 @@
         </div>
         {{-- Add-ons (paid bookings only) --}}
         <div x-show="!selectedTypeIsFree">
-          <p class="bk-enhance-title">Session Enhancements</p>
+          <p class="bk-enhance-title">Session Preparation</p>
           <div class="bk-addon-grid">
             <div class="bk-addon-card" :class="{selected: addOns.includes('seo_audit')}" @click="toggleAddOn('seo_audit')">
               <div class="bk-addon-check" x-text="addOns.includes('seo_audit') ? '✓' : ''"></div>

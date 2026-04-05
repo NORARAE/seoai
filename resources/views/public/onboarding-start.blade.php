@@ -1368,7 +1368,7 @@ body {
           Your deployment spans multiple markets. We'll scope and structure this correctly for your situation.
         </div>
         <div class="ob-path-note" x-show="leadType === 'agency'" x-cloak>
-          Partner-level access applies here. A licensing review is the appropriate path for your situation.
+          Partner-level access applies here. A structured deployment review is the appropriate path for your situation.
         </div>
       </div>
 
@@ -1552,7 +1552,7 @@ body {
         Your deployment spans multiple markets. We'll scope this correctly for your situation.
       </div>
       <div class="ob-path-note" x-show="leadType === 'agency'" x-cloak style="margin-bottom:18px">
-        Partner-level access applies here. A licensing review is the appropriate path.
+        Partner-level access applies here. A structured deployment review is the appropriate path.
       </div>
 
       <div class="ob-fullsvc-block">
@@ -1701,8 +1701,8 @@ body {
       <div class="ob-premium-row">
         <div class="ob-premium-row-body">
           <span class="ob-premium-row-label">Partner tier</span>
-          <span class="ob-premium-row-name">Agency &amp; Licensing Review</span>
-          <span class="ob-premium-row-desc">Partner-level deployment across multiple brands or markets &mdash; reviewed and structured, not self-serve.</span>
+          <span class="ob-premium-row-name">Agency &amp; Partner Deployment</span>
+          <span class="ob-premium-row-desc">Partner-level deployment across multiple brands or markets &mdash; reviewed, structured, and activated by arrangement.</span>
         </div>
         <span class="ob-premium-row-badge">By arrangement</span>
       </div>
