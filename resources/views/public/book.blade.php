@@ -118,6 +118,7 @@ body{background:var(--bg);color:var(--ivory);font-family:'DM Sans',sans-serif;fo
 }
 </style>
 @include('partials.clarity')
+@verbatim
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -159,6 +160,7 @@ body{background:var(--bg);color:var(--ivory);font-family:'DM Sans',sans-serif;fo
   ]
 }
 </script>
+@endverbatim
 </head>
 <body>
 

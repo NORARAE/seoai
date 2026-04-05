@@ -121,7 +121,7 @@ body{background:var(--bg);color:var(--ivory);font-family:'DM Sans',sans-serif;fo
     <li><span></span><div><strong>Decide what outcome matters most right now.</strong> More calls? More form fills? Specific markets? The more precise, the better the session.</div></li>
   </ul>
 
-  <a href="/book/confirmed@if($booking)?booking={{ $booking->id }}@endif" class="upg-cta" onclick="if(typeof gtag==='function'){gtag('event','upsell_accept',{booking_id:'{{ $booking->id ?? '' }}'});}">View Full Confirmation</a>
+  <a href="/book/confirmed{{ $booking ? '?booking=' . $booking->id : '' }}" class="upg-cta" onclick="if(typeof gtag==='function'){gtag('event','upsell_accept',{booking_id:'{{ $booking->id ?? '' }}'});}">View Full Confirmation</a>
   <a href="/" class="upg-skip" onclick="if(typeof gtag==='function'){gtag('event','upsell_decline',{booking_id:'{{ $booking->id ?? '' }}'});}">Return to Home</a>
 
 </div>

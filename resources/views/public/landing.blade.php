@@ -2407,6 +2407,7 @@ body::before{
 <script src="https://www.google.com/recaptcha/api.js?render={{ config('services.recaptcha.site_key') }}" async defer></script>
 @endif
 @include('partials.clarity')
+@verbatim
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -2504,6 +2505,7 @@ body::before{
   ]
 }
 </script>
+@endverbatim
 </head>
 <body>
 
