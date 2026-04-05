@@ -1857,15 +1857,37 @@ body::before{
 .sys-city-card:hover{border-color:rgba(200,168,75,.22);box-shadow:0 0 24px rgba(200,168,75,.04)}
 .sys-city-card:hover::before{opacity:1}
 .sys-city-name{
-  font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;
-  color:rgba(237,232,222,.78);font-weight:500;margin-bottom:10px;
-  display:flex;align-items:center;gap:7px;
+  font-size:.66rem;letter-spacing:.14em;text-transform:uppercase;
+  color:rgba(237,232,222,.38);font-weight:400;margin-bottom:10px;
 }
-.sys-city-name::before{content:'';width:4px;height:4px;border-radius:50%;background:var(--gold);opacity:.65;flex-shrink:0}
-.sys-svc-list{list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:4px}
-.sys-svc-item{font-size:.74rem;color:rgba(168,168,160,.52);line-height:1.55;padding-left:11px;position:relative}
-.sys-svc-item::before{content:'—';position:absolute;left:0;color:rgba(200,168,75,.25);font-size:.62rem;top:1px}
+/* URL-tree display */
+.sys-domain{
+  font-size:.72rem;font-family:'DM Mono','Courier New',monospace;
+  color:rgba(237,232,222,.82);letter-spacing:.02em;margin-bottom:9px;
+  padding-bottom:7px;border-bottom:1px solid rgba(200,168,75,.08);
+}
+.sys-url-list{list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:5px}
+.sys-url-item{
+  font-size:.72rem;font-family:'DM Mono','Courier New',monospace;
+  color:rgba(168,168,160,.48);line-height:1.5;padding-left:16px;position:relative;
+}
+.sys-url-item::before{content:'→';position:absolute;left:0;color:rgba(200,168,75,.35);font-family:inherit;font-size:.68rem}
+.sys-url-loc{color:rgba(200,168,75,.72);font-style:normal}
 .sys-city-foot{font-size:.62rem;letter-spacing:.07em;color:rgba(168,168,160,.22);margin-top:14px;border-top:1px solid rgba(200,168,75,.05);padding-top:10px;text-align:center}
+/* Left-copy extra elements */
+.sys-gold-line{
+  font-size:.78rem;letter-spacing:.12em;text-transform:uppercase;
+  color:rgba(200,168,75,.72);margin-bottom:16px;line-height:1.6;
+}
+.sys-clarity{
+  font-size:.88rem;line-height:1.72;color:rgba(237,232,222,.42);
+  margin-bottom:14px;max-width:460px;
+}
+.sys-trust{
+  font-size:.76rem;letter-spacing:.04em;color:rgba(168,168,160,.38);
+  line-height:1.6;display:flex;align-items:flex-start;gap:8px;
+}
+.sys-trust::before{content:'✓';color:rgba(200,168,75,.40);flex-shrink:0;margin-top:1px}
 
 /* ── Market decision trigger ── */
 .alloc-decision{
@@ -2672,70 +2694,82 @@ body::before{
 <section class="sys-struct r">
   <div class="sys-struct-inner">
 
-    {{-- Left: outcome-led copy --}}
+    {{-- Left: domain expansion copy --}}
     <div>
-      <p class="sys-eyebrow">Market Position</p>
-      <h2 class="sys-hed">You are not buying<br>a service.<br><em>You are securing market position.</em></h2>
-      <p class="sys-sub">Your presence expands across every service and city your market demands — building coverage that compounds over time.</p>
+      <p class="sys-eyebrow">Your Domain. Expanded.</p>
+      <h2 class="sys-hed">You are not buying<br>marketing.<br><em>You are expanding your domain.</em></h2>
+      <p class="sys-gold-line">Every service. Every city. Every search that matters.</p>
+      <p class="sys-sub">We build structured, hyper-local pages on your domain — so you show up where your competitors don’t.</p>
+      <p class="sys-clarity">We do not replace your existing website. We expand it — increasing visibility, reach, and authority.</p>
+      <p class="sys-trust">Works with your existing site. WordPress (including Divi) fully supported.</p>
     </div>
 
-    {{-- Right: city coverage card grid --}}
+    {{-- Right: URL expansion card grid --}}
     <div>
       <div class="sys-city-grid r">
 
         <div class="sys-city-card">
-          <div class="sys-city-name">Seattle, WA</div>
-          <ul class="sys-svc-list">
-            <li class="sys-svc-item">Personal Injury Lawyer</li>
-            <li class="sys-svc-item">Car Accident Lawyer</li>
-            <li class="sys-svc-item">Injury Attorney</li>
+          <div class="sys-city-name">Personal Injury Law</div>
+          <div class="sys-domain">client.com/</div>
+          <ul class="sys-url-list">
+            <li class="sys-url-item">/personal-injury-lawyer-<span class="sys-url-loc">seattle</span></li>
+            <li class="sys-url-item">/car-accident-lawyer-<span class="sys-url-loc">seattle</span></li>
+            <li class="sys-url-item">/personal-injury-lawyer-<span class="sys-url-loc">alki</span></li>
           </ul>
         </div>
 
         <div class="sys-city-card">
-          <div class="sys-city-name">Tacoma, WA</div>
-          <ul class="sys-svc-list">
-            <li class="sys-svc-item">Personal Injury Lawyer</li>
-            <li class="sys-svc-item">Car Accident Lawyer</li>
+          <div class="sys-city-name">Biohazard Cleanup</div>
+          <div class="sys-domain">client.com/</div>
+          <ul class="sys-url-list">
+            <li class="sys-url-item">/biohazard-cleanup-<span class="sys-url-loc">olympia</span></li>
+            <li class="sys-url-item">/crime-scene-cleanup-<span class="sys-url-loc">lacey</span></li>
+            <li class="sys-url-item">/unattended-death-cleanup-<span class="sys-url-loc">tumwater</span></li>
           </ul>
         </div>
 
         <div class="sys-city-card">
-          <div class="sys-city-name">Bellevue, WA</div>
-          <ul class="sys-svc-list">
-            <li class="sys-svc-item">Personal Injury Attorney</li>
-            <li class="sys-svc-item">Motorcycle Accident</li>
-            <li class="sys-svc-item">Wrongful Death</li>
+          <div class="sys-city-name">HVAC Repair</div>
+          <div class="sys-domain">client.com/</div>
+          <ul class="sys-url-list">
+            <li class="sys-url-item">/hvac-repair-<span class="sys-url-loc">bellevue</span></li>
+            <li class="sys-url-item">/ac-installation-<span class="sys-url-loc">redmond</span></li>
+            <li class="sys-url-item">/furnace-repair-<span class="sys-url-loc">kirkland</span></li>
           </ul>
         </div>
 
         <div class="sys-city-card">
-          <div class="sys-city-name">Portland, OR</div>
-          <ul class="sys-svc-list">
-            <li class="sys-svc-item">Personal Injury Lawyer</li>
-            <li class="sys-svc-item">Car Accident Lawyer</li>
-            <li class="sys-svc-item">DUI Defense Attorney</li>
+          <div class="sys-city-name">Emergency Plumbing</div>
+          <div class="sys-domain">client.com/</div>
+          <ul class="sys-url-list">
+            <li class="sys-url-item">/emergency-plumber-<span class="sys-url-loc">tacoma</span></li>
+            <li class="sys-url-item">/water-heater-repair-<span class="sys-url-loc">lakewood</span></li>
+            <li class="sys-url-item">/burst-pipe-repair-<span class="sys-url-loc">puyallup</span></li>
           </ul>
         </div>
 
         <div class="sys-city-card">
-          <div class="sys-city-name">Kirkland, WA</div>
-          <ul class="sys-svc-list">
-            <li class="sys-svc-item">Personal Injury Lawyer</li>
-            <li class="sys-svc-item">Car Accident Lawyer</li>
+          <div class="sys-city-name">Cosmetic Dentistry</div>
+          <div class="sys-domain">client.com/</div>
+          <ul class="sys-url-list">
+            <li class="sys-url-item">/cosmetic-dentist-<span class="sys-url-loc">portland</span></li>
+            <li class="sys-url-item">/teeth-whitening-<span class="sys-url-loc">beaverton</span></li>
+            <li class="sys-url-item">/dental-implants-<span class="sys-url-loc">hillsboro</span></li>
           </ul>
         </div>
 
         <div class="sys-city-card">
-          <div class="sys-city-name">Everett, WA</div>
-          <ul class="sys-svc-list">
-            <li class="sys-svc-item">Personal Injury Lawyer</li>
-            <li class="sys-svc-item">Injury Attorney</li>
+          <div class="sys-city-name">Roofing</div>
+          <div class="sys-domain">client.com/</div>
+          <ul class="sys-url-list">
+            <li class="sys-url-item">/roof-replacement-<span class="sys-url-loc">denver</span></li>
+            <li class="sys-url-item">/roof-repair-<span class="sys-url-loc">aurora</span></li>
+            <li class="sys-url-item">/emergency-roofing-<span class="sys-url-loc">lakewood</span></li>
           </ul>
         </div>
 
       </div>
-      <p class="sys-city-foot r">+ every service, every city — structured across your full territory</p>
+      <p class="sys-city-foot r">+ every service, every city, every neighborhood — built on your domain</p>
     </div>
 
   </div>
