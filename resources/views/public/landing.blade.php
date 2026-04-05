@@ -2009,66 +2009,34 @@ body::before{
 
 /* ── Settlement section ── */
 .settlement{
-  padding:44px 64px;
-  border-top:1px solid rgba(154,122,48,.1);
+  padding:32px 64px;
+  border-top:1px solid rgba(154,122,48,.08);
 }
 .settlement-inner{max-width:960px;margin:0 auto}
-.settle-hed{
-  font-family:'Cormorant Garamond',serif;font-weight:300;font-style:normal;
-  font-size:clamp(1.4rem,2.2vw,2rem);line-height:1.1;
-  color:var(--ivory);margin-bottom:4px;
+.settle-cards{
+  display:grid;grid-template-columns:repeat(3,1fr);gap:12px;
 }
-.settle-hed em{font-style:italic;color:var(--gold-lt)}
-.settle-body{font-size:.88rem;line-height:1.8;color:rgba(168,168,160,.78);margin-bottom:8px;max-width:560px}
-.settle-wallet-note{
-  font-size:.76rem;letter-spacing:.06em;color:rgba(168,168,160,.44);
-  margin-top:12px;font-style:italic;
-}
-.settle-icons{
-  display:flex;gap:32px;align-items:center;flex-wrap:wrap;
-  margin:24px 0 20px;
-}
-.settle-icon-item{
-  display:flex;flex-direction:column;align-items:center;gap:8px;
-  opacity:.46;transition:opacity .3s,filter .3s;cursor:default;
+.settle-card{
+  padding:22px 20px;
+  border:1px solid rgba(200,168,75,.08);
+  background:rgba(255,255,255,.012);
   position:relative;
 }
-.settle-icon-item:hover{
-  opacity:.86;filter:drop-shadow(0 0 10px rgba(200,168,75,.22));
-}
-.settle-icon-item:hover .settle-icon-label{color:var(--ivory)}
-.settle-icon-item[data-tip]:hover::after{
-  content:attr(data-tip);
-  position:absolute;bottom:calc(100% + 10px);left:50%;transform:translateX(-50%);
-  background:rgba(10,9,7,.94);border:1px solid rgba(200,168,75,.14);
-  color:rgba(168,168,160,.82);font-size:.6rem;letter-spacing:.08em;
-  white-space:nowrap;padding:5px 10px;pointer-events:none;z-index:10;
-}
-.settle-icon-logo{
-  width:44px;height:32px;display:flex;align-items:center;justify-content:center;
-  color:var(--ivory);
-}
-.settle-icon-label{
-  font-size:.56rem;letter-spacing:.22em;text-transform:uppercase;color:var(--muted);
-  transition:color .3s;
-}
-.settle-trust{
-  display:grid;grid-template-columns:1fr 1fr;gap:0;
-  background:rgba(200,168,75,.05);
-  margin-top:24px;
-}
-.settle-trust-item{
-  background:var(--deep);padding:20px 24px;position:relative;
-}
-.settle-trust-item::before{
+.settle-card::before{
   content:'';position:absolute;top:0;left:0;right:0;height:1px;
-  background:linear-gradient(90deg,transparent,rgba(200,168,75,.09),transparent);
+  background:linear-gradient(90deg,transparent,rgba(200,168,75,.14),transparent);
 }
-.settle-trust-strong{
-  font-size:.62rem;letter-spacing:.18em;text-transform:uppercase;
-  color:var(--gold-dim);display:block;margin-bottom:6px;
+.settle-card-hed{
+  display:block;font-size:.6rem;letter-spacing:.18em;text-transform:uppercase;
+  color:rgba(200,168,75,.62);margin-bottom:10px;
 }
-.settle-trust-text{font-size:.84rem;line-height:1.7;color:rgba(168,168,160,.7)}
+.settle-card-body{
+  font-size:.83rem;line-height:1.75;color:rgba(168,168,160,.65);
+}
+.pricing-cta-trust{
+  font-size:.68rem;letter-spacing:.06em;color:rgba(168,168,160,.32);
+  text-align:center;margin-top:6px;
+}
 
 /* ── Offer trust block ── */
 .offer-trust-line{
@@ -2169,8 +2137,7 @@ body::before{
   .infra-principle{padding:96px 24px}
   .infra-hed-1,.infra-hed-2{font-size:clamp(1.8rem,4.5vw,2.6rem)}
   .settlement{padding:36px 24px}
-  .settle-trust{grid-template-columns:1fr}
-  .settle-icons{gap:20px}
+  .settle-cards{grid-template-columns:1fr 1fr}
   .alloc-decision{padding:28px 24px;max-width:100%}
   .sys-struct{padding:52px 24px}
   .sys-struct-inner{grid-template-columns:1fr;gap:32px}
@@ -2181,6 +2148,7 @@ body::before{
   .infra-hed-1,.infra-hed-2{font-size:clamp(1.45rem,6.8vw,2.1rem)}
   .infra-gold{font-size:clamp(1.6rem,5.8vw,2.2rem)}
   .settlement{padding:28px 20px}
+  .settle-cards{grid-template-columns:1fr}
   .hero-stage{font-size:clamp(3.2rem,11vw,5rem)}
   .hero-gold-accent{font-size:clamp(1.1rem,4.5vw,1.4rem)}
   .exp-momentum-main{font-size:clamp(1.2rem,4.5vw,1.6rem)}
@@ -2208,8 +2176,6 @@ body::before{
   .alloc-reinforce span{font-size:.97rem;line-height:1.76}
   .alloc-sub p{font-size:1rem;line-height:1.82}
   .offer-note{font-size:.95rem;line-height:1.84}
-  .settle-body{font-size:.93rem;line-height:1.84}
-  .settle-trust-text{font-size:.9rem;line-height:1.76}
   .alloc-avail-note{font-size:.91rem;line-height:1.86}
   .exp-body{font-size:.93rem;line-height:1.76}
   .ac-body{font-size:.93rem;line-height:1.76}
@@ -2246,7 +2212,6 @@ body::before{
   .wyl-card{padding:32px 22px}
   .step{padding:32px 22px}
   .ac-card{padding:36px 26px}
-  .settle-trust-item{padding:18px 20px}
   .stmt-split-card{padding:18px 20px}
   .stmt-split-card .split-body{font-size:.91rem;line-height:1.76}
   .aud-list{gap:18px}
@@ -3464,6 +3429,7 @@ body::before{
     <a href="{{ route('onboarding.start') }}" class="btn-primary">Start My Market Setup</a>
   </div>
   <p class="pricing-cta-meta">No commitment &nbsp;&middot;&nbsp; Access reviewed individually &nbsp;&middot;&nbsp; Takes ~2 minutes</p>
+  <p class="pricing-cta-trust">Secure checkout via Stripe &nbsp;&middot;&nbsp; Modern payment support</p>
 </div>
 
 <!-- ════════════ FINAL CLOSE ════════════ -->
@@ -3476,59 +3442,23 @@ body::before{
 <!-- ════════════ SETTLEMENT ════════════ -->
 <div class="settlement">
   <div class="settlement-inner">
-    <p class="s-eye r">Settlement</p>
-    <h2 class="settle-hed r">Secure. Direct.<br><em>Flexible.</em></h2>
+    <div class="settle-cards">
 
-    <p class="settle-body r">Transactions can be completed via traditional payment methods or digital assets. USDC is supported for direct settlement. Stripe is available for standard invoicing and card payments.</p>
-    <p class="settle-wallet-note r">Wallet-based settlement will be available within your dashboard upon onboarding.</p>
+      <div class="settle-card r">
+        <span class="settle-card-hed">Secure. Flexible. Modern.</span>
+        <p class="settle-card-body">Payments are handled through Stripe with support for cards, Link, and modern digital payment methods. Crypto-ready infrastructure allows flexible settlement without complexity.</p>
+      </div>
 
-    <div class="settle-icons r">
-      <div class="settle-icon-item" data-tip="Standard billing and invoicing">
-        <div class="settle-icon-logo">
-          <svg width="44" height="30" viewBox="0 0 44 30" fill="none">
-            <rect x="9" y="5" width="26" height="20" rx="4" stroke="currentColor" stroke-width="1.2"/>
-            <text x="22" y="20" font-size="11" text-anchor="middle" fill="currentColor" font-family="DM Sans,sans-serif" font-weight="300" letter-spacing="1">S</text>
-          </svg>
-        </div>
-        <span class="settle-icon-label">Stripe</span>
+      <div class="settle-card r">
+        <span class="settle-card-hed">Verified. Structured.</span>
+        <p class="settle-card-body">No automated billing. Every engagement is reviewed, confirmed, and activated intentionally.</p>
       </div>
-      <div class="settle-icon-item" data-tip="Preferred for direct settlement">
-        <div class="settle-icon-logo">
-          <svg width="44" height="30" viewBox="0 0 44 30" fill="none">
-            <circle cx="22" cy="15" r="13" stroke="currentColor" stroke-width="1.2"/>
-            <text x="22" y="20" font-size="9" text-anchor="middle" fill="currentColor" font-family="DM Sans,sans-serif" font-weight="400" letter-spacing="0">USDC</text>
-          </svg>
-        </div>
-        <span class="settle-icon-label">USD Coin</span>
-      </div>
-      <div class="settle-icon-item" data-tip="Eligible for premium access tiers">
-        <div class="settle-icon-logo">
-          <svg width="44" height="30" viewBox="0 0 44 30" fill="none">
-            <polygon points="22,3 36,15 22,20 8,15" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"/>
-            <polygon points="22,20 36,15 22,28 8,15" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round" opacity=".6"/>
-          </svg>
-        </div>
-        <span class="settle-icon-label">Ethereum</span>
-      </div>
-      <div class="settle-icon-item" data-tip="Accepted for settlement">
-        <div class="settle-icon-logo">
-          <svg width="44" height="30" viewBox="0 0 44 30" fill="none">
-            <text x="22" y="22" font-size="18" text-anchor="middle" fill="currentColor" font-family="serif" font-weight="400">&#x20BF;</text>
-          </svg>
-        </div>
-        <span class="settle-icon-label">Bitcoin</span>
-      </div>
-    </div>
 
-    <div class="settle-trust r">
-      <div class="settle-trust-item">
-        <strong class="settle-trust-strong">Verified per agreement</strong>
-        <p class="settle-trust-text">No automated billing. Structured engagement only.</p>
+      <div class="settle-card r">
+        <span class="settle-card-hed">Confirmed Before Payment</span>
+        <p class="settle-card-body">Your market position is reviewed and approved before activation. This is not self-service access.</p>
       </div>
-      <div class="settle-trust-item">
-        <strong class="settle-trust-strong">Access approved before payment</strong>
-        <p class="settle-trust-text">Position is confirmed first. Not self-service.</p>
-      </div>
+
     </div>
   </div>
 </div>
@@ -3754,6 +3684,7 @@ body::before{
 
 <!-- ════════════ FOOTER — privacy/terms at very bottom ════════════ -->
 <footer>
+  @include('components.payment-trust-footer')
   <div class="footer-main">
     <a href="{{ url('/') }}" class="logo">
       <span class="logo-seo">SEO</span><span class="logo-ai">AI</span><span class="logo-co">co</span>
