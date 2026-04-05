@@ -264,8 +264,8 @@ body{background:var(--bg);color:var(--ivory);font-family:'DM Sans',sans-serif;fo
     <section id="book-now">
       <div class="bk-entry-intro">
         <p class="bk-section-label">Reserve Your Session</p>
-        <h2>Select your entry point.</h2>
-        <p class="bk-entry-system-note">Start with clarity, then move with confidence.</p>
+        <h2>Start growing your market.</h2>
+        <p class="bk-entry-system-note">Choose how you want to begin — and how fast you want to move.</p>
       </div>
       @include('components.booking-modal', ['disableOverlayDismiss' => true, 'panelMode' => true])
     </section>

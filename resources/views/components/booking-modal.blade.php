@@ -175,8 +175,7 @@
         <p class="bk-sub">Reserve your spot &mdash; takes under 2 minutes.</p>
         @endif
         <div class="bk-types">
-          <p style="font-size:.78rem;letter-spacing:.08em;text-transform:uppercase;color:rgba(168,168,160,.75);margin:0 0 4px">Each path represents a different level of system access.</p>
-          <p style="font-size:.75rem;letter-spacing:.06em;text-transform:uppercase;color:rgba(168,168,160,.68);margin:0 0 14px">Access is structured &mdash; not open.</p>
+          <p style="font-size:.75rem;letter-spacing:.06em;color:rgba(168,168,160,.68);margin:0 0 14px">We guide you step-by-step — every market is built with care, strategy, and support.</p>
           @foreach(($types ?? collect()) as $ct)
           <div class="bk-type {{ $ct->slug === 'audit' ? 'featured' : ($ct->slug === 'agency-review' ? 'reserved' : ($ct->is_free ? 'secondary' : '')) }}"
                :class="{ selected: selectedType === {{ $ct->id }} }"
@@ -185,11 +184,11 @@
               <div class="bk-type-name">{{ $ct->name }}</div>
               <div class="bk-type-desc">{{ $ct->description }}</div>
               @if($ct->slug === 'discovery')
-              <div class="bk-type-qualify">For businesses evaluating their position before committing.</div>
+              <div class="bk-type-qualify">We scan your market using real search data to show you exactly where opportunity exists.</div>
               @elseif($ct->slug === 'audit')
-              <div class="bk-type-qualify">For operators ready to move with structure and direction.</div>
+              <div class="bk-type-qualify">Best for businesses ready to move fast and take control of their market.</div>
               @elseif($ct->slug === 'agency-review')
-              <div class="bk-type-qualify">For operators prepared for system-level control.</div>
+              <div class="bk-type-qualify">Perfect if you're just getting started or want clear direction without guesswork.</div>
               @endif
             </div>
             <div class="bk-type-meta">
@@ -198,6 +197,17 @@
             </div>
           </div>
           @endforeach
+          <div style="margin-top:24px;padding:20px 24px;background:rgba(200,168,75,.02);border:1px solid rgba(200,168,75,.10);border-radius:8px">
+            <p style="font-size:.84rem;font-weight:500;color:rgba(237,232,222,.88);margin-bottom:8px">This is more than SEO.</p>
+            <p style="font-size:.80rem;color:rgba(168,168,160,.80);margin-bottom:10px;line-height:1.65">We build, expand, and support your entire growth system:</p>
+            <ul style="list-style:none;display:flex;flex-direction:column;gap:5px;margin-bottom:12px;padding:0">
+              <li style="font-size:.80rem;color:rgba(168,168,160,.78);padding-left:14px;position:relative;line-height:1.5"><span style="position:absolute;left:0;color:rgba(200,168,75,.65)">·</span>Website design and rebuilds</li>
+              <li style="font-size:.80rem;color:rgba(168,168,160,.78);padding-left:14px;position:relative;line-height:1.5"><span style="position:absolute;left:0;color:rgba(200,168,75,.65)">·</span>WordPress updates and development</li>
+              <li style="font-size:.80rem;color:rgba(168,168,160,.78);padding-left:14px;position:relative;line-height:1.5"><span style="position:absolute;left:0;color:rgba(200,168,75,.65)">·</span>Advertising and campaign management</li>
+              <li style="font-size:.80rem;color:rgba(168,168,160,.78);padding-left:14px;position:relative;line-height:1.5"><span style="position:absolute;left:0;color:rgba(200,168,75,.65)">·</span>Branding and print</li>
+            </ul>
+            <p style="font-size:.80rem;color:rgba(168,168,160,.62);font-style:italic;line-height:1.6">The system drives visibility — we support everything behind it.</p>
+          </div>
         </div>
 
         {{-- ── Price anchors (visual only — price anchoring) ── --}}

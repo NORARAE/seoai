@@ -12,13 +12,13 @@ class BookingSeeder extends Seeder
     {
         $types = [
             // ── PRIMARY FUNNEL ENTRIES (bookable) ───────────────────────────
-            ['name' => 'Market Position Clarity', 'slug' => 'discovery', 'description' => 'See exactly where your visibility is being lost — and why.', 'duration_minutes' => 20, 'price' => null, 'is_free' => true, 'is_active' => true, 'sort_order' => 1],
-            // PRIMARY entry point — Strategic Direction Session
-            ['name' => 'Strategic Direction Session', 'slug' => 'audit', 'description' => 'Define the path to take control of your market position.', 'duration_minutes' => 75, 'price' => 500.00, 'is_free' => false, 'is_active' => true, 'sort_order' => 2],
+            ['name' => 'Market Opportunity Snapshot', 'slug' => 'discovery', 'description' => 'See where you\'re missing visibility — and where your competitors are winning.', 'duration_minutes' => 20, 'price' => null, 'is_free' => true, 'is_active' => true, 'sort_order' => 1],
+            // PRIMARY entry point — Market Expansion Strategy
+            ['name' => 'Market Expansion Strategy', 'slug' => 'audit', 'description' => 'We map out how to expand your visibility across your services and locations using our system.', 'duration_minutes' => 75, 'price' => 500.00, 'is_free' => false, 'is_active' => true, 'sort_order' => 2],
 
             // ── SECONDARY / LEGACY TYPES (retain for direct-link access) ────
             ['name' => 'Paid Strategy Consult', 'slug' => 'strategy', 'description' => 'Deep-dive into your SEO strategy and growth roadmap.', 'duration_minutes' => 60, 'price' => 250.00, 'is_free' => false, 'is_active' => false, 'sort_order' => 10],
-            ['name' => 'System Access Review', 'slug' => 'agency-review', 'description' => 'Determine whether your operation is ready for system-level market control.', 'duration_minutes' => 60, 'price' => 250.00, 'is_free' => false, 'is_active' => true, 'sort_order' => 3],
+            ['name' => 'Growth Direction Call', 'slug' => 'agency-review', 'description' => 'We show you exactly what to do next to start getting more visibility and leads.', 'duration_minutes' => 60, 'price' => 250.00, 'is_free' => false, 'is_active' => true, 'sort_order' => 3],
             ['name' => 'Full SEO Audit Session', 'slug' => 'seo-audit', 'description' => 'Comprehensive audit of your site\'s SEO health and opportunities.', 'duration_minutes' => 90, 'price' => 400.00, 'is_free' => false, 'is_active' => false, 'sort_order' => 12],
             ['name' => 'Custom Project Scoping', 'slug' => 'project-scoping', 'description' => 'Scope out a custom build or integration project.', 'duration_minutes' => 60, 'price' => 250.00, 'is_free' => false, 'is_active' => false, 'sort_order' => 13],
             ['name' => 'Graphic Design Consult', 'slug' => 'design', 'description' => 'Discuss branding, layout, and visual direction for your project.', 'duration_minutes' => 45, 'price' => 200.00, 'is_free' => false, 'is_active' => false, 'sort_order' => 14],
