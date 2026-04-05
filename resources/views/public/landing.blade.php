@@ -1862,9 +1862,10 @@ body::before{
 }
 /* URL-tree display */
 .sys-domain{
-  font-size:.72rem;font-family:'DM Mono','Courier New',monospace;
-  color:rgba(237,232,222,.82);letter-spacing:.02em;margin-bottom:9px;
-  padding-bottom:7px;border-bottom:1px solid rgba(200,168,75,.08);
+  font-size:.76rem;font-family:'DM Mono','Courier New',monospace;
+  color:rgba(237,232,222,.93);letter-spacing:.02em;margin-bottom:9px;
+  padding-bottom:7px;border-bottom:1px solid rgba(200,168,75,.14);
+  font-weight:500;
 }
 .sys-url-list{list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:5px}
 .sys-url-item{
@@ -1874,6 +1875,7 @@ body::before{
 .sys-url-item::before{content:'→';position:absolute;left:0;color:rgba(200,168,75,.35);font-family:inherit;font-size:.68rem}
 .sys-url-loc{color:rgba(200,168,75,.72);font-style:normal}
 .sys-city-foot{font-size:.62rem;letter-spacing:.07em;color:rgba(168,168,160,.22);margin-top:14px;border-top:1px solid rgba(200,168,75,.05);padding-top:10px;text-align:center}
+.sys-city-clarity{font-size:.78rem;color:rgba(168,168,160,.46);letter-spacing:.03em;text-align:center;margin-top:18px;line-height:1.65;border-top:1px solid rgba(200,168,75,.07);padding-top:14px;font-style:italic}
 /* Left-copy extra elements */
 .sys-gold-line{
   font-size:.78rem;letter-spacing:.12em;text-transform:uppercase;
@@ -2650,7 +2652,7 @@ body::before{
   <p class="hero-diff">Programmatic URL expansion — expanding your visibility across every service and every city.</p>
   <p class="hero-note">Position early. Expand everywhere.</p>
   <div class="hero-actions" style="opacity:0;animation:up .85s .52s forwards">
-    <a href="#" class="btn-primary js-open-gate">Claim Your Territory</a>
+    <a href="#" class="btn-primary js-open-gate">Assess Your Market</a>
   </div>
   <p class="hero-cta-note">Signal-aware. Continuously adapting.</p>
 
@@ -2710,7 +2712,7 @@ body::before{
 
         <div class="sys-city-card">
           <div class="sys-city-name">Personal Injury Law</div>
-          <div class="sys-domain">client.com/</div>
+          <div class="sys-domain">client.com</div>
           <ul class="sys-url-list">
             <li class="sys-url-item">/personal-injury-lawyer-<span class="sys-url-loc">seattle</span></li>
             <li class="sys-url-item">/car-accident-lawyer-<span class="sys-url-loc">seattle</span></li>
@@ -2720,7 +2722,7 @@ body::before{
 
         <div class="sys-city-card">
           <div class="sys-city-name">Biohazard Cleanup</div>
-          <div class="sys-domain">client.com/</div>
+          <div class="sys-domain">client.com</div>
           <ul class="sys-url-list">
             <li class="sys-url-item">/biohazard-cleanup-<span class="sys-url-loc">olympia</span></li>
             <li class="sys-url-item">/crime-scene-cleanup-<span class="sys-url-loc">lacey</span></li>
@@ -2730,7 +2732,7 @@ body::before{
 
         <div class="sys-city-card">
           <div class="sys-city-name">HVAC Repair</div>
-          <div class="sys-domain">client.com/</div>
+          <div class="sys-domain">client.com</div>
           <ul class="sys-url-list">
             <li class="sys-url-item">/hvac-repair-<span class="sys-url-loc">bellevue</span></li>
             <li class="sys-url-item">/ac-installation-<span class="sys-url-loc">redmond</span></li>
@@ -2740,7 +2742,7 @@ body::before{
 
         <div class="sys-city-card">
           <div class="sys-city-name">Emergency Plumbing</div>
-          <div class="sys-domain">client.com/</div>
+          <div class="sys-domain">client.com</div>
           <ul class="sys-url-list">
             <li class="sys-url-item">/emergency-plumber-<span class="sys-url-loc">tacoma</span></li>
             <li class="sys-url-item">/water-heater-repair-<span class="sys-url-loc">lakewood</span></li>
@@ -2750,7 +2752,7 @@ body::before{
 
         <div class="sys-city-card">
           <div class="sys-city-name">Cosmetic Dentistry</div>
-          <div class="sys-domain">client.com/</div>
+          <div class="sys-domain">client.com</div>
           <ul class="sys-url-list">
             <li class="sys-url-item">/cosmetic-dentist-<span class="sys-url-loc">portland</span></li>
             <li class="sys-url-item">/teeth-whitening-<span class="sys-url-loc">beaverton</span></li>
@@ -2760,7 +2762,7 @@ body::before{
 
         <div class="sys-city-card">
           <div class="sys-city-name">Roofing</div>
-          <div class="sys-domain">client.com/</div>
+          <div class="sys-domain">client.com</div>
           <ul class="sys-url-list">
             <li class="sys-url-item">/roof-replacement-<span class="sys-url-loc">denver</span></li>
             <li class="sys-url-item">/roof-repair-<span class="sys-url-loc">aurora</span></li>
@@ -2770,6 +2772,7 @@ body::before{
 
       </div>
       <p class="sys-city-foot r">+ every service, every city, every neighborhood — built on your domain</p>
+      <p class="sys-city-clarity r">All pages are built on your domain — expanding your visibility across your entire market.</p>
     </div>
 
   </div>
@@ -2797,7 +2800,7 @@ body::before{
         <div class="step r">
           <div class="step-n">03</div>
           <h3 class="step-title">Deploy Under Your Brand</h3>
-          <p class="step-desc">Pages deploy across your licensed territory — white-label from top to bottom, no third-party branding on any client-facing page.</p>
+          <p class="step-desc">Pages deploy under your brand, across every service and city in your market — no third-party branding on any client-facing page.</p>
         </div>
         <div class="step r">
           <div class="step-n">04</div>
@@ -2812,7 +2815,7 @@ body::before{
 <!-- ════════════ COMMITMENT NOTE ════════════ -->
 <div class="commitment-note r">
   <p class="cn-hed">This is a 4-month structured expansion process —<br>not a one-week experiment.</p>
-  <p class="cn-body">Most market builds require a focused 4-month rollout window to map, configure, deploy, and compound correctly. That structure is what makes results durable — and why we limit access per territory.</p>
+  <p class="cn-body">Most market builds require a focused 4-month rollout window to map, configure, deploy, and compound correctly. That structure is what makes results durable — and why we structure access carefully.</p>
 </div>
 
 <!-- ════════════ MARKET ALLOCATION ════════════ -->
@@ -2833,7 +2836,7 @@ body::before{
       <p class="alloc-urgency">Position established early compounds. <em>Structure your market as phases open.</em></p>
       <span class="alloc-convert-label">Selective access. Launch-ready markets only.</span>
       <div class="alloc-actions">
-        <a href="#" class="btn-primary js-open-gate">Claim Your Territory</a>
+        <a href="#" class="btn-primary js-open-gate">Assess Your Market</a>
       </div>
     </div>
 
@@ -2878,7 +2881,7 @@ body::before{
 <section class="access-section r">
 
   <div class="access-eyebrow">The System</div>
-  <h2 class="access-headline">Not a tool.<br><em>A territory.</em></h2>
+  <h2 class="access-headline">Not a tool.<br><em>A system.</em></h2>
   <p class="access-subline">Your position is built — not assigned.</p>
 
   <div class="access-grid">
@@ -2988,32 +2991,32 @@ body::before{
         <div class="wyl-card r">
           <span class="wyl-icon">⬡</span>
           <h3 class="wyl-title">You show up everywhere.</h3>
-          <p class="wyl-desc">Every service and city in your market covered by dedicated, structured pages — built to perform across every relevant search.</p>
+          <p class="wyl-desc">Every service, every city — structured pages built to show up before your competitors do.</p>
         </div>
         <div class="wyl-card r">
           <span class="wyl-icon">◈</span>
           <h3 class="wyl-title">Built on your domain.</h3>
-          <p class="wyl-desc">Pages expand your own URL footprint — increasing domain authority and reach without replacing anything you already have.</p>
+          <p class="wyl-desc">Expands your own URL footprint — domain authority you own, built from your existing site outward.</p>
         </div>
         <div class="wyl-card r">
           <span class="wyl-icon">⊹</span>
           <h3 class="wyl-title">Visible to AI systems.</h3>
-          <p class="wyl-desc">Structured data, schema signals, and semantic architecture built to surface across LLMs, AI assistants, and every emerging discovery layer.</p>
+          <p class="wyl-desc">Structured to surface in AI, search engines, and every discovery layer that indexes the web.</p>
         </div>
         <div class="wyl-card r">
           <span class="wyl-icon">◎</span>
           <h3 class="wyl-title">Position compounds over time.</h3>
-          <p class="wyl-desc">Authority builds with every page deployed — position that deepens, widens, and becomes harder to displace each month.</p>
+          <p class="wyl-desc">Every month you're live, your position deepens — harder for competitors to displace, compounding automatically.</p>
         </div>
         <div class="wyl-card r">
           <span class="wyl-icon">⬧</span>
           <h3 class="wyl-title">Coverage they can't replicate.</h3>
-          <p class="wyl-desc">Hyper-local depth and breadth at a scale and structure that cannot be quickly built or matched by competitors.</p>
+          <p class="wyl-desc">A hyper-local coverage structure competitors cannot quickly build, match, or replicate.</p>
         </div>
         <div class="wyl-card r">
           <span class="wyl-icon">◼</span>
           <h3 class="wyl-title">The system runs itself.</h3>
-          <p class="wyl-desc">Maintained, optimized, and expanded under your active agreement — no dashboards, no management overhead required.</p>
+          <p class="wyl-desc">Deployed, held, and expanded for you — no dashboards, no management overhead required.</p>
         </div>
       </div>
     </div>
@@ -3539,7 +3542,7 @@ body::before{
         <span class="exp-dev-tag">In Development</span>
         <h3 class="exp-title">Agency Dashboard</h3>
         <p class="exp-punch">Full visibility. Real ownership.</p>
-        <p class="exp-body">Manage deployment, track coverage, and oversee expansion across your licensed territory — every page, every market, one place.</p>
+        <p class="exp-body">Manage deployment, track coverage, and oversee expansion across your full market — every page, every city, one place.</p>
       </div>
       <div class="exp-card">
         <span class="exp-dev-tag">In Development</span>
