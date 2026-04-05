@@ -269,8 +269,109 @@ body {
 }
 .done-learn-link:hover { color: var(--gold); }
 
-@media (max-width: 520px) {
-  body { padding: 36px 20px; }
+/* ── Share section ── */
+.done-share {
+  margin-top: 44px;
+  padding-top: 28px;
+  border-top: 1px solid rgba(200,168,75,.08);
+  position: relative;
+}
+.done-share-eye {
+  font-size: .64rem;
+  letter-spacing: .24em;
+  text-transform: uppercase;
+  color: rgba(200,168,75,.45);
+  display: block;
+  margin-bottom: 14px;
+}
+.done-share-hed {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(1.2rem, 3vw, 1.55rem);
+  font-weight: 300;
+  color: var(--ivory);
+  line-height: 1.25;
+  margin-bottom: 8px;
+}
+.done-share-sub {
+  font-size: .84rem;
+  color: rgba(168,168,160,.62);
+  line-height: 1.7;
+  margin-bottom: 22px;
+}
+.done-share-btns {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.done-share-primary {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: transparent;
+  border: 1px solid rgba(200,168,75,.32);
+  color: var(--gold);
+  font-family: 'DM Sans', sans-serif;
+  font-size: .76rem;
+  font-weight: 500;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  padding: 14px 28px;
+  border-radius: 3px;
+  cursor: pointer;
+  transition: border-color .3s, background .3s, box-shadow .3s;
+  overflow: hidden;
+  align-self: flex-start;
+}
+.done-share-primary:hover {
+  border-color: rgba(200,168,75,.70);
+  background: rgba(200,168,75,.06);
+  box-shadow: 0 0 18px rgba(200,168,75,.10);
+}
+.done-share-primary:active { transform: scale(.98); }
+.done-share-pulse {
+  position: absolute;
+  inset: 0;
+  border-radius: 3px;
+  pointer-events: none;
+  animation: sharePulse 2.8s ease-out infinite;
+  border: 1px solid rgba(200,168,75,.18);
+}
+@keyframes sharePulse {
+  0% { transform: scale(1); opacity: .7; }
+  70% { transform: scale(1.06); opacity: 0; }
+  100% { transform: scale(1.06); opacity: 0; }
+}
+.done-share-copy {
+  background: none;
+  border: none;
+  padding: 0;
+  font-family: 'DM Sans', sans-serif;
+  font-size: .72rem;
+  letter-spacing: .08em;
+  color: rgba(168,168,160,.44);
+  cursor: pointer;
+  text-transform: uppercase;
+  transition: color .2s;
+  align-self: flex-start;
+}
+.done-share-copy:hover { color: rgba(168,168,160,.78); }
+.done-share-copy.copied { color: var(--gold); }
+.done-share-micro {
+  margin-top: 14px;
+  font-size: .68rem;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: rgba(168,168,160,.28);
+  line-height: 1.6;
+}
+/* ── Share node canvas ── */
+.done-share-canvas {
+  position: absolute;
+  top: 0; right: 0;
+  width: 120px; height: 80px;
+  pointer-events: none;
+  opacity: .35;
 }
 @media (min-width: 768px) {
   .done-hed { font-size: clamp(2.4rem, 4vw, 3.2rem); }
@@ -286,6 +387,11 @@ body {
   .done-cta-primary { font-size: .80rem; padding: 16px 32px; }
   .done-cta-secondary { font-size: .78rem; padding: 14px 28px; }
   .done-cta-tertiary { font-size: .76rem; }
+}
+@media (max-width: 520px) {
+  body { padding: 36px 20px; }
+  .done-share-primary { align-self: stretch; justify-content: center; }
+  .done-share-copy { align-self: center; }
 }
 </style>
 @include('partials.clarity')
@@ -375,6 +481,130 @@ body {
     <p class="done-next-body" style="font-size:.94rem">Some operators may qualify for R&amp;D tax credits related to technical and digital development. See official IRS resources: <a href="https://www.irs.gov/instructions/i6765" target="_blank" rel="noopener noreferrer" style="color:var(--gold);text-decoration:none">Form 6765 Instructions</a> or <a href="https://www.irs.gov/pub/irs-pdf/f6765.pdf" target="_blank" rel="noopener noreferrer" style="color:var(--gold);text-decoration:none">Form 6765 PDF</a>. This is not tax advice — consult a qualified CPA.</p>
   </div>
 
+  <!-- SHARE EARLY ACCESS -->
+  <div class="done-share" id="doneShare">
+    <canvas class="done-share-canvas" id="shareNodeCanvas" aria-hidden="true"></canvas>
+    <span class="done-share-eye">Pass it on</span>
+    <h2 class="done-share-hed">Know someone who should<br>see this early?</h2>
+    <p class="done-share-sub">Share access with your circle — before this expands further.</p>
+    <div class="done-share-btns">
+      <button class="done-share-primary" id="shareBtn" type="button" aria-label="Share early access">
+        <span class="done-share-pulse" aria-hidden="true"></span>
+        Share Early Access &nbsp;&rarr;
+      </button>
+      <button class="done-share-copy" id="copyLinkBtn" type="button">Copy Invite Link</button>
+    </div>
+    <p class="done-share-micro">Access expands through qualified operators — not mass release.</p>
+  </div>
+
 </div>{{-- /x-data --}}
+
+<script>
+(function(){
+  var SHARE_URL = 'https://seoaico.com';
+  var SHARE_TEXT = "I just found a new AI-driven system that expands your visibility across every city you serve.\n\nIt\u2019s not typical SEO \u2014 it\u2019s structured expansion.\n\nThought you might want early access:\n" + SHARE_URL;
+
+  /* ── Primary: native share with clipboard fallback ── */
+  var shareBtn = document.getElementById('shareBtn');
+  if (shareBtn) {
+    shareBtn.addEventListener('click', function() {
+      if (navigator.share) {
+        navigator.share({
+          title: 'SEO AI Co\u2122 \u2014 Early Market Expansion Access',
+          text: SHARE_TEXT,
+          url: SHARE_URL
+        }).catch(function(){});
+      } else {
+        copyToClipboard(SHARE_TEXT, shareBtn, 'Copied!');
+      }
+    });
+  }
+
+  /* ── Secondary: copy invite link ── */
+  var copyBtn = document.getElementById('copyLinkBtn');
+  if (copyBtn) {
+    copyBtn.addEventListener('click', function() {
+      copyToClipboard(SHARE_URL, copyBtn, 'Copied \u2013');
+    });
+  }
+
+  function copyToClipboard(text, el, label) {
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(function() {
+        flashLabel(el, label);
+      }).catch(function() {
+        fallbackCopy(text, el, label);
+      });
+    } else {
+      fallbackCopy(text, el, label);
+    }
+  }
+
+  function fallbackCopy(text, el, label) {
+    var ta = document.createElement('textarea');
+    ta.value = text;
+    ta.style.cssText = 'position:fixed;left:-9999px;top:-9999px;opacity:0';
+    document.body.appendChild(ta);
+    ta.focus(); ta.select();
+    try { document.execCommand('copy'); flashLabel(el, label); } catch(e) {}
+    document.body.removeChild(ta);
+  }
+
+  function flashLabel(el, label) {
+    var orig = el.textContent;
+    el.textContent = label;
+    el.classList.add('copied');
+    setTimeout(function() {
+      el.textContent = orig;
+      el.classList.remove('copied');
+    }, 2200);
+  }
+
+  /* ── Mini node canvas ── */
+  var canvas = document.getElementById('shareNodeCanvas');
+  if (canvas) {
+    var ctx = canvas.getContext('2d');
+    var W = canvas.width  = canvas.offsetWidth  || 120;
+    var H = canvas.height = canvas.offsetHeight || 80;
+    var nodes = Array.from({length: 7}, function() {
+      return {
+        x: Math.random() * W,
+        y: Math.random() * H,
+        vx: (Math.random() - .5) * .28,
+        vy: (Math.random() - .5) * .28,
+        r: 1.2 + Math.random() * 1.2
+      };
+    });
+    function drawNodes() {
+      ctx.clearRect(0, 0, W, H);
+      for (var i = 0; i < nodes.length; i++) {
+        var n = nodes[i];
+        n.x += n.vx; n.y += n.vy;
+        if (n.x < 0 || n.x > W) n.vx *= -1;
+        if (n.y < 0 || n.y > H) n.vy *= -1;
+        for (var j = i + 1; j < nodes.length; j++) {
+          var m = nodes[j];
+          var dx = n.x - m.x, dy = n.y - m.y;
+          var dist = Math.sqrt(dx*dx + dy*dy);
+          if (dist < 55) {
+            ctx.beginPath();
+            ctx.moveTo(n.x, n.y);
+            ctx.lineTo(m.x, m.y);
+            ctx.strokeStyle = 'rgba(200,168,75,' + (.22 * (1 - dist/55)) + ')';
+            ctx.lineWidth = .6;
+            ctx.stroke();
+          }
+        }
+        ctx.beginPath();
+        ctx.arc(n.x, n.y, n.r, 0, Math.PI * 2);
+        ctx.fillStyle = 'rgba(200,168,75,.55)';
+        ctx.fill();
+      }
+      requestAnimationFrame(drawNodes);
+    }
+    drawNodes();
+  }
+})();
+</script>
 </body>
 </html>
