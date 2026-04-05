@@ -175,20 +175,23 @@
         <p class="bk-sub">Reserve your spot &mdash; takes under 2 minutes.</p>
         @endif
         <div class="bk-types">
-          <p style="font-size:.75rem;letter-spacing:.06em;color:rgba(168,168,160,.68);margin:0 0 14px">We guide you step-by-step — every market is built with care, strategy, and support.</p>
+          <p style="font-size:.75rem;letter-spacing:.06em;color:rgba(168,168,160,.68);margin:0 0 14px">Every market is built with care, strategy, and full support from start to finish.</p>
           @foreach(($types ?? collect()) as $ct)
           <div class="bk-type {{ $ct->slug === 'audit' ? 'featured' : ($ct->slug === 'agency-review' ? 'reserved' : ($ct->is_free ? 'secondary' : '')) }}"
                :class="{ selected: selectedType === {{ $ct->id }} }"
                @click="selectType({{ $ct->id }}, {{ $ct->duration_minutes }}, {{ json_encode($ct->name) }}, {{ $ct->is_free ? 'true' : 'false' }})">
             <div style="flex:1;min-width:0">
+              @if($ct->is_free)
+              <div class="bk-type-badge">Free</div>
+              @endif
               <div class="bk-type-name">{{ $ct->name }}</div>
               <div class="bk-type-desc">{{ $ct->description }}</div>
               @if($ct->slug === 'discovery')
               <div class="bk-type-qualify">We scan your market using real search data to show you exactly where opportunity exists.</div>
               @elseif($ct->slug === 'audit')
-              <div class="bk-type-qualify">Best for businesses ready to move fast and take control of their market.</div>
+              <div class="bk-type-qualify">For businesses ready to build their full market structure and move ahead of competitors.</div>
               @elseif($ct->slug === 'agency-review')
-              <div class="bk-type-qualify">Perfect if you're just getting started or want clear direction without guesswork.</div>
+              <div class="bk-type-qualify">For businesses that want a clear, actionable growth direction without a long-term commitment.</div>
               @endif
             </div>
             <div class="bk-type-meta">

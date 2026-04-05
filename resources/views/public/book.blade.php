@@ -138,21 +138,21 @@ body{background:var(--bg);color:var(--ivory);font-family:'DM Sans',sans-serif;fo
           "name": "Market Opportunity Snapshot",
           "price": "0",
           "priceCurrency": "USD",
-          "description": "Free session — see where you are missing visibility."
+          "description": "Free session \u2014 see where you are missing visibility."
         },
         {
           "@type": "Offer",
-          "name": "Growth Direction Call",
+          "name": "Market Growth Plan",
           "price": "250",
           "priceCurrency": "USD",
-          "description": "45-minute session identifying your highest-impact next steps."
+          "description": "60-minute session with clear, actionable next steps for your market."
         },
         {
           "@type": "Offer",
-          "name": "Market Expansion Strategy",
+          "name": "Market Expansion Blueprint",
           "price": "500",
           "priceCurrency": "USD",
-          "description": "60-minute session mapping full visibility expansion."
+          "description": "75-minute session mapping full-market visibility expansion across every service and city."
         }
       ]
     }

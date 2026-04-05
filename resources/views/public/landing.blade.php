@@ -955,6 +955,54 @@ nav.stuck{background:rgba(8,8,8,.95);backdrop-filter:blur(16px);border-color:var
   color:rgba(168,168,160,.35);
 }
 
+/* ── How-this-works trust strip ── */
+.how-strip{padding:36px 64px;max-width:1200px;margin:0 auto;border-top:1px solid rgba(200,168,75,.06);text-align:center}
+.how-strip-hed{font-size:.68rem;letter-spacing:.28em;text-transform:uppercase;color:rgba(200,168,75,.55);margin-bottom:20px}
+.how-strip-bullets{display:flex;justify-content:center;align-items:center;gap:20px 32px;flex-wrap:wrap;margin-bottom:14px}
+.how-strip-item{display:flex;align-items:center;gap:8px}
+.how-strip-dot{width:5px;height:5px;border-radius:50%;background:var(--gold);flex-shrink:0;box-shadow:0 0 6px rgba(200,168,75,.45);animation:pulseDot 2.4s ease-in-out infinite}
+.how-strip-item:nth-child(2) .how-strip-dot{animation-delay:.4s}
+.how-strip-item:nth-child(3) .how-strip-dot{animation-delay:.8s}
+.how-strip-item:nth-child(4) .how-strip-dot{animation-delay:1.2s}
+.how-strip-item:nth-child(5) .how-strip-dot{animation-delay:1.6s}
+@keyframes pulseDot{0%,100%{opacity:.5;transform:scale(1)}50%{opacity:1;transform:scale(1.5)}}
+.how-strip-label{font-size:.82rem;color:rgba(168,168,160,.72);letter-spacing:.01em}
+.how-strip-sub{font-size:.72rem;color:rgba(168,168,160,.36);letter-spacing:.08em;text-transform:uppercase}
+
+/* ── Value anchor additions ── */
+.va-eye{font-size:.66rem;letter-spacing:.28em;text-transform:uppercase;color:rgba(200,168,75,.45);margin-bottom:16px}
+.va-contrast{display:grid;grid-template-columns:1fr 1fr;gap:12px 40px;margin:28px auto 28px;max-width:620px;text-align:left}
+.va-col-hed{font-size:.70rem;letter-spacing:.16em;text-transform:uppercase;margin-bottom:10px}
+.va-col--left .va-col-hed{color:rgba(168,168,160,.38)}
+.va-col--right .va-col-hed{color:rgba(200,168,75,.5)}
+.va-col-item{font-size:.88rem;line-height:1.65;padding-left:14px;position:relative;margin-bottom:4px}
+.va-col-item::before{content:'—';position:absolute;left:0;color:rgba(168,168,160,.28)}
+.va-col--left .va-col-item{color:rgba(168,168,160,.58)}
+.va-col--right .va-col-item{color:rgba(237,232,222,.70)}
+.va-col--right .va-col-item::before{color:rgba(200,168,75,.45)}
+.va-close{font-family:'Cormorant Garamond',serif;font-size:clamp(1.1rem,1.8vw,1.4rem);font-weight:300;color:rgba(237,232,222,.75);line-height:1.5;border-top:1px solid rgba(200,168,75,.08);padding-top:22px;margin-top:8px}
+.va-close em{color:var(--gold);font-style:italic}
+
+/* ── Competitive positioning ── */
+.comp-pos{padding:28px 64px;max-width:1200px;margin:0 auto;text-align:center;border-top:1px solid rgba(200,168,75,.05)}
+.cp-line-1{font-size:.88rem;color:rgba(168,168,160,.50);letter-spacing:.02em;margin-bottom:6px}
+.cp-line-2{font-family:'Cormorant Garamond',serif;font-size:clamp(1.1rem,1.9vw,1.45rem);font-weight:300;color:var(--ivory);letter-spacing:-.01em}
+
+/* ── Service support block ── */
+.svc-support{padding:56px 64px;max-width:1200px;margin:0 auto;border-top:1px solid var(--border)}
+.ss-eye{font-size:.68rem;letter-spacing:.28em;text-transform:uppercase;color:rgba(200,168,75,.55);margin-bottom:12px}
+.ss-hed{font-family:'Cormorant Garamond',serif;font-size:clamp(1.4rem,2.2vw,1.9rem);font-weight:300;color:var(--ivory);margin-bottom:14px;line-height:1.2}
+.ss-intro{font-size:.92rem;color:rgba(168,168,160,.68);line-height:1.78;max-width:580px;margin-bottom:28px}
+.ss-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:10px 24px;margin-bottom:24px}
+.ss-item{display:flex;align-items:flex-start;gap:10px;padding:10px 14px;background:rgba(200,168,75,.015);border:1px solid rgba(200,168,75,.07);border-radius:4px}
+.ss-dot{width:4px;height:4px;border-radius:50%;background:rgba(200,168,75,.5);flex-shrink:0;margin-top:6px}
+.ss-label{font-size:.84rem;color:rgba(168,168,160,.78);line-height:1.5}
+.ss-note{font-size:.80rem;color:rgba(168,168,160,.45);font-style:italic;line-height:1.7;max-width:600px;border-top:1px solid rgba(200,168,75,.06);padding-top:16px}
+
+/* ── fcc wait line ── */
+.fcc-wait{font-size:.84rem;color:rgba(168,168,160,.36);line-height:1.9;margin-top:14px;letter-spacing:.01em}
+.fcc-wait em{color:rgba(200,168,75,.52);font-style:italic}
+
 /* ── Responsive pricing/services ── */
 @media(max-width:900px){
   .value-anchor,.exec-services,.access-position,.access-model,.decision-guide,.pricing-cta,.final-close{padding:48px 24px}
@@ -2407,16 +2455,16 @@ body::before{
           },
           {
             "@type": "Offer",
-            "name": "Market Expansion Strategy",
-            "description": "60-minute strategy session mapping full visibility expansion across services and locations.",
+            "name": "Market Expansion Blueprint",
+            "description": "75-minute session mapping full-market visibility expansion across every service and city.",
             "price": "500",
             "priceCurrency": "USD",
             "url": "https://seoaico.com/book"
           },
           {
             "@type": "Offer",
-            "name": "Growth Direction Call",
-            "description": "45-minute session to identify the highest-impact next steps for your market growth.",
+            "name": "Market Growth Plan",
+            "description": "60-minute session to identify clear, actionable next steps for your market growth.",
             "price": "250",
             "priceCurrency": "USD",
             "url": "https://seoaico.com/book"
@@ -2566,6 +2614,34 @@ body::before{
   <div class="hero-rule-shimmer"></div>
   <div class="hero-scroll-arrow"></div>
 </div>
+
+<!-- ════════════ HOW THIS WORKS ════════════ -->
+<section class="how-strip r" aria-label="How the system works">
+  <p class="how-strip-hed">How your market expansion is built</p>
+  <div class="how-strip-bullets">
+    <div class="how-strip-item">
+      <span class="how-strip-dot" aria-hidden="true"></span>
+      <span class="how-strip-label">Market mapping with live search data</span>
+    </div>
+    <div class="how-strip-item">
+      <span class="how-strip-dot" aria-hidden="true"></span>
+      <span class="how-strip-label">Programmatic pages across every service &amp; city</span>
+    </div>
+    <div class="how-strip-item">
+      <span class="how-strip-dot" aria-hidden="true"></span>
+      <span class="how-strip-label">AI signals, schema, and search infrastructure built in</span>
+    </div>
+    <div class="how-strip-item">
+      <span class="how-strip-dot" aria-hidden="true"></span>
+      <span class="how-strip-label">Continuous optimization as algorithms evolve</span>
+    </div>
+    <div class="how-strip-item">
+      <span class="how-strip-dot" aria-hidden="true"></span>
+      <span class="how-strip-label">Exclusive territory — one brand per market</span>
+    </div>
+  </div>
+  <p class="how-strip-sub">A full-system expansion — not a tool, not a shortcut.</p>
+</section>
 
 <!-- ════════════ SYSTEM STRUCTURE ════════════ -->
 <section class="sys-struct r">
@@ -3237,9 +3313,32 @@ body::before{
 <!-- ════════════ VALUE ANCHOR ════════════ -->
 <div class="value-anchor r">
   <div class="value-anchor-inner">
-    <p class="va-main">This is not traditional SEO.<br><em>This is structured, system-driven market expansion</em> — designed to scale your visibility across every service and every city simultaneously.</p>
-    <p class="va-sub">Businesses that implement early establish position before competitors can react.</p>
+    <p class="va-eye">What this is</p>
+    <p class="va-main">This is not a tool.<br><em>This is a system designed to expand your visibility across your entire market.</em></p>
+    <div class="va-contrast">
+      <div class="va-col va-col--left">
+        <p class="va-col-hed">What most businesses do</p>
+        <p class="va-col-item">Buy SEO tools. Publish content.</p>
+        <p class="va-col-item">Target keywords one at a time.</p>
+        <p class="va-col-item">Wait months for unclear results.</p>
+        <p class="va-col-item">Repeat the same tactics.</p>
+      </div>
+      <div class="va-col va-col--right">
+        <p class="va-col-hed">What this system does</p>
+        <p class="va-col-item">Builds your entire online structure.</p>
+        <p class="va-col-item">Deploys across every service and city.</p>
+        <p class="va-col-item">Establishes position while others wait.</p>
+        <p class="va-col-item">Compounds continuously over time.</p>
+      </div>
+    </div>
+    <p class="va-close">You are not buying SEO.<br><em>You are entering a system designed to grow your market.</em></p>
   </div>
+</div>
+
+<!-- ════════════ COMPETITIVE POSITIONING ════════════ -->
+<div class="comp-pos r">
+  <p class="cp-line-1">Most SEO tools help you create content.</p>
+  <p class="cp-line-2">We structure your entire market presence.</p>
 </div>
 
 <div class="gold-rule"></div>
@@ -3275,6 +3374,26 @@ body::before{
 
 <div class="gold-rule"></div>
 
+<!-- ════════════ SERVICE SUPPORT ════════════ -->
+<div class="svc-support r">
+  <p class="ss-eye">What's included</p>
+  <h2 class="ss-hed">This is more than SEO.</h2>
+  <p class="ss-intro">Your engagement includes full access to every capability needed to build, launch, and grow your market presence — coordinated under one system.</p>
+  <div class="ss-grid">
+    <div class="ss-item"><span class="ss-dot"></span><span class="ss-label">Programmatic SEO &amp; market expansion</span></div>
+    <div class="ss-item"><span class="ss-dot"></span><span class="ss-label">Website design &amp; development</span></div>
+    <div class="ss-item"><span class="ss-dot"></span><span class="ss-label">Google Ads &amp; local campaign management</span></div>
+    <div class="ss-item"><span class="ss-dot"></span><span class="ss-label">Branding, print &amp; collateral</span></div>
+    <div class="ss-item"><span class="ss-dot"></span><span class="ss-label">WordPress &amp; CMS development</span></div>
+    <div class="ss-item"><span class="ss-dot"></span><span class="ss-label">Content strategy &amp; copywriting</span></div>
+    <div class="ss-item"><span class="ss-dot"></span><span class="ss-label">Structured data &amp; schema markup</span></div>
+    <div class="ss-item"><span class="ss-dot"></span><span class="ss-label">Performance tracking &amp; reporting</span></div>
+  </div>
+  <p class="ss-note">All capabilities coordinated under a single expansion agreement — no separate agencies, no disconnected efforts.</p>
+</div>
+
+<div class="gold-rule"></div>
+
 <!-- ════════════ POSITIONING ════════════ -->
 <div class="access-position r">
   <div>
@@ -3290,12 +3409,13 @@ body::before{
 
 <!-- ════════════ ACCESS MODEL ════════════ -->
 <div class="access-model r">
-  <p class="am-eyebrow">Access is limited by market</p>
+  <p class="am-eyebrow">We guide every expansion personally</p>
   <h2 class="am-hed">One territory. One brand.</h2>
   <div class="am-body">
     <p class="am-line">Each territory supports one primary brand.</p>
     <p class="am-line">Once a market is active, expansion is restricted.</p>
     <p class="am-line">Access is released in controlled phases based on demand and system capacity.</p>
+    <p class="am-line">We guide every expansion personally — ensuring your market is built, positioned, and supported correctly.</p>
   </div>
 </div>
 
@@ -3578,10 +3698,11 @@ body::before{
     <p class="fcc-micro">Expansion moves continuously. Entry is guided.</p>
     <span class="fcc-rule" aria-hidden="true"></span>
     <div class="fcc-actions">
-      <button class="fcc-primary" onclick="window._bkPending={id:{{ $consultTypes->get('audit')?->id ?? 9 }},duration:{{ $consultTypes->get('audit')?->duration_minutes ?? 60 }},name:{{ json_encode($consultTypes->get('audit')?->name ?? 'Market Expansion Strategy') }},isFree:false};window.dispatchEvent(new CustomEvent('open-booking',{detail:window._bkPending}));if(typeof gtag==='function')gtag('event','cta_click',{cta_location:'final_close',cta_label:'start_market_expansion'});">Start Your Market Expansion</button>
+      <button class="fcc-primary" onclick="window._bkPending={id:{{ $consultTypes->get('audit')?->id ?? 9 }},duration:{{ $consultTypes->get('audit')?->duration_minutes ?? 75 }},name:{{ json_encode($consultTypes->get('audit')?->name ?? 'Market Expansion Blueprint') }},isFree:false};window.dispatchEvent(new CustomEvent('open-booking',{detail:window._bkPending}));if(typeof gtag==='function')gtag('event','cta_click',{cta_location:'final_close',cta_label:'start_market_expansion'});">Start Your Market Expansion</button>
       <a href="{{ route('how-it-works') }}" class="fcc-secondary">See how it works</a>
     </div>
     <p class="fcc-reassure">Guided entry.&ensp;Structured rollout.&ensp;Full support.</p>
+    <p class="fcc-wait">Most businesses wait.<br>Some position early.<br><em>A few own their market.</em></p>
   </div>
 </section>
 
