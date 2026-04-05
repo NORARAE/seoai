@@ -1049,6 +1049,8 @@ body {
 }
 </style>
 @include('partials.clarity')
+<link rel="canonical" href="{{ url('/onboarding/start') }}">
+<meta name="robots" content="noindex, nofollow">
 </head>
 <body x-data="onboardingWizard()" x-cloak>
 <div class="ob-wrap">
@@ -1869,6 +1871,14 @@ document.getElementById('ob-form').addEventListener('submit', function() {
   if(typeof gtag==='function'){
     gtag('event','onboarding_start',{page_location:window.location.href});
     gtag('event','start_onboarding',{page_location:window.location.href});
+    @if($booking && !$booking->consultType?->is_free)
+    gtag('event','purchase',{
+      transaction_id: '{{ $booking->id }}',
+      value: {{ (float) ($booking->consultType?->price ?? 0) }},
+      currency: 'USD',
+      items: [{ item_name: '{{ addslashes($booking->consultType?->name ?? '') }}', price: {{ (float) ($booking->consultType?->price ?? 0) }}, quantity: 1 }]
+    });
+    @endif
   }
 </script>
 </body>

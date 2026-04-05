@@ -578,23 +578,30 @@ document.addEventListener('alpine:init', () => {
           this.submitting = false;
           return;
         }
-        // Paid booking — redirect to Stripe checkout
+        // Paid booking — fire begin_checkout then redirect to Stripe
         if (data.checkout_url) {
+          if (typeof gtag === 'function') {
+            gtag('event', 'begin_checkout', {
+              currency: 'USD',
+              booking_type: this.selectedTypeName,
+              source: 'landing_page',
+            });
+          }
           window.location.href = data.checkout_url;
           return;
         }
-        // Free booking — flash step 4 then redirect to confirmed page
+        // Free booking — flash step 4 then redirect to onboarding
         this.confirmation = data.booking;
         this.step = 4;
         if (typeof gtag === 'function') {
           gtag('event', 'booking_completed', {
             booking_type: this.selectedTypeName,
             booking_id: data.booking.id,
-            is_free: this.selectedTypeIsFree,
+            is_free: true,
           });
         }
         setTimeout(() => {
-          window.location.href = '/book/confirmed?booking=' + data.booking.id;
+          window.location.href = '/onboarding/start?booking=' + data.booking.id;
         }, 900);
       } catch (e) {
         this.errorMsg = 'Network error — please try again.';

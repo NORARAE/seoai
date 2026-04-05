@@ -290,6 +290,8 @@ body {
 </style>
 @include('partials.clarity')
 <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+<link rel="canonical" href="{{ url('/onboarding/done') }}">
+<meta name="robots" content="noindex, nofollow">
 </head>
 <body>
 <div x-data="{ howOpen: false }">

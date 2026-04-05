@@ -36,7 +36,7 @@ class OnboardingController extends Controller
 
         $booking = Booking::with('consultType')
             ->where('id', $bookingId)
-            ->whereIn('status', ['confirmed', 'pending'])
+            ->whereIn('status', ['confirmed', 'pending', 'awaiting_payment'])
             ->firstOrFail();
 
         // If they already submitted, send them to done

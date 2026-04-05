@@ -433,6 +433,9 @@ class BookingController extends Controller
                         'booking_id' => $booking->id,
                         'payment_structure' => 'activation_plus_subscription',
                         'tier' => $tierConfigKey,
+                        'service' => $type->slug,
+                        'source' => 'landing',
+                        'timestamp' => now()->toISOString(),
                     ],
                     'subscription_data' => [
                         'metadata' => ['booking_id' => $booking->id],
@@ -452,7 +455,13 @@ class BookingController extends Controller
                     'mode' => 'payment',
                     'customer_email' => $booking->email,
                     'line_items' => $lineItems,
-                    'metadata' => ['booking_id' => $booking->id],
+                    'metadata' => [
+                        'booking_id' => $booking->id,
+                        'service' => $type->slug,
+                        'tier' => (string) (int) $type->price,
+                        'source' => 'landing',
+                        'timestamp' => now()->toISOString(),
+                    ],
                     'success_url' => url('/book/payment-return/' . $booking->id) . '?session_id={CHECKOUT_SESSION_ID}',
                     'cancel_url' => url('/book?payment=cancelled'),
                     'expires_at' => now()->addMinutes(30)->timestamp,
@@ -638,7 +647,7 @@ class BookingController extends Controller
         // Funnel tracking
         FunnelEvent::fire(FunnelEvent::BOOKING_PAID, $booking->id);
 
-        return redirect()->route('book.upgrade', ['booking' => $booking->id]);
+        return redirect()->route('onboarding.start', ['booking' => $booking->id]);
     }
 
     /**

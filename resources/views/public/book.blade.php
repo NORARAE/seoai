@@ -118,6 +118,47 @@ body{background:var(--bg);color:var(--ivory);font-family:'DM Sans',sans-serif;fo
 }
 </style>
 @include('partials.clarity')
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Service",
+      "name": "Market Opportunity Session — SEO AI Co™",
+      "provider": {
+        "@type": "Organization",
+        "name": "SEO AI Co",
+        "url": "https://seoaico.com"
+      },
+      "url": "https://seoaico.com/book",
+      "description": "A focused session to identify where your business can expand its search presence and how to take it.",
+      "offers": [
+        {
+          "@type": "Offer",
+          "name": "Market Opportunity Snapshot",
+          "price": "0",
+          "priceCurrency": "USD",
+          "description": "Free session — see where you are missing visibility."
+        },
+        {
+          "@type": "Offer",
+          "name": "Growth Direction Call",
+          "price": "250",
+          "priceCurrency": "USD",
+          "description": "45-minute session identifying your highest-impact next steps."
+        },
+        {
+          "@type": "Offer",
+          "name": "Market Expansion Strategy",
+          "price": "500",
+          "priceCurrency": "USD",
+          "description": "60-minute session mapping full visibility expansion."
+        }
+      ]
+    }
+  ]
+}
+</script>
 </head>
 <body>
 

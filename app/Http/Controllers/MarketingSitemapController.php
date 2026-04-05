@@ -43,11 +43,17 @@ class MarketingSitemapController extends Controller
             ];
             // Static core pages — always included regardless of DB state
             foreach ([
-                ['path' => '/book', 'changefreq' => 'weekly', 'priority' => '0.9'],
-                ['path' => '/how-it-works', 'changefreq' => 'monthly', 'priority' => '0.8'],
-                ['path' => '/solutions', 'changefreq' => 'monthly', 'priority' => '0.8'],
-                ['path' => '/rd-tax-credit', 'changefreq' => 'monthly', 'priority' => '0.6'],
-                ['path' => '/onboarding/start', 'changefreq' => 'monthly', 'priority' => '0.7'],
+                ['path' => '/book',                    'changefreq' => 'weekly',  'priority' => '0.9'],
+                ['path' => '/how-it-works',            'changefreq' => 'monthly', 'priority' => '0.8'],
+                ['path' => '/solutions',               'changefreq' => 'monthly', 'priority' => '0.8'],
+                ['path' => '/access-plans',            'changefreq' => 'monthly', 'priority' => '0.8'],
+                ['path' => '/growth-services',         'changefreq' => 'monthly', 'priority' => '0.7'],
+                ['path' => '/web-design-development',  'changefreq' => 'monthly', 'priority' => '0.7'],
+                ['path' => '/wordpress-support',       'changefreq' => 'monthly', 'priority' => '0.7'],
+                ['path' => '/ads-management',          'changefreq' => 'monthly', 'priority' => '0.7'],
+                ['path' => '/branding-print',          'changefreq' => 'monthly', 'priority' => '0.7'],
+                ['path' => '/rd-tax-credit',           'changefreq' => 'monthly', 'priority' => '0.6'],
+                ['path' => '/onboarding/start',        'changefreq' => 'monthly', 'priority' => '0.5'],
             ] as $static) {
                 $entries[] = [
                     'loc' => url($static['path']),

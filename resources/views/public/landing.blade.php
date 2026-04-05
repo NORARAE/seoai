@@ -2233,6 +2233,103 @@ body::before{
 <script src="https://www.google.com/recaptcha/api.js?render={{ config('services.recaptcha.site_key') }}" async defer></script>
 @endif
 @include('partials.clarity')
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": "https://seoaico.com/#org",
+      "name": "SEO AI Co",
+      "legalName": "SEO AI Co™",
+      "url": "https://seoaico.com",
+      "logo": "https://seoaico.com/favicon.svg",
+      "description": "AI-powered programmatic SEO infrastructure for local service businesses. Hyper-local, structured, and built for AI and organic search.",
+      "sameAs": [],
+      "contactPoint": {
+        "@type": "ContactPoint",
+        "email": "hello@seoaico.com",
+        "contactType": "customer support"
+      }
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://seoaico.com/#website",
+      "url": "https://seoaico.com",
+      "name": "SEO AI Co™",
+      "publisher": { "@id": "https://seoaico.com/#org" }
+    },
+    {
+      "@type": "Service",
+      "@id": "https://seoaico.com/#service",
+      "name": "Programmatic SEO Infrastructure",
+      "serviceType": "SEO",
+      "provider": { "@id": "https://seoaico.com/#org" },
+      "description": "AI-powered programmatic SEO for local service businesses. Hyper-local URL architecture, structured data, and internal link systems deployed at scale.",
+      "areaServed": { "@type": "Country", "name": "United States" },
+      "hasOfferCatalog": {
+        "@type": "OfferCatalog",
+        "name": "SEO AI Co™ Access Tiers",
+        "itemListElement": [
+          {
+            "@type": "Offer",
+            "name": "Market Opportunity Snapshot",
+            "description": "Free market opportunity session — see where you are missing visibility and where competitors are winning.",
+            "price": "0",
+            "priceCurrency": "USD",
+            "url": "https://seoaico.com/book"
+          },
+          {
+            "@type": "Offer",
+            "name": "Market Expansion Strategy",
+            "description": "60-minute strategy session mapping full visibility expansion across services and locations.",
+            "price": "500",
+            "priceCurrency": "USD",
+            "url": "https://seoaico.com/book"
+          },
+          {
+            "@type": "Offer",
+            "name": "Growth Direction Call",
+            "description": "45-minute session to identify the highest-impact next steps for your market growth.",
+            "price": "250",
+            "priceCurrency": "USD",
+            "url": "https://seoaico.com/book"
+          }
+        ]
+      }
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "What is programmatic SEO?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Programmatic SEO is the practice of building and deploying structured, hyper-local web pages at scale — one page per service-city combination — so your business appears in searches across your entire market."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What is hyper-local SEO?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Hyper-local SEO targets searches for specific services in specific cities or neighborhoods. SEO AI Co™ deploys one optimized page per service-location pair, covering every area you serve."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How does AI SEO work?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "AI SEO uses machine learning and structured data to generate, deploy, and continuously optimize content pages for local search — faster and at greater scale than manual methods."
+          }
+        }
+      ]
+    }
+  ]
+}
+</script>
 </head>
 <body>
 

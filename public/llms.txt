@@ -48,6 +48,16 @@ Available execution services complement the SEO infrastructure but are not inclu
 - Privacy policy: https://seoaico.com/privacy
 - Terms of service: https://seoaico.com/terms
 
+## Booking & Onboarding
+
+- Book a session (free or paid): https://seoaico.com/book
+- Client onboarding intake: https://seoaico.com/onboarding/start
+
+Sessions available:
+- **Market Opportunity Snapshot** — Free. Identify where visibility is missing.
+- **Growth Direction Call** — $250. Identify highest-impact next steps.
+- **Market Expansion Strategy** — $500. Full expansion mapping across services and cities.
+
 ## Sitemap
 
 https://seoaico.com/sitemap.xml
