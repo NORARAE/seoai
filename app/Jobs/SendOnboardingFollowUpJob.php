@@ -55,6 +55,22 @@ class SendOnboardingFollowUpJob implements ShouldQueue
             return;
         }
 
+        if (in_array('fit_declined', $lead->tags ?? []) || $lead->fit_status === 'declined') {
+            Log::channel('booking')->info('OnboardingFollowUp skipped — lead marked as declined', [
+                'lead_id' => $lead->id,
+                'step' => $this->step,
+            ]);
+            return;
+        }
+
+        if ($lead->email_unsubscribed_at) {
+            Log::channel('booking')->info('OnboardingFollowUp skipped — lead unsubscribed', [
+                'lead_id' => $lead->id,
+                'step' => $this->step,
+            ]);
+            return;
+        }
+
         $mailable = match ($this->step) {
             2 => new OnboardingStep2Mail($lead, $submission),
             3 => new OnboardingStep3Mail($lead, $submission),

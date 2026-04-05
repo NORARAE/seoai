@@ -24,6 +24,10 @@ class OnboardingController extends Controller
     public function start(Request $request)
     {
         $bookingId = (int) $request->query('booking', 0);
+        $allowedTiers = ['launch', 'expansion', 'dominance'];
+        $tier = in_array($request->query('tier'), $allowedTiers, true)
+            ? $request->query('tier')
+            : null;
 
         // Preview mode — no booking required
         if ($bookingId === 0) {
@@ -31,6 +35,7 @@ class OnboardingController extends Controller
             return view('public.onboarding-start', [
                 'booking' => null,
                 'isPreview' => true,
+                'tier' => $tier,
             ]);
         }
 
@@ -54,6 +59,7 @@ class OnboardingController extends Controller
         return view('public.onboarding-start', [
             'booking' => $booking,
             'isPreview' => false,
+            'tier' => $tier,
         ]);
     }
 
@@ -94,6 +100,9 @@ class OnboardingController extends Controller
             'number_of_locations' => 'nullable|in:1,2_to_5,6_to_10,11_to_20,20_plus',
             'commitment_length' => 'nullable|in:4_month,3_month,2_month',
             'payment_structure' => 'nullable|in:full_prepay,50_50_split,activation_plus_subscription',
+            'years_in_business' => 'nullable|in:0_to_1,1_to_3,3_to_10,10_plus',
+            'team_size' => 'nullable|in:solo,2_to_5,6_to_20,20_plus',
+            'platform_alignment' => 'nullable|boolean',
         ], [
             'license.mimes' => 'License must be a PDF, JPG, or PNG file.',
             'license.max' => 'License file must be under 5 MB.',
@@ -199,6 +208,8 @@ class OnboardingController extends Controller
                 ['running', 'has_budget']
             ) || in_array('google_ads_setup', $validated['add_ons'] ?? []),
             'ads_account_control' => 'not_configured',
+            'years_in_business' => $validated['years_in_business'] ?? null,
+            'team_size' => $validated['team_size'] ?? null,
             'submitted_at' => now(),
         ]);
 

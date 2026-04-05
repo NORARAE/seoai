@@ -93,6 +93,9 @@
       This email was sent to {{ $lead->email }} as part of your onboarding review at seoaico.com.<br>
       <a href="{{ url('/') }}">seoaico.com</a>
     </p>
+    <p style="margin-top:10px;font-size:.7rem;color:#bbb">
+      This is a follow-up email. <a href="{{ url('/unsubscribe/' . $lead->unsubscribe_token) }}" style="color:#bbb">Unsubscribe</a> to stop receiving these.
+    </p>
   </div>
 </div>
 </body>

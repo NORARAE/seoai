@@ -41,6 +41,8 @@ class OnboardingSubmission extends Model
         'agency_review_required',
         'ads_management_required',
         'ads_account_control',
+        'years_in_business',
+        'team_size',
         'submitted_at',
     ];
 

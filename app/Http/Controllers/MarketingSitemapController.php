@@ -53,7 +53,6 @@ class MarketingSitemapController extends Controller
                 ['path' => '/ads-management', 'changefreq' => 'monthly', 'priority' => '0.7'],
                 ['path' => '/branding-print', 'changefreq' => 'monthly', 'priority' => '0.7'],
                 ['path' => '/rd-tax-credit', 'changefreq' => 'monthly', 'priority' => '0.6'],
-                ['path' => '/onboarding/start', 'changefreq' => 'monthly', 'priority' => '0.5'],
             ] as $static) {
                 $entries[] = [
                     'loc' => url($static['path']),

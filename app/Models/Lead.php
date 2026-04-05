@@ -12,6 +12,8 @@ class Lead extends Model
         'booking_id',
         'name',
         'email',
+        'unsubscribe_token',
+        'email_unsubscribed_at',
         'company',
         'website',
         'phone',
@@ -25,6 +27,7 @@ class Lead extends Model
         'score',
         'grade',
         'scored_at',
+        'fit_status',
     ];
 
     protected function casts(): array
@@ -32,8 +35,19 @@ class Lead extends Model
         return [
             'score' => 'integer',
             'scored_at' => 'datetime',
+            'email_unsubscribed_at' => 'datetime',
             'tags' => 'array',
+            'fit_status' => 'string',
         ];
+    }
+
+    protected static function booted(): void
+    {
+        static::creating(function (Lead $lead) {
+            if (empty($lead->unsubscribe_token)) {
+                $lead->unsubscribe_token = \Illuminate\Support\Str::random(48);
+            }
+        });
     }
 
     // ── Lifecycle stage constants ─────────────────────────────────────────────

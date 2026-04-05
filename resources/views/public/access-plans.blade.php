@@ -129,6 +129,14 @@ body{background:var(--bg);color:var(--ivory);font-family:'DM Sans',sans-serif;fo
 .system-points li{display:flex;align-items:baseline;gap:12px;font-size:.86rem;color:var(--muted);line-height:1.65}
 .system-points li::before{content:'◈';color:var(--gold-dim);flex-shrink:0;font-size:.62rem}
 .system-points li strong{color:rgba(237,232,222,.82);font-weight:400}
+/* Capability grid */
+.sys-cap-grid{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:rgba(200,168,75,.07);margin:28px 0 20px}
+.sys-cap-item{background:var(--bg);padding:24px 28px;display:flex;flex-direction:column;gap:8px}
+.sys-cap-icon{width:20px;height:20px;color:var(--gold-dim);flex-shrink:0}
+.sys-cap-label{font-size:.76rem;letter-spacing:.12em;text-transform:uppercase;color:var(--ivory);font-weight:400}
+.sys-cap-desc{font-size:.82rem;color:var(--muted);line-height:1.7}
+.sys-trust-line{font-size:.74rem;color:rgba(168,168,160,.40);letter-spacing:.07em;text-align:center;padding-top:4px}
+@media(max-width:600px){.sys-cap-grid{grid-template-columns:1fr}}
 /* Exec services section */
 .exec-note{margin-bottom:56px;padding:32px 36px;border:1px solid var(--border);background:var(--card)}
 .exec-note-hed{font-family:'Cormorant Garamond',serif;font-size:1.18rem;font-weight:400;color:var(--ivory);margin-bottom:10px}
@@ -195,7 +203,7 @@ footer{border-top:1px solid var(--border);padding:32px 64px;display:flex;align-i
         <li>Upgradeable as your market grows</li>
       </ul>
       <div class="tier-gated"><strong>Access reviewed individually.</strong>&ensp;Apply to confirm availability in your market.</div>
-      <a href="/#contact" class="tier-cta">Apply for Launch Access</a>
+      <a href="{{ route('onboarding.start', ['tier' => 'launch']) }}" class="tier-cta">Check Market Availability</a>
     </div>
 
     <!-- Expansion (focal) -->
@@ -243,14 +251,40 @@ footer{border-top:1px solid var(--border);padding:32px 64px;display:flex;align-i
   <!-- ── HOW THE SYSTEM WORKS ── -->
   <div class="system-block">
     <h2 class="system-hed">Not a tool.<br><em>Infrastructure.</em></h2>
-    <p class="system-body">The SEO AI Co™ system builds programmatic SEO infrastructure — not content articles or backlink packages. Everything is structured to establish and hold your market position across every relevant service and city in your territory.</p>
-    <ul class="system-points">
-      <li><strong>One brand per market.</strong> No competitor can hold the same territory under the same system.</li>
-      <li><strong>Hyper-local URL architecture.</strong> Every service-city combination in your territory gets a dedicated structured page.</li>
-      <li><strong>AI-guided deployment.</strong> Pages are generated, deployed, and optimized systematically — not manually one at a time.</li>
-      <li><strong>LLM-aware structure.</strong> Pages are built for organic search, AI-assisted visibility, and discovery across AI tools and search assistants.</li>
-      <li><strong>Ongoing expansion.</strong> Your position compounds over time as the system rolls out more coverage across your territory.</li>
-    </ul>
+    <p class="system-body">Programmatic SEO infrastructure — not content articles or backlink packages. Structured to establish and hold your market position across every relevant service and city in your territory.</p>
+    <div class="sys-cap-grid">
+      <div class="sys-cap-item">
+        <svg class="sys-cap-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
+        <span class="sys-cap-label">One Brand Per Market</span>
+        <p class="sys-cap-desc">No competitor can hold the same territory under the same system. Your market is exclusively yours.</p>
+      </div>
+      <div class="sys-cap-item">
+        <svg class="sys-cap-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><path stroke-linecap="round" stroke-linejoin="round" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"/></svg>
+        <span class="sys-cap-label">Hyper-Local URL Architecture</span>
+        <p class="sys-cap-desc">Every service-city combination in your territory gets a dedicated, structured page — indexed and held.</p>
+      </div>
+      <div class="sys-cap-item">
+        <svg class="sys-cap-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><rect x="6" y="6" width="12" height="12" rx="1"/><path stroke-linecap="round" d="M9 6V4m3 2V4m3 2V4M9 20v-2m3 2v-2m3 2v-2M6 9H4m2 3H4m2 3H4M20 9h-2m2 3h-2m2 3h-2"/></svg>
+        <span class="sys-cap-label">AI-Guided Deployment</span>
+        <p class="sys-cap-desc">Pages are generated, optimized, and deployed systematically — structured for scale from the first activation.</p>
+      </div>
+      <div class="sys-cap-item">
+        <svg class="sys-cap-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
+        <span class="sys-cap-label">LLM-Aware Visibility</span>
+        <p class="sys-cap-desc">Structure built for organic search and AI-assisted discovery — surfaced by search engines and AI tools alike.</p>
+      </div>
+      <div class="sys-cap-item">
+        <svg class="sys-cap-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><path stroke-linecap="round" stroke-linejoin="round" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/></svg>
+        <span class="sys-cap-label">Ongoing Expansion</span>
+        <p class="sys-cap-desc">Coverage compounds over time. As the system rolls out across your territory, your position deepens and widens.</p>
+      </div>
+      <div class="sys-cap-item">
+        <svg class="sys-cap-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"/></svg>
+        <span class="sys-cap-label">System-Level Control</span>
+        <p class="sys-cap-desc">Your expansion is managed as a unified system — not a collection of disconnected deliverables.</p>
+      </div>
+    </div>
+    <p class="sys-trust-line">Built for search visibility, AI discovery, and structured market growth.</p>
   </div>
 
   <!-- ── EXECUTION SERVICES NOTE ── -->
@@ -263,8 +297,7 @@ footer{border-top:1px solid var(--border);padding:32px 64px;display:flex;align-i
   <!-- ── FINAL CTA ── -->
   <div class="page-cta">
     <p>Market availability changes as territories are claimed. Check your market now to see what's available in your territory and what your expansion structure would look like.</p>
-    <a href="{{ route('onboarding.start') }}" class="cta-btn">Check Market Availability</a><br>
-    <a href="/#contact" class="cta-ghost">Request Access Directly</a>
+    <a href="{{ route('onboarding.start') }}" class="cta-btn">See My Market Opportunity</a>
   </div>
 
   <div class="ai-note">

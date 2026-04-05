@@ -342,6 +342,8 @@ body {
 /* ── Add-on cards ── */
 .ob-addons-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
 @media (max-width: 580px) { .ob-addons-grid { grid-template-columns: 1fr; } }
+.ob-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+@media (max-width: 480px) { .ob-row { grid-template-columns: 1fr; } }
 .ob-addon-opt { display: none; }
 .ob-addon-card {
   display: flex;
@@ -525,12 +527,83 @@ body {
   font-style: italic;
 }
 
+/* ── Session transition ── */
+.ob-session-secured {
+  font-size: 1.05rem;
+  font-weight: 400;
+  color: var(--ivory);
+  line-height: 1.5;
+  margin-bottom: 6px;
+}
+.ob-session-secured-sub {
+  font-size: .875rem;
+  color: rgba(168,168,160,.62);
+  line-height: 1.78;
+  margin-bottom: 28px;
+}
+
 /* ── Enhancements intro ── */
 .ob-enhancements-intro {
   font-size: .84rem;
   color: var(--muted);
   line-height: 1.7;
   margin-bottom: 20px;
+}
+
+/* ── Full-service capabilities block ── */
+.ob-fullsvc-block {
+  margin: 0 0 28px;
+  padding: 22px 24px;
+  border: 1px solid rgba(200,168,75,.10);
+  border-radius: 10px;
+  background: rgba(200,168,75,.016);
+}
+.ob-fullsvc-hed {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.24rem;
+  font-weight: 300;
+  color: var(--ivory);
+  margin-bottom: 10px;
+  line-height: 1.2;
+}
+.ob-fullsvc-body {
+  font-size: .84rem;
+  color: rgba(168,168,160,.65);
+  line-height: 1.8;
+  margin-bottom: 8px;
+}
+.ob-fullsvc-list {
+  list-style: none;
+  margin: 8px 0 12px;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+.ob-fullsvc-list li {
+  font-size: .82rem;
+  color: rgba(168,168,160,.60);
+  padding-left: 14px;
+  position: relative;
+  line-height: 1.5;
+}
+.ob-fullsvc-list li::before {
+  content: '–';
+  position: absolute;
+  left: 0;
+  color: rgba(200,168,75,.32);
+}
+.ob-fullsvc-note {
+  font-size: .78rem;
+  color: rgba(168,168,160,.40);
+  line-height: 1.72;
+  border-top: 1px solid rgba(200,168,75,.06);
+  padding-top: 10px;
+  margin-top: 4px;
+}
+.ob-fullsvc-note strong {
+  color: rgba(200,168,75,.58);
+  font-weight: 400;
 }
 
 /* ── Path note (conditional guidance by lead_type) ── */
@@ -1060,9 +1133,7 @@ body {
   </a>
 
   <span class="ob-eye">{{ ($isPreview ?? false) ? 'SEO Opportunity Preview' : 'Client Onboarding' }}</span>
-  <p style="font-size:.78rem;letter-spacing:.06em;text-transform:uppercase;color:rgba(168,168,160,.38);margin:0 0 4px">You&rsquo;re now entering the intake process.</p>
-  <p style="font-size:.62rem;letter-spacing:.1em;text-transform:uppercase;color:rgba(168,168,160,.2);margin:0 0 4px">Access is granted selectively.</p>
-  <p style="font-size:.72rem;color:rgba(168,168,160,.28);margin:0 0 24px;letter-spacing:.03em">Your position is currently under evaluation.</p>
+  <p style="font-size:.86rem;color:rgba(168,168,160,.60);margin:0 0 24px;letter-spacing:.01em">Your position is under evaluation. Access is reviewed before activation.</p>
   <h1 class="ob-hed">
     @if($isPreview ?? false)
       Let's map your<br><em>opportunity.</em>
@@ -1071,6 +1142,10 @@ body {
     @endif
   </h1>
   <p class="ob-sub">Takes about 2 minutes. This helps us prepare everything before your call.</p>
+
+  @if(!empty($tier))
+  <p style="font-size:.78rem;letter-spacing:.12em;text-transform:uppercase;color:var(--gold);opacity:.72;margin:0 0 28px">{{ $tier === 'launch' ? "You're beginning with Launch setup." : ($tier === 'expansion' ? "You're starting with Expansion planning." : "You're entering Dominance review.") }}</p>
+  @endif
 
   {{-- ── Booking badge (only when a booking exists) ── --}}
   @if($booking)
@@ -1168,6 +1243,29 @@ body {
         @error('phone')<span class="ob-error">{{ $message }}</span>@enderror
       </div>
 
+      <div class="ob-row">
+        <div class="ob-field">
+          <label class="ob-label" for="years_in_business">Years in Business</label>
+          <select class="ob-input" id="years_in_business" name="years_in_business">
+            <option value="">Select…</option>
+            <option value="0_to_1" {{ old('years_in_business') === '0_to_1' ? 'selected' : '' }}>Less than 1 year</option>
+            <option value="1_to_3" {{ old('years_in_business') === '1_to_3' ? 'selected' : '' }}>1–3 years</option>
+            <option value="3_to_10" {{ old('years_in_business') === '3_to_10' ? 'selected' : '' }}>3–10 years</option>
+            <option value="10_plus" {{ old('years_in_business') === '10_plus' ? 'selected' : '' }}>10+ years</option>
+          </select>
+        </div>
+        <div class="ob-field">
+          <label class="ob-label" for="team_size">Team Size</label>
+          <select class="ob-input" id="team_size" name="team_size">
+            <option value="">Select…</option>
+            <option value="solo" {{ old('team_size') === 'solo' ? 'selected' : '' }}>Solo operator</option>
+            <option value="2_to_5" {{ old('team_size') === '2_to_5' ? 'selected' : '' }}>2–5 people</option>
+            <option value="6_to_20" {{ old('team_size') === '6_to_20' ? 'selected' : '' }}>6–20 people</option>
+            <option value="20_plus" {{ old('team_size') === '20_plus' ? 'selected' : '' }}>20+ people</option>
+          </select>
+        </div>
+      </div>
+
       <div class="ob-nav">
         <button type="button" class="ob-btn-next" @click="nextStep()">
           Next Step &rarr;
@@ -1181,7 +1279,7 @@ body {
     <div x-show="step === 2" x-transition:enter="ob-step-enter" x-transition:enter-start="ob-step-from" x-transition:enter-end="ob-step-to">
       <span class="ob-step-eye">Step 2 of 3 — Almost there</span>
       <h2 class="ob-step-title">What are you working toward?</h2>
-      <p class="ob-step-hint">This calibrates your session and deployment approach.</p>
+      <p class="ob-step-hint">This helps us understand your situation and prepare the right approach for your session.</p>
 
       <div class="ob-field">
         <label class="ob-label" for="goals">What's your primary goal right now?</label>
@@ -1236,10 +1334,10 @@ body {
           Single-market activation is the standard starting point. The system is designed to scale from here.
         </div>
         <div class="ob-path-note" x-show="leadType === 'multi_location'" x-cloak>
-          Operating across multiple markets. Structured deployment applies &mdash; not single-site configuration.
+          Your deployment spans multiple markets. We'll scope and structure this correctly for your situation.
         </div>
         <div class="ob-path-note" x-show="leadType === 'agency'" x-cloak>
-          Operating at a partner level. Partner and licensing review is the appropriate path.
+          Partner-level access applies here. A licensing review is the appropriate path for your situation.
         </div>
       </div>
 
@@ -1408,18 +1506,36 @@ body {
       </div>
 
       {{-- ── Growth & Support Options ── --}}
-      <div class="ob-section" style="margin-top:40px">Growth &amp; Support Options</div>
-      <p class="ob-enhancements-intro">Additional preparation layers (applied as needed). No charges are applied without your explicit approval.</p>
+      <div class="ob-section" style="margin-top:40px">Enhance Your Setup</div>
+      <p class="ob-session-secured">You’ve secured your session.</p>
+      <p class="ob-session-secured-sub">These enhancements help us move faster, build more accurately, and position your business more effectively from the start. No charges are added without your direct approval.</p>
+      <p class="ob-fine" style="color:rgba(168,168,160,.30);font-style:italic;margin:-14px 0 22px;letter-spacing:.02em">Session access is reserved and reviewed to ensure strong fit and execution.</p>
 
 
 
       {{-- Conditional path note in Step 3 --}}
       <div class="ob-path-note" x-show="leadType === 'multi_location'" x-cloak style="margin-bottom:18px">
-        Structured multi-market rollout applies to your situation.
+        Your deployment spans multiple markets. We'll scope this correctly for your situation.
       </div>
       <div class="ob-path-note" x-show="leadType === 'agency'" x-cloak style="margin-bottom:18px">
-        Agency &amp; Licensing Review below is the appropriate path.
+        Partner-level access applies here. A licensing review is the appropriate path.
       </div>
+
+      <div class="ob-fullsvc-block">
+        <p class="ob-fullsvc-hed">This is more than SEO.</p>
+        <p class="ob-fullsvc-body">We build, expand, and support your entire growth system — not just search rankings.</p>
+        <ul class="ob-fullsvc-list">
+          <li>Website design and rebuilds</li>
+          <li>WordPress development and updates</li>
+          <li>Advertising and campaign management</li>
+          <li>Branding and print</li>
+        </ul>
+        <p class="ob-fullsvc-body">The system drives visibility — we support everything behind it.</p>
+        <p class="ob-fullsvc-body" style="color:rgba(168,168,160,.48);font-size:.81rem;margin-top:2px">This is where most clients move after their session.</p>
+        <p class="ob-fullsvc-note">Most businesses start here, then expand into full market rollout and growth support. <strong>Typical investment: $3,000 – $15,000+ depending on scope and speed. Confirmed after your session.</strong></p>
+      </div>
+
+      <p class="ob-fine" style="color:rgba(168,168,160,.30);text-align:center;margin:0 0 20px;font-size:.76rem;letter-spacing:.025em">Pricing reflects the level of work, analysis, and system integration involved.</p>
 
       <div class="ob-addons-grid">
         <div>
@@ -1429,12 +1545,13 @@ body {
             <div class="ob-addon-header">
               <span style="display:flex;align-items:center;gap:4px">
                 <span class="ob-addon-name">Website + Growth System Review</span>
+                <span class="ob-info-btn" @click.prevent.stop="openAddonDetail('website_growth_review')" aria-label="About Website + Growth System Review">i</span>
               </span>
               <span class="ob-addon-check"></span>
             </div>
             <span class="ob-addon-price">$150 one-time</span>
-            <span class="ob-addon-desc">A hands-on review of your site and current growth systems — what's working, what's leaking revenue, and what to fix first. Delivered before your strategy session so we can act on it immediately.</span>
-            <span style="display:inline-block;margin-top:6px;font-size:.72rem;color:var(--gold);letter-spacing:.06em;text-transform:uppercase">Good starting point for new operators</span>
+            <span class="ob-addon-desc">A hands-on review of your website and current marketing setup — what's working, what's missing, and what to fix first. Delivered before your session so we can act on real findings immediately.</span>
+            <span style="display:inline-block;margin-top:6px;font-size:.72rem;color:var(--gold);letter-spacing:.06em;text-transform:uppercase">Most selected &middot; best first step</span>
           </label>
         </div>
 
@@ -1460,13 +1577,14 @@ body {
           <label class="ob-addon-card" for="addon_ads_setup">
             <div class="ob-addon-header">
               <span style="display:flex;align-items:center;gap:4px">
-                <span class="ob-addon-name">Google Ads Setup</span>
-                <span class="ob-info-btn" @click.prevent.stop="openAddonDetail('google_ads')" aria-label="About Google Ads Setup">i</span>
+                <span class="ob-addon-name">Campaign Build &amp; Launch</span>
+                <span class="ob-info-btn" @click.prevent.stop="openAddonDetail('google_ads')" aria-label="About Campaign Build and Launch">i</span>
               </span>
               <span class="ob-addon-check"></span>
             </div>
-            <span class="ob-addon-price">From $299 one-time</span>
-            <span class="ob-addon-desc">Paid coverage that runs alongside your organic position — campaigns, targeting, and conversion tracking built to your market.</span>
+            <span class="ob-addon-price">Setup fee quoted after session</span>
+            <span class="ob-addon-desc">We build your full Google Ads setup — campaigns, targeting, and conversion tracking — ready to generate leads from day one. Management and ad spend are separate.</span>
+            <span style="display:inline-block;margin-top:6px;font-size:.72rem;color:var(--gold);letter-spacing:.06em;text-transform:uppercase">Used by growth-focused clients</span>
           </label>
         </div>
 
@@ -1476,13 +1594,13 @@ body {
           <label class="ob-addon-card" for="addon_reporting">
             <div class="ob-addon-header">
               <span style="display:flex;align-items:center;gap:4px">
-                <span class="ob-addon-name">Monthly Reporting</span>
-                <span class="ob-info-btn" @click.prevent.stop="openAddonDetail('reporting')" aria-label="About Monthly Reporting">i</span>
+                <span class="ob-addon-name">SEOAIco&trade; Market Position Tracking</span>
+                <span class="ob-info-btn" @click.prevent.stop="openAddonDetail('reporting')" aria-label="About Market Position Tracking">i</span>
               </span>
               <span class="ob-addon-check"></span>
             </div>
-            <span class="ob-addon-price">$99/month</span>
-            <span class="ob-addon-desc">Branded performance dashboard delivered monthly — rankings, traffic, and position progress in one clear view.</span>
+            <span class="ob-addon-price">$149/month</span>
+            <span class="ob-addon-desc">A curated monthly report — not automated output. Clear, branded, and designed to show exactly how your market position is growing.</span>
           </label>
         </div>
 
@@ -1492,13 +1610,30 @@ body {
           <label class="ob-addon-card" for="addon_competitor">
             <div class="ob-addon-header">
               <span style="display:flex;align-items:center;gap:4px">
-                <span class="ob-addon-name">Territory Intelligence</span>
-                <span class="ob-info-btn" @click.prevent.stop="openAddonDetail('territory')" aria-label="About Territory Intelligence">i</span>
+                <span class="ob-addon-name">SEOAIco&trade; Market Intelligence Report</span>
+                <span class="ob-info-btn" @click.prevent.stop="openAddonDetail('territory')" aria-label="About Market Intelligence Report">i</span>
               </span>
               <span class="ob-addon-check"></span>
             </div>
-            <span class="ob-addon-price">$149 one-time</span>
-            <span class="ob-addon-desc">Analysis of your top competitors — coverage gaps, link structure, and positioning — so your system is calibrated from the start.</span>
+            <span class="ob-addon-price">$249 one-time</span>
+            <span class="ob-addon-desc">A research report on your market — who ranks, where they’re weak, and exactly where your business can grow first. Delivered before deployment begins.</span>
+          </label>
+        </div>
+
+        <div style="grid-column:1/-1">
+          <input type="checkbox" class="ob-addon-opt" id="addon_ai_report" name="add_ons[]" value="ai_market_report"
+                 {{ in_array('ai_market_report', old('add_ons', [])) ? 'checked' : '' }}>
+          <label class="ob-addon-card" for="addon_ai_report">
+            <div class="ob-addon-header">
+              <span style="display:flex;align-items:center;gap:4px">
+                <span class="ob-addon-name">SEOAIco&trade; AI Market Report</span>
+                <span class="ob-info-btn" @click.prevent.stop="openAddonDetail('ai_market_report')" aria-label="About AI Market Report">i</span>
+              </span>
+              <span class="ob-addon-check"></span>
+            </div>
+            <span class="ob-addon-price">From $349 one-time</span>
+            <span class="ob-addon-desc">Identifies where your business can take market position first — before competitors adjust. Full AI-driven breakdown of who to beat, where to rank, and what to build first.</span>
+            <span style="display:inline-block;margin-top:6px;font-size:.72rem;color:var(--gold);letter-spacing:.06em;text-transform:uppercase">Recommended starting point &middot; strategic advantage</span>
           </label>
         </div>
 
@@ -1513,8 +1648,8 @@ body {
               </span>
               <span class="ob-addon-check"></span>
             </div>
-            <span class="ob-addon-price">Custom pricing</span>
-            <span class="ob-addon-desc">For clients who want ongoing support beyond SEO: website updates &amp; maintenance, design &amp; branding assets, campaign planning, and marketing systems &amp; automation. We can support or fully manage your marketing as your system grows.</span>
+            <span class="ob-addon-price">Scoped and confirmed after your session</span>
+            <span class="ob-addon-desc">Complete marketing support beyond SEO — website, ads, campaigns, and automation. We build and manage the full system alongside your growth.</span>
             <span style="display:inline-block;margin-top:6px;font-size:.72rem;color:var(--gold);letter-spacing:.06em;text-transform:uppercase">Most popular for growing businesses</span>
           </label>
         </div>
@@ -1539,12 +1674,14 @@ body {
         <span class="ob-premium-row-badge">By arrangement</span>
       </div>
 
+      <p class="ob-fine" style="margin-top:14px;text-align:center;font-style:italic;color:rgba(168,168,160,.38)">We also partner with agencies and teams who want to integrate this system into their existing workflow.</p>
+
       {{-- ── Federal Research Credit (informational, optional) ── --}}
       <p class="ob-rd-preline">Some system builds may qualify for federal research credit review.</p>
       <div class="ob-rd-section">
         <span class="ob-rd-eye">Additional Opportunity</span>
         <h3 class="ob-rd-hed">Potential Federal R&D Credit Opportunity</h3>
-        <p class="ob-rd-body" style="font-size:.82rem;color:rgba(168,168,160,.78);margin-bottom:14px">Some operators may qualify for a CPA-led review of eligible development activity.</p>
+        <p class="ob-rd-body" style="font-size:.82rem;color:rgba(168,168,160,.78);margin-bottom:14px">Some businesses may qualify for a CPA-led review of eligible development activity.</p>
 
         <div x-show="rdExpanded" x-cloak>
           <ul class="ob-rd-bullets">
@@ -1569,15 +1706,23 @@ body {
                  {{ old('rd_referral_interest') ? 'checked' : '' }}>
           <span>Include CPA R&amp;D review referral with my intake</span>
         </label>
-        <p style="font-size:.70rem;letter-spacing:.04em;color:rgba(200,168,75,.82);margin-top:6px">Complimentary review available for qualified operators.</p>
+        <p style="font-size:.70rem;letter-spacing:.04em;color:rgba(200,168,75,.82);margin-top:6px">Complimentary review available for qualifying businesses.</p>
         <p class="ob-rd-disclaimer">This information is provided for general awareness only and does not constitute tax, legal, or accounting advice.</p>
       </div>
 
       {{-- ── Submit ── --}}
+      <div class="ob-field" style="margin-bottom:24px">
+        <label class="ob-rd-referral">
+          <input type="checkbox" name="platform_alignment" value="1" required
+                 {{ old('platform_alignment') ? 'checked' : '' }}>
+          <span>I confirm this is an actively operating, legitimate business that complies with applicable advertising and platform standards.</span>
+        </label>
+      </div>
+
       <p class="ob-activation-note">
         <em>Access is reviewed before activation.</em> This is a position decision.
       </p>
-      <p class="ob-activation-note" style="margin-top:8px">This system is built to compound over time.</p>
+      <p class="ob-activation-note" style="margin-top:8px">We work with legitimate, actively operating businesses ready to grow and invest in their market.</p>
       <p style="font-size:.80rem;color:rgba(168,168,160,.72);text-align:center;margin:16px 0 0;letter-spacing:.03em">If relevant, CPA review can be included with your intake.</p>
 
       <div class="ob-nav" style="margin-top:24px">
@@ -1608,6 +1753,34 @@ body {
       <div class="ob-detail-handle"></div>
       <button type="button" class="ob-detail-close" @click="closeAddonDetail()" aria-label="Close">&times;</button>
 
+      {{-- Website + Growth System Review --}}
+      <template x-if="obDetailId === 'website_growth_review'">
+        <div>
+          <span class="ob-detail-eyebrow">Enhancement — One-time</span>
+          <div class="ob-detail-title">Website + Growth System Review</div>
+          <div class="ob-detail-price-badge">$150 one-time</div>
+          <div class="ob-detail-section">
+            <span class="ob-detail-section-label">What this does</span>
+            <p class="ob-detail-body">Before your strategy session, we do a hands-on review of your website and your current marketing setup — what's working, what's missing, and what to fix first. So when we talk, we can act on real findings immediately.</p>
+          </div>
+          <hr class="ob-detail-divider">
+          <div class="ob-detail-section">
+            <span class="ob-detail-section-label">What you get</span>
+            <ul class="ob-detail-list">
+              <li>Website review — structure, messaging, speed, and conversion gaps</li>
+              <li>Visibility check — where you rank and where you're missing</li>
+              <li>Marketing system audit — what's active and what's not working</li>
+              <li>Written brief delivered before your session</li>
+            </ul>
+          </div>
+          <hr class="ob-detail-divider">
+          <div class="ob-detail-section">
+            <span class="ob-detail-section-label">Best if</span>
+            <p class="ob-detail-body">You're earlier in your growth stage, haven't had an outside review recently, or want clear expert direction before investing in additional work.</p>
+          </div>
+        </div>
+      </template>
+
       {{-- Local SEO Setup --}}
       <template x-if="obDetailId === 'local_seo'">
         <div>
@@ -1615,119 +1788,126 @@ body {
           <div class="ob-detail-title">Local SEO Setup</div>
           <div class="ob-detail-price-badge">From $199</div>
           <div class="ob-detail-section">
-            <span class="ob-detail-section-label">Outcome</span>
-            <p class="ob-detail-body">Establishes a defensible local search foundation across your territory.</p>
-          </div>
-          <div class="ob-detail-section" style="margin-top:10px">
-            <span class="ob-detail-section-label">Why it matters</span>
-            <p class="ob-detail-body">Without this layer, position cannot hold consistently — especially in markets where competitors have local signals in place.</p>
-          </div>
-          <div class="ob-detail-section" style="margin-top:10px">
-            <span class="ob-detail-section-label">Who it is for</span>
-            <p class="ob-detail-body">Recommended for operators entering or securing a local market from day one.</p>
+            <span class="ob-detail-section-label">What this does</span>
+            <p class="ob-detail-body">Gets your business set up correctly in local search — so Google knows exactly who you are, where you operate, and what you do. This is the foundation layer that makes everything else hold.</p>
           </div>
           <hr class="ob-detail-divider">
           <div class="ob-detail-section">
             <span class="ob-detail-section-label">What you get</span>
             <ul class="ob-detail-list">
-              <li>Google Business profile optimisation</li>
-              <li>Local citation setup and consistency</li>
-              <li>Address and NAP schema markup</li>
-              <li>Verification support and access handoff</li>
+              <li>Google Business profile set up and optimized — helps your business appear clearly in Maps and local search</li>
+              <li>Business listings built across key directories — keeps your name, address, and phone consistent everywhere online</li>
+              <li>Location data structured for search engines — technical setup handled for you, no experience needed</li>
+              <li>Account verification and connection support — we help you through it step by step</li>
             </ul>
+          </div>
+          <hr class="ob-detail-divider">
+          <div class="ob-detail-section">
+            <span class="ob-detail-section-label">Best if</span>
+            <p class="ob-detail-body">You're entering a new market, your Google Business profile needs work, or your business information is inconsistent across the web.</p>
           </div>
         </div>
       </template>
 
-      {{-- Google Ads Setup --}}
+      {{-- Campaign Build & Launch --}}
       <template x-if="obDetailId === 'google_ads'">
         <div>
-          <span class="ob-detail-eyebrow">Enhancement — One-time</span>
-          <div class="ob-detail-title">Google Ads Setup</div>
-          <div class="ob-detail-price-badge">From $299</div>
+          <span class="ob-detail-eyebrow">Enhancement — Expert Build</span>
+          <div class="ob-detail-title">Campaign Build &amp; Launch</div>
+          <div class="ob-detail-price-badge">Setup fee scoped after session · Management separate</div>
           <div class="ob-detail-section">
-            <span class="ob-detail-section-label">Outcome</span>
-            <p class="ob-detail-body">Creates immediate paid coverage while your organic position builds.</p>
-          </div>
-          <div class="ob-detail-section" style="margin-top:10px">
-            <span class="ob-detail-section-label">Why it matters</span>
-            <p class="ob-detail-body">Organic signal compounds over time. Paid fills the gap — and continues to run alongside it once organic holds.</p>
-          </div>
-          <div class="ob-detail-section" style="margin-top:10px">
-            <span class="ob-detail-section-label">Who it is for</span>
-            <p class="ob-detail-body">Appropriate for operators in competitive markets, or those who want dual-channel coverage from activation.</p>
+            <span class="ob-detail-section-label">What this includes</span>
+            <p class="ob-detail-body">A professionally built Google Ads account — campaign structure, targeting, ad copy, and conversion tracking — set up to run in your specific market and service area.</p>
           </div>
           <hr class="ob-detail-divider">
           <div class="ob-detail-section">
             <span class="ob-detail-section-label">What you get</span>
             <ul class="ob-detail-list">
-              <li>Campaign structure and ad copy built to your market</li>
-              <li>Audience and keyword targeting</li>
-              <li>Conversion tracking setup</li>
-              <li>Monthly campaign brief</li>
+              <li>Campaign structure built around your market and services</li>
+              <li>Ad copy written for your business — tested and ready to run</li>
+              <li>Location and audience targeting set for your territory</li>
+              <li>Conversion tracking connected so you know what's generating leads</li>
+              <li>First performance brief included after launch</li>
             </ul>
+          </div>
+          <hr class="ob-detail-divider">
+          <div class="ob-detail-section">
+            <span class="ob-detail-section-label">How it works</span>
+            <p class="ob-detail-body">Setup is a one-time fee. Once live, <strong style="color:var(--ivory);font-weight:400">ad spend goes directly to Google</strong> — it is not part of the setup fee. Ongoing campaign management is priced separately based on spend level.</p>
+          </div>
+          <div class="ob-detail-section" style="margin-top:14px">
+            <span class="ob-detail-section-label">What happens next</span>
+            <p class="ob-detail-body">After setup, we review performance and provide brief monthly recommendations. Ongoing management can be added at any time.</p>
+          </div>
+          <hr class="ob-detail-divider">
+          <div class="ob-detail-section">
+            <span class="ob-detail-section-label">Best if</span>
+            <p class="ob-detail-body">You want immediate visibility while your organic position builds — or you're in a competitive market where running both together makes sense.</p>
           </div>
         </div>
       </template>
 
-      {{-- Monthly Reporting --}}
+      {{-- Market Position Tracking --}}
       <template x-if="obDetailId === 'reporting'">
         <div>
           <span class="ob-detail-eyebrow">Enhancement — Monthly</span>
-          <div class="ob-detail-title">Monthly Reporting</div>
-          <div class="ob-detail-price-badge">$99 / month</div>
+          <div class="ob-detail-title">SEOAIco™ Market Position Tracking</div>
+          <div class="ob-detail-price-badge">$149 / month</div>
           <div class="ob-detail-section">
-            <span class="ob-detail-section-label">Outcome</span>
-            <p class="ob-detail-body">Delivers a clear performance view without requiring you to manage dashboards.</p>
-          </div>
-          <div class="ob-detail-section" style="margin-top:10px">
-            <span class="ob-detail-section-label">Why it matters</span>
-            <p class="ob-detail-body">System output compounds quietly. Without regular visibility, decisions are made without signal.</p>
-          </div>
-          <div class="ob-detail-section" style="margin-top:10px">
-            <span class="ob-detail-section-label">Who it is for</span>
-            <p class="ob-detail-body">Suited to operators who need a reliable performance record — or who report results to stakeholders.</p>
+            <span class="ob-detail-section-label">What this does</span>
+            <p class="ob-detail-body">Delivers a clear, branded report each month showing where your system is performing — so you don't have to log into dashboards or figure it out yourself.</p>
           </div>
           <hr class="ob-detail-divider">
           <div class="ob-detail-section">
             <span class="ob-detail-section-label">What you get</span>
             <ul class="ob-detail-list">
-              <li>Branded PDF or online report</li>
-              <li>Rankings and keyword movement</li>
-              <li>Traffic and visibility overview</li>
-              <li>Territory position progress</li>
+              <li>Branded monthly performance report — clean, readable, and shareable</li>
+              <li>Keyword rankings and movement across your territory</li>
+              <li>Traffic trends and visibility overview</li>
+              <li>Position progress notes — what improved and what to watch</li>
             </ul>
+          </div>
+          <hr class="ob-detail-divider">
+          <div class="ob-detail-section">
+            <span class="ob-detail-section-label">Good to know</span>
+            <p class="ob-detail-body">This is a curated monthly report — not a raw automated export. Custom dashboard builds and deeper strategic reporting are available as a separate service.</p>
+          </div>
+          <div class="ob-detail-section" style="margin-top:14px">
+            <span class="ob-detail-section-label">Best if</span>
+            <p class="ob-detail-body">You want a reliable record of progress — or you share results with a partner, team, or stakeholders.</p>
           </div>
         </div>
       </template>
 
-      {{-- Territory Intelligence --}}
+      {{-- Market Intelligence Report --}}
       <template x-if="obDetailId === 'territory'">
         <div>
           <span class="ob-detail-eyebrow">Enhancement — One-time</span>
-          <div class="ob-detail-title">Territory Intelligence</div>
-          <div class="ob-detail-price-badge">$149</div>
+          <div class="ob-detail-title">SEOAIco™ Market Intelligence Report</div>
+          <div class="ob-detail-price-badge">$249</div>
           <div class="ob-detail-section">
-            <span class="ob-detail-section-label">Outcome</span>
-            <p class="ob-detail-body">Calibrates your system to the actual competitive structure of your market.</p>
-          </div>
-          <div class="ob-detail-section" style="margin-top:10px">
-            <span class="ob-detail-section-label">Why it matters</span>
-            <p class="ob-detail-body">Without competitive mapping, your positioning is generic — not strategic. Your system targets gaps, not assumptions.</p>
-          </div>
-          <div class="ob-detail-section" style="margin-top:10px">
-            <span class="ob-detail-section-label">Who it is for</span>
-            <p class="ob-detail-body">Appropriate for operators entering a contested market who want a calibrated starting position.</p>
+            <span class="ob-detail-section-label">What this does</span>
+            <p class="ob-detail-body">Before your system deploys, we research your market — who ranks, where they’re winning, and where there are clear gaps your business can take. You get a written report with specific direction, not a generic overview.</p>
           </div>
           <hr class="ob-detail-divider">
           <div class="ob-detail-section">
             <span class="ob-detail-section-label">What you get</span>
             <ul class="ob-detail-list">
-              <li>Top 5 competitor territorial coverage map</li>
-              <li>Link and authority gap analysis</li>
-              <li>Keyword displacement opportunities</li>
-              <li>Market positioning brief</li>
+              <li>Competitor visibility map — exactly who ranks and where</li>
+              <li>Gap analysis — what your competitors are missing</li>
+              <li>Revenue opportunity areas — where your business can gain ground fastest</li>
+              <li>Written positioning brief delivered before deployment begins</li>
             </ul>
+          </div>
+          <hr class="ob-detail-divider">
+          <div class="ob-detail-section">
+            <span class="ob-detail-section-label">What happens next</span>
+            <p class="ob-detail-body">The report is delivered before your session. Your system deployment is built around it — so we’re targeting real opportunities from day one, not starting blind.</p>
+          </div>
+          <hr class="ob-detail-divider">
+          <div class="ob-detail-section">
+            <span class="ob-detail-section-label">Best if</span>
+            <p class="ob-detail-body">You’re entering a competitive market and want a clear picture of where to focus first.</p>
           </div>
         </div>
       </template>
@@ -1739,26 +1919,64 @@ body {
           <div class="ob-detail-title">Full-Service Marketing Support</div>
           <div class="ob-detail-price-badge">Custom pricing</div>
           <div class="ob-detail-section">
-            <span class="ob-detail-section-label">Outcome</span>
-            <p class="ob-detail-body">Extends your infrastructure beyond organic search into a fully managed growth system.</p>
-          </div>
-          <div class="ob-detail-section" style="margin-top:10px">
-            <span class="ob-detail-section-label">Why it matters</span>
-            <p class="ob-detail-body">As the system scales, operational demand grows. Full-service support absorbs that complexity under a single point of accountability.</p>
-          </div>
-          <div class="ob-detail-section" style="margin-top:10px">
-            <span class="ob-detail-section-label">Who it is for</span>
-            <p class="ob-detail-body">Designed for operators who want a single point of accountability across all marketing infrastructure.</p>
+            <span class="ob-detail-section-label">What this does</span>
+            <p class="ob-detail-body">Extends your growth system beyond organic search — covering design, ads, content, and marketing operations under a single point of accountability.</p>
           </div>
           <hr class="ob-detail-divider">
           <div class="ob-detail-section">
             <span class="ob-detail-section-label">What you get</span>
             <ul class="ob-detail-list">
-              <li>Website updates and maintenance</li>
-              <li>Design and branding assets</li>
-              <li>Campaign planning and execution</li>
-              <li>Marketing systems and automation</li>
+              <li>Website updates, fixes, and ongoing maintenance</li>
+              <li>Redesign direction and implementation support</li>
+              <li>Ad management — Google Ads, Meta, or both</li>
+              <li>Content creation and campaign planning</li>
+              <li>Launch materials for new services or locations</li>
+              <li>Marketing systems setup and automation</li>
+              <li>Structured monthly growth reviews</li>
             </ul>
+          </div>
+          <hr class="ob-detail-divider">
+          <div class="ob-detail-section">
+            <span class="ob-detail-section-label">Best if</span>
+            <p class="ob-detail-body">You want to hand off the marketing side entirely — or you're growing fast and need the infrastructure to keep pace.</p>
+          </div>
+        </div>
+      </template>
+
+      {{-- SEOAIco AI Market Report --}}
+      <template x-if="obDetailId === 'ai_market_report'">
+        <div>
+          <span class="ob-detail-eyebrow">Enhancement — One-time</span>
+          <div class="ob-detail-title">SEOAIco™ AI Market Report</div>
+          <div class="ob-detail-price-badge">From $349 one-time</div>
+          <div class="ob-detail-section">
+            <span class="ob-detail-section-label">What this does</span>
+            <p class="ob-detail-body">A full AI-driven breakdown of your market — who’s winning, where the gaps are, and exactly where your business should focus to generate the most growth.</p>
+          </div>
+          <hr class="ob-detail-divider">
+          <div class="ob-detail-section">
+            <span class="ob-detail-section-label">What you get</span>
+            <ul class="ob-detail-list">
+              <li>Where you should rank — priority keyword and topic areas for your market</li>
+              <li>Where competitors are winning — visibility, content, and search presence breakdown</li>
+              <li>What to build first — a prioritized action map for your deployment</li>
+              <li>Where revenue opportunities exist — high-intent search areas with low competition</li>
+              <li>Written report delivered before your strategy session</li>
+            </ul>
+          </div>
+          <hr class="ob-detail-divider">
+          <div class="ob-detail-section">
+            <span class="ob-detail-section-label">How it works</span>
+            <p class="ob-detail-body">Our AI-driven research process analyzes search data, competitor structure, and market gaps at scale — producing a report that would take a team of analysts days to compile manually.</p>
+          </div>
+          <div class="ob-detail-section" style="margin-top:14px">
+            <span class="ob-detail-section-label">What happens next</span>
+            <p class="ob-detail-body">The report is ready before your session. We bring the findings directly into your deployment strategy — so every decision is backed by market data, not guesswork.</p>
+          </div>
+          <hr class="ob-detail-divider">
+          <div class="ob-detail-section">
+            <span class="ob-detail-section-label">Best if</span>
+            <p class="ob-detail-body">You want to go into your session with a full picture of the market — and leave with a clear, researched plan rather than general direction.</p>
           </div>
         </div>
       </template>
@@ -1770,7 +1988,7 @@ body {
           <div class="ob-detail-title">Federal Research Credit (Form 6765)</div>
           <div class="ob-detail-section" style="margin-top:8px">
             <span class="ob-detail-section-label">Context</span>
-            <p class="ob-detail-body">The federal research credit (IRC Section 41) allows qualifying businesses to offset costs related to qualified research activities. Some operators with technical development, systems implementation, or infrastructure work review whether their activities may qualify.</p>
+            <p class="ob-detail-body">The federal research credit (IRC Section 41) allows qualifying businesses to offset costs related to qualified research activities. Some businesses with technical development, systems implementation, or infrastructure work review whether their activities may qualify.</p>
             <p class="ob-detail-body" style="margin-top:10px">Eligibility depends on how activities are structured, documented, and categorised. A qualified CPA or tax advisor can review your specific situation.</p>
           </div>
           <hr class="ob-detail-divider">

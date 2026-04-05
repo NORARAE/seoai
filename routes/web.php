@@ -14,7 +14,7 @@ use App\Http\Controllers\UserOnboardingController;
 use App\Http\Middleware\EnsureOnboardingComplete;
 use App\Http\Controllers\PublicSitemapController;
 use App\Http\Controllers\Auth\GoogleAuthController;
-use App\Http\Controllers\SeoController;
+use App\Http\Controllers\UnsubscribeController;
 use App\Http\Middleware\EnsureUserIsApproved;
 use Illuminate\Support\Facades\Route;
 
@@ -95,6 +95,11 @@ Route::post('/onboarding/submit', [OnboardingController::class, 'submit'])->midd
 Route::get('/onboarding/done', [OnboardingController::class, 'done'])->name('onboarding.done');
 // Admin-only secure license file download (auth required — never served publicly)
 Route::middleware(['auth'])->get('/onboarding/license/{submission}', [OnboardingController::class, 'downloadLicense'])->name('onboarding.license.download');
+
+// ── Email unsubscribe ──
+Route::get('/unsubscribe/{token}', [UnsubscribeController::class, 'unsubscribe'])
+    ->middleware('throttle:10,1')
+    ->name('unsubscribe');
 
 Route::get('/sitemaps/{site}.xml', [PublicSitemapController::class, 'index'])
     ->whereNumber('site')

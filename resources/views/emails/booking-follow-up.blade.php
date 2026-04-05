@@ -53,6 +53,11 @@
     <p style="font-size:12px;color:#aaa;margin:0;line-height:1.6">
       You're receiving this because you completed a strategy session at <a href="{{ url('/') }}" style="color:#c8a84b;text-decoration:none">seoaico.com</a>.
     </p>
+    @if(isset($lead) && $lead->unsubscribe_token)
+    <p style="font-size:11px;color:#ccc;margin:8px 0 0;line-height:1.6">
+      <a href="{{ url('/unsubscribe/' . $lead->unsubscribe_token) }}" style="color:#ccc;text-decoration:none">Unsubscribe</a> from follow-up emails.
+    </p>
+    @endif
   </div>
 
 </div>

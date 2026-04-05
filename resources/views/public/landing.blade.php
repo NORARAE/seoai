@@ -18,7 +18,7 @@
 <meta name="theme-color" content="#080808">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>SEO AI Co™ — Programmatic Search Infrastructure. Licensed. Controlled. Exclusive.</title>
-<meta name="description" content="SEO AI Co™ is programmatic search infrastructure—deploying structured content, internal link architecture, and structured data across 1,000+ U.S. cities. Access is licensed. One operator per market.">
+<meta name="description" content="SEO AI Co™ is programmatic search infrastructure—deploying structured content, internal link architecture, and structured data across 1,000+ U.S. cities. Position built through execution, not assigned. Authority that compounds.">
 <link rel="canonical" href="{{ url('/') }}">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -121,14 +121,14 @@ nav.stuck{background:rgba(8,8,8,.95);backdrop-filter:blur(16px);border-color:var
 .amb-orb-a{
   width:min(72vw,900px);height:min(72vw,900px);
   border-radius:50%;
-  background:radial-gradient(ellipse at center,rgba(200,168,75,.07) 0%,transparent 62%);
+  background:radial-gradient(ellipse at center,rgba(200,168,75,.09) 0%,transparent 62%);
   animation:ambDriftA 28s ease-in-out infinite alternate;
   will-change:transform;
 }
 .amb-orb-b{
   width:min(55vw,700px);height:min(55vw,700px);
   border-radius:50%;
-  background:radial-gradient(ellipse at center,rgba(200,168,75,.04) 0%,transparent 60%);
+  background:radial-gradient(ellipse at center,rgba(200,168,75,.055) 0%,transparent 60%);
   animation:ambDriftB 38s ease-in-out infinite alternate;
   will-change:transform;
 }
@@ -139,7 +139,7 @@ nav.stuck{background:rgba(8,8,8,.95);backdrop-filter:blur(16px);border-color:var
   width:min(110vw,1100px);height:60vh;
   transform:translateX(-50%);
   border-radius:50%;
-  background:radial-gradient(ellipse at 42% 46%,rgba(200,168,75,.038) 0%,transparent 65%);
+  background:radial-gradient(ellipse at 42% 46%,rgba(200,168,75,.054) 0%,transparent 65%);
   pointer-events:none;z-index:0;
   will-change:opacity;
   -webkit-backface-visibility:hidden;
@@ -817,20 +817,65 @@ nav.stuck{background:rgba(8,8,8,.95);backdrop-filter:blur(16px);border-color:var
 .pricing-cta-actions{display:flex;align-items:center;justify-content:center;gap:24px;margin-bottom:16px}
 .pricing-cta-meta{font-size:.68rem;letter-spacing:.14em;text-transform:uppercase;color:rgba(168,168,160,.30)}
 
+/* ── Commitment note (after #how steps) ── */
+.commitment-note{
+  max-width:720px;margin:0 auto;padding:52px 64px 44px;
+  text-align:center;
+  border-top:1px solid rgba(200,168,75,.09);
+  position:relative;
+}
+.commitment-note::before{
+  content:'';position:absolute;top:0;left:50%;transform:translateX(-50%);
+  width:100px;height:1px;
+  background:linear-gradient(90deg,transparent,rgba(200,168,75,.30),transparent);
+}
+.cn-hed{
+  font-family:'Cormorant Garamond',serif;font-weight:300;
+  font-size:clamp(1.4rem,2.3vw,1.82rem);color:var(--ivory);
+  letter-spacing:-.01em;line-height:1.28;margin-bottom:16px;
+  max-width:560px;margin-left:auto;margin-right:auto;
+}
+.cn-body{
+  font-size:.9rem;color:rgba(168,168,160,.78);line-height:1.88;
+  max-width:560px;margin:0 auto;
+}
+
+/* ── Fit screening block ── */
+.fit-screen{
+  max-width:1200px;margin:0 auto;padding:52px 64px;
+  text-align:center;border-top:1px solid rgba(200,168,75,.06);
+}
+.fs-hed{
+  font-family:'Cormorant Garamond',serif;font-weight:300;font-style:italic;
+  font-size:clamp(1.5rem,2.6vw,2.1rem);color:rgba(237,232,222,.80);
+  letter-spacing:-.01em;margin-bottom:20px;
+}
+.fs-body{
+  max-width:640px;margin:0 auto 20px;
+}
+.fs-body p{
+  font-size:.875rem;color:rgba(168,168,160,.60);line-height:1.85;margin-bottom:10px;
+}
+.fs-note{
+  font-size:.76rem;letter-spacing:.08em;text-transform:uppercase;
+  color:rgba(200,168,75,.38);max-width:580px;margin:0 auto;
+  line-height:1.7;
+}
+
 /* ── Final close ── */
 .final-close{
-  padding:52px 64px 64px;max-width:1200px;margin:0 auto;text-align:center;
-  border-top:1px solid rgba(200,168,75,.08);
+  padding:60px 64px 72px;max-width:1200px;margin:0 auto;text-align:center;
+  border-top:1px solid rgba(200,168,75,.10);
 }
 .fc-main{
   font-family:'Cormorant Garamond',serif;
-  font-size:clamp(1.6rem,3vw,2.4rem);font-weight:300;line-height:1.3;
-  color:var(--ivory);margin-bottom:8px;
+  font-size:clamp(1.9rem,3.4vw,2.8rem);font-weight:300;line-height:1.25;
+  color:var(--ivory);margin-bottom:10px;
 }
 .fc-question{
   font-family:'Cormorant Garamond',serif;
-  font-size:clamp(1.6rem,3vw,2.4rem);font-weight:300;font-style:italic;
-  color:rgba(237,232,222,.55);margin-bottom:28px;
+  font-size:clamp(1.9rem,3.4vw,2.8rem);font-weight:300;font-style:italic;
+  color:rgba(237,232,222,.48);margin-bottom:32px;
 }
 .fc-tagline{
   font-size:.72rem;letter-spacing:.24em;text-transform:uppercase;
@@ -871,7 +916,7 @@ nav.stuck{background:rgba(8,8,8,.95);backdrop-filter:blur(16px);border-color:var
 }
 .fcc-inner{
   position:relative;z-index:1;
-  max-width:800px;margin:0 auto;
+  max-width:1040px;margin:0 auto;
 }
 .fcc-eye{
   font-size:.63rem;letter-spacing:.38em;text-transform:uppercase;
@@ -887,12 +932,12 @@ nav.stuck{background:rgba(8,8,8,.95);backdrop-filter:blur(16px);border-color:var
   display:flex;flex-direction:column;gap:.30em;
 }
 .fcc-hed-1{
-  font-size:clamp(3rem,5.8vw,5.8rem);
+  font-size:clamp(3rem,4.8vw,4.4rem);
   color:var(--ivory);letter-spacing:-.020em;font-weight:300;
   white-space:nowrap;
 }
 .fcc-hed-2{
-  font-size:clamp(2.6rem,5.0vw,5.0rem);
+  font-size:clamp(2.6rem,4.2vw,3.8rem);
   color:rgba(237,232,222,.44);letter-spacing:-.018em;font-style:italic;
   white-space:nowrap;
 }
@@ -1007,15 +1052,20 @@ nav.stuck{background:rgba(8,8,8,.95);backdrop-filter:blur(16px);border-color:var
 @media(max-width:900px){
   .value-anchor,.exec-services,.access-position,.access-model,.decision-guide,.pricing-cta,.final-close{padding:48px 24px}
   .fcc{padding:100px 32px}
-  .fcc-hed-1,.fcc-hed-2{white-space:normal;font-size:clamp(1.9rem,5.2vw,2.8rem)}
+  .fcc-hed-1,.fcc-hed-2{font-size:clamp(1.9rem,5.2vw,2.8rem)}
+  .commitment-note{padding:40px 28px 36px}
+  .fit-screen{padding:40px 24px}
   .exec-grid{grid-template-columns:1fr}
   .access-position{grid-template-columns:1fr;gap:28px}
 }
 @media(max-width:520px){
   .value-anchor,.exec-services,.access-position,.access-model,.decision-guide,.pricing-cta,.final-close{padding:36px 20px}
   .fcc{padding:72px 20px}
+  .fcc-hed-1,.fcc-hed-2{white-space:normal}
   .fcc-hed-1{font-size:clamp(1.65rem,7.8vw,2.4rem)}
   .fcc-hed-2{font-size:clamp(1.45rem,6.8vw,2.1rem)}
+  .commitment-note{padding:32px 20px 28px}
+  .fit-screen{padding:32px 20px}
   .fcc-actions{flex-direction:column;align-items:stretch}
   .fcc-primary{justify-content:center;width:100%}
   .fcc-secondary{text-align:center}
@@ -1378,6 +1428,7 @@ footer{border-top:1px solid var(--border);padding:36px 64px;display:flex;flex-di
 .gate-tier-urls{font-size:.76rem;color:var(--muted);margin-top:4px}
 .gate-cta{display:inline-block;background:var(--gold);color:var(--bg);font-size:.8rem;font-weight:500;letter-spacing:.14em;text-transform:uppercase;padding:16px 42px;border:none;cursor:pointer;transition:background .3s,transform .2s;text-decoration:none}
 .gate-cta:hover{background:var(--gold-lt);transform:translateY(-2px)}
+.gate-guidance{font-size:.78rem;color:rgba(168,168,160,.45);font-style:italic;margin:-10px 0 22px;line-height:1.6}
 .gate-skip{display:block;margin-top:16px;font-size:.76rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);cursor:pointer;border:none;background:none;transition:color .3s}
 .gate-skip:hover{color:var(--ivory)}
 .gate-badge{display:inline-block;font-size:.62rem;letter-spacing:.16em;text-transform:uppercase;color:var(--gold);border:1px solid var(--gold-dim);padding:4px 10px;margin-bottom:20px}
@@ -1694,30 +1745,37 @@ body::before{
 /* ── Hero constellation overlay ── */
 .hero-net{
   position:absolute;inset:0;width:100%;height:100%;
-  pointer-events:none;z-index:0;opacity:.14;
+  pointer-events:none;z-index:0;opacity:.22;
 }
 .hero-net-g{
-  animation:netDrift 50s ease-in-out infinite alternate;
+  animation:netDrift 42s ease-in-out infinite alternate;
   transform-origin:600px 280px;
 }
 @keyframes netDrift{
   from{transform:translate(0,0) scale(1)}
-  to{transform:translate(-2%,1.4%) scale(1.04)}
+  to{transform:translate(-2.4%,1.6%) scale(1.05)}
 }
 @media(prefers-reduced-motion:reduce){.hero-net-g{animation:none}}
 /* ── Node intelligence pulse — hub intersections ── */
 .hero-net-pulse circle{fill:#c8a84b;opacity:0}
-.np-1{animation:nodePulse 5.6s ease-in-out 0.4s infinite}
-.np-2{animation:nodePulse 5.6s ease-in-out 1.8s infinite}
-.np-3{animation:nodePulse 5.6s ease-in-out 3.2s infinite}
-.np-4{animation:nodePulse 5.6s ease-in-out 4.6s infinite}
+.np-1{animation:nodePulse 4.8s ease-in-out 0.4s infinite}
+.np-2{animation:nodePulse 4.8s ease-in-out 1.6s infinite}
+.np-3{animation:nodePulse 4.8s ease-in-out 2.8s infinite}
+.np-4{animation:nodePulse 4.8s ease-in-out 4.0s infinite}
+.np-5{animation:nodePulse 4.8s ease-in-out 0.9s infinite}
+.np-6{animation:nodePulse 4.8s ease-in-out 3.4s infinite}
 @keyframes nodePulse{
   0%,100%{opacity:0}
   38%{opacity:0}
-  50%{opacity:.72}
+  50%{opacity:.88}
   62%{opacity:0}
 }
 @media(prefers-reduced-motion:reduce){.hero-net-pulse circle{animation:none}}
+/* ── Hero live network canvas ── */
+.hero-anim-canvas{
+  position:absolute;inset:0;width:100%;height:100%;
+  pointer-events:none;z-index:0;display:block;
+}
 
 /* ── Hero → Section transition: animated shimmer line ── */
 .hero-transition{text-align:center;padding:28px 0 0}
@@ -1765,7 +1823,7 @@ body::before{
 
 /* ── System Structure section ── */
 .sys-struct{padding:72px 64px;max-width:1200px;margin:0 auto;position:relative}
-.sys-struct-inner{display:grid;grid-template-columns:1fr 1.15fr;gap:68px;align-items:start}
+.sys-struct-inner{display:grid;grid-template-columns:1fr 1.2fr;gap:68px;align-items:start}
 .sys-eyebrow{
   font-size:.68rem;letter-spacing:.28em;text-transform:uppercase;
   color:var(--gold);display:flex;align-items:center;gap:14px;margin-bottom:18px;
@@ -1781,70 +1839,33 @@ body::before{
   font-size:clamp(.95rem,1.25vw,1.04rem);line-height:1.78;
   color:rgba(168,168,160,.78);margin-bottom:18px;max-width:480px;
 }
-.sys-diff{
-  font-size:.94rem;line-height:1.68;
-  color:rgba(168,168,160,.60);letter-spacing:.01em;margin-bottom:12px;
+.sys-position-note{
+  font-size:.88rem;line-height:1.72;
+  color:rgba(237,232,222,.52);letter-spacing:.01em;margin-bottom:28px;max-width:460px;
 }
-.sys-system-line{
-  font-size:.82rem;line-height:1.68;
-  color:rgba(200,168,75,.58);letter-spacing:.01em;margin-bottom:24px;
+/* City coverage cards */
+.sys-city-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.sys-city-card{
+  background:#040404;border:1px solid rgba(200,168,75,.10);padding:18px 16px;
+  position:relative;transition:border-color .22s,box-shadow .22s;
 }
-.sys-trust{
-  font-size:.72rem;letter-spacing:.04em;color:rgba(168,168,160,.44);
-  line-height:1.85;border-top:1px solid rgba(200,168,75,.12);padding-top:16px;
-}
-.sys-trust strong{
-  color:rgba(168,168,160,.60);font-weight:400;letter-spacing:.1em;
-  text-transform:uppercase;font-size:.62rem;display:block;margin-bottom:7px;
-}
-/* URL tree */
-.sys-url-wrap{
-  background:#050505;border:1px solid rgba(200,168,75,.15);
-  padding:28px 32px 22px;position:relative;
-}
-.sys-url-wrap::before{
+.sys-city-card::before{
   content:'';position:absolute;top:0;left:0;right:0;height:1px;
-  background:linear-gradient(90deg,transparent,rgba(200,168,75,.22),transparent);
+  background:linear-gradient(90deg,transparent,rgba(200,168,75,.18),transparent);
+  opacity:0;transition:opacity .22s;
 }
-.sys-url-label{
-  font-size:.60rem;letter-spacing:.22em;text-transform:uppercase;
-  color:rgba(200,168,75,.40);margin-bottom:14px;
-  display:flex;align-items:center;gap:10px;
+.sys-city-card:hover{border-color:rgba(200,168,75,.22);box-shadow:0 0 24px rgba(200,168,75,.04)}
+.sys-city-card:hover::before{opacity:1}
+.sys-city-name{
+  font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;
+  color:rgba(237,232,222,.78);font-weight:500;margin-bottom:10px;
+  display:flex;align-items:center;gap:7px;
 }
-.sys-url-label::after{content:'';flex:1;height:1px;background:rgba(200,168,75,.09)}
-.sys-url-root{
-  font-family:monospace;font-size:.94rem;color:rgba(237,232,222,.48);
-  margin-bottom:16px;letter-spacing:.02em;display:flex;align-items:center;gap:8px;
-}
-.sys-url-root-dot{
-  width:6px;height:6px;border-radius:50%;
-  background:var(--gold);opacity:.55;flex-shrink:0;
-  animation:blink 3s ease-in-out infinite;
-}
-.sys-url-list{
-  border-left:1px solid rgba(200,168,75,.13);
-  margin-left:10px;display:flex;flex-direction:column;gap:0;
-}
-.sys-url-group{margin-bottom:10px}
-.sys-url-group:last-child{margin-bottom:0}
-.sys-url-item{
-  display:flex;align-items:center;padding:6px 14px;
-  font-family:monospace;font-size:.83rem;color:rgba(168,168,160,.62);
-  position:relative;transition:background .2s,color .2s;cursor:default;
-}
-.sys-url-item::before{
-  content:'';position:absolute;left:-1px;top:50%;
-  width:10px;height:1px;background:rgba(200,168,75,.15);
-}
-.sys-url-item:hover{background:rgba(200,168,75,.04);color:rgba(237,232,222,.80)}
-.sys-url-svc{color:rgba(237,232,222,.82)}
-.sys-url-loc{color:var(--gold);opacity:.70}
-.sys-url-item:hover .sys-url-loc{opacity:.95}
-.sys-url-foot{
-  font-size:.68rem;letter-spacing:.08em;color:rgba(168,168,160,.30);
-  text-align:center;margin-top:12px;
-  border-top:1px solid rgba(200,168,75,.07);padding-top:10px;
-}
+.sys-city-name::before{content:'';width:4px;height:4px;border-radius:50%;background:var(--gold);opacity:.65;flex-shrink:0}
+.sys-svc-list{list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:4px}
+.sys-svc-item{font-size:.74rem;color:rgba(168,168,160,.52);line-height:1.55;padding-left:11px;position:relative}
+.sys-svc-item::before{content:'—';position:absolute;left:0;color:rgba(200,168,75,.25);font-size:.62rem;top:1px}
+.sys-city-foot{font-size:.62rem;letter-spacing:.07em;color:rgba(168,168,160,.22);margin-top:14px;border-top:1px solid rgba(200,168,75,.05);padding-top:10px;text-align:center}
 
 /* ── Market decision trigger ── */
 .alloc-decision{
@@ -2129,7 +2150,7 @@ body::before{
   .alloc-decision{padding:28px 24px;max-width:100%}
   .sys-struct{padding:52px 24px}
   .sys-struct-inner{grid-template-columns:1fr;gap:32px}
-  .sys-url-wrap{padding:22px 24px 18px}
+  .sys-city-grid{grid-template-columns:1fr 1fr}
 }
 @media(max-width:520px){
   .infra-principle{padding:72px 20px}
@@ -2140,7 +2161,6 @@ body::before{
   .hero-gold-accent{font-size:clamp(1.1rem,4.5vw,1.4rem)}
   .exp-momentum-main{font-size:clamp(1.2rem,4.5vw,1.6rem)}
   .sys-struct{padding:36px 20px}
-  .sys-url-item{font-size:.79rem;padding:5px 12px}
 }
 
 /* ═══════════════════════════════════════════════════════════
@@ -2193,7 +2213,7 @@ body::before{
   .hero-diff{font-size:.82rem;margin-bottom:20px}
   .hero-cities{font-size:.96rem;margin-bottom:24px;letter-spacing:.09em;padding-left:14px}
   .hero-cta-note{font-size:.64rem;letter-spacing:.12em}
-  .hero-net{opacity:.06}
+  .hero-net{opacity:.11}
   .hero-scroll-label{font-size:.60rem;letter-spacing:.16em}
 }
 
@@ -2538,7 +2558,7 @@ body::before{
 <div id="navBackdrop" class="nav-backdrop" aria-hidden="true"></div>
 <div id="navMenu" class="nav-menu" aria-hidden="true" role="dialog" aria-label="Site navigation">
   <div class="nav-menu-inner">
-    <a href="#contact" class="nm-link nm-featured" data-menu-close>Check Availability</a>
+    <a href="{{ route('onboarding.start') }}" class="nm-link nm-featured" data-menu-close>Check Availability</a>
     <a href="/book" class="nm-link" data-menu-close>Book a Session</a>
     <a href="/how-it-works" class="nm-link" data-menu-close>How It Works</a>
     <div class="nm-divider"></div>
@@ -2594,8 +2614,11 @@ body::before{
       <circle class="np-2" cx="700" cy="280" r="7"/>
       <circle class="np-3" cx="460" cy="400" r="5"/>
       <circle class="np-4" cx="920" cy="195" r="4.5"/>
+      <circle class="np-5" cx="540" cy="150" r="4.8"/>
+      <circle class="np-6" cx="1000" cy="90" r="4"/>
     </g>
   </svg>
+  <canvas class="hero-anim-canvas" id="heroAnimCanvas" aria-hidden="true"></canvas>
 
   <div class="hero-stage">
     <h1 id="heroSeq" aria-label="Your market. Your territory. Every city, every service. Programmatic expansion. One brand, one territory. Built for AI search.">Your market.<br>Your territory.</h1>
@@ -2603,9 +2626,9 @@ body::before{
   <p class="hero-gold-accent">AI-powered hyper-local SEO expansion across every city in your market.</p>
   <p class="hero-cities"><span>Every Service.</span><span>Every City.</span><span>Every Neighborhood.</span></p>
   <p class="hero-diff">Programmatic URL expansion — expanding your visibility across every service and every city.</p>
-  <p class="hero-note">ONE BRAND PER MARKET &mdash; SELECT TERRITORIES ONLY</p>
+  <p class="hero-note">Position early. Expand everywhere.</p>
   <div class="hero-actions" style="opacity:0;animation:up .85s .52s forwards">
-    <a href="#contact" class="btn-primary">Claim Your Territory</a>
+    <a href="#" class="btn-primary js-open-gate">Claim Your Territory</a>
   </div>
   <p class="hero-cta-note">Signal-aware. Continuously adapting.</p>
 
@@ -2639,7 +2662,7 @@ body::before{
     </div>
     <div class="how-strip-item">
       <span class="how-strip-dot" aria-hidden="true"></span>
-      <span class="how-strip-label">Exclusive territory — one brand per market</span>
+      <span class="how-strip-label">First-mover position — authority built through structure</span>
     </div>
   </div>
   <p class="how-strip-sub">A full-system expansion — not a tool, not a shortcut.</p>
@@ -2649,51 +2672,114 @@ body::before{
 <section class="sys-struct r">
   <div class="sys-struct-inner">
 
-    {{-- Left: copy --}}
+    {{-- Left: outcome-led copy --}}
     <div>
-      <p class="sys-eyebrow">System Structure</p>
-      <h2 class="sys-hed">Every service. Every city.<br><em>One structured system.</em></h2>
-      <p class="sys-sub">Programmatic URL expansion — scaling your visibility across every service, every city, and every search surface.</p>
-      <p class="sys-diff">Structured, scalable, and continuously optimized for search visibility.</p>
-      <p class="sys-system-line">Powered by a proprietary deployment system — continuously updated with live search signals, AI modeling, and evolving algorithm patterns.</p>
-      <div class="sys-trust">
-        <strong>Built on real search infrastructure</strong>
-        Google indexing signals &middot; AI-driven analysis &middot; LLM discovery &middot; structured data &middot; local ranking patterns
-      </div>
+      <p class="sys-eyebrow">Market Position</p>
+      <h2 class="sys-hed">You are not buying<br>a service.<br><em>You are securing market position.</em></h2>
+      <p class="sys-sub">Your presence expands across every service and city your market demands — building coverage that compounds over time.</p>
     </div>
 
-    {{-- Right: URL tree --}}
-    <div class="sys-url-wrap r">
-      <div class="sys-url-label">Live Deployment &mdash; Multi-Industry Example</div>
-      <div class="sys-url-root">
-        <span class="sys-url-root-dot"></span>
-        client.com/
+    {{-- Right: city coverage card grid --}}
+    <div>
+      <div class="sys-city-grid r">
+
+        <div class="sys-city-card">
+          <div class="sys-city-name">Seattle, WA</div>
+          <ul class="sys-svc-list">
+            <li class="sys-svc-item">Personal Injury Lawyer</li>
+            <li class="sys-svc-item">Car Accident Lawyer</li>
+            <li class="sys-svc-item">Injury Attorney</li>
+          </ul>
+        </div>
+
+        <div class="sys-city-card">
+          <div class="sys-city-name">Tacoma, WA</div>
+          <ul class="sys-svc-list">
+            <li class="sys-svc-item">Personal Injury Lawyer</li>
+            <li class="sys-svc-item">Car Accident Lawyer</li>
+          </ul>
+        </div>
+
+        <div class="sys-city-card">
+          <div class="sys-city-name">Bellevue, WA</div>
+          <ul class="sys-svc-list">
+            <li class="sys-svc-item">Personal Injury Attorney</li>
+            <li class="sys-svc-item">Motorcycle Accident</li>
+            <li class="sys-svc-item">Wrongful Death</li>
+          </ul>
+        </div>
+
+        <div class="sys-city-card">
+          <div class="sys-city-name">Portland, OR</div>
+          <ul class="sys-svc-list">
+            <li class="sys-svc-item">Personal Injury Lawyer</li>
+            <li class="sys-svc-item">Car Accident Lawyer</li>
+            <li class="sys-svc-item">DUI Defense Attorney</li>
+          </ul>
+        </div>
+
+        <div class="sys-city-card">
+          <div class="sys-city-name">Kirkland, WA</div>
+          <ul class="sys-svc-list">
+            <li class="sys-svc-item">Personal Injury Lawyer</li>
+            <li class="sys-svc-item">Car Accident Lawyer</li>
+          </ul>
+        </div>
+
+        <div class="sys-city-card">
+          <div class="sys-city-name">Everett, WA</div>
+          <ul class="sys-svc-list">
+            <li class="sys-svc-item">Personal Injury Lawyer</li>
+            <li class="sys-svc-item">Injury Attorney</li>
+          </ul>
+        </div>
+
       </div>
-      <div class="sys-url-list">
-        <div class="sys-url-group">
-          <div class="sys-url-item"><span class="sys-url-svc">personal-injury-lawyer-</span><span class="sys-url-loc">seattle</span></div>
-          <div class="sys-url-item"><span class="sys-url-svc">personal-injury-lawyer-</span><span class="sys-url-loc">tacoma</span></div>
-        </div>
-        <div class="sys-url-group">
-          <div class="sys-url-item"><span class="sys-url-svc">emergency-plumber-</span><span class="sys-url-loc">seattle</span></div>
-          <div class="sys-url-item"><span class="sys-url-svc">hvac-repair-</span><span class="sys-url-loc">seattle</span></div>
-        </div>
-        <div class="sys-url-group">
-          <div class="sys-url-item"><span class="sys-url-svc">cosmetic-dentist-</span><span class="sys-url-loc">seattle</span></div>
-          <div class="sys-url-item"><span class="sys-url-svc">dental-implants-</span><span class="sys-url-loc">bellevue</span></div>
-        </div>
-        <div class="sys-url-group">
-          <div class="sys-url-item"><span class="sys-url-svc">roof-replacement-</span><span class="sys-url-loc">seattle</span></div>
-          <div class="sys-url-item"><span class="sys-url-svc">water-damage-restoration-</span><span class="sys-url-loc">everett</span></div>
-        </div>
-      </div>
-      <div class="sys-url-foot">+ coverage across every service and location combination</div>
+      <p class="sys-city-foot r">+ every service, every city — structured across your full territory</p>
     </div>
 
   </div>
 </section>
 
 <div class="gold-rule"></div>
+
+<!-- ════════════ STEPS — PROCESS (TRANSITION) ════════════ -->
+<section id="how">
+  <div class="steps-section">
+    <div class="steps-wrap">
+      <p class="s-eye r">The Process</p>
+      <h2 class="s-h r">Controlled onboarding.<br><em>Disciplined expansion.</em></h2>
+      <div class="steps-grid">
+        <div class="step r">
+          <div class="step-n">01</div>
+          <h3 class="step-title">Map Your Territory</h3>
+          <p class="step-desc">Every service, every city, every topic — your complete coverage architecture is mapped before a single page deploys.</p>
+        </div>
+        <div class="step r">
+          <div class="step-n">02</div>
+          <h3 class="step-title">Set Up Your System</h3>
+          <p class="step-desc">Link architecture, localized signals, and structured data — configured to your brand before deployment begins.</p>
+        </div>
+        <div class="step r">
+          <div class="step-n">03</div>
+          <h3 class="step-title">Deploy Under Your Brand</h3>
+          <p class="step-desc">Pages deploy across your licensed territory — white-label from top to bottom, no third-party branding on any client-facing page.</p>
+        </div>
+        <div class="step r">
+          <div class="step-n">04</div>
+          <h3 class="step-title">Expand Your Position</h3>
+          <p class="step-desc">As your position compounds, your agreement accommodates expansion — new services, cities, and deeper coverage without renegotiation.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════ COMMITMENT NOTE ════════════ -->
+<div class="commitment-note r">
+  <p class="cn-hed">This is a 4-month structured expansion process —<br>not a one-week experiment.</p>
+  <p class="cn-body">Most market builds require a focused 4-month rollout window to map, configure, deploy, and compound correctly. That structure is what makes results durable — and why we limit access per territory.</p>
+</div>
 
 <!-- ════════════ MARKET ALLOCATION ════════════ -->
 <section id="alloc" class="alloc-section r">
@@ -2710,15 +2796,10 @@ body::before{
         <p>Each region reflects real-time rollout status — driven by demand, competition, and phased expansion sequencing.</p>
         <p><em>One brand positioned per market. Strategic expansion phases.</em></p>
       </div>
-      <div class="alloc-reinforce">
-        <span>Markets activate as expansion progresses — early positioning secures long-term visibility.</span>
-        <span>AI-guided deployment. Structured local rollout.</span>
-        <span>Built to compound over time — continuous optimization across every active market.</span>
-      </div>
       <p class="alloc-urgency">Position established early compounds. <em>Structure your market as phases open.</em></p>
       <span class="alloc-convert-label">Selective access. Launch-ready markets only.</span>
       <div class="alloc-actions">
-        <a href="/onboarding/start" class="btn-primary">Claim Your Territory</a>
+        <a href="#" class="btn-primary js-open-gate">Claim Your Territory</a>
       </div>
     </div>
 
@@ -2751,7 +2832,7 @@ body::before{
         </div>
       </div>
       <p class="alloc-trust-line">These regions show where access is active, limited, or currently available for expansion. Status reflects live search coverage and market positioning.</p>
-      <p class="alloc-avail-note"><strong>AI-guided deployment. One brand per market.</strong> Each position covers structured service and location pages — built for organic search, AI-assisted visibility, and LLM-aware discovery across your full territory.<br><br>Access is reviewed individually based on market availability and strategic fit. Search presence is established through structured systems and expanded over time.</p>
+      <p class="alloc-avail-note"><strong>AI-guided deployment. Position built through structured coverage.</strong> Each position covers structured service and location pages — built for organic search, AI-assisted visibility, and LLM-aware discovery across your full territory.<br><br>Access is reviewed individually based on market availability and strategic fit. Search presence is established through structured systems and expanded over time.</p>
     </div>
 
   </div>
@@ -2764,15 +2845,15 @@ body::before{
 
   <div class="access-eyebrow">The System</div>
   <h2 class="access-headline">Not a tool.<br><em>A territory.</em></h2>
-  <p class="access-subline">One licensee per category, per market. Position held under agreement — unavailable to competitors while active.</p>
+  <p class="access-subline">Your position is built — not assigned.</p>
 
   <div class="access-grid">
 
     <div class="ac-card">
       <span class="ac-label">Controlled Access</span>
-      <h3 class="ac-head">One Market.<br><em>One Agreement.</em></h3>
-      <p class="ac-impact">Once held, competitors are excluded.</p>
-      <p class="ac-body">No two businesses in the same vertical share the same licensed territory. This is not a subscription — it is a position held under contract.</p>
+      <h3 class="ac-head">Built on structure.<br><em>Sustained by execution.</em></h3>
+      <p class="ac-impact">The advantage compounds with every deployment.</p>
+      <p class="ac-body">The advantage comes from structured expansion, domain authority, and continuous coverage. Businesses that move first build stronger signals, expand faster, and become harder to displace over time.</p>
     </div>
 
     <div class="ac-card">
@@ -2799,7 +2880,7 @@ body::before{
   </div><!-- /tier-grid-3 -->
 
   <div class="offer-fomo r">
-    <p class="offer-fomo-line">Availability contracts with every agreement signed.</p>
+    <p class="offer-fomo-line">Position is not reserved. It is built — and held — through execution.</p>
   </div>
 
 </section>
@@ -2823,37 +2904,9 @@ body::before{
 
 <div class="gold-rule"></div>
 
-<!-- ════════════ URL DEMO — LICENSED SEARCH FOOTPRINT ════════════ -->
-<div class="url-section">
-  <div class="url-inner">
-    <div>
-      <p class="s-eye r">Licensed Search Footprint</p>
-      <h2 class="s-h r">Every service.<br>Every city.<br><em>One structured system.</em></h2>
-      <p class="s-p r">Each page targets a precise search intent — service, city, search variation — structured for organic discovery, AI citation, and every emerging layer. <strong>Structured coverage that compounds.</strong></p>
-    </div>
-    <div class="url-box r">
-      <div class="url-box-label">Example Agency Deployment — Home Services</div>
-      <div class="url-list">
-        <div class="url-item"><div class="url-dot"></div>client.com/<span class="hl">hvac-repair-seattle-wa</span></div>
-        <div class="url-item"><div class="url-dot"></div>client.com/<span class="hl">furnace-installation-bellevue-wa</span></div>
-        <div class="url-item"><div class="url-dot"></div>client.com/<span class="hl">ac-service-tacoma-wa</span></div>
-        <div class="url-item"><div class="url-dot"></div>client.com/<span class="hl">heat-pump-repair-renton-wa</span></div>
-        <div class="url-item"><div class="url-dot"></div>client.com/<span class="hl">emergency-hvac-kent-wa</span></div>
-        <div class="url-item"><div class="url-dot"></div>client.com/<span class="hl">air-duct-cleaning-redmond-wa</span></div>
-        <div class="url-item"><div class="url-dot"></div>client.com/<span class="hl">boiler-service-kirkland-wa</span></div>
-      </div>
-      <div class="url-more">+ coverage across every service and location combination</div>
-    </div>
-  </div>
-</div>
-
 <!-- ════════════ AUDIENCE — SELL ════════════ -->
 <section id="who">
   <div class="audience-section">
-    <div class="stmt-quote r" style="text-align:center;max-width:820px;margin:0 auto 48px">
-      <p class="sq-text">The first to claim the market, owns it.<br><strong>Premium territories are still available.</strong></p>
-      <span class="sq-rule"></span>
-    </div>
     <p class="s-eye r">Who This Is For</p>
     <h2 class="s-h r">Two paths in.<br><em>One outcome. Total market control.</em></h2>
     <div class="audience-grid">
@@ -2865,7 +2918,7 @@ body::before{
         <ul class="aud-list">
           <li><strong>Zero attribution</strong> — invisible to clients and competitors alike</li>
           <li><strong>One licence covers your full portfolio</strong></li>
-          <li><strong>Exclusive territory per client</strong> — no overlap, no competition</li>
+          <li><strong>Structured coverage per client</strong> — depth that builds retention</li>
           <li><strong>Search presence is tied to your agreement</strong> — retention by design</li>
         </ul>
         <p style="font-size:.82rem;color:var(--muted);letter-spacing:.04em;margin-bottom:12px">Not ads. Not campaigns. Ownership.</p>
@@ -2879,10 +2932,10 @@ body::before{
         <ul class="aud-list">
           <li><strong>Every service. Every city. Total coverage.</strong></li>
           <li><strong>Visible across organic, AI, and emerging search</strong></li>
-          <li><strong>One operator per market</strong> — your category, exclusively yours</li>
-          <li><strong>Locked in from day one</strong> — competitors cannot enter while you're active</li>
+          <li><strong>Move first, compound faster</strong> — early coverage builds stronger authority</li>
+          <li><strong>Harder to displace over time</strong> — position that strengthens with every deployment</li>
         </ul>
-        <p style="font-size:.82rem;color:var(--muted);letter-spacing:.04em;margin-bottom:12px">Once claimed, your territory cannot be reallocated while active.</p>
+        <p style="font-size:.82rem;color:var(--muted);letter-spacing:.04em;margin-bottom:12px">Position built first holds longest. The system compounds in your favor.</p>
         <a href="#offer" class="aud-cta">Assess Market Availability &rarr;</a>
       </div>
 
@@ -2949,16 +3002,16 @@ body::before{
 
     <!-- LEFT: text hierarchy -->
     <div class="pos-left">
-      <h2 class="pos-h2 r">Claimed.<br><em>Not competed for daily.</em></h2>
+      <h2 class="pos-h2 r">Built first.<br><em>Held through execution.</em></h2>
       <div class="pos-rule r"></div>
       <p class="pos-support r">Structure does what effort cannot sustain.</p>
-      <span class="pos-gold r">Every page. Every market. One operator.</span>
+      <span class="pos-gold r">Every page. Every market. Every signal.</span>
       <ul class="pos-proof r">
-        <li>One operator per market.</li>
-        <li>No overlap. No duplication.</li>
-        <li>Once secured, it is held.</li>
+        <li>Position built through structured coverage.</li>
+        <li>Authority that compounds with every deployment.</li>
+        <li>Harder to displace with every passing month.</li>
       </ul>
-      <span class="pos-close r">We don't compete. We own the ground.</span>
+      <span class="pos-close r">Position is not reserved. It is built — and held — through execution.</span>
     </div>
 
     <!-- RIGHT: territory lock canvas -->
@@ -3086,38 +3139,6 @@ body::before{
 })();
 </script>
 
-<!-- ════════════ STEPS — PROCESS (TRANSITION) ════════════ -->
-<section id="how">
-  <div class="steps-section">
-    <div class="steps-wrap">
-      <p class="s-eye r">The Process</p>
-      <h2 class="s-h r">Controlled onboarding.<br><em>Disciplined expansion.</em></h2>
-      <div class="steps-grid">
-        <div class="step r">
-          <div class="step-n">01</div>
-          <h3 class="step-title">Map Your Territory</h3>
-          <p class="step-desc">Your full search territory is mapped — every service, every city, every topic variation — establishing the complete coverage architecture before a single page is deployed.</p>
-        </div>
-        <div class="step r">
-          <div class="step-n">02</div>
-          <h3 class="step-title">Set Up Your System</h3>
-          <p class="step-desc">The system is configured to your brand: link architecture, localized content signals, and structured data — calibrated to your licensed territory before deployment begins.</p>
-        </div>
-        <div class="step r">
-          <div class="step-n">03</div>
-          <h3 class="step-title">Deploy Under Your Brand</h3>
-          <p class="step-desc">Pages deploy across your licensed territory — white-label from top to bottom, no third-party branding on any client-facing page.</p>
-        </div>
-        <div class="step r">
-          <div class="step-n">04</div>
-          <h3 class="step-title">Expand Your Position</h3>
-          <p class="step-desc">As your licensed position compounds, your agreement accommodates controlled expansion — new services, additional cities, deeper coverage — all within the same licensed agreement.</p>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
 <!-- ════════════ LICENCE LOCK ════════════ -->
 <section id="integrity">
 <div class="url-lock">
@@ -3147,18 +3168,6 @@ body::before{
     </div>
   </div>
 </div>
-</section>
-
-<!-- ════════════ LICENCE STATEMENT ════════════ -->
-<section>
-  <div class="licence-stmt-section">
-    <p class="licence-stmt-principle r">Position is held under licence &mdash; not by default.</p>
-    <div class="licence-stmt-body r">
-      <p>Active licences protect your position.</p>
-      <p>Unlicensed builds do not carry forward.</p>
-    </div>
-  </div>
-  <p style="text-align:center;font-size:.7rem;color:rgba(168,168,160,.35);max-width:560px;margin:0 auto;padding:0 24px 32px;line-height:1.8">The SEO AI Co™ system combines structured content, local relevance, internal link architecture, search signals, and ongoing optimization &mdash; designed to strengthen every signal that drives local visibility and market dominance.</p>
 </section>
 
 <!-- ════════════ PRICING ════════════ -->
@@ -3200,7 +3209,8 @@ body::before{
   </div>
 
   <div class="offer-guide r">
-    <p class="offer-guide-line">Select the level of expansion your market requires.</p>
+    <p class="offer-guide-line">Select the level that matches your goal.</p>
+    <p style="font-size:.86rem;color:rgba(168,168,160,.65);text-align:center;margin-top:12px;letter-spacing:.02em">Access begins with onboarding.<br>We review your market, confirm availability, and activate your system with you.</p>
   </div>
 
   <div class="tier-grid-3" id="tierGrid">
@@ -3231,7 +3241,7 @@ body::before{
         <span class="tier-gated-icon">◈</span>
         <span><strong>Access reviewed individually.</strong> Apply below to confirm availability.</span>
       </div>
-      <a href="#contact" class="tier-cta">Apply for Launch Access</a>
+      <a href="{{ route('onboarding.start', ['tier' => 'launch']) }}" class="tier-cta">Start Launch Setup</a>
       <button class="tier-book" onclick="window._bkPending={id:{{ $consultTypes->get('discovery')?->id ?? 1 }},duration:{{ $consultTypes->get('discovery')?->duration_minutes ?? 15 }},name:{{ json_encode($consultTypes->get('discovery')?->name ?? 'Free Discovery Call') }},isFree:{{ ($consultTypes->get('discovery')?->is_free ?? true) ? 'true' : 'false' }}};window.dispatchEvent(new CustomEvent('open-booking',{detail:window._bkPending}));if(typeof gtag==='function')gtag('event','cta_click',{cta_location:'pricing_section',cta_label:'book_discovery_call'});">Book a Discovery Call</button>
     </div>
 
@@ -3259,7 +3269,7 @@ body::before{
       </ul>
       <div class="tier-price"><sup>$</sup>2,995<sub>/mo</sub></div>
       <div class="tier-commitment">Structured 4-month deployment cycle.</div>
-      <a href="#contact" class="tier-cta">Apply for Expansion Access</a>
+      <a href="{{ route('onboarding.start', ['tier' => 'expansion']) }}" class="tier-cta">Start Expansion Planning</a>
       <button class="tier-book" onclick="window._bkPending={id:{{ $consultTypes->get('strategy')?->id ?? 2 }},duration:{{ $consultTypes->get('strategy')?->duration_minutes ?? 30 }},name:{{ json_encode($consultTypes->get('strategy')?->name ?? 'Strategy Call') }},isFree:{{ ($consultTypes->get('strategy')?->is_free ?? false) ? 'true' : 'false' }}};window.dispatchEvent(new CustomEvent('open-booking',{detail:window._bkPending}));if(typeof gtag==='function')gtag('event','cta_click',{cta_location:'pricing_section',cta_label:'book_strategy_call'});">Book a Strategy Call</button>
     </div>
 
@@ -3287,11 +3297,14 @@ body::before{
       </ul>
       <div class="tier-price"><sup>$</sup>4,799<sub>/mo</sub></div>
       <div class="tier-commitment">Priority processing. Structured 4-month deployment cycle.</div>
-      <a href="#contact" class="tier-cta">Apply for Dominance Access</a>
+      <a href="{{ route('onboarding.start', ['tier' => 'dominance']) }}" class="tier-cta">Review Dominance Setup</a>
       <button class="tier-book" onclick="window._bkPending={id:{{ $consultTypes->get('agency-review')?->id ?? $consultTypes->get('agency')?->id ?? 3 }},duration:{{ $consultTypes->get('agency-review')?->duration_minutes ?? $consultTypes->get('agency')?->duration_minutes ?? 60 }},name:{{ json_encode($consultTypes->get('agency-review')?->name ?? $consultTypes->get('agency')?->name ?? 'Agency Licence Review') }},isFree:{{ ($consultTypes->get('agency-review')?->is_free ?? $consultTypes->get('agency')?->is_free ?? false) ? 'true' : 'false' }}};window.dispatchEvent(new CustomEvent('open-booking',{detail:window._bkPending}));if(typeof gtag==='function')gtag('event','cta_click',{cta_location:'pricing_section',cta_label:'book_agency_review'});">Review My Agency Licence</button>
     </div>
 
   </div>
+
+  <p style="text-align:center;font-size:.74rem;color:rgba(168,168,160,.32);letter-spacing:.04em;padding:28px 0 8px;position:relative;z-index:2">Applying selects your market level — not a payment. We review your inquiry, confirm availability, and guide activation personally.</p>
+
 </section>
 <script>
 (function(){
@@ -3337,12 +3350,6 @@ body::before{
   </div>
 </div>
 
-<!-- ════════════ COMPETITIVE POSITIONING ════════════ -->
-<div class="comp-pos r">
-  <p class="cp-line-1">Most SEO tools help you create content.</p>
-  <p class="cp-line-2">We structure your entire market presence.</p>
-</div>
-
 <div class="gold-rule"></div>
 
 <!-- ════════════ EXECUTION SERVICES ════════════ -->
@@ -3352,21 +3359,21 @@ body::before{
   <p class="exec-intro">All services align with your market expansion — not disconnected marketing efforts.</p>
   <div class="exec-grid">
     <div class="exec-card r">
-      <span class="exec-label">Development &amp; Design</span>
-      <h3 class="exec-title">Websites &amp; Builds</h3>
-      <p class="exec-body">Websites, redesigns, and performance-driven builds aligned with your expansion strategy.</p>
+      <span class="exec-label">Website Strategy &amp; Development</span>
+      <h3 class="exec-title">Conversion Architecture</h3>
+      <p class="exec-body">Strategy-led builds engineered for conversion — designed to hold position and perform across every market you enter.</p>
       <a href="{{ route('web-design-development') }}" class="exec-learn">Learn more &rarr;</a>
     </div>
     <div class="exec-card r">
-      <span class="exec-label">Advertising</span>
-      <h3 class="exec-title">Search &amp; Local Campaigns</h3>
-      <p class="exec-body">Search and local campaigns designed to reinforce your market position while your organic presence compounds.</p>
+      <span class="exec-label">Paid Media Strategy</span>
+      <h3 class="exec-title">Campaign Launch &amp; Growth</h3>
+      <p class="exec-body">Paid media structured to reinforce your organic position — not replace it. Campaigns built for market velocity, not just clicks.</p>
       <a href="{{ route('ads-management') }}" class="exec-learn">Learn more &rarr;</a>
     </div>
     <div class="exec-card r">
-      <span class="exec-label">Brand &amp; Print</span>
-      <h3 class="exec-title">Brand Systems</h3>
-      <p class="exec-body">Business cards, collateral, and brand systems aligned with your growth — not generic templates.</p>
+      <span class="exec-label">Brand Management &amp; Creative Direction</span>
+      <h3 class="exec-title">Market Delivery</h3>
+      <p class="exec-body">Brand systems, creative direction, and market-ready collateral — built to communicate authority at every client touchpoint.</p>
       <a href="{{ route('branding-print') }}" class="exec-learn">Learn more &rarr;</a>
     </div>
   </div>
@@ -3378,20 +3385,20 @@ body::before{
 
 <!-- ════════════ SERVICE SUPPORT ════════════ -->
 <div class="svc-support r">
-  <p class="ss-eye">What's included</p>
-  <h2 class="ss-hed">This is more than SEO.</h2>
-  <p class="ss-intro">Your engagement includes full access to every capability needed to build, launch, and grow your market presence — coordinated under one system.</p>
+  <p class="ss-eye">Full-Spectrum Capability</p>
+  <h2 class="ss-hed">We guide and support every layer of your growth.</h2>
+  <p class="ss-intro">Your engagement spans every capability required to build, position, and hold your market — all coordinated under one agreement, one team, one system.</p>
   <div class="ss-grid">
-    <div class="ss-item"><span class="ss-dot"></span><span class="ss-label">Programmatic SEO &amp; market expansion</span></div>
-    <div class="ss-item"><span class="ss-dot"></span><span class="ss-label">Website design &amp; development</span></div>
-    <div class="ss-item"><span class="ss-dot"></span><span class="ss-label">Google Ads &amp; local campaign management</span></div>
-    <div class="ss-item"><span class="ss-dot"></span><span class="ss-label">Branding, print &amp; collateral</span></div>
-    <div class="ss-item"><span class="ss-dot"></span><span class="ss-label">WordPress &amp; CMS development</span></div>
-    <div class="ss-item"><span class="ss-dot"></span><span class="ss-label">Content strategy &amp; copywriting</span></div>
-    <div class="ss-item"><span class="ss-dot"></span><span class="ss-label">Structured data &amp; schema markup</span></div>
-    <div class="ss-item"><span class="ss-dot"></span><span class="ss-label">Performance tracking &amp; reporting</span></div>
+    <div class="ss-item"><span class="ss-dot"></span><span class="ss-label">Programmatic SEO &amp; territorial market expansion</span></div>
+    <div class="ss-item"><span class="ss-dot"></span><span class="ss-label">Website Strategy, Development &amp; Conversion Architecture</span></div>
+    <div class="ss-item"><span class="ss-dot"></span><span class="ss-label">Paid Media Strategy, Campaign Launch &amp; Growth Management</span></div>
+    <div class="ss-item"><span class="ss-dot"></span><span class="ss-label">Brand Management, Creative Direction &amp; Market Delivery</span></div>
+    <div class="ss-item"><span class="ss-dot"></span><span class="ss-label">WordPress Management, Enhancements &amp; Technical Support</span></div>
+    <div class="ss-item"><span class="ss-dot"></span><span class="ss-label">Content Strategy, Authority Copy &amp; Search Signal Architecture</span></div>
+    <div class="ss-item"><span class="ss-dot"></span><span class="ss-label">Structured Data, Schema Markup &amp; Technical SEO</span></div>
+    <div class="ss-item"><span class="ss-dot"></span><span class="ss-label">Performance Intelligence, Reporting &amp; Market Tracking</span></div>
   </div>
-  <p class="ss-note">All capabilities coordinated under a single expansion agreement — no separate agencies, no disconnected efforts.</p>
+  <p class="ss-note">One agreement. One team. Every capability required — nothing outsourced, nothing disconnected.</p>
 </div>
 
 <div class="gold-rule"></div>
@@ -3407,45 +3414,14 @@ body::before{
   </div>
 </div>
 
-<div class="gold-rule"></div>
-
-<!-- ════════════ ACCESS MODEL ════════════ -->
-<div class="access-model r">
-  <p class="am-eyebrow">We guide every expansion personally</p>
-  <h2 class="am-hed">One territory. One brand.</h2>
-  <div class="am-body">
-    <p class="am-line">Each territory supports one primary brand.</p>
-    <p class="am-line">Once a market is active, expansion is restricted.</p>
-    <p class="am-line">Access is released in controlled phases based on demand and system capacity.</p>
-    <p class="am-line">We guide every expansion personally — ensuring your market is built, positioned, and supported correctly.</p>
+<!-- ════════════ FIT SCREENING ════════════ -->
+<div class="fit-screen r">
+  <p class="fs-hed">We work selectively.</p>
+  <div class="fs-body">
+    <p>Before expansion begins, we review whether a business is legitimate, growth-ready, and aligned with platform and search-quality standards.</p>
+    <p>This protects the system, the market, and the businesses we choose to support.</p>
   </div>
-</div>
-
-<div class="gold-rule"></div>
-
-<!-- ════════════ DECISION GUIDE ════════════ -->
-<div class="decision-guide r">
-  <h2 class="dg-hed">Not sure where to start?</h2>
-  <div class="dg-rows">
-    <div class="dg-row">
-      <span class="dg-if">If</span>
-      <span class="dg-goal">your goal is visibility</span>
-      <span class="dg-arrow">→</span>
-      <span class="dg-tier">Launch</span>
-    </div>
-    <div class="dg-row">
-      <span class="dg-if">If</span>
-      <span class="dg-goal">your goal is growth</span>
-      <span class="dg-arrow">→</span>
-      <span class="dg-tier">Expansion</span>
-    </div>
-    <div class="dg-row">
-      <span class="dg-if">If</span>
-      <span class="dg-goal">your goal is market control</span>
-      <span class="dg-arrow">→</span>
-      <span class="dg-tier">Dominance</span>
-    </div>
-  </div>
+  <p class="fs-note">We may decline businesses that are not a fit, not aligned with our standards, or not positioned for the kind of growth this system is built to deliver.</p>
 </div>
 
 <div class="gold-rule"></div>
@@ -3453,10 +3429,9 @@ body::before{
 <!-- ════════════ PRICING CTA ════════════ -->
 <div class="pricing-cta r">
   <div class="pricing-cta-actions">
-    <a href="{{ route('onboarding.start') }}" class="btn-primary">Check Your Market Availability</a>
-    <a href="#contact" class="btn-ghost">Request Access</a>
+    <a href="{{ route('onboarding.start') }}" class="btn-primary">Start My Market Setup</a>
   </div>
-  <p class="pricing-cta-meta">Takes ~2 minutes &nbsp;&middot;&nbsp; No commitment required</p>
+  <p class="pricing-cta-meta">No commitment &nbsp;&middot;&nbsp; Access reviewed individually &nbsp;&middot;&nbsp; Takes ~2 minutes</p>
 </div>
 
 <!-- ════════════ FINAL CLOSE ════════════ -->
@@ -3596,10 +3571,9 @@ body::before{
 <section id="contact">
   <div class="contact-inner">
     <div>
-      <p class="s-eye r">Submit Market for Review</p>
-      <h2 class="s-h r">Submit your market<br>for review.<br><em>Before it's claimed.</em></h2>
-      <p class="s-p r">Access is not guaranteed. Availability is limited per territory. We assess your category, your market, and your operating context — then confirm whether access is available. Not automated. Not self-serve.</p>
-      <p class="s-p r" style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.05rem;margin-top:8px;color:rgba(168,168,160,.68)">This is not a purchase decision. It is a position decision.</p>
+      <p class="s-eye r">Questions Before You Begin</p>
+      <h2 class="s-h r">Not ready yet?<br><em>Ask a question.</em></h2>
+      <p class="s-p r">If you have questions before starting onboarding, submit them here. We review every inquiry personally and respond directly.</p>
       <div class="c-meta r">
         <div class="cm"><label>Licensing Model</label><span>Reviewed individually — not automated</span></div>
         <div class="cm"><label>Commitment</label><span>Structured 4-month deployment cycle</span></div>
@@ -3680,8 +3654,8 @@ body::before{
       <input type="hidden" name="g-recaptcha-response" id="g-recaptcha-response" value="">
       @endif
 
-      <p style="font-size:.82rem;color:var(--muted);text-align:center;letter-spacing:.04em;margin-bottom:8px">Markets are reviewed individually. Not all territories are available at time of application.</p>
-      <button type="submit" class="fsub" id="submitBtn">Submit Market for Review</button>
+      <p style="font-size:.82rem;color:var(--muted);text-align:center;letter-spacing:.04em;margin-bottom:8px">We review every message personally. Not all markets are available.</p>
+      <button type="submit" class="fsub" id="submitBtn">Send My Question</button>
     </form>
   </div>
 </section>
@@ -3700,7 +3674,7 @@ body::before{
     <p class="fcc-micro">Expansion moves continuously. Entry is guided.</p>
     <span class="fcc-rule" aria-hidden="true"></span>
     <div class="fcc-actions">
-      <button class="fcc-primary" onclick="window._bkPending={id:{{ $consultTypes->get('audit')?->id ?? 9 }},duration:{{ $consultTypes->get('audit')?->duration_minutes ?? 75 }},name:{{ json_encode($consultTypes->get('audit')?->name ?? 'Market Expansion Blueprint') }},isFree:false};window.dispatchEvent(new CustomEvent('open-booking',{detail:window._bkPending}));if(typeof gtag==='function')gtag('event','cta_click',{cta_location:'final_close',cta_label:'start_market_expansion'});">Start Your Market Expansion</button>
+      <a href="{{ route('onboarding.start') }}" class="fcc-primary" onclick="if(typeof gtag==='function')gtag('event','cta_click',{cta_location:'final_close',cta_label:'start_market_setup'});">Start My Market Setup</a>
       <a href="{{ route('how-it-works') }}" class="fcc-secondary">See how it works</a>
     </div>
     <p class="fcc-reassure">Guided entry.&ensp;Structured rollout.&ensp;Full support.</p>
@@ -3711,7 +3685,7 @@ body::before{
 <!-- ════════════ STICKY MOBILE CTA (mobile only — hidden on desktop via CSS) ════════════ -->
 <div id="mobStickyCta" class="mob-sticky-cta" role="complementary" aria-label="Quick access — assess market availability">
   <div class="msc-inner">
-    <a href="#contact" class="msc-primary">Check My Market</a>
+    <a href="{{ route('onboarding.start') }}" class="msc-primary">Check My Market</a>
     <a href="/book" class="msc-secondary">Book a Call</a>
   </div>
 </div>
@@ -3725,22 +3699,23 @@ body::before{
 <div class="gate-overlay" id="gateOverlay">
   <div class="gate-box">
     <div class="gate-icon">◈</div>
-    <span class="gate-badge">Licensed Access Required</span>
+    <span class="gate-badge">Activation Required</span>
     <h2 class="gate-title">Secure your<br><em>position.</em></h2>
-    <p class="gate-desc">Select a licence tier to activate your territory — <strong>structured pages, link architecture, and search signals deployed across your markets under a single agreement.</strong></p>
+    <p class="gate-desc">Activate your market expansion system.<br><br>This includes:<br><strong>• Structured service + location pages<br>• Internal linking and authority signals<br>• AI-driven expansion across your territory</strong><br><br>Deployed and managed under a single system.</p>
     <div class="gate-tiers">
-      <div class="gate-tier" data-tier="5k">
-        <div class="gate-tier-name">5,000 URLs</div>
+      <div class="gate-tier" data-tier="expansion">
+        <div class="gate-tier-name">Expansion</div>
         <div class="gate-tier-price">$2,995/mo</div>
-        <div class="gate-tier-urls">Foundation licence</div>
+        <div class="gate-tier-urls">Foundation tier</div>
       </div>
-      <div class="gate-tier selected" data-tier="10k">
-        <div class="gate-tier-name">10,000 URLs</div>
+      <div class="gate-tier selected" data-tier="dominance">
+        <div class="gate-tier-name">Dominance</div>
         <div class="gate-tier-price">$4,799/mo</div>
         <div class="gate-tier-urls">Preferred · Priority access</div>
       </div>
     </div>
-    <a href="#contact" class="gate-cta" id="gateCta">Claim Your Territory</a>
+    <p class="gate-guidance">Most businesses start with Expansion, then scale into Dominance.</p>
+    <a href="/onboarding/start" class="gate-cta" id="gateCta">Activate My Market</a>
     <button class="gate-skip" id="gateSkip">Continue browsing</button>
   </div>
 </div>
@@ -3851,31 +3826,29 @@ body::before{
     updateBar();
   })();
 
-  // ── Paywall Gate (placeholder) ──
+  // ── Activation Gate ──
   const gateOverlay = document.getElementById('gateOverlay');
   const gateSkip = document.getElementById('gateSkip');
   const gateCta = document.getElementById('gateCta');
   const gateTiers = document.querySelectorAll('.gate-tier');
-  let gateShown = sessionStorage.getItem('seoai_gate_shown');
 
-  // Show gate when user scrolls past pricing (soft gate — dismissible)
-  if (!gateShown) {
-    const offerSection = document.getElementById('offer');
-    const gateIO = new IntersectionObserver((entries) => {
-      entries.forEach(e => {
-        if (e.isIntersecting && !e.target.dataset.gateTriggered) {
-          e.target.dataset.gateTriggered = '1';
-          setTimeout(() => {
-            gateOverlay.classList.add('active');
-            document.body.style.overflow = 'hidden';
-            sessionStorage.setItem('seoai_gate_shown', '1');
-          }, 1200);
-          gateIO.unobserve(e.target);
-        }
-      });
-    }, {threshold: 0.4});
-    gateIO.observe(offerSection);
+  function openGate() {
+    gateOverlay.classList.add('active');
+    document.body.style.overflow = 'hidden';
   }
+
+  function closeGate() {
+    gateOverlay.classList.remove('active');
+    document.body.style.overflow = '';
+  }
+
+  // Intent-based trigger — only open on explicit CTA click
+  document.querySelectorAll('.js-open-gate').forEach(function(el) {
+    el.addEventListener('click', function(e) {
+      e.preventDefault();
+      openGate();
+    });
+  });
 
   // Tier selection
   gateTiers.forEach(t => t.addEventListener('click', () => {
@@ -3883,13 +3856,11 @@ body::before{
     t.classList.add('selected');
   }));
 
-  // Close gate
-  function closeGate() {
-    gateOverlay.classList.remove('active');
-    document.body.style.overflow = '';
-  }
+  // Skip closes gate; CTA navigates (href handles it after gate closes)
   gateSkip.addEventListener('click', closeGate);
-  gateCta.addEventListener('click', closeGate);
+  gateOverlay.addEventListener('click', function(e) {
+    if (e.target === gateOverlay) closeGate();
+  });
 
   @if (session('inquiry_success'))
     document.getElementById('contact').scrollIntoView({behavior:'smooth'});
@@ -4173,6 +4144,87 @@ body::before{
     init();
     // use rAF unconditionally; reduced-motion nodes just don't move
     raf = requestAnimationFrame(frame);
+    window.addEventListener('resize',function(){
+      cancelAnimationFrame(raf); init();
+      raf = requestAnimationFrame(frame);
+    });
+  })();
+
+  /* ── Hero live network canvas (restrained — lighter than FCC) ── */
+  (function(){
+    var canvas = document.getElementById('heroAnimCanvas');
+    if(!canvas) return;
+    var ctx = canvas.getContext('2d');
+    var nodes=[], raf, W, H;
+    var BASE_COUNT=28, LINK=200, G='200,168,75';
+    var reduced = window.matchMedia('(prefers-reduced-motion:reduce)').matches;
+    var tick=0;
+
+    function resize(){
+      var DPR = Math.min(window.devicePixelRatio||1, 2);
+      W = canvas.offsetWidth;
+      H = canvas.offsetHeight;
+      canvas.width  = Math.round(W * DPR);
+      canvas.height = Math.round(H * DPR);
+      ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
+    }
+    function init(){
+      resize(); nodes=[];
+      var COUNT = W < 640 ? 16 : BASE_COUNT;
+      for(var i=0;i<COUNT;i++){
+        nodes.push({
+          x:Math.random()*W, y:Math.random()*H,
+          vx:(Math.random()-.5)*.14, vy:(Math.random()-.5)*.14,
+          r:Math.random()*1.4+.6,
+          phase:Math.random()*Math.PI*2
+        });
+      }
+    }
+    function frame(){
+      ctx.clearRect(0,0,W,H);
+      tick += 0.010;
+
+      for(var i=0;i<nodes.length;i++){
+        for(var j=i+1;j<nodes.length;j++){
+          var dx=nodes[j].x-nodes[i].x, dy=nodes[j].y-nodes[i].y;
+          var d=Math.sqrt(dx*dx+dy*dy);
+          if(d<LINK){
+            ctx.beginPath();
+            ctx.moveTo(nodes[i].x,nodes[i].y);
+            ctx.lineTo(nodes[j].x,nodes[j].y);
+            ctx.strokeStyle='rgba('+G+','+(1-d/LINK)*.22+')';
+            ctx.lineWidth=.45;
+            ctx.stroke();
+          }
+        }
+      }
+
+      for(var i=0;i<nodes.length;i++){
+        var n = nodes[i];
+        var pulse = .24 + Math.sin(tick + n.phase) * .09;
+        ctx.beginPath();
+        ctx.arc(n.x, n.y, n.r, 0, Math.PI*2);
+        ctx.fillStyle = 'rgba('+G+','+pulse.toFixed(3)+')';
+        ctx.fill();
+
+        if(!reduced){
+          n.x += n.vx * .55;
+          n.y += n.vy * .55;
+          if(n.x<0)n.x=W; if(n.x>W)n.x=0;
+          if(n.y<0)n.y=H; if(n.y>H)n.y=0;
+        }
+      }
+      raf = requestAnimationFrame(frame);
+    }
+
+    if('IntersectionObserver' in window){
+      var io = new IntersectionObserver(function(entries){
+        if(entries[0].isIntersecting){init();raf=requestAnimationFrame(frame);io.disconnect();}
+      },{threshold:.05});
+      io.observe(canvas);
+    } else {
+      init(); raf = requestAnimationFrame(frame);
+    }
     window.addEventListener('resize',function(){
       cancelAnimationFrame(raf); init();
       raf = requestAnimationFrame(frame);

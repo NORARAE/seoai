@@ -87,6 +87,7 @@ class BookingResource extends Resource
                         'pending' => 'warning',
                         'awaiting_payment' => 'info',
                         'cancelled' => 'danger',
+                        'no_show' => 'danger',
                         'completed' => 'gray',
                         default => 'gray',
                     }),
@@ -156,6 +157,7 @@ class BookingResource extends Resource
                         'confirmed' => 'Confirmed',
                         'awaiting_payment' => 'Awaiting Payment',
                         'cancelled' => 'Cancelled',
+                        'no_show' => 'No Show',
                         'completed' => 'Completed',
                     ]),
 
@@ -164,12 +166,23 @@ class BookingResource extends Resource
                     ->options(fn() => ConsultType::orderBy('sort_order')->pluck('name', 'id')),
             ])
             ->actions([
+                Action::make('mark_no_show')
+                    ->label('No Show')
+                    ->icon('heroicon-o-user-minus')
+                    ->color('warning')
+                    ->requiresConfirmation()
+                    ->modalHeading('Mark as No Show')
+                    ->modalDescription('This client did not attend. The booking will be marked as no_show.')
+                    ->visible(fn(Booking $record) => $record->status === 'confirmed')
+                    ->action(function (Booking $record) {
+                        $record->update(['status' => 'no_show']);
+                    }),
                 Action::make('cancel')
                     ->label('Cancel')
                     ->icon('heroicon-o-x-circle')
                     ->color('danger')
                     ->requiresConfirmation()
-                    ->visible(fn(Booking $record) => !in_array($record->status, ['cancelled', 'completed']))
+                    ->visible(fn(Booking $record) => !in_array($record->status, ['cancelled', 'completed', 'no_show']))
                     ->action(function (Booking $record) {
                         $record->update([
                             'status' => 'cancelled',
