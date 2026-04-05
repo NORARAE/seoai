@@ -10,48 +10,43 @@
 
   {{-- Body --}}
   <div style="padding:32px 28px">
-    <h1 style="font-size:22px;font-weight:400;color:#111;margin:0 0 8px">Thanks for the session</h1>
+    <h1 style="font-size:22px;font-weight:400;color:#111;margin:0 0 8px">The work starts now.</h1>
     <p style="font-size:14px;color:#666;margin:0 0 24px;line-height:1.6">
-      We hope your strategy session was valuable. Here's a quick recap of where things stand and what to expect next.
+      Your session is done. Most businesses stop here. That gap is exactly where your advantage builds.
     </p>
 
-    {{-- Session recap --}}
-    <table cellpadding="8" cellspacing="0" style="width:100%;border-collapse:collapse;font-size:14px;color:#333;margin-bottom:24px">
-      <tr style="border-bottom:1px solid #eee">
-        <td style="font-weight:600;white-space:nowrap;padding-right:16px;vertical-align:top">Session</td>
-        <td>{{ $booking->consultType->name }}</td>
-      </tr>
-      <tr>
-        <td style="font-weight:600;white-space:nowrap;padding-right:16px;vertical-align:top">Date</td>
-        <td>{{ $booking->preferred_date->format('l, F j, Y') }}</td>
-      </tr>
-    </table>
-
-    {{-- Next steps placeholder --}}
+    {{-- What's underway --}}
     <div style="background:#f9f9f7;border-radius:6px;padding:20px 24px;margin:0 0 24px">
-      <p style="font-size:13px;font-weight:600;color:#333;margin:0 0 12px;text-transform:uppercase;letter-spacing:.06em">What comes next</p>
-      <table cellpadding="0" cellspacing="0" style="font-size:13px;color:#555;line-height:1.7">
+      <p style="font-size:13px;font-weight:600;color:#333;margin:0 0 12px;text-transform:uppercase;letter-spacing:.06em">What's underway</p>
+      <table cellpadding="0" cellspacing="0" style="font-size:13px;color:#555;line-height:1.8">
         <tr>
           <td style="padding-right:10px;vertical-align:top;color:#c8a84b;font-size:16px">→</td>
-          <td>We'll prepare your territory map and coverage plan</td>
+          <td style="padding-bottom:8px">Territory mapping and coverage analysis for your market</td>
         </tr>
         <tr>
           <td style="padding-right:10px;vertical-align:top;color:#c8a84b;font-size:16px">→</td>
-          <td>You'll receive a summary of our recommendations within 2 business days</td>
+          <td style="padding-bottom:8px">A summary of the recommended approach — delivered within 2 business days</td>
         </tr>
         <tr>
           <td style="padding-right:10px;vertical-align:top;color:#c8a84b;font-size:16px">→</td>
-          <td>Once approved, infrastructure build begins</td>
+          <td>Once you confirm direction, infrastructure deployment begins</td>
         </tr>
       </table>
     </div>
 
+    {{-- Positioning reminder --}}
+    <div style="border-left:3px solid #c8a84b;padding:14px 18px;margin:0 0 24px;background:#fffef9">
+      <p style="font-size:13px;color:#555;line-height:1.7;margin:0">
+        Most businesses in your market are not running a structured system. You are. That is the compounding advantage — and it starts from this point, not later.
+      </p>
+    </div>
+
     <p style="font-size:13px;color:#888;line-height:1.6;margin:0 0 24px">
-      Questions or want to move faster? Reply to this email — we're here.
+      Want to move faster or have a question? Reply directly — we respond same day.
     </p>
 
     <div style="text-align:center;margin:0 0 8px">
-      <a href="{{ url('/') }}" style="display:inline-block;background:#c8a84b;color:#080808;font-size:14px;font-weight:600;text-decoration:none;padding:14px 36px;border-radius:6px;letter-spacing:.04em">Visit seoaico.com</a>
+      <a href="{{ url('/book') }}" style="display:inline-block;background:#c8a84b;color:#080808;font-size:14px;font-weight:600;text-decoration:none;padding:14px 36px;border-radius:6px;letter-spacing:.04em">Book Your Next Session</a>
     </div>
 
     <hr style="border:none;border-top:1px solid #eee;margin:24px 0">

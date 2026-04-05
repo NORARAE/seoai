@@ -26,14 +26,14 @@
 <div class="wrap">
   <div class="header">
     <div class="logo">SEO AI Co™</div>
-    <h1>Onboarding received,<br>{{ $lead->name }}.</h1>
-    <p>Thank you — your intake form has been submitted. Our team will review your information and be in touch within 1–2 business days.</p>
+    <h1>Your intake is in.<br>{{ $lead->name }}, your position is now under review.</h1>
+    <p>We review every submission individually. Your market is being evaluated now.</p>
   </div>
 
   <div class="divider"></div>
 
   <div class="body">
-    <p>We accept a limited number of operators per market. Submissions are reviewed individually &mdash; your position is now under evaluation.</p>
+    <p>We accept one primary operator per market. Your submission is under review — territory availability, competitive position, and site readiness are all evaluated before activation.</p>
 
     <div class="detail-block">
       <p><strong>Business:</strong> {{ $submission->business_name }}</p>
@@ -51,7 +51,7 @@
       @endif
     </div>
 
-    <p>Our team will review your intake and be in touch within 1–2 business days. In the meantime, you can learn more about how we work or schedule a strategy session:</p>
+    <p>Our team will be in touch within 1–2 business days. In the meantime:</p>
 
     <p style="margin: 20px 0;">
       &bull; <a href="{{ url('/book') }}" style="color:#c8a84b;">Schedule a strategy session &rarr;</a><br>

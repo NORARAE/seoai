@@ -32,13 +32,13 @@
   <div class="header">
     <div class="logo">SEO AI Co™</div>
     <h1>What we're evaluating<br>for {{ $submission->business_name }}.</h1>
-    <p>Our team is conducting a structured review of your position. Here is exactly what we look at before activation.</p>
+    <p>This is not a formality. It determines whether your market is a fit and how quickly deployment can begin.</p>
   </div>
 
   <div class="divider"></div>
 
   <div class="body">
-    <p>Before a new partner is activated, we evaluate four dimensions. This is not a formality — it determines how we prioritize your market and allocate resources.</p>
+    <p>Before a new operator is activated, we evaluate four dimensions. Each one affects timeline, strategy, and how aggressively we can build position in your market.</p>
 
     <div class="eval-block">
       <h3>Review Criteria</h3>
@@ -64,7 +64,7 @@
       </div>
     </div>
 
-    <p>You do not need to do anything right now. If there is something we need from you to complete the review, someone will reach out directly.</p>
+    <p>You don't need to do anything right now. If we need something from you to complete the review, you'll hear from us directly.</p>
 
     <p>Questions before then? Reply to this email or reach us at <a href="mailto:{{ config('services.booking.owner_email', 'hello@seoaico.com') }}" style="color:#c8a84b;">{{ config('services.booking.owner_email', 'hello@seoaico.com') }}</a>.</p>
 

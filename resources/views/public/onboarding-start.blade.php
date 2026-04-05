@@ -1423,6 +1423,22 @@ body {
 
       <div class="ob-addons-grid">
         <div>
+          <input type="checkbox" class="ob-addon-opt" id="addon_growth_review" name="add_ons[]" value="website_growth_review"
+                 {{ in_array('website_growth_review', old('add_ons', [])) ? 'checked' : '' }}>
+          <label class="ob-addon-card" for="addon_growth_review">
+            <div class="ob-addon-header">
+              <span style="display:flex;align-items:center;gap:4px">
+                <span class="ob-addon-name">Website + Growth System Review</span>
+              </span>
+              <span class="ob-addon-check"></span>
+            </div>
+            <span class="ob-addon-price">$150 one-time</span>
+            <span class="ob-addon-desc">A hands-on review of your site and current growth systems — what's working, what's leaking revenue, and what to fix first. Delivered before your strategy session so we can act on it immediately.</span>
+            <span style="display:inline-block;margin-top:6px;font-size:.72rem;color:var(--gold);letter-spacing:.06em;text-transform:uppercase">Good starting point for new operators</span>
+          </label>
+        </div>
+
+        <div>
           <input type="checkbox" class="ob-addon-opt" id="addon_local_seo" name="add_ons[]" value="local_seo_setup"
                  {{ in_array('local_seo_setup', old('add_ons', [])) ? 'checked' : '' }}>
           <label class="ob-addon-card" for="addon_local_seo">
@@ -1862,6 +1878,12 @@ document.addEventListener('alpine:init', () => {
 
 // Disable submit on submit to prevent double-post
 document.getElementById('ob-form').addEventListener('submit', function() {
+  if (typeof gtag === 'function') {
+    gtag('event', 'onboarding_submitted', {
+      page_location: window.location.href,
+      booking_id: (new URLSearchParams(window.location.search)).get('booking') || null,
+    });
+  }
   const btn = document.getElementById('submit-btn');
   btn.disabled = true;
   btn.textContent = 'Submitting…';

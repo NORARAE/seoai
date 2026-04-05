@@ -6,8 +6,8 @@
     <span style="font-size:18px;color:#ede8de;font-weight:300;letter-spacing:.04em">SEO<span style="color:#c8a84b;font-weight:500;font-size:20px">AI</span> Co™</span>
   </div>
   <div style="padding:32px 28px">
-    <h1 style="font-size:22px;font-weight:400;color:#111;margin:0 0 8px">Your booking is confirmed</h1>
-    <p style="font-size:14px;color:#666;margin:0 0 24px;line-height:1.6">Here are the details for your upcoming session.</p>
+    <h1 style="font-size:22px;font-weight:400;color:#111;margin:0 0 8px">You're booked. Your spot is locked in.</h1>
+    <p style="font-size:14px;color:#666;margin:0 0 24px;line-height:1.6">Most operators in your market haven't made this call yet. That gap is exactly the point.</p>
 
     <table cellpadding="8" cellspacing="0" style="width:100%;border-collapse:collapse;font-size:14px;color:#333;margin-bottom:24px">
       <tr style="border-bottom:1px solid #eee">
@@ -35,8 +35,8 @@
     @endif
 
     <p style="font-size:13px;color:#888;line-height:1.6;margin-top:24px">
-      <strong style="color:#555">How to prepare:</strong><br>
-      Have your website and current SEO situation ready to discuss. If relevant, prepare any questions about licensing, capacity, or deployment.
+      <strong style="color:#555">Walk in ready:</strong><br>
+      Know your primary geography, top 2–3 service categories, and the single biggest growth obstacle you're facing right now. That context makes the session sharp.
     </p>
 
     <hr style="border:none;border-top:1px solid #eee;margin:24px 0">

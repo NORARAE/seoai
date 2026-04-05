@@ -10,9 +10,9 @@
 
   {{-- Body --}}
   <div style="padding:32px 28px">
-    <h1 style="font-size:22px;font-weight:400;color:#111;margin:0 0 8px">Your session is coming up</h1>
+    <h1 style="font-size:22px;font-weight:400;color:#111;margin:0 0 8px">Your session is tomorrow. Here's how to arrive ready.</h1>
     <p style="font-size:14px;color:#666;margin:0 0 24px;line-height:1.6">
-      We're looking forward to working through your local SEO strategy together. Here's a quick summary of what's scheduled and how to make the most of it.
+      The operators who get the most from this session come in with specific context. Here is what matters.
     </p>
 
     {{-- Session summary --}}
@@ -46,26 +46,26 @@
       <p style="font-size:13px;font-weight:600;color:#333;margin:0 0 12px;text-transform:uppercase;letter-spacing:.06em">Before we meet</p>
       <table cellpadding="0" cellspacing="0" style="font-size:13px;color:#555;line-height:1.7">
         <tr>
-          <td style="padding-right:10px;vertical-align:top;color:#c8a84b;font-size:16px">✓</td>
-          <td>Note the primary market or city you want to cover</td>
+          <td style="padding-right:10px;vertical-align:top;color:#c8a84b;font-size:16px">→</td>
+          <td>Your primary market — the specific geography where you want to hold position</td>
         </tr>
         <tr>
-          <td style="padding-right:10px;vertical-align:top;color:#c8a84b;font-size:16px">✓</td>
-          <td>List your top 2–3 service categories</td>
+          <td style="padding-right:10px;vertical-align:top;color:#c8a84b;font-size:16px">→</td>
+          <td>Your top 2–3 services, ranked by revenue margin — not just what you offer</td>
         </tr>
         <tr>
-          <td style="padding-right:10px;vertical-align:top;color:#c8a84b;font-size:16px">✓</td>
-          <td>Have your website URL on hand</td>
+          <td style="padding-right:10px;vertical-align:top;color:#c8a84b;font-size:16px">→</td>
+          <td>Your website URL and a rough sense of your current search visibility</td>
         </tr>
         <tr>
-          <td style="padding-right:10px;vertical-align:top;color:#c8a84b;font-size:16px">✓</td>
-          <td>Think through your biggest growth obstacle right now</td>
+          <td style="padding-right:10px;vertical-align:top;color:#c8a84b;font-size:16px">→</td>
+          <td>The one growth obstacle you would fix today if resources were not the constraint</td>
         </tr>
       </table>
     </div>
 
     <p style="font-size:13px;color:#888;line-height:1.6;margin:0">
-      Questions before the call? Reply to this email and we'll get back to you.
+      Questions before the call? Reply to this email — we'll get back to you same day.
     </p>
 
     <hr style="border:none;border-top:1px solid #eee;margin:24px 0">

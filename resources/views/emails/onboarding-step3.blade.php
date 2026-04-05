@@ -32,13 +32,13 @@
   <div class="header">
     <div class="logo">SEO AI Co™</div>
     <h1>Next steps for<br>{{ $submission->business_name }}.</h1>
-    <p>Your review is underway. Here is what happens from this point forward.</p>
+    <p>Your review is underway. Here is exactly what happens from this point — no ambiguity.</p>
   </div>
 
   <div class="divider"></div>
 
   <div class="body">
-    <p>Reviews typically complete within 2–3 business days. When yours is finalized, you will receive direct communication regarding your activation status and proposed starting point.</p>
+    <p>Reviews complete within 2–3 business days. When yours is finalized, you will receive a direct message with your activation status and a clear outline of how we move forward together.</p>
 
     <div class="steps-block">
       <div class="step">
@@ -77,7 +77,7 @@
     @endif
 
     <div class="cta-block">
-      <p>If you have not yet scheduled your market opportunity session, you may do so now. Priority onboarding is available for confirmed clients.</p>
+      <p>Haven't scheduled your market opportunity session yet? Do it now — priority onboarding is available for confirmed operators.</p>
       <a href="{{ url('/book') }}">Book Your Market Opportunity Session</a>
     </div>
 
