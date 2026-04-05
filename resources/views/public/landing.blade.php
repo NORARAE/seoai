@@ -837,14 +837,140 @@ nav.stuck{background:rgba(8,8,8,.95);backdrop-filter:blur(16px);border-color:var
   color:rgba(200,168,75,.45);
 }
 
+/* ── Final Closing CTA section ── */
+.fcc{
+  position:relative;overflow:hidden;
+  padding:160px 64px;text-align:center;
+  border-top:1px solid rgba(200,168,75,.14);
+}
+.fcc::before{
+  content:'';
+  position:absolute;inset:0;
+  background:radial-gradient(ellipse 82% 74% at 50% 46%,rgba(200,168,75,.17) 0%,rgba(200,168,75,.05) 52%,transparent 70%);
+  pointer-events:none;
+  animation:fccGlow 8s ease-in-out infinite;
+  z-index:0;
+}
+.fcc::after{
+  content:'';
+  position:absolute;inset:0;
+  background-image:
+    linear-gradient(rgba(200,168,75,.018) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(200,168,75,.018) 1px,transparent 1px);
+  background-size:72px 72px;
+  pointer-events:none;
+  z-index:0;
+}
+@keyframes fccGlow{
+  0%,100%{opacity:.72}
+  50%{opacity:1}
+}
+.fcc-canvas{
+  position:absolute;inset:0;width:100%;height:100%;
+  pointer-events:none;z-index:0;
+}
+.fcc-inner{
+  position:relative;z-index:1;
+  max-width:800px;margin:0 auto;
+}
+.fcc-eye{
+  font-size:.63rem;letter-spacing:.38em;text-transform:uppercase;
+  color:rgba(200,168,75,.58);margin-bottom:52px;
+  display:flex;align-items:center;justify-content:center;gap:20px;
+}
+.fcc-eye::before,.fcc-eye::after{
+  content:'';width:44px;height:1px;background:rgba(200,168,75,.2);
+}
+.fcc-hed{
+  font-family:'Cormorant Garamond',serif;font-weight:200;
+  line-height:1.08;margin-bottom:44px;
+  display:flex;flex-direction:column;gap:.30em;
+}
+.fcc-hed-1{
+  font-size:clamp(3rem,5.8vw,5.8rem);
+  color:var(--ivory);letter-spacing:-.020em;font-weight:300;
+  white-space:nowrap;
+}
+.fcc-hed-2{
+  font-size:clamp(2.6rem,5.0vw,5.0rem);
+  color:rgba(237,232,222,.44);letter-spacing:-.018em;font-style:italic;
+  white-space:nowrap;
+}
+.fcc-sub{
+  font-size:.96rem;color:rgba(168,168,160,.70);
+  line-height:1.85;margin-bottom:32px;
+  max-width:560px;margin-left:auto;margin-right:auto;
+}
+.fcc-gold{
+  font-family:'Cormorant Garamond',serif;font-weight:400;font-style:italic;
+  font-size:clamp(1.4rem,2.4vw,2.0rem);
+  letter-spacing:.01em;
+  background:linear-gradient(90deg,var(--gold) 0%,rgba(245,228,152,.98) 44%,var(--gold) 62%,var(--gold) 100%);
+  background-size:260% 100%;
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
+  background-clip:text;
+  animation:fccGoldShimmer 10s ease-in-out infinite;
+  margin-bottom:18px;
+  display:block;
+}
+@keyframes fccGoldShimmer{
+  0%,100%{background-position:120% 0}
+  40%,60%{background-position:0% 0}
+}
+.fcc-micro{
+  font-size:.70rem;letter-spacing:.22em;text-transform:uppercase;
+  color:rgba(168,168,160,.42);margin-bottom:56px;
+}
+.fcc-rule{
+  display:block;width:64px;height:1px;margin:0 auto 48px;
+  background:linear-gradient(90deg,transparent,rgba(200,168,75,.32),transparent);
+}
+.fcc-actions{
+  display:flex;align-items:center;justify-content:center;gap:22px;
+  flex-wrap:wrap;margin-bottom:22px;
+}
+.fcc-primary{
+  display:inline-flex;align-items:center;
+  background:var(--gold);color:#080808;
+  font-family:'DM Sans',sans-serif;
+  font-size:.82rem;font-weight:500;letter-spacing:.14em;text-transform:uppercase;
+  padding:18px 44px;border-radius:6px;border:none;cursor:pointer;
+  transition:background .3s,transform .2s,box-shadow .2s;
+  min-height:56px;
+}
+.fcc-primary:hover{
+  background:var(--gold-lt);transform:translateY(-2px);
+  box-shadow:0 10px 32px rgba(200,168,75,.26);
+}
+.fcc-secondary{
+  font-size:.80rem;letter-spacing:.14em;text-transform:uppercase;
+  color:rgba(168,168,160,.65);text-decoration:none;
+  border-bottom:1px solid rgba(168,168,160,.18);padding-bottom:2px;
+  transition:color .2s,border-color .2s;
+}
+.fcc-secondary:hover{color:var(--gold);border-color:rgba(200,168,75,.42)}
+.fcc-reassure{
+  font-size:.70rem;letter-spacing:.14em;text-transform:uppercase;
+  color:rgba(168,168,160,.35);
+}
+
 /* ── Responsive pricing/services ── */
 @media(max-width:900px){
   .value-anchor,.exec-services,.access-position,.access-model,.decision-guide,.pricing-cta,.final-close{padding:48px 24px}
+  .fcc{padding:100px 32px}
+  .fcc-hed-1,.fcc-hed-2{white-space:normal;font-size:clamp(1.9rem,5.2vw,2.8rem)}
   .exec-grid{grid-template-columns:1fr}
   .access-position{grid-template-columns:1fr;gap:28px}
 }
 @media(max-width:520px){
   .value-anchor,.exec-services,.access-position,.access-model,.decision-guide,.pricing-cta,.final-close{padding:36px 20px}
+  .fcc{padding:72px 20px}
+  .fcc-hed-1{font-size:clamp(1.65rem,7.8vw,2.4rem)}
+  .fcc-hed-2{font-size:clamp(1.45rem,6.8vw,2.1rem)}
+  .fcc-actions{flex-direction:column;align-items:stretch}
+  .fcc-primary{justify-content:center;width:100%}
+  .fcc-secondary{text-align:center}
   .dg-row{flex-wrap:wrap;gap:8px}
   .dg-tier{text-align:left;min-width:auto}
   .dg-if{width:auto}
@@ -3438,6 +3564,27 @@ body::before{
   </div>
 </section>
 
+<!-- ════════════ FINAL CLOSING CTA ════════════ -->
+<section class="fcc r" aria-label="Start your market expansion">
+  <canvas class="fcc-canvas" id="fccCanvas" aria-hidden="true"></canvas>
+  <div class="fcc-inner">
+    <p class="fcc-eye">Market Position</p>
+    <h2 class="fcc-hed">
+      <span class="fcc-hed-1">The territory will be owned.</span>
+      <span class="fcc-hed-2">The only question is by whom.</span>
+    </h2>
+    <p class="fcc-sub">Markets are structured, expanded, and secured over time.<br>Early positioning establishes long-term visibility.</p>
+    <span class="fcc-gold">First to structure. First to scale.</span>
+    <p class="fcc-micro">Expansion moves continuously. Entry is guided.</p>
+    <span class="fcc-rule" aria-hidden="true"></span>
+    <div class="fcc-actions">
+      <button class="fcc-primary" onclick="window._bkPending={id:{{ $consultTypes->get('audit')?->id ?? 9 }},duration:{{ $consultTypes->get('audit')?->duration_minutes ?? 60 }},name:{{ json_encode($consultTypes->get('audit')?->name ?? 'Market Expansion Strategy') }},isFree:false};window.dispatchEvent(new CustomEvent('open-booking',{detail:window._bkPending}));if(typeof gtag==='function')gtag('event','cta_click',{cta_location:'final_close',cta_label:'start_market_expansion'});">Start Your Market Expansion</button>
+      <a href="{{ route('how-it-works') }}" class="fcc-secondary">See how it works</a>
+    </div>
+    <p class="fcc-reassure">Guided entry.&ensp;Structured rollout.&ensp;Full support.</p>
+  </div>
+</section>
+
 <!-- ════════════ STICKY MOBILE CTA (mobile only — hidden on desktop via CSS) ════════════ -->
 <div id="mobStickyCta" class="mob-sticky-cta" role="complementary" aria-label="Quick access — assess market availability">
   <div class="msc-inner">
@@ -3909,7 +4056,91 @@ body::before{
     });
   })();
 
-  /* ── Mobile slide-in panel ── */
+  /* ── Final Closing CTA canvas (brighter than infra-principle) ── */
+  (function(){
+    var canvas = document.getElementById('fccCanvas');
+    if(!canvas) return;
+    var ctx = canvas.getContext('2d');
+    var nodes=[], raf, W, H;
+    var COUNT=46, LINK=260, G='200,168,75';
+    var reduced = window.matchMedia('(prefers-reduced-motion:reduce)').matches;
+    var tick=0;
+
+    function resize(){
+      var DPR = window.devicePixelRatio || 1;
+      W = canvas.offsetWidth;
+      H = canvas.offsetHeight;
+      canvas.width  = Math.round(W * DPR);
+      canvas.height = Math.round(H * DPR);
+      ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
+    }
+    function init(){
+      resize(); nodes=[];
+      for(var i=0;i<COUNT;i++){
+        nodes.push({
+          x:Math.random()*W, y:Math.random()*H,
+          vx:(Math.random()-.5)*.22, vy:(Math.random()-.5)*.22,
+          r:Math.random()*1.8+.9,
+          phase:Math.random()*Math.PI*2,
+          glowMult:Math.random()*.9+.6
+        });
+      }
+    }
+    function frame(){
+      ctx.clearRect(0,0,W,H);
+      tick += 0.014;
+
+      for(var i=0;i<nodes.length;i++){
+        for(var j=i+1;j<nodes.length;j++){
+          var dx=nodes[j].x-nodes[i].x, dy=nodes[j].y-nodes[i].y;
+          var d=Math.sqrt(dx*dx+dy*dy);
+          if(d<LINK){
+            ctx.beginPath();
+            ctx.moveTo(nodes[i].x,nodes[i].y);
+            ctx.lineTo(nodes[j].x,nodes[j].y);
+            ctx.strokeStyle='rgba('+G+','+(1-d/LINK)*.44+')';
+            ctx.lineWidth=.60;
+            ctx.stroke();
+          }
+        }
+      }
+
+      for(var i=0;i<nodes.length;i++){
+        var n = nodes[i];
+        var pulse = .42 + Math.sin(tick + n.phase) * .14;
+        var glow  = n.glowMult;
+        ctx.shadowBlur  = glow * 14;
+        ctx.shadowColor = 'rgba('+G+','+(glow*.46).toFixed(2)+')';
+        ctx.beginPath();
+        ctx.arc(n.x, n.y, n.r, 0, Math.PI*2);
+        ctx.fillStyle   = 'rgba('+G+','+pulse.toFixed(3)+')';
+        ctx.fill();
+        ctx.shadowBlur  = 0;
+
+        if(!reduced){
+          n.x += n.vx * .70;
+          n.y += n.vy * .70;
+          if(n.x<0)n.x=W; if(n.x>W)n.x=0;
+          if(n.y<0)n.y=H; if(n.y>H)n.y=0;
+        }
+      }
+      raf = requestAnimationFrame(frame);
+    }
+
+    // Defer start until section enters viewport
+    if('IntersectionObserver' in window){
+      var io = new IntersectionObserver(function(entries){
+        if(entries[0].isIntersecting){init();raf=requestAnimationFrame(frame);io.disconnect();}
+      },{threshold:.05});
+      io.observe(canvas);
+    } else {
+      init(); raf = requestAnimationFrame(frame);
+    }
+    window.addEventListener('resize',function(){
+      cancelAnimationFrame(raf); init();
+      raf = requestAnimationFrame(frame);
+    });
+  })();
   (function(){
     var btn      = document.getElementById('navHamburger');
     var menu     = document.getElementById('navMenu');
