@@ -646,6 +646,37 @@ body {
   font-weight: 400;
 }
 
+/* ── Decision frame block ── */
+.ob-decision-frame {
+  margin: 32px 0 28px;
+  padding: 24px 22px;
+  border: 1px solid rgba(200,168,75,.12);
+  border-radius: 10px;
+  background: rgba(200,168,75,.015);
+  position: relative;
+}
+.ob-decision-frame::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(200,168,75,.22), transparent);
+}
+.ob-decision-hed {
+  font-size: .82rem;
+  letter-spacing: .10em;
+  text-transform: uppercase;
+  color: rgba(237,232,222,.62);
+  margin-bottom: 4px;
+}
+.ob-decision-sub {
+  font-size: .73rem;
+  color: rgba(168,168,160,.38);
+  letter-spacing: .02em;
+  margin-top: 4px;
+  font-style: italic;
+}
+
 /* ── Premium path rows (Multi-location, Agency) ── */
 .ob-premium-row {
   display: flex;
@@ -1506,10 +1537,13 @@ body {
       </div>
 
       {{-- ── Growth & Support Options ── --}}
-      <div class="ob-section" style="margin-top:40px">Enhance Your Setup</div>
-      <p class="ob-session-secured">You’ve secured your session.</p>
-      <p class="ob-session-secured-sub">These enhancements help us move faster, build more accurately, and position your business more effectively from the start. No charges are added without your direct approval.</p>
-      <p class="ob-fine" style="color:rgba(168,168,160,.30);font-style:italic;margin:-14px 0 22px;letter-spacing:.02em">Session access is reserved and reviewed to ensure strong fit and execution.</p>
+      <div class="ob-section" style="margin-top:40px">Strategic Acceleration</div>
+      <p class="ob-session-secured">You’ve secured your session.<br><br>Now we prepare your market.</p>
+      <p class="ob-session-secured-sub">The selections below determine how fast your system deploys, how accurately it is structured, and how strongly your position builds over time. No charges are added without your direct approval.</p>
+      @if(!empty($tier))
+      <p class="ob-session-secured-sub" style="color:rgba(200,168,75,.62);margin-top:-10px;margin-bottom:20px">{{ $tier === 'launch' ? 'Your Launch path is set. These decisions shape how quickly your market position takes hold.' : ($tier === 'expansion' ? 'Your Expansion path is set. These decisions determine how broadly and how fast your system scales.' : 'Your Dominance path is set. These decisions drive the speed and depth of full-market coverage.') }}</p>
+      @endif
+      <p class="ob-fine" style="color:rgba(168,168,160,.30);font-style:italic;margin:0 0 22px;letter-spacing:.02em">These options help us move faster, build smarter, and strengthen your position from the start.</p>
 
 
 
@@ -1522,17 +1556,16 @@ body {
       </div>
 
       <div class="ob-fullsvc-block">
-        <p class="ob-fullsvc-hed">This is more than SEO.</p>
-        <p class="ob-fullsvc-body">We build, expand, and support your entire growth system — not just search rankings.</p>
+        <p class="ob-fullsvc-hed">This is more than visibility.</p>
+        <p class="ob-fullsvc-body">We build, expand, and support your full growth system:</p>
         <ul class="ob-fullsvc-list">
-          <li>Website design and rebuilds</li>
-          <li>WordPress development and updates</li>
-          <li>Advertising and campaign management</li>
-          <li>Branding and print</li>
+          <li>Website structure and conversion architecture</li>
+          <li>Market expansion and search visibility</li>
+          <li>Paid acquisition and campaign strategy</li>
+          <li>Brand positioning and creative direction</li>
         </ul>
-        <p class="ob-fullsvc-body">The system drives visibility — we support everything behind it.</p>
-        <p class="ob-fullsvc-body" style="color:rgba(168,168,160,.48);font-size:.81rem;margin-top:2px">This is where most clients move after their session.</p>
-        <p class="ob-fullsvc-note">Most businesses start here, then expand into full market rollout and growth support. <strong>Typical investment: $3,000 – $15,000+ depending on scope and speed. Confirmed after your session.</strong></p>
+        <p class="ob-fullsvc-body">The system drives visibility.<br>We support everything behind it.</p>
+        <p class="ob-fullsvc-note">Typical investment: $3,000 – $15,000+ depending on scope and speed. <strong>Confirmed after your session.</strong></p>
       </div>
 
       <p class="ob-fine" style="color:rgba(168,168,160,.30);text-align:center;margin:0 0 20px;font-size:.76rem;letter-spacing:.025em">Pricing reflects the level of work, analysis, and system integration involved.</p>
@@ -1577,13 +1610,13 @@ body {
           <label class="ob-addon-card" for="addon_ads_setup">
             <div class="ob-addon-header">
               <span style="display:flex;align-items:center;gap:4px">
-                <span class="ob-addon-name">Campaign Build &amp; Launch</span>
-                <span class="ob-info-btn" @click.prevent.stop="openAddonDetail('google_ads')" aria-label="About Campaign Build and Launch">i</span>
+                <span class="ob-addon-name">Market Activation Campaign</span>
+                <span class="ob-info-btn" @click.prevent.stop="openAddonDetail('google_ads')" aria-label="About Market Activation Campaign">i</span>
               </span>
               <span class="ob-addon-check"></span>
             </div>
-            <span class="ob-addon-price">Setup fee quoted after session</span>
-            <span class="ob-addon-desc">We build your full Google Ads setup — campaigns, targeting, and conversion tracking — ready to generate leads from day one. Management and ad spend are separate.</span>
+            <span class="ob-addon-price">Setup from $750 &middot; ad spend paid directly to platform</span>
+            <span class="ob-addon-desc">We build your full paid acquisition setup — campaigns, targeting, and conversion tracking — structured around your market. Ad spend goes directly to the platform. Ongoing management scoped separately after your session.</span>
             <span style="display:inline-block;margin-top:6px;font-size:.72rem;color:var(--gold);letter-spacing:.06em;text-transform:uppercase">Used by growth-focused clients</span>
           </label>
         </div>
@@ -1599,8 +1632,8 @@ body {
               </span>
               <span class="ob-addon-check"></span>
             </div>
-            <span class="ob-addon-price">$149/month</span>
-            <span class="ob-addon-desc">A curated monthly report — not automated output. Clear, branded, and designed to show exactly how your market position is growing.</span>
+            <span class="ob-addon-price">$349/month</span>
+            <span class="ob-addon-desc">Strategic position tracking — not automated output. Clear, branded, and structured to show exactly how your market position is building month over month.</span>
           </label>
         </div>
 
@@ -1615,8 +1648,8 @@ body {
               </span>
               <span class="ob-addon-check"></span>
             </div>
-            <span class="ob-addon-price">$249 one-time</span>
-            <span class="ob-addon-desc">A research report on your market — who ranks, where they’re weak, and exactly where your business can grow first. Delivered before deployment begins.</span>
+            <span class="ob-addon-price">From $349</span>
+            <span class="ob-addon-desc">A research report on your market — who ranks, where they’re weak, and exactly where your business can grow first. Delivered before deployment begins so we target real opportunities from day one.</span>
           </label>
         </div>
 
@@ -1626,13 +1659,13 @@ body {
           <label class="ob-addon-card" for="addon_ai_report">
             <div class="ob-addon-header">
               <span style="display:flex;align-items:center;gap:4px">
-                <span class="ob-addon-name">SEOAIco&trade; AI Market Report</span>
-                <span class="ob-info-btn" @click.prevent.stop="openAddonDetail('ai_market_report')" aria-label="About AI Market Report">i</span>
+                <span class="ob-addon-name">SEOAIco&trade; AI Market Analysis</span>
+                <span class="ob-info-btn" @click.prevent.stop="openAddonDetail('ai_market_report')" aria-label="About AI Market Analysis">i</span>
               </span>
               <span class="ob-addon-check"></span>
             </div>
-            <span class="ob-addon-price">From $349 one-time</span>
-            <span class="ob-addon-desc">Identifies where your business can take market position first — before competitors adjust. Full AI-driven breakdown of who to beat, where to rank, and what to build first.</span>
+            <span class="ob-addon-price">$349–$999</span>
+            <span class="ob-addon-desc">Full AI-driven market analysis — who ranks, where the gaps are, and exactly where to deploy first for the strongest position. Delivered before your session so every decision is backed by data.</span>
             <span style="display:inline-block;margin-top:6px;font-size:.72rem;color:var(--gold);letter-spacing:.06em;text-transform:uppercase">Recommended starting point &middot; strategic advantage</span>
           </label>
         </div>
@@ -1708,6 +1741,17 @@ body {
         </label>
         <p style="font-size:.70rem;letter-spacing:.04em;color:rgba(200,168,75,.82);margin-top:6px">Complimentary review available for qualifying businesses.</p>
         <p class="ob-rd-disclaimer">This information is provided for general awareness only and does not constitute tax, legal, or accounting advice.</p>
+      </div>
+
+      {{-- ── Decision frame ── --}}
+      <div class="ob-decision-frame">
+        <p class="ob-decision-hed">How aggressively do you want to move?</p>
+        <ul class="ob-tier-ladder">
+          <li class="ob-tier-item"><strong>Standard build</strong> — structured rollout, steady position growth over time</li>
+          <li class="ob-tier-item"><strong>Accelerated build</strong> — intelligence reports + tracking activate faster, stronger deployment</li>
+          <li class="ob-tier-item"><strong>Full expansion path</strong> — paid acquisition layered over organic, maximum velocity from day one</li>
+        </ul>
+        <p class="ob-decision-sub">Your selections above determine which path you’re on.</p>
       </div>
 
       {{-- ── Submit ── --}}
@@ -1813,8 +1857,8 @@ body {
       <template x-if="obDetailId === 'google_ads'">
         <div>
           <span class="ob-detail-eyebrow">Enhancement — Expert Build</span>
-          <div class="ob-detail-title">Campaign Build &amp; Launch</div>
-          <div class="ob-detail-price-badge">Setup fee scoped after session · Management separate</div>
+          <div class="ob-detail-title">Market Activation Campaign</div>
+          <div class="ob-detail-price-badge">Setup from $750 &middot; Ad spend direct to platform &middot; Management scoped separately</div>
           <div class="ob-detail-section">
             <span class="ob-detail-section-label">What this includes</span>
             <p class="ob-detail-body">A professionally built Google Ads account — campaign structure, targeting, ad copy, and conversion tracking — set up to run in your specific market and service area.</p>
@@ -1852,7 +1896,7 @@ body {
         <div>
           <span class="ob-detail-eyebrow">Enhancement — Monthly</span>
           <div class="ob-detail-title">SEOAIco™ Market Position Tracking</div>
-          <div class="ob-detail-price-badge">$149 / month</div>
+          <div class="ob-detail-price-badge">$349 / month</div>
           <div class="ob-detail-section">
             <span class="ob-detail-section-label">What this does</span>
             <p class="ob-detail-body">Delivers a clear, branded report each month showing where your system is performing — so you don't have to log into dashboards or figure it out yourself.</p>
@@ -1884,7 +1928,7 @@ body {
         <div>
           <span class="ob-detail-eyebrow">Enhancement — One-time</span>
           <div class="ob-detail-title">SEOAIco™ Market Intelligence Report</div>
-          <div class="ob-detail-price-badge">$249</div>
+          <div class="ob-detail-price-badge">From $349</div>
           <div class="ob-detail-section">
             <span class="ob-detail-section-label">What this does</span>
             <p class="ob-detail-body">Before your system deploys, we research your market — who ranks, where they’re winning, and where there are clear gaps your business can take. You get a written report with specific direction, not a generic overview.</p>
@@ -1947,8 +1991,8 @@ body {
       <template x-if="obDetailId === 'ai_market_report'">
         <div>
           <span class="ob-detail-eyebrow">Enhancement — One-time</span>
-          <div class="ob-detail-title">SEOAIco™ AI Market Report</div>
-          <div class="ob-detail-price-badge">From $349 one-time</div>
+          <div class="ob-detail-title">SEOAIco™ AI Market Analysis</div>
+          <div class="ob-detail-price-badge">$349–$999</div>
           <div class="ob-detail-section">
             <span class="ob-detail-section-label">What this does</span>
             <p class="ob-detail-body">A full AI-driven breakdown of your market — who’s winning, where the gaps are, and exactly where your business should focus to generate the most growth.</p>
