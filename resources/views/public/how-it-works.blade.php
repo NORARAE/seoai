@@ -51,6 +51,9 @@ body{background:var(--bg);color:var(--ivory);font-family:'DM Sans',sans-serif;fo
 .page-intro{font-size:1.12rem;color:var(--muted);max-width:640px;line-height:1.85;margin-bottom:12px}
 .page-intro-note{font-size:.88rem;color:rgba(200,168,75,.60);letter-spacing:.02em;margin-bottom:52px;font-weight:400}
 
+/* ── Positioning line ── */
+.page-position{font-size:1.18rem;font-weight:400;color:var(--ivory);max-width:600px;line-height:1.55;margin-bottom:52px;border-left:2px solid rgba(200,168,75,.35);padding-left:18px}
+
 /* ── Top trust strip ── */
 .trust-strip{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:rgba(200,168,75,.08);border:1px solid rgba(200,168,75,.14);margin-bottom:72px}
 .ts-item{background:rgba(14,13,9,.95);padding:26px 20px 24px;display:flex;flex-direction:column;gap:10px;transition:background .22s}
@@ -63,6 +66,7 @@ body{background:var(--bg);color:var(--ivory);font-family:'DM Sans',sans-serif;fo
 /* ── How-strip (4-pillar summary) ── */
 .how-strip{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:rgba(200,168,75,.08);border:1px solid rgba(200,168,75,.14);margin-bottom:80px}
 .how-pill{background:rgba(14,13,9,.90);padding:36px 22px 32px;display:flex;flex-direction:column;gap:12px;transition:background .22s,transform .22s;cursor:default;position:relative}
+.how-pill.how-pill--lead{background:rgba(20,17,10,.98);border-right:1px solid rgba(200,168,75,.18)}
 .how-pill::after{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;background:rgba(200,168,75,0);transition:background .28s}
 .how-pill:hover{background:rgba(22,19,11,1);transform:translateY(-2px)}
 .how-pill:hover::after{background:rgba(200,168,75,.40)}
@@ -181,6 +185,7 @@ sup{font-size:.55em;line-height:0;vertical-align:super}
   <span class="page-eye">The System</span>
   <h1 class="page-title">How <em>SEO AI Co<sup>&trade;</sup></em><br>works.</h1>
   <p class="page-intro">We build structured, location-specific pages on your existing website &mdash; expanding your domain&rsquo;s coverage across every service and city you serve.</p>
+  <p class="page-position">We expand your existing website with structured pages across your market.</p>
   <p class="page-intro-note">No site replacement. No separate platform. Built on your URL, under your brand.</p>
 
   {{-- ── TOP TRUST STRIP ── --}}
@@ -192,7 +197,7 @@ sup{font-size:.55em;line-height:0;vertical-align:super}
         </svg>
       </div>
       <span class="ts-label">Built on your domain</span>
-      <span class="ts-sub">Your URL. Your brand. Your authority.</span>
+      <span class="ts-sub">Your site &mdash; not a replacement.</span>
     </div>
     <div class="ts-item" data-stagger-child>
       <div class="ts-icon-wrap">
@@ -201,7 +206,7 @@ sup{font-size:.55em;line-height:0;vertical-align:super}
         </svg>
       </div>
       <span class="ts-label">WordPress-first</span>
-      <span class="ts-sub">Plugin-based integration. No rebuilding.</span>
+      <span class="ts-sub">Plugin-based integration.</span>
     </div>
     <div class="ts-item" data-stagger-child>
       <div class="ts-icon-wrap">
@@ -209,8 +214,8 @@ sup{font-size:.55em;line-height:0;vertical-align:super}
           <path stroke-linecap="round" stroke-linejoin="round" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><circle cx="12" cy="12" r="3"/>
         </svg>
       </div>
-      <span class="ts-label">Custom development available</span>
-      <span class="ts-sub">Built for any properly structured setup.</span>
+      <span class="ts-label">Custom builds supported</span>
+      <span class="ts-sub">Flexible implementation.</span>
     </div>
     <div class="ts-item" data-stagger-child>
       <div class="ts-icon-wrap">
@@ -219,31 +224,31 @@ sup{font-size:.55em;line-height:0;vertical-align:super}
         </svg>
       </div>
       <span class="ts-label">Structured rollout</span>
-      <span class="ts-sub">Phased, planned, and managed for you.</span>
+      <span class="ts-sub">Phased, controlled expansion.</span>
     </div>
   </div>
 
   {{-- ── HOW-STRIP: 4-pillar summary ── --}}
   <div class="how-strip" data-stagger>
-    <div class="how-pill" data-stagger-child>
+    <div class="how-pill how-pill--lead" data-stagger-child>
       <span class="how-pill-num">01</span>
       <span class="how-pill-label">Map</span>
-      <span class="how-pill-sub">We review your services, locations, and site structure.</span>
+      <span class="how-pill-sub">Review services, locations, structure.</span>
     </div>
     <div class="how-pill" data-stagger-child>
       <span class="how-pill-num">02</span>
       <span class="how-pill-label">Build</span>
-      <span class="how-pill-sub">We create structured pages on your existing domain.</span>
+      <span class="how-pill-sub">Create structured pages on your domain.</span>
     </div>
     <div class="how-pill" data-stagger-child>
       <span class="how-pill-num">03</span>
       <span class="how-pill-label">Connect</span>
-      <span class="how-pill-sub">We strengthen internal linking and page relationships.</span>
+      <span class="how-pill-sub">Strengthen internal linking.</span>
     </div>
     <div class="how-pill" data-stagger-child>
       <span class="how-pill-num">04</span>
       <span class="how-pill-label">Expand</span>
-      <span class="how-pill-sub">Growth rolls out in phases, not all at once.</span>
+      <span class="how-pill-sub">Roll out growth in phases.</span>
     </div>
   </div>
 
@@ -255,7 +260,7 @@ sup{font-size:.55em;line-height:0;vertical-align:super}
       <div class="step-body">
         <span class="step-label">Map</span>
         <h2 class="step-hed">We map your market before anything is built.</h2>
-        <p class="step-copy">Every service you offer. Every city you serve. Every gap in your current site&rsquo;s coverage. We document the full structure before a single page is created.<br><br>This phase produces your complete expansion architecture &mdash; service categories, location depth, URL structure, and internal link planning.</p>
+        <p class="step-copy">Every service you offer. Every city you serve. Every gap in your current coverage. We document the full structure before a single page is created &mdash; so every deployment has a clear purpose and place.<br><br>Output: service categories, location depth, URL structure, and internal link plan.</p>
         <span class="step-note">No guesswork. Mapped to your actual market.</span>
       </div>
     </div>
@@ -265,7 +270,7 @@ sup{font-size:.55em;line-height:0;vertical-align:super}
       <div class="step-body">
         <span class="step-label">Build</span>
         <h2 class="step-hed">Structured pages &mdash; built on your domain.</h2>
-        <p class="step-copy">We generate location-specific service pages on your existing website &mdash; under your URL, inside your brand. Each page is properly structured with relevant content, schema markup, and the signals search engines and AI systems use to understand what a page is about.<br><br><strong>Your site grows. Your domain earns the authority.</strong></p>
+        <p class="step-copy">Location-specific service pages &mdash; built directly on your existing website, under your URL, inside your brand. Each page is structured with relevant content, schema markup, and the signals search engines use to understand what a page is about.<br><br><strong>Your site grows. Your domain earns the authority.</strong></p>
         <span class="step-note">WordPress and Divi supported natively. No migration required.</span>
       </div>
     </div>
@@ -275,7 +280,7 @@ sup{font-size:.55em;line-height:0;vertical-align:super}
       <div class="step-body">
         <span class="step-label">Connect</span>
         <h2 class="step-hed">Every page connects &mdash; and signals correctly.</h2>
-        <p class="step-copy">We build the internal link structure, schema markup, and search signal layers that help your site get understood. Each page reinforces your domain&rsquo;s coverage depth and topical authority.<br><br>This is the layer most sites are missing &mdash; and what separates a structured visibility system from a collection of pages.</p>
+        <p class="step-copy">Internal link structure, schema markup, and search signal layers &mdash; built so your site is properly understood. Each page reinforces your domain&rsquo;s coverage depth and topical authority.<br><br>This is the layer most sites are missing.</p>
         <span class="step-note">Structured data, canonical signals, and local schema included.</span>
       </div>
     </div>
@@ -285,7 +290,7 @@ sup{font-size:.55em;line-height:0;vertical-align:super}
       <div class="step-body">
         <span class="step-label">Expand</span>
         <h2 class="step-hed">Coverage grows. The system manages it.</h2>
-        <p class="step-copy">New pages extend your reach on a structured, phased schedule. Coverage compounds &mdash; earlier pages build context and authority that later pages benefit from. Your team manages none of this directly.<br><br>Deployment is structured over a 4-month build phase. Ongoing coverage and signal maintenance continue under your active agreement.</p>
+        <p class="step-copy">New pages extend your reach on a structured, phased schedule. Coverage compounds &mdash; earlier pages build authority that later pages benefit from. Your team manages none of this directly.<br><br>4-month build phase. Ongoing maintenance under your active agreement.</p>
         <span class="step-note">Structured 4-month rollout. Continuous coverage thereafter.</span>
       </div>
     </div>
@@ -358,8 +363,8 @@ sup{font-size:.55em;line-height:0;vertical-align:super}
   {{-- ── PLATFORM COMPATIBILITY ── --}}
   <div class="compat-block">
     <span class="compat-block-eye">Platform Compatibility</span>
-    <h2 class="compat-block-hed">Works with your existing website.</h2>
-    <p class="compat-block-sub">SEO AI Co is designed to build directly on your current site &mdash; no separate platform, no migration required for most setups.</p>
+    <h2 class="compat-block-hed">Works with your existing site.</h2>
+    <p class="compat-block-sub">Built directly on your current website. No separate platform. No migration required for most setups.</p>
 
     <div class="compat-grid">
 
