@@ -86,6 +86,12 @@
 .bk-fullsvc-access{font-size:.72rem;color:rgba(168,168,160,.48);letter-spacing:.03em;margin:14px 0 0;line-height:1.55;text-align:center;font-style:italic}
 .bk-priority-note{font-size:.74rem;color:rgba(200,168,75,.62);letter-spacing:.03em;margin:10px 0 0;padding:8px 12px;border-left:2px solid rgba(200,168,75,.25);background:rgba(200,168,75,.025);border-radius:0 4px 4px 0;line-height:1.55}
 .bk-lower-label{margin:28px 0 10px!important;border-top:1px solid #161616;padding-top:22px;color:#565650!important}
+/* Confidence / what-happens-next block inside full-service cards */
+.bk-whats-next{margin:12px 0 14px;padding-top:11px;border-top:1px solid rgba(200,168,75,.12)}
+.bk-whats-next-label{font-size:.68rem;letter-spacing:.12em;text-transform:uppercase;color:rgba(200,168,75,.55);margin-bottom:7px;display:block}
+.bk-whats-next-list{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:5px}
+.bk-whats-next-list li{font-size:.74rem;color:rgba(168,168,160,.72);padding-left:13px;position:relative;line-height:1.5}
+.bk-whats-next-list li::before{content:'→';color:rgba(200,168,75,.40);position:absolute;left:0;font-size:.68rem;top:.05em}
 .bk-lower-section .bk-type{opacity:.78}
 .bk-lower-section .bk-type.featured{opacity:.84}
 .bk-lower-section .bk-type:hover{opacity:1}
@@ -201,6 +207,15 @@
             <div class="bk-fullsvc-name">Strategy Session</div>
             <div class="bk-fullsvc-price">$1,500&ndash;$2,500</div>
             <div class="bk-fullsvc-note">Deep analysis + prioritised growth roadmap. Structured entry into a full expansion plan.</div>
+            <div class="bk-whats-next">
+              <span class="bk-whats-next-label">What happens next</span>
+              <ul class="bk-whats-next-list">
+                <li>Market review and opportunity mapping</li>
+                <li>Expansion strategy across services and locations</li>
+                <li>Prioritised rollout plan</li>
+                <li>Direct next steps for activation</li>
+              </ul>
+            </div>
             <a href="mailto:hello@seoaico.com?subject=Strategy+Session+Inquiry" class="bk-fullsvc-cta-primary">Book &amp; Secure Session</a>
             <a href="mailto:hello@seoaico.com?subject=Strategy+Session+Inquiry" class="bk-fullsvc-cta-secondary">Contact to discuss</a>
           </div>
