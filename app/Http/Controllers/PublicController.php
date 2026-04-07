@@ -29,7 +29,8 @@ class PublicController extends Controller
         $consultTypes = \App\Models\ConsultType::active()->get()->keyBy('slug');
         $types = $consultTypes->values();
         $availableDays = \App\Models\BookingAvailability::active()->pluck('day_of_week')->toArray();
-        return view('public.landing', compact('consultTypes', 'types', 'availableDays'));
+        $highTicketTypes = \App\Models\ConsultType::whereIn('slug', ['strategy-session', 'market-expansion'])->get()->keyBy('slug');
+        return view('public.landing', compact('consultTypes', 'types', 'availableDays', 'highTicketTypes'));
     }
 
     /**

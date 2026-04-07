@@ -79,7 +79,7 @@
 .bk-fullsvc-name{font-size:.90rem;color:#ede8de;font-weight:400;margin-bottom:4px;line-height:1.3}
 .bk-fullsvc-price{font-size:.84rem;color:rgba(200,168,75,.85);margin-bottom:6px;font-weight:500}
 .bk-fullsvc-note{font-size:.74rem;color:#9a9a92;line-height:1.55;margin-bottom:14px}
-.bk-fullsvc-cta-primary{display:block;text-align:center;background:rgba(200,168,75,.10);border:1px solid rgba(200,168,75,.32);border-radius:6px;color:rgba(200,168,75,.90);font-size:.72rem;font-weight:500;letter-spacing:.10em;text-transform:uppercase;padding:9px 10px;text-decoration:none;transition:background .25s,border-color .25s,color .25s;margin-bottom:7px}
+.bk-fullsvc-cta-primary{display:block;width:100%;text-align:center;background:rgba(200,168,75,.10);border:1px solid rgba(200,168,75,.32);border-radius:6px;color:rgba(200,168,75,.90);font-size:.72rem;font-weight:500;letter-spacing:.10em;text-transform:uppercase;padding:9px 10px;text-decoration:none;transition:background .25s,border-color .25s,color .25s;margin-bottom:7px;cursor:pointer;font-family:inherit;box-sizing:border-box}
 .bk-fullsvc-cta-primary:hover{background:rgba(200,168,75,.18);border-color:rgba(200,168,75,.52);color:var(--gold,#c8a84b)}
 .bk-fullsvc-cta-secondary{display:block;text-align:center;background:none;border:none;color:rgba(168,168,160,.52);font-size:.68rem;letter-spacing:.08em;text-transform:uppercase;text-decoration:none;padding:4px 0;transition:color .2s;cursor:pointer}
 .bk-fullsvc-cta-secondary:hover{color:rgba(168,168,160,.82)}
@@ -216,7 +216,11 @@
                 <li>Direct next steps for activation</li>
               </ul>
             </div>
-            <a href="mailto:hello@seoaico.com?subject=Strategy+Session+Inquiry" class="bk-fullsvc-cta-primary">Book &amp; Secure Session</a>
+            <button type="button" class="bk-fullsvc-cta-primary"
+              onclick="_bkOpenHT({{ ($highTicketTypes ?? collect())->get('strategy-session')?->id ?? 0 }}, 90, 'Strategy Session', 'full_prepay')">
+              Secure Your Session
+            </button>
+            <p style="margin:4px 0 7px;text-align:center;font-size:.70rem;color:rgba(168,168,160,.40);letter-spacing:.03em">Deposit applied toward full engagement</p>
             <a href="mailto:hello@seoaico.com?subject=Strategy+Session+Inquiry" class="bk-fullsvc-cta-secondary">Contact to discuss</a>
           </div>
           <div class="bk-fullsvc-card">
@@ -224,7 +228,11 @@
             <div class="bk-fullsvc-name">Full Market Expansion System</div>
             <div class="bk-fullsvc-price">$5,000&ndash;$15,000+</div>
             <div class="bk-fullsvc-note">Complete build &mdash; done-for-you. Everything from structure to execution, fully managed.</div>
-            <a href="mailto:hello@seoaico.com?subject=Full+Market+Expansion+Inquiry" class="bk-fullsvc-cta-primary">Start Activation</a>
+            <button type="button" class="bk-fullsvc-cta-primary"
+              onclick="_bkOpenHT({{ ($highTicketTypes ?? collect())->get('market-expansion')?->id ?? 0 }}, 60, 'Market Expansion Activation', '50_50_split')">
+              Start Activation
+            </button>
+            <p style="margin:4px 0 7px;text-align:center;font-size:.70rem;color:rgba(168,168,160,.40);letter-spacing:.03em">Activation deposit — applied toward full engagement</p>
             <a href="mailto:hello@seoaico.com?subject=Market+Review+Application" class="bk-fullsvc-cta-secondary">Apply for market review</a>
           </div>
         </div>
@@ -237,6 +245,7 @@
         <div class="bk-types bk-lower-section">
           <p style="font-size:.75rem;letter-spacing:.06em;color:rgba(168,168,160,.68);margin:0 0 14px">Every market is built with care, strategy, and full support from start to finish.</p>
           @foreach(($types ?? collect()) as $ct)
+          @if(in_array($ct->slug, ['strategy-session', 'market-expansion']))@continue@endif
           <div class="bk-type {{ $ct->slug === 'audit' ? 'featured' : ($ct->slug === 'agency-review' ? 'reserved' : ($ct->is_free ? 'secondary' : '')) }}"
                :class="{ selected: selectedType === {{ $ct->id }} }"
                @click="selectType({{ $ct->id }}, {{ $ct->duration_minutes }}, {{ json_encode($ct->name) }}, {{ $ct->is_free ? 'true' : 'false' }})">
@@ -330,6 +339,10 @@
           <div class="bk-sum-item"><strong x-text="selectedTypeName"></strong></div>
           <div class="bk-sum-item" x-text="formatDateDisplay()"></div>
           <div class="bk-sum-item" x-text="formatTime(selectedTime)"></div>
+        </div>
+        <div x-show="paymentStructure !== null" x-cloak
+             style="font-size:.76rem;color:rgba(200,168,75,.72);letter-spacing:.03em;margin:-10px 0 16px;padding:8px 14px;border-left:2px solid rgba(200,168,75,.28);background:rgba(200,168,75,.025);border-radius:0 4px 4px 0;line-height:1.5"
+             x-text="paymentStructure === '50_50_split' ? 'Activation deposit — applied toward full engagement. Remainder due at kickoff.' : 'Deposit secures your session — applied toward full engagement cost.'">
         </div>
         <div class="bk-row">
           <div class="bk-field">
@@ -425,6 +438,17 @@
 </div>
 
 <script>
+function _bkOpenHT(id, duration, name, paymentStructure) {
+  if (!id) return; // type not seeded yet — secondary mailto link is the fallback
+  var d = { id: id, duration: duration, name: name, isFree: false, paymentStructure: paymentStructure };
+  window._bkPending = d;
+  window.dispatchEvent(new CustomEvent('open-booking', { detail: d }));
+  var t = document.getElementById('book-now');
+  if (t) t.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+</script>
+
+<script>
 document.addEventListener('alpine:init', () => {
   Alpine.data('bookingModal', () => ({
     isOpen: false,
@@ -445,6 +469,7 @@ document.addEventListener('alpine:init', () => {
 
     form: { name: '', email: '', phone: '', company: '', website: '', website_confirm: '', message: '' },
     addOns: [],
+    paymentStructure: null,
     confirmation: { consult_type: '', date: '', time: '', duration: 0, meet_link: '' },
 
     // When true, overlay click and Escape will not close the modal (used on /book).
@@ -482,6 +507,7 @@ document.addEventListener('alpine:init', () => {
         },
       }).catch(() => {});
       if (preselect) {
+        this.paymentStructure = preselect.paymentStructure ?? null;
         this.selectType(preselect.id, preselect.duration, preselect.name, preselect.isFree ?? false);
       }
     },
@@ -502,6 +528,7 @@ document.addEventListener('alpine:init', () => {
       this.slots = [];
         this.form = { name: '', email: '', phone: '', company: '', website: '', website_confirm: '', message: '' };
       this.addOns = [];
+      this.paymentStructure = null;
       this.confirmation = { consult_type: '', date: '', time: '', duration: 0, meet_link: '' };
       this.errorMsg = '';
       if (this.flatpickrInstance) {
@@ -608,6 +635,7 @@ document.addEventListener('alpine:init', () => {
             preferred_time: this.selectedTime,
             ...this.form,
             add_ons: this.addOns,
+            ...(this.paymentStructure ? { payment_structure: this.paymentStructure } : {}),
           })
         });
         const data = await resp.json();

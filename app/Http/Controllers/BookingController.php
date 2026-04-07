@@ -29,10 +29,11 @@ class BookingController extends Controller
     {
         $types = ConsultType::active()->get();
         $availableDays = BookingAvailability::active()->pluck('day_of_week')->toArray();
+        $highTicketTypes = ConsultType::whereIn('slug', ['strategy-session', 'market-expansion'])->get()->keyBy('slug');
 
         FunnelEvent::fire(FunnelEvent::BOOKING_VIEWED);
 
-        return view('public.book', compact('types', 'availableDays'));
+        return view('public.book', compact('types', 'availableDays', 'highTicketTypes'));
     }
 
     /**
@@ -751,9 +752,9 @@ class BookingController extends Controller
         return match ($slug) {
             'discovery' => 'discovery',
             'audit' => 'audit',
-            'strategy', 'agency-review',
+            'strategy', 'agency-review', 'strategy-session',
             'seo-audit', 'project-scoping' => 'strategy',
-            'build' => 'build',
+            'build', 'market-expansion' => 'build',
             default => 'discovery',
         };
     }

@@ -15,10 +15,14 @@ class BookingSeeder extends Seeder
             ['name' => 'Market Opportunity Snapshot', 'slug' => 'discovery', 'description' => 'See where you\'re missing visibility — and where your competitors are winning. A focused scan using live search data.', 'duration_minutes' => 20, 'price' => null, 'is_free' => true, 'is_active' => true, 'sort_order' => 1],
             // PRIMARY entry point — Market Expansion Blueprint
             ['name' => 'Market Expansion Blueprint', 'slug' => 'audit', 'description' => 'We map your full expansion across every service and city — building the structure your market needs to grow.', 'duration_minutes' => 75, 'price' => 500.00, 'is_free' => false, 'is_active' => true, 'sort_order' => 2],
+            ['name' => 'Market Growth Plan', 'slug' => 'agency-review', 'description' => 'Clear next steps to start gaining visibility and leads — built around your specific market and goals.', 'duration_minutes' => 60, 'price' => 250.00, 'is_free' => false, 'is_active' => true, 'sort_order' => 3],
+
+            // ── HIGH-TICKET ENGAGEMENT TYPES (full-service — not shown in lower wizard) ──
+            ['name' => 'Strategy Session', 'slug' => 'strategy-session', 'description' => 'Dedicated high-ticket strategy session — market analysis, expansion planning, and a prioritised activation roadmap.', 'duration_minutes' => 90, 'price' => 500.00, 'is_free' => false, 'is_active' => true, 'sort_order' => 4],
+            ['name' => 'Market Expansion Activation', 'slug' => 'market-expansion', 'description' => 'Complete done-for-you market build — full activation from structure to rollout.', 'duration_minutes' => 60, 'price' => 1000.00, 'is_free' => false, 'is_active' => true, 'sort_order' => 5],
 
             // ── SECONDARY / LEGACY TYPES (retain for direct-link access) ────
             ['name' => 'Paid Strategy Consult', 'slug' => 'strategy', 'description' => 'Deep-dive into your SEO strategy and growth roadmap.', 'duration_minutes' => 60, 'price' => 250.00, 'is_free' => false, 'is_active' => false, 'sort_order' => 10],
-            ['name' => 'Market Growth Plan', 'slug' => 'agency-review', 'description' => 'Clear next steps to start gaining visibility and leads — built around your specific market and goals.', 'duration_minutes' => 60, 'price' => 250.00, 'is_free' => false, 'is_active' => true, 'sort_order' => 3],
             ['name' => 'Full SEO Audit Session', 'slug' => 'seo-audit', 'description' => 'Comprehensive audit of your site\'s SEO health and opportunities.', 'duration_minutes' => 90, 'price' => 400.00, 'is_free' => false, 'is_active' => false, 'sort_order' => 12],
             ['name' => 'Custom Project Scoping', 'slug' => 'project-scoping', 'description' => 'Scope out a custom build or integration project.', 'duration_minutes' => 60, 'price' => 250.00, 'is_free' => false, 'is_active' => false, 'sort_order' => 13],
             ['name' => 'Graphic Design Consult', 'slug' => 'design', 'description' => 'Discuss branding, layout, and visual direction for your project.', 'duration_minutes' => 45, 'price' => 200.00, 'is_free' => false, 'is_active' => false, 'sort_order' => 14],
