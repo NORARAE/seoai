@@ -98,6 +98,9 @@ body{background:var(--bg);color:var(--ivory);font-family:'DM Sans',sans-serif;fo
 .trust-icon{width:28px;height:28px;color:rgba(200,168,75,.52);flex-shrink:0}
 .trust-title{font-size:.88rem;color:var(--ivory);letter-spacing:.02em;font-weight:400}
 .trust-desc{font-size:.80rem;color:var(--muted-lt);line-height:1.72}
+.trust-list{list-style:none;display:flex;flex-direction:column;gap:6px;margin-top:10px}
+.trust-list li{font-size:.78rem;color:var(--muted-lt);line-height:1.60;display:flex;align-items:flex-start;gap:8px}
+.trust-list li::before{content:'\2014';color:rgba(200,168,75,.28);flex-shrink:0;font-size:.74rem;margin-top:.1em}
 .trust-caveat-wrap{margin-top:40px;padding-top:36px;border-top:1px solid rgba(200,168,75,.06);text-align:center}
 .trust-caveat{font-size:.76rem;color:rgba(168,168,160,.36);line-height:1.74;max-width:580px;margin:0 auto;font-style:italic}
 
@@ -304,7 +307,7 @@ sup{font-size:.55em;line-height:0;vertical-align:super}
   <div class="trust-block">
     <span class="trust-block-eye">How We Work</span>
     <h2 class="trust-block-hed">Built correctly. Clearly structured.</h2>
-    <p class="trust-block-sub">A few things worth knowing before you engage &mdash; so you understand exactly what this system does and does not do.</p>
+    <p class="trust-block-sub">Built with the signals, structure, and consistency that modern search systems reward.</p>
 
     <div class="trust-grid">
 
@@ -334,18 +337,26 @@ sup{font-size:.55em;line-height:0;vertical-align:super}
 
       <div class="trust-card">
         <svg class="trust-icon" fill="none" stroke="currentColor" stroke-width="1.4" viewBox="0 0 24 24" aria-hidden="true">
-          <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
+          <circle cx="12" cy="12" r="3"/>
+          <path stroke-linecap="round" stroke-linejoin="round" d="M6.343 6.343a8 8 0 000 11.314M17.657 6.343a8 8 0 010 11.314M3.515 3.515a13 13 0 000 16.97M20.485 3.515a13 13 0 010 16.97"/>
         </svg>
-        <span class="trust-title">No guaranteed search outcomes</span>
-        <p class="trust-desc">We build the structural foundation for visibility. Search engines decide how and when to index content. We do not control or promise specific results.</p>
+        <span class="trust-title">Built for modern search systems</span>
+        <p class="trust-desc">We create structured, location-specific pages designed to align with how search engines evaluate and surface content today.</p>
+        <ul class="trust-list">
+          <li>Clean structure and internal linking</li>
+          <li>Consistent signals across your domain</li>
+          <li>Ongoing expansion that strengthens coverage over time</li>
+        </ul>
       </div>
 
       <div class="trust-card">
         <svg class="trust-icon" fill="none" stroke="currentColor" stroke-width="1.4" viewBox="0 0 24 24" aria-hidden="true">
-          <path stroke-linecap="round" stroke-linejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
+          <rect x="3" y="16" width="18" height="3" rx="1"/>
+          <rect x="3" y="10.5" width="18" height="3" rx="1" opacity=".7"/>
+          <rect x="3" y="5" width="18" height="3" rx="1" opacity=".4"/>
         </svg>
-        <span class="trust-title">Platform-compliant methodology</span>
-        <p class="trust-desc">All pages are built with proper markup, structured data, and platform quality standards in mind. No manipulative tactics. No shortcuts.</p>
+        <span class="trust-title">Structured. Consistent. Continuously expanding.</span>
+        <p class="trust-desc">This is not a one-time deployment. Your site evolves through phased expansion &mdash; adding new pages, reinforcing signals, and strengthening overall coverage as your market grows.</p>
       </div>
 
       <div class="trust-card">
@@ -359,7 +370,7 @@ sup{font-size:.55em;line-height:0;vertical-align:super}
     </div>
 
     <div class="trust-caveat-wrap">
-      <p class="trust-caveat">SEO AI Co&trade; builds the structural conditions for search and AI visibility &mdash; including page architecture, internal linking, schema markup, and location-specific content. We do not control search engine algorithms, guarantee indexing timelines, or promise specific traffic or revenue outcomes. Results vary based on market, competition, and factors outside our control.</p>
+      <p class="trust-caveat">As your footprint grows, your site becomes more complete, more connected, and more visible across your market. Visibility develops over time based on market conditions, competition, and search system behavior.</p>
     </div>
   </div>
 
