@@ -245,7 +245,7 @@
         <div class="bk-types bk-lower-section">
           <p style="font-size:.75rem;letter-spacing:.06em;color:rgba(168,168,160,.68);margin:0 0 14px">Every market is built with care, strategy, and full support from start to finish.</p>
           @foreach(($types ?? collect()) as $ct)
-          @if(in_array($ct->slug, ['strategy-session', 'market-expansion']))@continue@endif
+          @continue(in_array($ct->slug, ['strategy-session', 'market-expansion']))
           <div class="bk-type {{ $ct->slug === 'audit' ? 'featured' : ($ct->slug === 'agency-review' ? 'reserved' : ($ct->is_free ? 'secondary' : '')) }}"
                :class="{ selected: selectedType === {{ $ct->id }} }"
                @click="selectType({{ $ct->id }}, {{ $ct->duration_minutes }}, {{ json_encode($ct->name) }}, {{ $ct->is_free ? 'true' : 'false' }})">
