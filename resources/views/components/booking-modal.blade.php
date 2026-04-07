@@ -72,6 +72,25 @@
 .bk-anchor-label-tag{font-size:.66rem;letter-spacing:.08em;text-transform:uppercase;color:#5a5040;display:inline-block;margin-top:6px}
 @media(max-width:480px){.bk-anchor-grid{grid-template-columns:1fr}}
 
+/* Full-service engagement cards (top tier) */
+.bk-fullsvc-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:0}
+.bk-fullsvc-card{background:#090909;border:1px solid rgba(200,168,75,.22);border-top:2px solid rgba(200,168,75,.38);border-radius:10px;padding:20px 20px 18px;position:relative}
+.bk-fullsvc-badge{display:inline-flex;align-items:center;gap:5px;background:rgba(200,168,75,.12);color:rgba(200,168,75,.88);font-size:.70rem;font-weight:600;letter-spacing:.10em;text-transform:uppercase;padding:3px 8px;border-radius:20px;margin-bottom:8px;border:1px solid rgba(200,168,75,.24)}
+.bk-fullsvc-name{font-size:.90rem;color:#ede8de;font-weight:400;margin-bottom:4px;line-height:1.3}
+.bk-fullsvc-price{font-size:.84rem;color:rgba(200,168,75,.85);margin-bottom:6px;font-weight:500}
+.bk-fullsvc-note{font-size:.74rem;color:#9a9a92;line-height:1.55;margin-bottom:14px}
+.bk-fullsvc-cta-primary{display:block;text-align:center;background:rgba(200,168,75,.10);border:1px solid rgba(200,168,75,.32);border-radius:6px;color:rgba(200,168,75,.90);font-size:.72rem;font-weight:500;letter-spacing:.10em;text-transform:uppercase;padding:9px 10px;text-decoration:none;transition:background .25s,border-color .25s,color .25s;margin-bottom:7px}
+.bk-fullsvc-cta-primary:hover{background:rgba(200,168,75,.18);border-color:rgba(200,168,75,.52);color:var(--gold,#c8a84b)}
+.bk-fullsvc-cta-secondary{display:block;text-align:center;background:none;border:none;color:rgba(168,168,160,.52);font-size:.68rem;letter-spacing:.08em;text-transform:uppercase;text-decoration:none;padding:4px 0;transition:color .2s;cursor:pointer}
+.bk-fullsvc-cta-secondary:hover{color:rgba(168,168,160,.82)}
+.bk-fullsvc-access{font-size:.72rem;color:rgba(168,168,160,.48);letter-spacing:.03em;margin:14px 0 0;line-height:1.55;text-align:center;font-style:italic}
+.bk-priority-note{font-size:.74rem;color:rgba(200,168,75,.62);letter-spacing:.03em;margin:10px 0 0;padding:8px 12px;border-left:2px solid rgba(200,168,75,.25);background:rgba(200,168,75,.025);border-radius:0 4px 4px 0;line-height:1.55}
+.bk-lower-label{margin:28px 0 10px!important;border-top:1px solid #161616;padding-top:22px;color:#565650!important}
+.bk-lower-section .bk-type{opacity:.78}
+.bk-lower-section .bk-type.featured{opacity:.84}
+.bk-lower-section .bk-type:hover{opacity:1}
+@media(max-width:480px){.bk-fullsvc-grid{grid-template-columns:1fr}}
+
 /* Step 2 — Date & Time */
 .bk-datepicker{margin-bottom:20px}
 .bk-datepicker input{width:100%;background:#0b0b0b;border:1px solid #1a1a1a;border-radius:6px;color:#ede8de;font-size:.92rem;padding:14px 16px;font-family:'DM Sans',sans-serif}
@@ -174,7 +193,33 @@
         <h3 class="bk-title">Choose Your Session Type</h3>
         <p class="bk-sub">Reserve your spot &mdash; takes under 2 minutes.</p>
         @endif
-        <div class="bk-types">
+
+        {{-- ── Full-service engagements (primary action tier) ── --}}
+        <p class="bk-anchor-label" style="margin-top:0">Full-Service Engagements</p>
+        <div class="bk-fullsvc-grid">
+          <div class="bk-fullsvc-card">
+            <div class="bk-fullsvc-name">Strategy Session</div>
+            <div class="bk-fullsvc-price">$1,500&ndash;$2,500</div>
+            <div class="bk-fullsvc-note">Deep analysis + prioritised growth roadmap. Structured entry into a full expansion plan.</div>
+            <a href="mailto:hello@seoaico.com?subject=Strategy+Session+Inquiry" class="bk-fullsvc-cta-primary">Book &amp; Secure Session</a>
+            <a href="mailto:hello@seoaico.com?subject=Strategy+Session+Inquiry" class="bk-fullsvc-cta-secondary">Contact to discuss</a>
+          </div>
+          <div class="bk-fullsvc-card">
+            <div class="bk-fullsvc-badge">Most clients begin here</div>
+            <div class="bk-fullsvc-name">Full Market Expansion System</div>
+            <div class="bk-fullsvc-price">$5,000&ndash;$15,000+</div>
+            <div class="bk-fullsvc-note">Complete build &mdash; done-for-you. Everything from structure to execution, fully managed.</div>
+            <a href="mailto:hello@seoaico.com?subject=Full+Market+Expansion+Inquiry" class="bk-fullsvc-cta-primary">Start Activation</a>
+            <a href="mailto:hello@seoaico.com?subject=Market+Review+Application" class="bk-fullsvc-cta-secondary">Apply for market review</a>
+          </div>
+        </div>
+
+        <p class="bk-fullsvc-access">Access is limited per territory. Activation is confirmed based on availability and strategic fit.</p>
+        <p class="bk-priority-note">For clients ready to move forward immediately, priority activation is available.</p>
+
+        {{-- ── Exploration entry points (lower tier) ── --}}
+        <p class="bk-anchor-label bk-lower-label">Explore Your Market Opportunity</p>
+        <div class="bk-types bk-lower-section">
           <p style="font-size:.75rem;letter-spacing:.06em;color:rgba(168,168,160,.68);margin:0 0 14px">Every market is built with care, strategy, and full support from start to finish.</p>
           @foreach(($types ?? collect()) as $ct)
           <div class="bk-type {{ $ct->slug === 'audit' ? 'featured' : ($ct->slug === 'agency-review' ? 'reserved' : ($ct->is_free ? 'secondary' : '')) }}"
@@ -213,25 +258,7 @@
           </div>
         </div>
 
-        {{-- ── Price anchors (visual only — price anchoring) ── --}}
-        <p class="bk-anchor-label">Full-service engagements</p>
-        <div class="bk-anchor-grid">
-          <div class="bk-anchor-card">
-            <span class="bk-anchor-name">Strategy Session</span>
-            <span class="bk-anchor-price">$1,500–$2,500</span>
-            <span class="bk-anchor-note">Deep analysis + prioritised growth roadmap</span>
-            <span class="bk-anchor-label-tag">Contact to discuss</span>
-          </div>
-          <div class="bk-anchor-card">
-            <span class="bk-anchor-name">Full Market Expansion System</span>
-            <span class="bk-anchor-price">$5,000–$15,000+</span>
-            <span class="bk-anchor-note">Complete build — done-for-you</span>
-            <span class="bk-anchor-label-tag">Contact to discuss</span>
-          </div>
-        </div>
-
         <p class="bk-avail-note">Limited availability based on active markets</p>
-        <p class="bk-avail-note" style="margin-top:4px">Access is limited per territory.</p>
 
         {{-- R&D value block --}}
         <div class="bk-rd-block" x-data="{ rdOpen: false }">
