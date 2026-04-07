@@ -122,14 +122,14 @@ nav.stuck{background:rgba(8,8,8,.95);backdrop-filter:blur(16px);border-color:var
   width:min(72vw,900px);height:min(72vw,900px);
   border-radius:50%;
   background:radial-gradient(ellipse at center,rgba(200,168,75,.09) 0%,transparent 62%);
-  animation:ambDriftA 28s ease-in-out infinite alternate;
+  animation:ambDriftA 18s ease-in-out infinite alternate;
   will-change:transform;
 }
 .amb-orb-b{
   width:min(55vw,700px);height:min(55vw,700px);
   border-radius:50%;
   background:radial-gradient(ellipse at center,rgba(200,168,75,.055) 0%,transparent 60%);
-  animation:ambDriftB 38s ease-in-out infinite alternate;
+  animation:ambDriftB 24s ease-in-out infinite alternate;
   will-change:transform;
 }
 
@@ -1225,6 +1225,7 @@ nav.stuck{background:rgba(8,8,8,.95);backdrop-filter:blur(16px);border-color:var
   font-size:clamp(.97rem,1.2vw,1rem);line-height:1.85;color:rgba(168,168,160,.82);
 }
 .alloc-avail-note strong{color:rgba(237,232,222,.82);font-weight:400}
+.alloc-access-note{font-size:.74rem;color:rgba(168,168,160,.40);letter-spacing:.03em;line-height:1.65;margin-top:14px}
 
 /* ── Access section (replaces proof strip) ── */
 .access-section{padding:72px 64px;max-width:1200px;margin:0 auto}
@@ -1959,8 +1960,9 @@ body::before{
 }
 .infra-inner{
   position:relative;z-index:1;
-  max-width:900px;margin:0 auto;
+  max-width:1100px;margin:0 auto;
 }
+@media(min-width:1001px){.infra-hed-1,.infra-hed-2{white-space:nowrap}}
 .infra-eyebrow{
   font-size:.64rem;letter-spacing:.38em;text-transform:uppercase;
   color:rgba(200,168,75,.6);margin-bottom:44px;
@@ -2777,66 +2779,6 @@ body::before{
   <p class="cn-hed">This is a 4-month structured expansion process —<br>not a one-week experiment.</p>
   <p class="cn-body">Most market builds require a focused 4-month rollout window to map, configure, deploy, and compound correctly. That structure is what makes results durable — and why we structure access carefully.</p>
 </div>
-
-<!-- ════════════ MARKET ALLOCATION ════════════ -->
-<section id="alloc" class="alloc-section r">
-  <div class="alloc-layout">
-
-    <!-- Left: editorial copy -->
-    <div class="alloc-copy">
-      <p class="alloc-eyebrow">Market Status Overview</p>
-      <h2 class="alloc-hed">
-        Where expansion<br>is active, limited,<br>
-        <em>and opening.</em>
-      </h2>
-      <div class="alloc-sub">
-        <p>Each region reflects real-time rollout status — driven by demand, competition, and phased expansion sequencing.</p>
-        <p><em>Structured market positioning at scale. Strategic expansion phases.</em></p>
-      </div>
-      <p class="alloc-urgency">Position established early compounds. <em>Structure your market as phases open.</em></p>
-      <span class="alloc-convert-label">Selective access. Launch-ready markets only.</span>
-      <div class="alloc-actions">
-        <a href="#" class="btn-primary js-open-gate">Assess Your Market</a>
-      </div>
-    </div>
-
-    <!-- Right: regional allocation grid (data rendered from JS array below) -->
-    <div class="alloc-panel">
-      <p style="font-size:.68rem;letter-spacing:.22em;text-transform:uppercase;color:rgba(200,168,75,.82);margin-bottom:6px;font-weight:500">Live Market Status</p>
-      <p class="alloc-panel-label">U.S. Market Coverage</p>
-      <div class="alloc-grid" id="allocGrid"></div>
-      <div class="alloc-legend">
-        <div class="alloc-legend-item">
-          <span class="alloc-dot allocated"></span>
-          <div class="alloc-legend-text">
-            <span class="alloc-legend-label">Active</span>
-            <span class="alloc-legend-desc">Established and expanding</span>
-          </div>
-        </div>
-        <div class="alloc-legend-item">
-          <span class="alloc-dot limited"></span>
-          <div class="alloc-legend-text">
-            <span class="alloc-legend-label">Selective Access</span>
-            <span class="alloc-legend-desc">Limited strategic entry</span>
-          </div>
-        </div>
-        <div class="alloc-legend-item">
-          <span class="alloc-dot open"></span>
-          <div class="alloc-legend-text">
-            <span class="alloc-legend-label">Expansion Available</span>
-            <span class="alloc-legend-desc">Open for structured rollout</span>
-          </div>
-        </div>
-      </div>
-      <p class="alloc-trust-line">These regions show where access is active, limited, or currently available for expansion. Status reflects live search coverage and market positioning.</p>
-      <p class="alloc-avail-note">Each position covers structured service and location pages — built for organic search, AI-assisted visibility, and LLM-aware discovery across your full territory. Access is reviewed individually based on market availability and strategic fit.</p>
-    </div>
-
-  </div>
-</section>
-
-<div class="gold-rule"></div>
-
 <!-- ════════════ ACCESS SECTION ════════════ -->
 <section class="access-section r">
 
@@ -2880,6 +2822,59 @@ body::before{
     <p class="offer-fomo-line">Position is not reserved. It is built — and held — through execution.</p>
   </div>
 
+</section>
+
+<div class="gold-rule"></div>
+
+<!-- ════════════ MARKET ALLOCATION ════════════ -->
+<section id="alloc" class="alloc-section r">
+  <div class="alloc-layout">
+
+    <!-- Left: editorial copy -->
+    <div class="alloc-copy">
+      <p class="alloc-eyebrow">Market Availability</p>
+      <h2 class="alloc-hed">
+        Active markets.<br>Limited entry.<br>
+        <em>Availability reviewed.</em>
+      </h2>
+      <p class="alloc-urgency">These markets reflect current rollout availability. Access is reviewed by coverage, demand, and strategic fit.</p>
+      <div class="alloc-actions">
+        <a href="#" class="btn-primary js-open-gate">Assess Your Market</a>
+      </div>
+      <p class="alloc-access-note">Each activation includes structured service and location coverage across your full market.</p>
+    </div>
+
+    <!-- Right: regional allocation grid (data rendered from JS array below) -->
+    <div class="alloc-panel">
+      <p style="font-size:.68rem;letter-spacing:.22em;text-transform:uppercase;color:rgba(200,168,75,.82);margin-bottom:6px;font-weight:500">Live Market Status</p>
+      <p class="alloc-panel-label">U.S. Market Coverage</p>
+      <div class="alloc-grid" id="allocGrid"></div>
+      <div class="alloc-legend">
+        <div class="alloc-legend-item">
+          <span class="alloc-dot allocated"></span>
+          <div class="alloc-legend-text">
+            <span class="alloc-legend-label">Active</span>
+            <span class="alloc-legend-desc">Established and expanding</span>
+          </div>
+        </div>
+        <div class="alloc-legend-item">
+          <span class="alloc-dot limited"></span>
+          <div class="alloc-legend-text">
+            <span class="alloc-legend-label">Limited Entry</span>
+            <span class="alloc-legend-desc">Selective access only</span>
+          </div>
+        </div>
+        <div class="alloc-legend-item">
+          <span class="alloc-dot open"></span>
+          <div class="alloc-legend-text">
+            <span class="alloc-legend-label">Open for Expansion</span>
+            <span class="alloc-legend-desc">Available now</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
 </section>
 
 <div class="gold-rule"></div>
@@ -3014,7 +3009,7 @@ body::before{
   var DPR=window.devicePixelRatio||1;
   var COLS=10,ROWS=7;
   var W,H,cW,cH,nodes=[],lastClaim=0;
-  var INTERVAL=1600;
+  var INTERVAL=900;
 
   function resize(){
     var r=C.getBoundingClientRect();
@@ -3079,7 +3074,7 @@ body::before{
     for(var k=0;k<nodes.length;k++){
       var n=nodes[k];
       if(n.state==='a'){
-        n.prog=Math.min(1,n.prog+.009);
+        n.prog=Math.min(1,n.prog+.016);
         var ring=cW*.38*(0.4+0.6*n.prog);
         var g=ctx.createRadialGradient(n.x,n.y,0,n.x,n.y,ring);
         g.addColorStop(0,'rgba(200,168,75,'+(0.18+0.18*n.prog)+')');
@@ -3164,8 +3159,7 @@ body::before{
     <div>
       <p class="s-eye">Market Access Plans</p>
       <h2 class="s-h offer-hed-split">
-        <span>Access is structured by coverage</span>
-        <span class="offer-hed-mid">depth and commitment —</span>
+        <span>Structured access by coverage depth —</span>
         <em>not generic packages.</em>
       </h2>
     </div>
@@ -3187,7 +3181,6 @@ body::before{
       <!-- C. FINAL POSITIONING -->
       <div class="offer-positioning">
         <p class="offer-positioning-bottom">Not a deliverable.<br>A position that is actively held.</p>
-        <p style="font-size:.78rem;color:rgba(168,168,160,.48);letter-spacing:.04em;margin-top:14px;line-height:1.68">Anyone can create pages.<br>Very few can make them rank &mdash; and fewer still can hold that position over time.</p>
       </div>
 
     </div>
@@ -3195,8 +3188,7 @@ body::before{
 
   <div class="offer-guide r">
     <p class="offer-guide-line">Select the level that matches your goal.</p>
-    <p style="font-size:.86rem;color:rgba(168,168,160,.65);text-align:center;margin-top:12px;letter-spacing:.02em">Access begins with onboarding.<br>We review your market, confirm availability, and activate your system with you.</p>
-    <p style="font-size:.76rem;color:rgba(168,168,160,.38);text-align:center;margin-top:10px;letter-spacing:.03em;font-style:italic">Your expansion system is maintained under an active licensing agreement.</p>
+    <p style="font-size:.82rem;color:rgba(168,168,160,.52);text-align:center;margin-top:10px;letter-spacing:.02em">Access begins with onboarding. We review your market, confirm availability, and activate your system with you.</p>
   </div>
 
   <div class="tier-grid-3" id="tierGrid">
@@ -3291,8 +3283,7 @@ body::before{
   </div>
 
   <p style="text-align:center;font-size:.82rem;color:rgba(168,168,160,.48);letter-spacing:.03em;padding:12px 0 2px;position:relative;z-index:2;font-style:italic">Most businesses begin with Expansion. Dominance is used when speed and coverage matter most.</p>
-  <p style="text-align:center;font-size:.74rem;color:rgba(168,168,160,.32);letter-spacing:.04em;padding:6px 0 4px;position:relative;z-index:2">Applying selects your market level — not a payment. We review your inquiry, confirm availability, and guide activation personally.</p>
-  <p style="text-align:center;font-size:.72rem;color:rgba(168,168,160,.26);letter-spacing:.04em;padding:4px 0 12px;position:relative;z-index:2;line-height:1.72">Initial deployment is structured over a 4-month build phase.<br>Ongoing expansion, optimization, and position strength are maintained through continued licensing.<br><em>Coverage builds continuously &mdash; strengthening your domain across your full market footprint under an active agreement.</em></p>
+  <p style="text-align:center;font-size:.74rem;color:rgba(168,168,160,.28);letter-spacing:.04em;padding:4px 0 14px;position:relative;z-index:2">Applying selects your tier — not a payment. We review your market, confirm availability, and guide activation personally.<br><em>Coverage builds continuously — strengthening your domain across your full market footprint under an active agreement.</em></p>
 
 </section>
 <script>
@@ -3317,8 +3308,7 @@ body::before{
 <!-- ════════════ VALUE ANCHOR ════════════ -->
 <div class="value-anchor r">
   <div class="value-anchor-inner">
-    <p class="va-eye">What this is</p>
-    <p class="va-main">This is not a tool.<br><em>This is a system designed to expand your visibility across your entire market.</em></p>
+    <p class="va-main">This is not a tool.<br><em>A system designed to expand your visibility across your entire market.</em></p>
     <div class="va-contrast">
       <div class="va-col va-col--left">
         <p class="va-col-hed">What most businesses do</p>
@@ -3367,16 +3357,15 @@ body::before{
     </div>
   </div>
   <a href="{{ route('growth-services') }}" class="exec-all">See all services &rarr;</a>
-  <p class="exec-positioning">All services align with your market expansion strategy — not disconnected marketing efforts.</p>
 </section>
 
-<div class="gold-rule"></div>
+<div style="margin:0 auto;width:60%;max-width:540px;height:1px;background:rgba(200,168,75,.06)"></div>
 
 <!-- ════════════ SERVICE SUPPORT ════════════ -->
 <div class="svc-support r">
   <p class="ss-eye">Full-Spectrum Capability</p>
-  <h2 class="ss-hed">We guide and support every layer of your growth.</h2>
-  <p class="ss-intro">Your engagement spans every capability required to build, position, and hold your market — all coordinated under one agreement, one team, one system.</p>
+  <h2 class="ss-hed">Every capability your market requires.</h2>
+  <p class="ss-intro">One agreement. One team. Every layer of execution — from structured expansion to brand, paid media, and technical infrastructure.</p>
   <div class="ss-grid">
     <div class="ss-item"><span class="ss-dot"></span><span class="ss-label">Programmatic SEO &amp; territorial market expansion</span></div>
     <div class="ss-item"><span class="ss-dot"></span><span class="ss-label">Website Strategy, Development &amp; Conversion Architecture</span></div>
@@ -3964,7 +3953,7 @@ body::before{
     function frame(){
       if(!W || !H){ raf = requestAnimationFrame(frame); return; }
       ctx.clearRect(0, 0, W, H);
-      tick += 0.013;  /* slow, elegant sine cycle */
+      tick += 0.020;  /* slightly faster sine cycle */
       /* ── Connection lines ── */
       for(var i = 0; i < nodes.length; i++){
         for(var j = i+1; j < nodes.length; j++){
@@ -3999,8 +3988,8 @@ body::before{
         ctx.fill();
         ctx.shadowBlur = 0;
         if(!reduced){
-          n.x += n.vx * .58;  /* slow, smooth */
-          n.y += n.vy * .58;
+          n.x += n.vx * .80;  /* moderately paced */
+          n.y += n.vy * .80;
           if(n.x < 0) n.x = W;  if(n.x > W) n.x = 0;
           if(n.y < 0) n.y = H;  if(n.y > H) n.y = 0;
         }
@@ -4053,7 +4042,7 @@ body::before{
     }
     function frame(){
       ctx.clearRect(0,0,W,H);
-      tick += 0.016;  // slightly faster sine cycle
+      tick += 0.024;  // faster sine cycle
 
       /* connection lines */
       for(var i=0;i<nodes.length;i++){
@@ -4087,8 +4076,8 @@ body::before{
         ctx.shadowBlur  = 0;
 
         if(!reduced){
-          n.x += n.vx * .75;  // effective velocity ∼0.195
-          n.y += n.vy * .75;
+          n.x += n.vx * .96;  // effective velocity ∼0.24
+          n.y += n.vy * .96;
           if(n.x<0)n.x=W; if(n.x>W)n.x=0;
           if(n.y<0)n.y=H; if(n.y>H)n.y=0;
         }
@@ -4137,7 +4126,7 @@ body::before{
     }
     function frame(){
       ctx.clearRect(0,0,W,H);
-      tick += 0.010;
+      tick += 0.016;
 
       for(var i=0;i<nodes.length;i++){
         for(var j=i+1;j<nodes.length;j++){
@@ -4163,8 +4152,8 @@ body::before{
         ctx.fill();
 
         if(!reduced){
-          n.x += n.vx * .55;
-          n.y += n.vy * .55;
+          n.x += n.vx * .72;
+          n.y += n.vy * .72;
           if(n.x<0)n.x=W; if(n.x>W)n.x=0;
           if(n.y<0)n.y=H; if(n.y>H)n.y=0;
         }
@@ -4218,7 +4207,7 @@ body::before{
     }
     function frame(){
       ctx.clearRect(0,0,W,H);
-      tick += 0.014;
+      tick += 0.022;
 
       for(var i=0;i<nodes.length;i++){
         for(var j=i+1;j<nodes.length;j++){
@@ -4248,8 +4237,8 @@ body::before{
         ctx.shadowBlur  = 0;
 
         if(!reduced){
-          n.x += n.vx * .70;
-          n.y += n.vy * .70;
+          n.x += n.vx * .90;
+          n.y += n.vy * .90;
           if(n.x<0)n.x=W; if(n.x>W)n.x=0;
           if(n.y<0)n.y=H; if(n.y>H)n.y=0;
         }
