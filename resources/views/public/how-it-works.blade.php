@@ -383,7 +383,7 @@ sup{font-size:.55em;line-height:0;vertical-align:super}
           <span class="compat-platform-name">WordPress</span>
           <span class="compat-platform-tag">Fastest path</span>
         </div>
-        <p class="compat-platform-desc">Plugin-based integration. Full page control, native internal linking, and complete structured deployment from day one.</p>
+        <p class="compat-platform-desc">Plugin-based integration with native page generation, internal linking, and structured deployment. The most straightforward implementation path.</p>
       </div>
 
       {{-- Custom / PHP --}}
@@ -393,7 +393,7 @@ sup{font-size:.55em;line-height:0;vertical-align:super}
           <polyline stroke-linecap="round" stroke-linejoin="round" points="8 6 2 12 8 18"/>
         </svg>
         <div class="compat-platform-meta">
-          <span class="compat-platform-name">Custom / PHP</span>
+          <span class="compat-platform-name">Custom Builds / PHP</span>
         </div>
         <p class="compat-platform-desc">Flexible implementation for structured environments. We work directly within your existing architecture.</p>
       </div>
