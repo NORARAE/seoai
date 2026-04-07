@@ -9,8 +9,8 @@
 <link rel="manifest" href="/site.webmanifest">
 <meta name="theme-color" content="#080808">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>How It Works — SEO AI Co™</title>
-<meta name="description" content="Learn how SEO AI Co™ builds structured, location-specific pages on your existing domain — expanding your site's coverage across every service and city you serve.">
+<title>How It Works &mdash; SEO AI Co&trade;</title>
+<meta name="description" content="Learn how SEO AI Co&trade; builds structured, location-specific pages on your existing domain &mdash; expanding your site&rsquo;s coverage across every service and city you serve.">
 <link rel="canonical" href="{{ url('/how-it-works') }}">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -25,6 +25,11 @@
 html{scroll-behavior:smooth;font-size:18px}
 body{background:var(--bg);color:var(--ivory);font-family:'DM Sans',sans-serif;font-weight:300;line-height:1.75;min-height:100vh}
 
+/* ── Reveal animation ── */
+@keyframes fadeUp{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:translateY(0)}}
+[data-stagger-child]{opacity:0;transform:translateY(18px);transition:opacity .45s ease,transform .45s ease}
+[data-stagger-child].vis{opacity:1;transform:translateY(0)}
+
 /* ── Logo ── */
 .logo{display:inline-flex;align-items:baseline;text-decoration:none;line-height:1}
 .logo-seo{font-family:'DM Sans',sans-serif;font-weight:300;font-size:1.2rem;letter-spacing:.06em;color:var(--ivory)}
@@ -37,31 +42,45 @@ body{background:var(--bg);color:var(--ivory);font-family:'DM Sans',sans-serif;fo
 .top-bar a.back:hover{color:var(--gold)}
 
 /* ── Page wrap ── */
-.page{max-width:920px;margin:0 auto;padding:88px 40px 120px}
+.page{max-width:920px;margin:0 auto;padding:80px 40px 120px}
 
 /* ── Hero ── */
 .page-eye{font-size:.62rem;letter-spacing:.26em;text-transform:uppercase;color:var(--gold-dim);display:block;margin-bottom:20px}
-.page-title{font-family:'Cormorant Garamond',serif;font-size:clamp(3rem,5.5vw,4.8rem);font-weight:300;line-height:1.04;margin-bottom:28px;color:var(--ivory)}
+.page-title{font-family:'Cormorant Garamond',serif;font-size:clamp(3.2rem,5.5vw,5rem);font-weight:300;line-height:1.04;margin-bottom:28px;color:var(--ivory)}
 .page-title em{font-style:italic;color:var(--gold-lt)}
-.page-intro{font-size:1.08rem;color:var(--muted);max-width:640px;line-height:1.88;margin-bottom:10px}
-.page-intro-note{font-size:.80rem;color:rgba(168,168,160,.40);letter-spacing:.03em;margin-bottom:72px}
+.page-intro{font-size:1.12rem;color:var(--muted);max-width:640px;line-height:1.85;margin-bottom:12px}
+.page-intro-note{font-size:.88rem;color:rgba(200,168,75,.60);letter-spacing:.02em;margin-bottom:52px;font-weight:400}
+
+/* ── Top trust strip ── */
+.trust-strip{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:rgba(200,168,75,.08);border:1px solid rgba(200,168,75,.14);margin-bottom:72px}
+.ts-item{background:rgba(14,13,9,.95);padding:26px 20px 24px;display:flex;flex-direction:column;gap:10px;transition:background .22s}
+.ts-item:hover{background:rgba(22,19,11,1)}
+.ts-icon-wrap{width:36px;height:36px;border-radius:50%;background:rgba(200,168,75,.07);border:1px solid rgba(200,168,75,.16);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.ts-icon{width:18px;height:18px;color:var(--gold);stroke:currentColor;fill:none}
+.ts-label{font-size:.84rem;color:var(--ivory);font-weight:400;line-height:1.35}
+.ts-sub{font-size:.74rem;color:var(--muted-lt);line-height:1.55}
 
 /* ── How-strip (4-pillar summary) ── */
-.how-strip{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:rgba(200,168,75,.06);border:1px solid rgba(200,168,75,.08);margin-bottom:88px}
-.how-pill{background:var(--card);padding:30px 24px;display:flex;flex-direction:column;gap:10px}
-.how-pill-num{font-family:'Cormorant Garamond',serif;font-size:1.15rem;color:rgba(200,168,75,.28);font-weight:300;line-height:1}
-.how-pill-label{font-size:.70rem;letter-spacing:.14em;text-transform:uppercase;color:var(--gold-dim);line-height:1.4;font-weight:400}
-.how-pill-sub{font-size:.80rem;color:var(--muted-lt);line-height:1.65}
+.how-strip{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:rgba(200,168,75,.08);border:1px solid rgba(200,168,75,.14);margin-bottom:80px}
+.how-pill{background:rgba(14,13,9,.90);padding:36px 22px 32px;display:flex;flex-direction:column;gap:12px;transition:background .22s,transform .22s;cursor:default;position:relative}
+.how-pill::after{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;background:rgba(200,168,75,0);transition:background .28s}
+.how-pill:hover{background:rgba(22,19,11,1);transform:translateY(-2px)}
+.how-pill:hover::after{background:rgba(200,168,75,.40)}
+.how-pill-num{font-family:'Cormorant Garamond',serif;font-size:1.9rem;color:rgba(200,168,75,.32);font-weight:300;line-height:1}
+.how-pill-label{font-size:.92rem;letter-spacing:.05em;text-transform:uppercase;color:var(--ivory);line-height:1.3;font-weight:400}
+.how-pill-sub{font-size:.86rem;color:var(--muted);line-height:1.62}
 
 /* ── Steps ── */
 .steps{display:grid;gap:0;margin-bottom:88px}
 .step{display:grid;grid-template-columns:64px 1fr;gap:0 36px;padding:52px 0;border-top:1px solid var(--border);position:relative}
 .step:last-child{border-bottom:1px solid var(--border)}
-.step-num{font-family:'Cormorant Garamond',serif;font-size:3rem;font-weight:300;color:rgba(200,168,75,.15);line-height:1;padding-top:2px;user-select:none}
+.step-num{font-family:'Cormorant Garamond',serif;font-size:3rem;font-weight:300;color:rgba(200,168,75,.15);line-height:1;padding-top:2px;user-select:none;transition:color .3s}
+.step:hover .step-num{color:rgba(200,168,75,.30)}
 .step-label{font-size:.60rem;letter-spacing:.22em;text-transform:uppercase;color:var(--gold-dim);display:block;margin-bottom:12px}
-.step-hed{font-family:'Cormorant Garamond',serif;font-size:clamp(1.75rem,2.8vw,2.2rem);font-weight:400;color:var(--ivory);margin-bottom:16px;line-height:1.18}
-.step-copy{font-size:.98rem;color:var(--muted);line-height:1.88;max-width:640px}
+.step-hed{font-family:'Cormorant Garamond',serif;font-size:clamp(1.9rem,2.8vw,2.4rem);font-weight:400;color:var(--ivory);margin-bottom:14px;line-height:1.16}
+.step-copy{font-size:1.00rem;color:var(--muted);line-height:1.82;max-width:600px}
 .step-copy strong{color:rgba(237,232,222,.88);font-weight:400}
+.step-copy p+p{margin-top:14px}
 .step-note{display:inline-block;margin-top:16px;font-size:.76rem;color:rgba(200,168,75,.50);letter-spacing:.04em;font-style:italic}
 
 /* ── Trust block ── */
@@ -70,7 +89,8 @@ body{background:var(--bg);color:var(--ivory);font-family:'DM Sans',sans-serif;fo
 .trust-block-hed{font-family:'Cormorant Garamond',serif;font-size:clamp(1.5rem,2.2vw,1.9rem);font-weight:300;color:var(--ivory);text-align:center;margin-bottom:10px;line-height:1.2}
 .trust-block-sub{font-size:.86rem;color:var(--muted-lt);text-align:center;margin-bottom:44px;line-height:1.75;max-width:520px;margin-left:auto;margin-right:auto}
 .trust-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
-.trust-card{padding:26px 22px;border:1px solid rgba(200,168,75,.07);background:rgba(0,0,0,.20);display:flex;flex-direction:column;gap:12px}
+.trust-card{padding:26px 22px;border:1px solid rgba(200,168,75,.07);background:rgba(0,0,0,.20);display:flex;flex-direction:column;gap:12px;transition:transform .22s,border-color .22s,background .22s}
+.trust-card:hover{transform:translateY(-3px);border-color:rgba(200,168,75,.20);background:rgba(0,0,0,.34)}
 .trust-icon{width:28px;height:28px;color:rgba(200,168,75,.52);flex-shrink:0}
 .trust-title{font-size:.88rem;color:var(--ivory);letter-spacing:.02em;font-weight:400}
 .trust-desc{font-size:.80rem;color:var(--muted-lt);line-height:1.72}
@@ -83,7 +103,8 @@ body{background:var(--bg);color:var(--ivory);font-family:'DM Sans',sans-serif;fo
 .compat-block-hed{font-family:'Cormorant Garamond',serif;font-size:clamp(1.5rem,2.2vw,1.9rem);font-weight:300;color:var(--ivory);text-align:center;margin-bottom:10px;line-height:1.2}
 .compat-block-sub{font-size:.86rem;color:var(--muted-lt);text-align:center;margin-bottom:44px;line-height:1.75;max-width:520px;margin-left:auto;margin-right:auto}
 .compat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
-.compat-col{padding:26px 22px;border:1px solid rgba(200,168,75,.07);background:rgba(0,0,0,.20)}
+.compat-col{padding:26px 22px;border:1px solid rgba(200,168,75,.07);background:rgba(0,0,0,.20);transition:border-color .22s,transform .22s}
+.compat-col:hover{border-color:rgba(200,168,75,.20);transform:translateY(-2px)}
 .compat-col-label{font-size:.60rem;letter-spacing:.18em;text-transform:uppercase;color:var(--gold-dim);display:block;margin-bottom:16px;font-weight:400}
 .compat-items{list-style:none;display:flex;flex-direction:column;gap:10px}
 .compat-item{font-size:.82rem;color:var(--muted);line-height:1.60;display:flex;align-items:flex-start;gap:8px}
@@ -93,7 +114,7 @@ body{background:var(--bg);color:var(--ivory);font-family:'DM Sans',sans-serif;fo
 .compat-note{font-size:.76rem;color:rgba(168,168,160,.38);line-height:1.74;max-width:560px;margin:0 auto;font-style:italic}
 
 /* ── CTA block ── */
-.page-cta{border:1px solid rgba(200,168,75,.14);background:var(--card);padding:56px 52px;text-align:center}
+.page-cta{border:1px solid rgba(200,168,75,.14);background:var(--card);padding:60px 52px;text-align:center}
 .page-cta-eye{font-size:.60rem;letter-spacing:.22em;text-transform:uppercase;color:var(--gold-dim);display:block;margin-bottom:14px}
 .page-cta-hed{font-family:'Cormorant Garamond',serif;font-size:clamp(1.7rem,2.6vw,2.2rem);font-weight:300;color:var(--ivory);margin-bottom:16px;line-height:1.18}
 .page-cta-body{font-size:.92rem;color:var(--muted);margin-bottom:34px;line-height:1.78;max-width:440px;margin-left:auto;margin-right:auto}
@@ -101,10 +122,10 @@ body{background:var(--bg);color:var(--ivory);font-family:'DM Sans',sans-serif;fo
   display:inline-flex;align-items:center;gap:10px;
   background:var(--gold);color:var(--deep);
   font-size:.78rem;font-weight:500;letter-spacing:.14em;text-transform:uppercase;
-  text-decoration:none;padding:16px 42px;
-  transition:background .25s,color .25s;
+  text-decoration:none;padding:17px 44px;
+  transition:background .25s,transform .2s;
 }
-.cta-btn:hover{background:var(--gold-lt)}
+.cta-btn:hover{background:var(--gold-lt);transform:translateY(-1px)}
 .cta-meta{margin-top:16px;font-size:.72rem;color:rgba(168,168,160,.36);letter-spacing:.06em}
 .cta-ghost{
   display:inline-block;margin-top:14px;
@@ -124,6 +145,7 @@ footer{border-top:1px solid var(--border);padding:32px 64px;display:flex;align-i
 @media(max-width:760px){
   .top-bar{padding:20px 24px}
   .page{padding:52px 24px 80px}
+  .trust-strip{grid-template-columns:repeat(2,1fr)}
   .how-strip{grid-template-columns:repeat(2,1fr)}
   .trust-grid{grid-template-columns:1fr}
   .page-cta{padding:40px 24px}
@@ -133,6 +155,7 @@ footer{border-top:1px solid var(--border);padding:32px 64px;display:flex;align-i
   footer{padding:24px;flex-direction:column;text-align:center}
 }
 @media(max-width:480px){
+  .trust-strip{grid-template-columns:1fr}
   .how-strip{grid-template-columns:1fr}
   .step{grid-template-columns:44px 1fr;gap:0 22px}
   .step-num{font-size:2.2rem}
@@ -154,82 +177,122 @@ sup{font-size:.55em;line-height:0;vertical-align:super}
 
 <main class="page">
 
-  {{-- &#8212;&#8212; HERO &#8212;&#8212; --}}
+  {{-- ── HERO ── --}}
   <span class="page-eye">The System</span>
   <h1 class="page-title">How <em>SEO AI Co<sup>&trade;</sup></em><br>works.</h1>
-  <p class="page-intro">We build structured, location-specific pages on your existing website &mdash; expanding your domain&rsquo;s coverage across every service and city you serve. Here is how the process works, from start to finish.</p>
+  <p class="page-intro">We build structured, location-specific pages on your existing website &mdash; expanding your domain&rsquo;s coverage across every service and city you serve.</p>
   <p class="page-intro-note">No site replacement. No separate platform. Built on your URL, under your brand.</p>
 
-  {{-- &#8212;&#8212; HOW-STRIP: 4-pillar summary &#8212;&#8212; --}}
-  <div class="how-strip">
-    <div class="how-pill">
-      <span class="how-pill-num">01</span>
-      <span class="how-pill-label">Map</span>
-      <span class="how-pill-sub">Market &amp; structure mapping before anything is built.</span>
+  {{-- ── TOP TRUST STRIP ── --}}
+  <div class="trust-strip" data-stagger>
+    <div class="ts-item" data-stagger-child>
+      <div class="ts-icon-wrap">
+        <svg class="ts-icon" stroke-width="1.5" viewBox="0 0 24 24" aria-hidden="true">
+          <circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 010 20M12 2a15.3 15.3 0 000 20"/>
+        </svg>
+      </div>
+      <span class="ts-label">Built on your domain</span>
+      <span class="ts-sub">Your URL. Your brand. Your authority.</span>
     </div>
-    <div class="how-pill">
-      <span class="how-pill-num">02</span>
-      <span class="how-pill-label">Build</span>
-      <span class="how-pill-sub">Structured pages deployed to your existing domain.</span>
+    <div class="ts-item" data-stagger-child>
+      <div class="ts-icon-wrap">
+        <svg class="ts-icon" stroke-width="1.5" viewBox="0 0 24 24" aria-hidden="true">
+          <rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 9h6M9 12h6M9 15h4"/>
+        </svg>
+      </div>
+      <span class="ts-label">WordPress-first</span>
+      <span class="ts-sub">Plugin-based integration. No rebuilding.</span>
     </div>
-    <div class="how-pill">
-      <span class="how-pill-num">03</span>
-      <span class="how-pill-label">Link</span>
-      <span class="how-pill-sub">Internal linking, schema, and search signals configured.</span>
+    <div class="ts-item" data-stagger-child>
+      <div class="ts-icon-wrap">
+        <svg class="ts-icon" stroke-width="1.5" viewBox="0 0 24 24" aria-hidden="true">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><circle cx="12" cy="12" r="3"/>
+        </svg>
+      </div>
+      <span class="ts-label">Custom development available</span>
+      <span class="ts-sub">Built for any properly structured setup.</span>
     </div>
-    <div class="how-pill">
-      <span class="how-pill-num">04</span>
-      <span class="how-pill-label">Expand</span>
-      <span class="how-pill-sub">Coverage grows on a controlled, structured schedule.</span>
+    <div class="ts-item" data-stagger-child>
+      <div class="ts-icon-wrap">
+        <svg class="ts-icon" stroke-width="1.5" viewBox="0 0 24 24" aria-hidden="true">
+          <rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/><path d="M8 14h.01M12 14h.01M16 14h.01M8 18h.01M12 18h.01"/>
+        </svg>
+      </div>
+      <span class="ts-label">Structured rollout</span>
+      <span class="ts-sub">Phased, planned, and managed for you.</span>
     </div>
   </div>
 
-  {{-- &#8212;&#8212; STEPS &#8212;&#8212; --}}
-  <div class="steps">
+  {{-- ── HOW-STRIP: 4-pillar summary ── --}}
+  <div class="how-strip" data-stagger>
+    <div class="how-pill" data-stagger-child>
+      <span class="how-pill-num">01</span>
+      <span class="how-pill-label">Map</span>
+      <span class="how-pill-sub">We review your services, locations, and site structure.</span>
+    </div>
+    <div class="how-pill" data-stagger-child>
+      <span class="how-pill-num">02</span>
+      <span class="how-pill-label">Build</span>
+      <span class="how-pill-sub">We create structured pages on your existing domain.</span>
+    </div>
+    <div class="how-pill" data-stagger-child>
+      <span class="how-pill-num">03</span>
+      <span class="how-pill-label">Connect</span>
+      <span class="how-pill-sub">We strengthen internal linking and page relationships.</span>
+    </div>
+    <div class="how-pill" data-stagger-child>
+      <span class="how-pill-num">04</span>
+      <span class="how-pill-label">Expand</span>
+      <span class="how-pill-sub">Growth rolls out in phases, not all at once.</span>
+    </div>
+  </div>
 
-    <div class="step">
+  {{-- ── STEPS ── --}}
+  <div class="steps" data-stagger>
+
+    <div class="step" data-stagger-child>
       <span class="step-num">01</span>
       <div class="step-body">
-        <span class="step-label">Market &amp; Structure Mapping</span>
+        <span class="step-label">Map</span>
         <h2 class="step-hed">We map your market before anything is built.</h2>
-        <p class="step-copy">Every service you offer. Every city you serve. Every coverage gap your current site has. We document the full structure before a single page is created &mdash; so every deployment has a purpose, a place, and a clear relationship to everything else.<br><br>This phase produces the complete architecture for your expansion: service categories, location depth, URL structure, and internal link planning.</p>
+        <p class="step-copy">Every service you offer. Every city you serve. Every gap in your current site&rsquo;s coverage. We document the full structure before a single page is created.<br><br>This phase produces your complete expansion architecture &mdash; service categories, location depth, URL structure, and internal link planning.</p>
         <span class="step-note">No guesswork. Mapped to your actual market.</span>
       </div>
     </div>
 
-    <div class="step">
+    <div class="step" data-stagger-child>
       <span class="step-num">02</span>
       <div class="step-body">
-        <span class="step-label">Systemized Page Building</span>
+        <span class="step-label">Build</span>
         <h2 class="step-hed">Structured pages &mdash; built on your domain.</h2>
-        <p class="step-copy">We generate location-specific service pages on your existing website &mdash; under your URL, inside your brand. These are not generic stubs or placeholder pages. Each one is properly structured with relevant content, schema markup, and the signals search engines and AI discovery systems use to understand what a page is about.<br><br><strong>Your site grows. Your domain earns the authority.</strong></p>
+        <p class="step-copy">We generate location-specific service pages on your existing website &mdash; under your URL, inside your brand. Each page is properly structured with relevant content, schema markup, and the signals search engines and AI systems use to understand what a page is about.<br><br><strong>Your site grows. Your domain earns the authority.</strong></p>
         <span class="step-note">WordPress and Divi supported natively. No migration required.</span>
       </div>
     </div>
 
-    <div class="step">
+    <div class="step" data-stagger-child>
       <span class="step-num">03</span>
       <div class="step-body">
-        <span class="step-label">Internal Linking &amp; Signal Architecture</span>
+        <span class="step-label">Connect</span>
         <h2 class="step-hed">Every page connects &mdash; and signals correctly.</h2>
-        <p class="step-copy">We build the internal link structure, schema markup, and search signal layers that help your site get understood. Each page connects outward and inward &mdash; reinforcing your domain&rsquo;s overall coverage depth and topical authority.<br><br>This is the layer most sites are missing. It is also what separates a collection of pages from a structured visibility system.</p>
+        <p class="step-copy">We build the internal link structure, schema markup, and search signal layers that help your site get understood. Each page reinforces your domain&rsquo;s coverage depth and topical authority.<br><br>This is the layer most sites are missing &mdash; and what separates a structured visibility system from a collection of pages.</p>
         <span class="step-note">Structured data, canonical signals, and local schema included.</span>
       </div>
     </div>
 
-    <div class="step">
+    <div class="step" data-stagger-child>
       <span class="step-num">04</span>
       <div class="step-body">
-        <span class="step-label">Controlled Expansion Over Time</span>
+        <span class="step-label">Expand</span>
         <h2 class="step-hed">Coverage grows. The system manages it.</h2>
-        <p class="step-copy">New pages extend your reach on a structured, phased schedule. Coverage compounds &mdash; earlier pages build context and authority that later pages benefit from. Your team manages none of this directly.<br><br>Deployment is structured over a 4-month build phase. Ongoing coverage, optimisation, and signal maintenance continue under your active agreement.</p>
+        <p class="step-copy">New pages extend your reach on a structured, phased schedule. Coverage compounds &mdash; earlier pages build context and authority that later pages benefit from. Your team manages none of this directly.<br><br>Deployment is structured over a 4-month build phase. Ongoing coverage and signal maintenance continue under your active agreement.</p>
         <span class="step-note">Structured 4-month rollout. Continuous coverage thereafter.</span>
       </div>
     </div>
 
   </div>
 
-  {{-- &#8212;&#8212; TRUST BLOCK &#8212;&#8212; --}}
+  {{-- ── TRUST BLOCK ── --}}
   <div class="trust-block">
     <span class="trust-block-eye">How We Work</span>
     <h2 class="trust-block-hed">Built correctly. Clearly structured.</h2>
@@ -292,7 +355,7 @@ sup{font-size:.55em;line-height:0;vertical-align:super}
     </div>
   </div>
 
-  {{-- &#8212;&#8212; PLATFORM COMPATIBILITY &#8212;&#8212; --}}
+  {{-- ── PLATFORM COMPATIBILITY ── --}}
   <div class="compat-block">
     <span class="compat-block-eye">Platform Compatibility</span>
     <h2 class="compat-block-hed">Works with your existing website.</h2>
@@ -329,7 +392,7 @@ sup{font-size:.55em;line-height:0;vertical-align:super}
     </div>
   </div>
 
-  {{-- &#8212;&#8212; CTA &#8212;&#8212; --}}
+  {{-- ── CTA ── --}}
   <div class="page-cta">
     <span class="page-cta-eye">Ready to begin</span>
     <h2 class="page-cta-hed">See how this fits your market.</h2>
@@ -352,6 +415,34 @@ sup{font-size:.55em;line-height:0;vertical-align:super}
     <a href="{{ route('privacy') }}">Privacy</a>
   </nav>
 </footer>
+
+<script>
+(function(){
+  var containers = document.querySelectorAll('[data-stagger]');
+  if (!containers.length) return;
+
+  function revealGroup(container) {
+    var children = container.querySelectorAll('[data-stagger-child]');
+    children.forEach(function(el, i){
+      setTimeout(function(){ el.classList.add('vis'); }, i * 85);
+    });
+  }
+
+  if ('IntersectionObserver' in window) {
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(e){
+        if (e.isIntersecting) {
+          revealGroup(e.target);
+          io.unobserve(e.target);
+        }
+      });
+    }, {threshold: 0.07, rootMargin: '0px 0px -40px 0px'});
+    containers.forEach(function(c){ io.observe(c); });
+  } else {
+    containers.forEach(function(c){ revealGroup(c); });
+  }
+})();
+</script>
 
 </body>
 </html>
