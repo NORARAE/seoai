@@ -106,16 +106,19 @@ body{background:var(--bg);color:var(--ivory);font-family:'DM Sans',sans-serif;fo
 .compat-block-eye{font-size:.60rem;letter-spacing:.22em;text-transform:uppercase;color:var(--gold-dim);display:block;margin-bottom:14px;text-align:center}
 .compat-block-hed{font-family:'Cormorant Garamond',serif;font-size:clamp(1.5rem,2.2vw,1.9rem);font-weight:300;color:var(--ivory);text-align:center;margin-bottom:10px;line-height:1.2}
 .compat-block-sub{font-size:.86rem;color:var(--muted-lt);text-align:center;margin-bottom:44px;line-height:1.75;max-width:520px;margin-left:auto;margin-right:auto}
-.compat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
-.compat-col{padding:26px 22px;border:1px solid rgba(200,168,75,.07);background:rgba(0,0,0,.20);transition:border-color .22s,transform .22s}
-.compat-col:hover{border-color:rgba(200,168,75,.20);transform:translateY(-2px)}
-.compat-col-label{font-size:.60rem;letter-spacing:.18em;text-transform:uppercase;color:var(--gold-dim);display:block;margin-bottom:16px;font-weight:400}
-.compat-items{list-style:none;display:flex;flex-direction:column;gap:10px}
-.compat-item{font-size:.82rem;color:var(--muted);line-height:1.60;display:flex;align-items:flex-start;gap:8px}
-.compat-item::before{content:'\2014';color:rgba(200,168,75,.28);flex-shrink:0;font-size:.78rem;margin-top:.1em}
-.compat-item.dim{color:var(--muted-lt)}
-.compat-note-wrap{margin-top:36px;padding-top:32px;border-top:1px solid rgba(200,168,75,.06);text-align:center}
-.compat-note{font-size:.76rem;color:rgba(168,168,160,.38);line-height:1.74;max-width:560px;margin:0 auto;font-style:italic}
+.compat-platform-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-bottom:36px}
+.compat-platform-card{padding:28px 24px;border:1px solid rgba(200,168,75,.07);background:rgba(0,0,0,.20);display:flex;flex-direction:column;gap:14px;transition:border-color .22s,transform .22s,background .22s}
+.compat-platform-card:hover{border-color:rgba(200,168,75,.22);transform:translateY(-2px);background:rgba(0,0,0,.32)}
+.compat-platform-card--lead{border-color:rgba(200,168,75,.16);background:rgba(12,10,6,.55)}
+.compat-platform-card--lead:hover{border-color:rgba(200,168,75,.30)}
+.compat-platform-icon{width:36px;height:36px;color:rgba(200,168,75,.55);flex-shrink:0}
+.compat-platform-meta{display:flex;flex-direction:column;gap:6px}
+.compat-platform-name{font-size:.92rem;color:var(--ivory);font-weight:400;letter-spacing:.01em;line-height:1.3}
+.compat-platform-tag{display:inline-block;font-size:.58rem;letter-spacing:.14em;text-transform:uppercase;color:rgba(200,168,75,.80);background:rgba(200,168,75,.07);border:1px solid rgba(200,168,75,.18);padding:3px 9px;align-self:flex-start}
+.compat-platform-desc{font-size:.80rem;color:var(--muted-lt);line-height:1.68}
+.compat-note-wrap{margin-top:36px;padding-top:32px;border-top:1px solid rgba(200,168,75,.06);text-align:center;display:flex;flex-direction:column;gap:12px}
+.compat-support-line{font-size:.82rem;color:var(--muted);line-height:1.76;max-width:520px;margin:0 auto}
+.compat-position-line{font-size:.78rem;color:rgba(200,168,75,.46);line-height:1.74;max-width:500px;margin:0 auto;font-style:italic}
 
 /* ── CTA block ── */
 .page-cta{border:1px solid rgba(200,168,75,.14);background:var(--card);padding:60px 52px;text-align:center}
@@ -155,7 +158,7 @@ footer{border-top:1px solid var(--border);padding:32px 64px;display:flex;align-i
   .page-cta{padding:40px 24px}
   .trust-block{padding:40px 24px}
   .compat-block{padding:40px 24px}
-  .compat-grid{grid-template-columns:1fr}
+  .compat-platform-grid{grid-template-columns:1fr}
   footer{padding:24px;flex-direction:column;text-align:center}
 }
 @media(max-width:480px){
@@ -364,36 +367,56 @@ sup{font-size:.55em;line-height:0;vertical-align:super}
   <div class="compat-block">
     <span class="compat-block-eye">Platform Compatibility</span>
     <h2 class="compat-block-hed">Works with your existing site.</h2>
-    <p class="compat-block-sub">Built directly on your current website. No separate platform. No migration required for most setups.</p>
+    <p class="compat-block-sub">Built for environments that support structured expansion and direct page control.</p>
 
-    <div class="compat-grid">
+    <div class="compat-platform-grid">
 
-      <div class="compat-col">
-        <span class="compat-col-label">Best supported</span>
-        <ul class="compat-items">
-          <li class="compat-item">WordPress &mdash; plugin-based integration</li>
-          <li class="compat-item">Custom-built websites</li>
-        </ul>
+      {{-- WordPress --}}
+      <div class="compat-platform-card compat-platform-card--lead">
+        <svg class="compat-platform-icon" fill="none" stroke="currentColor" stroke-width="1.4" viewBox="0 0 24 24" aria-label="WordPress" aria-hidden="true">
+          <rect x="3" y="3" width="8" height="8" rx="1"/>
+          <rect x="13" y="3" width="8" height="8" rx="1"/>
+          <rect x="3" y="13" width="8" height="8" rx="1"/>
+          <rect x="13" y="13" width="8" height="8" rx="1"/>
+        </svg>
+        <div class="compat-platform-meta">
+          <span class="compat-platform-name">WordPress</span>
+          <span class="compat-platform-tag">Fastest path</span>
+        </div>
+        <p class="compat-platform-desc">Plugin-based integration. Full page control, native internal linking, and complete structured deployment from day one.</p>
       </div>
 
-      <div class="compat-col">
-        <span class="compat-col-label">In development</span>
-        <ul class="compat-items">
-          <li class="compat-item">Shopify integration</li>
-        </ul>
+      {{-- Custom / PHP --}}
+      <div class="compat-platform-card">
+        <svg class="compat-platform-icon" fill="none" stroke="currentColor" stroke-width="1.4" viewBox="0 0 24 24" aria-label="Custom build" aria-hidden="true">
+          <polyline stroke-linecap="round" stroke-linejoin="round" points="16 18 22 12 16 6"/>
+          <polyline stroke-linecap="round" stroke-linejoin="round" points="8 6 2 12 8 18"/>
+        </svg>
+        <div class="compat-platform-meta">
+          <span class="compat-platform-name">Custom / PHP</span>
+        </div>
+        <p class="compat-platform-desc">Flexible implementation for structured environments. We work directly within your existing architecture.</p>
       </div>
 
-      <div class="compat-col">
-        <span class="compat-col-label">Other platforms</span>
-        <ul class="compat-items">
-          <li class="compat-item dim">Some website builders and hosted platforms may require a modified setup to support structured expansion at scale.</li>
-        </ul>
+      {{-- Shopify --}}
+      <div class="compat-platform-card">
+        <svg class="compat-platform-icon" fill="none" stroke="currentColor" stroke-width="1.4" viewBox="0 0 24 24" aria-label="Shopify" aria-hidden="true">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/>
+          <line stroke-linecap="round" x1="3" y1="6" x2="21" y2="6"/>
+          <path stroke-linecap="round" stroke-linejoin="round" d="M16 10a4 4 0 01-8 0"/>
+        </svg>
+        <div class="compat-platform-meta">
+          <span class="compat-platform-name">Shopify</span>
+          <span class="compat-platform-tag">In development</span>
+        </div>
+        <p class="compat-platform-desc">Direct integration currently in development. Coming to the platform in a future release.</p>
       </div>
 
     </div>
 
     <div class="compat-note-wrap">
-      <p class="compat-note">Structured expansion requires direct control over page generation and internal linking. Some hosted platforms limit this capability. We confirm compatibility during your market review.</p>
+      <p class="compat-support-line">We&rsquo;ll confirm compatibility and recommend the best implementation path during your market review.</p>
+      <p class="compat-position-line">For clients starting fresh or restructuring, we typically deploy on WordPress for speed, flexibility, and long-term scalability.</p>
     </div>
   </div>
 
