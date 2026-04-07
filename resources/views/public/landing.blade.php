@@ -2612,14 +2612,13 @@ body::before{
   <div class="hero-stage">
     <h1 id="heroSeq" aria-label="Your market. Your territory. Every city, every service. Programmatic expansion. Maximum coverage. Built for search and AI discovery.">Your market.<br>Your territory.</h1>
   </div>
-  <p class="hero-gold-accent">AI-powered hyper-local market expansion across every city in your market.</p>
-  <p class="hero-cities"><span>Every Service.</span><span>Every City.</span><span>Every Neighborhood.</span></p>
-  <p class="hero-diff">Programmatic URL expansion — expanding your visibility across every service and every city.</p>
-  <p class="hero-note">Position early. Expand everywhere.</p>
+  <p class="hero-gold-accent">We build structured pages on your existing website — covering every service and city you serve.</p>
+  <p class="hero-diff">Your domain. More pages. More markets. More search presence.</p>
+  <p class="hero-note">Position early. Compound over time.</p>
   <div class="hero-actions" style="opacity:0;animation:up .85s .52s forwards">
     <a href="#" class="btn-primary js-open-gate">Assess Your Market</a>
   </div>
-  <p class="hero-cta-note">Signal-aware. Continuously adapting.</p>
+  <p class="hero-cta-note">Managed system. White-label platform available.</p>
 
 </section>
 
@@ -2631,7 +2630,7 @@ body::before{
 
 <!-- ════════════ HOW THIS WORKS ════════════ -->
 <section class="how-strip r" aria-label="How the system works">
-  <p class="how-strip-hed">How your market expansion is built</p>
+  <p class="how-strip-hed">How the system works</p>
   <div class="how-strip-bullets">
     <div class="how-strip-item">
       <span class="how-strip-dot" aria-hidden="true"></span>
@@ -2649,12 +2648,8 @@ body::before{
       <span class="how-strip-dot" aria-hidden="true"></span>
       <span class="how-strip-label">Continuous optimization as algorithms evolve</span>
     </div>
-    <div class="how-strip-item">
-      <span class="how-strip-dot" aria-hidden="true"></span>
-      <span class="how-strip-label">First-mover position — authority built through structure</span>
-    </div>
   </div>
-  <p class="how-strip-sub">A full-system expansion — not a tool, not a shortcut.</p>
+  <p class="how-strip-sub">A structured system — not a tool, not a generic agency.</p>
 </section>
 
 <!-- ════════════ SYSTEM STRUCTURE ════════════ -->
@@ -2736,7 +2731,6 @@ body::before{
         </div>
 
       </div>
-      <p class="sys-city-foot r">+ every service, every city, every neighborhood — built on your domain</p>
       <p class="sys-city-clarity r">All pages are built on your domain — expanding your visibility across your entire market.</p>
     </div>
 
@@ -2834,7 +2828,7 @@ body::before{
         </div>
       </div>
       <p class="alloc-trust-line">These regions show where access is active, limited, or currently available for expansion. Status reflects live search coverage and market positioning.</p>
-      <p class="alloc-avail-note"><strong>AI-guided deployment. Position built through structured coverage.</strong> Each position covers structured service and location pages — built for organic search, AI-assisted visibility, and LLM-aware discovery across your full territory.<br><br>Access is reviewed individually based on market availability and strategic fit. Search presence is established through structured systems and expanded over time.</p>
+      <p class="alloc-avail-note">Each position covers structured service and location pages — built for organic search, AI-assisted visibility, and LLM-aware discovery across your full territory. Access is reviewed individually based on market availability and strategic fit.</p>
     </div>
 
   </div>
@@ -2855,7 +2849,7 @@ body::before{
       <span class="ac-label">Controlled Access</span>
       <h3 class="ac-head">Built on structure.<br><em>Sustained by execution.</em></h3>
       <p class="ac-impact">The advantage compounds with every deployment.</p>
-      <p class="ac-body">The advantage comes from structured expansion, domain authority, and continuous coverage. Businesses that move first build stronger signals, expand faster, and become harder to displace over time.</p>
+      <p class="ac-body">Structured expansion builds domain authority. Earlier coverage compounds faster — harder to displace with every passing month.</p>
     </div>
 
     <div class="ac-card">
@@ -2898,8 +2892,7 @@ body::before{
       <span class="infra-hed-1">The territory will be owned.</span>
       <span class="infra-hed-2">The only question is by whom.</span>
     </h2>
-    <p class="infra-gold">First to claim. First to rank.</p>
-    <p class="infra-sub">Available ground closes without warning.</p>
+    <p class="infra-gold">First to structure. First to rank.</p>
     <span class="infra-rule"></span>
   </div>
 </section>
@@ -2910,7 +2903,7 @@ body::before{
 <section id="who">
   <div class="audience-section">
     <p class="s-eye r">Who This Is For</p>
-    <h2 class="s-h r">Two paths in.<br><em>One outcome. Total market control.</em></h2>
+    <h2 class="s-h r">Two paths in.<br><em>One outcome.</em></h2>
     <div class="audience-grid">
 
       <div class="aud-card r">
@@ -2921,7 +2914,6 @@ body::before{
           <li><strong>Zero attribution</strong> — invisible to clients and competitors alike</li>
           <li><strong>Full portfolio coverage under one agreement</strong></li>
           <li><strong>Structured coverage per client</strong> — depth that builds retention</li>
-          <li><strong>Search presence is tied to your agreement</strong> — retention by design</li>
         </ul>
         <p style="font-size:.82rem;color:var(--muted);letter-spacing:.04em;margin-bottom:12px">Not ads. Not campaigns. Ownership.</p>
         <a href="#offer" class="aud-cta">Review Agency Deployment &rarr;</a>
@@ -3145,7 +3137,7 @@ body::before{
         <div class="ul-state active">
           <span class="ul-state-label">Active Licence</span>
           <div class="ul-state-title">Fully live — ranking, indexing, generating leads</div>
-          <div class="ul-state-desc">Structured content, search signals, FAQ architecture, localized data, internal link structure, and page descriptions all active. Organic search, AI systems, and emerging discovery layers indexing your pages across every city under your agreement. <strong>Position compounds under active maintenance.</strong></div>
+          <div class="ul-state-desc">All structured content, search signals, and internal link architecture active. Your pages rank, index, and compound in authority across every city in your coverage.</div>
         </div>
         <div class="ul-state inactive">
           <span class="ul-state-label">Licence Lapsed</span>
@@ -3155,7 +3147,6 @@ body::before{
       </div>
       <div class="ul-note">
         <p><strong>Need more pages?</strong> Upgrade to the next tier — your existing pages carry over.</p>
-        <p><strong>Already have pages built outside this platform?</strong> You can bring them under the licensed platform at the 10,000 page tier — full structured coverage, link architecture, and search signals across your entire footprint.</p>
       </div>
     </div>
   </div>
@@ -3172,8 +3163,8 @@ body::before{
     <div>
       <p class="s-eye">Market Access Plans</p>
       <h2 class="s-h offer-hed-split">
-        <span>Access is structured by level</span>
-        <span class="offer-hed-mid">of expansion —</span>
+        <span>Access is structured by coverage</span>
+        <span class="offer-hed-mid">depth and commitment —</span>
         <em>not generic packages.</em>
       </h2>
     </div>
