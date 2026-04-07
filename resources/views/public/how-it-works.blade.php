@@ -77,6 +77,21 @@ body{background:var(--bg);color:var(--ivory);font-family:'DM Sans',sans-serif;fo
 .trust-caveat-wrap{margin-top:40px;padding-top:36px;border-top:1px solid rgba(200,168,75,.06);text-align:center}
 .trust-caveat{font-size:.76rem;color:rgba(168,168,160,.36);line-height:1.74;max-width:580px;margin:0 auto;font-style:italic}
 
+/* ── Platform compat block ── */
+.compat-block{background:var(--card2);border:1px solid rgba(200,168,75,.10);padding:56px 52px;margin-bottom:88px}
+.compat-block-eye{font-size:.60rem;letter-spacing:.22em;text-transform:uppercase;color:var(--gold-dim);display:block;margin-bottom:14px;text-align:center}
+.compat-block-hed{font-family:'Cormorant Garamond',serif;font-size:clamp(1.5rem,2.2vw,1.9rem);font-weight:300;color:var(--ivory);text-align:center;margin-bottom:10px;line-height:1.2}
+.compat-block-sub{font-size:.86rem;color:var(--muted-lt);text-align:center;margin-bottom:44px;line-height:1.75;max-width:520px;margin-left:auto;margin-right:auto}
+.compat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.compat-col{padding:26px 22px;border:1px solid rgba(200,168,75,.07);background:rgba(0,0,0,.20)}
+.compat-col-label{font-size:.60rem;letter-spacing:.18em;text-transform:uppercase;color:var(--gold-dim);display:block;margin-bottom:16px;font-weight:400}
+.compat-items{list-style:none;display:flex;flex-direction:column;gap:10px}
+.compat-item{font-size:.82rem;color:var(--muted);line-height:1.60;display:flex;align-items:flex-start;gap:8px}
+.compat-item::before{content:'\2014';color:rgba(200,168,75,.28);flex-shrink:0;font-size:.78rem;margin-top:.1em}
+.compat-item.dim{color:var(--muted-lt)}
+.compat-note-wrap{margin-top:36px;padding-top:32px;border-top:1px solid rgba(200,168,75,.06);text-align:center}
+.compat-note{font-size:.76rem;color:rgba(168,168,160,.38);line-height:1.74;max-width:560px;margin:0 auto;font-style:italic}
+
 /* ── CTA block ── */
 .page-cta{border:1px solid rgba(200,168,75,.14);background:var(--card);padding:56px 52px;text-align:center}
 .page-cta-eye{font-size:.60rem;letter-spacing:.22em;text-transform:uppercase;color:var(--gold-dim);display:block;margin-bottom:14px}
@@ -113,6 +128,8 @@ footer{border-top:1px solid var(--border);padding:32px 64px;display:flex;align-i
   .trust-grid{grid-template-columns:1fr}
   .page-cta{padding:40px 24px}
   .trust-block{padding:40px 24px}
+  .compat-block{padding:40px 24px}
+  .compat-grid{grid-template-columns:1fr}
   footer{padding:24px;flex-direction:column;text-align:center}
 }
 @media(max-width:480px){
@@ -272,6 +289,43 @@ sup{font-size:.55em;line-height:0;vertical-align:super}
 
     <div class="trust-caveat-wrap">
       <p class="trust-caveat">SEO AI Co&trade; builds the structural conditions for search and AI visibility &mdash; including page architecture, internal linking, schema markup, and location-specific content. We do not control search engine algorithms, guarantee indexing timelines, or promise specific traffic or revenue outcomes. Results vary based on market, competition, and factors outside our control.</p>
+    </div>
+  </div>
+
+  {{-- &#8212;&#8212; PLATFORM COMPATIBILITY &#8212;&#8212; --}}
+  <div class="compat-block">
+    <span class="compat-block-eye">Platform Compatibility</span>
+    <h2 class="compat-block-hed">Works with your existing website.</h2>
+    <p class="compat-block-sub">SEO AI Co is designed to build directly on your current site &mdash; no separate platform, no migration required for most setups.</p>
+
+    <div class="compat-grid">
+
+      <div class="compat-col">
+        <span class="compat-col-label">Best supported</span>
+        <ul class="compat-items">
+          <li class="compat-item">WordPress &mdash; plugin-based integration</li>
+          <li class="compat-item">Custom-built websites</li>
+        </ul>
+      </div>
+
+      <div class="compat-col">
+        <span class="compat-col-label">In development</span>
+        <ul class="compat-items">
+          <li class="compat-item">Shopify integration</li>
+        </ul>
+      </div>
+
+      <div class="compat-col">
+        <span class="compat-col-label">Other platforms</span>
+        <ul class="compat-items">
+          <li class="compat-item dim">Some website builders and hosted platforms may require a modified setup to support structured expansion at scale.</li>
+        </ul>
+      </div>
+
+    </div>
+
+    <div class="compat-note-wrap">
+      <p class="compat-note">Structured expansion requires direct control over page generation and internal linking. Some hosted platforms limit this capability. We confirm compatibility during your market review.</p>
     </div>
   </div>
 
