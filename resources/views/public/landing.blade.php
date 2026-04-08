@@ -18,8 +18,8 @@
 <link rel="manifest" href="/site.webmanifest">
 <meta name="theme-color" content="#080808">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>SEO AI Co™ — Programmatic Search Infrastructure. Licensed. Controlled. Exclusive.</title>
-<meta name="description" content="SEO AI Co™ helps agencies and service businesses dominate local search with AI-powered programmatic SEO, hyper-local expansion, and automated content systems built for scale.">
+<title>You Found Us Organically — Let's Do the Same for You | SEO AI Co™</title>
+<meta name="description" content="SEO AI Co™ helps your business show up in every city you serve with AI-powered SEO, ChatGPT optimization (AEO/GEO), and WordPress & Divi expertise — without complicated tools or big agency costs.">
 <link rel="canonical" href="{{ url('/') }}">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>

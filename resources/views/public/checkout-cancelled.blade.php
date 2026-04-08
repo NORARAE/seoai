@@ -10,7 +10,7 @@
 <link rel="manifest" href="/site.webmanifest">
 <meta name="theme-color" content="#080808">
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    <title>Checkout Cancelled — SEO AI Co™</title>
+    <title>Checkout Cancelled — Start Over Anytime | SEO AI Co™</title>
     <meta name="robots" content="noindex,nofollow">
     <style>
         *{margin:0;padding:0;box-sizing:border-box}

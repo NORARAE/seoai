@@ -10,8 +10,8 @@
 <link rel="manifest" href="/site.webmanifest">
 <meta name="theme-color" content="#080808">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>How It Works &mdash; SEO AI Co&trade;</title>
-<meta name="description" content="Learn how SEO AI Co&trade; builds structured, location-specific pages on your existing domain &mdash; expanding your site&rsquo;s coverage across every service and city you serve.">
+<title>How AI-Powered SEO Works for Your Business | SEO AI Co™</title>
+<meta name="description" content="SEO AI Co™ builds AI-powered, location-specific pages on your existing website — so you show up in search across every service and city you serve.">
 <link rel="canonical" href="{{ url('/how-it-works') }}">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>

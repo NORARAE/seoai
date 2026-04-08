@@ -10,8 +10,8 @@
 <link rel="manifest" href="/site.webmanifest">
 <meta name="theme-color" content="#080808">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Growth Services — SEO AI Co™</title>
-<meta name="description" content="SEO AI Co™ offers a complete suite of execution services — web design, WordPress development, paid ads management, and brand systems — all aligned with your market expansion strategy.">
+<title>SEO, Ads &amp; Web Design for Growing Businesses | SEO AI Co™</title>
+<meta name="description" content="Full-service growth from SEO AI Co™ — web design, WordPress development, Google Ads, and brand systems built to help your business get found and grow.">
 <link rel="canonical" href="{{ url('/growth-services') }}">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>

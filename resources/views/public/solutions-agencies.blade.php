@@ -10,8 +10,8 @@
 <link rel="manifest" href="/site.webmanifest">
 <meta name="theme-color" content="#080808">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>For Agencies — SEO AI Co™</title>
-<meta name="description" content="White-label SEO infrastructure for agencies. Deploy territory-locked coverage under your brand — own the territory, retain the margin.">
+<title>White-Label AI SEO for Digital Agencies | SEO AI Co™</title>
+<meta name="description" content="White-label AI SEO for digital agencies — deploy structured search coverage under your brand across all your clients, in every market they serve.">
 <link rel="canonical" href="{{ url('/solutions/agencies') }}">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>

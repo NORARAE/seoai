@@ -10,7 +10,7 @@
 <link rel="manifest" href="/site.webmanifest">
 <meta name="theme-color" content="#080808">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Cancel Booking — SEO AI Co™</title>
+<title>Cancel Your Session | SEO AI Co™</title>
 <meta name="robots" content="noindex,nofollow">
 <meta name="csrf-token" content="{{ csrf_token() }}">
 <style>

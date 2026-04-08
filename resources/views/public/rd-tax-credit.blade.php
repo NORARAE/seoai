@@ -19,7 +19,7 @@
 <meta name="theme-color" content="#080808">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="csrf-token" content="{{ csrf_token() }}">
-<title>R&amp;D Tax Credit — SEO AI Co™</title>
+<title>R&amp;D Tax Credits for AI &amp; Software Development | SEO AI Co™</title>
 <meta name="description" content="Some technical activities associated with custom software development, AI systems, and automation may be relevant to federal research credit considerations.">
 <link rel="canonical" href="{{ url('/rd-tax-credit') }}">
 <link rel="preconnect" href="https://fonts.googleapis.com">

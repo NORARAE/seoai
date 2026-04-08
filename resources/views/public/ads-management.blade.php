@@ -10,8 +10,8 @@
 <link rel="manifest" href="/site.webmanifest">
 <meta name="theme-color" content="#080808">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Ads Management — Search &amp; Local Campaigns — SEO AI Co™</title>
-<meta name="description" content="Google Ads, local search campaigns, and paid media management from SEO AI Co™ — designed to reinforce your organic market position while your programmatic SEO compounds.">
+<title>Google Ads &amp; Local Search Campaign Management | SEO AI Co™</title>
+<meta name="description" content="Google Ads and local search campaigns managed by SEO AI Co™ — drive more calls, leads, and traffic while your organic SEO builds long-term visibility.">
 <link rel="canonical" href="{{ url('/ads-management') }}">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>

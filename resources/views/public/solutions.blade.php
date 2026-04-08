@@ -10,7 +10,7 @@
 <link rel="manifest" href="/site.webmanifest">
 <meta name="theme-color" content="#080808">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Solutions — SEO AI Co™</title>
+<title>Who We Work With — Agencies &amp; Local Businesses | SEO AI Co™</title>
 <meta name="description" content="SEO AI Co™ helps your business show up in search across every service and city you serve — without complicated SEO.">
 <link rel="canonical" href="{{ url('/solutions') }}">
 <link rel="preconnect" href="https://fonts.googleapis.com">

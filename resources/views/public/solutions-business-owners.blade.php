@@ -10,8 +10,8 @@
 <link rel="manifest" href="/site.webmanifest">
 <meta name="theme-color" content="#080808">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>For Business Owners — SEO AI Co™</title>
-<meta name="description" content="Own your local market. Territory-locked SEO for service businesses — one operator per category per city.">
+<title>Get Found in Every City You Serve | SEO AI Co™</title>
+<meta name="description" content="SEO AI Co™ helps local service businesses show up in search across every city and service they offer — AI-powered, WordPress-compatible, built for you.">
 <link rel="canonical" href="{{ url('/solutions/business-owners') }}">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>

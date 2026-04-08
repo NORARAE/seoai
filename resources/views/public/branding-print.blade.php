@@ -10,8 +10,8 @@
 <link rel="manifest" href="/site.webmanifest">
 <meta name="theme-color" content="#080808">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Branding &amp; Print — SEO AI Co™</title>
-<meta name="description" content="Brand identity systems, business cards, marketing collateral, and print production from SEO AI Co™ — aligned with your market expansion strategy.">
+<title>Brand Identity &amp; Print Design for Local Businesses | SEO AI Co™</title>
+<meta name="description" content="Brand identity systems, business cards, and print collateral from SEO AI Co™ — designed to strengthen your local presence and match how customers find you.">
 <link rel="canonical" href="{{ url('/branding-print') }}">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>

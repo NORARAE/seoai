@@ -10,8 +10,8 @@
 <link rel="manifest" href="/site.webmanifest">
 <meta name="theme-color" content="#080808">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>WordPress Development &amp; Support — SEO AI Co™</title>
-<meta name="description" content="WordPress development, plugin management, theme customization, performance optimization, and ongoing technical support from SEO AI Co™ — aligned with your local SEO expansion.">
+<title>WordPress &amp; Divi Development and Support | SEO AI Co™</title>
+<meta name="description" content="WordPress and Divi development, plugin management, and ongoing support from SEO AI Co™ — keeping your site fast, secure, and ready to grow in search.">
 <link rel="canonical" href="{{ url('/wordpress-support') }}">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>

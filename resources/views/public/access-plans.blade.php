@@ -10,8 +10,8 @@
 <link rel="manifest" href="/site.webmanifest">
 <meta name="theme-color" content="#080808">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Access Plans — SEO AI Co™</title>
-<meta name="description" content="SEO AI Co™ access plans — Launch, Expansion, and Dominance. Programmatic SEO infrastructure for local service businesses securing market positions across the United States.">
+<title>SEO Plans &amp; Pricing for Local Service Businesses | SEO AI Co™</title>
+<meta name="description" content="Simple, transparent SEO plans from SEO AI Co™ — choose the coverage level that fits where your business wants to grow, starting with your most important markets.">
 <link rel="canonical" href="{{ url('/access-plans') }}">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
