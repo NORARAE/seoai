@@ -264,4 +264,9 @@ class PublicController extends Controller
     {
         return view('public.access-plans');
     }
+
+    public function aiSeoGeoAeo(): View
+    {
+        return view('public.ai-seo-for-chatgpt-geo-aeo');
+    }
 }

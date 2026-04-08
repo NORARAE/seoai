@@ -68,6 +68,7 @@ Route::get('/wordpress-support', [PublicController::class, 'wordpressSupport'])-
 Route::get('/ads-management', [PublicController::class, 'adsManagement'])->name('ads-management');
 Route::get('/branding-print', [PublicController::class, 'brandingPrint'])->name('branding-print');
 Route::get('/access-plans', [PublicController::class, 'accessPlans'])->name('access-plans');
+Route::get('/ai-seo-for-chatgpt-geo-aeo', [PublicController::class, 'aiSeoGeoAeo'])->name('ai-seo-geo-aeo');
 
 // ── Booking / Consult System ──
 Route::post('/track/modal-open', [TrackingController::class, 'modalOpen'])->middleware('throttle:30,1')->name('track.modal-open');
