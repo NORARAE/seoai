@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
+<link rel="icon" type="image/x-icon" href="/favicon.ico">
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
 <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
@@ -10,7 +11,7 @@
 <meta name="theme-color" content="#080808">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Solutions — SEO AI Co™</title>
-<meta name="description" content="SEO AI Co™ is built for agencies and service businesses ready to own their market. Explore who we work with.">
+<meta name="description" content="SEO AI Co™ helps your business show up in search across every service and city you serve — without complicated SEO.">
 <link rel="canonical" href="{{ url('/solutions') }}">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -82,26 +83,26 @@ footer{border-top:1px solid var(--border);padding:32px 64px;display:flex;align-i
 
 <main class="page">
   <span class="page-eye">Solutions</span>
-  <h1 class="page-title">Built for agencies and<br><em>operators in active markets.</em></h1>
-  <p class="page-intro">SEO AI Co™ is a territory-locked SEO infrastructure system. Built for two types of operators — agencies and independent market operators. Choose your path.</p>
+  <h1 class="page-title">Built for businesses that want<br><em>to show up where it counts.</em></h1>
+  <p class="page-intro">SEO AI Co™ helps local businesses and agencies show up in search across every service and city they serve. Two paths — built for how you work.</p>
 
   <div class="sol-grid">
     <a href="/solutions/agencies" class="sol-card">
       <span class="sol-eye">Agencies</span>
       <h2 class="sol-title">For <em>Agencies</em></h2>
-      <p class="sol-desc">White-label SEO infrastructure you can deploy under your brand across all your clients. Own the system, hold the territory, retain the margin.</p>
+      <p class="sol-desc">Deploy a structured SEO system across all your clients under your brand. One platform, every market, full margin control.</p>
       <span class="sol-arrow">Explore Agencies →</span>
     </a>
     <a href="/solutions/business-owners" class="sol-card">
       <span class="sol-eye">Business Owners</span>
       <h2 class="sol-title">For <em>Business Owners</em></h2>
-      <p class="sol-desc">Own your city. Lock out local competitors. One territory per operator — yours to hold as long as you're active.</p>
+      <p class="sol-desc">Show up in search across every service you offer and every city you work in — built for you, managed for you.</p>
       <span class="sol-arrow">Explore Business Owners →</span>
     </a>
   </div>
 
   <div class="page-cta">
-    <p>Not sure which fits? A market session will clarify your best path in under 30 minutes.</p>
+    <p>Not sure where to start? A quick market session will show you exactly where to focus.</p>
     <a href="/book" class="cta-btn">Reserve a Market Session</a>
   </div>
 </main>
