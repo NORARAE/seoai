@@ -17,56 +17,56 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
 
-{{-- ── Schema: Article + Organization ── --}}
+{{-- ── Schema: WebPage + Organization + FAQPage ── --}}
 <script type="application/ld+json">
 {
-  "@context": "https://schema.org",
-  "@graph": [
+  "@@context": "https://schema.org",
+  "@@graph": [
     {
-      "@type": "WebPage",
-      "@id": "{{ url('/ai-seo-for-chatgpt-geo-aeo') }}#webpage",
+      "@@type": "WebPage",
+      "@@id": "{{ url('/ai-seo-for-chatgpt-geo-aeo') }}#webpage",
       "url": "{{ url('/ai-seo-for-chatgpt-geo-aeo') }}",
       "name": "AI SEO for ChatGPT, GEO & AEO | SEO AI Co™",
       "description": "Optimize your business for ChatGPT, AI search, and modern SEO with SEO AI Co™. We handle AEO, GEO, and AI visibility so you show up everywhere customers search.",
       "inLanguage": "en-US",
-      "isPartOf": { "@id": "{{ url('/') }}#website" }
+      "isPartOf": { "@@id": "{{ url('/') }}#website" }
     },
     {
-      "@type": "Organization",
-      "@id": "{{ url('/') }}#organization",
+      "@@type": "Organization",
+      "@@id": "{{ url('/') }}#organization",
       "name": "SEO AI Co™",
       "url": "{{ url('/') }}",
       "logo": "{{ url('/favicon-32x32.png') }}",
       "contactPoint": {
-        "@type": "ContactPoint",
+        "@@type": "ContactPoint",
         "contactType": "Customer Support",
         "email": "hello@seoaico.com"
       }
     },
     {
-      "@type": "FAQPage",
+      "@@type": "FAQPage",
       "mainEntity": [
         {
-          "@type": "Question",
+          "@@type": "Question",
           "name": "What is AI SEO?",
           "acceptedAnswer": {
-            "@type": "Answer",
+            "@@type": "Answer",
             "text": "AI SEO is the practice of optimizing your business so it appears in AI-driven search results — including ChatGPT, Google AI Overviews, Perplexity, and voice assistants. It goes beyond traditional keyword rankings to ensure your business is cited as a trusted answer."
           }
         },
         {
-          "@type": "Question",
+          "@@type": "Question",
           "name": "What is AEO (Answer Engine Optimization)?",
           "acceptedAnswer": {
-            "@type": "Answer",
+            "@@type": "Answer",
             "text": "AEO — Answer Engine Optimization — is the process of structuring your web content so AI tools and voice assistants can extract and surface direct answers about your business. When someone asks ChatGPT or a voice assistant about a service in your area, AEO helps ensure your business is the answer they get."
           }
         },
         {
-          "@type": "Question",
+          "@@type": "Question",
           "name": "What is GEO (Generative Engine Optimization)?",
           "acceptedAnswer": {
-            "@type": "Answer",
+            "@@type": "Answer",
             "text": "GEO — Generative Engine Optimization — focuses on making your business content usable by large language models and generative AI tools. When Google, ChatGPT, or Perplexity summarize search results, GEO increases the likelihood that your business is included in those summaries."
           }
         }
