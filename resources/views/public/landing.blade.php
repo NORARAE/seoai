@@ -1826,6 +1826,7 @@ body::before{
   font-size:clamp(4.4rem,9.5vw,8.5rem);
   /* 2-line reserve: handles any headline that wraps at this font size */
   height:calc(2em * 1.03);
+  overflow:hidden;            /* hard guard — never allows a 3rd line to bleed */
   position:relative;      /* positioning context for h1 */
   width:100%;             /* fill flex parent so absolute h1 isn't clipped */
   margin-bottom:40px;     /* gap to gold accent */
@@ -2342,6 +2343,7 @@ body::before{
   .step-title{font-size:1.18rem}
 
   /* Hero supporting copy */
+  .hero-stage{font-size:clamp(2.8rem,7.5vw,4rem)} /* covers 520–768px gap */
   .hero-gold-accent{margin-bottom:22px;line-height:1.3}
   .hero-note{font-size:clamp(1rem,4vw,1.2rem);margin-bottom:22px;padding-left:12px;max-width:100%}
   .hero-diff{font-size:.82rem;margin-bottom:20px}
@@ -3995,8 +3997,8 @@ body::before{
     if(!el) return;
     var headlines = [
       'Show Up in Every<br>City You Serve',
-      'Get Found on Google,<br>ChatGPT &amp; AI Search.',
-      'Works with<br>Your Existing Site.',
+      'Google. ChatGPT.<br>AI Search.',
+      'Works on Your<br>Existing Site.',
       'Every Service.<br>Every City.',
       'Simple SEO.<br>Real Results.'
     ];
