@@ -1133,7 +1133,7 @@ nav.stuck{background:rgba(8,8,8,.95);backdrop-filter:blur(16px);border-color:var
   opacity:0;transition:opacity .18s;letter-spacing:.02em;
 }
 .alloc-cell:hover .alloc-cell-tooltip{opacity:1}
-@media(max-width:768px){.alloc-cell-tooltip{display:none}}
+@media(max-width:768px){.alloc-cell-tooltip{display:none}.alloc-insight-cols{grid-template-columns:1fr}}
 /* trust line below grid */
 .alloc-trust-line{
   font-size:.80rem;color:rgba(168,168,160,.82);margin-top:14px;line-height:1.65;
@@ -1227,6 +1227,55 @@ nav.stuck{background:rgba(8,8,8,.95);backdrop-filter:blur(16px);border-color:var
 }
 .alloc-avail-note strong{color:rgba(237,232,222,.82);font-weight:400}
 .alloc-access-note{font-size:.74rem;color:rgba(168,168,160,.40);letter-spacing:.03em;line-height:1.65;margin-top:14px}
+
+/* Body intro + insight columns */
+.alloc-body-intro{
+  font-size:.94rem;color:rgba(168,168,160,.82);line-height:1.75;
+  margin-bottom:20px;
+}
+.alloc-insight-cols{
+  display:grid;grid-template-columns:1fr 1fr 1fr;gap:1px;
+  background:rgba(200,168,75,.10);
+  margin-bottom:28px;
+  border:1px solid rgba(200,168,75,.10);
+}
+.alloc-insight-col{
+  background:var(--bg);padding:18px 16px 16px;
+  display:flex;flex-direction:column;gap:7px;
+  position:relative;
+}
+.alloc-insight-col::before{
+  content:'';
+  position:absolute;top:0;left:0;right:0;height:2px;
+}
+.alloc-col-covered::before{background:linear-gradient(90deg,rgba(74,140,110,.6),rgba(74,140,110,.1));}
+.alloc-col-missing::before{background:linear-gradient(90deg,rgba(180,80,80,.55),rgba(180,80,80,.1));}
+.alloc-col-building::before{background:linear-gradient(90deg,rgba(200,168,75,.6),rgba(200,168,75,.1));}
+.alloc-insight-dot{
+  width:7px;height:7px;border-radius:50%;flex-shrink:0;
+}
+.alloc-col-covered .alloc-insight-dot{background:#4a8c6e;box-shadow:0 0 8px rgba(74,140,110,.5)}
+.alloc-col-missing .alloc-insight-dot{background:#b45050;box-shadow:0 0 8px rgba(180,80,80,.45)}
+.alloc-col-building .alloc-insight-dot{background:#c8a84b;box-shadow:0 0 8px rgba(200,168,75,.45)}
+.alloc-insight-label{
+  font-size:.65rem;letter-spacing:.22em;text-transform:uppercase;
+  font-weight:500;
+}
+.alloc-col-covered .alloc-insight-label{color:#6aaf90}
+.alloc-col-missing .alloc-insight-label{color:#c47878}
+.alloc-col-building .alloc-insight-label{color:var(--gold)}
+.alloc-insight-desc{
+  font-size:.78rem;color:rgba(168,168,160,.68);line-height:1.55;
+  margin:0;
+}
+.alloc-differentiator{
+  font-family:'Cormorant Garamond',serif;font-style:italic;
+  font-size:clamp(1.1rem,1.6vw,1.3rem);
+  color:rgba(200,168,75,.72);
+  line-height:1.55;margin-bottom:28px;
+  padding-left:14px;
+  border-left:2px solid rgba(200,168,75,.25);
+}
 
 /* ── Access section (replaces proof strip) ── */
 .access-section{padding:72px 64px;max-width:1200px;margin:0 auto}
@@ -2939,16 +2988,39 @@ body::before{
 
     <!-- Left: editorial copy -->
     <div class="alloc-copy">
-      <p class="alloc-eyebrow">Market Availability</p>
+      <p class="alloc-eyebrow">Market Mapping</p>
       <h2 class="alloc-hed">
-        Active markets.<br>Limited entry.<br>
-        <em>Availability reviewed.</em>
+        Your Market,<br>
+        <em>Mapped.</em>
       </h2>
-      <p class="alloc-urgency">These markets reflect current rollout availability. Access is reviewed by coverage, demand, and strategic fit.</p>
-      <div class="alloc-actions">
-        <a href="/book" class="btn-primary">Book a Free Strategy Session</a>
+      <p class="alloc-urgency">We don’t guess where to grow — we show you exactly where you’re missing visibility and where opportunity exists.</p>
+
+      <p class="alloc-body-intro">SEO AI Co™ analyzes your services, locations, and search demand to map your entire market. You’ll see:</p>
+
+      <div class="alloc-insight-cols">
+        <div class="alloc-insight-col alloc-col-covered">
+          <span class="alloc-insight-dot"></span>
+          <span class="alloc-insight-label">Covered</span>
+          <p class="alloc-insight-desc">Where you already show up in search</p>
+        </div>
+        <div class="alloc-insight-col alloc-col-missing">
+          <span class="alloc-insight-dot"></span>
+          <span class="alloc-insight-label">Missing</span>
+          <p class="alloc-insight-desc">Where you’re invisible to customers</p>
+        </div>
+        <div class="alloc-insight-col alloc-col-building">
+          <span class="alloc-insight-dot"></span>
+          <span class="alloc-insight-label">Expanding</span>
+          <p class="alloc-insight-desc">Where demand is high and we build next</p>
+        </div>
       </div>
-      <p class="alloc-access-note">Each activation includes structured service and location coverage across your full market.</p>
+
+      <p class="alloc-differentiator">No spreadsheets. No guesswork. Just a clear path to expand your visibility.</p>
+
+      <div class="alloc-actions">
+        <a href="/book" class="btn-primary">See Your Market →</a>
+      </div>
+      <p class="alloc-access-note">Free strategy session · No commitment required</p>
     </div>
 
     <!-- Right: regional allocation grid (data rendered from JS array below) -->
