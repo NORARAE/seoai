@@ -2165,7 +2165,7 @@ body::before{
   .infra-gold{font-size:clamp(1.6rem,5.8vw,2.2rem)}
   .settlement{padding:28px 20px}
   .settle-cards{grid-template-columns:1fr}
-  .hero-stage{font-size:clamp(3.2rem,11vw,5rem)}
+  .hero-stage{font-size:clamp(2.8rem,9vw,3.8rem)}
   .hero-gold-accent{font-size:clamp(1.1rem,4.5vw,1.4rem)}
   .exp-momentum-main{font-size:clamp(1.2rem,4.5vw,1.6rem)}
   .sys-struct{padding:36px 20px}
@@ -2417,7 +2417,7 @@ body::before{
 /* ── 11. Hero headline — very small phones (≤390px) ── */
 @media(max-width:390px){
   /* Reduce font-size floor so 5-word headlines wrap to 2 lines max, not 3 */
-  .hero-stage{font-size:clamp(2.7rem,10.2vw,3.5rem)}
+  .hero-stage{font-size:clamp(2.4rem,8.5vw,3rem)}
   /* Compensate: stage height is 2em × line-height — keep reserve at 2 lines */
   /* (height is set via JS-matchable clamp; CSS height:2.12em still correct) */
 
@@ -2626,7 +2626,7 @@ body::before{
   <canvas class="hero-anim-canvas" id="heroAnimCanvas" aria-hidden="true"></canvas>
 
   <div class="hero-stage">
-    <h1 id="heroSeq" aria-label="Show Up in Every City You Serve. Get found across Google, ChatGPT, and AI search without complicated SEO.">Show Up in Every City<br>You Serve</h1>
+    <h1 id="heroSeq" aria-label="Show Up in Every City You Serve. Get found across Google, ChatGPT, and AI search without complicated SEO.">Show Up in Every<br>City You Serve</h1>
   </div>
   <p class="hero-gold-accent">Get found across Google, ChatGPT, and AI search without complicated SEO.</p>
   <p class="hero-note">You found us organically. Let&#8217;s do the same for you.</p>
@@ -3823,7 +3823,7 @@ body::before{
     var el = document.getElementById('heroSeq');
     if(!el) return;
     var headlines = [
-      'Show Up in Every City<br>You Serve.',
+      'Show Up in Every<br>City You Serve',
       'Get Found on Google,<br>ChatGPT &amp; AI Search.',
       'Works with<br>Your Existing Site.',
       'Every Service.<br>Every City.',
