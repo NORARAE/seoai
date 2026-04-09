@@ -3997,7 +3997,7 @@ body::before{
     if(!el) return;
     var headlines = [
       'Show Up in Every<br>City You Serve',
-      'Google &amp; ChatGPT.<br>AI Search.',
+      'Seen in Google.<br>Seen in AI.',
       'Works with Your<br>Existing Site',
       'Every Service.<br>Every City.',
       'More Visibility.<br>Less Complexity.'
