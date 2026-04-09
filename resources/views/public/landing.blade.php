@@ -2626,15 +2626,14 @@ body::before{
   <canvas class="hero-anim-canvas" id="heroAnimCanvas" aria-hidden="true"></canvas>
 
   <div class="hero-stage">
-    <h1 id="heroSeq" aria-label="Show Up in Every City You Serve. Get found on Google, ChatGPT, and AI search. No agency overhead, no complicated tools.">Show Up in Every City<br>You Serve.</h1>
+    <h1 id="heroSeq" aria-label="Show Up in Every City You Serve. Get found across Google, ChatGPT, and AI search without complicated SEO.">Show Up in Every City<br>You Serve</h1>
   </div>
-  <p class="hero-gold-accent">SEO AI Co™ helps your business get found across Google, ChatGPT, and AI search — without complicated SEO or big agency costs.</p>
-  <p class="hero-note">You found us organically. Let's do the same for you.</p>
+  <p class="hero-gold-accent">Get found across Google, ChatGPT, and AI search without complicated SEO.</p>
+  <p class="hero-note">You found us organically. Let&#8217;s do the same for you.</p>
   <div class="hero-actions" style="opacity:0;animation:up .85s .52s forwards">
     <a href="/book" class="btn-primary">Book a Free Strategy Session</a>
     <a href="#how" class="btn-ghost">See how it works</a>
   </div>
-  <p class="hero-cta-note">No contracts &middot; No complicated tools &middot; Works with your existing site</p>
 
 </section>
 
@@ -2665,7 +2664,7 @@ body::before{
       <span class="how-strip-label">Optimized for Google, ChatGPT, and AI search from day one</span>
     </div>
   </div>
-  <p class="how-strip-sub">Works with your existing site. No rebuild required.</p>
+  <p class="how-strip-sub">Works with your existing site. Built to expand your visibility everywhere.</p>
 </section>
 
 <!-- ════════════ SYSTEM STRUCTURE ════════════ -->
@@ -3826,7 +3825,7 @@ body::before{
     var headlines = [
       'Show Up in Every City<br>You Serve.',
       'Get Found on Google,<br>ChatGPT &amp; AI Search.',
-      'Works with<br>WordPress &amp; Divi.',
+      'Works with<br>Your Existing Site.',
       'Every Service.<br>Every City.',
       'Simple SEO.<br>Real Results.'
     ];
