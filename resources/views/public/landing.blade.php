@@ -2626,46 +2626,46 @@ body::before{
   <canvas class="hero-anim-canvas" id="heroAnimCanvas" aria-hidden="true"></canvas>
 
   <div class="hero-stage">
-    <h1 id="heroSeq" aria-label="Your market. Your territory. Every city, every service. Programmatic expansion. Maximum coverage. Built for search and AI discovery.">Your market.<br>Your territory.</h1>
+    <h1 id="heroSeq" aria-label="Show Up in Every City You Serve. Get found on Google, ChatGPT, and AI search. No agency overhead, no complicated tools.">Show Up in Every City<br>You Serve.</h1>
   </div>
-  <p class="hero-gold-accent">We build structured pages on your existing website — covering every service and city you serve.</p>
-  <p class="hero-diff">Your domain. More pages. More markets. More search presence.</p>
-  <p class="hero-note">Position early. Compound over time.</p>
+  <p class="hero-gold-accent">SEO AI Co™ helps your business get found across Google, ChatGPT, and AI search — without complicated SEO or big agency costs.</p>
+  <p class="hero-note">You found us organically. Let's do the same for you.</p>
   <div class="hero-actions" style="opacity:0;animation:up .85s .52s forwards">
-    <a href="#" class="btn-primary js-open-gate">Assess Your Market</a>
+    <a href="/book" class="btn-primary">Book a Free Strategy Session</a>
+    <a href="#how" class="btn-ghost">See how it works</a>
   </div>
-  <p class="hero-cta-note">Managed system. White-label platform available.</p>
+  <p class="hero-cta-note">No contracts &middot; No complicated tools &middot; Works with your existing site</p>
 
 </section>
 
 <div class="hero-transition" aria-hidden="true">
-  <span class="hero-scroll-label">See how your market expands</span>
+  <span class="hero-scroll-label">See how it works</span>
   <div class="hero-rule-shimmer"></div>
   <div class="hero-scroll-arrow"></div>
 </div>
 
-<!-- ════════════ HOW THIS WORKS ════════════ -->
-<section class="how-strip r" aria-label="How the system works">
-  <p class="how-strip-hed">How the system works</p>
+<!-- ════════════ WHO THIS IS FOR ════════════ -->
+<section class="how-strip r" aria-label="Who this is for and what it works with">
+  <p class="how-strip-hed">Built for Real Businesses</p>
   <div class="how-strip-bullets">
     <div class="how-strip-item">
       <span class="how-strip-dot" aria-hidden="true"></span>
-      <span class="how-strip-label">Market mapping with live search data</span>
+      <span class="how-strip-label">Local service businesses with multiple services or locations</span>
     </div>
     <div class="how-strip-item">
       <span class="how-strip-dot" aria-hidden="true"></span>
-      <span class="how-strip-label">Programmatic pages across every service &amp; city</span>
+      <span class="how-strip-label">WordPress &amp; Divi websites (custom sites welcome)</span>
     </div>
     <div class="how-strip-item">
       <span class="how-strip-dot" aria-hidden="true"></span>
-      <span class="how-strip-label">AI signals, schema, and search infrastructure built in</span>
+      <span class="how-strip-label">Businesses ready to grow without hiring an agency</span>
     </div>
     <div class="how-strip-item">
       <span class="how-strip-dot" aria-hidden="true"></span>
-      <span class="how-strip-label">Continuous optimization as algorithms evolve</span>
+      <span class="how-strip-label">Optimized for Google, ChatGPT, and AI search from day one</span>
     </div>
   </div>
-  <p class="how-strip-sub">A structured system — not a tool, not a generic agency.</p>
+  <p class="how-strip-sub">Works with your existing site. No rebuild required.</p>
 </section>
 
 <!-- ════════════ SYSTEM STRUCTURE ════════════ -->
@@ -2760,38 +2760,33 @@ body::before{
 <section id="how">
   <div class="steps-section">
     <div class="steps-wrap">
-      <p class="s-eye r">The Process</p>
-      <h2 class="s-h r">Controlled onboarding.<br><em>Disciplined expansion.</em></h2>
+      <p class="s-eye r">How It Works</p>
+      <h2 class="s-h r">Three steps to showing up<br><em>everywhere your customers search.</em></h2>
       <div class="steps-grid">
         <div class="step r">
           <div class="step-n">01</div>
-          <h3 class="step-title">Map Your Territory</h3>
-          <p class="step-desc">Every service, every city, every topic — your complete coverage architecture is mapped before a single page deploys.</p>
+          <h3 class="step-title">We Map Your Services &amp; Locations</h3>
+          <p class="step-desc">We identify every service you offer and every city you serve — building your complete coverage map before a single page goes live.</p>
         </div>
         <div class="step r">
           <div class="step-n">02</div>
-          <h3 class="step-title">Set Up Your System</h3>
-          <p class="step-desc">Link architecture, localized signals, and structured data — configured to your brand before deployment begins.</p>
+          <h3 class="step-title">We Build Your Optimized Pages</h3>
+          <p class="step-desc">Structured, hyper-local pages are built on your existing website — with schema, AI signals, and local SEO built in from the start.</p>
         </div>
         <div class="step r">
           <div class="step-n">03</div>
-          <h3 class="step-title">Deploy Under Your Brand</h3>
-          <p class="step-desc">Pages deploy under your brand, across every service and city in your market — no third-party branding on any client-facing page.</p>
-        </div>
-        <div class="step r">
-          <div class="step-n">04</div>
-          <h3 class="step-title">Expand Your Position</h3>
-          <p class="step-desc">As your position compounds, your agreement accommodates expansion — new services, cities, and deeper coverage without renegotiation.</p>
+          <h3 class="step-title">You Start Showing Up</h3>
+          <p class="step-desc">Your business appears in Google, ChatGPT, and AI search results across every market you serve — and the system keeps working over time.</p>
         </div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ════════════ COMMITMENT NOTE ════════════ -->
+<!-- ════════════ DIFFERENTIATOR ════════════ -->
 <div class="commitment-note r">
-  <p class="cn-hed">This is a 4-month structured expansion process —<br>not a one-week experiment.</p>
-  <p class="cn-body">Most market builds require a focused 4-month rollout window to map, configure, deploy, and compound correctly. That structure is what makes results durable — and why we structure access carefully.</p>
+  <p class="cn-hed">Unlike generic SEO tools — we work directly with<br>your existing website. No rebuild required.</p>
+  <p class="cn-body">SEO AI Co™ builds structured, hyper-local pages on your domain — covering every service and city you serve. Your site gains authority, your customers find you, and ChatGPT and AI search cite you. It all compounds over time.</p>
 </div>
 <!-- ════════════ ACCESS SECTION ════════════ -->
 <section class="access-section r">
@@ -2853,7 +2848,7 @@ body::before{
       </h2>
       <p class="alloc-urgency">These markets reflect current rollout availability. Access is reviewed by coverage, demand, and strategic fit.</p>
       <div class="alloc-actions">
-        <a href="#" class="btn-primary js-open-gate">Assess Your Market</a>
+        <a href="/book" class="btn-primary">Book a Free Strategy Session</a>
       </div>
       <p class="alloc-access-note">Each activation includes structured service and location coverage across your full market.</p>
     </div>
@@ -2897,12 +2892,12 @@ body::before{
 <section class="infra-principle r">
   <canvas class="infra-canvas" id="infraCanvas" aria-hidden="true"></canvas>
   <div class="infra-inner">
-    <p class="infra-eyebrow">Market Position</p>
+    <p class="infra-eyebrow">AI SEO &middot; AEO &middot; GEO</p>
     <h2 class="infra-hed">
-      <span class="infra-hed-1">The territory will be owned.</span>
-      <span class="infra-hed-2">The only question is by whom.</span>
+      <span class="infra-hed-1">Search has changed.</span>
+      <span class="infra-hed-2">We help you show up everywhere.</span>
     </h2>
-    <p class="infra-gold">First to structure. First to rank.</p>
+    <p class="infra-gold">Google &middot; ChatGPT &middot; AI Search &middot; Local Results</p>
     <span class="infra-rule"></span>
   </div>
 </section>
@@ -2913,7 +2908,7 @@ body::before{
 <section id="who">
   <div class="audience-section">
     <p class="s-eye r">Who This Is For</p>
-    <h2 class="s-h r">Two paths in.<br><em>One outcome.</em></h2>
+    <h2 class="s-h r">Whether you're a business owner<br><em>or an agency — we've got you covered.</em></h2>
     <div class="audience-grid">
 
       <div class="aud-card r">
@@ -2931,8 +2926,8 @@ body::before{
 
       <div class="aud-card r">
         <span class="aud-tag">For Operators &amp; Business Owners</span>
-        <h3 class="aud-title">Take your market.<br><em>Before someone else does.</em></h3>
-        <p class="aud-body">Full search coverage across every service, every city, every variation — structured, maintained, and held under your active agreement. <strong>A position you hold.</strong></p>
+        <h3 class="aud-title">Get found everywhere<br><em>your customers are searching.</em></h3>
+        <p class="aud-body">SEO AI Co™ builds structured pages across every service and city you serve — so you show up in Google, ChatGPT, and AI search results across your entire market.</p>
         <ul class="aud-list">
           <li><strong>Every service. Every city. Total coverage.</strong></li>
           <li><strong>Visible across organic, AI, and emerging search</strong></li>
@@ -2940,7 +2935,7 @@ body::before{
           <li><strong>Harder to displace over time</strong> — position that strengthens with every deployment</li>
         </ul>
         <p style="font-size:.82rem;color:var(--muted);letter-spacing:.04em;margin-bottom:12px">Position built first holds longest. The system compounds in your favor.</p>
-        <a href="#offer" class="aud-cta">Assess Market Availability &rarr;</a>
+        <a href="/book" class="aud-cta">Book a Free Strategy Session &rarr;</a>
       </div>
 
     </div>
@@ -3829,11 +3824,11 @@ body::before{
     var el = document.getElementById('heroSeq');
     if(!el) return;
     var headlines = [
-      'Your market.<br>Your territory.',
-      'Every city.<br>Every service.',
-      'Programmatic<br>expansion.',
-      'One brand.<br>One territory.',
-      'Built for<br>AI search.'
+      'Show Up in Every City<br>You Serve.',
+      'Get Found on Google,<br>ChatGPT &amp; AI Search.',
+      'Works with<br>WordPress &amp; Divi.',
+      'Every Service.<br>Every City.',
+      'Simple SEO.<br>Real Results.'
     ];
     var current = 0;
     var FADE  = 560;  // ms — must match CSS transition duration
