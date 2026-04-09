@@ -1618,7 +1618,7 @@ footer{border-top:1px solid var(--border);padding:36px 64px;display:flex;flex-di
   margin:6px 0;
 }
 
-/* Portal row — keep for @auth block */
+/* Portal row — keep for @@auth block */
 .nm-portal{
   display:flex;align-items:center;justify-content:space-between;
   padding:13px 28px;
