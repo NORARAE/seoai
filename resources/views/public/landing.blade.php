@@ -3997,10 +3997,10 @@ body::before{
     if(!el) return;
     var headlines = [
       'Show Up in Every<br>City You Serve',
-      'Google. ChatGPT.<br>AI Search.',
-      'Works on Your<br>Existing Site.',
+      'Google &amp; ChatGPT.<br>AI Search.',
+      'Works with Your<br>Existing Site',
       'Every Service.<br>Every City.',
-      'Simple SEO.<br>Real Results.'
+      'More Visibility.<br>Less Complexity.'
     ];
     var current = 0;
     var FADE  = 560;  // ms — must match CSS transition duration
