@@ -4117,13 +4117,13 @@ body::before{
     });
   })();
 
-  /* ── Infrastructure Principle canvas ── */
+  /* ── Infrastructure Principle canvas — sparse constellation ── */
   (function(){
     var canvas = document.getElementById('infraCanvas');
     if(!canvas) return;
     var ctx = canvas.getContext('2d');
     var nodes=[], raf, W, H;
-    var COUNT=40, LINK=240, G='200,168,75';
+    var COUNT=22, LINK=160, G='200,168,75';
     var reduced = window.matchMedia('(prefers-reduced-motion:reduce)').matches;
     var tick=0;
 
@@ -4140,18 +4140,17 @@ body::before{
       for(var i=0;i<COUNT;i++){
         nodes.push({
           x:Math.random()*W, y:Math.random()*H,
-          vx:(Math.random()-.5)*.26, vy:(Math.random()-.5)*.26,
-          r:Math.random()*1.6+.8,
-          phase:Math.random()*Math.PI*2,      // per-node sine offset
-          glowMult:Math.random()*.9+.55       // depth variation: 0.55–1.45
+          vx:(Math.random()-.5)*.52, vy:(Math.random()-.5)*.52,
+          r:Math.random()*1.2+.7,
+          phase:Math.random()*Math.PI*2
         });
       }
     }
     function frame(){
       ctx.clearRect(0,0,W,H);
-      tick += 0.024;  // faster sine cycle
+      tick += 0.018;
 
-      /* connection lines */
+      /* connection lines — sparse, fine */
       for(var i=0;i<nodes.length;i++){
         for(var j=i+1;j<nodes.length;j++){
           var dx=nodes[j].x-nodes[i].x, dy=nodes[j].y-nodes[i].y;
@@ -4160,22 +4159,20 @@ body::before{
             ctx.beginPath();
             ctx.moveTo(nodes[i].x,nodes[i].y);
             ctx.lineTo(nodes[j].x,nodes[j].y);
-            ctx.strokeStyle='rgba('+G+','+(1-d/LINK)*.36+')';
-            ctx.lineWidth=.55;
+            ctx.strokeStyle='rgba('+G+','+(1-d/LINK)*.18+')';
+            ctx.lineWidth=.4;
             ctx.stroke();
           }
         }
       }
 
-      /* nodes */
+      /* nodes — small, gentle pulse, no heavy glow */
       for(var i=0;i<nodes.length;i++){
         var n = nodes[i];
-        // breathing range 0.26–0.50, per-node phase so no two nodes sync
-        var pulse = .38 + Math.sin(tick + n.phase) * .12;
-        var glow  = n.glowMult;
+        var pulse = .30 + Math.sin(tick + n.phase) * .10;
 
-        ctx.shadowBlur  = glow * 12;
-        ctx.shadowColor = 'rgba('+G+','+(glow*.42).toFixed(2)+')';
+        ctx.shadowBlur  = 6;
+        ctx.shadowColor = 'rgba('+G+',.18)';
         ctx.beginPath();
         ctx.arc(n.x, n.y, n.r, 0, Math.PI*2);
         ctx.fillStyle   = 'rgba('+G+','+pulse.toFixed(3)+')';
@@ -4183,8 +4180,8 @@ body::before{
         ctx.shadowBlur  = 0;
 
         if(!reduced){
-          n.x += n.vx * .96;  // effective velocity ∼0.24
-          n.y += n.vy * .96;
+          n.x += n.vx;
+          n.y += n.vy;
           if(n.x<0)n.x=W; if(n.x>W)n.x=0;
           if(n.y<0)n.y=H; if(n.y>H)n.y=0;
         }
@@ -4193,7 +4190,6 @@ body::before{
       raf = requestAnimationFrame(frame);
     }
     init();
-    // use rAF unconditionally; reduced-motion nodes just don't move
     raf = requestAnimationFrame(frame);
     window.addEventListener('resize',function(){
       cancelAnimationFrame(raf); init();
