@@ -1495,87 +1495,161 @@ footer{border-top:1px solid var(--border);padding:36px 64px;display:flex;flex-di
 .nav-menu{
   position:fixed;
   top:0;right:0;bottom:0;
-  width:300px;max-width:85vw;
+  width:320px;max-width:88vw;
   z-index:9200;
-  background:#0d0c08;
-  border-left:1px solid rgba(200,168,75,.12);
-  box-shadow:-12px 0 48px rgba(0,0,0,.6);
+  background:linear-gradient(160deg,#0f0e09 0%,#0a0908 60%,#0d0b06 100%);
+  border-left:1px solid rgba(200,168,75,.14);
+  box-shadow:-16px 0 64px rgba(0,0,0,.72);
   overflow-y:auto;
   display:flex;flex-direction:column;
   transform:translateX(100%);
   visibility:hidden;
-  transition:transform .3s cubic-bezier(.23,1,.32,1),visibility 0s .3s;
+  transition:transform .32s cubic-bezier(.23,1,.32,1),visibility 0s .32s;
+}
+.nav-menu::before{
+  content:'';
+  position:absolute;top:0;left:0;right:0;
+  height:320px;
+  background:radial-gradient(ellipse 260px 200px at 80% -10%,rgba(200,168,75,.055) 0%,transparent 70%);
+  pointer-events:none;
 }
 .nav-menu.is-open{
   transform:translateX(0);
   visibility:visible;
-  transition:transform .3s cubic-bezier(.23,1,.32,1),visibility 0s 0s;
+  transition:transform .32s cubic-bezier(.23,1,.32,1),visibility 0s 0s;
 }
 .nav-menu-inner{
-  padding:88px 0 52px;
+  padding:72px 0 48px;
   flex:1;display:flex;flex-direction:column;
+  position:relative;
+}
+
+/* Identity block ── */
+.nm-identity{
+  padding:0 28px 28px;
+  border-bottom:1px solid rgba(200,168,75,.09);
+  margin-bottom:8px;
+}
+.nm-identity-brand{
+  font-family:'Cormorant Garamond',serif;
+  font-size:1.45rem;font-weight:400;letter-spacing:.04em;
+  color:var(--ivory);
+  line-height:1.1;
+  margin-bottom:5px;
+}
+.nm-identity-brand em{
+  color:var(--gold);
+  font-style:normal;
+}
+.nm-identity-sub{
+  font-size:.68rem;letter-spacing:.2em;text-transform:uppercase;
+  color:rgba(200,168,75,.38);
+  font-family:'DM Sans',sans-serif;
+}
+
+/* Section group labels ── */
+.nm-group{
+  padding:20px 28px 6px;
+}
+.nm-group-label{
+  font-size:.6rem;letter-spacing:.26em;text-transform:uppercase;
+  color:rgba(200,168,75,.3);
+  font-family:'DM Sans',sans-serif;font-weight:500;
 }
 
 /* Panel menu links */
 .nm-link{
   display:flex;align-items:center;justify-content:space-between;
-  padding:20px 32px;
+  padding:13px 28px;
   font-family:'DM Sans',sans-serif;
-  font-size:.82rem;letter-spacing:.08em;
-  color:rgba(168,168,160,.85);text-decoration:none;
-  transition:color .18s,background .18s;
-  min-height:52px;
+  font-size:.84rem;letter-spacing:.07em;
+  color:rgba(210,210,202,.78);text-decoration:none;
+  transition:color .18s ease,background .18s ease,transform .15s ease;
+  min-height:48px;
+  position:relative;
 }
 .nm-link::after{
   content:'›';
-  color:rgba(200,168,75,.3);
-  font-size:1rem;transition:color .18s,transform .18s;
+  color:rgba(200,168,75,.28);
+  font-size:1.05rem;
+  transition:color .18s ease,transform .18s ease;
+  flex-shrink:0;
 }
-.nm-link:hover{color:var(--ivory);background:rgba(200,168,75,.04)}
+.nm-link:hover,.nm-link:focus-visible{
+  color:var(--ivory);
+  background:rgba(200,168,75,.05);
+  transform:scale(1.018);
+}
 .nm-link:hover::after{color:var(--gold);transform:translateX(3px)}
+.nm-link:active{transform:scale(.97)}
+
+/* Primary featured link */
 .nm-link.nm-featured{
-  color:var(--gold);font-weight:500;letter-spacing:.1em;
+  font-size:.9rem;
+  color:var(--gold);
+  font-weight:500;
+  letter-spacing:.1em;
+  padding-top:14px;padding-bottom:14px;
 }
-.nm-link.nm-featured::after{color:var(--gold)}
+.nm-link.nm-featured::after{color:var(--gold);opacity:.7}
+.nm-link.nm-featured:hover{
+  color:#e2c96e;
+  background:rgba(200,168,75,.07);
+  box-shadow:inset 3px 0 0 rgba(200,168,75,.4);
+}
+.nm-link.nm-featured:hover::after{transform:translateX(4px)}
+
+/* Tertiary muted link */
+.nm-link.nm-muted{
+  font-size:.76rem;
+  color:rgba(168,168,160,.42);
+  letter-spacing:.09em;
+  padding-top:10px;padding-bottom:10px;
+  min-height:44px;
+}
+.nm-link.nm-muted::after{color:rgba(200,168,75,.18);font-size:.9rem}
+.nm-link.nm-muted:hover{color:rgba(168,168,160,.72);background:transparent}
+.nm-link.nm-muted:hover::after{color:rgba(200,168,75,.35)}
 
 /* Divider */
 .nm-divider{
   height:1px;
-  background:rgba(200,168,75,.08);
-  margin:8px 0;
+  background:rgba(200,168,75,.07);
+  margin:6px 0;
 }
 
-/* Portal row */
+/* Portal row — keep for @auth block */
 .nm-portal{
   display:flex;align-items:center;justify-content:space-between;
-  padding:20px 32px;
+  padding:13px 28px;
   color:var(--gold);font-family:'DM Sans',sans-serif;
-  font-size:.82rem;font-weight:500;letter-spacing:.1em;
+  font-size:.84rem;font-weight:500;letter-spacing:.1em;
   text-decoration:none;
-  transition:color .18s,background .18s;
-  min-height:52px;
+  transition:color .18s ease,background .18s ease,transform .15s ease;
+  min-height:48px;
 }
 .nm-portal::after{
   content:'›';
-  color:var(--gold);
-  font-size:1rem;transition:color .18s,transform .18s;
+  color:var(--gold);opacity:.7;
+  font-size:1.05rem;transition:color .18s ease,transform .18s ease;
 }
-.nm-portal:hover{color:var(--ivory);background:rgba(200,168,75,.04)}
-.nm-portal:hover::after{color:var(--ivory);transform:translateX(3px)}
+.nm-portal:hover{color:#e2c96e;background:rgba(200,168,75,.06);transform:scale(1.018)}
+.nm-portal:hover::after{transform:translateX(3px)}
+.nm-portal:active{transform:scale(.97)}
 
 /* Sign In secondary row */
 .nm-signin{
   display:flex;align-items:center;justify-content:space-between;
-  padding:16px 32px;
+  padding:10px 28px;
   font-family:'DM Sans',sans-serif;
   font-size:.74rem;letter-spacing:.1em;
-  color:rgba(168,168,160,.45);text-decoration:none;
-  transition:color .18s;
+  color:rgba(168,168,160,.4);text-decoration:none;
+  transition:color .18s ease;
   min-height:44px;
 }
-.nm-signin::after{content:'›';color:rgba(200,168,75,.2);font-size:.95rem;transition:color .18s}
-.nm-signin:hover{color:rgba(168,168,160,.8)}
-.nm-signin:hover::after{color:rgba(200,168,75,.5)}
+.nm-signin::after{content:'›';color:rgba(200,168,75,.18);font-size:.9rem;transition:color .18s ease,transform .18s ease}
+.nm-signin:hover{color:rgba(168,168,160,.75)}
+.nm-signin:hover::after{color:rgba(200,168,75,.45);transform:translateX(2px)}
 
 /* ── Mobile ── */
 @media(max-width:900px){
@@ -2568,16 +2642,36 @@ body::before{
 <div id="navBackdrop" class="nav-backdrop" aria-hidden="true"></div>
 <div id="navMenu" class="nav-menu" aria-hidden="true" role="dialog" aria-label="Site navigation">
   <div class="nav-menu-inner">
-    <a href="{{ route('onboarding.start') }}" class="nm-link nm-featured" data-menu-close>Check Availability</a>
+
+    {{-- Identity block --}}
+    <div class="nm-identity">
+      <div class="nm-identity-brand">SEO AI <em>Co&trade;</em></div>
+      <div class="nm-identity-sub">Control your search presence.</div>
+    </div>
+
+    {{-- GET STARTED --}}
+    <div class="nm-group"><span class="nm-group-label">Get Started</span></div>
+    <a href="{{ route('onboarding.start') }}" class="nm-link nm-featured" data-menu-close>Check Availability &nbsp;&rarr;</a>
     <a href="/book" class="nm-link" data-menu-close>Book a Session</a>
-    <a href="/how-it-works" class="nm-link" data-menu-close>How It Works</a>
+
     <div class="nm-divider"></div>
+
+    {{-- EXPLORE --}}
+    <div class="nm-group"><span class="nm-group-label">Explore</span></div>
+    <a href="/how-it-works" class="nm-link" data-menu-close>How It Works</a>
+    <a href="/solutions" class="nm-link" data-menu-close>Solutions</a>
+
+    <div class="nm-divider"></div>
+
+    {{-- ACCOUNT --}}
+    <div class="nm-group"><span class="nm-group-label">Account</span></div>
     @auth
       <a href="/dashboard" class="nm-portal" data-menu-close>My Dashboard</a>
     @else
-      <a href="/admin/login" class="nm-portal" data-menu-close>Portal</a>
-      <a href="/admin/login" class="nm-signin" data-menu-close>Sign In</a>
+      <a href="/admin/login" class="nm-link" data-menu-close>Portal</a>
+      <a href="/admin/login" class="nm-link nm-muted" data-menu-close>Sign In</a>
     @endauth
+
   </div>
 </div>
 
