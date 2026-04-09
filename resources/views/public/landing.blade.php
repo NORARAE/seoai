@@ -1727,10 +1727,15 @@ body::before{
   margin-bottom:32px;
 }
 .hero-note{
-  font-size:.72rem;letter-spacing:.24em;text-transform:uppercase;
-  color:rgba(200,168,75,.44);
+  font-family:'Cormorant Garamond',serif;font-style:italic;font-weight:400;
+  font-size:clamp(1.05rem,2vw,1.3rem);
+  color:rgba(200,168,75,.72);
+  letter-spacing:.015em;line-height:1.5;
+  padding-left:14px;
+  border-left:2px solid rgba(200,168,75,.32);
   opacity:0;animation:up .8s .54s forwards;
-  margin-top:4px;margin-bottom:32px;
+  margin-top:0;margin-bottom:32px;
+  max-width:480px;
 }
 
 /* ── Hero differentiation line ── */
@@ -2215,7 +2220,7 @@ body::before{
 
   /* Hero supporting copy */
   .hero-gold-accent{margin-bottom:22px;line-height:1.3}
-  .hero-note{margin-bottom:22px}
+  .hero-note{font-size:clamp(1rem,4vw,1.2rem);margin-bottom:22px;padding-left:12px;max-width:100%}
   .hero-diff{font-size:.82rem;margin-bottom:20px}
   .hero-cities{font-size:.96rem;margin-bottom:24px;letter-spacing:.09em;padding-left:14px}
   .hero-cta-note{font-size:.64rem;letter-spacing:.12em}
