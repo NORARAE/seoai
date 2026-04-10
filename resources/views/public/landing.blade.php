@@ -447,16 +447,28 @@ nav.stuck{background:rgba(8,8,8,.95);backdrop-filter:blur(16px);border-color:var
 
 /* ── Steps ── */
 .steps-section{background:var(--deep);border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
-.steps-wrap{max-width:1200px;margin:0 auto;padding:72px 64px}
-.steps-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--border);margin-top:40px}
-.step{background:var(--deep);padding:36px 28px;position:relative;overflow:hidden;transition:background .4s}
-.step::after{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--gold),transparent);transform:scaleX(0);transition:transform .5s cubic-bezier(.23,1,.32,1)}
-.step:hover{background:var(--card)}
-.step:hover::after{transform:scaleX(1)}
-.step-n{font-family:'Cormorant Garamond',serif;font-size:3.6rem;font-weight:300;color:rgba(200,168,75,.25);line-height:1;margin-bottom:16px;transition:color .3s}
-.step:hover .step-n{color:rgba(200,168,75,.45)}
-.step-title{font-family:'Cormorant Garamond',serif;font-size:1.6rem;font-weight:400;line-height:1.15;margin-bottom:10px;color:var(--ivory)}
-.step-desc{font-size:.92rem;line-height:1.70;color:var(--muted)}
+.steps-wrap{max-width:1200px;margin:0 auto;padding:52px 64px}
+.steps-panel{margin-top:18px;border:1px solid rgba(200,168,75,.08);position:relative}
+.steps-panel::before{content:'';position:absolute;top:-1px;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent 5%,var(--gold-dim) 28%,var(--gold) 50%,var(--gold-dim) 72%,transparent 95%);opacity:.65}
+.steps-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:0;align-items:start}
+.step{padding:56px 48px;position:relative;transition:background .4s}
+.step:not(:last-child)::after{content:'';position:absolute;top:10%;right:0;width:1px;height:80%;background:linear-gradient(to bottom,transparent,rgba(200,168,75,.12) 28%,rgba(200,168,75,.12) 72%,transparent)}
+.step:hover{background:rgba(200,168,75,.02)}
+.step-n{font-family:'Cormorant Garamond',serif;font-size:5rem;font-weight:300;color:rgba(200,168,75,.10);line-height:1;letter-spacing:-.02em;display:block;margin-bottom:20px;transition:color .4s}
+.step:hover .step-n{color:rgba(200,168,75,.20)}
+.step-rule{width:24px;height:1px;background:linear-gradient(90deg,var(--gold-dim),transparent);margin-bottom:24px;opacity:.65}
+.step-title{font-family:'Cormorant Garamond',serif;font-size:1.5rem;font-weight:400;line-height:1.22;margin-bottom:14px;color:var(--ivory)}
+.step-desc{font-size:.88rem;line-height:1.82;color:var(--muted)}
+/* ── Steps Trust Row ── */
+.steps-trust{margin-top:10px;padding-top:10px;text-align:center}
+.steps-trust-label{font-size:.64rem;letter-spacing:.26em;text-transform:uppercase;color:rgba(200,168,75,.28);margin-bottom:12px}
+.steps-surface-row{display:flex;justify-content:center;align-items:flex-start;flex-wrap:wrap;column-gap:36px;row-gap:14px}
+.steps-surface{display:flex;flex-direction:column;align-items:center;gap:7px;font-size:.65rem;letter-spacing:.16em;text-transform:uppercase;color:rgba(232,220,190,.44);font-family:'DM Sans',sans-serif;font-weight:300;cursor:default;transition:color .25s,transform .25s}
+.steps-surface svg{width:18px;height:18px;color:rgba(200,168,75,.46);flex-shrink:0;transition:color .25s,filter .25s,transform .25s}
+.steps-surface:hover{color:rgba(232,220,190,.72);transform:translateY(-2px)}
+.steps-surface:hover svg{color:rgba(200,168,75,.78);filter:drop-shadow(0 0 6px rgba(200,168,75,.28))}
+.steps-surface:active{transform:translateY(-1px) scale(.96)}
+.steps-surface-sep{display:none}
 
 /* ── URL Lock ── */
 .url-lock{
@@ -1735,13 +1747,18 @@ footer{border-top:1px solid var(--border);padding:36px 64px;display:flex;flex-di
   .audience-grid,.tier-grid-3{grid-template-columns:1fr}
   .aud-card{padding:40px 24px}
   .aud-title{font-size:1.6rem}
-  .wyl-grid,.steps-grid{grid-template-columns:1fr 1fr}
-  .wyl-grid{gap:14px}
+  .wyl-grid{grid-template-columns:1fr 1fr;gap:14px}
+  .steps-grid{grid-template-columns:1fr}
+  .step:not(:last-child)::after{top:auto;bottom:0;left:8%;right:8%;width:84%;height:1px;background:linear-gradient(90deg,transparent,rgba(200,168,75,.12) 30%,rgba(200,168,75,.12) 70%,transparent)}
   .wyl-card{padding:32px 26px}
   .wyl-icon{font-size:1.9rem;margin-bottom:18px}
-  .step{padding:32px 20px}
-  .step-n{font-size:2.8rem;margin-bottom:14px}
-  .step-title{font-size:1.2rem}
+  .step{padding:44px 36px}
+  .step-n{font-size:3.4rem;margin-bottom:16px}
+  .step-rule{margin-bottom:18px}
+  .step-title{font-size:1.3rem}
+  .steps-trust{margin-top:18px;padding-top:16px}
+  .steps-surface{font-size:.63rem;gap:6px}
+  .steps-surface svg{width:17px;height:17px}
   /* exp-grid mobile handled by expansion @media block */
   .url-lock-inner{grid-template-columns:1fr;gap:28px}
   .ul-title{font-size:clamp(1.5rem,5vw,2rem)}
@@ -1788,7 +1805,13 @@ footer{border-top:1px solid var(--border);padding:36px 64px;display:flex;flex-di
   .wyl-card{padding:30px 24px}
   .wyl-title{font-size:1.3rem}
   .proof-icon{font-size:1.8rem;margin-bottom:10px}
-  .wyl-grid,.steps-grid{grid-template-columns:1fr}
+  .wyl-grid{grid-template-columns:1fr}
+  .step{padding:32px 28px}
+  .step-n{font-size:2.8rem}
+  .steps-trust{margin-top:14px;padding-top:12px}
+  .steps-surface{font-size:.62rem;gap:7px;letter-spacing:.12em}
+  .steps-surface svg{width:18px;height:18px}
+  .steps-surface-row{column-gap:24px;row-gap:16px}
   .ac-card{padding:32px 24px}
   .stmt-quote{padding:24px 18px}
   .stmt-quote .sq-text{font-size:clamp(1.1rem,4vw,1.4rem)}
@@ -2911,21 +2934,51 @@ body::before{
     <div class="steps-wrap">
       <p class="s-eye r">How It Works</p>
       <h2 class="s-h r">Three steps to showing up<br><em>everywhere your customers search.</em></h2>
-      <div class="steps-grid">
-        <div class="step r">
-          <div class="step-n">01</div>
-          <h3 class="step-title">We Map Your Services &amp; Locations</h3>
-          <p class="step-desc">We identify every service you offer and every city you serve — building your complete coverage map before a single page goes live.</p>
+      <div class="steps-panel r">
+        <div class="steps-grid">
+          <div class="step">
+            <div class="step-n">01</div>
+            <div class="step-rule"></div>
+            <h3 class="step-title">We Map Your Market</h3>
+            <p class="step-desc">Identify every service, city, and coverage gap across your entire service area — before anything goes live.</p>
+          </div>
+          <div class="step">
+            <div class="step-n">02</div>
+            <div class="step-rule"></div>
+            <h3 class="step-title">We Build Your<wbr> Coverage Engine</h3>
+            <p class="step-desc">Deploy hyper-local pages directly into your existing site — structured with schema, internal linking, and AI-ready content.</p>
+          </div>
+          <div class="step">
+            <div class="step-n">03</div>
+            <div class="step-rule"></div>
+            <h3 class="step-title">You Start Showing Up</h3>
+            <p class="step-desc">Appear across Google, Bing, AI platforms, maps, and voice search — wherever your customers are searching.</p>
+          </div>
         </div>
-        <div class="step r">
-          <div class="step-n">02</div>
-          <h3 class="step-title">We Build Your Optimized Pages</h3>
-          <p class="step-desc">Structured, hyper-local pages are built on your existing website — with schema, AI signals, and local SEO built in from the start.</p>
-        </div>
-        <div class="step r">
-          <div class="step-n">03</div>
-          <h3 class="step-title">You Start Showing Up</h3>
-          <p class="step-desc">Your business appears in Google, ChatGPT, and AI search results across every market you serve — and the system keeps working over time.</p>
+      </div>
+      <div class="steps-trust r">
+        <p class="steps-trust-label">Visible Across Every Search Surface</p>
+        <div class="steps-surface-row">
+          <span class="steps-surface">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+            Google
+          </span>
+          <span class="steps-surface">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+            Bing
+          </span>
+          <span class="steps-surface">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+            ChatGPT
+          </span>
+          <span class="steps-surface">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+            Apple Maps
+          </span>
+          <span class="steps-surface">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg>
+            Voice Assistants
+          </span>
         </div>
       </div>
     </div>
