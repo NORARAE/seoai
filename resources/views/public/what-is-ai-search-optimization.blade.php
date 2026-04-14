@@ -28,7 +28,7 @@
             'url'         => url('/what-is-ai-search-optimization'),
             'headline'    => 'What Is AI Search Optimization?',
             'description' => 'AI search optimization is the practice of structuring web content — its page architecture, definitions, schema, and geographic coverage — so that AI-powered search systems can retrieve, extract, and cite it in generated answers.',
-            'author'      => ['@type' => 'Person', '@id' => url('/about') . '#author', 'name' => 'Nora Genet'],
+            'author'      => ['@type' => 'Organization', 'name' => 'SEOAIco', 'url' => 'https://seoaico.com'],
             'publisher'   => ['@type' => 'Organization', 'name' => 'SEO AI Co™', 'url' => url('/')],
             'isPartOf'    => ['@id' => url('/') . '#website'],
             'about'       => ['@type' => 'Thing', 'name' => 'AI Search Optimization', 'description' => 'The practice of structuring web content for extraction and citation by AI-powered search systems.'],
@@ -197,7 +197,7 @@ footer{border-top:1px solid var(--border);padding:32px 64px;display:flex;align-i
 
   <span class="page-eye">Definition &amp; Strategy</span>
   <h1 class="page-title">What is <em>AI search optimization?</em></h1>
-  <p class="byline">By <a href="{{ route('about') }}">Nora Genet</a> &mdash; AI Search Strategist, SEO AI Co&#8482;</p>
+  <p class="byline">SEOAIco Editorial Team</p>
 
   <div class="definition">
     <span class="definition-term">Definition</span>

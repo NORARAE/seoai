@@ -176,7 +176,9 @@ footer{border-top:1px solid var(--border);padding:32px 64px;display:flex;align-i
 <main class="page">
 
   <span class="page-eye">LLM Discoverability</span>
-  <h1 class="page-title">What people mean when they say<br><em>"ChatGPT SEO."</em></h1>  <p class="byline">By <a href="{{ route('about') }}">Nora Genet</a> &mdash; AI Search Strategist, SEO AI Co&#8482;</p>  <p class="page-intro">The term is informal but the underlying problem is real: if an AI system generates an answer to a query your business should be answering, and your brand is not in that answer, you have a discoverability problem that traditional SEO metrics will not surface.</p>
+  <h1 class="page-title">What people mean when they say<br><em>"ChatGPT SEO."</em></h1>
+  <p class="byline">SEOAIco Editorial Team</p>
+  <p class="page-intro">The term is informal but the underlying problem is real: if an AI system generates an answer to a query your business should be answering, and your brand is not in that answer, you have a discoverability problem that traditional SEO metrics will not surface.</p>
 
   <div class="definition">
     <span class="definition-term">What is ChatGPT SEO?</span>

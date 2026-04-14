@@ -29,7 +29,7 @@
             'url'             => url('/how-ai-search-works'),
             'datePublished'   => '2025-01-01',
             'dateModified'    => date('Y-m-d'),
-            'author'          => ['@type' => 'Person', '@id' => url('/about') . '#author', 'name' => 'Nora Genet'],
+            'author'          => ['@type' => 'Organization', 'name' => 'SEOAIco', 'url' => 'https://seoaico.com'],
             'publisher'       => ['@type' => 'Organization', '@id' => url('/') . '#organization', 'name' => 'SEO AI Co™'],
             'mainEntityOfPage'=> ['@type' => 'WebPage', '@id' => url('/how-ai-search-works')],
             'about'           => ['@type' => 'Thing', 'name' => 'AI Search'],
@@ -150,7 +150,7 @@ footer{border-top:1px solid rgba(200,168,75,.07);padding:32px 40px;display:flex;
 
   <p class="eyebrow">AI Search Explained</p>
   <h1>How AI Search <em>Works</em></h1>
-  <p class="byline">By <a href="{{ route('about') }}">Nora Genet</a> &mdash; AI Search Strategist, SEO AI Co&#8482;</p>
+  <p class="byline">SEOAIco Editorial Team</p>
 
   <p class="lead">AI search works by retrieving content from crawled web pages, extracting the passages most relevant to a query, and synthesizing a direct-language answer &#8212; with citations. Unlike traditional search, which returns a ranked list, AI search delivers a composed answer before the user ever sees a link.</p>
 

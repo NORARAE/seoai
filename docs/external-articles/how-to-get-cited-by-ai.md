@@ -1,6 +1,6 @@
 # How to Get Your Website Cited by AI Search Systems
 
-_By Nora Genet — AI Search Strategist, SEO AI Co™_
+_By SEOAIco Editorial Team — SEO AI Co™_
 
 ---
 
@@ -126,4 +126,4 @@ _For the full 5-step interactive guide:_
 - _[How AI Search Works](https://seoaico.com/how-ai-search-works) — Three-stage pipeline_
 - _[The AI Citation Engine™](https://seoaico.com/ai-citation-engine) — Implementation infrastructure_
 
-_Originally published at [SEO AI Co™](https://seoaico.com) by Nora Genet._
+_Originally published at [SEO AI Co™](https://seoaico.com) by the SEOAIco Editorial Team._

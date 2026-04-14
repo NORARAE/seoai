@@ -194,7 +194,7 @@ footer{border-top:1px solid var(--border);padding:32px 64px;display:flex;align-i
 
   <span class="page-eye">Category Overview</span>
   <h1 class="page-title">Search happens in more places<br>than <em>Google alone.</em></h1>
-  <p class="byline">By <a href="{{ route('about') }}">Nora Genet</a> &mdash; AI Search Strategist, SEO AI Co&#8482;</p>
+  <p class="byline">SEOAIco Editorial Team</p>
   <div class="definition">
     <span class="definition-term">Definition</span>
     <p class="definition-text"><strong>AI search optimization</strong> is the practice of structuring web content — its page architecture, definitions, schema, and geographic coverage — so that AI-powered search systems can retrieve, extract, and cite it in generated answers. It applies across Google AI Overviews, ChatGPT, Perplexity, and Gemini, operating alongside traditional organic search.</p>

@@ -1,6 +1,6 @@
 # What Is AI Search Optimization?
 
-_By Nora Genet — AI Search Strategist, SEO AI Co™_
+_By SEOAIco Editorial Team — SEO AI Co™_
 
 ---
 
@@ -60,4 +60,4 @@ _For the complete framework and authority pages, see:_
 - _[AI Search Optimization Guide](https://seoaico.com/ai-search-optimization-guide) — Complete glossary_
 - _[The AI Citation Engine™](https://seoaico.com/ai-citation-engine) — Infrastructure system_
 
-_Originally published at [SEO AI Co™](https://seoaico.com) by Nora Genet._
+_Originally published at [SEO AI Co™](https://seoaico.com) by the SEOAIco Editorial Team._

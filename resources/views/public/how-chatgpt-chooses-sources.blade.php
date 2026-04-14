@@ -29,7 +29,7 @@
             'url'             => url('/how-chatgpt-chooses-sources'),
             'datePublished'   => '2025-01-01',
             'dateModified'    => date('Y-m-d'),
-            'author'          => ['@type' => 'Person', '@id' => url('/about') . '#author', 'name' => 'Nora Genet'],
+            'author'          => ['@type' => 'Organization', 'name' => 'SEOAIco', 'url' => 'https://seoaico.com'],
             'publisher'       => ['@type' => 'Organization', '@id' => url('/') . '#organization', 'name' => 'SEO AI Co™'],
             'mainEntityOfPage'=> ['@type' => 'WebPage', '@id' => url('/how-chatgpt-chooses-sources')],
         ],
@@ -150,7 +150,7 @@ footer{border-top:1px solid rgba(200,168,75,.07);padding:32px 40px;display:flex;
 
   <p class="eyebrow">Citation Mechanics</p>
   <h1>How ChatGPT <em>Chooses Sources</em></h1>
-  <p class="byline">By <a href="{{ route('about') }}">Nora Genet</a> &mdash; AI Search Strategist, SEO AI Co&#8482;</p>
+  <p class="byline">SEOAIco Editorial Team</p>
 
   <p class="lead">ChatGPT selects citation sources based on retrieval relevance, entity clarity, structured data signals, and passage extractability &#8212; not solely on Google search rank. The same signals that earn citations from ChatGPT Search also improve citation probability in Google AI Overviews, Perplexity, and Gemini.</p>
 

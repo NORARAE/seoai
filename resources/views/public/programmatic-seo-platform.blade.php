@@ -210,7 +210,7 @@ footer{border-top:1px solid var(--border);padding:32px 64px;display:flex;align-i
 
   <span class="page-eye">Infrastructure</span>
   <h1 class="page-title">Scale is not the goal.<br><em>Structure is.</em></h1>
-  <p class="byline">By <a href="{{ route('about') }}">Nora Genet</a> &mdash; AI Search Strategist, SEO AI Co&#8482;</p>
+  <p class="byline">SEOAIco Editorial Team</p>
   <p class="page-intro">A programmatic SEO platform is not a content mill. It is a systematic approach to building the pages your market requires — each structured correctly for search, for AI discovery, and for the entity relationships that connect your business to customers searching for it.</p>
 
   <div class="definition">

@@ -201,7 +201,7 @@ footer{border-top:1px solid var(--border);padding:32px 64px;display:flex;align-i
 
   <span class="page-eye">The Platform</span>
   <h1 class="page-title">It is not an SEO tool.<br>It is a <em>search presence engine.</em></h1>
-  <p class="byline">By <a href="{{ route('about') }}">Nora Genet</a> &mdash; AI Search Strategist, SEO AI Co&#8482;</p>
+  <p class="byline">SEOAIco Editorial Team</p>
   <p class="page-intro">An SEO tool gives you data. A search presence engine builds the infrastructure that places your business in the answer layer — across Google, ChatGPT, Perplexity, voice, and every surface where your customers are looking.</p>
 
   <div class="definition">

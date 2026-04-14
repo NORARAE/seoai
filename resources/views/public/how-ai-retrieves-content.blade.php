@@ -29,7 +29,7 @@
             'url'             => url('/how-ai-retrieves-content'),
             'datePublished'   => '2025-01-01',
             'dateModified'    => date('Y-m-d'),
-            'author'          => ['@type' => 'Person', '@id' => url('/about') . '#author', 'name' => 'Nora Genet'],
+            'author'          => ['@type' => 'Organization', 'name' => 'SEOAIco', 'url' => 'https://seoaico.com'],
             'publisher'       => ['@type' => 'Organization', '@id' => url('/') . '#organization', 'name' => 'SEO AI Co™'],
             'mainEntityOfPage'=> ['@type' => 'WebPage', '@id' => url('/how-ai-retrieves-content')],
         ],
@@ -151,7 +151,7 @@ footer{border-top:1px solid rgba(200,168,75,.07);padding:32px 40px;display:flex;
 
   <p class="eyebrow">AI Search Infrastructure</p>
   <h1>How AI Retrieves <em>Content</em></h1>
-  <p class="byline">By <a href="{{ route('about') }}">Nora Genet</a> &mdash; AI Search Strategist, SEO AI Co&#8482;</p>
+  <p class="byline">SEOAIco Editorial Team</p>
 
   <p class="lead">AI systems retrieve web content through a multi-stage process: crawling (discovering pages), indexing (storing and structuring their content), and vector retrieval (finding the semantically closest match to a query at answer-generation time). Each stage is a filter your content must pass to become a citation candidate.</p>
 

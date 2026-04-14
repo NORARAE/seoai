@@ -1,6 +1,6 @@
 # How AI Search Works: Retrieval, Extraction, and Citation
 
-_By Nora Genet — AI Search Strategist, SEO AI Co™_
+_By SEOAIco Editorial Team — SEO AI Co™_
 
 ---
 
@@ -64,4 +64,4 @@ _For the canonical definitions and framework:_
 - _[What Is AI Search Optimization?](https://seoaico.com/what-is-ai-search-optimization) — Foundation_
 - _[Optimize for AI Answers](https://seoaico.com/optimize-for-ai-answers) — Implementation guide_
 
-_Originally published at [SEO AI Co™](https://seoaico.com) by Nora Genet._
+_Originally published at [SEO AI Co™](https://seoaico.com) by the SEOAIco Editorial Team._

@@ -1,6 +1,6 @@
 # AI Search vs. Traditional SEO: What's Actually Different
 
-_By Nora Genet — AI Search Strategist, SEO AI Co™_
+_By SEOAIco Editorial Team — SEO AI Co™_
 
 ---
 
@@ -71,4 +71,4 @@ _For the complete framework:_
 - _[How AI Search Works](https://seoaico.com/how-ai-search-works) — Three-stage pipeline_
 - _[The AI Citation Engine™](https://seoaico.com/ai-citation-engine) — Full infrastructure system_
 
-_Originally published at [SEO AI Co™](https://seoaico.com) by Nora Genet._
+_Originally published at [SEO AI Co™](https://seoaico.com) by the SEOAIco Editorial Team._

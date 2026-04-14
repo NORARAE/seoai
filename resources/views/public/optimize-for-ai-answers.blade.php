@@ -29,7 +29,7 @@
             'url'             => url('/optimize-for-ai-answers'),
             'datePublished'   => '2025-01-01',
             'dateModified'    => date('Y-m-d'),
-            'author'          => ['@type' => 'Person', '@id' => url('/about') . '#author', 'name' => 'Nora Genet'],
+            'author'          => ['@type' => 'Organization', 'name' => 'SEOAIco', 'url' => 'https://seoaico.com'],
             'publisher'       => ['@type' => 'Organization', '@id' => url('/') . '#organization', 'name' => 'SEO AI Co™'],
             'mainEntityOfPage'=> ['@type' => 'WebPage', '@id' => url('/optimize-for-ai-answers')],
         ],
@@ -162,7 +162,7 @@ footer{border-top:1px solid rgba(200,168,75,.07);padding:32px 40px;display:flex;
 
   <p class="eyebrow">AI Search Optimization</p>
   <h1>Optimize for <em>AI Answers</em></h1>
-  <p class="byline">By <a href="{{ route('about') }}">Nora Genet</a> &mdash; AI Search Strategist, SEO AI Co&#8482;</p>
+  <p class="byline">SEOAIco Editorial Team</p>
 
   <p class="lead">Optimizing for AI answers means structuring content so that AI search systems &#8212; Google AI Overviews, ChatGPT, Perplexity, Gemini &#8212; retrieve, extract, and cite it when composing an answer. The core technique is structural: entity-first sentences, self-contained paragraphs, FAQ schema, and a schema layer that confirms entity type and geographic scope.</p>
 

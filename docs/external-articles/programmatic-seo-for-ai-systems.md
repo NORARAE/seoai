@@ -1,6 +1,6 @@
 # Programmatic SEO for AI Systems: Scaling AI Citation Coverage
 
-_By Nora Genet — AI Search Strategist, SEO AI Co™_
+_By SEOAIco Editorial Team — SEO AI Co™_
 
 ---
 
@@ -108,4 +108,4 @@ _For the full programmatic SEO architecture:_
 - _[What Is AI Search Optimization?](https://seoaico.com/what-is-ai-search-optimization) — Foundation_
 - _[The AI Citation Engine™](https://seoaico.com/ai-citation-engine) — Full infrastructure_
 
-_Originally published at [SEO AI Co™](https://seoaico.com) by Nora Genet._
+_Originally published at [SEO AI Co™](https://seoaico.com) by the SEOAIco Editorial Team._

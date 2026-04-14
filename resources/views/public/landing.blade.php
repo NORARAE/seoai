@@ -2048,6 +2048,34 @@ body::before{
 .qs-mid-hed{font-size:clamp(1.3rem,3vw,2rem);font-weight:300;color:var(--ivory);line-height:1.3;margin:0 auto 12px;max-width:560px;font-family:'Cormorant Garamond',Georgia,serif}
 .qs-mid-hed em{color:var(--gold);font-style:italic}
 .qs-mid-sub{font-size:.88rem;color:var(--muted);margin:0 auto 28px;max-width:420px;line-height:1.6}
+/* scan result preview mockup */
+.qs-preview{max-width:420px;margin:0 auto 28px;background:#0e0d09;border:1px solid rgba(200,168,75,.18);overflow:hidden;text-align:left}
+.qs-preview-header{background:#111009;border-bottom:1px solid rgba(200,168,75,.1);padding:10px 18px;display:flex;align-items:center;gap:10px}
+.qs-preview-dots{display:flex;gap:5px}
+.qs-preview-dot{width:8px;height:8px;border-radius:50%}
+.qs-preview-url{font-size:.66rem;color:rgba(168,168,160,.44);letter-spacing:.04em}
+.qs-preview-body{padding:16px 20px;display:flex;gap:18px;align-items:center}
+.qs-preview-score-wrap{flex-shrink:0;text-align:center;padding-right:16px;border-right:1px solid rgba(200,168,75,.1)}
+.qs-preview-score{font-size:2rem;font-weight:300;color:#6aaf90;line-height:1;margin-bottom:2px}
+.qs-preview-score-lbl{font-size:.6rem;letter-spacing:.1em;color:rgba(168,168,160,.5);text-transform:uppercase}
+.qs-preview-checks{flex:1;display:flex;flex-direction:column;gap:6px}
+.qs-preview-check{font-size:.74rem;color:rgba(168,168,160,.75);display:flex;align-items:center;gap:7px;line-height:1.3}
+.qs-preview-check.pass::before{content:'\2713';color:#6aaf90;font-size:.7rem;flex-shrink:0}
+.qs-preview-check.fail::before{content:'\2717';color:#c47878;font-size:.7rem;flex-shrink:0}
+.qs-preview-footer{font-size:.7rem;color:rgba(168,168,160,.45);padding:8px 20px 12px;border-top:1px solid rgba(200,168,75,.07);letter-spacing:.02em}
+.qs-checks-row{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;margin:0 auto 28px;max-width:480px}
+.qs-check-pill{font-size:.62rem;letter-spacing:.07em;color:rgba(168,168,160,.55);background:rgba(200,168,75,.04);border:1px solid rgba(200,168,75,.1);padding:4px 11px}
+/* product feature grid */
+.feat-grid{padding:64px 24px;text-align:center;max-width:1100px;margin:0 auto}
+.feat-grid-eye{font-size:.64rem;letter-spacing:.26em;text-transform:uppercase;color:rgba(200,168,75,.55);margin-bottom:12px}
+.feat-grid-hed{font-family:'Cormorant Garamond',serif;font-size:clamp(1.4rem,2.8vw,2rem);font-weight:300;color:var(--ivory);line-height:1.25;margin:0 auto 36px;max-width:560px}
+.feat-grid-hed em{font-style:italic;color:var(--gold)}
+.feat-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:rgba(200,168,75,.07);max-width:900px;margin:0 auto}
+.feat-card{background:#080808;padding:28px 24px;text-align:left}
+.feat-card-icon{font-size:1.1rem;margin-bottom:12px;opacity:.7}
+.feat-card-title{font-size:.82rem;color:var(--ivory);font-weight:400;margin-bottom:8px;letter-spacing:.02em}
+.feat-card-body{font-size:.78rem;color:var(--muted);line-height:1.65}
+.feat-card-score{display:inline-block;font-size:.6rem;letter-spacing:.1em;text-transform:uppercase;color:rgba(200,168,75,.5);border:1px solid rgba(200,168,75,.15);padding:2px 8px;margin-top:10px}
 .sys-struct{padding:72px 64px;max-width:1200px;margin:0 auto;position:relative}
 .sys-struct-inner{display:grid;grid-template-columns:1fr 1.2fr;gap:68px;align-items:start}
 .sys-eyebrow{
@@ -2948,8 +2976,8 @@ body::before{
 .ace-cta{text-align:center;margin-top:8px}
 .ace-cta a{font-size:.82rem;color:rgba(200,168,75,.8);text-decoration:none;border-bottom:1px solid rgba(200,168,75,.25);padding-bottom:2px;letter-spacing:.04em;transition:color .2s,border-color .2s}
 .ace-cta a:hover{color:#e2c97d;border-color:rgba(226,201,125,.6)}
-@media(max-width:900px){.ace-section{padding:72px 40px}.ace-grid{grid-template-columns:repeat(3,1fr)}}
-@media(max-width:600px){.ace-section{padding:56px 24px}.ace-grid{grid-template-columns:1fr 1fr}}
+@media(max-width:900px){.ace-section{padding:72px 40px}.ace-grid{grid-template-columns:repeat(3,1fr)}.feat-cards{grid-template-columns:1fr 1fr}}
+@media(max-width:600px){.ace-section{padding:56px 24px}.ace-grid{grid-template-columns:1fr 1fr}.feat-cards{grid-template-columns:1fr}.qs-preview-body{flex-direction:column;text-align:center}.qs-preview-score-wrap{border-right:none;border-bottom:1px solid rgba(200,168,75,.1);padding:0 0 14px;margin-bottom:0}.qs-preview-checks{align-items:center}}
 @media(max-width:400px){.ace-grid{grid-template-columns:1fr}}
 </style>
 @if(config('services.recaptcha.site_key'))
@@ -3213,9 +3241,89 @@ body::before{
 <!-- ════════════ QUICK SCAN CTA ════════════ -->
 <section class="qs-mid r" aria-label="AI Citation Quick Scan">
   <p class="qs-mid-eyebrow">Not sure where you stand?</p>
-  <h2 class="qs-mid-hed">Find out if AI would cite your site&nbsp;— <em>instantly</em></h2>
-  <p class="qs-mid-sub">Our $2 scan checks 5 citation signals and returns an instant 0–100 AI Citation Score for your URL.</p>
+  <h2 class="qs-mid-hed">Find out if AI would cite your site&nbsp;&#8212; <em>instantly</em></h2>
+  <p class="qs-mid-sub">Our $2 scan checks 5 citation signals and returns an instant 0&#8211;100 AI Citation Score with a specific action to improve it.</p>
+
+  <!-- Scan result preview mockup -->
+  <div class="qs-preview r">
+    <div class="qs-preview-header">
+      <div class="qs-preview-dots">
+        <div class="qs-preview-dot" style="background:#c47878;opacity:.55"></div>
+        <div class="qs-preview-dot" style="background:#c8a84b;opacity:.38"></div>
+        <div class="qs-preview-dot" style="background:#6aaf90;opacity:.48"></div>
+      </div>
+      <span class="qs-preview-url">yourbusiness.com &nbsp;&middot;&nbsp; AI Citation Score</span>
+    </div>
+    <div class="qs-preview-body">
+      <div class="qs-preview-score-wrap">
+        <div class="qs-preview-score">72</div>
+        <div class="qs-preview-score-lbl">/ 100<br>citation<br>score</div>
+      </div>
+      <div class="qs-preview-checks">
+        <div class="qs-preview-check pass">Schema markup detected</div>
+        <div class="qs-preview-check fail">No FAQ / Q&amp;A content found</div>
+        <div class="qs-preview-check pass">Definition content present</div>
+        <div class="qs-preview-check fail">Internal link density low</div>
+        <div class="qs-preview-check pass">Content length sufficient</div>
+      </div>
+    </div>
+    <p class="qs-preview-footer">Fastest fix: Add a FAQ section &mdash; estimated +20 points</p>
+  </div>
+
+  <div class="qs-checks-row">
+    <span class="qs-check-pill">Schema Markup</span>
+    <span class="qs-check-pill">FAQ Content</span>
+    <span class="qs-check-pill">Definition Signals</span>
+    <span class="qs-check-pill">Internal Links</span>
+    <span class="qs-check-pill">Content Depth</span>
+  </div>
+
   <a href="{{ route('quick-scan.show') }}" class="btn-cta r" style="display:inline-block;background:var(--gold);color:var(--bg);font-size:.72rem;font-weight:600;letter-spacing:.12em;text-transform:uppercase;text-decoration:none;padding:13px 38px">Run a $2 Quick Scan</a>
+  <p style="font-size:.64rem;letter-spacing:.1em;text-transform:uppercase;color:rgba(168,168,160,.3);margin-top:14px">Results in seconds &nbsp;&middot;&nbsp; Sent to your inbox &nbsp;&middot;&nbsp; No account required</p>
+</section>
+
+<!-- ════════════ PRODUCT FEATURE GRID ════════════ -->
+<section class="feat-grid r" aria-label="What the AI Citation Engine checks">
+  <p class="feat-grid-eye">The AI Citation Engine&#8482; — 6 infrastructure layers</p>
+  <h2 class="feat-grid-hed">Everything AI needs to <em>cite you by default</em></h2>
+  <div class="feat-cards">
+    <div class="feat-card">
+      <div class="feat-card-icon">&#x7B;&#x7D;</div>
+      <p class="feat-card-title">Structured Data &amp; Schema</p>
+      <p class="feat-card-body">JSON-LD for LocalBusiness, Service, FAQPage, and DefinedTerm — machine-readable entity signals on every page.</p>
+      <span class="feat-card-score">Layer 1</span>
+    </div>
+    <div class="feat-card">
+      <div class="feat-card-icon">&#x25A4;</div>
+      <p class="feat-card-title">Page Architecture</p>
+      <p class="feat-card-body">One service, one city, one self-contained page. The coverage structure AI systems use to establish geographic authority.</p>
+      <span class="feat-card-score">Layer 2</span>
+    </div>
+    <div class="feat-card">
+      <div class="feat-card-icon">&#x25CE;</div>
+      <p class="feat-card-title">Entity Definition</p>
+      <p class="feat-card-body">Every page defines what you do, where you do it, and who you are — structured for AI extraction in the first 150 words.</p>
+      <span class="feat-card-score">Layer 3</span>
+    </div>
+    <div class="feat-card">
+      <div class="feat-card-icon">&#x2197;</div>
+      <p class="feat-card-title">Internal Link Graph</p>
+      <p class="feat-card-body">Topic clusters and hub pages that signal authority depth — the internal link pattern AI systems use to verify expertise.</p>
+      <span class="feat-card-score">Layer 4</span>
+    </div>
+    <div class="feat-card">
+      <div class="feat-card-icon">&#x2318;</div>
+      <p class="feat-card-title">AI Guidance (llms.txt)</p>
+      <p class="feat-card-body">Explicit citation instructions for AI crawlers — tells LLMs what your site is authoritative about and how to reference it.</p>
+      <span class="feat-card-score">Layer 5</span>
+    </div>
+    <div class="feat-card">
+      <div class="feat-card-icon">&#x25FC;</div>
+      <p class="feat-card-title">Programmatic Coverage</p>
+      <p class="feat-card-body">Hundreds of structured pages deployed as a single operation — one page per service per city, from a single content model.</p>
+      <span class="feat-card-score">Layer 6</span>
+    </div>
+  </div>
 </section>
 
 <!-- ════════════ SYSTEM STRUCTURE ════════════ -->

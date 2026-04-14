@@ -10,25 +10,25 @@
 <link rel="manifest" href="/site.webmanifest">
 <meta name="theme-color" content="#080808">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>About Nora Genet — AI Search Strategist & Founder | SEO AI Co™</title>
-<meta name="description" content="Nora Genet is the founder of SEO AI Co™ and the architect of the AI Citation Engine™ — the infrastructure system that structures web content for citation by AI-powered search systems.">
+<title>About SEOAIco — AI Citation Infrastructure & Research | SEO AI Co™</title>
+<meta name="description" content="SEOAIco builds the AI citation infrastructure layer for businesses — the technical and content architecture that makes your brand the source AI systems cite across Google AI Overviews, ChatGPT, and Perplexity.">
 <link rel="canonical" href="{{ url('/about') }}">
-<meta property="og:type" content="profile">
+<meta property="og:type" content="website">
 <meta property="og:site_name" content="SEO AI Co™">
-<meta property="og:title" content="About Nora Genet — AI Search Strategist & Founder | SEO AI Co™">
-<meta property="og:description" content="Nora Genet is the founder of SEO AI Co™ and architect of the AI Citation Engine™ — the system that makes businesses the source AI systems cite.">
+<meta property="og:title" content="About SEOAIco — AI Citation Infrastructure & Research | SEO AI Co™">
+<meta property="og:description" content="SEOAIco builds AI citation infrastructure for businesses — the system that makes brands the source AI systems cite by default.">
 <meta property="og:url" content="{{ url('/about') }}">
 <script type="application/ld+json">
 {!! json_encode([
     '@context' => 'https://schema.org',
     '@graph' => [
         [
-            '@type'       => 'Person',
-            '@id'         => url('/about') . '#author',
-            'name'        => 'Nora Genet',
-            'url'         => url('/about'),
-            'jobTitle'    => 'AI Search Strategist & Founder',
-            'description' => 'Nora Genet is the founder of SEO AI Co™ and the architect of the AI Citation Engine™ — the infrastructure system that structures web content for citation and extraction by AI-powered search systems, including Google AI Overviews, ChatGPT, Perplexity, and Gemini.',
+            '@type'       => 'Organization',
+            '@id'         => url('/') . '#organization',
+            'name'        => 'SEO AI Co™',
+            'alternateName' => 'SEOAIco',
+            'url'         => url('/'),
+            'description' => 'SEOAIco builds AI citation infrastructure for businesses — the technical and content architecture that structures web presence for citation by AI-powered search systems, including Google AI Overviews, ChatGPT, Perplexity, and Gemini.',
             'knowsAbout'  => [
                 'AI Search Optimization',
                 'Programmatic SEO',
@@ -37,13 +37,7 @@
                 'Structured Data & Schema Markup',
                 'Content Extraction Optimization',
             ],
-            'worksFor'    => [
-                '@type' => 'Organization',
-                '@id'   => url('/') . '#organization',
-                'name'  => 'SEO AI Co™',
-                'url'   => url('/'),
-            ],
-            'author'      => [
+            'subjectOf'   => [
                 ['@type' => 'Article', 'url' => url('/what-is-ai-search-optimization'), 'name' => 'What Is AI Search Optimization?'],
                 ['@type' => 'Article', 'url' => url('/ai-search-optimization'), 'name' => 'AI Search Optimization'],
                 ['@type' => 'Article', 'url' => url('/ai-citation-engine'), 'name' => 'The AI Citation Engine™'],
@@ -139,17 +133,17 @@ footer{border-top:1px solid rgba(200,168,75,.07);padding:32px 40px;display:flex;
   </ul>
 </nav>
 
-<article itemscope itemtype="https://schema.org/ProfilePage">
+<article>
 
-  <p class="eyebrow">About the Author</p>
-  <h1>Nora <em>Genet</em></h1>
-  <p class="author-title">AI Search Strategist &amp; Founder, SEO AI Co&#8482;</p>
+  <p class="eyebrow">About SEOAIco</p>
+  <h1>The AI Citation<br><em>Infrastructure</em> Company</h1>
+  <p class="author-title">Built to make businesses the source AI systems cite.</p>
 
-  <p class="lead">Nora Genet is the founder of SEO AI Co&#8482; and the architect of the AI Citation Engine&#8482; &#8212; the infrastructure system that structures web content for extraction and citation by AI-powered search systems. Her work focuses on the intersection of programmatic content architecture, entity clarity, and the emerging discipline of AI citation optimization.</p>
+  <p class="lead">SEOAIco builds the AI citation infrastructure layer for businesses &#8212; the technical and content architecture that structures web presence for extraction and citation by AI-powered search systems. We developed the AI Citation Engine&#8482; to deploy this infrastructure at scale across every service and market a business operates in.</p>
 
-  <p class="prose">The shift from ranked results to AI-generated answers has changed how discoverability works. Nora&#8217;s research and practice center on one core question: <strong>what makes AI systems choose to cite one source over another?</strong> The answer &#8212; structured content, entity definition, schema, and geographic coverage &#8212; is the foundation of every engagement at SEO AI Co&#8482;.</p>
+  <p class="prose">The shift from ranked results to AI-generated answers has changed how discoverability works. Our research and methodology center on one core question: <strong>what makes AI systems choose to cite one source over another?</strong> The answer &#8212; structured content, entity definition, schema, and geographic coverage &#8212; is the foundation of every engagement at SEO AI Co&#8482;.</p>
 
-  <p class="prose">She works with local service businesses and agencies to deploy citation infrastructure at scale: structured service-location pages, schema layers, llms.txt guidance, and the internal link architecture that AI systems use to establish topical authority.</p>
+  <p class="prose">We work with local service businesses and agencies to deploy citation infrastructure at scale: structured service-location pages, schema layers, llms.txt guidance, and the internal link architecture that AI systems use to establish topical authority.</p>
 
   <div class="divider"></div>
 
@@ -184,11 +178,11 @@ footer{border-top:1px solid rgba(200,168,75,.07);padding:32px 40px;display:flex;
 
   <div class="divider"></div>
 
-  <h2 class="section-hed">The core <em>thesis.</em></h2>
+  <h2 class="section-hed">Our core <em>methodology.</em></h2>
 
   <p class="prose"><strong>AI citation is the new rank.</strong> Businesses that appear in AI-generated answers earn the click, the credibility, and the user&#8217;s intent &#8212; before they reach a ranked list. The infrastructure that earns citations is architectural, not content-volume based: pages need to define entities clearly, confirm geographic scope, provide schema confirmations, and structure sentences for extraction.</p>
 
-  <p class="prose">The AI Citation Engine&#8482; was built directly from this thesis: deploy the complete six-layer citation infrastructure &#8212; page architecture, entity definition, schema, AI guidance (llms.txt), internal link graph, and programmatic coverage &#8212; across an entire service area, not just a homepage.</p>
+  <p class="prose">The AI Citation Engine&#8482; was built directly from this research: deploy the complete six-layer citation infrastructure &#8212; page architecture, entity definition, schema, AI guidance (llms.txt), internal link graph, and programmatic coverage &#8212; across an entire service area, not just a homepage.</p>
 
   <ul class="signal-list">
     <li><strong>AI systems prefer the clearest source</strong> &#8212; not always the highest-ranked one</li>
@@ -202,7 +196,7 @@ footer{border-top:1px solid rgba(200,168,75,.07);padding:32px 40px;display:flex;
 
   <h2 class="section-hed">Concepts developed <em>here.</em></h2>
 
-  <nav class="concept-links" aria-label="Concepts by Nora Genet">
+  <nav class="concept-links" aria-label="Concepts from SEOAIco">
     <a href="{{ route('what-is-ai-search-optimization') }}" class="concept-link">
       <span class="concept-link-label">Foundational Definition</span>
       <span class="concept-link-title">What Is AI Search Optimization?</span>

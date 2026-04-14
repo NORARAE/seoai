@@ -194,7 +194,7 @@ footer{border-top:1px solid var(--border);padding:32px 64px;display:flex;align-i
 
   <span class="page-eye">Local Discovery</span>
   <h1 class="page-title">Local search has changed.<br><em>The map pack is not enough.</em></h1>
-  <p class="byline">By <a href="{{ route('about') }}">Nora Genet</a> &mdash; AI Search Strategist, SEO AI Co&#8482;</p>
+  <p class="byline">SEOAIco Editorial Team</p>
   <p class="page-intro">When someone asks ChatGPT, Perplexity, or a voice assistant to recommend a local service business, the answer does not come from a proximity ping. It comes from structured content that explicitly describes what you do and where you operate.</p>
 
   <div class="statement">
