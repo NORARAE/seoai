@@ -132,6 +132,9 @@ nav.stuck{background:rgba(8,8,8,.95);backdrop-filter:blur(16px);border-color:var
 .qs-form-group .field-error{
   font-size:.74rem;color:#cf8f8f;margin-top:2px;
 }
+.qs-form-group .field-hint{
+  display:block;font-size:.72rem;color:rgba(168,168,160,.5);margin-top:3px;
+}
 
 .qs-submit{
   display:flex;align-items:center;justify-content:center;gap:10px;
@@ -265,10 +268,10 @@ footer{border-top:1px solid var(--border);padding:28px 48px;display:flex;flex-di
       <div class="qs-form-group">
         <label for="url">Your Website URL</label>
         <input
-          type="url"
+          type="text"
           id="url"
           name="url"
-          placeholder="https://yoursite.com"
+          placeholder="yoursite.com"
           value="{{ old('url') }}"
           autocomplete="url"
           autocorrect="off"
@@ -276,6 +279,7 @@ footer{border-top:1px solid var(--border);padding:28px 48px;display:flex;flex-di
           spellcheck="false"
           required
         >
+        <span class="field-hint">Enter any domain or URL — we'll handle the formatting.</span>
         @error('url')
           <span class="field-error">{{ $message }}</span>
         @enderror

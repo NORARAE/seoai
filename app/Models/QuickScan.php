@@ -9,6 +9,7 @@ class QuickScan extends Model
     protected $fillable = [
         'email',
         'url',
+        'url_input',
         'stripe_session_id',
         'paid',
         'score',

@@ -15,7 +15,7 @@ class QuickScanService
      */
     public function scan(string $url): array
     {
-        // Fetch the HTML
+        // Fetch the HTML — try https first, fall back to http
         $html = null;
         $fetchError = null;
 
@@ -31,6 +31,23 @@ class QuickScanService
             }
         } catch (\Throwable $e) {
             $fetchError = 'Could not reach URL: ' . Str::limit($e->getMessage(), 120);
+        }
+
+        // Fallback: try http:// if https:// failed and URL uses https
+        if ($html === null && str_starts_with($url, 'https://')) {
+            $httpUrl = 'http://' . substr($url, 8);
+            try {
+                $response = Http::timeout(10)
+                    ->withHeaders(['User-Agent' => 'SEOAIco-Scanner/1.0 (+https://seoaico.com)'])
+                    ->get($httpUrl);
+
+                if ($response->successful()) {
+                    $html = $response->body();
+                    $fetchError = null;
+                }
+            } catch (\Throwable $e) {
+                // Keep original fetchError
+            }
         }
 
         if ($html === null) {

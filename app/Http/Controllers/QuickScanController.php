@@ -26,23 +26,28 @@ class QuickScanController extends Controller
      */
     public function checkout(Request $request)
     {
+        // Normalize: prepend https:// if user entered bare domain
+        $rawUrl = trim($request->input('url', ''));
+        if ($rawUrl !== '' && !preg_match('#^https?://#i', $rawUrl)) {
+            $request->merge(['url' => 'https://' . $rawUrl]);
+        }
+
         $validated = $request->validate([
-            'url' => 'required|url|max:500',
-            'email' => 'required|email|max:255',
+            'url' => ['required', 'url', 'max:500'],
+            'email' => ['required', 'email', 'max:255'],
+        ], [
+            'url.required' => 'Enter a valid website address, such as yoursite.com',
+            'url.url' => 'Enter a valid website address, such as yoursite.com',
         ]);
 
         $url = rtrim($validated['url'], '/');
         $email = strtolower(trim($validated['email']));
 
-        // Normalize URL scheme
-        if (!preg_match('#^https?://#i', $url)) {
-            $url = 'https://' . $url;
-        }
-
-        // Create pending scan record
+        // Create pending scan record (preserve original input)
         $scan = QuickScan::create([
             'email' => $email,
             'url' => $url,
+            'url_input' => $rawUrl,
             'status' => QuickScan::STATUS_PENDING,
         ]);
 
