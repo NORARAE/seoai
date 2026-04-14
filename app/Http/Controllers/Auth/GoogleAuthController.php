@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Models\QuickScan;
 use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
@@ -137,9 +138,20 @@ class GoogleAuthController extends Controller
         Auth::login($user, remember: true);
         request()->session()->regenerate();
 
+        // Link any Quick Scans purchased with this email to the user account.
+        $linked = QuickScan::where('email', $user->email)
+            ->whereNull('user_id')
+            ->update(['user_id' => $user->id]);
+
+        // Auto-approve users who have at least one paid scan.
+        if (! $user->isApproved() && $user->quickScans()->where('paid', true)->exists()) {
+            $user->update(['approved' => true]);
+        }
+
         Log::info('Google OAuth: login successful', [
-            'user_id' => $user->id,
-            'email'   => $user->email,
+            'user_id'      => $user->id,
+            'email'        => $user->email,
+            'scans_linked' => $linked,
         ]);
 
         // Approval check: unapproved non-staff users go to pending page.

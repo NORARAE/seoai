@@ -7,6 +7,7 @@ use App\Models\QuickScan;
 use App\Services\QuickScanService;
 use App\Services\UrlValidator;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\RateLimiter;
 use Laravel\Cashier\Cashier;
@@ -108,6 +109,7 @@ class QuickScanController extends Controller
             'url' => $url,
             'url_input' => $rawUrl,
             'ip_address' => $ip,
+            'user_id' => Auth::id(),
             'status' => QuickScan::STATUS_PENDING,
         ]);
 

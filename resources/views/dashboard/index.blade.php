@@ -222,6 +222,127 @@
             </div>
         </div>
 
+        <!-- AI Scans Section -->
+        <div id="ai-scans" class="mb-8">
+            <div class="flex items-center justify-between mb-6">
+                <div>
+                    <h3 class="text-xl font-bold text-gray-900">AI Citation Scans</h3>
+                    <p class="text-sm text-gray-600 mt-1">Your AI citation readiness scores</p>
+                </div>
+                <a href="{{ route('quick-scan.show') }}" class="inline-flex items-center gap-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-sm font-medium transition-colors">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
+                    New Scan
+                </a>
+            </div>
+
+            @if($latestScan)
+            <!-- Latest Scan Card -->
+            <div class="bg-white rounded-xl border-2 border-gray-100 p-6 shadow-sm mb-6">
+                <div class="flex items-start justify-between">
+                    <div class="flex items-center gap-5">
+                        <div class="flex-shrink-0">
+                            <div class="w-16 h-16 rounded-full flex items-center justify-center text-xl font-bold
+                                @if($latestScan->score >= 70) bg-green-100 text-green-700
+                                @elseif($latestScan->score >= 40) bg-yellow-100 text-yellow-700
+                                @else bg-red-100 text-red-700
+                                @endif
+                            ">
+                                {{ $latestScan->score }}
+                            </div>
+                        </div>
+                        <div>
+                            <h4 class="text-lg font-semibold text-gray-900">{{ $latestScan->url }}</h4>
+                            <p class="text-sm text-gray-500 mt-1">Scanned {{ $latestScan->scanned_at?->diffForHumans() ?? $latestScan->created_at->diffForHumans() }}</p>
+                            @if($latestScan->fastest_fix)
+                            <div class="mt-3 p-3 bg-blue-50 border border-blue-100 rounded-lg">
+                                <p class="text-xs font-medium text-blue-700 uppercase tracking-wider mb-1">Fastest Fix</p>
+                                <p class="text-sm text-blue-900">{{ $latestScan->fastest_fix }}</p>
+                            </div>
+                            @endif
+                        </div>
+                    </div>
+                    <div class="flex flex-col items-end gap-2">
+                        <span class="px-3 py-1 text-xs font-semibold rounded-full
+                            @if($latestScan->score >= 70) bg-green-100 text-green-800
+                            @elseif($latestScan->score >= 40) bg-yellow-100 text-yellow-800
+                            @else bg-red-100 text-red-800
+                            @endif
+                        ">
+                            @if($latestScan->score >= 70) Strong
+                            @elseif($latestScan->score >= 40) Partial
+                            @else Needs Work
+                            @endif
+                        </span>
+                    </div>
+                </div>
+            </div>
+            @endif
+
+            @if($scanHistory->count() > 0)
+            <!-- Scan History -->
+            <div class="bg-white rounded-xl border-2 border-gray-100 shadow-sm mb-6">
+                <div class="px-6 py-4 border-b border-gray-100">
+                    <h4 class="text-base font-semibold text-gray-900">Scan History</h4>
+                </div>
+                <div class="divide-y divide-gray-100">
+                    @foreach($scanHistory as $scan)
+                    <div class="flex items-center justify-between px-6 py-4 hover:bg-gray-50 transition-colors">
+                        <div class="flex items-center gap-4">
+                            <span class="inline-flex items-center justify-center w-10 h-10 rounded-full text-sm font-bold
+                                @if($scan->score >= 70) bg-green-100 text-green-800
+                                @elseif($scan->score >= 40) bg-yellow-100 text-yellow-800
+                                @else bg-red-100 text-red-800
+                                @endif
+                            ">{{ $scan->score }}</span>
+                            <div>
+                                <p class="text-sm font-medium text-gray-900">{{ $scan->url }}</p>
+                                <p class="text-xs text-gray-500">{{ $scan->scanned_at?->format('M j, Y g:i A') ?? $scan->created_at->format('M j, Y g:i A') }}</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-3">
+                            @if(!empty($scan->issues) && is_array($scan->issues))
+                            <span class="text-xs text-gray-500">{{ count($scan->issues) }} issue{{ count($scan->issues) !== 1 ? 's' : '' }}</span>
+                            @endif
+                        </div>
+                    </div>
+                    @endforeach
+                </div>
+            </div>
+            @else
+            <!-- Empty state -->
+            <div class="bg-white rounded-xl border-2 border-gray-100 p-8 shadow-sm text-center mb-6">
+                <svg class="mx-auto h-12 w-12 text-gray-400 mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"/>
+                </svg>
+                <p class="font-medium text-gray-900">No scans yet</p>
+                <p class="text-sm text-gray-500 mt-1 mb-4">Run your first AI Citation Scan to see how your site performs.</p>
+                <a href="{{ route('quick-scan.show') }}" class="inline-flex items-center gap-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-sm font-medium transition-colors">
+                    Run Your First Scan
+                </a>
+            </div>
+            @endif
+
+            <!-- Upgrade CTAs -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div class="bg-gradient-to-br from-indigo-50 to-blue-50 rounded-xl border border-indigo-100 p-6">
+                    <h4 class="font-semibold text-gray-900 mb-1">Citation Builder</h4>
+                    <p class="text-2xl font-bold text-indigo-600 mb-2">$249</p>
+                    <p class="text-sm text-gray-600 mb-4">Full opportunity mapping, FAQ optimization, entity structure, internal linking plan, and actionable fixes.</p>
+                    <a href="{{ route('onboarding.start') }}?plan=citation-builder" class="inline-flex items-center gap-2 px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg text-sm font-medium transition-colors">
+                        Get Citation Builder
+                    </a>
+                </div>
+                <div class="bg-gradient-to-br from-blue-50 to-cyan-50 rounded-xl border border-blue-100 p-6">
+                    <h4 class="font-semibold text-gray-900 mb-1">Authority Engine</h4>
+                    <p class="text-2xl font-bold text-blue-600 mb-2">$499</p>
+                    <p class="text-sm text-gray-600 mb-4">Everything in Citation Builder plus AI-generated content, schema deployment, scoring system, and 4-month roadmap.</p>
+                    <a href="{{ route('onboarding.start') }}?plan=authority-engine" class="inline-flex items-center gap-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-sm font-medium transition-colors">
+                        Get Authority Engine
+                    </a>
+                </div>
+            </div>
+        </div>
+
         <!-- Suggested Actions Panel -->
         <div class="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-xl border-2 border-blue-100 p-6 shadow-sm">
             <div class="flex items-start justify-between mb-6">

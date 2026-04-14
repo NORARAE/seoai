@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\LocationPage;
+use App\Models\QuickScan;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class DashboardController extends Controller
@@ -82,6 +84,19 @@ class DashboardController extends Controller
             ->pluck('count', 'content_quality_status')
             ->toArray();
 
+        // Quick Scan data for the logged-in user
+        $user = Auth::user();
+        $latestScan = $user->quickScans()
+            ->where('status', QuickScan::STATUS_SCANNED)
+            ->latest()
+            ->first();
+        $scanHistory = $user->quickScans()
+            ->where('status', QuickScan::STATUS_SCANNED)
+            ->latest()
+            ->take(10)
+            ->get();
+        $totalScans = $user->quickScans()->count();
+
         return view('dashboard.index', compact(
             'stats',
             'health',
@@ -89,7 +104,10 @@ class DashboardController extends Controller
             'recentPages',
             'scoreDistribution',
             'statusBreakdown',
-            'contentQualityBreakdown'
+            'contentQualityBreakdown',
+            'latestScan',
+            'scanHistory',
+            'totalScans'
         ));
     }
 

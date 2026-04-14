@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class QuickScan extends Model
 {
@@ -11,6 +12,7 @@ class QuickScan extends Model
         'url',
         'url_input',
         'ip_address',
+        'user_id',
         'stripe_session_id',
         'paid',
         'score',
@@ -37,4 +39,9 @@ class QuickScan extends Model
     const STATUS_PAID = 'paid';
     const STATUS_SCANNED = 'scanned';
     const STATUS_ERROR = 'error';
+
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo(User::class);
+    }
 }

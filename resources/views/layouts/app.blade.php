@@ -56,6 +56,9 @@
                         <a href="/reports" class="px-3 py-2 text-sm font-medium {{ request()->is('reports*') ? 'text-blue-600 bg-blue-50' : 'text-gray-700 hover:text-gray-900 hover:bg-gray-50' }} rounded-md transition-colors">
                             Reports
                         </a>
+                        <a href="/dashboard#ai-scans" class="px-3 py-2 text-sm font-medium {{ request()->is('dashboard') && request()->fragment === 'ai-scans' ? 'text-blue-600 bg-blue-50' : 'text-gray-700 hover:text-gray-900 hover:bg-gray-50' }} rounded-md transition-colors">
+                            AI Scans
+                        </a>
                     </div>
                 </div>
                 
