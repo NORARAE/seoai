@@ -4664,7 +4664,7 @@ body::before{
     if(!el) return;
     var headlines = [
       'Be the Answer<br>AI Returns',
-      'Cited in Google.<br>Cited in ChatGPT.',
+      'Be the Answer Google Returns.<br>Be the Answer AI Uses.',
       'Works with Your<br>Existing Site',
       'Every Service.<br>Every City. Cited.',
       'Structure That<br>Gets You Cited'
