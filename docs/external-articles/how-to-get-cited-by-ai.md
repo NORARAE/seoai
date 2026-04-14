@@ -1,6 +1,6 @@
 # How to Get Your Website Cited by AI Search Systems
 
-*By Nora Genet — AI Search Strategist, SEO AI Co™*
+_By Nora Genet — AI Search Strategist, SEO AI Co™_
 
 ---
 
@@ -29,9 +29,11 @@ Each of these failures is fixable with specific structural changes.
 The first sentence of every page should state, without ambiguity, what the page is about. This serves both vector encoding (Stage 1: retrieval) and extraction primacy (Stage 2: the first paragraph is the most frequently cited section).
 
 **Template:**
+
 > "[Topic] is [direct, complete definition]. [One sentence of scope]."
 
 **Example:**
+
 > "AI search optimization is the practice of structuring web content so that AI-powered search systems can retrieve, extract, and cite it in generated answers. It applies across Google AI Overviews, ChatGPT, Perplexity, and Gemini."
 
 Avoid openings that lead with context, questions, or historical framing. Get to the definition in the first sentence or you lose it.
@@ -51,19 +53,20 @@ FAQPage structured data maps your content to the full query reformulation space 
 Each question in your FAQ schema is a potential match for a user's query. Each answer is a potential extraction candidate. A page with 8 well-structured FAQ pairs covers significantly more retrieval surface than a page with no FAQ schema.
 
 Practical implementation in JSON-LD:
+
 ```json
 {
-  "@type": "FAQPage",
-  "mainEntity": [
-    {
-      "@type": "Question",
-      "name": "What does AI search optimization mean?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "AI search optimization is the practice of structuring web content so that AI-powered search systems can retrieve, extract, and cite it in generated answers."
-      }
-    }
-  ]
+    "@type": "FAQPage",
+    "mainEntity": [
+        {
+            "@type": "Question",
+            "name": "What does AI search optimization mean?",
+            "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "AI search optimization is the practice of structuring web content so that AI-powered search systems can retrieve, extract, and cite it in generated answers."
+            }
+        }
+    ]
 }
 ```
 
@@ -72,20 +75,21 @@ Practical implementation in JSON-LD:
 Article schema with a named author creates a machine-readable authority signal used in the synthesis stage of AI answer generation — the stage where candidate citations are scored and ranked before appearing in the answer.
 
 Minimum complete Article schema:
+
 ```json
 {
-  "@type": "Article",
-  "headline": "Page Title",
-  "author": {
-    "@type": "Person",
-    "@id": "https://yourdomain.com/about#author",
-    "name": "Your Name"
-  },
-  "publisher": {
-    "@type": "Organization",
-    "name": "Your Organization"
-  },
-  "datePublished": "2025-01-01"
+    "@type": "Article",
+    "headline": "Page Title",
+    "author": {
+        "@type": "Person",
+        "@id": "https://yourdomain.com/about#author",
+        "name": "Your Name"
+    },
+    "publisher": {
+        "@type": "Organization",
+        "name": "Your Organization"
+    },
+    "datePublished": "2025-01-01"
 }
 ```
 
@@ -96,6 +100,7 @@ The `@id` on the author creates a persistent entity identifier that can accumula
 The `llms.txt` protocol (defined at llmstxt.org) is a machine-readable file that tells AI systems how to understand your site's structure, definitions, and content priorities.
 
 A well-structured `llms.txt` includes:
+
 - Site and author description
 - Canonical definitions for your core topics
 - Key pages list with descriptions
@@ -115,9 +120,10 @@ Place it at `https://yourdomain.com/llms.txt`. The SEO AI Co™ implementation i
 
 ---
 
-*For the full 5-step interactive guide:*
-- *[Optimize for AI Answers](https://seoaico.com/optimize-for-ai-answers) — Interactive HowTo framework*
-- *[How AI Search Works](https://seoaico.com/how-ai-search-works) — Three-stage pipeline*
-- *[The AI Citation Engine™](https://seoaico.com/ai-citation-engine) — Implementation infrastructure*
+_For the full 5-step interactive guide:_
 
-*Originally published at [SEO AI Co™](https://seoaico.com) by Nora Genet.*
+- _[Optimize for AI Answers](https://seoaico.com/optimize-for-ai-answers) — Interactive HowTo framework_
+- _[How AI Search Works](https://seoaico.com/how-ai-search-works) — Three-stage pipeline_
+- _[The AI Citation Engine™](https://seoaico.com/ai-citation-engine) — Implementation infrastructure_
+
+_Originally published at [SEO AI Co™](https://seoaico.com) by Nora Genet._

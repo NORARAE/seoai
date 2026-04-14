@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"></head>
+<body style="margin:0;padding:0;background:#f5f5f4;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif">
+<div style="max-width:560px;margin:40px auto;background:#ffffff;overflow:hidden;border:1px solid #e8e8e8">
+
+  <!-- Header -->
+  <div style="background:#080808;padding:28px 24px;text-align:center">
+    <span style="font-size:17px;color:#ede8de;font-weight:300;letter-spacing:.04em">SEO<span style="color:#c8a84b;font-weight:500;font-size:19px;font-style:italic">AI</span> Co&#8482;</span>
+    <p style="font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:rgba(200,168,75,.5);margin:6px 0 0">AI Citation</p>
+  </div>
+
+  <!-- Body -->
+  <div style="padding:32px 28px">
+    <h1 style="font-size:20px;font-weight:400;color:#111;margin:0 0 16px;line-height:1.3">Why AI won't cite your site <span style="color:#c8a84b;font-style:italic">(yet)</span></h1>
+
+    <p style="font-size:14px;color:#555;margin:0 0 16px;line-height:1.65">
+      Yesterday you ran a quick scan on <strong style="color:#333">{{ $scan->url }}</strong> and got a score of <strong style="color:#c8a84b">{{ $scan->score ?? 0 }}/100</strong>.
+    </p>
+
+    <p style="font-size:14px;color:#555;margin:0 0 16px;line-height:1.65">
+      Most sites score under 40 on their first scan. Not because the content is bad — because it's not <em>structured</em> the way AI systems expect.
+    </p>
+
+    <div style="background:#f9f8f5;border-left:3px solid #c8a84b;padding:16px 18px;margin-bottom:20px">
+      <p style="font-size:14px;font-style:italic;color:#444;margin:0;line-height:1.65">
+        AI systems don't read your site the way a human does. They look for specific signals — schema, definitions, FAQ structure, entity relationships. Without those, your content doesn't get cited.
+      </p>
+    </div>
+
+    <p style="font-size:14px;color:#555;margin:0 0 16px;line-height:1.65">
+      The three signals AI looks for most:
+    </p>
+
+    <ol style="padding-left:20px;margin:0 0 20px">
+      <li style="font-size:13px;color:#555;margin-bottom:10px;line-height:1.55"><strong style="color:#333">Structured Data (Schema)</strong> — Tells AI what type of business you are, what services you offer, and where you operate. Without it, AI systems make assumptions — or skip you entirely.</li>
+      <li style="font-size:13px;color:#555;margin-bottom:10px;line-height:1.55"><strong style="color:#333">Q&amp;A / FAQ Content</strong> — AI systems are built to find and cite direct answers. A page with clear questions and answers gets cited. A page with only general copy doesn't.</li>
+      <li style="font-size:13px;color:#555;margin-bottom:10px;line-height:1.55"><strong style="color:#333">Definitions and Explanations</strong> — "What is [service]?" content is the most frequently cited type of web content across Google AI Overviews, ChatGPT, and Perplexity. If your site doesn't define your services clearly, you won't appear in those answers.</li>
+    </ol>
+
+    <p style="font-size:13px;color:#777;margin:0 0 24px;line-height:1.6">
+      Tomorrow I'll show you exactly how far a few structural changes could take your score — and how quickly we can implement them.
+    </p>
+
+    <div style="text-align:center;margin:20px 0">
+      <a href="{{ url('/pricing') }}" style="display:inline-block;background:#c8a84b;color:#080808;font-size:12px;font-weight:600;text-decoration:none;padding:13px 36px;letter-spacing:.08em">See how to fix it</a>
+    </div>
+
+    <p style="font-size:12px;color:#bbb;text-align:center;margin:16px 0 0">
+      <a href="{{ url('/book') }}" style="color:#c8a84b;text-decoration:none">Book a free strategy call</a>
+    </p>
+  </div>
+
+  <!-- Footer -->
+  <div style="background:#f5f5f4;padding:16px 24px;text-align:center;border-top:1px solid #e8e8e8">
+    <p style="font-size:11px;color:#bbb;margin:0">SEO AI Co&#8482; &middot; <a href="{{ url('/') }}" style="color:#bbb">seoaico.com</a></p>
+  </div>
+
+</div>
+</body>
+</html>

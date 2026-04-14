@@ -2043,6 +2043,11 @@ body::before{
 }
 
 /* ── System Structure section ── */
+.qs-mid{padding:64px 24px;text-align:center;border-top:1px solid rgba(200,168,75,.08);border-bottom:1px solid rgba(200,168,75,.08);background:rgba(200,168,75,.025)}
+.qs-mid-eyebrow{font-size:.64rem;letter-spacing:.26em;text-transform:uppercase;color:rgba(200,168,75,.55);margin-bottom:14px}
+.qs-mid-hed{font-size:clamp(1.3rem,3vw,2rem);font-weight:300;color:var(--ivory);line-height:1.3;margin:0 auto 12px;max-width:560px;font-family:'Cormorant Garamond',Georgia,serif}
+.qs-mid-hed em{color:var(--gold);font-style:italic}
+.qs-mid-sub{font-size:.88rem;color:var(--muted);margin:0 auto 28px;max-width:420px;line-height:1.6}
 .sys-struct{padding:72px 64px;max-width:1200px;margin:0 auto;position:relative}
 .sys-struct-inner{display:grid;grid-template-columns:1fr 1.2fr;gap:68px;align-items:start}
 .sys-eyebrow{
@@ -3203,6 +3208,14 @@ body::before{
     </div>
   </div>
   <p class="how-strip-sub">Your domain &#8212; expanded across every search that matters.</p>
+</section>
+
+<!-- ════════════ QUICK SCAN CTA ════════════ -->
+<section class="qs-mid r" aria-label="AI Citation Quick Scan">
+  <p class="qs-mid-eyebrow">Not sure where you stand?</p>
+  <h2 class="qs-mid-hed">Find out if AI would cite your site&nbsp;— <em>instantly</em></h2>
+  <p class="qs-mid-sub">Our $2 scan checks 5 citation signals and returns an instant 0–100 AI Citation Score for your URL.</p>
+  <a href="{{ route('quick-scan.show') }}" class="btn-cta r" style="display:inline-block;background:var(--gold);color:var(--bg);font-size:.72rem;font-weight:600;letter-spacing:.12em;text-transform:uppercase;text-decoration:none;padding:13px 38px">Run a $2 Quick Scan</a>
 </section>
 
 <!-- ════════════ SYSTEM STRUCTURE ════════════ -->
@@ -4539,6 +4552,7 @@ body::before{
   <nav class="footer-legal">
     <a href="{{ route('privacy') }}">Privacy</a>
     <a href="{{ route('terms') }}">Terms</a>
+    <a href="{{ route('quick-scan.show') }}">AI Citation Scan</a>
   </nav>
 </footer>
 

@@ -87,6 +87,12 @@ Route::get('/chatgpt-seo', [PublicController::class, 'chatgptSeo'])->name('chatg
 Route::get('/local-ai-search', [PublicController::class, 'localAiSearch'])->name('local-ai-search');
 Route::get('/search-presence-engine', [PublicController::class, 'searchPresenceEngine'])->name('search-presence-engine');
 
+// ── $2 AI Citation Quick Scan ──
+Route::get('/quick-scan', [\App\Http\Controllers\QuickScanController::class, 'show'])->name('quick-scan.show');
+Route::post('/quick-scan/checkout', [\App\Http\Controllers\QuickScanController::class, 'checkout'])->middleware('throttle:20,1')->name('quick-scan.checkout');
+Route::get('/quick-scan/result', [\App\Http\Controllers\QuickScanController::class, 'result'])->name('quick-scan.result');
+Route::get('/quick-scan/cancelled', [\App\Http\Controllers\QuickScanController::class, 'cancelled'])->name('quick-scan.cancelled');
+
 // ── Booking / Consult System ──
 Route::post('/track/modal-open', [TrackingController::class, 'modalOpen'])->middleware('throttle:30,1')->name('track.modal-open');
 Route::get('/book', [BookingController::class, 'index'])->name('book.index');

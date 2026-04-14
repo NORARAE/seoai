@@ -1,6 +1,6 @@
 # Programmatic SEO for AI Systems: Scaling AI Citation Coverage
 
-*By Nora Genet — AI Search Strategist, SEO AI Co™*
+_By Nora Genet — AI Search Strategist, SEO AI Co™_
 
 ---
 
@@ -52,38 +52,38 @@ For a programmatically generated page to pass Stage 2 (extraction) and Stage 3 (
 
 ```json
 {
-  "@context": "https://schema.org",
-  "@graph": [
-    {
-      "@type": "LocalBusiness",
-      "@id": "https://yourdomain.com/services/city#business",
-      "name": "Your Business Name",
-      "areaServed": {
-        "@type": "City",
-        "name": "Denver",
-        "sameAs": "https://en.wikipedia.org/wiki/Denver"
-      },
-      "geo": {
-        "@type": "GeoCoordinates",
-        "latitude": 39.7392,
-        "longitude": -104.9903
-      },
-      "serviceType": "Service Name"
-    },
-    {
-      "@type": "FAQPage",
-      "mainEntity": [
+    "@context": "https://schema.org",
+    "@graph": [
         {
-          "@type": "Question",
-          "name": "What is [service] in [city]?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "[Self-contained definition naming city and service]"
-          }
+            "@type": "LocalBusiness",
+            "@id": "https://yourdomain.com/services/city#business",
+            "name": "Your Business Name",
+            "areaServed": {
+                "@type": "City",
+                "name": "Denver",
+                "sameAs": "https://en.wikipedia.org/wiki/Denver"
+            },
+            "geo": {
+                "@type": "GeoCoordinates",
+                "latitude": 39.7392,
+                "longitude": -104.9903
+            },
+            "serviceType": "Service Name"
+        },
+        {
+            "@type": "FAQPage",
+            "mainEntity": [
+                {
+                    "@type": "Question",
+                    "name": "What is [service] in [city]?",
+                    "acceptedAnswer": {
+                        "@type": "Answer",
+                        "text": "[Self-contained definition naming city and service]"
+                    }
+                }
+            ]
         }
-      ]
-    }
-  ]
+    ]
 }
 ```
 
@@ -102,9 +102,10 @@ This is the core problem the [AI Citation Tracking™](https://seoaico.com/ai-ci
 
 ---
 
-*For the full programmatic SEO architecture:*
-- *[Programmatic SEO Platform](https://seoaico.com/programmatic-seo-platform) — Location generation at scale*
-- *[What Is AI Search Optimization?](https://seoaico.com/what-is-ai-search-optimization) — Foundation*
-- *[The AI Citation Engine™](https://seoaico.com/ai-citation-engine) — Full infrastructure*
+_For the full programmatic SEO architecture:_
 
-*Originally published at [SEO AI Co™](https://seoaico.com) by Nora Genet.*
+- _[Programmatic SEO Platform](https://seoaico.com/programmatic-seo-platform) — Location generation at scale_
+- _[What Is AI Search Optimization?](https://seoaico.com/what-is-ai-search-optimization) — Foundation_
+- _[The AI Citation Engine™](https://seoaico.com/ai-citation-engine) — Full infrastructure_
+
+_Originally published at [SEO AI Co™](https://seoaico.com) by Nora Genet._
