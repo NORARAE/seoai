@@ -5,8 +5,10 @@ namespace App\Http\Controllers;
 use App\Jobs\RunQuickScanJob;
 use App\Models\QuickScan;
 use App\Services\QuickScanService;
+use App\Services\UrlValidator;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\RateLimiter;
 use Laravel\Cashier\Cashier;
 
 class QuickScanController extends Controller
@@ -22,33 +24,98 @@ class QuickScanController extends Controller
 
     /**
      * POST /quick-scan/checkout
-     * Validate input, create a pending QuickScan, redirect to Stripe.
+     * Validate input, gate all checks, then redirect to Stripe.
      */
-    public function checkout(Request $request)
+    public function checkout(Request $request, UrlValidator $urlValidator)
     {
-        // Normalize: prepend https:// if user entered bare domain
+        $ip = $request->ip();
+
+        // ── Honeypot: hidden field must be empty ──────────────────────────
+        if ($request->filled('company_website')) {
+            Log::warning('QuickScan: honeypot triggered', ['ip' => $ip]);
+            return redirect()->route('quick-scan.show');
+        }
+
+        // ── Timing check: reject sub-2-second submissions ────────────────
+        $formLoadedAt = (float) $request->input('_loaded_at', 0);
+        if ($formLoadedAt > 0 && (microtime(true) - $formLoadedAt) < 2.0) {
+            Log::warning('QuickScan: timing check failed (too fast)', ['ip' => $ip, 'elapsed' => microtime(true) - $formLoadedAt]);
+            return redirect()->route('quick-scan.show')
+                ->withErrors(['error' => 'Please take a moment to fill out the form.'])
+                ->withInput();
+        }
+
+        // ── Rate limit: 5 checkout attempts per IP per 10 minutes ────────
+        $rateLimitKey = 'qs-checkout:' . $ip;
+        if (RateLimiter::tooManyAttempts($rateLimitKey, 5)) {
+            Log::warning('QuickScan: rate limit exceeded', ['ip' => $ip]);
+            return redirect()->route('quick-scan.show')
+                ->withErrors(['error' => 'Too many attempts. Please wait a few minutes and try again.'])
+                ->withInput();
+        }
+        RateLimiter::hit($rateLimitKey, 600);
+
+        // ── Normalize URL: prepend https:// if bare domain ───────────────
         $rawUrl = trim($request->input('url', ''));
         if ($rawUrl !== '' && !preg_match('#^https?://#i', $rawUrl)) {
             $request->merge(['url' => 'https://' . $rawUrl]);
         }
 
+        // ── Basic validation ─────────────────────────────────────────────
         $validated = $request->validate([
             'url' => ['required', 'url', 'max:500'],
-            'email' => ['required', 'email', 'max:255'],
+            'email' => ['required', 'email:rfc,dns', 'max:255'],
         ], [
             'url.required' => 'Enter a valid website address, such as yoursite.com',
             'url.url' => 'Enter a valid website address, such as yoursite.com',
+            'email.email' => 'Enter a valid email address.',
         ]);
 
         $url = rtrim($validated['url'], '/');
         $email = strtolower(trim($validated['email']));
 
-        // Create pending scan record (preserve original input)
+        // ── URL safety validation (TLD, SSRF, private IPs) ───────────────
+        $urlCheck = $urlValidator->validate($url);
+        if (!$urlCheck['valid']) {
+            Log::info('QuickScan: URL validation failed', ['ip' => $ip, 'url' => $url, 'reason' => $urlCheck['error']]);
+            return redirect()->route('quick-scan.show')
+                ->withErrors(['url' => $urlCheck['error']])
+                ->withInput();
+        }
+
+        // ── Pre-payment reachability check ────────────────────────────────
+        $reachability = $urlValidator->checkReachability($url);
+        if (!$reachability['reachable']) {
+            Log::info('QuickScan: reachability check failed', ['ip' => $ip, 'url' => $url, 'reason' => $reachability['error']]);
+            return redirect()->route('quick-scan.show')
+                ->withErrors(['url' => $reachability['error']])
+                ->withInput();
+        }
+
+        // ── Rate limit: 3 scans per email per day ────────────────────────
+        $emailKey = 'qs-email:' . sha1($email);
+        if (RateLimiter::tooManyAttempts($emailKey, 3)) {
+            Log::warning('QuickScan: email rate limit exceeded', ['ip' => $ip, 'email' => $email]);
+            return redirect()->route('quick-scan.show')
+                ->withErrors(['error' => 'You have reached the scan limit for this email address today. Please try again tomorrow.'])
+                ->withInput();
+        }
+        RateLimiter::hit($emailKey, 86400);
+
+        // ── All gates passed — create pending scan ────────────────────────
         $scan = QuickScan::create([
             'email' => $email,
             'url' => $url,
             'url_input' => $rawUrl,
+            'ip_address' => $ip,
             'status' => QuickScan::STATUS_PENDING,
+        ]);
+
+        Log::info('QuickScan: checkout initiated', [
+            'scan_id' => $scan->id,
+            'ip' => $ip,
+            'url' => $url,
+            'email' => $email,
         ]);
 
         try {
@@ -120,6 +187,7 @@ class QuickScanController extends Controller
 
         // If already scanned, just show results
         if ($scan->status === QuickScan::STATUS_SCANNED && $scan->score !== null) {
+            Log::info('QuickScan: result page revisited', ['scan_id' => $scan->id]);
             return view('public.quick-scan-result', compact('scan'));
         }
 
@@ -148,6 +216,14 @@ class QuickScanController extends Controller
             'status' => QuickScan::STATUS_PAID,
         ]);
 
+        Log::info('QuickScan: payment verified, starting scan', [
+            'scan_id' => $scan->id,
+            'url' => $scan->url,
+            'email' => $scan->email,
+            'ip' => $scan->ip_address,
+            'stripe_session' => $sessionId,
+        ]);
+
         // Run scan synchronously so the user sees results immediately.
         // RunQuickScanJob handles CRM + email drip (idempotent).
         $result = $scanner->scan($scan->url);
@@ -159,8 +235,17 @@ class QuickScanController extends Controller
             'fastest_fix' => $result['fastest_fix'],
             'raw_checks' => $result['raw_checks'],
             'status' => QuickScan::STATUS_SCANNED,
+            'scanned_at' => now(),
         ]);
         $scan->refresh();
+
+        Log::info('QuickScan: scan completed, result delivered', [
+            'scan_id' => $scan->id,
+            'score' => $scan->score,
+            'url' => $scan->url,
+            'email' => $scan->email,
+            'ip' => $scan->ip_address,
+        ]);
 
         // Dispatch job for CRM upsert + email sequence (idempotent — will
         // see STATUS_SCANNED and skip the scan, then run CRM + emails).

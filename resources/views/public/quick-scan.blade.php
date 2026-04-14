@@ -265,6 +265,14 @@ footer{border-top:1px solid var(--border);padding:28px 48px;display:flex;flex-di
     <form method="POST" action="{{ route('quick-scan.checkout') }}" id="scanForm">
       @csrf
 
+      {{-- Honeypot — hidden from real users, bots fill it --}}
+      <div style="position:absolute;left:-9999px;top:-9999px" aria-hidden="true">
+        <label for="company_website">Company Website</label>
+        <input type="text" id="company_website" name="company_website" tabindex="-1" autocomplete="off" value="">
+      </div>
+      {{-- Timing check — records when form was rendered --}}
+      <input type="hidden" name="_loaded_at" id="_loadedAt" value="">
+
       <div class="qs-form-group">
         <label for="url">Your Website URL</label>
         <input
@@ -307,7 +315,8 @@ footer{border-top:1px solid var(--border);padding:28px 48px;display:flex;flex-di
       </button>
 
       <p class="qs-trust">
-        Secure checkout via Stripe &nbsp;·&nbsp; Score delivered instantly after payment &nbsp;·&nbsp; No recurring charges
+        Real websites only. Scan begins instantly after payment.<br>
+        Secure checkout via Stripe &nbsp;·&nbsp; Score delivered instantly &nbsp;·&nbsp; Non-refundable once processing begins
       </p>
     </form>
   </div>
@@ -361,6 +370,9 @@ footer{border-top:1px solid var(--border);padding:28px 48px;display:flex;flex-di
 <script>
   const nav = document.getElementById('nav');
   window.addEventListener('scroll', () => nav.classList.toggle('stuck', scrollY > 60));
+
+  // Set timing check value on page load
+  document.getElementById('_loadedAt').value = (Date.now() / 1000).toFixed(3);
 
   document.getElementById('scanForm').addEventListener('submit', function() {
     const btn = document.getElementById('submitBtn');

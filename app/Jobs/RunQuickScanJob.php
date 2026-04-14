@@ -58,6 +58,7 @@ class RunQuickScanJob implements ShouldQueue, ShouldBeUnique
                 'fastest_fix' => $result['fastest_fix'],
                 'raw_checks' => $result['raw_checks'],
                 'status' => QuickScan::STATUS_SCANNED,
+                'scanned_at' => now(),
             ]);
             $scan->refresh();
         }

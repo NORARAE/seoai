@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 
 class QuickScanService
@@ -15,6 +16,41 @@ class QuickScanService
      */
     public function scan(string $url): array
     {
+        // SSRF guard: resolve hostname and block private/reserved IPs
+        $host = parse_url($url, PHP_URL_HOST);
+        if ($host && !filter_var($host, FILTER_VALIDATE_IP)) {
+            $ips = @gethostbynamel(strtolower($host));
+            if ($ips) {
+                foreach ($ips as $ip) {
+                    $flags = FILTER_FLAG_NO_PRIV_RANGE | FILTER_FLAG_NO_RES_RANGE;
+                    if (!filter_var($ip, FILTER_VALIDATE_IP, $flags)) {
+                        Log::warning('QuickScanService: SSRF blocked — private IP resolved', ['url' => $url, 'ip' => $ip]);
+                        return [
+                            'score' => 0,
+                            'issues' => ['This URL resolves to a private or reserved network address and cannot be scanned.'],
+                            'strengths' => [],
+                            'fastest_fix' => 'Ensure your website is hosted on a public IP address.',
+                            'raw_checks' => [],
+                            'error' => 'SSRF protection: private IP blocked',
+                        ];
+                    }
+                }
+            }
+        } elseif ($host && filter_var($host, FILTER_VALIDATE_IP)) {
+            $flags = FILTER_FLAG_NO_PRIV_RANGE | FILTER_FLAG_NO_RES_RANGE;
+            if (!filter_var($host, FILTER_VALIDATE_IP, $flags)) {
+                Log::warning('QuickScanService: SSRF blocked — direct private IP', ['url' => $url]);
+                return [
+                    'score' => 0,
+                    'issues' => ['This URL points to a private or reserved network address and cannot be scanned.'],
+                    'strengths' => [],
+                    'fastest_fix' => 'Ensure your website is hosted on a public IP address.',
+                    'raw_checks' => [],
+                    'error' => 'SSRF protection: private IP blocked',
+                ];
+            }
+        }
+
         // Fetch the HTML — try https first, fall back to http
         $html = null;
         $fetchError = null;

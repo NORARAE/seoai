@@ -10,6 +10,7 @@ class QuickScan extends Model
         'email',
         'url',
         'url_input',
+        'ip_address',
         'stripe_session_id',
         'paid',
         'score',
@@ -19,6 +20,7 @@ class QuickScan extends Model
         'raw_checks',
         'status',
         'emails_sent',
+        'scanned_at',
     ];
 
     protected $casts = [
@@ -28,6 +30,7 @@ class QuickScan extends Model
         'issues' => 'array',
         'strengths' => 'array',
         'raw_checks' => 'array',
+        'scanned_at' => 'datetime',
     ];
 
     const STATUS_PENDING = 'pending';
