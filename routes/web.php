@@ -70,6 +70,22 @@ Route::get('/branding-print', [PublicController::class, 'brandingPrint'])->name(
 Route::get('/access-plans', [PublicController::class, 'accessPlans'])->name('access-plans');
 Route::get('/ai-seo-for-chatgpt-geo-aeo', [PublicController::class, 'aiSeoGeoAeo'])->name('ai-seo-geo-aeo');
 
+// ── Category capture & authority pages ──
+Route::get('/what-is-ai-search-optimization', [PublicController::class, 'whatIsAiSearchOptimization'])->name('what-is-ai-search-optimization');
+Route::get('/ai-search-optimization', [PublicController::class, 'aiSearchOptimization'])->name('ai-search-optimization');
+Route::get('/ai-search-optimization-guide', [PublicController::class, 'aiSearchOptimizationGuide'])->name('ai-search-optimization-guide');
+Route::get('/ai-citation-engine', [PublicController::class, 'aiCitationEngine'])->name('ai-citation-engine');
+Route::get('/about', [PublicController::class, 'about'])->name('about');
+Route::get('/ai-citation-tracking', [PublicController::class, 'aiCitationTracking'])->name('ai-citation-tracking');
+Route::get('/how-ai-search-works', [PublicController::class, 'howAiSearchWorks'])->name('how-ai-search-works');
+Route::get('/how-ai-retrieves-content', [PublicController::class, 'howAiRetrievesContent'])->name('how-ai-retrieves-content');
+Route::get('/how-chatgpt-chooses-sources', [PublicController::class, 'howChatgptChoosesSources'])->name('how-chatgpt-chooses-sources');
+Route::get('/optimize-for-ai-answers', [PublicController::class, 'optimizeForAiAnswers'])->name('optimize-for-ai-answers');
+Route::get('/programmatic-seo-platform', [PublicController::class, 'programmaticSeoPlatform'])->name('programmatic-seo-platform');
+Route::get('/chatgpt-seo', [PublicController::class, 'chatgptSeo'])->name('chatgpt-seo');
+Route::get('/local-ai-search', [PublicController::class, 'localAiSearch'])->name('local-ai-search');
+Route::get('/search-presence-engine', [PublicController::class, 'searchPresenceEngine'])->name('search-presence-engine');
+
 // ── Booking / Consult System ──
 Route::post('/track/modal-open', [TrackingController::class, 'modalOpen'])->middleware('throttle:30,1')->name('track.modal-open');
 Route::get('/book', [BookingController::class, 'index'])->name('book.index');

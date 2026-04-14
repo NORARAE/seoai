@@ -11,8 +11,35 @@
 <meta name="theme-color" content="#080808">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Who We Work With — Agencies &amp; Local Businesses | SEO AI Co™</title>
-<meta name="description" content="SEO AI Co™ helps your business show up in search across every service and city you serve — without complicated SEO.">
+<meta name="description" content="SEO AI Co™ helps your business show up across Google, AI search, and local discovery — every service, every city, without complicated tools.">
 <link rel="canonical" href="{{ url('/solutions') }}">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="SEO AI Co™">
+<meta property="og:title" content="Who We Work With — Agencies &amp; Local Businesses | SEO AI Co™">
+<meta property="og:description" content="SEO AI Co™ helps your business show up across Google, AI search, and local discovery — every service, every city, without complicated tools.">
+<meta property="og:url" content="{{ url('/solutions') }}">
+<script type="application/ld+json">
+{!! json_encode([
+    '@context' => 'https://schema.org',
+    '@graph' => [
+        [
+            '@type'       => 'WebPage',
+            '@id'         => url('/solutions') . '#webpage',
+            'url'         => url('/solutions'),
+            'name'        => 'Who We Work With — Agencies & Local Businesses | SEO AI Co™',
+            'description' => 'SEO AI Co™ helps your business show up across Google, AI search, and local discovery — every service, every city, without complicated tools.',
+            'isPartOf'    => ['@id' => url('/') . '#website'],
+        ],
+        [
+            '@type' => 'BreadcrumbList',
+            'itemListElement' => [
+                ['@type' => 'ListItem', 'position' => 1, 'name' => 'Home', 'item' => url('/')],
+                ['@type' => 'ListItem', 'position' => 2, 'name' => 'Solutions', 'item' => url('/solutions')],
+            ],
+        ],
+    ],
+], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT) !!}
+</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">

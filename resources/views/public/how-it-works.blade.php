@@ -10,9 +10,41 @@
 <link rel="manifest" href="/site.webmanifest">
 <meta name="theme-color" content="#080808">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>How AI-Powered SEO Works for Your Business | SEO AI Co™</title>
-<meta name="description" content="SEO AI Co™ builds AI-powered, location-specific pages on your existing website — so you show up in search across every service and city you serve.">
+<title>How Programmatic Local SEO Works | SEO AI Co™</title>
+<meta name="description" content="SEO AI Co™ builds structured, location-specific pages on your domain — one page per service and city — so your business ranks across its entire local market.">
 <link rel="canonical" href="{{ url('/how-it-works') }}">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="SEO AI Co™">
+<meta property="og:title" content="How Programmatic Local SEO Works | SEO AI Co™">
+<meta property="og:description" content="SEO AI Co™ builds structured, location-specific pages on your domain — one page per service and city — so your business ranks across its entire local market.">
+<meta property="og:url" content="{{ url('/how-it-works') }}">
+<script type="application/ld+json">
+{!! json_encode([
+    '@context' => 'https://schema.org',
+    '@graph' => [
+        [
+            '@type'       => 'WebPage',
+            '@id'         => url('/how-it-works') . '#webpage',
+            'url'         => url('/how-it-works'),
+            'name'        => 'How Programmatic Local SEO Works | SEO AI Co™',
+            'description' => 'SEO AI Co™ builds structured, location-specific pages on your domain — one page per service and city — so your business ranks across its entire local market.',
+            'isPartOf'    => ['@id' => url('/') . '#website'],
+            'about' => [
+                '@type'    => 'Service',
+                'name'     => 'Programmatic Local SEO',
+                'provider' => ['@type' => 'Organization', 'name' => 'SEO AI Co™', 'url' => url('/')],
+            ],
+        ],
+        [
+            '@type' => 'BreadcrumbList',
+            'itemListElement' => [
+                ['@type' => 'ListItem', 'position' => 1, 'name' => 'Home', 'item' => url('/')],
+                ['@type' => 'ListItem', 'position' => 2, 'name' => 'How It Works', 'item' => url('/how-it-works')],
+            ],
+        ],
+    ],
+], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT) !!}
+</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
@@ -87,8 +119,17 @@ body{background:var(--bg);color:var(--ivory);font-family:'DM Sans',sans-serif;fo
 .step-copy strong{color:rgba(237,232,222,.88);font-weight:400}
 .step-copy p+p{margin-top:14px}
 .step-note{display:inline-block;margin-top:16px;font-size:.76rem;color:rgba(200,168,75,.50);letter-spacing:.04em;font-style:italic}
+.step-lead{color:rgba(237,232,222,.88);font-weight:400}
+.step-output{color:rgba(200,168,75,.55);font-size:.88rem;letter-spacing:.02em}
+.step-link{color:inherit;text-decoration:none;border-bottom:1px solid rgba(200,168,75,.28);transition:border-color .22s,color .22s}
+.step-link:hover{color:rgba(200,168,75,.85);border-color:rgba(200,168,75,.60)}
 
-/* ── Trust block ── */
+/* ── Search shift block ── */
+.shift-block{padding:40px 0 52px;border-bottom:1px solid var(--border);margin-bottom:64px}
+.shift-old{font-size:.92rem;color:rgba(168,168,160,.62);line-height:1.75;margin-bottom:20px}
+.shift-now{font-size:1.08rem;color:var(--ivory);font-weight:400;line-height:1.65;margin-bottom:12px}
+.shift-pain{font-size:.96rem;color:rgba(168,168,160,.75);line-height:1.72;margin-bottom:20px}
+.shift-bridge{font-size:.96rem;color:rgba(237,232,222,.82);line-height:1.72;border-left:2px solid rgba(200,168,75,.30);padding-left:16px}
 .trust-block{background:var(--card2);border:1px solid rgba(200,168,75,.10);padding:56px 52px;margin-bottom:88px}
 .trust-block-eye{font-size:.60rem;letter-spacing:.22em;text-transform:uppercase;color:var(--gold-dim);display:block;margin-bottom:14px;text-align:center}
 .trust-block-hed{font-family:'Cormorant Garamond',serif;font-size:clamp(1.5rem,2.2vw,1.9rem);font-weight:300;color:var(--ivory);text-align:center;margin-bottom:10px;line-height:1.2}
@@ -123,6 +164,15 @@ body{background:var(--bg);color:var(--ivory);font-family:'DM Sans',sans-serif;fo
 .compat-note-wrap{margin-top:36px;padding-top:32px;border-top:1px solid rgba(200,168,75,.06);text-align:center;display:flex;flex-direction:column;gap:12px}
 .compat-support-line{font-size:.82rem;color:var(--muted);line-height:1.76;max-width:520px;margin:0 auto}
 .compat-position-line{font-size:.78rem;color:rgba(200,168,75,.46);line-height:1.74;max-width:500px;margin:0 auto;font-style:italic}
+
+/* ── FAQ section ── */
+.faq-section{max-width:640px;margin:0 auto;padding:0 24px 72px}
+.faq-section-heading{font-family:'Cormorant Garamond',serif;font-weight:300;font-style:italic;font-size:clamp(1.3rem,2.2vw,1.8rem);color:var(--ivory);letter-spacing:-.01em;margin-bottom:40px;text-align:center}
+.faq-list{display:flex;flex-direction:column}
+.faq-item{border-top:1px solid rgba(200,168,75,.09);padding:22px 0}
+.faq-item:last-child{border-bottom:1px solid rgba(200,168,75,.09)}
+.faq-q{font-family:'DM Sans',sans-serif;font-size:.9rem;font-weight:400;color:var(--ivory);margin-bottom:9px;line-height:1.5}
+.faq-a{font-size:.86rem;line-height:1.78;color:rgba(168,168,160,.68)}
 
 /* ── CTA block ── */
 .page-cta{border:1px solid rgba(200,168,75,.14);background:var(--card);padding:60px 52px;text-align:center}
@@ -191,10 +241,16 @@ sup{font-size:.55em;line-height:0;vertical-align:super}
   {{-- ── HERO ── --}}
   <span class="page-eye">The System</span>
   <h1 class="page-title">How <em>SEO AI Co<sup>&trade;</sup></em><br>works.</h1>
-  <p class="page-intro">We build structured, location-specific pages on your existing website &mdash; expanding your domain&rsquo;s coverage across every service and city you serve.</p>
-  <p class="page-position">We expand your existing website with structured pages across your market.</p>
-  <p class="page-intro-note">No site replacement. No separate platform. Built on your URL, under your brand.</p>
-
+  <p class="page-intro">We map how your business actually operates &mdash; then build the structure that reflects how your customers search. Location-specific pages on your domain, across every service and city you serve.</p>
+  <p class="page-position">Your website, mapped to your market &mdash; every page placed with purpose.</p>
+  <p class="page-intro-note">No site replacement. No separate platform. A system built on your URL &mdash; one you own.</p>
+  {{-- ── SEARCH SHIFT ── --}}
+  <div class="shift-block">
+    <p class="shift-old">SEO used to be about getting one page into Google.</p>
+    <p class="shift-now">Now your business has to show up everywhere your customers are searching &mdash; or you get missed.</p>
+    <p class="shift-pain">Most websites aren&rsquo;t built for how search works today.</p>
+    <p class="shift-bridge">We turn your website into a growth foundation &mdash; built so search engines, AI, and your marketing channels all work from the same source.</p>
+  </div>
   {{-- ── TOP TRUST STRIP ── --}}
   <div class="trust-strip" data-stagger>
     <div class="ts-item" data-stagger-child>
@@ -212,8 +268,8 @@ sup{font-size:.55em;line-height:0;vertical-align:super}
           <rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 9h6M9 12h6M9 15h4"/>
         </svg>
       </div>
-      <span class="ts-label">WordPress-first</span>
-      <span class="ts-sub">Plugin-based integration.</span>
+      <span class="ts-label">Built into WordPress</span>
+      <span class="ts-sub">No migration. No disruption.</span>
     </div>
     <div class="ts-item" data-stagger-child>
       <div class="ts-icon-wrap">
@@ -240,22 +296,22 @@ sup{font-size:.55em;line-height:0;vertical-align:super}
     <div class="how-pill how-pill--lead" data-stagger-child>
       <span class="how-pill-num">01</span>
       <span class="how-pill-label">Map</span>
-      <span class="how-pill-sub">Review services, locations, structure.</span>
+      <span class="how-pill-sub">Every service, city, and gap &mdash; mapped first.</span>
     </div>
     <div class="how-pill" data-stagger-child>
       <span class="how-pill-num">02</span>
       <span class="how-pill-label">Build</span>
-      <span class="how-pill-sub">Create structured pages on your domain.</span>
+      <span class="how-pill-sub">One page per service, per city.</span>
     </div>
     <div class="how-pill" data-stagger-child>
       <span class="how-pill-num">03</span>
       <span class="how-pill-label">Connect</span>
-      <span class="how-pill-sub">Strengthen internal linking.</span>
+      <span class="how-pill-sub">Links, schema, and signals unified.</span>
     </div>
     <div class="how-pill" data-stagger-child>
       <span class="how-pill-num">04</span>
       <span class="how-pill-label">Expand</span>
-      <span class="how-pill-sub">Roll out growth in phases.</span>
+      <span class="how-pill-sub">Authority compounds. Position holds.</span>
     </div>
   </div>
 
@@ -266,9 +322,13 @@ sup{font-size:.55em;line-height:0;vertical-align:super}
       <span class="step-num">01</span>
       <div class="step-body">
         <span class="step-label">Map</span>
-        <h2 class="step-hed">We map your market before anything is built.</h2>
-        <p class="step-copy">Every service you offer. Every city you serve. Every gap in your current coverage. We document the full structure before a single page is created &mdash; so every deployment has a clear purpose and place.<br><br>Output: service categories, location depth, URL structure, and internal link plan.</p>
-        <span class="step-note">No guesswork. Mapped to your actual market.</span>
+        <h2 class="step-hed">Map your market before anything is built.</h2>
+        <div class="step-copy">
+          <p class="step-lead">Every service. Every city. Every gap.</p>
+          <p>We define the full structure first &mdash; so every page has a role, and nothing is wasted.</p>
+          <p class="step-output">Output: service coverage, location depth, URL structure, <a href="{{ route('ai-seo-geo-aeo') }}" class="step-link">internal linking</a>.</p>
+        </div>
+        <span class="step-note">We map how your business operates &mdash; then build the structure that reflects how your market actually searches.</span>
       </div>
     </div>
 
@@ -276,9 +336,15 @@ sup{font-size:.55em;line-height:0;vertical-align:super}
       <span class="step-num">02</span>
       <div class="step-body">
         <span class="step-label">Build</span>
-        <h2 class="step-hed">Structured pages &mdash; built on your domain.</h2>
-        <p class="step-copy">Location-specific service pages &mdash; built directly on your existing website, under your URL, inside your brand. Each page is structured with relevant content, schema markup, and the signals search engines use to understand what a page is about.<br><br><strong>Your site grows. Your domain earns the authority.</strong></p>
-        <span class="step-note">WordPress and Divi supported natively. No migration required.</span>
+        <h2 class="step-hed"><a href="{{ route('growth-services') }}" class="step-link">Structured pages</a> &mdash; built directly on your domain.</h2>
+        <div class="step-copy">
+          <p class="step-lead">One page. One service. One city.</p>
+          <p>Each page is created inside your existing site &mdash; aligned to your brand, your URL, and your authority.</p>
+          <p>Content, schema, and search signals are built in from the start.</p>
+          <p class="step-lead">Your site expands. Your domain gains authority.</p>
+          <p>Your domain. Your structure. Your long-term position.</p>
+        </div>
+        <span class="step-note">No migration required. Built directly into WordPress &mdash; with the expertise to structure, expand, and scale it correctly.</span>
       </div>
     </div>
 
@@ -286,9 +352,13 @@ sup{font-size:.55em;line-height:0;vertical-align:super}
       <span class="step-num">03</span>
       <div class="step-body">
         <span class="step-label">Connect</span>
-        <h2 class="step-hed">Every page connects &mdash; and signals correctly.</h2>
-        <p class="step-copy">Internal link structure, schema markup, and search signal layers &mdash; built so your site is properly understood. Each page reinforces your domain&rsquo;s coverage depth and topical authority.<br><br>This is the layer most sites are missing.</p>
-        <span class="step-note">Structured data, canonical signals, and local schema included.</span>
+        <h2 class="step-hed">Every page strengthens the whole.</h2>
+        <div class="step-copy">
+          <p>Internal links, schema, and search signals work together &mdash; so your site isn&rsquo;t just indexed, it&rsquo;s understood.</p>
+          <p class="step-lead">Each page strengthens the next.</p>
+          <p>This is where most sites break.</p>
+        </div>
+        <span class="step-note"><a href="{{ route('ai-seo-geo-aeo') }}" class="step-link">Structured data</a>, canonical signals, and local schema included.</span>
       </div>
     </div>
 
@@ -296,9 +366,13 @@ sup{font-size:.55em;line-height:0;vertical-align:super}
       <span class="step-num">04</span>
       <div class="step-body">
         <span class="step-label">Expand</span>
-        <h2 class="step-hed">Coverage grows. The system manages it.</h2>
-        <p class="step-copy">New pages extend your reach on a structured, phased schedule. Coverage compounds &mdash; earlier pages build authority that later pages benefit from. Your team manages none of this directly.<br><br>4-month build phase. Ongoing maintenance under your active agreement.</p>
-        <span class="step-note">Structured 4-month rollout. Continuous coverage thereafter.</span>
+        <h2 class="step-hed">Coverage compounds over time.</h2>
+        <div class="step-copy">
+          <p>New pages are deployed in a phased rollout &mdash; building authority as coverage grows.</p>
+          <p class="step-lead">Earlier pages strengthen later ones.<br>Momentum builds. Position holds.</p>
+          <p class="step-output">4-month structured build. Continuous expansion under active management.</p>
+        </div>
+        <span class="step-note">Phased rollout. Active management. Long-term position.</span>
       </div>
     </div>
 
@@ -307,7 +381,7 @@ sup{font-size:.55em;line-height:0;vertical-align:super}
   {{-- ── TRUST BLOCK ── --}}
   <div class="trust-block">
     <span class="trust-block-eye">How We Work</span>
-    <h2 class="trust-block-hed">Built correctly. Clearly structured.</h2>
+    <h2 class="trust-block-hed">Built correctly. Built to compound.</h2>
     <p class="trust-block-sub">Built with the signals, structure, and consistency that modern search systems reward.</p>
 
     <div class="trust-grid">
@@ -375,62 +449,67 @@ sup{font-size:.55em;line-height:0;vertical-align:super}
     </div>
   </div>
 
-  {{-- ── PLATFORM COMPATIBILITY ── --}}
+  {{-- ── WORDPRESS EXPERTISE ── --}}
   <div class="compat-block">
-    <span class="compat-block-eye">Platform Compatibility</span>
-    <h2 class="compat-block-hed">Works with your existing site.</h2>
-    <p class="compat-block-sub">Built for environments that support structured expansion and direct page control.</p>
+    <span class="compat-block-eye">Platform</span>
+    <h2 class="compat-block-hed">WordPress is our environment &mdash; not our limitation.</h2>
+    <p class="compat-block-sub">We integrate directly into your existing WordPress site. No migration. No disruption. Your domain, your structure, your authority &mdash; expanded correctly.</p>
 
-    <div class="compat-platform-grid">
+    <div class="compat-platform-grid" style="grid-template-columns:repeat(2,1fr)">
 
-      {{-- WordPress --}}
       <div class="compat-platform-card compat-platform-card--lead">
-        <svg class="compat-platform-icon" fill="none" stroke="currentColor" stroke-width="1.4" viewBox="0 0 24 24" aria-label="WordPress" aria-hidden="true">
-          <rect x="3" y="3" width="8" height="8" rx="1"/>
-          <rect x="13" y="3" width="8" height="8" rx="1"/>
-          <rect x="3" y="13" width="8" height="8" rx="1"/>
-          <rect x="13" y="13" width="8" height="8" rx="1"/>
+        <svg class="compat-platform-icon" fill="none" stroke="currentColor" stroke-width="1.4" viewBox="0 0 24 24" aria-hidden="true">
+          <circle cx="12" cy="12" r="10"/><path stroke-linecap="round" stroke-linejoin="round" d="M2 12h20M12 2a15.3 15.3 0 010 20M12 2a15.3 15.3 0 000 20"/>
         </svg>
         <div class="compat-platform-meta">
-          <span class="compat-platform-name">WordPress</span>
-          <span class="compat-platform-tag">Fastest path</span>
+          <span class="compat-platform-name">Your existing site</span>
+          <span class="compat-platform-tag">No migration</span>
         </div>
-        <p class="compat-platform-desc">Plugin-based integration with native page generation, internal linking, and structured deployment. The most straightforward implementation path.</p>
+        <p class="compat-platform-desc">We build directly inside your WordPress installation &mdash; under your URL, within your structure. Your existing pages, design, and content stay exactly as they are.</p>
       </div>
 
-      {{-- Custom / PHP --}}
       <div class="compat-platform-card">
-        <svg class="compat-platform-icon" fill="none" stroke="currentColor" stroke-width="1.4" viewBox="0 0 24 24" aria-label="Custom build" aria-hidden="true">
-          <polyline stroke-linecap="round" stroke-linejoin="round" points="16 18 22 12 16 6"/>
-          <polyline stroke-linecap="round" stroke-linejoin="round" points="8 6 2 12 8 18"/>
+        <svg class="compat-platform-icon" fill="none" stroke="currentColor" stroke-width="1.4" viewBox="0 0 24 24" aria-hidden="true">
+          <rect x="3" y="3" width="18" height="18" rx="2"/><path stroke-linecap="round" d="M3 9h18M9 21V9"/>
         </svg>
         <div class="compat-platform-meta">
-          <span class="compat-platform-name">Custom Builds / PHP</span>
+          <span class="compat-platform-name">Starting fresh</span>
         </div>
-        <p class="compat-platform-desc">Flexible implementation for structured environments. We work directly within your existing architecture.</p>
-      </div>
-
-      {{-- Shopify --}}
-      <div class="compat-platform-card">
-        <svg class="compat-platform-icon" fill="none" stroke="currentColor" stroke-width="1.4" viewBox="0 0 24 24" aria-label="Shopify" aria-hidden="true">
-          <path stroke-linecap="round" stroke-linejoin="round" d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/>
-          <line stroke-linecap="round" x1="3" y1="6" x2="21" y2="6"/>
-          <path stroke-linecap="round" stroke-linejoin="round" d="M16 10a4 4 0 01-8 0"/>
-        </svg>
-        <div class="compat-platform-meta">
-          <span class="compat-platform-name">Shopify</span>
-          <span class="compat-platform-tag">In development</span>
-        </div>
-        <p class="compat-platform-desc">Direct integration currently in development. Coming to the platform in a future release.</p>
+        <p class="compat-platform-desc">For clients without a current site, we build the right WordPress foundation &mdash; architected for structured expansion, performance, and search from day one.</p>
       </div>
 
     </div>
 
     <div class="compat-note-wrap">
-      <p class="compat-support-line">We&rsquo;ll confirm compatibility and recommend the best implementation path during your market review.</p>
-      <p class="compat-position-line">For clients starting fresh or restructuring, we typically deploy on WordPress for speed, flexibility, and long-term scalability.</p>
+      <p class="compat-support-line">WordPress expertise applied at the architecture, performance, and search level &mdash; not just installation.</p>
     </div>
   </div>
+
+  @php
+  $howFaqs = [
+    [
+      'question' => 'What is programmatic SEO?',
+      'answer'   => 'Programmatic SEO is the systematic creation of location- and service-specific pages built from structured data. Instead of one generic page, your business gets a dedicated page for every city and service combination — scaling search presence across your entire market without manual effort.',
+    ],
+    [
+      'question' => 'Do I need to rebuild my website to use this?',
+      'answer'   => 'No. We work directly within your existing website — typically WordPress — deploying structured pages at the URL level of your current domain. No migration, no platform change, no disruption to what\'s already working.',
+    ],
+    [
+      'question' => 'What is the difference between traditional SEO and programmatic SEO?',
+      'answer'   => 'Traditional SEO optimizes a handful of existing pages. Programmatic SEO builds new, structured pages at scale — one per service, per city — so your business is visible everywhere your customers search, not just in one or two locations.',
+    ],
+    [
+      'question' => 'How long until I see results from programmatic SEO?',
+      'answer'   => 'Most clients begin seeing indexed pages within 4–6 weeks. Meaningful ranking movement typically starts at 60–90 days as pages accumulate authority. Coverage compounds over time — the more markets you are live in, the stronger your overall position becomes.',
+    ],
+    [
+      'question' => 'Does this work for AI search and ChatGPT, not just Google?',
+      'answer'   => 'Yes. Structured, location-specific pages are exactly what AI search systems extract when answering local and service queries. By building clear entity relationships — your business, your services, your locations — the content surfaces across Google, AI Overviews, ChatGPT, and Perplexity.',
+    ],
+  ];
+  @endphp
+  <x-faq-section heading="Questions about how this works" :faqs="$howFaqs" />
 
   {{-- ── CTA ── --}}
   <div class="page-cta">

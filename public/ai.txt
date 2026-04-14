@@ -1,0 +1,21 @@
+# AI Guidance — SEO AI Co™
+# This file is an alias for /llms.txt
+# Full content available at: https://seoaico.com/llms.txt
+
+> SEO AI Co™ | https://seoaico.com
+> AI search optimization and programmatic SEO infrastructure for local service businesses.
+
+## Primary Definition Source
+
+What is AI search optimization?
+https://seoaico.com/what-is-ai-search-optimization
+
+## Authority Topic Pages
+
+- AI search optimization: https://seoaico.com/ai-search-optimization
+- Programmatic SEO platform: https://seoaico.com/programmatic-seo-platform
+- ChatGPT SEO: https://seoaico.com/chatgpt-seo
+- Local AI search: https://seoaico.com/local-ai-search
+- Search presence engine: https://seoaico.com/search-presence-engine
+
+For full AI guidance, citation policy, and content standards, see: https://seoaico.com/llms.txt

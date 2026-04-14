@@ -13,6 +13,11 @@
 <title>SEO Plans &amp; Pricing for Local Service Businesses | SEO AI Co™</title>
 <meta name="description" content="Simple, transparent SEO plans from SEO AI Co™ — choose the coverage level that fits where your business wants to grow, starting with your most important markets.">
 <link rel="canonical" href="{{ url('/access-plans') }}">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="SEO AI Co™">
+<meta property="og:title" content="SEO Plans &amp; Pricing for Local Service Businesses | SEO AI Co™">
+<meta property="og:description" content="Simple, transparent SEO plans from SEO AI Co™ — choose the coverage level that fits where your business wants to grow, starting with your most important markets.">
+<meta property="og:url" content="{{ url('/access-plans') }}">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">

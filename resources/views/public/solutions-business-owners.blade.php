@@ -13,6 +13,42 @@
 <title>Get Found in Every City You Serve | SEO AI Co™</title>
 <meta name="description" content="SEO AI Co™ helps local service businesses show up in search across every city and service they offer — AI-powered, WordPress-compatible, built for you.">
 <link rel="canonical" href="{{ url('/solutions/business-owners') }}">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="SEO AI Co™">
+<meta property="og:title" content="Get Found in Every City You Serve | SEO AI Co™">
+<meta property="og:description" content="SEO AI Co™ helps local service businesses show up in search across every city and service they offer — AI-powered, WordPress-compatible, built for you.">
+<meta property="og:url" content="{{ url('/solutions/business-owners') }}">
+<script type="application/ld+json">
+{!! json_encode([
+    '@context' => 'https://schema.org',
+    '@graph' => [
+        [
+            '@type'       => 'WebPage',
+            '@id'         => url('/solutions/business-owners') . '#webpage',
+            'url'         => url('/solutions/business-owners'),
+            'name'        => 'Get Found in Every City You Serve | SEO AI Co™',
+            'description' => 'SEO AI Co™ helps local service businesses show up in search across every city and service they offer — AI-powered, WordPress-compatible, built for you.',
+            'isPartOf'    => ['@id' => url('/') . '#website'],
+        ],
+        [
+            '@type'       => 'Service',
+            'name'        => 'Programmatic Local SEO',
+            'serviceType' => 'Programmatic SEO',
+            'provider'    => ['@type' => 'Organization', 'name' => 'SEO AI Co™', 'url' => url('/')],
+            'audience'    => ['@type' => 'Audience', 'audienceType' => 'Local Service Businesses'],
+            'areaServed'  => ['@type' => 'Country', 'name' => 'United States'],
+        ],
+        [
+            '@type' => 'BreadcrumbList',
+            'itemListElement' => [
+                ['@type' => 'ListItem', 'position' => 1, 'name' => 'Home', 'item' => url('/')],
+                ['@type' => 'ListItem', 'position' => 2, 'name' => 'Solutions', 'item' => url('/solutions')],
+                ['@type' => 'ListItem', 'position' => 3, 'name' => 'Business Owners', 'item' => url('/solutions/business-owners')],
+            ],
+        ],
+    ],
+], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT) !!}
+</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">

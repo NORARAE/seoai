@@ -10,9 +10,14 @@
 <link rel="manifest" href="/site.webmanifest">
 <meta name="theme-color" content="#080808">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>WordPress &amp; Divi Website Design for Local Businesses | SEO AI Co™</title>
-<meta name="description" content="Custom WordPress and Divi website design built for local service businesses — fast, SEO-ready, and built to show up in search across every city you serve.">
+<title>WordPress Website Design &amp; Development for Local Businesses | SEO AI Co™</title>
+<meta name="description" content="Custom WordPress website design and development built for local service businesses — fast, SEO-ready, and structured to show up in search across every city you serve.">
 <link rel="canonical" href="{{ url('/web-design-development') }}">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="SEO AI Co™">
+<meta property="og:title" content="WordPress Website Design &amp; Development for Local Businesses | SEO AI Co™">
+<meta property="og:description" content="Custom WordPress website design and development built for local service businesses — fast, SEO-ready, and structured to show up in search across every city you serve.">
+<meta property="og:url" content="{{ url('/web-design-development') }}">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">

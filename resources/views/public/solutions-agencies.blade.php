@@ -13,6 +13,42 @@
 <title>White-Label AI SEO for Digital Agencies | SEO AI Co™</title>
 <meta name="description" content="White-label AI SEO for digital agencies — deploy structured search coverage under your brand across all your clients, in every market they serve.">
 <link rel="canonical" href="{{ url('/solutions/agencies') }}">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="SEO AI Co™">
+<meta property="og:title" content="White-Label AI SEO for Digital Agencies | SEO AI Co™">
+<meta property="og:description" content="White-label AI SEO for digital agencies — deploy structured search coverage under your brand across all your clients, in every market they serve.">
+<meta property="og:url" content="{{ url('/solutions/agencies') }}">
+<script type="application/ld+json">
+{!! json_encode([
+    '@context' => 'https://schema.org',
+    '@graph' => [
+        [
+            '@type'       => 'WebPage',
+            '@id'         => url('/solutions/agencies') . '#webpage',
+            'url'         => url('/solutions/agencies'),
+            'name'        => 'White-Label AI SEO for Digital Agencies | SEO AI Co™',
+            'description' => 'White-label AI SEO for digital agencies — deploy structured search coverage under your brand across all your clients, in every market they serve.',
+            'isPartOf'    => ['@id' => url('/') . '#website'],
+        ],
+        [
+            '@type'       => 'Service',
+            'name'        => 'White-Label AI SEO',
+            'serviceType' => 'Programmatic SEO',
+            'provider'    => ['@type' => 'Organization', 'name' => 'SEO AI Co™', 'url' => url('/')],
+            'audience'    => ['@type' => 'Audience', 'audienceType' => 'Digital Marketing Agencies'],
+            'areaServed'  => ['@type' => 'Country', 'name' => 'United States'],
+        ],
+        [
+            '@type' => 'BreadcrumbList',
+            'itemListElement' => [
+                ['@type' => 'ListItem', 'position' => 1, 'name' => 'Home', 'item' => url('/')],
+                ['@type' => 'ListItem', 'position' => 2, 'name' => 'Solutions', 'item' => url('/solutions')],
+                ['@type' => 'ListItem', 'position' => 3, 'name' => 'Agencies', 'item' => url('/solutions/agencies')],
+            ],
+        ],
+    ],
+], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT) !!}
+</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">

@@ -13,6 +13,11 @@
 <title>Google Ads &amp; Local Search Campaign Management | SEO AI Co™</title>
 <meta name="description" content="Google Ads and local search campaigns managed by SEO AI Co™ — drive more calls, leads, and traffic while your organic SEO builds long-term visibility.">
 <link rel="canonical" href="{{ url('/ads-management') }}">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="SEO AI Co™">
+<meta property="og:title" content="Google Ads &amp; Local Search Campaign Management | SEO AI Co™">
+<meta property="og:description" content="Google Ads and local search campaigns managed by SEO AI Co™ — drive more calls, leads, and traffic while your organic SEO builds long-term visibility.">
+<meta property="og:url" content="{{ url('/ads-management') }}">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">

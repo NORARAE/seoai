@@ -13,6 +13,11 @@
 <title>AI SEO for ChatGPT, GEO &amp; AEO | SEO AI Co™</title>
 <meta name="description" content="Optimize your business for ChatGPT, AI search, and modern SEO with SEO AI Co™. We handle AEO, GEO, and AI visibility so you show up everywhere customers search.">
 <link rel="canonical" href="{{ url('/ai-seo-for-chatgpt-geo-aeo') }}">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="SEO AI Co™">
+<meta property="og:title" content="AI SEO for ChatGPT, GEO &amp; AEO | SEO AI Co™">
+<meta property="og:description" content="Optimize your business for ChatGPT, AI search, and modern SEO with SEO AI Co™. We handle AEO, GEO, and AI visibility so you show up everywhere customers search.">
+<meta property="og:url" content="{{ url('/ai-seo-for-chatgpt-geo-aeo') }}">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
@@ -241,10 +246,10 @@ sup{font-size:.55em;line-height:0;vertical-align:super}
 <main class="page">
 
   {{-- ── HERO ── --}}
-  <span class="page-eye">AI&#8202;SEO &middot; AEO &middot; GEO</span>
+  <span class="page-eye">Search, AI &amp; Discovery</span>
   <h1 class="page-title">Your business,<br><em>visible everywhere</em><br>people search.</h1>
   <p class="page-intro">Search has changed. Customers aren't just typing into Google — they're asking ChatGPT, talking to Siri, and reading AI-generated summaries instead of clicking links. If your business isn't built to show up in those places, you're invisible to a growing share of your market.</p>
-  <p class="page-position">SEO AI Co<sup>&trade;</sup> handles AI SEO, AEO, and GEO for you — so your business shows up whether someone searches on Google, asks ChatGPT, or uses voice search.</p>
+  <p class="page-position">SEO AI Co<sup>&trade;</sup> structures your business for search, AI, and discovery &mdash; so you show up whether someone searches on Google, asks ChatGPT, or uses voice. <span style="font-size:.82em;color:rgba(200,168,75,.52);letter-spacing:.02em">AI SEO &middot; AEO &middot; GEO frameworks applied.</span></p>
 
   {{-- ── SIGNAL STRIP ── --}}
   <div class="signal-strip" role="list" data-stagger>
@@ -308,7 +313,7 @@ sup{font-size:.55em;line-height:0;vertical-align:super}
   <div class="def-rule" role="separator" aria-hidden="true"></div>
 
   {{-- ── HOW IT HELPS: FEATURE GRID ── --}}
-  <section class="feature-block" aria-labelledby="feat-hed">
+  <section class="feature-block" aria-labelledby="feat-hed" data-stagger>
     <span class="feature-block-eye">What this means for your business</span>
     <h2 class="feature-block-hed" id="feat-hed">Show up everywhere customers search — not just Google</h2>
     <p class="feature-block-sub">Search is no longer one channel. Here's where AI SEO, AEO, and GEO help you get found.</p>
@@ -342,10 +347,10 @@ sup{font-size:.55em;line-height:0;vertical-align:super}
     <h2 class="why-hed" id="why-hed">A simpler alternative to<br><em>the big agency model</em>.</h2>
     <div class="why-body">
       <p>Most SEO agencies were built for a search landscape that's changing fast. Their systems weren't designed for AI Overviews, ChatGPT recommendations, or the kind of structured, location-specific content that modern search engines reward.</p>
-      <p>SEO AI Co<sup>&trade;</sup> was built specifically for this shift. We <strong>handle AI SEO, AEO, and GEO for real businesses</strong> — without requiring you to learn the terminology, manage a team of specialists, or navigate a complicated platform.</p>
+      <p>SEO AI Co<sup>&trade;</sup> was built specifically for this shift. We <strong>structure your business for search, AI, and discovery</strong> &mdash; without requiring you to learn the terminology, manage a team of specialists, or navigate a complicated platform.</p>
     </div>
     <ul class="why-list" role="list">
-      <li><strong>Works with WordPress and Divi</strong> — no site rebuild required. We work within what you already have.</li>
+      <li><strong>Built on your infrastructure</strong> — we work within your existing setup, or build the right foundation if needed.</li>
       <li><strong>Built for local service businesses</strong> — plumbers, contractors, agencies, consultants, med spas, real estate pros, and more.</li>
       <li><strong>Handles everything end-to-end</strong> — content structure, schema markup, location pages, AEO formatting, and GEO readiness.</li>
       <li><strong>No complicated dashboard to learn</strong> — we do the technical work. You get the results.</li>
@@ -394,9 +399,9 @@ sup{font-size:.55em;line-height:0;vertical-align:super}
         <span class="link-card-arrow">Explore solutions &rarr;</span>
       </a>
       <a href="/wordpress-support" class="link-card" role="listitem">
-        <span class="link-card-eye">WordPress &amp; Divi</span>
+        <span class="link-card-eye">WordPress support</span>
         <h3 class="link-card-title">WordPress development &amp; support</h3>
-        <p class="link-card-desc">We work within your existing WordPress or Divi site — no platform migration, no rebuilds, no disruption.</p>
+        <p class="link-card-desc">We integrate directly into your existing WordPress site &mdash; no migration, no rebuild, no disruption to what&rsquo;s already working.</p>
         <span class="link-card-arrow">See WordPress support &rarr;</span>
       </a>
       <a href="/growth-services" class="link-card" role="listitem">

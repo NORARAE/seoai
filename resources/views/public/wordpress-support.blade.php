@@ -10,9 +10,14 @@
 <link rel="manifest" href="/site.webmanifest">
 <meta name="theme-color" content="#080808">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>WordPress &amp; Divi Development and Support | SEO AI Co™</title>
-<meta name="description" content="WordPress and Divi development, plugin management, and ongoing support from SEO AI Co™ — keeping your site fast, secure, and ready to grow in search.">
+<title>WordPress Development &amp; Support | SEO AI Co™</title>
+<meta name="description" content="WordPress development, plugin management, and ongoing support from SEO AI Co™ — keeping your site fast, secure, and ready to grow in search and AI discovery.">
 <link rel="canonical" href="{{ url('/wordpress-support') }}">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="SEO AI Co™">
+<meta property="og:title" content="WordPress Development &amp; Support | SEO AI Co™">
+<meta property="og:description" content="WordPress development, plugin management, and ongoing support from SEO AI Co™ — keeping your site fast, secure, and ready to grow in search and AI discovery.">
+<meta property="og:url" content="{{ url('/wordpress-support') }}">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">

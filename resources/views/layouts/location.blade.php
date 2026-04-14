@@ -6,16 +6,27 @@
     
     {{-- SEO Meta Tags --}}
     <title>{{ $metaTitle ?? $title ?? 'Page' }}</title>
-    <meta name="description" content="{{ $metaDescription ?? '' }}">
+    <meta name="description" content="{{ $metaDescription ?? config('seo.default_meta_description') }}">
     <link rel="icon" type="image/x-icon" href="/favicon.ico">
     <link rel="icon" type="image/svg+xml" href="/favicon.svg">
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
     <link rel="manifest" href="/site.webmanifest">
-    
+
     @if(isset($canonicalUrl))
     <link rel="canonical" href="{{ $canonicalUrl }}">
+    @endif
+
+    {{-- Open Graph --}}
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="{{ config('seo.site_name') }}">
+    <meta property="og:title" content="{{ $metaTitle ?? $title ?? config('seo.site_name') }}">
+    <meta property="og:description" content="{{ $metaDescription ?? config('seo.default_og_description') }}">
+    @if(isset($canonicalUrl))
+    <meta property="og:url" content="{{ $canonicalUrl }}">
+    @else
+    <meta property="og:url" content="{{ url()->current() }}">
     @endif
 
     @if(isset($isIndexable) && !$isIndexable)

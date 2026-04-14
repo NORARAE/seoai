@@ -13,6 +13,11 @@
 <title>Brand Identity &amp; Print Design for Local Businesses | SEO AI Co™</title>
 <meta name="description" content="Brand identity systems, business cards, and print collateral from SEO AI Co™ — designed to strengthen your local presence and match how customers find you.">
 <link rel="canonical" href="{{ url('/branding-print') }}">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="SEO AI Co™">
+<meta property="og:title" content="Brand Identity &amp; Print for Local Service Businesses | SEO AI Co™">
+<meta property="og:description" content="Brand identity systems, business cards, and print collateral from SEO AI Co™ — designed to strengthen your local presence and match how customers find you.">
+<meta property="og:url" content="{{ url('/branding-print') }}">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">

@@ -18,9 +18,14 @@
 <link rel="manifest" href="/site.webmanifest">
 <meta name="theme-color" content="#080808">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>You Found Us Organically — Let's Do the Same for You | SEO AI Co™</title>
-<meta name="description" content="SEO AI Co™ helps your business show up in every city you serve with AI-powered SEO, ChatGPT optimization (AEO/GEO), and WordPress & Divi expertise — without complicated tools or big agency costs.">
+<title>The AI Citation Engine&#8482; for Local Service Businesses | SEO AI Co™</title>
+<meta name="description" content="SEO AI Co™ operates the AI Citation Engine&#8482; — structuring web content for extraction and citation by AI systems. Get cited by Google AI Overviews, ChatGPT, and Perplexity across every city you serve.">
 <link rel="canonical" href="{{ url('/') }}">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="SEO AI Co™">
+<meta property="og:title" content="The AI Citation Engine&#8482; for Local Service Businesses | SEO AI Co™">
+<meta property="og:description" content="SEO AI Co™ operates the AI Citation Engine&#8482; — structuring web content for extraction and citation by AI systems. Get cited by Google AI Overviews, ChatGPT, and Perplexity.">
+<meta property="og:url" content="{{ url('/') }}">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
@@ -65,10 +70,11 @@ nav.stuck{background:rgba(8,8,8,.95);backdrop-filter:blur(16px);border-color:var
 .nav-link:hover::after{right:0}
 .nav-btn{
   font-size:.78rem;letter-spacing:.14em;text-transform:uppercase;
-  color:var(--bg);background:var(--gold);padding:12px 28px;text-decoration:none;transition:background .3s;
+  color:var(--bg);background:var(--gold);padding:12px 28px;text-decoration:none;
+  transition:background .3s cubic-bezier(.23,1,.32,1),box-shadow .3s cubic-bezier(.23,1,.32,1);
   display:inline-flex;align-items:center;white-space:nowrap;
 }
-.nav-btn:hover{background:var(--gold-lt)}
+.nav-btn:hover{background:var(--gold-lt);box-shadow:0 4px 16px rgba(200,168,75,.22)}
 .nav-account-short{display:none}
 
 /* ── Hero ── */
@@ -189,19 +195,20 @@ nav.stuck{background:rgba(8,8,8,.95);backdrop-filter:blur(16px);border-color:var
 .btn-primary{
   background:var(--gold);color:var(--bg);font-size:.82rem;font-weight:500;letter-spacing:.14em;
   text-transform:uppercase;padding:18px 48px;text-decoration:none;
-  transition:background .3s,transform .2s,box-shadow .3s;
+  transition:background .35s cubic-bezier(.23,1,.32,1),transform .28s cubic-bezier(.23,1,.32,1),box-shadow .35s cubic-bezier(.23,1,.32,1);
+  box-shadow:0 4px 18px rgba(200,168,75,.12);
 }
-.btn-primary:hover{background:var(--gold-lt);transform:translateY(-2px);box-shadow:0 10px 30px rgba(200,168,75,.18)}
+.btn-primary:hover{background:var(--gold-lt);transform:translateY(-2px);box-shadow:0 8px 32px rgba(200,168,75,.28),0 2px 8px rgba(200,168,75,.14)}
 .btn-ghost{
-  font-size:.82rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);
-  text-decoration:none;padding-bottom:4px;position:relative;transition:color .3s;
+  font-size:.82rem;letter-spacing:.14em;text-transform:uppercase;color:rgba(168,168,160,.78);
+  text-decoration:none;padding-bottom:4px;position:relative;transition:color .32s cubic-bezier(.23,1,.32,1);
 }
 .btn-ghost::after{
   content:'';position:absolute;bottom:0;left:0;right:100%;height:1px;
-  background:var(--gold-dim);transition:right .38s cubic-bezier(.23,1,.32,1);
+  background:var(--gold-dim);transition:right .42s cubic-bezier(.23,1,.32,1),background .32s;
 }
 .btn-ghost:hover{color:var(--ivory)}
-.btn-ghost:hover::after{right:0}
+.btn-ghost:hover::after{right:0;background:var(--gold)}
 
 /* ── Scroll cue ── */
 .hero-scroll{
@@ -223,15 +230,15 @@ nav.stuck{background:rgba(8,8,8,.95);backdrop-filter:blur(16px);border-color:var
   55%{opacity:.7;transform:rotate(45deg) translateY(4px)}
 }
 
-@keyframes up{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:none}}
+@keyframes up{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
 
 /* ── Shared section helpers ── */
-.gold-rule{height:1px;background:linear-gradient(to right,transparent,var(--gold-dim),transparent)}
+.gold-rule{height:1px;background:linear-gradient(to right,transparent,rgba(154,122,48,.38),transparent)}
 .s-eye{font-size:.76rem;letter-spacing:.24em;text-transform:uppercase;color:var(--gold);margin-bottom:14px;display:flex;align-items:center;gap:14px}
 .s-eye::before{content:'';width:28px;height:1px;background:var(--gold)}
 .s-h{font-family:'Cormorant Garamond',serif;font-size:clamp(2.4rem,4vw,3.6rem);font-weight:400;line-height:1.12;margin-bottom:20px}
 .s-h em{font-style:italic;color:var(--gold)}
-.s-p{font-size:1.05rem;line-height:1.9;color:var(--muted);max-width:680px}
+.s-p{font-size:1.05rem;line-height:1.9;color:rgba(168,168,160,.82);max-width:680px}
 .s-p strong{color:var(--ivory);font-weight:400}
 
 /* ── Statement ── */
@@ -265,8 +272,8 @@ nav.stuck{background:rgba(8,8,8,.95);backdrop-filter:blur(16px);border-color:var
 /* ── Audience ── */
 .audience-section{border-top:1px solid var(--border);padding:72px 64px;max-width:1200px;margin:0 auto}
 .audience-grid{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--border);margin-top:40px}
-.aud-card{background:var(--deep);padding:40px 36px;position:relative;overflow:hidden;transition:background .4s}
-.aud-card:hover{background:var(--card)}
+.aud-card{background:var(--deep);padding:40px 36px;position:relative;overflow:hidden;transition:background .32s,transform .32s cubic-bezier(.23,1,.32,1),box-shadow .32s}
+.aud-card:hover{background:var(--card);transform:translateY(-1px);box-shadow:0 16px 48px rgba(0,0,0,.5)}
 .aud-card::before{
   content:'';position:absolute;top:0;left:0;right:0;height:2px;
   background:linear-gradient(90deg,transparent,var(--gold-dim),transparent);
@@ -451,7 +458,7 @@ nav.stuck{background:rgba(8,8,8,.95);backdrop-filter:blur(16px);border-color:var
 .steps-panel{margin-top:18px;border:1px solid rgba(200,168,75,.08);position:relative}
 .steps-panel::before{content:'';position:absolute;top:-1px;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent 5%,var(--gold-dim) 28%,var(--gold) 50%,var(--gold-dim) 72%,transparent 95%);opacity:.65}
 .steps-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:0;align-items:start}
-.step{padding:56px 48px;position:relative;transition:background .4s}
+.step{padding:56px 48px;position:relative;transition:background .32s,transform .32s cubic-bezier(.23,1,.32,1),box-shadow .32s}
 .step:not(:last-child)::after{content:'';position:absolute;top:10%;right:0;width:1px;height:80%;background:linear-gradient(to bottom,transparent,rgba(200,168,75,.12) 28%,rgba(200,168,75,.12) 72%,transparent)}
 .step:hover{background:rgba(200,168,75,.02)}
 .step-n{font-family:'Cormorant Garamond',serif;font-size:5rem;font-weight:300;color:rgba(200,168,75,.10);line-height:1;letter-spacing:-.02em;display:block;margin-bottom:20px;transition:color .4s}
@@ -724,13 +731,13 @@ nav.stuck{background:rgba(8,8,8,.95);backdrop-filter:blur(16px);border-color:var
 .exec-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:1px;background:rgba(200,168,75,.08)}
 .exec-card{
   background:var(--bg);padding:36px 32px;position:relative;overflow:hidden;
-  transition:background .28s;
+  transition:background .28s,transform .28s cubic-bezier(.23,1,.32,1),box-shadow .28s;
 }
 .exec-card::before{
   content:'';position:absolute;top:0;left:0;right:0;height:1px;
   background:linear-gradient(90deg,transparent,rgba(200,168,75,.10),transparent);
 }
-.exec-card:hover{background:rgba(14,13,10,1)}
+.exec-card:hover{background:rgba(14,13,10,1);transform:translateY(-1px);box-shadow:0 12px 36px rgba(0,0,0,.45)}
 .exec-label{
   font-size:.65rem;letter-spacing:.24em;text-transform:uppercase;
   color:var(--gold-dim);display:block;margin-bottom:14px;
@@ -848,10 +855,48 @@ nav.stuck{background:rgba(8,8,8,.95);backdrop-filter:blur(16px);border-color:var
   letter-spacing:-.01em;line-height:1.28;margin-bottom:16px;
   max-width:560px;margin-left:auto;margin-right:auto;
 }
-.cn-body{
-  font-size:.9rem;color:rgba(168,168,160,.78);line-height:1.88;
-  max-width:560px;margin:0 auto;
+.commitment-note{
+  max-width:660px;margin:0 auto;padding:72px 64px 60px;
+  text-align:center;
+  border-top:1px solid rgba(200,168,75,.09);
+  position:relative;
 }
+.commitment-note::before{
+  content:'';position:absolute;top:0;left:50%;transform:translateX(-50%);
+  width:100px;height:1px;
+  background:linear-gradient(90deg,transparent,rgba(200,168,75,.30),transparent);
+}
+.cn-hed{
+  font-family:'Cormorant Garamond',serif;font-weight:300;
+  font-size:clamp(1.6rem,2.6vw,2.1rem);color:var(--ivory);
+  letter-spacing:-.01em;line-height:1.32;margin-bottom:20px;
+  max-width:580px;margin-left:auto;margin-right:auto;
+}
+.cn-aha{
+  font-family:'Cormorant Garamond',serif;font-weight:300;font-style:italic;
+  font-size:clamp(1.1rem,1.8vw,1.32rem);
+  color:rgba(200,168,75,.62);
+  line-height:1.5;letter-spacing:-.005em;
+  margin-bottom:28px;
+}
+.cn-body{
+  font-size:.94rem;color:rgba(168,168,160,.64);line-height:1.9;
+  max-width:520px;margin:0 auto;
+  margin-bottom:20px;
+}
+.cn-surface{
+  font-size:.7rem;letter-spacing:.18em;text-transform:uppercase;
+  color:rgba(200,168,75,.38);
+}
+.cn-secondary{
+  display:none;
+}
+.cn-link{
+  color:rgba(200,168,75,.58);text-decoration:none;
+  border-bottom:1px solid rgba(200,168,75,.18);
+  transition:color .2s,border-color .2s;
+}
+.cn-link:hover{color:rgba(200,168,75,.88);border-color:rgba(200,168,75,.46)}
 
 /* ── Fit screening block ── */
 .fit-screen{
@@ -1039,6 +1084,11 @@ nav.stuck{background:rgba(8,8,8,.95);backdrop-filter:blur(16px);border-color:var
 .va-col--right .va-col-item{color:rgba(237,232,222,.70)}
 .va-col--right .va-col-item::before{color:rgba(200,168,75,.45)}
 .va-close{font-family:'Cormorant Garamond',serif;font-size:clamp(1.1rem,1.8vw,1.4rem);font-weight:300;color:rgba(237,232,222,.75);line-height:1.5;border-top:1px solid rgba(200,168,75,.08);padding-top:22px;margin-top:8px}
+.va-act{display:flex;align-items:center;justify-content:center;gap:28px;flex-wrap:wrap;}
+.va-act .btn-primary{opacity:.86;}
+.va-act .btn-primary:hover{opacity:1;}
+.va-act .btn-ghost{opacity:.64;}
+.va-act .btn-ghost:hover{opacity:1;}
 .va-close em{color:var(--gold);font-style:italic}
 
 /* ── Competitive positioning ── */
@@ -1048,14 +1098,18 @@ nav.stuck{background:rgba(8,8,8,.95);backdrop-filter:blur(16px);border-color:var
 
 /* ── Service support block ── */
 .svc-support{padding:56px 64px;max-width:1200px;margin:0 auto;border-top:1px solid var(--border)}
-.ss-eye{font-size:.68rem;letter-spacing:.28em;text-transform:uppercase;color:rgba(200,168,75,.55);margin-bottom:12px}
-.ss-hed{font-family:'Cormorant Garamond',serif;font-size:clamp(1.4rem,2.2vw,1.9rem);font-weight:300;color:var(--ivory);margin-bottom:14px;line-height:1.2}
-.ss-intro{font-size:.92rem;color:rgba(168,168,160,.68);line-height:1.78;max-width:580px;margin-bottom:28px}
-.ss-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:10px 24px;margin-bottom:24px}
-.ss-item{display:flex;align-items:flex-start;gap:10px;padding:10px 14px;background:rgba(200,168,75,.015);border:1px solid rgba(200,168,75,.07);border-radius:4px}
-.ss-dot{width:4px;height:4px;border-radius:50%;background:rgba(200,168,75,.5);flex-shrink:0;margin-top:6px}
-.ss-label{font-size:.84rem;color:rgba(168,168,160,.78);line-height:1.5}
-.ss-note{font-size:.80rem;color:rgba(168,168,160,.45);font-style:italic;line-height:1.7;max-width:600px;border-top:1px solid rgba(200,168,75,.06);padding-top:16px}
+.ss-eye{font-size:.68rem;letter-spacing:.28em;text-transform:uppercase;color:rgba(200,168,75,.72);margin-bottom:14px;display:flex;align-items:center;gap:14px}
+.ss-eye::before{content:'';width:22px;height:1px;background:rgba(200,168,75,.52)}
+.ss-hed{font-family:'Cormorant Garamond',serif;font-size:clamp(1.6rem,2.6vw,2.2rem);font-weight:300;color:var(--ivory);margin-bottom:16px;line-height:1.18;letter-spacing:-.01em}
+.ss-intro{font-size:.92rem;color:rgba(168,168,160,.80);line-height:1.80;max-width:580px;margin-bottom:32px}
+.ss-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:12px 20px;margin-bottom:28px}
+.ss-item{display:flex;align-items:flex-start;gap:12px;padding:13px 16px;background:rgba(200,168,75,.015);border:1px solid rgba(200,168,75,.07);border-radius:2px;transition:background .22s ease,border-color .30s cubic-bezier(.23,1,.32,1),transform .34s cubic-bezier(.22,.84,.36,1)}
+.ss-item:hover{background:rgba(200,168,75,.04);border-color:rgba(200,168,75,.2);transform:translateY(-1px)}
+.ss-item:hover .ss-icon{color:rgba(200,168,75,.9)}
+.ss-item:hover .ss-label{color:rgba(237,232,222,.90)}
+.ss-icon{width:14px;height:14px;flex-shrink:0;margin-top:2px;color:rgba(200,168,75,.58);transition:color .28s}
+.ss-label{font-size:.84rem;color:rgba(168,168,160,.82);line-height:1.52;transition:color .28s}
+.ss-note{font-size:.80rem;color:rgba(168,168,160,.62);font-style:italic;line-height:1.7;max-width:600px;border-top:1px solid rgba(200,168,75,.12);padding-top:20px;margin-top:6px;letter-spacing:.01em}
 
 /* ── fcc wait line ── */
 .fcc-wait{font-size:.84rem;color:rgba(168,168,160,.36);line-height:1.9;margin-top:14px;letter-spacing:.01em}
@@ -1497,7 +1551,7 @@ footer{border-top:1px solid var(--border);padding:36px 64px;display:flex;flex-di
 .gate-badge{display:inline-block;font-size:.62rem;letter-spacing:.16em;text-transform:uppercase;color:var(--gold);border:1px solid var(--gold-dim);padding:4px 10px;margin-bottom:20px}
 
 /* ── Reveal animation ── */
-.r{opacity:0;transform:translateY(32px);transition:opacity .85s cubic-bezier(.23,1,.32,1),transform .85s cubic-bezier(.23,1,.32,1)}
+.r{opacity:0;transform:translateY(22px);transition:opacity .72s cubic-bezier(.22,.84,.36,1),transform .72s cubic-bezier(.22,.84,.36,1)}
 .r.on{opacity:1;transform:none}
 
 /* ── Large tablet / small desktop nav compact ── */
@@ -1848,7 +1902,7 @@ body::before{
   /* font-size mirrors the h1 so em units here = h1 font size */
   font-size:clamp(4.4rem,9.5vw,8.5rem);
   /* 2-line reserve: handles any headline that wraps at this font size */
-  height:calc(2em * 1.03);
+  height:calc(2em * 1.18);
   overflow:hidden;            /* hard guard — never allows a 3rd line to bleed */
   position:relative;      /* positioning context for h1 */
   width:100%;             /* fill flex parent so absolute h1 isn't clipped */
@@ -1856,7 +1910,7 @@ body::before{
 }
 #heroSeq{
   font-family:'Cormorant Garamond',serif;
-  font-size:inherit;font-weight:300;line-height:1.03;
+  font-size:inherit;font-weight:300;line-height:1.18;
   color:var(--ivory);letter-spacing:-.02em;margin:0;
   /* position:absolute removes from flow — animation is visual only */
   position:absolute;top:0;left:0;width:100%;
@@ -1869,9 +1923,9 @@ body::before{
 .hero-gold-accent{
   font-family:'Cormorant Garamond',serif;font-style:italic;font-weight:400;
   font-size:clamp(1.45rem,2.75vw,2.15rem);
-  color:var(--gold);letter-spacing:.025em;line-height:1.32;
+  color:var(--gold);letter-spacing:.025em;line-height:1.35;
   opacity:0;animation:up .75s .2s forwards;
-  margin-bottom:32px;
+  margin-bottom:36px;
 }
 .hero-note{
   font-family:'Cormorant Garamond',serif;font-style:italic;font-weight:400;
@@ -2045,12 +2099,80 @@ body::before{
 .sys-city-clarity{font-size:.78rem;color:rgba(168,168,160,.46);letter-spacing:.03em;text-align:center;margin-top:18px;line-height:1.65;border-top:1px solid rgba(200,168,75,.07);padding-top:14px;font-style:italic}
 /* Left-copy extra elements */
 .sys-gold-line{
-  font-size:.78rem;letter-spacing:.12em;text-transform:uppercase;
-  color:rgba(200,168,75,.72);margin-bottom:16px;line-height:1.6;
+  display:flex;flex-direction:column;gap:2px;
+  margin-bottom:24px;
 }
-.sys-clarity{
-  font-size:.88rem;line-height:1.72;color:rgba(237,232,222,.42);
-  margin-bottom:14px;max-width:460px;
+.sys-gold-phrase{
+  font-size:.72rem;letter-spacing:.18em;text-transform:uppercase;
+  font-family:'DM Sans',sans-serif;font-weight:300;
+  color:rgba(200,168,75,.55);
+  line-height:1.5;
+  opacity:0;
+  animation:sysPhraseFade .7s cubic-bezier(.23,1,.32,1) forwards;
+}
+.sys-gold-phrase:nth-child(1){animation-delay:.1s}
+.sys-gold-phrase:nth-child(2){animation-delay:.28s}
+.sys-gold-phrase:nth-child(3){
+  animation-delay:.48s;
+  font-family:'Cormorant Garamond',serif;
+  font-size:1.08rem;letter-spacing:.04em;text-transform:none;
+  font-style:italic;font-weight:300;
+  color:rgba(200,168,75,.82);
+  margin-top:4px;
+}
+@keyframes sysPhraseFade{
+  from{opacity:0;transform:translateY(6px)}
+  to{opacity:1;transform:none}
+}
+/* sys-clarity editorial units */
+.sys-clarity-block{max-width:460px;}
+.sys-cl-unit{
+  font-size:.92rem;line-height:1.52;
+  color:rgba(237,232,222,.68);
+  margin-bottom:20px;
+}
+.sys-cl-dim{
+  font-size:.88rem;line-height:1.52;
+  color:rgba(168,168,160,.42);
+  margin-bottom:20px;
+}
+.sys-cl-sub{
+  font-size:.62rem;letter-spacing:.22em;text-transform:uppercase;
+  font-family:'DM Sans',sans-serif;font-weight:400;
+  color:rgba(200,168,75,.52);
+  margin-top:8px;
+}
+.sys-hed-sub{
+  font-family:'Cormorant Garamond',serif;
+  font-size:clamp(1.1rem,1.8vw,1.38rem);
+  font-weight:300;font-style:italic;
+  color:rgba(200,168,75,.68);
+  line-height:1.5;letter-spacing:-.005em;
+  margin-bottom:32px;
+}
+.sys-aha{
+  font-family:'Cormorant Garamond',serif;
+  font-size:clamp(1rem,1.55vw,1.16rem);
+  font-weight:300;font-style:italic;
+  color:rgba(237,232,222,.6);
+  line-height:1.66;
+  margin-bottom:32px;
+  border-left:2px solid rgba(200,168,75,.22);
+  padding-left:14px;
+}
+.sys-stmt{
+  font-size:.92rem;line-height:1.7;
+  color:rgba(237,232,222,.72);
+  margin-bottom:8px;
+}
+.sys-stmt-sub{
+  font-size:.86rem;line-height:1.78;
+  color:rgba(168,168,160,.44);
+  margin-bottom:32px;
+}
+.sys-platform{
+  font-size:.6rem;letter-spacing:.22em;text-transform:uppercase;
+  color:rgba(200,168,75,.36);
 }
 .sys-trust{
   font-size:.76rem;letter-spacing:.04em;color:rgba(168,168,160,.38);
@@ -2097,36 +2219,44 @@ body::before{
   padding:140px 64px;text-align:center;
   border-top:1px solid rgba(200,168,75,.12);
   border-bottom:1px solid rgba(200,168,75,.12);
+  background:#070706;
 }
 .infra-canvas{
   position:absolute;inset:0;width:100%;height:100%;
   pointer-events:none;z-index:0;
 }
+/* dark readability overlay — sits above canvas, below content */
+.infra-principle .infra-overlay{
+  position:absolute;inset:0;z-index:1;pointer-events:none;
+  background:
+    radial-gradient(ellipse 100% 100% at 50% 50%,rgba(7,7,6,.82) 0%,rgba(7,7,6,.96) 100%),
+    linear-gradient(to bottom,rgba(7,7,6,.92) 0%,rgba(7,7,6,.78) 40%,rgba(7,7,6,.78) 60%,rgba(7,7,6,.92) 100%);
+}
 /* breathing radial glow */
 .infra-principle::before{
   content:'';
   position:absolute;inset:0;
-  background:radial-gradient(ellipse 72% 68% at 50% 50%,rgba(200,168,75,.13) 0%,transparent 68%);
+  background:radial-gradient(ellipse 72% 68% at 50% 50%,rgba(200,168,75,.09) 0%,transparent 68%);
   pointer-events:none;
-  animation:infraGlow 7s ease-in-out infinite;
+  animation:infraGlow 7s ease-in-out infinite;z-index:1;
 }
 /* faint grid texture */
 .infra-principle::after{
   content:'';
   position:absolute;inset:0;
   background-image:
-    linear-gradient(rgba(200,168,75,.02) 1px,transparent 1px),
-    linear-gradient(90deg,rgba(200,168,75,.02) 1px,transparent 1px);
+    linear-gradient(rgba(200,168,75,.015) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(200,168,75,.015) 1px,transparent 1px);
   background-size:72px 72px;
-  pointer-events:none;
+  pointer-events:none;z-index:1;
 }
 @keyframes infraGlow{
   0%,100%{opacity:.74}
   50%{opacity:1}
 }
 .infra-inner{
-  position:relative;z-index:1;
-  max-width:1100px;margin:0 auto;
+  position:relative;z-index:2;
+  max-width:1080px;margin:0 auto;
 }
 @media(min-width:1001px){.infra-hed-1,.infra-hed-2{white-space:nowrap}}
 .infra-eyebrow{
@@ -2139,8 +2269,8 @@ body::before{
 }
 .infra-hed{
   font-family:'Cormorant Garamond',serif;font-weight:200;
-  line-height:1.1;margin-bottom:48px;
-  display:flex;flex-direction:column;gap:.22em;
+  line-height:1.1;margin-bottom:28px;
+  display:flex;flex-direction:column;gap:.18em;
 }
 .infra-hed-1{
   font-size:clamp(3rem,5.8vw,5.6rem);
@@ -2149,6 +2279,188 @@ body::before{
 .infra-hed-2{
   font-size:clamp(2.8rem,5.2vw,5.0rem);
   color:rgba(237,232,222,.52);letter-spacing:-.018em;font-style:italic;
+}
+.infra-sub-copy{
+  font-family:'DM Sans',sans-serif;font-weight:300;
+  font-size:clamp(.9rem,1.6vw,1.08rem);
+  color:rgba(168,168,160,.72);line-height:1.76;letter-spacing:.01em;
+  max-width:640px;margin:0 auto 48px;
+}
+.infra-stmt{
+  font-family:'Cormorant Garamond',serif;font-weight:300;font-style:italic;
+  font-size:clamp(1.3rem,2.2vw,1.72rem);
+  color:rgba(200,168,75,.72);letter-spacing:.01em;line-height:1.4;
+  margin-bottom:28px;
+}
+.infra-tagline{
+  font-size:.66rem;letter-spacing:.28em;text-transform:uppercase;
+  color:rgba(237,232,222,.34);margin-bottom:32px;
+}
+.infra-tenets{
+  list-style:none;padding:0;margin:0 auto 36px;
+  max-width:440px;text-align:left;
+  display:flex;flex-direction:column;gap:10px;
+}
+.infra-tenet{
+  font-family:'DM Sans',sans-serif;font-size:.84rem;font-weight:300;
+  line-height:1.6;color:rgba(168,168,160,.56);
+  padding-left:20px;position:relative;
+}
+.infra-tenet::before{content:'\2013';position:absolute;left:0;color:rgba(200,168,75,.38);}
+.infra-close{
+  font-family:'Cormorant Garamond',serif;font-weight:300;font-style:italic;
+  font-size:clamp(1.1rem,1.8vw,1.36rem);
+  color:rgba(237,232,222,.5);margin-bottom:72px;letter-spacing:-.005em;
+}
+/* ── Infra bridge ── */
+.infra-bridge{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:64px;
+  text-align:left;
+  max-width:760px;
+  margin:0 auto 72px;
+  padding-top:8px;
+  border-top:1px solid rgba(200,168,75,.08);
+}
+.infra-bridge-left{
+  font-family:'Cormorant Garamond',serif;
+  font-size:clamp(1.05rem,1.7vw,1.26rem);
+  font-weight:300;font-style:italic;
+  line-height:1.58;
+  color:rgba(237,232,222,.44);
+}
+.infra-bridge-left strong{
+  font-style:normal;font-weight:300;
+  color:rgba(237,232,222,.72);
+}
+.infra-bridge-right{
+  display:flex;flex-direction:column;gap:13px;
+  justify-content:center;
+}
+.infra-bridge-item{
+  font-family:'DM Sans',sans-serif;
+  font-size:.78rem;font-weight:300;
+  letter-spacing:.06em;
+  color:rgba(168,168,160,.46);
+  line-height:1.5;
+  padding-left:14px;
+  position:relative;
+}
+.infra-bridge-item::before{
+  content:'→';
+  position:absolute;left:0;
+  color:rgba(200,168,75,.32);
+  font-size:.7rem;
+}
+/* ── Conversion Bridge ── */
+.cvb{
+  padding:80px 64px;max-width:760px;margin:0 auto;text-align:center;
+}
+.cvb-lead{
+  font-size:.68rem;letter-spacing:.32em;text-transform:uppercase;
+  color:rgba(200,168,75,.52);margin-bottom:20px;
+}
+.cvb-hed{
+  font-family:'Cormorant Garamond',serif;font-weight:300;
+  font-size:clamp(2rem,3.4vw,3.1rem);line-height:1.12;
+  color:var(--ivory);letter-spacing:-.015em;margin-bottom:28px;
+}
+.cvb-hed em{font-style:italic;color:rgba(200,168,75,.82);}
+.cvb-body{
+  font-size:.96rem;line-height:1.82;color:rgba(168,168,160,.62);
+  max-width:580px;margin:0 auto 44px;
+}
+.cvb-points{
+  list-style:none;padding:0;margin:0 auto 52px;
+  max-width:480px;text-align:left;
+  display:flex;flex-direction:column;gap:14px;
+  border-left:1px solid rgba(200,168,75,.14);
+  padding-left:24px;
+}
+.cvb-point{
+  font-family:'DM Sans',sans-serif;font-size:.88rem;font-weight:300;
+  line-height:1.6;color:rgba(237,232,222,.58);
+}
+.cvb-close{
+  font-family:'Cormorant Garamond',serif;font-weight:300;font-style:italic;
+  font-size:clamp(1rem,1.7vw,1.28rem);
+  color:rgba(237,232,222,.46);margin-bottom:44px;letter-spacing:-.005em;
+}
+.cvb-actions{
+  display:flex;align-items:center;justify-content:center;gap:28px;flex-wrap:wrap;
+}
+/* ── Trust differentiation block ── */
+.trust-diff{
+  max-width:680px;margin:0 auto;
+  padding:80px 64px;
+  text-align:center;
+  border-top:1px solid rgba(200,168,75,.07);
+  position:relative;
+}
+.trust-diff::before{
+  content:'';
+  position:absolute;top:0;left:50%;transform:translateX(-50%);
+  width:60px;height:1px;
+  background:linear-gradient(90deg,transparent,rgba(200,168,75,.28),transparent);
+}
+.trust-diff-hed{
+  font-family:'Cormorant Garamond',serif;font-weight:300;
+  font-size:clamp(1.5rem,2.4vw,2rem);
+  color:var(--ivory);letter-spacing:-.01em;line-height:1.28;
+  margin-bottom:28px;
+}
+.trust-diff-body{
+  font-size:.9rem;line-height:1.84;
+  color:rgba(168,168,160,.52);
+  max-width:560px;margin:0 auto 10px;
+}
+.trust-diff-body strong{
+  color:rgba(237,232,222,.72);font-weight:400;
+}
+.trust-diff-close{
+  font-family:'Cormorant Garamond',serif;font-weight:300;font-style:italic;
+  font-size:clamp(1rem,1.6vw,1.22rem);
+  color:rgba(200,168,75,.58);
+  line-height:1.5;margin-top:24px;
+}
+.infra-pillars{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:1px;
+  background:rgba(200,168,75,.09);
+  border:1px solid rgba(200,168,75,.09);
+  margin:0 auto 44px;
+}
+.infra-pillar{
+  display:flex;
+  flex-direction:column;
+  align-items:flex-start;
+  justify-content:flex-start;
+  gap:12px;
+  padding:32px 28px;
+  background:rgba(8,8,8,.55);
+  transition:background .3s;
+}
+.infra-pillar:hover{background:rgba(200,168,75,.055);transform:translateY(-1px)}
+.infra-pillar svg{
+  width:18px;height:18px;
+  color:rgba(200,168,75,.62);flex-shrink:0;
+  margin-bottom:4px;
+  transition:color .28s;
+}
+.infra-pillar:hover svg{color:rgba(200,168,75,.9)}
+.infra-pillar-title{
+  font-family:'DM Sans',sans-serif;
+  font-size:.72rem;letter-spacing:.13em;text-transform:uppercase;
+  font-weight:500;color:rgba(237,232,222,.84);
+  line-height:1.3;
+}
+.infra-pillar-desc{
+  font-family:'DM Sans',sans-serif;
+  font-size:.8rem;font-weight:300;
+  line-height:1.68;
+  color:rgba(168,168,160,.6);
 }
 .infra-gold{
   font-family:'Cormorant Garamond',serif;font-weight:300;font-style:italic;
@@ -2174,6 +2486,26 @@ body::before{
   display:block;width:72px;height:1px;margin:44px auto 0;
   background:linear-gradient(90deg,transparent,rgba(200,168,75,.3),transparent);
 }
+/* Ticker */
+.infra-ticker{
+  overflow:hidden;padding:12px 0;margin-top:40px;position:relative;
+  border-top:1px solid rgba(200,168,75,.1);
+  border-bottom:1px solid rgba(200,168,75,.1);
+}
+.infra-ticker::before,.infra-ticker::after{
+  content:'';position:absolute;top:0;width:100px;height:100%;z-index:2;pointer-events:none;
+}
+.infra-ticker::before{left:0;background:linear-gradient(90deg,#080808 20%,transparent);}
+.infra-ticker::after{right:0;background:linear-gradient(270deg,#080808 20%,transparent);}
+.itk-track{display:flex;width:max-content;animation:infraTicker 28s linear infinite;}
+.itk-set{
+  white-space:nowrap;flex-shrink:0;
+  font-family:'DM Sans',sans-serif;font-size:.68rem;font-weight:300;
+  letter-spacing:.3em;text-transform:uppercase;
+  color:rgba(200,168,75,.44);padding:0 52px;
+}
+.itk-dot{color:rgba(200,168,75,.2);margin:0 6px;}
+@keyframes infraTicker{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
 
 /* ── Settlement section ── */
 .settlement{
@@ -2189,20 +2521,22 @@ body::before{
   border:1px solid rgba(200,168,75,.08);
   background:rgba(255,255,255,.012);
   position:relative;
+  transition:border-color .3s,background .3s;
 }
+.settle-card:hover{border-color:rgba(200,168,75,.18);background:rgba(200,168,75,.025)}
 .settle-card::before{
   content:'';position:absolute;top:0;left:0;right:0;height:1px;
   background:linear-gradient(90deg,transparent,rgba(200,168,75,.14),transparent);
 }
 .settle-card-hed{
   display:block;font-size:.6rem;letter-spacing:.18em;text-transform:uppercase;
-  color:rgba(200,168,75,.62);margin-bottom:10px;
+  color:rgba(200,168,75,.78);margin-bottom:10px;
 }
 .settle-card-body{
-  font-size:.83rem;line-height:1.75;color:rgba(168,168,160,.65);
+  font-size:.83rem;line-height:1.75;color:rgba(168,168,160,.78);
 }
 .pricing-cta-trust{
-  font-size:.68rem;letter-spacing:.06em;color:rgba(168,168,160,.32);
+  font-size:.68rem;letter-spacing:.06em;color:rgba(168,168,160,.46);
   text-align:center;margin-top:6px;
 }
 
@@ -2304,20 +2638,33 @@ body::before{
 @media(max-width:900px){
   .infra-principle{padding:96px 24px}
   .infra-hed-1,.infra-hed-2{font-size:clamp(1.8rem,4.5vw,2.6rem)}
+  .infra-pillars{grid-template-columns:1fr 1fr}
+  .infra-bridge{grid-template-columns:1fr;gap:28px;max-width:100%}
   .settlement{padding:36px 24px}
   .settle-cards{grid-template-columns:1fr 1fr}
   .alloc-decision{padding:28px 24px;max-width:100%}
   .sys-struct{padding:52px 24px}
   .sys-struct-inner{grid-template-columns:1fr;gap:32px}
   .sys-city-grid{grid-template-columns:1fr 1fr}
+  .cvb{padding:80px 32px}
+  .trust-diff{padding:60px 32px}
 }
 @media(max-width:520px){
   .infra-principle{padding:72px 20px}
   .infra-hed-1,.infra-hed-2{font-size:clamp(1.45rem,6.8vw,2.1rem)}
   .infra-gold{font-size:clamp(1.6rem,5.8vw,2.2rem)}
+  .infra-sub-copy{font-size:.9rem}
+  .infra-pillars{grid-template-columns:1fr}
+  .infra-pillar{padding:24px 20px}
+  .infra-pillar-desc{font-size:.76rem}
   .settlement{padding:28px 20px}
   .settle-cards{grid-template-columns:1fr}
   .hero-stage{font-size:clamp(2.8rem,9vw,3.8rem)}
+  .cvb{padding:64px 24px}
+  .trust-diff{padding:48px 24px}
+  .cvb-actions{flex-direction:column;gap:20px;align-items:stretch}
+  .cvb-actions .btn-primary{text-align:center}
+  .cvb-points{padding-left:18px}
   .hero-gold-accent{font-size:clamp(1.1rem,4.5vw,1.4rem)}
   .exp-momentum-main{font-size:clamp(1.2rem,4.5vw,1.6rem)}
   .sys-struct{padding:36px 20px}
@@ -2580,6 +2927,25 @@ body::before{
   /* Hero section padding — recover vertical space gained */
   #hero{padding:76px 20px 44px}
 }
+/* ── AI Citation Engine section ── */
+.ace-section{padding:96px 64px;max-width:1200px;margin:0 auto}
+.ace-inner{max-width:960px;margin:0 auto}
+.ace-eyebrow{font-size:.68rem;letter-spacing:.22em;text-transform:uppercase;color:rgba(200,168,75,.7);margin-bottom:14px}
+.ace-hed{font-family:'Cormorant Garamond',serif;font-size:clamp(2.2rem,4vw,3.2rem);font-weight:300;color:rgba(237,232,222,.97);margin-bottom:18px;line-height:1.12}
+.ace-hed em{font-style:italic;color:#e2c97d}
+.ace-sub{font-size:.97rem;color:rgba(168,168,160,.75);max-width:600px;line-height:1.8;margin-bottom:52px}
+.ace-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:2px;margin-bottom:40px}
+.ace-block{background:#0e0d09;border:1px solid rgba(200,168,75,.08);padding:26px 24px;transition:border-color .2s,background .2s}
+.ace-block:hover{border-color:rgba(200,168,75,.18);background:rgba(200,168,75,.03)}
+.ace-block-num{font-size:.6rem;letter-spacing:.18em;color:rgba(200,168,75,.55);margin-bottom:10px}
+.ace-block-title{font-size:.9rem;color:rgba(237,232,222,.92);font-weight:400;margin-bottom:8px;line-height:1.3}
+.ace-block-desc{font-size:.8rem;color:rgba(168,168,160,.65);line-height:1.68}
+.ace-cta{text-align:center;margin-top:8px}
+.ace-cta a{font-size:.82rem;color:rgba(200,168,75,.8);text-decoration:none;border-bottom:1px solid rgba(200,168,75,.25);padding-bottom:2px;letter-spacing:.04em;transition:color .2s,border-color .2s}
+.ace-cta a:hover{color:#e2c97d;border-color:rgba(226,201,125,.6)}
+@media(max-width:900px){.ace-section{padding:72px 40px}.ace-grid{grid-template-columns:repeat(3,1fr)}}
+@media(max-width:600px){.ace-section{padding:56px 24px}.ace-grid{grid-template-columns:1fr 1fr}}
+@media(max-width:400px){.ace-grid{grid-template-columns:1fr}}
 </style>
 @if(config('services.recaptcha.site_key'))
 <script src="https://www.google.com/recaptcha/api.js?render={{ config('services.recaptcha.site_key') }}" async defer></script>
@@ -2799,19 +3165,18 @@ body::before{
   <canvas class="hero-anim-canvas" id="heroAnimCanvas" aria-hidden="true"></canvas>
 
   <div class="hero-stage">
-    <h1 id="heroSeq" aria-label="Show Up in Every City You Serve. Get found across Google, ChatGPT, and AI search without complicated SEO.">Show Up in Every<br>City You Serve</h1>
+    <h1 id="heroSeq" aria-label="Show Up in Every City You Serve. Get found across Google, ChatGPT, and AI — the new way to search.">Show Up in Every<br>City You Serve</h1>
   </div>
-  <p class="hero-gold-accent">Get found across Google, ChatGPT, and AI search without complicated SEO.</p>
-  <p class="hero-note">You found us organically. Let&#8217;s do the same for you.</p>
+  <p class="hero-gold-accent">Structured for AI citation &#8202;&mdash;&#8202;built for Google, ChatGPT, and every AI search surface.</p>
+  <p class="hero-note">You found us organically. We make AI systems cite you the same way.</p>
   <div class="hero-actions" style="opacity:0;animation:up .85s .52s forwards">
-    <a href="/book" class="btn-primary">Book a Free Strategy Session</a>
-    <a href="#how" class="btn-ghost">See how it works</a>
+    <a href="/book" class="btn-primary">Make your site the answer</a>
   </div>
 
 </section>
 
-<div class="hero-transition" aria-hidden="true">
-  <span class="hero-scroll-label">See how it works</span>
+<div class="hero-transition">
+  <a href="#how" class="hero-scroll-label" style="text-decoration:none">See how it works</a>
   <div class="hero-rule-shimmer"></div>
   <div class="hero-scroll-arrow"></div>
 </div>
@@ -2826,7 +3191,7 @@ body::before{
     </div>
     <div class="how-strip-item">
       <span class="how-strip-dot" aria-hidden="true"></span>
-      <span class="how-strip-label">WordPress &amp; Divi websites (custom sites welcome)</span>
+      <span class="how-strip-label">WordPress sites and custom builds &mdash; structured for search from the ground up</span>
     </div>
     <div class="how-strip-item">
       <span class="how-strip-dot" aria-hidden="true"></span>
@@ -2834,10 +3199,10 @@ body::before{
     </div>
     <div class="how-strip-item">
       <span class="how-strip-dot" aria-hidden="true"></span>
-      <span class="how-strip-label">Optimized for Google, ChatGPT, and AI search from day one</span>
+      <span class="how-strip-label">Expanded across Google, ChatGPT, and modern search &#8212; from day one</span>
     </div>
   </div>
-  <p class="how-strip-sub">Works with your existing site. Built to expand your visibility everywhere.</p>
+  <p class="how-strip-sub">Your domain &#8212; expanded across every search that matters.</p>
 </section>
 
 <!-- ════════════ SYSTEM STRUCTURE ════════════ -->
@@ -2848,11 +3213,21 @@ body::before{
     <div>
       <p class="sys-eyebrow">Your Domain. Expanded.</p>
       <h2 class="sys-hed">This is how your<br>domain takes position.<br><em>Built on your URL. Expanded across your market.</em></h2>
-      <p class="sys-gold-line">Every service. Every city. Every search that matters.</p>
+      <p class="sys-gold-line">
+        <span class="sys-gold-phrase">Every service.</span>
+        <span class="sys-gold-phrase">Every city.</span>
+        <span class="sys-gold-phrase">Every search that matters.</span>
+      </p>
       <p class="sys-sub">We build structured, hyper-local pages on your domain — so you show up where your competitors don’t.</p>
-      <p class="sys-clarity">We do not replace your existing website. We expand it — increasing visibility, reach, and authority.</p>
-      <p class="sys-trust">Works with your existing site. WordPress (including Divi) fully supported.</p>
-      <p class="sys-trust" style="margin-top:8px;color:rgba(200,168,75,.50);font-size:.78rem">Built for modern search systems. Structured. Consistent. Continuously expanding.</p>
+      <div class="sys-clarity-block">
+        <p class="sys-cl-unit">We build on your domain.</p>
+        <p class="sys-cl-unit sys-cl-dim" style="margin-top:-14px">Not beside it.</p>
+        <p class="sys-cl-unit">One page. One service. One city.</p>
+        <p class="sys-cl-dim">That&#8217;s what modern search returns.</p>
+        <p class="sys-cl-unit">A homepage can&#8217;t rank for everything.</p>
+        <p class="sys-cl-dim" style="margin-top:-14px">A network that covers your entire market can.</p>
+        <p class="sys-cl-sub">Expanded across Google, ChatGPT, and modern search.</p>
+      </div>
     </div>
 
     {{-- Right: URL expansion card grid --}}
@@ -2920,7 +3295,7 @@ body::before{
         </div>
 
       </div>
-      <p class="sys-city-clarity r">All pages are built on your domain — expanding your visibility across your entire market.</p>
+      <p class="sys-city-clarity r">Your domain &#8212; expanded across every search that matters.</p>
     </div>
 
   </div>
@@ -2945,8 +3320,8 @@ body::before{
           <div class="step">
             <div class="step-n">02</div>
             <div class="step-rule"></div>
-            <h3 class="step-title">We Build Your<wbr> Coverage Engine</h3>
-            <p class="step-desc">Deploy hyper-local pages directly into your existing site — structured with schema, internal linking, and AI-ready content.</p>
+            <h3 class="step-title">We Deploy the<wbr> AI Citation Engine&#8482;</h3>
+            <p class="step-desc">Deploy structured pages directly into your existing site — built with schema, internal linking, and extraction-optimized content so AI systems cite you.</p>
           </div>
           <div class="step">
             <div class="step-n">03</div>
@@ -2987,50 +3362,96 @@ body::before{
 
 <!-- ════════════ DIFFERENTIATOR ════════════ -->
 <div class="commitment-note r">
-  <p class="cn-hed">Unlike generic SEO tools — we work directly with<br>your existing website. No rebuild required.</p>
-  <p class="cn-body">SEO AI Co™ builds structured, hyper-local pages on your domain — covering every service and city you serve. Your site gains authority, your customers find you, and ChatGPT and AI search cite you. It all compounds over time.</p>
+  <p class="cn-hed">Works with your existing site.<br><em>Or we rebuild it the right way.</em></p>
+  <p class="cn-aha">Your site isn&#8217;t the problem.<br>Your coverage is.</p>
+  <p class="cn-body">Search returns what it can find.<br>We give it every service, every city &#8212; matched to how your customers actually search.</p>
+  <p class="cn-surface">Structure over shortcuts.</p>
 </div>
+
+<div class="gold-rule"></div>
+
+<!-- ════════════ AI CITATION ENGINE ════════════ -->
+<section class="ace-section r">
+  <div class="ace-inner">
+    <p class="ace-eyebrow">AI Citation Engine&#8482;</p>
+    <h2 class="ace-hed">How SEOAIco wins<br><em>in AI search.</em></h2>
+    <p class="ace-sub">Five structural layers that make your business the source AI systems cite &#8212; not just a result they rank.</p>
+    <div class="ace-grid">
+      <div class="ace-block r">
+        <p class="ace-block-num">01</p>
+        <p class="ace-block-title">Structure for AI</p>
+        <p class="ace-block-desc">Pages built with self-contained paragraphs and entity-first sentences &#8212; architecture AI systems can extract directly.</p>
+      </div>
+      <div class="ace-block r">
+        <p class="ace-block-num">02</p>
+        <p class="ace-block-title">Knowledge Graph</p>
+        <p class="ace-block-desc">Every page defines who you are, what you do, and where you operate &#8212; connecting your business to AI knowledge graphs.</p>
+      </div>
+      <div class="ace-block r">
+        <p class="ace-block-num">03</p>
+        <p class="ace-block-title">Extraction Optimization</p>
+        <p class="ace-block-desc">JSON-LD schema signals entity type, service scope, and geographic authority to every AI and search system that processes the page.</p>
+      </div>
+      <div class="ace-block r">
+        <p class="ace-block-num">04</p>
+        <p class="ace-block-title">AI Guidance Layer</p>
+        <p class="ace-block-desc">An llms.txt file instructs AI crawlers on your site&#8217;s authority topics &#8212; a direct signal layer standard SEO doesn&#8217;t address.</p>
+      </div>
+      <div class="ace-block r">
+        <p class="ace-block-num">05</p>
+        <p class="ace-block-title">Citation Positioning</p>
+        <p class="ace-block-desc">Structured internal link graphs create topical clusters that AI systems use to establish authority and cross-reference your coverage.</p>
+      </div>
+    </div>
+    <div class="ace-cta">
+      <a href="{{ route('ai-citation-engine') }}">See how the AI Citation Engine&#8482; works &#8594;</a>
+    </div>
+  </div>
+</section>
+
+<div class="gold-rule"></div>
+
 <!-- ════════════ ACCESS SECTION ════════════ -->
 <section class="access-section r">
 
-  <div class="access-eyebrow">The System</div>
-  <h2 class="access-headline">Not a tool.<br><em>A system.</em></h2>
-  <p class="access-subline">Your position is built — not assigned.</p>
+  <div class="access-eyebrow">How It Works</div>
+  <h2 class="access-headline">Get found on Google,<br><em>ChatGPT, and AI search.</em></h2>
+  <p class="access-subline">We build the pages that put your business in front of customers &#8212; wherever they&#8217;re searching.</p>
 
   <div class="access-grid">
 
     <div class="ac-card">
-      <span class="ac-label">Controlled Access</span>
-      <h3 class="ac-head">Built on structure.<br><em>Sustained by execution.</em></h3>
-      <p class="ac-impact">The advantage compounds with every deployment.</p>
-      <p class="ac-body">Structured expansion builds domain authority. Earlier coverage compounds faster — harder to displace with every passing month.</p>
+      <span class="ac-label">Local Search Pages</span>
+      <h3 class="ac-head">A dedicated page<br><em>for every service and city.</em></h3>
+      <p class="ac-impact">One page ranks for one search. We build all of them.</p>
+      <p class="ac-body">When someone searches &#8220;plumber in Austin&#8221; or &#8220;HVAC repair near Bellevue,&#8221; we make sure your business is the result they get.</p>
     </div>
 
     <div class="ac-card">
-      <span class="ac-label">Full-Stack Visibility</span>
-      <h3 class="ac-head">Every surface.<br><em>Every signal.</em></h3>
-      <p class="ac-impact">Organic search, AI, emerging discovery — all layers.</p>
-      <p class="ac-body">Every page is structured to surface across the full discovery stack — not just crawled, but understood, cited, and returned.</p>
+      <span class="ac-label">Google + AI Search</span>
+      <h3 class="ac-head">Visible on Google.<br><em>Cited by ChatGPT.</em></h3>
+      <p class="ac-impact">Get cited by AI &#8212; not just ranked by Google.</p>
+      <p class="ac-body">Every page is built to rank in traditional search and show up in AI-generated answers &#8212; the results people see without even clicking.</p>
     </div>
 
     <div class="ac-card">
-      <span class="ac-label">Market Coverage</span>
-      <h3 class="ac-head">A market claimed,<br><em>not a keyword.</em></h3>
-      <p class="ac-impact">Complete coverage of your entire search surface.</p>
-      <p class="ac-body">Every service. Every city. Every variation. Structured to compound as the system builds authority — not a campaign, a held position.</p>
+      <span class="ac-label">Full Service Coverage</span>
+      <h3 class="ac-head">Every service.<br><em>Every city you work in.</em></h3>
+      <p class="ac-impact">Your homepage can&#8217;t rank for everything. We fix that.</p>
+      <p class="ac-body">We map your services and target cities, then build pages for every combination &#8212; so customers find you no matter which service or location they search for.</p>
     </div>
 
     <div class="ac-card">
-      <span class="ac-label">Active Coverage</span>
-      <h3 class="ac-head">Built to last.<br><em>Maintained to win.</em></h3>
-      <p class="ac-impact">The system runs. You don’t manage it.</p>
-      <p class="ac-body">Pages are maintained and adapted under your active agreement. Coverage is not static — it is actively defended.</p>
+      <span class="ac-label">Managed for You</span>
+      <h3 class="ac-head">We run it.<br><em>You get the customers.</em></h3>
+      <p class="ac-impact">No dashboards. No maintenance. No learning curve.</p>
+      <p class="ac-body">Your pages are built, monitored, and kept up to date under your active plan. You focus on your business &#8212; we handle everything that keeps you visible.</p>
     </div>
 
   </div><!-- /tier-grid-3 -->
 
   <div class="offer-fomo r">
-    <p class="offer-fomo-line">Position is not reserved. It is built — and held — through execution.</p>
+    <p class="offer-fomo-line">The businesses that show up first in search win the most customers. We help you get there first.</p>
   </div>
 
 </section>
@@ -3048,7 +3469,7 @@ body::before{
         Your Market,<br>
         <em>Mapped.</em>
       </h2>
-      <p class="alloc-urgency">We don’t guess where to grow — we show you exactly where you’re missing visibility and where opportunity exists.</p>
+      <p class="alloc-urgency">We don&#8217;t guess where to grow &#8212; we show you exactly where your market is unclaimed and where opportunity is highest.</p>
 
       <p class="alloc-body-intro">SEO AI Co™ analyzes your services, locations, and search demand to map your entire market. You’ll see:</p>
 
@@ -3070,10 +3491,10 @@ body::before{
         </div>
       </div>
 
-      <p class="alloc-differentiator">No spreadsheets. No guesswork. Just a clear path to expand your visibility.</p>
+      <p class="alloc-differentiator">No spreadsheets. No guesswork. Just a clear picture of what&#8217;s yours to claim.</p>
 
       <div class="alloc-actions">
-        <a href="/book" class="btn-primary">See Your Market →</a>
+        <a href="/book" class="btn-primary">Book a Strategy Session</a>
       </div>
       <p class="alloc-access-note">Free strategy session · No commitment required</p>
     </div>
@@ -3116,18 +3537,162 @@ body::before{
 <!-- ════════════ INFRASTRUCTURE PRINCIPLE ════════════ -->
 <section class="infra-principle r">
   <canvas class="infra-canvas" id="infraCanvas" aria-hidden="true"></canvas>
+  <div class="infra-overlay" aria-hidden="true"></div>
   <div class="infra-inner">
-    <p class="infra-eyebrow">AI SEO &middot; AEO &middot; GEO</p>
+    <p class="infra-eyebrow">The AI Citation Engine&#8482;</p>
     <h2 class="infra-hed">
-      <span class="infra-hed-1">Search has changed.</span>
-      <span class="infra-hed-2">We help you show up everywhere.</span>
+      <span class="infra-hed-1">Built first.</span>
+      <span class="infra-hed-2">Held through execution.</span>
     </h2>
+    <p class="infra-stmt">Structure wins.</p>
+    <p class="infra-tagline">Every page &middot; Every market &middot; Every signal</p>
+    <ul class="infra-tenets">
+      <li class="infra-tenet" style="color:rgba(237,232,222,.72);">You show up where others don&#8217;t.</li>
+      <li class="infra-tenet">Authority compounds with every deployment.</li>
+      <li class="infra-tenet">Harder to displace over time.</li>
+    </ul>
+    <p class="infra-close">Position isn&#8217;t claimed.<br>It&#8217;s built &#8212; and defended.</p>
+    <div class="infra-bridge">
+      <div class="infra-bridge-left">
+        <strong>This is how modern visibility is built.</strong><br>
+        Not through effort.<br>Through structure.
+      </div>
+      <div class="infra-bridge-right">
+        <span class="infra-bridge-item">Pages mapped to intent</span>
+        <span class="infra-bridge-item">Signals structured for discovery</span>
+        <span class="infra-bridge-item">Coverage expanded continuously</span>
+      </div>
+    </div>
+    <div class="infra-pillars">
+      <div class="infra-pillar">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+        <span class="infra-pillar-title">Show Up Everywhere</span>
+        <span class="infra-pillar-desc">Every service and city structured to surface before competitors do.</span>
+      </div>
+      <div class="infra-pillar">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2L2 7l10 5 10-5-10-5z"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg>
+        <span class="infra-pillar-title">Built on Your Domain</span>
+        <span class="infra-pillar-desc">Expand authority on the site you already own.</span>
+      </div>
+      <div class="infra-pillar">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="4" width="16" height="16" rx="2"/><rect x="9" y="9" width="6" height="6"/><path d="M9 1v3M15 1v3M9 20v3M15 20v3M1 9h3M1 15h3M20 9h3M20 15h3"/></svg>
+        <span class="infra-pillar-title">Visible to AI</span>
+        <span class="infra-pillar-desc">Structured for AI platforms and modern discovery.</span>
+      </div>
+      <div class="infra-pillar">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+        <span class="infra-pillar-title">Search-Ready by Design</span>
+        <span class="infra-pillar-desc">Built with schema, structure, and internal linking from the start.</span>
+      </div>
+      <div class="infra-pillar">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
+        <span class="infra-pillar-title">Position Compounds</span>
+        <span class="infra-pillar-desc">The longer you&#8217;re live, the stronger your footprint gets.</span>
+      </div>
+      <div class="infra-pillar">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        <span class="infra-pillar-title">Hard to Replicate</span>
+        <span class="infra-pillar-desc">Competitors cannot quickly match the structure you build.</span>
+      </div>
+      <div class="infra-pillar">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+        <span class="infra-pillar-title">No Rebuild Required</span>
+        <span class="infra-pillar-desc">Deploy directly into your existing website.</span>
+      </div>
+      <div class="infra-pillar">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg>
+        <span class="infra-pillar-title">Coverage at Scale</span>
+        <span class="infra-pillar-desc">Expand market by market without starting from scratch.</span>
+      </div>
+    </div>
+    <div class="infra-ticker" aria-hidden="true">
+      <div class="itk-track">
+        <div class="itk-set">Google <span class="itk-dot">&middot;</span> ChatGPT <span class="itk-dot">&middot;</span> AI Search <span class="itk-dot">&middot;</span> Local Results <span class="itk-dot">&middot;</span></div>
+        <div class="itk-set">Google <span class="itk-dot">&middot;</span> ChatGPT <span class="itk-dot">&middot;</span> AI Search <span class="itk-dot">&middot;</span> Local Results <span class="itk-dot">&middot;</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════ CONVERSION BRIDGE ════════════ -->
+<section class="cvb r">
+  <p class="cvb-lead">This isn&#8217;t just SEO.</p>
+  <h2 class="cvb-hed">It&#8217;s your growth system &#8212;<br><em>built to work together.</em></h2>
+  <p class="cvb-body">We expand your reach, drive the traffic, and shape the message &#8212; so your coverage turns into position, and your position turns into revenue.</p>
+  <ul class="cvb-points">
+    <li class="cvb-point">Organic visibility across Google, AI, and modern search</li>
+    <li class="cvb-point">Paid ads that accelerate what&#8217;s already working</li>
+    <li class="cvb-point">Websites and landing pages built to convert</li>
+    <li class="cvb-point">Positioning, messaging, and marketing materials that hold attention</li>
+  </ul>
+  <p class="cvb-close">One system. One strategy. Built to grow your market &#8212; and hold it.</p>
+  <div class="cvb-actions">
+    <a href="/book" class="btn-primary">Book a Strategy Session</a>
+    <a href="#how" class="btn-ghost">See How It Works</a>
+  </div>
+</section>
+<section class="trust-diff r">
+  <h2 class="trust-diff-hed">We don&#8217;t sell backlinks.<br>We build the coverage that owns it.</h2>
+  <p class="trust-diff-body">No spam. No shortcuts. No risky tactics that can get your site buried.</p>
+  <p class="trust-diff-body">We expand your domain across every relevant search &#8212; so Google, ChatGPT, and modern search engines know exactly what you do, where you do it, and why your site is the right result.</p>
+  <p class="trust-diff-close">That&#8217;s why your position holds.<br>Not through tricks. Through structure.</p>
+</section>
+
+<!--
+  ╔══════════════════════════════════════════════════════════════════╗
+  ║  BEGIN SAVED SECTION: legacy infra concept                      ║
+  ║                                                                  ║
+  ║  This was the previous version of the Infrastructure Principle  ║
+  ║  section (5-card, 3+2 centered layout) before it was upgraded   ║
+  ║  to the active 8-card 4×2 system grid above.                    ║
+  ║                                                                  ║
+  ║  Potential reuse: secondary proof block, differentiation deep-  ║
+  ║  dive, or CTA-prelude section below the fold. The copy is       ║
+  ║  tighter / more declarative than the 8-card descriptive grid    ║
+  ║  and may work well as a follow-up reinforcement section.        ║
+  ║                                                                  ║
+  ║  DO NOT delete. Review before next major copy pass.             ║
+  ╚══════════════════════════════════════════════════════════════════╝
+
+<section class="infra-principle r">
+  <canvas class="infra-canvas" id="infraCanvasLegacy" aria-hidden="true"></canvas>
+  <div class="infra-overlay" aria-hidden="true"></div>
+  <div class="infra-inner">
+    <p class="infra-eyebrow">The Coverage Engine</p>
+    <h2 class="infra-hed">
+      <span class="infra-hed-1">Coverage your competitors</span>
+      <span class="infra-hed-2">can&#8217;t replicate.</span>
+    </h2>
+    <p class="infra-sub-copy">A hyper-local coverage engine built to expand your visibility across every service, every city, and every search surface.</p>
+    <div class="infra-pillars" style="grid-template-columns:repeat(3,1fr);max-width:860px">
+      <div class="infra-pillar">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+        <span class="infra-pillar-title">You show up everywhere.</span>
+      </div>
+      <div class="infra-pillar">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+        <span class="infra-pillar-title">Built on your domain.</span>
+      </div>
+      <div class="infra-pillar">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+        <span class="infra-pillar-title">Visible to AI systems.</span>
+      </div>
+      <div class="infra-pillar" style="grid-column:1;justify-self:end">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
+        <span class="infra-pillar-title">Position compounds over time.</span>
+      </div>
+      <div class="infra-pillar">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M4.93 4.93a10 10 0 0 0 0 14.14"/></svg>
+        <span class="infra-pillar-title">The system runs itself.</span>
+      </div>
+    </div>
     <p class="infra-gold">Google &middot; ChatGPT &middot; AI Search &middot; Local Results</p>
     <span class="infra-rule"></span>
   </div>
 </section>
 
-<div class="gold-rule"></div>
+  END SAVED SECTION: legacy infra concept
+--><div class="gold-rule"></div>
 
 <!-- ════════════ AUDIENCE — SELL ════════════ -->
 <section id="who">
@@ -3152,7 +3717,7 @@ body::before{
       <div class="aud-card r">
         <span class="aud-tag">For Operators &amp; Business Owners</span>
         <h3 class="aud-title">Get found everywhere<br><em>your customers are searching.</em></h3>
-        <p class="aud-body">SEO AI Co™ builds structured pages across every service and city you serve — so you show up in Google, ChatGPT, and AI search results across your entire market.</p>
+        <p class="aud-body">SEO AI Co™ expands your domain across every service and city you serve &#8212; so you show up in Google, ChatGPT, and AI search results across your entire market.</p>
         <ul class="aud-list">
           <li><strong>Every service. Every city. Total coverage.</strong></li>
           <li><strong>Visible across organic, AI, and emerging search</strong></li>
@@ -3160,55 +3725,69 @@ body::before{
           <li><strong>Harder to displace over time</strong> — position that strengthens with every deployment</li>
         </ul>
         <p style="font-size:.82rem;color:var(--muted);letter-spacing:.04em;margin-bottom:12px">Position built first holds longest. The system compounds in your favor.</p>
-        <a href="/book" class="aud-cta">Book a Free Strategy Session &rarr;</a>
+        <a href="/book" class="aud-cta">Book a Strategy Session &rarr;</a>
       </div>
 
     </div>
   </div>
 </section>
 
-<!-- ════════════ WYL — FEATURES / WOW ════════════ -->
-<section id="wyl">
-  <div class="wyl-section">
-    <div class="wyl-inner">
-      <p class="s-eye r">What Your Deployment Delivers</p>
-      <h2 class="s-h r">The system behind<br><em>every page, every market.</em></h2>
-      <p class="s-p r" style="max-width:640px">Every result this system produces comes from structure — not effort. <strong>This is what takes and keeps your market position.</strong></p>
-      <div class="wyl-grid">
-        <div class="wyl-card r">
-          <span class="wyl-icon">⬡</span>
-          <h3 class="wyl-title">You show up everywhere.</h3>
-          <p class="wyl-desc">Every service, every city — structured pages built to show up before your competitors do.</p>
-        </div>
-        <div class="wyl-card r">
-          <span class="wyl-icon">◈</span>
-          <h3 class="wyl-title">Built on your domain.</h3>
-          <p class="wyl-desc">Expands your own URL footprint — domain authority you own, built from your existing site outward.</p>
-        </div>
-        <div class="wyl-card r">
-          <span class="wyl-icon">⊹</span>
-          <h3 class="wyl-title">Visible to AI systems.</h3>
-          <p class="wyl-desc">Structured to surface in AI, search engines, and every discovery layer that indexes the web.</p>
-        </div>
-        <div class="wyl-card r">
-          <span class="wyl-icon">◎</span>
-          <h3 class="wyl-title">Position compounds over time.</h3>
-          <p class="wyl-desc">Every month you're live, your position deepens — harder for competitors to displace, compounding automatically.</p>
-        </div>
-        <div class="wyl-card r">
-          <span class="wyl-icon">⬧</span>
-          <h3 class="wyl-title">Coverage they can't replicate.</h3>
-          <p class="wyl-desc">A hyper-local coverage structure competitors cannot quickly build, match, or replicate.</p>
-        </div>
-        <div class="wyl-card r">
-          <span class="wyl-icon">◼</span>
-          <h3 class="wyl-title">The system runs itself.</h3>
-          <p class="wyl-desc">Deployed, held, and expanded for you — no dashboards, no management overhead required.</p>
+{{--
+  BEGIN SAVED SECTION: legacy infra cards (WYL — features / value grid)
+
+  This section ("What Your Deployment Delivers") was a 6-card features grid
+  using the same value props as the active 8-card Infrastructure Principle grid.
+  Replaced by: active infra-principle section (8-card 4x2 grid, above).
+  Removed from live output to eliminate the duplicate system/value-prop story.
+
+  Potential reuse: post-pricing proof block, onboarding explainer, or inline
+  feature detail section with a different copy direction. DO NOT delete.
+
+  ════════════ WYL — FEATURES / WOW ════════════
+  <section id="wyl">
+    <div class="wyl-section">
+      <div class="wyl-inner">
+        <p class="s-eye r">What Your Deployment Delivers</p>
+        <h2 class="s-h r">The system behind<br><em>every page, every market.</em></h2>
+        <p class="s-p r" style="max-width:640px">Every result this system produces comes from structure — not effort. <strong>This is what takes and keeps your market position.</strong></p>
+        <div class="wyl-grid">
+          <div class="wyl-card r">
+            <span class="wyl-icon">⬡</span>
+            <h3 class="wyl-title">You show up everywhere.</h3>
+            <p class="wyl-desc">Every service, every city — structured pages built to show up before your competitors do.</p>
+          </div>
+          <div class="wyl-card r">
+            <span class="wyl-icon">◈</span>
+            <h3 class="wyl-title">Built on your domain.</h3>
+            <p class="wyl-desc">Expands your own URL footprint — domain authority you own, built from your existing site outward.</p>
+          </div>
+          <div class="wyl-card r">
+            <span class="wyl-icon">⊹</span>
+            <h3 class="wyl-title">Visible to AI systems.</h3>
+            <p class="wyl-desc">Structured to surface in AI, search engines, and every discovery layer that indexes the web.</p>
+          </div>
+          <div class="wyl-card r">
+            <span class="wyl-icon">◎</span>
+            <h3 class="wyl-title">Position compounds over time.</h3>
+            <p class="wyl-desc">Every month you're live, your position deepens — harder for competitors to displace, compounding automatically.</p>
+          </div>
+          <div class="wyl-card r">
+            <span class="wyl-icon">⬧</span>
+            <h3 class="wyl-title">Coverage they can't replicate.</h3>
+            <p class="wyl-desc">A hyper-local coverage structure competitors cannot quickly build, match, or replicate.</p>
+          </div>
+          <div class="wyl-card r">
+            <span class="wyl-icon">◼</span>
+            <h3 class="wyl-title">The system runs itself.</h3>
+            <p class="wyl-desc">Deployed, held, and expanded for you — no dashboards, no management overhead required.</p>
+          </div>
         </div>
       </div>
     </div>
-  </div>
-</section>
+  </section>
+
+  END SAVED SECTION: legacy infra cards (WYL)
+--}}
 
 <!-- ════════════ POSITIONING BLOCK ════════════ -->
 <section class="pos-block">
@@ -3216,16 +3795,16 @@ body::before{
 
     <!-- LEFT: text hierarchy -->
     <div class="pos-left">
-      <h2 class="pos-h2 r">Built first.<br><em>Held through execution.</em></h2>
+      <h2 class="pos-h2 r">Your territory.<br><em>Claimed by structure.</em></h2>
       <div class="pos-rule r"></div>
-      <p class="pos-support r">Structure does what effort cannot sustain.</p>
-      <span class="pos-gold r">Every page. Every market. Every signal.</span>
+      <p class="pos-support r">Every deployment locks your position in a new market.</p>
+      <span class="pos-gold r">Service. City. Coverage. Yours.</span>
       <ul class="pos-proof r">
-        <li>Position built through structured coverage.</li>
-        <li>Authority that compounds with every deployment.</li>
-        <li>Harder to displace with every passing month.</li>
+        <li>Pages built first hold position longest.</li>
+        <li>Each deployment narrows the window for competitors.</li>
+        <li>The system scales &#8212; your lead grows with it.</li>
       </ul>
-      <span class="pos-close r">Position is not reserved. It is built — and held — through execution.</span>
+      <span class="pos-close r">Move before your market is claimed.</span>
     </div>
 
     <!-- RIGHT: territory lock canvas -->
@@ -3352,36 +3931,6 @@ body::before{
   });
 })();
 </script>
-
-<!-- ════════════ LICENCE LOCK ════════════ -->
-<section id="integrity">
-<div class="url-lock">
-  <div class="url-lock-inner">
-    <div class="ul-head r">
-      <p class="s-eye">The Licence Is the Product</p>
-      <h2 class="ul-title">Your URLs are assets.<br><em>The licence is the key.</em></h2>
-      <p class="ul-lead">Every page, every ranking, every lead — tied to one thing: your active licence.</p>
-    </div>
-    <div class="r">
-      <div class="ul-states">
-        <div class="ul-state active">
-          <span class="ul-state-label">Active Licence</span>
-          <div class="ul-state-title">Fully live — ranking, indexing, generating leads</div>
-          <div class="ul-state-desc">All structured content, search signals, and internal link architecture active. Your pages rank, index, and compound in authority across every city in your coverage.</div>
-        </div>
-        <div class="ul-state inactive">
-          <span class="ul-state-label">Licence Lapsed</span>
-          <div class="ul-state-title">Pages revert — company name &amp; phone number only</div>
-          <div class="ul-state-desc">All structured content, search signals, and internal link architecture removed. Pages remain on your site, but <strong>search coverage is inactive. Position is no longer held.</strong> Reactivate the agreement to restore full coverage.</div>
-        </div>
-      </div>
-      <div class="ul-note">
-        <p><strong>Need more pages?</strong> Upgrade to the next tier — your existing pages carry over.</p>
-      </div>
-    </div>
-  </div>
-</div>
-</section>
 
 <!-- ════════════ PRICING ════════════ -->
 <section id="offer">
@@ -3520,6 +4069,37 @@ body::before{
   <p style="text-align:center;font-size:.74rem;color:rgba(168,168,160,.28);letter-spacing:.04em;padding:4px 0 14px;position:relative;z-index:2">Applying selects your tier — not a payment. We review your market, confirm availability, and guide activation personally.<br><em>Coverage builds continuously — strengthening your domain across your full market footprint under an active agreement.</em></p>
 
 </section>
+
+<!-- ════════════ LICENCE LOCK ════════════ -->
+<section id="integrity">
+<div class="url-lock">
+  <div class="url-lock-inner">
+    <div class="ul-head r">
+      <p class="s-eye">The Licence Is the Product</p>
+      <h2 class="ul-title">Your URLs are assets.<br><em>The licence is the key.</em></h2>
+      <p class="ul-lead">Every page, every ranking, every lead — tied to one thing: your active licence.</p>
+    </div>
+    <div class="r">
+      <div class="ul-states">
+        <div class="ul-state active">
+          <span class="ul-state-label">Active Licence</span>
+          <div class="ul-state-title">Fully live — ranking, indexing, generating leads</div>
+          <div class="ul-state-desc">All structured content, search signals, and internal link architecture active. Your pages rank, index, and compound in authority across every city in your coverage.</div>
+        </div>
+        <div class="ul-state inactive">
+          <span class="ul-state-label">Licence Lapsed</span>
+          <div class="ul-state-title">Pages revert — company name &amp; phone number only</div>
+          <div class="ul-state-desc">All structured content, search signals, and internal link architecture removed. Pages remain on your site, but <strong>search coverage is inactive. Position is no longer held.</strong> Reactivate the agreement to restore full coverage.</div>
+        </div>
+      </div>
+      <div class="ul-note">
+        <p><strong>Need more pages?</strong> Upgrade to the next tier — your existing pages carry over.</p>
+      </div>
+    </div>
+  </div>
+</div>
+</section>
+
 <script>
 (function(){
   var grid=document.getElementById('tierGrid');
@@ -3542,24 +4122,15 @@ body::before{
 <!-- ════════════ VALUE ANCHOR ════════════ -->
 <div class="value-anchor r">
   <div class="value-anchor-inner">
-    <p class="va-main">This is not a tool.<br><em>A system designed to expand your visibility across your entire market.</em></p>
-    <div class="va-contrast">
-      <div class="va-col va-col--left">
-        <p class="va-col-hed">What most businesses do</p>
-        <p class="va-col-item">Buy SEO tools. Publish content.</p>
-        <p class="va-col-item">Target keywords one at a time.</p>
-        <p class="va-col-item">Wait months for unclear results.</p>
-        <p class="va-col-item">Repeat the same tactics.</p>
-      </div>
-      <div class="va-col va-col--right">
-        <p class="va-col-hed">What this system does</p>
-        <p class="va-col-item">Builds your entire online structure.</p>
-        <p class="va-col-item">Deploys across every service and city.</p>
-        <p class="va-col-item">Establishes position while others wait.</p>
-        <p class="va-col-item">Compounds continuously over time.</p>
-      </div>
+    <p class="va-main">What happens when you start</p>
+    <p class="va-sub" style="margin-bottom:40px;line-height:1.9">Your structure is built &#8212; your coverage expands &#8212; your visibility compounds.</p>
+    <p class="va-close">While others are still planning,<br><em>you&#8217;re already showing up &#8212; everywhere it matters.</em></p>
+    <p class="va-main" style="margin-top:44px;margin-bottom:24px;font-size:clamp(1.3rem,2.1vw,1.7rem);letter-spacing:-.02em">This is how position is taken &#8212; before anyone else realizes it&#8217;s happening.</p>
+    <p class="va-sub" style="margin-bottom:44px;opacity:.48">Most markets aren&#8217;t won by better businesses.<br>They&#8217;re won by the ones that show up first.</p>
+    <div class="va-act">
+      <a href="/book" class="btn-primary">Book a Strategy Session</a>
+      <a href="#how" class="btn-ghost">See How It Works</a>
     </div>
-    <p class="va-close">This is not marketing spend.<br><em>This is structured market expansion — built and compounded over time.</em></p>
   </div>
 </div>
 
@@ -3599,18 +4170,59 @@ body::before{
 <div class="svc-support r">
   <p class="ss-eye">Full-Spectrum Capability</p>
   <h2 class="ss-hed">Every capability your market requires.</h2>
-  <p class="ss-intro">One agreement. One team. Every layer of execution — from structured expansion to brand, paid media, and technical infrastructure.</p>
+  <p class="ss-intro">One agreement. One team. Every capability your market requires &mdash; search, AI visibility, and the full infrastructure to scale with you.</p>
   <div class="ss-grid">
-    <div class="ss-item"><span class="ss-dot"></span><span class="ss-label">Programmatic SEO &amp; territorial market expansion</span></div>
-    <div class="ss-item"><span class="ss-dot"></span><span class="ss-label">Website Strategy, Development &amp; Conversion Architecture</span></div>
-    <div class="ss-item"><span class="ss-dot"></span><span class="ss-label">Paid Media Strategy, Campaign Launch &amp; Growth Management</span></div>
-    <div class="ss-item"><span class="ss-dot"></span><span class="ss-label">Brand Management, Creative Direction &amp; Market Delivery</span></div>
-    <div class="ss-item"><span class="ss-dot"></span><span class="ss-label">WordPress Management, Enhancements &amp; Technical Support</span></div>
-    <div class="ss-item"><span class="ss-dot"></span><span class="ss-label">Content Strategy, Authority Copy &amp; Search Signal Architecture</span></div>
-    <div class="ss-item"><span class="ss-dot"></span><span class="ss-label">Structured Data, Schema Markup &amp; Technical SEO</span></div>
-    <div class="ss-item"><span class="ss-dot"></span><span class="ss-label">Performance Intelligence, Reporting &amp; Market Tracking</span></div>
+
+    <div class="ss-item">
+      {{-- magnifier: SEO / search --}}
+      <svg class="ss-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+      <span class="ss-label">Programmatic SEO &amp; Market Expansion</span>
+    </div>
+
+    <div class="ss-item">
+      {{-- code brackets: web development --}}
+      <svg class="ss-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+      <span class="ss-label">Website Development &amp; Conversion Architecture</span>
+    </div>
+
+    <div class="ss-item">
+      {{-- trending arrow: paid media growth --}}
+      <svg class="ss-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg>
+      <span class="ss-label">Paid Media Strategy &amp; Campaign Growth</span>
+    </div>
+
+    <div class="ss-item">
+      {{-- precision crosshair: brand / market delivery --}}
+      <svg class="ss-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
+      <span class="ss-label">Brand, Creative Direction &amp; Market Delivery</span>
+    </div>
+
+    <div class="ss-item">
+      {{-- pen/edit: WordPress management --}}
+      <svg class="ss-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+      <span class="ss-label">WordPress Management &amp; Technical Support</span>
+    </div>
+
+    <div class="ss-item">
+      {{-- broadcast arcs: content / search signals --}}
+      <svg class="ss-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="2"/><path d="M8.5 9a5 5 0 0 0 0 6"/><path d="M15.5 9a5 5 0 0 1 0 6"/><path d="M5 6A11 11 0 0 0 5 18"/><path d="M19 6a11 11 0 0 1 0 12"/></svg>
+      <span class="ss-label">Content Strategy &amp; Search Signal Architecture</span>
+    </div>
+
+    <div class="ss-item">
+      {{-- schema CPU grid: structured data / technical SEO --}}
+      <svg class="ss-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="4" width="16" height="16" rx="2"/><rect x="9" y="9" width="6" height="6"/><path d="M9 1v3M15 1v3M9 20v3M15 20v3M1 9h3M1 15h3M20 9h3M20 15h3"/></svg>
+      <span class="ss-label">Schema Markup &amp; Technical SEO</span>
+    </div>
+
+    <div class="ss-item">
+      {{-- bar chart: performance / market tracking --}}
+      <svg class="ss-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+      <span class="ss-label">Performance Intelligence &amp; Market Tracking</span>
+    </div>
+
   </div>
-  <p class="ss-note">One agreement. One team. Every capability required — nothing outsourced, nothing disconnected.</p>
+  <p class="ss-note">One agreement. Every capability. Nothing outsourced, nothing disconnected.</p>
 </div>
 
 <div class="gold-rule"></div>
@@ -3644,7 +4256,7 @@ body::before{
     <a href="{{ route('onboarding.start') }}" class="btn-primary">Start My Market Setup</a>
   </div>
   <p class="pricing-cta-meta">No commitment &nbsp;&middot;&nbsp; Access reviewed individually &nbsp;&middot;&nbsp; Takes ~2 minutes</p>
-  <p class="pricing-cta-trust">Secure checkout via Stripe &nbsp;&middot;&nbsp; Modern payment support</p>
+  <p class="pricing-cta-trust">Private onboarding &nbsp;&middot;&nbsp; Client fit reviewed individually &nbsp;&middot;&nbsp; 4-month minimum engagement</p>
 </div>
 
 <!-- ════════════ FINAL CLOSE ════════════ -->
@@ -3660,18 +4272,18 @@ body::before{
     <div class="settle-cards">
 
       <div class="settle-card r">
-        <span class="settle-card-hed">Secure. Flexible. Modern.</span>
-        <p class="settle-card-body">Payments are handled through Stripe with support for cards, Link, and modern digital payment methods. Crypto-ready infrastructure allows flexible settlement without complexity.</p>
+        <span class="settle-card-hed">Your Data. Your Domain.</span>
+        <p class="settle-card-body">Everything we build lives on your domain, under your control.<br>No rented presence. No shared infrastructure. No borrowed authority.</p>
       </div>
 
       <div class="settle-card r">
-        <span class="settle-card-hed">Verified. Structured.</span>
-        <p class="settle-card-body">No automated billing. Every engagement is reviewed, confirmed, and activated intentionally.</p>
+        <span class="settle-card-hed">Reviewed Before We Begin.</span>
+        <p class="settle-card-body">We do not onboard every business.<br>Each engagement is reviewed for market fit, growth potential, and operational readiness before activation.</p>
       </div>
 
       <div class="settle-card r">
-        <span class="settle-card-hed">Confirmed Before Payment</span>
-        <p class="settle-card-body">Your market position is reviewed and approved before activation. This is not self-service access.</p>
+        <span class="settle-card-hed">Built as a Real Engagement.</span>
+        <p class="settle-card-body">This is a 4-month minimum engagement designed to build real market position.<br>Not a quick fix. Not a one-off project. Not a Fiverr-style SEO service.</p>
       </div>
 
     </div>
@@ -3736,12 +4348,14 @@ body::before{
 </script>
 
 <!-- ════════════ TERRITORY PREVIEW ════════════ -->
-<section id="preview" style="padding:56px 40px;text-align:center;border-top:1px solid rgba(200,168,75,.06)">
-  <p style="font-family:'Cormorant Garamond',serif;font-size:clamp(1.7rem,4vw,2.5rem);font-weight:400;color:rgba(237,232,222,.95);margin-bottom:12px;line-height:1.2">Explore your territory first.</p>
-  <p style="font-size:.84rem;letter-spacing:.12em;text-transform:uppercase;color:rgba(200,168,75,.88);margin-bottom:20px;font-weight:400">See what's available in your territory.</p>
-  <p style="font-size:.92rem;color:rgba(168,168,160,.88);max-width:480px;margin:0 auto 28px;line-height:1.8">Share your site and we'll map what's available in your territory — including gaps, missed coverage, and positions competitors may take if left open.</p>
-  <a href="{{ route('onboarding.start') }}" class="btn-primary">Check Your Market Position &rarr;</a>
-  <p style="font-size:.72rem;letter-spacing:.10em;text-transform:uppercase;color:rgba(200,168,75,.88);margin-top:14px;font-weight:400">Territories close as agreements are secured.</p>
+<section id="preview" style="padding:64px 40px;text-align:center;border-top:1px solid rgba(200,168,75,.09);position:relative;overflow:hidden">
+  <div style="pointer-events:none;position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:600px;height:320px;background:radial-gradient(ellipse,rgba(200,168,75,.045) 0%,transparent 68%);z-index:0" aria-hidden="true"></div>
+  <p style="font-size:.72rem;letter-spacing:.22em;text-transform:uppercase;color:rgba(200,168,75,.72);margin-bottom:20px;font-weight:500">Your market is active now</p>
+  <p style="font-family:'Cormorant Garamond',serif;font-size:clamp(2rem,4.5vw,3rem);font-weight:300;color:rgba(237,232,222,.97);margin-bottom:18px;line-height:1.15">Positions are being claimed.<br><em>Be the one who moves first.</em></p>
+  <p style="font-size:.96rem;color:rgba(168,168,160,.82);max-width:460px;margin:0 auto 12px;line-height:1.8">Delay gives competitors time to take ground in your market.</p>
+  <p style="font-family:'Cormorant Garamond',serif;font-size:1.05rem;font-style:italic;color:rgba(237,232,222,.46);margin-bottom:32px">First movers hold the ground.</p>
+  <a href="{{ route('onboarding.start') }}" class="btn-primary">Turn your content into AI answers</a>
+  <p style="font-size:.68rem;letter-spacing:.14em;text-transform:uppercase;color:rgba(200,168,75,.62);margin-top:16px;font-weight:400">Territories narrow as engagements are secured &nbsp;&middot;&nbsp; Access reviewed individually</p>
 </section>
 
 <!-- ════════════ CONTACT ════════════ -->
@@ -3877,8 +4491,8 @@ body::before{
   <div class="gate-box">
     <div class="gate-icon">◈</div>
     <span class="gate-badge">Activation Required</span>
-    <h2 class="gate-title">Secure your<br><em>position.</em></h2>
-    <p class="gate-desc">Activate your market expansion system.<br><br>This includes:<br><strong>• Structured service + location pages<br>• Internal linking and authority signals<br>• AI-driven expansion across your territory</strong><br><br>Deployed and managed under a single system.</p>
+    <h2 class="gate-title">Make your site<br><em>the answer.</em></h2>
+    <p class="gate-desc">Deploy the AI Citation Engine&#8482; into your existing site.<br><br>This includes:<br><strong>&#8226; Structured service + location pages<br>&#8226; Schema, internal linking, and AI guidance signals<br>&#8226; Citation infrastructure across your full service area</strong><br><br>Deployed and managed under a single agreement.</p>
     <div class="gate-tiers">
       <div class="gate-tier" data-tier="expansion">
         <div class="gate-tier-name">Expansion</div>
@@ -3909,7 +4523,7 @@ body::before{
   <p style="text-align:center;font-size:.72rem;color:var(--muted);margin:6px 0 4px">
     <a href="mailto:hello@seoaico.com" style="color:var(--muted);text-decoration:none">hello@seoaico.com</a>
   </p>
-  <p style="text-align:center;font-size:.6rem;color:rgba(168,168,160,.28);max-width:540px;margin:0 auto 8px;line-height:1.65">SEO AI Co™ is a programmatic SEO and market intelligence system for operators competing in active markets. This platform maps local search visibility and identifies expansion opportunities.</p>
+  <p style="text-align:center;font-size:.6rem;color:rgba(168,168,160,.28);max-width:540px;margin:0 auto 8px;line-height:1.65">SEO AI Co™ operates the AI Citation Engine&#8482; — structuring content for extraction and citation by AI systems across Google AI Overviews, ChatGPT, and Perplexity. Built for local service businesses competing in active markets.</p>
   <div style="display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:6px 14px;opacity:.22;margin-bottom:10px" aria-label="Platform integrations">
     <span style="font-size:.52rem;letter-spacing:.12em;text-transform:uppercase;color:#c8a84b">Google Analytics</span>
     <span style="color:#c8a84b;font-size:.5rem">&middot;</span>

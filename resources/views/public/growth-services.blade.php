@@ -13,6 +13,11 @@
 <title>SEO, Ads &amp; Web Design for Growing Businesses | SEO AI Co™</title>
 <meta name="description" content="Full-service growth from SEO AI Co™ — web design, WordPress development, Google Ads, and brand systems built to help your business get found and grow.">
 <link rel="canonical" href="{{ url('/growth-services') }}">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="SEO AI Co™">
+<meta property="og:title" content="SEO, Ads &amp; Web Design for Growing Businesses | SEO AI Co™">
+<meta property="og:description" content="Full-service growth from SEO AI Co™ — web design, WordPress development, Google Ads, and brand systems built to help your business get found and grow.">
+<meta property="og:url" content="{{ url('/growth-services') }}">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">

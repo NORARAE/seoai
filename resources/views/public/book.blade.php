@@ -22,6 +22,11 @@
 <title>Book a Free Market Strategy Session | SEO AI Co™</title>
 <meta name="description" content="Not a sales call — a focused session where we map out exactly where your business can show up in search and what steps get you there.">
 <link rel="canonical" href="{{ url('/book') }}">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="SEO AI Co™">
+<meta property="og:title" content="Book a Free Market Strategy Session | SEO AI Co™">
+<meta property="og:description" content="Not a sales call — a focused session where we map out exactly where your business can show up in search and what steps get you there.">
+<meta property="og:url" content="{{ url('/book') }}">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">

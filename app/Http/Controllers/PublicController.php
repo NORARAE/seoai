@@ -269,4 +269,74 @@ class PublicController extends Controller
     {
         return view('public.ai-seo-for-chatgpt-geo-aeo');
     }
+
+    public function whatIsAiSearchOptimization(): View
+    {
+        return view('public.what-is-ai-search-optimization');
+    }
+
+    public function aiSearchOptimization(): View
+    {
+        return view('public.ai-search-optimization');
+    }
+
+    public function aiSearchOptimizationGuide(): View
+    {
+        return view('public.ai-search-optimization-guide');
+    }
+
+    public function aiCitationEngine(): View
+    {
+        return view('public.ai-citation-engine');
+    }
+
+    public function about(): View
+    {
+        return view('public.about');
+    }
+
+    public function aiCitationTracking(): View
+    {
+        return view('public.ai-citation-tracking');
+    }
+
+    public function howAiSearchWorks(): View
+    {
+        return view('public.how-ai-search-works');
+    }
+
+    public function howAiRetrievesContent(): View
+    {
+        return view('public.how-ai-retrieves-content');
+    }
+
+    public function howChatgptChoosesSources(): View
+    {
+        return view('public.how-chatgpt-chooses-sources');
+    }
+
+    public function optimizeForAiAnswers(): View
+    {
+        return view('public.optimize-for-ai-answers');
+    }
+
+    public function programmaticSeoPlatform(): View
+    {
+        return view('public.programmatic-seo-platform');
+    }
+
+    public function chatgptSeo(): View
+    {
+        return view('public.chatgpt-seo');
+    }
+
+    public function localAiSearch(): View
+    {
+        return view('public.local-ai-search');
+    }
+
+    public function searchPresenceEngine(): View
+    {
+        return view('public.search-presence-engine');
+    }
 }
