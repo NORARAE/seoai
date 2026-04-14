@@ -155,7 +155,11 @@ class User extends Authenticatable
     public function canApproveUsers(): bool
     {
         return in_array($this->role, [
-            'super_admin', 'superadmin', 'admin', 'owner', 'account_manager',
+            'super_admin',
+            'superadmin',
+            'admin',
+            'owner',
+            'account_manager',
         ], true);
     }
 

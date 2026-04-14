@@ -369,7 +369,7 @@ footer{border-top:1px solid var(--border);padding:28px 48px;display:flex;flex-di
         <div class="upsell-name">Citation Builder</div>
         <div class="upsell-price"><sup>$</sup>249</div>
         <p class="upsell-desc">Full opportunity mapping, FAQ optimization, entity structure, internal linking plan, and actionable fixes delivered within two weeks.</p>
-        <a href="{{ route('onboarding.start') }}?plan=citation-builder" class="upsell-cta">Get Citation Builder</a>
+        <a href="{{ route('onboarding.start') }}?plan=citation-builder&scan_id={{ $scan->id }}" class="upsell-cta">Get Citation Builder</a>
       </div>
 
       <div class="upsell-card featured">
@@ -377,7 +377,7 @@ footer{border-top:1px solid var(--border);padding:28px 48px;display:flex;flex-di
         <div class="upsell-name">Authority Engine</div>
         <div class="upsell-price"><sup>$</sup>499</div>
         <p class="upsell-desc">Everything in Citation Builder plus AI-generated content structures, schema deployment, citation scoring system, and 4-month roadmap.</p>
-        <a href="{{ route('onboarding.start') }}?plan=authority-engine" class="upsell-cta">Get Authority Engine</a>
+        <a href="{{ route('onboarding.start') }}?plan=authority-engine&scan_id={{ $scan->id }}" class="upsell-cta">Get Authority Engine</a>
       </div>
 
     </div>

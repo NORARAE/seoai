@@ -8,6 +8,7 @@ use App\Models\Booking;
 use App\Models\FunnelEvent;
 use App\Models\Lead;
 use App\Models\OnboardingSubmission;
+use App\Models\QuickScan;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
@@ -29,6 +30,10 @@ class OnboardingController extends Controller
             ? $request->query('tier')
             : null;
 
+        // Quick Scan project linkage
+        $scanId = (int) $request->query('scan_id', 0);
+        $plan = $request->query('plan');
+
         // Preview mode — no booking required
         if ($bookingId === 0) {
             FunnelEvent::fire(FunnelEvent::ONBOARDING_STARTED);
@@ -36,6 +41,8 @@ class OnboardingController extends Controller
                 'booking' => null,
                 'isPreview' => true,
                 'tier' => $tier,
+                'scanId' => $scanId,
+                'plan' => $plan,
             ]);
         }
 
@@ -60,6 +67,8 @@ class OnboardingController extends Controller
             'booking' => $booking,
             'isPreview' => false,
             'tier' => $tier,
+            'scanId' => $scanId,
+            'plan' => $plan,
         ]);
     }
 
@@ -76,6 +85,8 @@ class OnboardingController extends Controller
 
         $validated = $request->validate([
             'booking_id' => 'nullable|integer|exists:bookings,id',
+            'scan_id' => 'nullable|integer|exists:quick_scans,id',
+            'plan' => 'nullable|in:citation-builder,authority-engine',
             'email' => 'nullable|email|max:255',
             'business_name' => 'required|string|max:255',
             'website' => 'nullable|string|max:500',
@@ -212,6 +223,19 @@ class OnboardingController extends Controller
             'team_size' => $validated['team_size'] ?? null,
             'submitted_at' => now(),
         ]);
+
+        // ── Link to Quick Scan project if scan_id provided ──────────────────
+        $scanId = (int) ($validated['scan_id'] ?? 0);
+        if ($scanId > 0) {
+            $scan = QuickScan::find($scanId);
+            if ($scan) {
+                $scan->update([
+                    'onboarding_submission_id' => $submission->id,
+                    'upgrade_plan' => $validated['plan'] ?? $scan->upgrade_plan,
+                    'upgrade_status' => $scan->upgrade_status ?? 'pending',
+                ]);
+            }
+        }
 
         // ── Advance CRM status ────────────────────────────────────────────────
         $existingTags = $lead->tags ?? [];

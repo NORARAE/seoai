@@ -67,7 +67,7 @@ class QuickScanResource extends Resource
                     ->searchable()
                     ->sortable()
                     ->limit(50)
-                    ->tooltip(fn (QuickScan $r): string => $r->url ?? ''),
+                    ->tooltip(fn(QuickScan $r): string => $r->url ?? ''),
 
                 TextColumn::make('user.name')
                     ->label('User')
@@ -77,7 +77,7 @@ class QuickScanResource extends Resource
                 TextColumn::make('score')
                     ->sortable()
                     ->badge()
-                    ->color(fn (?int $state): string => match (true) {
+                    ->color(fn(?int $state): string => match (true) {
                         $state === null => 'gray',
                         $state >= 70 => 'success',
                         $state >= 40 => 'warning',
@@ -87,7 +87,7 @@ class QuickScanResource extends Resource
                 TextColumn::make('status')
                     ->badge()
                     ->sortable()
-                    ->color(fn (string $state): string => match ($state) {
+                    ->color(fn(string $state): string => match ($state) {
                         'scanned' => 'success',
                         'paid' => 'info',
                         'pending' => 'gray',
@@ -95,11 +95,37 @@ class QuickScanResource extends Resource
                         default => 'gray',
                     }),
 
+                TextColumn::make('upgrade_plan')
+                    ->label('Plan')
+                    ->badge()
+                    ->placeholder('—')
+                    ->formatStateUsing(fn(?string $state): string => match ($state) {
+                        'citation-builder' => 'Citation Builder',
+                        'authority-engine' => 'Authority Engine',
+                        default => $state ?? '',
+                    })
+                    ->color(fn(?string $state): string => match ($state) {
+                        'citation-builder' => 'info',
+                        'authority-engine' => 'warning',
+                        default => 'gray',
+                    }),
+
+                TextColumn::make('upgrade_status')
+                    ->label('Upgrade')
+                    ->badge()
+                    ->placeholder('—')
+                    ->color(fn(?string $state): string => match ($state) {
+                        'paid', 'active' => 'success',
+                        'pending' => 'warning',
+                        'completed' => 'info',
+                        default => 'gray',
+                    }),
+
                 TextColumn::make('paid')
                     ->label('Paid')
                     ->badge()
-                    ->formatStateUsing(fn (bool $state): string => $state ? 'Yes' : 'No')
-                    ->color(fn (bool $state): string => $state ? 'success' : 'gray'),
+                    ->formatStateUsing(fn(bool $state): string => $state ? 'Yes' : 'No')
+                    ->color(fn(bool $state): string => $state ? 'success' : 'gray'),
 
                 TextColumn::make('created_at')
                     ->label('Created')

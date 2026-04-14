@@ -1218,6 +1218,8 @@ body {
   <form method="POST" action="{{ route('onboarding.submit') }}" novalidate id="ob-form">
     @csrf
     <input type="hidden" name="booking_id" value="{{ $booking->id ?? '' }}">
+    <input type="hidden" name="scan_id" value="{{ $scanId ?? '' }}">
+    <input type="hidden" name="plan" value="{{ $plan ?? '' }}">
 
     {{-- ══════════════════════════════════════════════════
          STEP 1 — Basic Profile

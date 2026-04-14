@@ -23,6 +23,11 @@ class QuickScan extends Model
         'status',
         'emails_sent',
         'scanned_at',
+        'upgrade_plan',
+        'upgrade_status',
+        'upgrade_stripe_session_id',
+        'upgraded_at',
+        'onboarding_submission_id',
     ];
 
     protected $casts = [
@@ -33,6 +38,7 @@ class QuickScan extends Model
         'strengths' => 'array',
         'raw_checks' => 'array',
         'scanned_at' => 'datetime',
+        'upgraded_at' => 'datetime',
     ];
 
     const STATUS_PENDING = 'pending';
@@ -43,5 +49,20 @@ class QuickScan extends Model
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function onboardingSubmission(): BelongsTo
+    {
+        return $this->belongsTo(OnboardingSubmission::class);
+    }
+
+    public function isUpgraded(): bool
+    {
+        return $this->upgrade_plan !== null && $this->upgrade_status === 'paid';
+    }
+
+    public function domain(): string
+    {
+        return parse_url($this->url, PHP_URL_HOST) ?? $this->url;
     }
 }

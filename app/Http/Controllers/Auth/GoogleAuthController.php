@@ -20,7 +20,7 @@ class GoogleAuthController extends Controller
      */
     public function redirect(): RedirectResponse
     {
-        if (! $this->isEnabled()) {
+        if (!$this->isEnabled()) {
             abort(404);
         }
 
@@ -34,7 +34,7 @@ class GoogleAuthController extends Controller
      */
     public function callback(): RedirectResponse
     {
-        if (! $this->isEnabled()) {
+        if (!$this->isEnabled()) {
             abort(404);
         }
 
@@ -42,7 +42,7 @@ class GoogleAuthController extends Controller
         if (request()->has('error')) {
             Log::info('Google OAuth: user denied or error returned', [
                 'error' => request('error'),
-                'ip'    => request()->ip(),
+                'ip' => request()->ip(),
             ]);
 
             return redirect()->route('filament.admin.auth.login')
@@ -54,7 +54,7 @@ class GoogleAuthController extends Controller
         } catch (\Throwable $e) {
             Log::warning('Google OAuth: callback exception', [
                 'message' => $e->getMessage(),
-                'ip'      => request()->ip(),
+                'ip' => request()->ip(),
             ]);
 
             return redirect()->route('filament.admin.auth.login')
@@ -72,12 +72,12 @@ class GoogleAuthController extends Controller
 
         // Domain restriction
         $allowedDomains = $this->getAllowedDomains();
-        if (! empty($allowedDomains)) {
+        if (!empty($allowedDomains)) {
             $emailDomain = Str::after($email, '@');
-            if (! in_array($emailDomain, $allowedDomains, true)) {
+            if (!in_array($emailDomain, $allowedDomains, true)) {
                 Log::info('Google OAuth: domain not allowed', [
                     'domain' => $emailDomain,
-                    'ip'     => request()->ip(),
+                    'ip' => request()->ip(),
                 ]);
 
                 return redirect()->route('filament.admin.auth.login')
@@ -90,11 +90,11 @@ class GoogleAuthController extends Controller
         $user = User::where('google_id', $googleUser->getId())->first()
             ?? User::where('email', $email)->first();
 
-        if (! $user) {
-            if (! config('services.google_login.auto_provision', false)) {
+        if (!$user) {
+            if (!config('services.google_login.auto_provision', false)) {
                 Log::info('Google OAuth: no account, auto-provision disabled', [
                     'email' => $email,
-                    'ip'    => request()->ip(),
+                    'ip' => request()->ip(),
                 ]);
 
                 return redirect()->route('filament.admin.auth.login')
@@ -103,20 +103,20 @@ class GoogleAuthController extends Controller
 
             // Auto-provision: create account, unapproved by default.
             $user = User::create([
-                'name'              => $googleUser->getName() ?: Str::before($email, '@'),
-                'email'             => $email,
-                'password'          => Hash::make(Str::random(40)),
-                'google_id'         => $googleUser->getId(),
-                'google_avatar'     => $googleUser->getAvatar(),
-                'auth_provider'     => 'google',
+                'name' => $googleUser->getName() ?: Str::before($email, '@'),
+                'email' => $email,
+                'password' => Hash::make(Str::random(40)),
+                'google_id' => $googleUser->getId(),
+                'google_avatar' => $googleUser->getAvatar(),
+                'auth_provider' => 'google',
                 'email_verified_at' => now(),
-                'role'              => config('services.google_login.default_role', 'viewer'),
-                'approved'          => false,
-                'last_login_at'     => now(),
-                'signup_ip'         => request()->ip(),
+                'role' => config('services.google_login.default_role', 'viewer'),
+                'approved' => false,
+                'last_login_at' => now(),
+                'signup_ip' => request()->ip(),
                 'signup_user_agent' => substr((string) request()->userAgent(), 0, 512),
-                'signup_referrer'   => substr((string) request()->headers->get('referer', ''), 0, 512) ?: null,
-                'signup_source'     => 'google-oauth',
+                'signup_referrer' => substr((string) request()->headers->get('referer', ''), 0, 512) ?: null,
+                'signup_source' => 'google-oauth',
             ]);
 
             Log::info('Google OAuth: auto-provisioned new user', ['email' => $email]);
@@ -144,23 +144,23 @@ class GoogleAuthController extends Controller
             ->update(['user_id' => $user->id]);
 
         // Auto-approve users who have at least one paid scan.
-        if (! $user->isApproved() && $user->quickScans()->where('paid', true)->exists()) {
+        if (!$user->isApproved() && $user->quickScans()->where('paid', true)->exists()) {
             $user->update(['approved' => true]);
         }
 
         Log::info('Google OAuth: login successful', [
-            'user_id'      => $user->id,
-            'email'        => $user->email,
+            'user_id' => $user->id,
+            'email' => $user->email,
             'scans_linked' => $linked,
         ]);
 
         // Approval check: unapproved non-staff users go to pending page.
-        if (! $user->isPrivilegedStaff() && ! $user->isApproved()) {
+        if (!$user->isPrivilegedStaff() && !$user->isApproved()) {
             return redirect()->route('pending-approval');
         }
 
         // Approved but onboarding not yet complete
-        if (! $user->isPrivilegedStaff() && $user->isApproved() && is_null($user->onboarding_completed_at)) {
+        if (!$user->isPrivilegedStaff() && $user->isApproved() && is_null($user->onboarding_completed_at)) {
             return redirect()->route('user.onboarding');
         }
 

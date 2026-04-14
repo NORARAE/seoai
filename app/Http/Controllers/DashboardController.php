@@ -27,7 +27,7 @@ class DashboardController extends Controller
 
         // Action queue - things that need attention
         $actionQueue = [
-            'missing_meta' => LocationPage::where(function($query) {
+            'missing_meta' => LocationPage::where(function ($query) {
                 $query->whereNull('meta_title')
                     ->orWhereNull('meta_description')
                     ->orWhere('meta_title', '')
@@ -47,10 +47,13 @@ class DashboardController extends Controller
             ->map(function ($page) {
                 // Format location inline instead of calling method
                 $locationParts = [];
-                if ($page->city) $locationParts[] = $page->city->name;
-                if ($page->county) $locationParts[] = $page->county->name;
-                if ($page->state) $locationParts[] = $page->state->code;
-                
+                if ($page->city)
+                    $locationParts[] = $page->city->name;
+                if ($page->county)
+                    $locationParts[] = $page->county->name;
+                if ($page->state)
+                    $locationParts[] = $page->state->code;
+
                 return [
                     'id' => $page->id,
                     'title' => $page->title,
@@ -84,16 +87,11 @@ class DashboardController extends Controller
             ->pluck('count', 'content_quality_status')
             ->toArray();
 
-        // Quick Scan data for the logged-in user
+        // Quick Scan data for the logged-in user — treat as projects
         $user = Auth::user();
-        $latestScan = $user->quickScans()
-            ->where('status', QuickScan::STATUS_SCANNED)
+        $scanProjects = $user->quickScans()
+            ->whereIn('status', [QuickScan::STATUS_SCANNED, QuickScan::STATUS_PAID])
             ->latest()
-            ->first();
-        $scanHistory = $user->quickScans()
-            ->where('status', QuickScan::STATUS_SCANNED)
-            ->latest()
-            ->take(10)
             ->get();
         $totalScans = $user->quickScans()->count();
 
@@ -105,8 +103,7 @@ class DashboardController extends Controller
             'scoreDistribution',
             'statusBreakdown',
             'contentQualityBreakdown',
-            'latestScan',
-            'scanHistory',
+            'scanProjects',
             'totalScans'
         ));
     }
@@ -117,17 +114,17 @@ class DashboardController extends Controller
     protected function calculateSystemHealth(): array
     {
         $totalPages = LocationPage::count();
-        
+
         if ($totalPages === 0) {
             return [
                 'score' => 0,
                 'grade' => 'No Data',
                 'color' => 'gray',
                 'metrics' => [
-                    'render'  => 0,
-                    'meta'    => 0,
-                    'links'   => 0,
-                    'schema'  => 0,
+                    'render' => 0,
+                    'meta' => 0,
+                    'links' => 0,
+                    'schema' => 0,
                     'quality' => 0,
                 ],
             ];
@@ -172,29 +169,33 @@ class DashboardController extends Controller
 
     protected function getGradeAndColor(int $score): array
     {
-        if ($score >= 90) return ['Excellent', 'green'];
-        if ($score >= 80) return ['Good', 'blue'];
-        if ($score >= 70) return ['Fair', 'yellow'];
-        if ($score >= 50) return ['Needs Work', 'orange'];
+        if ($score >= 90)
+            return ['Excellent', 'green'];
+        if ($score >= 80)
+            return ['Good', 'blue'];
+        if ($score >= 70)
+            return ['Fair', 'yellow'];
+        if ($score >= 50)
+            return ['Needs Work', 'orange'];
         return ['Critical', 'red'];
     }
 
     protected function formatLocation(LocationPage $page): string
     {
         $parts = [];
-        
+
         if ($page->city) {
             $parts[] = $page->city->name;
         }
-        
+
         if ($page->county) {
             $parts[] = $page->county->name;
         }
-        
+
         if ($page->state) {
             $parts[] = $page->state->code;
         }
-        
+
         return implode(', ', $parts);
     }
 }
