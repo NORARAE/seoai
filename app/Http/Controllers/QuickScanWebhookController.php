@@ -53,6 +53,8 @@ class QuickScanWebhookController extends Controller
             return response()->json(['message' => 'Invalid signature.'], Response::HTTP_BAD_REQUEST);
         }
 
+        Log::info('QuickScan webhook: received', ['event_type' => $event->type, 'event_id' => $event->id]);
+
         // ── Only handle checkout.session.completed ────────────────────────
         if ($event->type !== 'checkout.session.completed') {
             return response()->json(['message' => 'Event type not handled.', 'event' => $event->type]);
@@ -86,11 +88,6 @@ class QuickScanWebhookController extends Controller
             return response()->json(['message' => 'Scan not found.']);
         }
 
-        // Idempotent: already processed by the synchronous result handler.
-        if ($scan->status === QuickScan::STATUS_SCANNED) {
-            return response()->json(['message' => 'Already scanned.', 'scan_id' => $scanId]);
-        }
-
         // Mark paid (idempotent — may already be paid from result handler)
         if (!$scan->paid) {
             $scan->update([
@@ -98,14 +95,20 @@ class QuickScanWebhookController extends Controller
                 'stripe_session_id' => $session->id,
                 'status' => QuickScan::STATUS_PAID,
             ]);
+            Log::info('QuickScan webhook: marked paid', ['scan_id' => $scanId]);
         }
 
-        // Dispatch scan + email sequence
+        // Always dispatch — the job is fully idempotent:
+        //   - skips scan if already STATUS_SCANNED
+        //   - skips emails if emails_sent=true
+        //   - CRM upsert is updateOrCreate (safe to repeat)
         RunQuickScanJob::dispatch($scan->id);
 
         Log::info('QuickScan webhook: dispatched RunQuickScanJob', [
             'scan_id' => $scanId,
             'session_id' => $session->id,
+            'scan_status' => $scan->status,
+            'emails_sent' => $scan->emails_sent,
         ]);
 
         return response()->json(['message' => 'Scan queued.', 'scan_id' => $scanId]);

@@ -10,6 +10,7 @@ use App\Models\Lead;
 use App\Models\QuickScan;
 use App\Services\QuickScanService;
 use Illuminate\Bus\Queueable;
+use Illuminate\Contracts\Queue\ShouldBeUnique;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
@@ -17,16 +18,22 @@ use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 
-class RunQuickScanJob implements ShouldQueue
+class RunQuickScanJob implements ShouldQueue, ShouldBeUnique
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
     public int $tries = 2;
     public int $backoff = 30;
+    public int $uniqueFor = 300; // 5-minute window prevents duplicate dispatch
 
     public function __construct(
         public readonly int $scanId,
     ) {
+    }
+
+    public function uniqueId(): string
+    {
+        return (string) $this->scanId;
     }
 
     public function handle(QuickScanService $scanner): void
