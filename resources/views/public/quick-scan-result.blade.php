@@ -384,7 +384,7 @@ footer{border-top:1px solid var(--border);padding:28px 48px;display:flex;flex-di
 
     <p class="upsell-book">
       Not sure which plan fits? &nbsp;
-      <a href="{{ route('book') }}">Book a free 20-minute strategy call</a> — we'll map your market first.
+      <a href="{{ route('book.index') }}">Book a free 20-minute strategy call</a> — we'll map your market first.
     </p>
   </div>
 
