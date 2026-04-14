@@ -2963,7 +2963,7 @@ body::before{
       "legalName": "SEO AI Co™",
       "url": "https://seoaico.com",
       "logo": "https://seoaico.com/favicon.svg",
-      "description": "AI-powered programmatic SEO infrastructure for local service businesses. Hyper-local, structured, and built for AI and organic search.",
+      "description": "SEO AI Co™ operates the AI Citation Engine™ — structuring web content for extraction and citation by AI systems including Google AI Overviews, ChatGPT, and Perplexity. Built for local service businesses.",
       "sameAs": [],
       "contactPoint": {
         "@type": "ContactPoint",
@@ -2981,10 +2981,10 @@ body::before{
     {
       "@type": "Service",
       "@id": "https://seoaico.com/#service",
-      "name": "Programmatic SEO Infrastructure",
-      "serviceType": "SEO",
+      "name": "AI Citation Engine™",
+      "serviceType": "AI Citation & Search Visibility",
       "provider": { "@id": "https://seoaico.com/#org" },
-      "description": "AI-powered programmatic SEO for local service businesses. Hyper-local URL architecture, structured data, and internal link systems deployed at scale.",
+      "description": "The AI Citation Engine™ deploys structured pages, schema, and entity systems that make local service businesses the source AI systems cite across Google AI Overviews, ChatGPT, and Perplexity.",
       "areaServed": { "@type": "Country", "name": "United States" },
       "hasOfferCatalog": {
         "@type": "OfferCatalog",
@@ -3165,7 +3165,7 @@ body::before{
   <canvas class="hero-anim-canvas" id="heroAnimCanvas" aria-hidden="true"></canvas>
 
   <div class="hero-stage">
-    <h1 id="heroSeq" aria-label="Show Up in Every City You Serve. Get found across Google, ChatGPT, and AI — the new way to search.">Show Up in Every<br>City You Serve</h1>
+    <h1 id="heroSeq" aria-label="Be the Answer AI Returns. Structured for citation by Google AI Overviews, ChatGPT, and every AI search surface.">Be the Answer<br>AI Returns</h1>
   </div>
   <p class="hero-gold-accent">Structured for AI citation &#8202;&mdash;&#8202;built for Google, ChatGPT, and every AI search surface.</p>
   <p class="hero-note">You found us organically. We make AI systems cite you the same way.</p>
@@ -3308,7 +3308,7 @@ body::before{
   <div class="steps-section">
     <div class="steps-wrap">
       <p class="s-eye r">How It Works</p>
-      <h2 class="s-h r">Three steps to showing up<br><em>everywhere your customers search.</em></h2>
+      <h2 class="s-h r">Three steps to getting cited<br><em>everywhere your customers search.</em></h2>
       <div class="steps-panel r">
         <div class="steps-grid">
           <div class="step">
@@ -3326,8 +3326,8 @@ body::before{
           <div class="step">
             <div class="step-n">03</div>
             <div class="step-rule"></div>
-            <h3 class="step-title">You Start Showing Up</h3>
-            <p class="step-desc">Appear across Google, Bing, AI platforms, maps, and voice search — wherever your customers are searching.</p>
+            <h3 class="step-title">You Start Getting Cited</h3>
+            <p class="step-desc">Appear across Google, Bing, AI platforms, maps, and voice search &#8212; as the answer AI systems return to your customers.</p>
           </div>
         </div>
       </div>
@@ -3415,8 +3415,8 @@ body::before{
 <section class="access-section r">
 
   <div class="access-eyebrow">How It Works</div>
-  <h2 class="access-headline">Get found on Google,<br><em>ChatGPT, and AI search.</em></h2>
-  <p class="access-subline">We build the pages that put your business in front of customers &#8212; wherever they&#8217;re searching.</p>
+  <h2 class="access-headline">Get cited across Google,<br><em>ChatGPT, and AI search.</em></h2>
+  <p class="access-subline">We build the pages that make your business the answer AI returns &#8212; wherever your customers are searching.</p>
 
   <div class="access-grid">
 
@@ -3451,7 +3451,7 @@ body::before{
   </div><!-- /tier-grid-3 -->
 
   <div class="offer-fomo r">
-    <p class="offer-fomo-line">The businesses that show up first in search win the most customers. We help you get there first.</p>
+    <p class="offer-fomo-line">The businesses AI cites by default win the most customers. We make yours one of them.</p>
   </div>
 
 </section>
@@ -3566,7 +3566,7 @@ body::before{
     <div class="infra-pillars">
       <div class="infra-pillar">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
-        <span class="infra-pillar-title">Show Up Everywhere</span>
+        <span class="infra-pillar-title">Cited Everywhere</span>
         <span class="infra-pillar-desc">Every service and city structured to surface before competitors do.</span>
       </div>
       <div class="infra-pillar">
@@ -3716,7 +3716,7 @@ body::before{
 
       <div class="aud-card r">
         <span class="aud-tag">For Operators &amp; Business Owners</span>
-        <h3 class="aud-title">Get found everywhere<br><em>your customers are searching.</em></h3>
+        <h3 class="aud-title">Get cited wherever<br><em>your customers search.</em></h3>
         <p class="aud-body">SEO AI Co™ expands your domain across every service and city you serve &#8212; so you show up in Google, ChatGPT, and AI search results across your entire market.</p>
         <ul class="aud-list">
           <li><strong>Every service. Every city. Total coverage.</strong></li>
@@ -4263,7 +4263,7 @@ body::before{
 <div class="final-close r">
   <p class="fc-main">Your market will be claimed.</p>
   <p class="fc-question">The only question is — by whom.</p>
-  <p class="fc-tagline">First to structure. First to deploy. First to rank.</p>
+  <p class="fc-tagline">First to structure. First to deploy. First to be cited.</p>
 </div>
 
 <!-- ════════════ SETTLEMENT ════════════ -->
@@ -4663,11 +4663,11 @@ body::before{
     var el = document.getElementById('heroSeq');
     if(!el) return;
     var headlines = [
-      'Show Up in Every<br>City You Serve',
-      'Seen in Google.<br>Seen in AI.',
+      'Be the Answer<br>AI Returns',
+      'Cited in Google.<br>Cited in ChatGPT.',
       'Works with Your<br>Existing Site',
-      'Every Service.<br>Every City.',
-      'More Visibility.<br>Less Complexity.'
+      'Every Service.<br>Every City. Cited.',
+      'Structure That<br>Gets You Cited'
     ];
     var current = 0;
     var FADE  = 560;  // ms — must match CSS transition duration
