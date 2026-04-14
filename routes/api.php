@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Api\V1\LicenseController;
 use App\Http\Controllers\BookingWebhookController;
+use App\Http\Controllers\QuickScanWebhookController;
 use App\Http\Middleware\EnsureUserIsAdmin;
 use Illuminate\Support\Facades\Route;
 
@@ -13,6 +14,10 @@ Route::prefix('v1')->group(function (): void {
     // Register in Stripe Dashboard: checkout.session.completed
     // Must be excluded from CSRF (API routes skip CSRF by default).
     Route::post('/book/stripe-webhook', [BookingWebhookController::class, 'handle']);
+
+    // Quick Scan payment webhook — runs scan + email drip if user never returns.
+    // Register in Stripe Dashboard: checkout.session.completed
+    Route::post('/quick-scan/stripe-webhook', [QuickScanWebhookController::class, 'handle']);
 
     // Stripe checkout — public, called from WP plugin admin page.
     Route::post('/checkout', [LicenseController::class, 'createCheckoutSession'])->middleware('throttle:api-public');

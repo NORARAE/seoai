@@ -99,6 +99,11 @@ return [
         'webhook_secret' => env('STRIPE_BOOKING_WEBHOOK_SECRET'),
     ],
 
+    // Stripe webhook secret for the Quick Scan payment flow.
+    'stripe_quick_scan' => [
+        'webhook_secret' => env('STRIPE_QUICK_SCAN_WEBHOOK_SECRET'),
+    ],
+
     // Stripe tier price IDs for commitment-based billing.
     // monthly = recurring subscription price; activation = one-time invoice item.
     // These are resolved by recommended_tier at checkout — never exposed to the UI.

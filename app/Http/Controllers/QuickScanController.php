@@ -2,16 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Mail\QuickScanDay1;
-use App\Mail\QuickScanDay2;
-use App\Mail\QuickScanDay3;
-use App\Mail\QuickScanResult;
-use App\Models\Lead;
+use App\Jobs\RunQuickScanJob;
 use App\Models\QuickScan;
 use App\Services\QuickScanService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Mail;
 use Laravel\Cashier\Cashier;
 
 class QuickScanController extends Controller
@@ -98,7 +93,8 @@ class QuickScanController extends Controller
 
     /**
      * GET /quick-scan/result?session_id=cs_xxx&scan_id=yyy
-     * Verify payment, run scan, persist results, send email, show results.
+     * Verify payment, dispatch scan job, show results.
+     * The webhook provides a safety net if the user never reaches this page.
      */
     public function result(Request $request, QuickScanService $scanner)
     {
@@ -147,7 +143,8 @@ class QuickScanController extends Controller
             'status' => QuickScan::STATUS_PAID,
         ]);
 
-        // Run the scan
+        // Run scan synchronously so the user sees results immediately.
+        // RunQuickScanJob handles CRM + email drip (idempotent).
         $result = $scanner->scan($scan->url);
 
         $scan->update([
@@ -160,52 +157,9 @@ class QuickScanController extends Controller
         ]);
         $scan->refresh();
 
-        // Upsert CRM lead
-        try {
-            $lead = Lead::updateOrCreate(
-                ['email' => $scan->email],
-                [
-                    'website' => $scan->url,
-                    'source' => 'quick-scan',
-                    'lifecycle_stage' => Lead::STAGE_NEW,
-                    'score' => $scan->score,
-                    'tags' => array_merge(
-                        Lead::where('email', $scan->email)->value('tags') ?? [],
-                        ['quick-scan:purchased']
-                    ),
-                ]
-            );
-        } catch (\Throwable $e) {
-            Log::warning('QuickScan Lead upsert failed', ['scan_id' => $scan->id, 'error' => $e->getMessage()]);
-        }
-
-        // Email 1: Immediate result email
-        try {
-            Mail::to($scan->email)->queue(new QuickScanResult($scan));
-        } catch (\Throwable $e) {
-            Log::warning('QuickScan Email 1 failed', ['scan_id' => $scan->id, 'error' => $e->getMessage()]);
-        }
-
-        // Email 2: Day 1 follow-up
-        try {
-            Mail::to($scan->email)->later(now()->addDay(), new QuickScanDay1($scan));
-        } catch (\Throwable $e) {
-            Log::warning('QuickScan Email 2 (Day 1) schedule failed', ['scan_id' => $scan->id, 'error' => $e->getMessage()]);
-        }
-
-        // Email 3: Day 3 deepen
-        try {
-            Mail::to($scan->email)->later(now()->addDays(3), new QuickScanDay2($scan));
-        } catch (\Throwable $e) {
-            Log::warning('QuickScan Email 3 (Day 3) schedule failed', ['scan_id' => $scan->id, 'error' => $e->getMessage()]);
-        }
-
-        // Email 4: Day 5 conversion
-        try {
-            Mail::to($scan->email)->later(now()->addDays(5), new QuickScanDay3($scan));
-        } catch (\Throwable $e) {
-            Log::warning('QuickScan Email 4 (Day 5) schedule failed', ['scan_id' => $scan->id, 'error' => $e->getMessage()]);
-        }
+        // Dispatch job for CRM upsert + email sequence (idempotent — will
+        // see STATUS_SCANNED and skip the scan, then run CRM + emails).
+        RunQuickScanJob::dispatch($scan->id);
 
         return view('public.quick-scan-result', compact('scan'));
     }

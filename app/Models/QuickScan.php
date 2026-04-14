@@ -17,10 +17,12 @@ class QuickScan extends Model
         'fastest_fix',
         'raw_checks',
         'status',
+        'emails_sent',
     ];
 
     protected $casts = [
         'paid' => 'boolean',
+        'emails_sent' => 'boolean',
         'score' => 'integer',
         'issues' => 'array',
         'strengths' => 'array',
