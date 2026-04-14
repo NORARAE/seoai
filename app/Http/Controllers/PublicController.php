@@ -339,4 +339,9 @@ class PublicController extends Controller
     {
         return view('public.search-presence-engine');
     }
+
+    public function pricing(): View
+    {
+        return view('public.pricing');
+    }
 }

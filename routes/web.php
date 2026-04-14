@@ -69,6 +69,7 @@ Route::get('/ads-management', [PublicController::class, 'adsManagement'])->name(
 Route::get('/branding-print', [PublicController::class, 'brandingPrint'])->name('branding-print');
 Route::get('/access-plans', [PublicController::class, 'accessPlans'])->name('access-plans');
 Route::get('/ai-seo-for-chatgpt-geo-aeo', [PublicController::class, 'aiSeoGeoAeo'])->name('ai-seo-geo-aeo');
+Route::get('/pricing', [PublicController::class, 'pricing'])->name('pricing');
 
 // ── Category capture & authority pages ──
 Route::get('/what-is-ai-search-optimization', [PublicController::class, 'whatIsAiSearchOptimization'])->name('what-is-ai-search-optimization');
