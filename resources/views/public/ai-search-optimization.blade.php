@@ -108,7 +108,8 @@ body{background:var(--bg);color:var(--ivory);font-family:'DM Sans',sans-serif;fo
 
 /* ── Surface grid ── */
 .surface-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:2px;margin:32px 0}
-.surface-item{padding:28px 24px;background:var(--card);border:1px solid var(--border)}
+.surface-item{padding:28px 24px;background:var(--card);border:1px solid var(--border);transition:border-color .25s,transform .25s cubic-bezier(.23,1,.32,1),box-shadow .25s}
+.surface-item:hover{border-color:rgba(200,168,75,.18);transform:translateY(-2px);box-shadow:0 8px 24px rgba(0,0,0,.3)}
 .surface-name{font-family:'Cormorant Garamond',serif;font-size:1.1rem;font-weight:400;color:var(--ivory);margin-bottom:8px}
 .surface-desc{font-size:.82rem;color:var(--muted);line-height:1.65}
 
@@ -344,9 +345,9 @@ footer{border-top:1px solid var(--border);padding:32px 64px;display:flex;align-i
 
   <div class="divider"></div>
 
-  <h2 class="section-hed">How this connects to the <em>AI Citation Engine&#8482;</em></h2>
-  <p class="prose">Every pillar of AI search optimization &mdash; coverage, entity clarity, schema, extractable content &mdash; is operationalized through the AI Citation Engine&#8482;. The AI Citation Engine&#8482; is the infrastructure that turns AI search optimization strategy into deployed, citation-ready pages at scale.</p>
-  <p class="prose"><a href="{{ route('ai-citation-engine') }}">See how the AI Citation Engine&#8482; works &rarr;</a></p>
+  <h2 class="section-hed">How this connects to the <em>AI Citation Engine™</em></h2>
+  <p class="prose">Every pillar of AI search optimization &mdash; coverage, entity clarity, schema, extractable content &mdash; is operationalized through the AI Citation Engine™. The AI Citation Engine™ is the infrastructure that turns AI search optimization strategy into deployed, citation-ready pages at scale.</p>
+  <p class="prose"><a href="{{ route('ai-citation-engine') }}">See how the AI Citation Engine™ works &rarr;</a></p>
 
   <div class="divider"></div>
 
@@ -397,5 +398,6 @@ footer{border-top:1px solid var(--border);padding:32px 64px;display:flex;align-i
   </nav>
 </footer>
 
+@include('components.tm-style')
 </body>
 </html>

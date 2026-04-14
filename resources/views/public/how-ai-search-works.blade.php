@@ -275,7 +275,7 @@ footer{border-top:1px solid rgba(200,168,75,.07);padding:32px 40px;display:flex;
   <div class="page-cta">
     <span class="page-cta-eye">AI Citation Infrastructure</span>
     <h2>Make your content the <em>source AI systems cite.</em></h2>
-    <p>The AI Citation Engine&#8482; deploys the complete infrastructure needed to appear in AI-generated answers: entity definition, schema, extraction-optimized content, and programmatic coverage.</p>
+    <p>The AI Citation Engine™ deploys the complete infrastructure needed to appear in AI-generated answers: entity definition, schema, extraction-optimized content, and programmatic coverage.</p>
     <a href="{{ route('book.index') }}" class="cta-btn">Book a Market Review</a>
     <a href="{{ route('ai-citation-engine') }}" class="cta-ghost">See the AI Citation Engine™ →</a>
   </div>
@@ -295,5 +295,6 @@ footer{border-top:1px solid rgba(200,168,75,.07);padding:32px 40px;display:flex;
   </nav>
 </footer>
 
+@include('components.tm-style')
 </body>
 </html>

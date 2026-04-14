@@ -395,9 +395,9 @@ footer{border-top:1px solid var(--border);padding:32px 64px;display:flex;align-i
 
   <div class="divider"></div>
 
-  <h2 class="section-hed">How this connects to the <em>AI Citation Engine&#8482;</em></h2>
-  <p class="prose">Programmatic page generation is the coverage layer of the AI Citation Engine&#8482;. The platform generates the pages; the engine structures them for citation. Without programmatic deployment, the AI Citation Engine&#8482; cannot reach the full service-location matrix at scale.</p>
-  <p class="prose"><a href="{{ route('ai-citation-engine') }}">See how the AI Citation Engine&#8482; works &rarr;</a></p>
+  <h2 class="section-hed">How this connects to the <em>AI Citation Engine™</em></h2>
+  <p class="prose">Programmatic page generation is the coverage layer of the AI Citation Engine™. The platform generates the pages; the engine structures them for citation. Without programmatic deployment, the AI Citation Engine™ cannot reach the full service-location matrix at scale.</p>
+  <p class="prose"><a href="{{ route('ai-citation-engine') }}">See how the AI Citation Engine™ works &rarr;</a></p>
 
   <div class="divider"></div>
 
@@ -442,5 +442,6 @@ footer{border-top:1px solid var(--border);padding:32px 64px;display:flex;align-i
   </nav>
 </footer>
 
+@include('components.tm-style')
 </body>
 </html>

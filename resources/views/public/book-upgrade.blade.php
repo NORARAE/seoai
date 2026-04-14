@@ -130,5 +130,6 @@ body{background:var(--bg);color:var(--ivory);font-family:'DM Sans',sans-serif;fo
 <script>
   if(typeof gtag==='function'){gtag('event','view_upgrade',{booking_id:'{{ $booking->id ?? '' }}'});}
 </script>
+@include('components.tm-style')
 </body>
 </html>

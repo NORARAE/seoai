@@ -457,5 +457,6 @@ sup{font-size:.55em;line-height:0;vertical-align:super}
 })();
 </script>
 
+@include('components.tm-style')
 </body>
 </html>

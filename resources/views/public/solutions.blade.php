@@ -147,5 +147,6 @@ footer{border-top:1px solid var(--border);padding:32px 64px;display:flex;align-i
     <a href="/privacy">Privacy</a>
   </nav>
 </footer>
+@include('components.tm-style')
 </body>
 </html>

@@ -31,5 +31,6 @@
     Changed your mind? <a href="mailto:hello@seoaico.com">hello@seoaico.com</a>
   </p>
 </div>
+@include('components.tm-style')
 </body>
 </html>

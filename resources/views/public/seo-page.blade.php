@@ -554,5 +554,6 @@ footer{border-top:1px solid var(--border);padding:36px 64px;display:flex;flex-di
   btt.addEventListener('click', () => window.scrollTo({top: 0, behavior: 'smooth'}));
 </script>
 
+@include('components.tm-style')
 </body>
 </html>

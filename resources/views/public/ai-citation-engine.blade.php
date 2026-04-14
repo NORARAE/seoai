@@ -127,7 +127,8 @@ h1 em{font-style:italic;color:var(--gold-lt)}
 .compare-table tbody tr:last-child td{border-bottom:none}
 /* Components grid */
 .components-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:28px 0}
-.component-card{background:var(--card);border:1px solid var(--border);border-radius:5px;padding:22px 24px}
+.component-card{background:var(--card);border:1px solid var(--border);border-radius:5px;padding:22px 24px;transition:border-color .25s,transform .25s cubic-bezier(.23,1,.32,1),box-shadow .25s}
+.component-card:hover{border-color:rgba(200,168,75,.18);transform:translateY(-2px);box-shadow:0 8px 24px rgba(0,0,0,.3)}
 .component-card-num{font-size:.7rem;letter-spacing:.14em;color:var(--gold);opacity:.6;margin-bottom:6px}
 .component-card-title{font-size:.97rem;color:var(--ivory);font-weight:400;margin-bottom:8px}
 .component-card-text{font-size:.85rem;color:var(--muted);line-height:1.7}
@@ -190,15 +191,15 @@ footer{border-top:1px solid rgba(200,168,75,.07);padding:32px 40px;display:flex;
   <div class="snippet-band" aria-label="Quick answers">
     <div class="snippet-item">
       <p class="snippet-item-label">Short answer</p>
-      <p class="snippet-item-text">The AI Citation Engine&#8482; makes web content the source AI systems cite &#8212; deploying structured pages, schema, entity relationships, and sentence-level content optimized for retrieval.</p>
+      <p class="snippet-item-text">The AI Citation Engine™ makes web content the source AI systems cite &#8212; deploying structured pages, schema, entity relationships, and sentence-level content optimized for retrieval.</p>
     </div>
     <div class="snippet-item">
       <p class="snippet-item-label">Best answer</p>
-      <p class="snippet-item-text">The AI Citation Engine&#8482; operates across six layers &#8212; page architecture, entity definition, structured data, AI guidance, internal link topology, and programmatic content &#8212; to earn citations in AI-generated answers.</p>
+      <p class="snippet-item-text">The AI Citation Engine™ operates across six layers &#8212; page architecture, entity definition, structured data, AI guidance, internal link topology, and programmatic content &#8212; to earn citations in AI-generated answers.</p>
     </div>
     <div class="snippet-item">
       <p class="snippet-item-label">One sentence</p>
-      <p class="snippet-item-text">The AI Citation Engine&#8482; is a proprietary infrastructure system that structures web pages for extraction and citation by AI-powered search systems, including Google AI Overviews, ChatGPT, Perplexity, and Gemini.</p>
+      <p class="snippet-item-text">The AI Citation Engine™ is a proprietary infrastructure system that structures web pages for extraction and citation by AI-powered search systems, including Google AI Overviews, ChatGPT, Perplexity, and Gemini.</p>
     </div>
   </div>
 
@@ -414,5 +415,6 @@ footer{border-top:1px solid rgba(200,168,75,.07);padding:32px 40px;display:flex;
   </nav>
 </footer>
 
+@include('components.tm-style')
 </body>
 </html>

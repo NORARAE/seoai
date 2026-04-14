@@ -179,5 +179,6 @@ footer{border-top:1px solid var(--border);padding:36px 64px;display:flex;flex-di
   </nav>
 </footer>
 
+@include('components.tm-style')
 </body>
 </html>

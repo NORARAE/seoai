@@ -91,7 +91,8 @@ h1 em{font-style:italic;color:var(--gold-lt)}
 .prose a:hover{border-color:var(--gold)}
 .divider{height:1px;background:linear-gradient(to right,transparent,rgba(200,168,75,.12),transparent);margin:52px 0}
 .expertise-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:28px 0}
-.expertise-card{background:var(--card);border:1px solid var(--border);border-radius:5px;padding:22px 24px}
+.expertise-card{background:var(--card);border:1px solid var(--border);border-radius:5px;padding:22px 24px;transition:border-color .25s,transform .25s cubic-bezier(.23,1,.32,1),box-shadow .25s}
+.expertise-card:hover{border-color:rgba(200,168,75,.18);transform:translateY(-2px);box-shadow:0 8px 24px rgba(0,0,0,.3)}
 .expertise-card-title{font-size:.9rem;color:var(--ivory);font-weight:400;margin-bottom:8px}
 .expertise-card-text{font-size:.85rem;color:var(--muted);line-height:1.7}
 .concept-links{display:grid;grid-template-columns:1fr 1fr;gap:2px;margin:28px 0}
@@ -139,9 +140,9 @@ footer{border-top:1px solid rgba(200,168,75,.07);padding:32px 40px;display:flex;
   <h1>The AI Citation<br><em>Infrastructure</em> Company</h1>
   <p class="author-title">Built to make businesses the source AI systems cite.</p>
 
-  <p class="lead">SEOAIco builds the AI citation infrastructure layer for businesses &#8212; the technical and content architecture that structures web presence for extraction and citation by AI-powered search systems. We developed the AI Citation Engine&#8482; to deploy this infrastructure at scale across every service and market a business operates in.</p>
+  <p class="lead">SEOAIco builds the AI citation infrastructure layer for businesses &#8212; the technical and content architecture that structures web presence for extraction and citation by AI-powered search systems. We developed the AI Citation Engine™ to deploy this infrastructure at scale across every service and market a business operates in.</p>
 
-  <p class="prose">The shift from ranked results to AI-generated answers has changed how discoverability works. Our research and methodology center on one core question: <strong>what makes AI systems choose to cite one source over another?</strong> The answer &#8212; structured content, entity definition, schema, and geographic coverage &#8212; is the foundation of every engagement at SEO AI Co&#8482;.</p>
+  <p class="prose">The shift from ranked results to AI-generated answers has changed how discoverability works. Our research and methodology center on one core question: <strong>what makes AI systems choose to cite one source over another?</strong> The answer &#8212; structured content, entity definition, schema, and geographic coverage &#8212; is the foundation of every engagement at SEO AI Co™.</p>
 
   <p class="prose">We work with local service businesses and agencies to deploy citation infrastructure at scale: structured service-location pages, schema layers, llms.txt guidance, and the internal link architecture that AI systems use to establish topical authority.</p>
 
@@ -182,7 +183,7 @@ footer{border-top:1px solid rgba(200,168,75,.07);padding:32px 40px;display:flex;
 
   <p class="prose"><strong>AI citation is the new rank.</strong> Businesses that appear in AI-generated answers earn the click, the credibility, and the user&#8217;s intent &#8212; before they reach a ranked list. The infrastructure that earns citations is architectural, not content-volume based: pages need to define entities clearly, confirm geographic scope, provide schema confirmations, and structure sentences for extraction.</p>
 
-  <p class="prose">The AI Citation Engine&#8482; was built directly from this research: deploy the complete six-layer citation infrastructure &#8212; page architecture, entity definition, schema, AI guidance (llms.txt), internal link graph, and programmatic coverage &#8212; across an entire service area, not just a homepage.</p>
+  <p class="prose">The AI Citation Engine™ was built directly from this research: deploy the complete six-layer citation infrastructure &#8212; page architecture, entity definition, schema, AI guidance (llms.txt), internal link graph, and programmatic coverage &#8212; across an entire service area, not just a homepage.</p>
 
   <ul class="signal-list">
     <li><strong>AI systems prefer the clearest source</strong> &#8212; not always the highest-ranked one</li>
@@ -234,7 +235,7 @@ footer{border-top:1px solid rgba(200,168,75,.07);padding:32px 40px;display:flex;
   <div class="page-cta">
     <span class="page-cta-eye">Work with SEO AI Co™</span>
     <h2>Deploy the <em>AI Citation Engine™</em></h2>
-    <p>Book a market review to see where your business has citation gaps across Google AI Overviews, ChatGPT, and Perplexity &#8212; and how the AI Citation Engine&#8482; closes them.</p>
+    <p>Book a market review to see where your business has citation gaps across Google AI Overviews, ChatGPT, and Perplexity &#8212; and how the AI Citation Engine™ closes them.</p>
     <a href="{{ route('book.index') }}" class="cta-btn">Book a Market Review</a>
     <a href="{{ route('ai-citation-engine') }}" class="cta-ghost">See how the AI Citation Engine™ works →</a>
   </div>
@@ -254,5 +255,6 @@ footer{border-top:1px solid rgba(200,168,75,.07);padding:32px 40px;display:flex;
   </nav>
 </footer>
 
+@include('components.tm-style')
 </body>
 </html>

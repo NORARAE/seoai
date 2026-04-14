@@ -323,9 +323,9 @@ footer{border-top:1px solid var(--border);padding:32px 64px;display:flex;align-i
 
   <div class="divider"></div>
 
-  <h2 class="section-hed">How this connects to the <em>AI Citation Engine&#8482;</em></h2>
-  <p class="prose">Local AI search coverage is built by the AI Citation Engine&#8482; &mdash; generating one structured, schema-rich page per service-location pair across the full service area. The AI Citation Engine&#8482; is the deployment system that makes local AI citation possible at the market level.</p>
-  <p class="prose"><a href="{{ route('ai-citation-engine') }}">See how the AI Citation Engine&#8482; works &rarr;</a></p>
+  <h2 class="section-hed">How this connects to the <em>AI Citation Engine™</em></h2>
+  <p class="prose">Local AI search coverage is built by the AI Citation Engine™ &mdash; generating one structured, schema-rich page per service-location pair across the full service area. The AI Citation Engine™ is the deployment system that makes local AI citation possible at the market level.</p>
+  <p class="prose"><a href="{{ route('ai-citation-engine') }}">See how the AI Citation Engine™ works &rarr;</a></p>
 
   <div class="divider"></div>
 
@@ -370,5 +370,6 @@ footer{border-top:1px solid var(--border);padding:32px 64px;display:flex;align-i
   </nav>
 </footer>
 
+@include('components.tm-style')
 </body>
 </html>

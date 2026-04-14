@@ -188,7 +188,9 @@ nav.stuck{background:rgba(8,8,8,.95);backdrop-filter:blur(16px);border-color:var
   background:rgba(14,13,9,.6);
   padding:26px 24px;
   position:relative;
+  transition:border-color .25s,transform .25s cubic-bezier(.23,1,.32,1),box-shadow .25s;
 }
+.qs-check:hover{border-color:rgba(200,168,75,.16);transform:translateY(-2px);box-shadow:0 6px 20px rgba(0,0,0,.2)}
 .qs-check::before{
   content:'';position:absolute;top:0;left:0;right:0;height:1px;
   background:linear-gradient(90deg,transparent,rgba(200,168,75,.14),transparent);
@@ -365,5 +367,6 @@ footer{border-top:1px solid var(--border);padding:28px 48px;display:flex;flex-di
     spin.style.display = 'inline';
   });
 </script>
+@include('components.tm-style')
 </body>
 </html>

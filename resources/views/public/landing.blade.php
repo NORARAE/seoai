@@ -18,13 +18,13 @@
 <link rel="manifest" href="/site.webmanifest">
 <meta name="theme-color" content="#080808">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>The AI Citation Engine&#8482; for Local Service Businesses | SEO AI Co™</title>
-<meta name="description" content="SEO AI Co™ operates the AI Citation Engine&#8482; — structuring web content for extraction and citation by AI systems. Get cited by Google AI Overviews, ChatGPT, and Perplexity across every city you serve.">
+<title>The AI Citation Engine™ for Local Service Businesses | SEO AI Co™</title>
+<meta name="description" content="SEO AI Co™ operates the AI Citation Engine™ — structuring web content for extraction and citation by AI systems. Get cited by Google AI Overviews, ChatGPT, and Perplexity across every city you serve.">
 <link rel="canonical" href="{{ url('/') }}">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="SEO AI Co™">
-<meta property="og:title" content="The AI Citation Engine&#8482; for Local Service Businesses | SEO AI Co™">
-<meta property="og:description" content="SEO AI Co™ operates the AI Citation Engine&#8482; — structuring web content for extraction and citation by AI systems. Get cited by Google AI Overviews, ChatGPT, and Perplexity.">
+<meta property="og:title" content="The AI Citation Engine™ for Local Service Businesses | SEO AI Co™">
+<meta property="og:description" content="SEO AI Co™ operates the AI Citation Engine™ — structuring web content for extraction and citation by AI systems. Get cited by Google AI Overviews, ChatGPT, and Perplexity.">
 <meta property="og:url" content="{{ url('/') }}">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -2071,8 +2071,10 @@ body::before{
 .feat-grid-hed{font-family:'Cormorant Garamond',serif;font-size:clamp(1.4rem,2.8vw,2rem);font-weight:300;color:var(--ivory);line-height:1.25;margin:0 auto 36px;max-width:560px}
 .feat-grid-hed em{font-style:italic;color:var(--gold)}
 .feat-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:rgba(200,168,75,.07);max-width:900px;margin:0 auto}
-.feat-card{background:#080808;padding:28px 24px;text-align:left}
-.feat-card-icon{font-size:1.1rem;margin-bottom:12px;opacity:.7}
+.feat-card{background:#080808;padding:28px 24px;text-align:left;transition:background .25s,transform .25s cubic-bezier(.23,1,.32,1),box-shadow .25s}
+.feat-card:hover{background:#0e0d09;transform:translateY(-2px);box-shadow:0 8px 24px rgba(0,0,0,.35)}
+.feat-card:hover .feat-card-icon{opacity:1}
+.feat-card-icon{font-size:1.1rem;margin-bottom:12px;opacity:.7;transition:opacity .25s}
 .feat-card-title{font-size:.82rem;color:var(--ivory);font-weight:400;margin-bottom:8px;letter-spacing:.02em}
 .feat-card-body{font-size:.78rem;color:var(--muted);line-height:1.65}
 .feat-card-score{display:inline-block;font-size:.6rem;letter-spacing:.1em;text-transform:uppercase;color:rgba(200,168,75,.5);border:1px solid rgba(200,168,75,.15);padding:2px 8px;margin-top:10px}
@@ -3284,7 +3286,7 @@ body::before{
 
 <!-- ════════════ PRODUCT FEATURE GRID ════════════ -->
 <section class="feat-grid r" aria-label="What the AI Citation Engine checks">
-  <p class="feat-grid-eye">The AI Citation Engine&#8482; — 6 infrastructure layers</p>
+  <p class="feat-grid-eye">The AI Citation Engine™ — 6 infrastructure layers</p>
   <h2 class="feat-grid-hed">Everything AI needs to <em>cite you by default</em></h2>
   <div class="feat-cards">
     <div class="feat-card">
@@ -3339,7 +3341,7 @@ body::before{
         <span class="sys-gold-phrase">Every city.</span>
         <span class="sys-gold-phrase">Every search that matters.</span>
       </p>
-      <p class="sys-sub">We build structured, hyper-local pages on your domain — so you show up where your competitors don’t.</p>
+      <p class="sys-sub">We build structured, hyper-local pages on your domain — so you appear where your competitors can’t.</p>
       <div class="sys-clarity-block">
         <p class="sys-cl-unit">We build on your domain.</p>
         <p class="sys-cl-unit sys-cl-dim" style="margin-top:-14px">Not beside it.</p>
@@ -3441,7 +3443,7 @@ body::before{
           <div class="step">
             <div class="step-n">02</div>
             <div class="step-rule"></div>
-            <h3 class="step-title">We Deploy the<wbr> AI Citation Engine&#8482;</h3>
+            <h3 class="step-title">We Deploy the<wbr> AI Citation Engine™</h3>
             <p class="step-desc">Deploy structured pages directly into your existing site — built with schema, internal linking, and extraction-optimized content so AI systems cite you.</p>
           </div>
           <div class="step">
@@ -3494,7 +3496,7 @@ body::before{
 <!-- ════════════ AI CITATION ENGINE ════════════ -->
 <section class="ace-section r">
   <div class="ace-inner">
-    <p class="ace-eyebrow">AI Citation Engine&#8482;</p>
+    <p class="ace-eyebrow">AI Citation Engine™</p>
     <h2 class="ace-hed">How SEOAIco wins<br><em>in AI search.</em></h2>
     <p class="ace-sub">Five structural layers that make your business the source AI systems cite &#8212; not just a result they rank.</p>
     <div class="ace-grid">
@@ -3525,7 +3527,7 @@ body::before{
       </div>
     </div>
     <div class="ace-cta">
-      <a href="{{ route('ai-citation-engine') }}">See how the AI Citation Engine&#8482; works &#8594;</a>
+      <a href="{{ route('ai-citation-engine') }}">See how the AI Citation Engine™ works &#8594;</a>
     </div>
   </div>
 </section>
@@ -3552,7 +3554,7 @@ body::before{
       <span class="ac-label">Google + AI Search</span>
       <h3 class="ac-head">Visible on Google.<br><em>Cited by ChatGPT.</em></h3>
       <p class="ac-impact">Get cited by AI &#8212; not just ranked by Google.</p>
-      <p class="ac-body">Every page is built to rank in traditional search and show up in AI-generated answers &#8212; the results people see without even clicking.</p>
+      <p class="ac-body">Every page is built to rank in traditional search and get cited in AI-generated answers &#8212; the results people see without even clicking.</p>
     </div>
 
     <div class="ac-card">
@@ -3660,7 +3662,7 @@ body::before{
   <canvas class="infra-canvas" id="infraCanvas" aria-hidden="true"></canvas>
   <div class="infra-overlay" aria-hidden="true"></div>
   <div class="infra-inner">
-    <p class="infra-eyebrow">The AI Citation Engine&#8482;</p>
+    <p class="infra-eyebrow">The AI Citation Engine™</p>
     <h2 class="infra-hed">
       <span class="infra-hed-1">Built first.</span>
       <span class="infra-hed-2">Held through execution.</span>
@@ -3668,7 +3670,7 @@ body::before{
     <p class="infra-stmt">Structure wins.</p>
     <p class="infra-tagline">Every page &middot; Every market &middot; Every signal</p>
     <ul class="infra-tenets">
-      <li class="infra-tenet" style="color:rgba(237,232,222,.72);">You show up where others don&#8217;t.</li>
+      <li class="infra-tenet" style="color:rgba(237,232,222,.72);">You appear where others can&#8217;t.</li>
       <li class="infra-tenet">Authority compounds with every deployment.</li>
       <li class="infra-tenet">Harder to displace over time.</li>
     </ul>
@@ -3788,7 +3790,7 @@ body::before{
     <div class="infra-pillars" style="grid-template-columns:repeat(3,1fr);max-width:860px">
       <div class="infra-pillar">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
-        <span class="infra-pillar-title">You show up everywhere.</span>
+        <span class="infra-pillar-title">You're cited everywhere.</span>
       </div>
       <div class="infra-pillar">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
@@ -3838,7 +3840,7 @@ body::before{
       <div class="aud-card r">
         <span class="aud-tag">For Operators &amp; Business Owners</span>
         <h3 class="aud-title">Get cited wherever<br><em>your customers search.</em></h3>
-        <p class="aud-body">SEO AI Co™ expands your domain across every service and city you serve &#8212; so you show up in Google, ChatGPT, and AI search results across your entire market.</p>
+        <p class="aud-body">SEO AI Co™ expands your domain across every service and city you serve &#8212; so you're cited across Google, ChatGPT, and AI search results in your entire market.</p>
         <ul class="aud-list">
           <li><strong>Every service. Every city. Total coverage.</strong></li>
           <li><strong>Visible across organic, AI, and emerging search</strong></li>
@@ -3874,8 +3876,8 @@ body::before{
         <div class="wyl-grid">
           <div class="wyl-card r">
             <span class="wyl-icon">⬡</span>
-            <h3 class="wyl-title">You show up everywhere.</h3>
-            <p class="wyl-desc">Every service, every city — structured pages built to show up before your competitors do.</p>
+            <h3 class="wyl-title">You're the answer everywhere.</h3>
+            <p class="wyl-desc">Every service, every city — structured pages built for citation ahead of your competitors.</p>
           </div>
           <div class="wyl-card r">
             <span class="wyl-icon">◈</span>
@@ -4245,9 +4247,9 @@ body::before{
   <div class="value-anchor-inner">
     <p class="va-main">What happens when you start</p>
     <p class="va-sub" style="margin-bottom:40px;line-height:1.9">Your structure is built &#8212; your coverage expands &#8212; your visibility compounds.</p>
-    <p class="va-close">While others are still planning,<br><em>you&#8217;re already showing up &#8212; everywhere it matters.</em></p>
+    <p class="va-close">While others are still planning,<br><em>you&#8217;re already being cited &#8212; everywhere it matters.</em></p>
     <p class="va-main" style="margin-top:44px;margin-bottom:24px;font-size:clamp(1.3rem,2.1vw,1.7rem);letter-spacing:-.02em">This is how position is taken &#8212; before anyone else realizes it&#8217;s happening.</p>
-    <p class="va-sub" style="margin-bottom:44px;opacity:.48">Most markets aren&#8217;t won by better businesses.<br>They&#8217;re won by the ones that show up first.</p>
+    <p class="va-sub" style="margin-bottom:44px;opacity:.48">Most markets aren&#8217;t won by better businesses.<br>They&#8217;re won by the ones that get cited first.</p>
     <div class="va-act">
       <a href="/book" class="btn-primary">Book a Strategy Session</a>
       <a href="#how" class="btn-ghost">See How It Works</a>
@@ -4613,7 +4615,7 @@ body::before{
     <div class="gate-icon">◈</div>
     <span class="gate-badge">Activation Required</span>
     <h2 class="gate-title">Make your site<br><em>the answer.</em></h2>
-    <p class="gate-desc">Deploy the AI Citation Engine&#8482; into your existing site.<br><br>This includes:<br><strong>&#8226; Structured service + location pages<br>&#8226; Schema, internal linking, and AI guidance signals<br>&#8226; Citation infrastructure across your full service area</strong><br><br>Deployed and managed under a single agreement.</p>
+    <p class="gate-desc">Deploy the AI Citation Engine™ into your existing site.<br><br>This includes:<br><strong>&#8226; Structured service + location pages<br>&#8226; Schema, internal linking, and AI guidance signals<br>&#8226; Citation infrastructure across your full service area</strong><br><br>Deployed and managed under a single agreement.</p>
     <div class="gate-tiers">
       <div class="gate-tier" data-tier="expansion">
         <div class="gate-tier-name">Expansion</div>
@@ -4644,7 +4646,7 @@ body::before{
   <p style="text-align:center;font-size:.72rem;color:var(--muted);margin:6px 0 4px">
     <a href="mailto:hello@seoaico.com" style="color:var(--muted);text-decoration:none">hello@seoaico.com</a>
   </p>
-  <p style="text-align:center;font-size:.6rem;color:rgba(168,168,160,.28);max-width:540px;margin:0 auto 8px;line-height:1.65">SEO AI Co™ operates the AI Citation Engine&#8482; — structuring content for extraction and citation by AI systems across Google AI Overviews, ChatGPT, and Perplexity. Built for local service businesses competing in active markets.</p>
+  <p style="text-align:center;font-size:.6rem;color:rgba(168,168,160,.28);max-width:540px;margin:0 auto 8px;line-height:1.65">SEO AI Co™ operates the AI Citation Engine™ — structuring content for extraction and citation by AI systems across Google AI Overviews, ChatGPT, and Perplexity. Built for local service businesses competing in active markets.</p>
   <div style="display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:6px 14px;opacity:.22;margin-bottom:10px" aria-label="Platform integrations">
     <span style="font-size:.52rem;letter-spacing:.12em;text-transform:uppercase;color:#c8a84b">Google Analytics</span>
     <span style="color:#c8a84b;font-size:.5rem">&middot;</span>
@@ -5312,5 +5314,6 @@ body::before{
 <script>
   if(typeof gtag==='function'){gtag('event','view_landing',{page_location:window.location.href});}
 </script>
+@include('components.tm-style')
 </body>
 </html>

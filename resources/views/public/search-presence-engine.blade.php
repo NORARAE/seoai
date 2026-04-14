@@ -330,9 +330,9 @@ footer{border-top:1px solid var(--border);padding:32px 64px;display:flex;align-i
 
   <div class="divider"></div>
 
-  <h2 class="section-hed">How this connects to the <em>AI Citation Engine&#8482;</em></h2>
-  <p class="prose">The search presence engine is the operational layer of the AI Citation Engine&#8482; &mdash; the deployment system that publishes and maintains citation infrastructure at scale. Together, the search presence engine handles delivery while the AI Citation Engine&#8482; handles structure.</p>
-  <p class="prose"><a href="{{ route('ai-citation-engine') }}">See how the AI Citation Engine&#8482; works &rarr;</a></p>
+  <h2 class="section-hed">How this connects to the <em>AI Citation Engine™</em></h2>
+  <p class="prose">The search presence engine is the operational layer of the AI Citation Engine™ &mdash; the deployment system that publishes and maintains citation infrastructure at scale. Together, the search presence engine handles delivery while the AI Citation Engine™ handles structure.</p>
+  <p class="prose"><a href="{{ route('ai-citation-engine') }}">See how the AI Citation Engine™ works &rarr;</a></p>
 
   <div class="divider"></div>
 
@@ -377,5 +377,6 @@ footer{border-top:1px solid var(--border);padding:32px 64px;display:flex;align-i
   </nav>
 </footer>
 
+@include('components.tm-style')
 </body>
 </html>

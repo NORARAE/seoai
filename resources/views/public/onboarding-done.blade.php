@@ -607,5 +607,6 @@ body {
   }
 })();
 </script>
+@include('components.tm-style')
 </body>
 </html>

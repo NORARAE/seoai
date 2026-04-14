@@ -166,7 +166,7 @@ footer{border-top:1px solid rgba(200,168,75,.07);padding:32px 40px;display:flex;
 
   <p class="prose">When a business invests in AI search optimization &#8212; adding schema, restructuring pages, deploying llms.txt &#8212; there is currently no native way to measure whether it worked. Traditional analytics tools do not track AI-generated answer appearances. There is no equivalent of &#8220;ranking position&#8221; for AI citation.</p>
 
-  <p class="prose">The businesses that will win the most from the AI search shift are the ones that can measure, iterate, and optimize systemically. <strong>AI Citation Tracking&#8482; is the measurement layer that makes systematic AI optimization possible.</strong></p>
+  <p class="prose">The businesses that will win the most from the AI search shift are the ones that can measure, iterate, and optimize systemically. <strong>AI Citation Tracking™ is the measurement layer that makes systematic AI optimization possible.</strong></p>
 
   <ul class="problem-list">
     <li class="problem-item">
@@ -189,7 +189,7 @@ footer{border-top:1px solid rgba(200,168,75,.07);padding:32px 40px;display:flex;
 
   <div class="divider"></div>
 
-  <h2 class="section-hed">What AI Citation Tracking&#8482; <em>does.</em></h2>
+  <h2 class="section-hed">What AI Citation Tracking™ <em>does.</em></h2>
 
   <div class="feature-grid">
     <div class="feature-card">
@@ -216,9 +216,9 @@ footer{border-top:1px solid rgba(200,168,75,.07);padding:32px 40px;display:flex;
 
   <div class="divider"></div>
 
-  <h2 class="section-hed">How it connects to the <em>AI Citation Engine&#8482;.</em></h2>
+  <h2 class="section-hed">How it connects to the <em>AI Citation Engine™.</em></h2>
 
-  <p class="prose">AI Citation Tracking&#8482; is the measurement and feedback layer of the <a href="{{ route('ai-citation-engine') }}">AI Citation Engine&#8482;</a> &#8212; the full system for deploying AI citation infrastructure across a service area. The Engine deploys the infrastructure; Tracking measures its impact and identifies where to deploy next.</p>
+  <p class="prose">AI Citation Tracking™ is the measurement and feedback layer of the <a href="{{ route('ai-citation-engine') }}">AI Citation Engine™</a> &#8212; the full system for deploying AI citation infrastructure across a service area. The Engine deploys the infrastructure; Tracking measures its impact and identifies where to deploy next.</p>
 
   <p class="prose">The loop runs continuously: <strong>Detect</strong> your current citation baseline &#8212; <strong>Deploy</strong> AI Citation Engine infrastructure to fill the gaps &#8212; <strong>Track</strong> the citation increase &#8212; <strong>Analyze</strong> remaining gaps &#8212; <strong>Recommend</strong> the next deployment target. This is the systematic approach to AI citation dominance in a market.</p>
 
@@ -227,7 +227,7 @@ footer{border-top:1px solid rgba(200,168,75,.07);padding:32px 40px;display:flex;
     <div class="faq-list">
       <div class="faq-item">
         <p class="faq-q">What is AI Citation Tracking?</p>
-        <p class="faq-a">AI Citation Tracking&#8482; is a system that detects when AI-powered search systems &#8212; including Google AI Overviews, ChatGPT, Perplexity, and Gemini &#8212; cite your web content in their generated answers. It tracks which pages earn citations, for which queries, and identifies the gaps that allow competitors to be cited instead.</p>
+        <p class="faq-a">AI Citation Tracking™ is a system that detects when AI-powered search systems &#8212; including Google AI Overviews, ChatGPT, Perplexity, and Gemini &#8212; cite your web content in their generated answers. It tracks which pages earn citations, for which queries, and identifies the gaps that allow competitors to be cited instead.</p>
       </div>
       <div class="faq-item">
         <p class="faq-q">Why is AI citation tracking important?</p>
@@ -239,7 +239,7 @@ footer{border-top:1px solid rgba(200,168,75,.07);padding:32px 40px;display:flex;
       </div>
       <div class="faq-item">
         <p class="faq-q">When will AI Citation Tracking be available?</p>
-        <p class="faq-a">AI Citation Tracking&#8482; is currently in active development. Businesses that book a market review with SEO AI Co&#8482; receive priority access to the tracking dashboard upon release. Join the early access list via the booking page.</p>
+        <p class="faq-a">AI Citation Tracking™ is currently in active development. Businesses that book a market review with SEO AI Co™ receive priority access to the tracking dashboard upon release. Join the early access list via the booking page.</p>
       </div>
     </div>
   </section>
@@ -247,7 +247,7 @@ footer{border-top:1px solid rgba(200,168,75,.07);padding:32px 40px;display:flex;
   <div class="early-access-block">
     <span class="early-access-eye">Early Access</span>
     <h2>Be the first to see <em>your citation data.</em></h2>
-    <p>Book a market review now &#8212; we&#8217;ll add you to the priority access list for AI Citation Tracking&#8482; and begin deploying your citation infrastructure today, so you&#8217;ll have baseline data to measure against at launch.</p>
+    <p>Book a market review now &#8212; we&#8217;ll add you to the priority access list for AI Citation Tracking™ and begin deploying your citation infrastructure today, so you&#8217;ll have baseline data to measure against at launch.</p>
     <a href="{{ route('book.index') }}" class="cta-btn">Join the Early Access List</a>
   </div>
 
@@ -289,5 +289,6 @@ footer{border-top:1px solid rgba(200,168,75,.07);padding:32px 40px;display:flex;
   </nav>
 </footer>
 
+@include('components.tm-style')
 </body>
 </html>

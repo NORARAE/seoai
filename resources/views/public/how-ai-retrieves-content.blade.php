@@ -285,7 +285,7 @@ footer{border-top:1px solid rgba(200,168,75,.07);padding:32px 40px;display:flex;
   <div class="page-cta">
     <span class="page-cta-eye">AI Citation Infrastructure</span>
     <h2>Make your pages <em>retrievable by AI.</em></h2>
-    <p>The AI Citation Engine&#8482; deploys the complete retrieval infrastructure: crawlable architecture, schema markup, llms.txt guidance, and programmatic page coverage across your entire service area.</p>
+    <p>The AI Citation Engine™ deploys the complete retrieval infrastructure: crawlable architecture, schema markup, llms.txt guidance, and programmatic page coverage across your entire service area.</p>
     <a href="{{ route('book.index') }}" class="cta-btn">Book a Market Review</a>
     <a href="{{ route('ai-citation-engine') }}" class="cta-ghost">See the AI Citation Engine™ →</a>
   </div>
@@ -305,5 +305,6 @@ footer{border-top:1px solid rgba(200,168,75,.07);padding:32px 40px;display:flex;
   </nav>
 </footer>
 
+@include('components.tm-style')
 </body>
 </html>

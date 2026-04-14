@@ -298,7 +298,7 @@ footer{border-top:1px solid rgba(200,168,75,.07);padding:32px 40px;display:flex;
   <div class="page-cta">
     <span class="page-cta-eye">AI Citation Infrastructure</span>
     <h2>Get <em>ChatGPT to cite your business.</em></h2>
-    <p>The AI Citation Engine&#8482; deploys the structured data, entity definition, FAQ architecture, and programmatic page coverage that makes your content the source ChatGPT &#8212; and every AI search system &#8212; cites.</p>
+    <p>The AI Citation Engine™ deploys the structured data, entity definition, FAQ architecture, and programmatic page coverage that makes your content the source ChatGPT &#8212; and every AI search system &#8212; cites.</p>
     <a href="{{ route('book.index') }}" class="cta-btn">Book a Market Review</a>
     <a href="{{ route('ai-citation-engine') }}" class="cta-ghost">See the AI Citation Engine™ →</a>
   </div>
@@ -318,5 +318,6 @@ footer{border-top:1px solid rgba(200,168,75,.07);padding:32px 40px;display:flex;
   </nav>
 </footer>
 
+@include('components.tm-style')
 </body>
 </html>

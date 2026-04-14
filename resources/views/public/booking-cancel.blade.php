@@ -61,5 +61,6 @@ p{color:#a8a8a0;font-size:.92rem;line-height:1.7;margin-bottom:16px}
   <br>
   <a href="/" class="home">&larr; Back to seoaico.com</a>
 </div>
+@include('components.tm-style')
 </body>
 </html>

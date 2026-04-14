@@ -578,5 +578,6 @@ footer{border-top:1px solid rgba(200,168,75,.07);padding:32px 48px;display:flex;
   </ul>
 </footer>
 
+@include('components.tm-style')
 </body>
 </html>

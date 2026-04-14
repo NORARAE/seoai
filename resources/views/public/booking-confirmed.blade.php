@@ -343,5 +343,6 @@ body {
     @endif
   }
 </script>
+@include('components.tm-style')
 </body>
 </html>

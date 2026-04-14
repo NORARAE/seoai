@@ -2166,5 +2166,6 @@ document.getElementById('ob-form').addEventListener('submit', function() {
     @endif
   }
 </script>
+@include('components.tm-style')
 </body>
 </html>

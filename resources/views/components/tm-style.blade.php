@@ -1,0 +1,2 @@
+<style>.tm{font-size:.55em;vertical-align:super;opacity:.45;font-weight:300;line-height:0;letter-spacing:0}</style>
+<script>document.addEventListener('DOMContentLoaded',function(){var w=document.createTreeWalker(document.body,NodeFilter.SHOW_TEXT,null);while(w.nextNode()){var n=w.currentNode;if(n.nodeValue.includes('™')){var s=document.createElement('span');s.innerHTML=n.nodeValue.replace(/™/g,'<sup class="tm">™</sup>');n.parentNode.replaceChild(s,n)}}});</script>

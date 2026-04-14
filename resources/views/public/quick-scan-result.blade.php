@@ -420,5 +420,6 @@ footer{border-top:1px solid var(--border);padding:28px 48px;display:flex;flex-di
     }, 300);
   });
 </script>
+@include('components.tm-style')
 </body>
 </html>

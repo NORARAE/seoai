@@ -216,5 +216,6 @@ body{background:var(--bg);color:var(--ivory);font-family:'DM Sans',sans-serif;fo
   <script>
   if(typeof gtag==='function'){gtag('event','view_rd_tax_credit',{page_location:window.location.href});}
   </script>
+@include('components.tm-style')
 </body>
 </html>

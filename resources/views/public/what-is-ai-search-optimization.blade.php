@@ -389,9 +389,9 @@ footer{border-top:1px solid var(--border);padding:32px 64px;display:flex;align-i
 
   <div class="divider"></div>
 
-  <h2 class="section-hed">How this connects to the <em>AI Citation Engine&#8482;</em></h2>
-  <p class="prose">AI search optimization defines the goal; the AI Citation Engine&#8482; is the system that achieves it at scale. Every structural requirement of AI search optimization &mdash; entity clarity, schema, extractable content, geographic coverage &mdash; is operationalized through the AI Citation Engine&#8482;.</p>
-  <p class="prose"><a href="{{ route('ai-citation-engine') }}">See how the AI Citation Engine&#8482; works &rarr;</a></p>
+  <h2 class="section-hed">How this connects to the <em>AI Citation Engine™</em></h2>
+  <p class="prose">AI search optimization defines the goal; the AI Citation Engine™ is the system that achieves it at scale. Every structural requirement of AI search optimization &mdash; entity clarity, schema, extractable content, geographic coverage &mdash; is operationalized through the AI Citation Engine™.</p>
+  <p class="prose"><a href="{{ route('ai-citation-engine') }}">See how the AI Citation Engine™ works &rarr;</a></p>
 
   <div class="divider"></div>
 
@@ -443,5 +443,6 @@ footer{border-top:1px solid var(--border);padding:32px 64px;display:flex;align-i
   </nav>
 </footer>
 
+@include('components.tm-style')
 </body>
 </html>
