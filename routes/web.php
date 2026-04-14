@@ -91,6 +91,7 @@ Route::get('/search-presence-engine', [PublicController::class, 'searchPresenceE
 Route::get('/quick-scan', [\App\Http\Controllers\QuickScanController::class, 'show'])->name('quick-scan.show');
 Route::post('/quick-scan/checkout', [\App\Http\Controllers\QuickScanController::class, 'checkout'])->middleware('throttle:10,1')->name('quick-scan.checkout');
 Route::get('/quick-scan/result', [\App\Http\Controllers\QuickScanController::class, 'result'])->name('quick-scan.result');
+Route::get('/quick-scan/status', [\App\Http\Controllers\QuickScanController::class, 'status'])->name('quick-scan.status');
 Route::get('/quick-scan/cancelled', [\App\Http\Controllers\QuickScanController::class, 'cancelled'])->name('quick-scan.cancelled');
 
 // ── Booking / Consult System ──

@@ -80,7 +80,7 @@ nav.stuck{background:rgba(8,8,8,.95);backdrop-filter:blur(16px);border-color:var
   transition:stroke-dashoffset 1.4s cubic-bezier(.23,1,.32,1);
 }
 .score-ring-fill.animate{
-  stroke-dashoffset: calc(440 - (440 * {{ $scan->score ?? 0 }} / 100));
+  stroke-dashoffset: calc(440 - (440 * {{ (int) ($scan->score ?? 0) }} / 100));
 }
 .score-ring-text{
   position:absolute;
@@ -91,7 +91,7 @@ nav.stuck{background:rgba(8,8,8,.95);backdrop-filter:blur(16px);border-color:var
   font-size:3.8rem;font-weight:300;line-height:1;
   color:var(--ivory);
   @php
-    $score = $scan->score ?? 0;
+    $score = (int) ($scan->score ?? 0);
   @endphp
   @if($score >= 70)
   color:#6aaf90;
@@ -293,7 +293,7 @@ footer{border-top:1px solid var(--border);padding:28px 48px;display:flex;flex-di
 <!-- Hero: score -->
 <section class="result-hero">
   <p class="result-eyebrow">AI Citation Readiness Score</p>
-  <p class="result-url">{{ $scan->url }}</p>
+  <p class="result-url">{{ $scan->url ?? '' }}</p>
 
   <div class="score-ring-wrap">
     <div style="position:relative;display:inline-flex;align-items:center;justify-content:center">
@@ -307,7 +307,7 @@ footer{border-top:1px solid var(--border);padding:28px 48px;display:flex;flex-di
       </div>
     </div>
 
-    @php $score = $scan->score ?? 0; @endphp
+    @php $score = (int) ($scan->score ?? 0); @endphp
     @if($score >= 70)
       <p class="score-verdict">Strong AI citation foundation</p>
     @elseif($score >= 40)
@@ -321,14 +321,14 @@ footer{border-top:1px solid var(--border);padding:28px 48px;display:flex;flex-di
 <!-- Report body -->
 <div class="result-body">
 
-  @if($scan->fastest_fix)
+  @if(!empty($scan->fastest_fix))
   <div class="fastest-fix">
     <span class="fix-label">Your Fastest Fix</span>
     <p class="fix-text">{{ $scan->fastest_fix }}</p>
   </div>
   @endif
 
-  @if($scan->issues && count($scan->issues) > 0)
+  @if(!empty($scan->issues) && is_array($scan->issues))
   <div class="r-section">
     <p class="r-section-label">Issues Found ({{ count($scan->issues) }})</p>
     <ul class="r-list">
@@ -342,7 +342,7 @@ footer{border-top:1px solid var(--border);padding:28px 48px;display:flex;flex-di
   </div>
   @endif
 
-  @if($scan->strengths && count($scan->strengths) > 0)
+  @if(!empty($scan->strengths) && is_array($scan->strengths))
   <div class="r-section">
     <p class="r-section-label">What's Working ({{ count($scan->strengths) }})</p>
     <ul class="r-list">

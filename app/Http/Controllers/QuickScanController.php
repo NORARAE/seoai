@@ -165,56 +165,76 @@ class QuickScanController extends Controller
 
     /**
      * GET /quick-scan/result?session_id=cs_xxx&scan_id=yyy
-     * Verify payment, dispatch scan job, show results.
-     * The webhook provides a safety net if the user never reaches this page.
+     * Verify payment, run scan, show results.
+     * Never throws 500 — falls back to processing view on any failure.
      */
     public function result(Request $request, QuickScanService $scanner)
     {
         $sessionId = $request->query('session_id');
         $scanId = $request->query('scan_id');
 
+        // ── Phase 7: validate query params ───────────────────────────────
         if (!$sessionId || !$scanId) {
+            Log::warning('QuickScan: result page missing params', [
+                'session_id' => $sessionId,
+                'scan_id' => $scanId,
+            ]);
             return redirect()->route('quick-scan.show')
                 ->withErrors(['error' => 'Invalid result link.']);
         }
 
+        // ── Phase 1: safe retrieval ──────────────────────────────────────
         $scan = QuickScan::find((int) $scanId);
 
         if (!$scan) {
+            Log::warning('QuickScan: scan not found on result page', ['scan_id' => $scanId]);
             return redirect()->route('quick-scan.show')
                 ->withErrors(['error' => 'Scan record not found.']);
         }
 
-        // If already scanned, just show results
+        // ── Phase 2: already complete — show results ─────────────────────
         if ($scan->status === QuickScan::STATUS_SCANNED && $scan->score !== null) {
             Log::info('QuickScan: result page revisited', ['scan_id' => $scan->id]);
             return view('public.quick-scan-result', compact('scan'));
         }
 
-        // Verify payment with Stripe
-        try {
-            $stripeSession = Cashier::stripe()->checkout->sessions->retrieve($sessionId);
+        // ── Phase 8: verify payment with Stripe ─────────────────────────
+        if (!$scan->paid) {
+            try {
+                $stripeSession = Cashier::stripe()->checkout->sessions->retrieve($sessionId);
 
-            if ($stripeSession->payment_status !== 'paid') {
-                return redirect()->route('quick-scan.show')
-                    ->withErrors(['error' => 'Payment not confirmed. Please complete checkout.']);
+                if (($stripeSession->payment_status ?? null) !== 'paid') {
+                    Log::info('QuickScan: payment not yet confirmed', [
+                        'scan_id' => $scan->id,
+                        'session_id' => $sessionId,
+                        'payment_status' => $stripeSession->payment_status ?? 'unknown',
+                    ]);
+                    // Show processing view — webhook may complete payment later
+                    return view('public.quick-scan-processing', [
+                        'scan' => $scan,
+                        'sessionId' => $sessionId,
+                    ]);
+                }
+            } catch (\Throwable $e) {
+                Log::error('QuickScan: Stripe session retrieval failed', [
+                    'session_id' => $sessionId,
+                    'scan_id' => $scan->id,
+                    'error' => $e->getMessage(),
+                ]);
+                // Don't crash — show processing view, webhook will handle it
+                return view('public.quick-scan-processing', [
+                    'scan' => $scan,
+                    'sessionId' => $sessionId,
+                ]);
             }
-        } catch (\Throwable $e) {
-            Log::error('QuickScan Stripe session retrieval failed', [
-                'session_id' => $sessionId,
-                'scan_id' => $scanId,
-                'error' => $e->getMessage(),
-            ]);
-            return redirect()->route('quick-scan.show')
-                ->withErrors(['error' => 'Could not verify payment. Contact hello@seoaico.com.']);
-        }
 
-        // Mark paid
-        $scan->update([
-            'paid' => true,
-            'stripe_session_id' => $sessionId,
-            'status' => QuickScan::STATUS_PAID,
-        ]);
+            // Mark paid
+            $scan->update([
+                'paid' => true,
+                'stripe_session_id' => $sessionId,
+                'status' => QuickScan::STATUS_PAID,
+            ]);
+        }
 
         Log::info('QuickScan: payment verified, starting scan', [
             'scan_id' => $scan->id,
@@ -224,34 +244,71 @@ class QuickScanController extends Controller
             'stripe_session' => $sessionId,
         ]);
 
-        // Run scan synchronously so the user sees results immediately.
-        // RunQuickScanJob handles CRM + email drip (idempotent).
-        $result = $scanner->scan($scan->url);
+        // ── Run scan synchronously — wrapped in try/catch ────────────────
+        try {
+            $result = $scanner->scan($scan->url);
 
-        $scan->update([
-            'score' => $result['score'],
-            'issues' => $result['issues'],
-            'strengths' => $result['strengths'],
-            'fastest_fix' => $result['fastest_fix'],
-            'raw_checks' => $result['raw_checks'],
-            'status' => QuickScan::STATUS_SCANNED,
-            'scanned_at' => now(),
-        ]);
-        $scan->refresh();
+            $scan->update([
+                'score' => $result['score'],
+                'issues' => $result['issues'],
+                'strengths' => $result['strengths'],
+                'fastest_fix' => $result['fastest_fix'],
+                'raw_checks' => $result['raw_checks'],
+                'status' => QuickScan::STATUS_SCANNED,
+                'scanned_at' => now(),
+            ]);
+            $scan->refresh();
 
-        Log::info('QuickScan: scan completed, result delivered', [
-            'scan_id' => $scan->id,
-            'score' => $scan->score,
-            'url' => $scan->url,
-            'email' => $scan->email,
-            'ip' => $scan->ip_address,
-        ]);
+            Log::info('QuickScan: scan completed, result delivered', [
+                'scan_id' => $scan->id,
+                'score' => $scan->score,
+                'url' => $scan->url,
+                'email' => $scan->email,
+                'ip' => $scan->ip_address,
+            ]);
+        } catch (\Throwable $e) {
+            Log::error('QuickScan: synchronous scan failed', [
+                'scan_id' => $scan->id,
+                'url' => $scan->url,
+                'error' => $e->getMessage(),
+            ]);
+            // Dispatch job as fallback — show processing view
+            RunQuickScanJob::dispatch($scan->id);
+            return view('public.quick-scan-processing', [
+                'scan' => $scan,
+                'sessionId' => $sessionId,
+            ]);
+        }
 
-        // Dispatch job for CRM upsert + email sequence (idempotent — will
-        // see STATUS_SCANNED and skip the scan, then run CRM + emails).
+        // Dispatch job for CRM upsert + email sequence (idempotent)
         RunQuickScanJob::dispatch($scan->id);
 
         return view('public.quick-scan-result', compact('scan'));
+    }
+
+    /**
+     * GET /quick-scan/status?scan_id=yyy
+     * JSON polling endpoint for the processing view.
+     */
+    public function status(Request $request)
+    {
+        $scanId = $request->query('scan_id');
+
+        if (!$scanId) {
+            return response()->json(['ready' => false]);
+        }
+
+        $scan = QuickScan::find((int) $scanId);
+
+        if (!$scan) {
+            return response()->json(['ready' => false]);
+        }
+
+        if ($scan->status === QuickScan::STATUS_SCANNED && $scan->score !== null) {
+            return response()->json(['ready' => true, 'score' => $scan->score]);
+        }
+
+        return response()->json(['ready' => false, 'status' => $scan->status]);
     }
 
     /**
