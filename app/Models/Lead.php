@@ -28,6 +28,9 @@ class Lead extends Model
         'grade',
         'scored_at',
         'fit_status',
+        'user_type',
+        'domain_count',
+        'scan_count',
     ];
 
     protected function casts(): array
@@ -38,6 +41,8 @@ class Lead extends Model
             'email_unsubscribed_at' => 'datetime',
             'tags' => 'array',
             'fit_status' => 'string',
+            'domain_count' => 'integer',
+            'scan_count' => 'integer',
         ];
     }
 

@@ -51,8 +51,19 @@ class RunQuickScanJob implements ShouldQueue, ShouldBeUnique
         if ($scan->status !== QuickScan::STATUS_SCANNED || $scan->score === null) {
             $result = $scanner->scan($scan->url);
 
+            // Scan memory: capture previous score for same domain
+            $previousScan = QuickScan::where('domain', $scan->domain)
+                ->where('status', QuickScan::STATUS_SCANNED)
+                ->where('id', '!=', $scan->id)
+                ->latest('scanned_at')
+                ->first();
+            $lastScore = $previousScan?->score;
+            $scoreChange = $lastScore !== null ? ($result['score'] - $lastScore) : null;
+
             $scan->update([
                 'score' => $result['score'],
+                'last_score' => $lastScore,
+                'score_change' => $scoreChange,
                 'categories' => $result['categories'],
                 'issues' => $result['issues'],
                 'strengths' => $result['strengths'],
@@ -68,7 +79,7 @@ class RunQuickScanJob implements ShouldQueue, ShouldBeUnique
 
         // Upsert CRM lead (idempotent — updateOrCreate)
         try {
-            Lead::updateOrCreate(
+            $lead = Lead::updateOrCreate(
                 ['email' => $scan->email],
                 [
                     'website' => $scan->url,
@@ -81,6 +92,20 @@ class RunQuickScanJob implements ShouldQueue, ShouldBeUnique
                     ),
                 ]
             );
+
+            // User classification: detect multi-domain / agency behavior
+            $domainCount = QuickScan::where('email', $scan->email)
+                ->whereNotNull('domain')
+                ->distinct('domain')
+                ->count('domain');
+            $scanCount = QuickScan::where('email', $scan->email)->count();
+            $userType = $domainCount >= 5 ? 'agency_suspect' : ($domainCount >= 3 ? 'multi_domain' : 'individual');
+
+            $lead->update([
+                'domain_count' => $domainCount,
+                'scan_count' => $scanCount,
+                'user_type' => $userType,
+            ]);
         } catch (\Throwable $e) {
             Log::warning('RunQuickScanJob: Lead upsert failed', ['scan_id' => $scan->id, 'error' => $e->getMessage()]);
         }

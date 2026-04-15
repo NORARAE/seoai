@@ -135,6 +135,37 @@ class LeadResource extends Resource
                     ->label('Score')
                     ->suffix('/100')
                     ->sortable(),
+
+                TextColumn::make('user_type')
+                    ->label('Type')
+                    ->badge()
+                    ->sortable()
+                    ->color(fn (?string $state): string => match ($state) {
+                        'agency_suspect' => 'danger',
+                        'multi_domain' => 'warning',
+                        default => 'gray',
+                    })
+                    ->formatStateUsing(fn (?string $state): string => match ($state) {
+                        'agency_suspect' => 'Agency',
+                        'multi_domain' => 'Multi-Domain',
+                        default => ucfirst($state ?? 'individual'),
+                    }),
+
+                TextColumn::make('domain_count')
+                    ->label('Domains')
+                    ->sortable()
+                    ->badge()
+                    ->color(fn (?int $state): string => match (true) {
+                        $state >= 5 => 'danger',
+                        $state >= 3 => 'warning',
+                        default => 'gray',
+                    }),
+
+                TextColumn::make('scan_count')
+                    ->label('Scans')
+                    ->sortable()
+                    ->badge()
+                    ->color('gray'),
             ])
             ->filters([
                 SelectFilter::make('lifecycle_stage')
@@ -162,6 +193,14 @@ class LeadResource extends Resource
                     ->options([
                         'paid' => 'Paid',
                         'free' => 'Free',
+                    ]),
+
+                SelectFilter::make('user_type')
+                    ->label('User Type')
+                    ->options([
+                        'individual' => 'Individual',
+                        'multi_domain' => 'Multi-Domain',
+                        'agency_suspect' => 'Agency Suspect',
                     ]),
             ])
             ->recordUrl(fn (Lead $r) => static::getUrl('view', ['record' => $r]));

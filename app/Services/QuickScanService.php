@@ -57,17 +57,27 @@ class QuickScanService
         $strengths = [];
         $firstFix = null;
 
+        // Output variability: deterministic seed from URL for consistent-per-URL rotation
+        $variantSeed = crc32($url);
+
         foreach ($categories as $cat) {
             foreach ($cat['checks'] as $check) {
                 if ($check['passed']) {
-                    $strengths[] = $check['pass'];
+                    $strengths[] = $this->rotatePhrase($check['pass'], $check['key'], $variantSeed, 'pass');
                 } else {
-                    $issues[] = $check['fail'];
+                    $issues[] = $this->rotatePhrase($check['fail'], $check['key'], $variantSeed, 'fail');
                     if ($firstFix === null) {
                         $firstFix = $check['fix'];
                     }
                 }
             }
+        }
+
+        // Shuffle issue ordering for variability (deterministic per URL)
+        if (count($issues) > 1) {
+            mt_srand($variantSeed);
+            shuffle($issues);
+            mt_srand();
         }
 
         // 404 detection on internal links
@@ -631,5 +641,79 @@ class QuickScanService
         }
 
         return ['broken' => $broken, 'total' => $total];
+    }
+
+    // =========================================================================
+    // Output Variability — Phrasing Rotation
+    // =========================================================================
+
+    private static array $phraseVariants = [
+        'title' => [
+            'pass' => [
+                'Primary topic signal detected — AI systems can identify this page.',
+                'Topic signal present — AI platforms can recognize your page content.',
+            ],
+            'fail' => [
+                'Primary topic signal missing — AI systems cannot determine what this page covers.',
+                'No topic signal detected — AI platforms have no way to classify this page.',
+            ],
+        ],
+        'meta_description' => [
+            'pass' => [
+                'Page summary signal present — AI systems have context for this page.',
+                'Summary signal detected — AI platforms can contextualize your content.',
+            ],
+            'fail' => [
+                'No page summary signal — AI systems have no context for this page.',
+                'Summary signal absent — AI platforms lack context to surface this page.',
+            ],
+        ],
+        'h1' => [
+            'pass' => [
+                'Primary content marker detected — clear topic established.',
+                'Content marker found — your primary topic is clearly defined.',
+            ],
+            'fail' => [
+                'No primary content marker — the page lacks a clear topic signal.',
+                'Content marker missing — AI cannot identify your page\'s primary topic.',
+            ],
+        ],
+        'json_ld' => [
+            'pass' => [
+                'Structured data layer detected — AI systems can parse your business information.',
+                'Data layer present — machine-readable business information available.',
+            ],
+            'fail' => [
+                'No structured data layer — AI systems cannot identify your business type or services.',
+                'Data layer missing — machines cannot parse your business information.',
+            ],
+        ],
+        'link_count' => [
+            'fail' => [
+                'Sparse content graph — AI cannot fully map your site.',
+                'Weak content connections — AI discovery of your pages is limited.',
+            ],
+        ],
+        'faq' => [
+            'pass' => [
+                'Direct answer content detected — AI can extract citable responses from your pages.',
+                'Answer-ready content found — AI platforms can cite your responses directly.',
+            ],
+            'fail' => [
+                'No direct answer content — AI has no citable responses to extract.',
+                'Answer content missing — AI platforms cannot extract quotable information.',
+            ],
+        ],
+    ];
+
+    private function rotatePhrase(string $default, string $checkKey, int $seed, string $type): string
+    {
+        $variants = self::$phraseVariants[$checkKey][$type] ?? null;
+        if (!$variants || count($variants) < 2) {
+            return $default;
+        }
+
+        $index = abs($seed + crc32($checkKey)) % count($variants);
+        return $variants[$index];
     }
 }

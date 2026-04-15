@@ -244,7 +244,9 @@ footer{border-top:1px solid var(--border);padding:28px 48px;display:flex;flex-di
       </div>
     </div>
 
-    @if($score >= 90)
+    @if($score === 100)
+      <p class="score-verdict">Strong technical foundation — but this scan only measures structural readiness, not market coverage.</p>
+    @elseif($score >= 90)
       <p class="score-verdict">Strong foundation — but incomplete market coverage limits full visibility.</p>
     @elseif($score >= 70)
       <p class="score-verdict">Strong signals present — but gaps remain that limit your reach.</p>
@@ -252,6 +254,24 @@ footer{border-top:1px solid var(--border);padding:28px 48px;display:flex;flex-di
       <p class="score-verdict">AI systems detect your site, but confidence is inconsistent.</p>
     @else
       <p class="score-verdict">AI systems cannot reliably understand or cite your site.</p>
+    @endif
+
+    @if($scan->score_change !== null)
+    <p style="font-size:.78rem;letter-spacing:.06em;margin-top:12px;color:{{ $scan->score_change > 0 ? 'var(--green)' : ($scan->score_change < 0 ? 'var(--red)' : 'var(--muted)') }}">
+      @if($scan->score_change > 0)
+        ↑ +{{ $scan->score_change }} points since your last scan — progress detected, but gaps remain.
+      @elseif($scan->score_change < 0)
+        ↓ {{ $scan->score_change }} points since your last scan — your position is weakening.
+      @else
+        No change since your last scan — your competitors are still gaining ground.
+      @endif
+    </p>
+    @endif
+
+    @if($scan->is_repeat_scan && $scan->score_change === null)
+    <p style="font-size:.78rem;letter-spacing:.06em;margin-top:12px;color:var(--muted)">
+      Repeat scan detected — tracking changes across scans reveals whether your market position is improving.
+    </p>
     @endif
   </div>
 
@@ -366,7 +386,7 @@ footer{border-top:1px solid var(--border);padding:28px 48px;display:flex;flex-di
   <div class="market-coverage">
     <div class="market-header">
       <span class="market-eyebrow">Untapped Market Coverage</span>
-      <span class="market-gap-badge">{{ $gapPct }}% uncaptured</span>
+      <span class="market-gap-badge">{{ $gapPct > 0 ? $gapPct . '% uncaptured' : 'Deeper layers unmeasured' }}</span>
     </div>
     <div class="market-body">
       <div class="market-bar-wrap">
@@ -392,7 +412,13 @@ footer{border-top:1px solid var(--border);padding:28px 48px;display:flex;flex-di
           <span class="market-stat-lbl">Visibility potential increase</span>
         </div>
       </div>
-      <p class="market-insight">AI systems are currently unable to surface {{ $gapPct }}% of your market potential. Each gap represents customers finding your competitors instead.</p>
+      <p class="market-insight">
+        @if($gapPct <= 0)
+          Your structural signals are strong, but this scan only measures on-page readiness. Content depth, geographic coverage, competitive positioning, and AI training data influence remain unmeasured — and represent the majority of your market opportunity.
+        @else
+          AI systems are currently unable to surface {{ $gapPct }}% of your market potential. Each gap represents customers finding your competitors instead.
+        @endif
+      </p>
       <a href="{{ route('onboarding.start') }}?plan=authority-engine&scan_id={{ $scan->id }}" class="market-cta">Expand Coverage →</a>
     </div>
   </div>

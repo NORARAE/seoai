@@ -6,7 +6,7 @@
 <!-- Page Header -->
 <div class="mb-8">
     <h2 class="text-3xl font-bold text-gray-900 mb-2">Dashboard</h2>
-    <p class="text-gray-600">Monitor your SEO location intelligence system performance and health</p>
+    <p class="text-gray-600">Monitor your AI citation system performance and market coverage</p>
 </div>
 
 @if(session('scan_saved'))
@@ -52,7 +52,7 @@
                 icon="✓"
             />
             <x-dashboard.stat-card 
-                label="Avg SEO Score" 
+                label="Avg Citation Score" 
                 :value="$stats['average_score']"
                 subtext="out of 100"
                 color="blue"
@@ -86,17 +86,17 @@
                         color="blue"
                     />
                     <x-dashboard.progress-bar 
-                        label="Meta Completeness" 
+                        label="Signal Completeness" 
                         :percentage="$health['metrics']['meta']"
                         color="green"
                     />
                     <x-dashboard.progress-bar 
-                        label="Internal Links" 
+                        label="Content Connectivity" 
                         :percentage="$health['metrics']['links']"
                         color="purple"
                     />
                     <x-dashboard.progress-bar 
-                        label="Schema Readiness" 
+                        label="Data Layer Readiness" 
                         :percentage="$health['metrics']['schema']"
                         color="indigo"
                     />
@@ -119,13 +119,13 @@
 
                 <div class="space-y-3">
                     <x-dashboard.action-item 
-                        label="Pages Missing Meta Tags" 
+                        label="Pages Missing Signal Tags" 
                         :count="$actionQueue['missing_meta']"
                         color="orange"
                         :urgent="$actionQueue['missing_meta'] > 0"
                     />
                     <x-dashboard.action-item 
-                        label="Pages Missing Internal Links" 
+                        label="Pages Missing Content Connections" 
                         :count="$actionQueue['missing_internal_links']"
                         color="yellow"
                     />
@@ -135,7 +135,7 @@
                         color="blue"
                     />
                     <x-dashboard.action-item 
-                        label="Pages Below Score Threshold (70)" 
+                        label="Pages Below Citation Threshold (70)" 
                         :count="$actionQueue['below_threshold']"
                         color="red"
                         :urgent="$actionQueue['below_threshold'] > 10"
@@ -257,30 +257,42 @@
                 <div class="bg-white rounded-xl border-2 border-gray-100 shadow-sm hover:border-blue-200 hover:shadow-md transition-all overflow-hidden">
                     <!-- Score header band -->
                     <div class="px-5 py-3 flex items-center justify-between
-                        @if($project->score >= 70) bg-green-50 border-b border-green-100
+                        @if($project->score >= 90) bg-green-50 border-b border-green-100
+                        @elseif($project->score >= 70) bg-blue-50 border-b border-blue-100
                         @elseif($project->score >= 40) bg-yellow-50 border-b border-yellow-100
                         @else bg-red-50 border-b border-red-100
                         @endif
                     ">
                         <div class="flex items-center gap-3">
                             <span class="inline-flex items-center justify-center w-10 h-10 rounded-full text-sm font-bold
-                                @if($project->score >= 70) bg-green-100 text-green-800
+                                @if($project->score >= 90) bg-green-100 text-green-800
+                                @elseif($project->score >= 70) bg-blue-100 text-blue-800
                                 @elseif($project->score >= 40) bg-yellow-100 text-yellow-800
                                 @else bg-red-100 text-red-800
                                 @endif
                             ">{{ $project->score ?? '—' }}</span>
                             <div>
                                 <p class="text-xs font-medium uppercase tracking-wider
-                                    @if($project->score >= 70) text-green-700
+                                    @if($project->score >= 90) text-green-700
+                                    @elseif($project->score >= 70) text-blue-700
                                     @elseif($project->score >= 40) text-yellow-700
                                     @else text-red-700
                                     @endif
                                 ">
-                                    @if($project->score >= 70) Strong
+                                    @if($project->score >= 90) Strong
+                                    @elseif($project->score >= 70) Advancing
                                     @elseif($project->score >= 40) Partial
                                     @else Needs Work
                                     @endif
                                 </p>
+                                @if($project->score_change !== null)
+                                <p class="text-xs font-medium mt-0.5
+                                    @if($project->score_change > 0) text-green-600 @elseif($project->score_change < 0) text-red-600 @else text-gray-500 @endif
+                                ">
+                                    @if($project->score_change > 0) ↑ +{{ $project->score_change }} @elseif($project->score_change < 0) ↓ {{ $project->score_change }} @else — No change @endif
+                                    since last scan
+                                </p>
+                                @endif
                             </div>
                         </div>
                         @if($project->upgrade_plan)
@@ -339,7 +351,7 @@
                 <div class="bg-gradient-to-br from-indigo-50 to-blue-50 rounded-xl border border-indigo-100 p-6">
                     <h4 class="font-semibold text-gray-900 mb-1">Citation Builder</h4>
                     <p class="text-2xl font-bold text-indigo-600 mb-2">$249 <span class="text-sm font-normal text-gray-500">per domain</span></p>
-                    <p class="text-sm text-gray-600 mb-4">Full opportunity mapping, FAQ optimization, entity structure, internal linking plan, and actionable fixes.</p>
+                    <p class="text-sm text-gray-600 mb-4">Full opportunity mapping, direct answer optimization, entity structure, content connectivity plan, and actionable fixes.</p>
                     <a href="{{ route('onboarding.start') }}?plan=citation-builder" class="inline-flex items-center gap-2 px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg text-sm font-medium transition-colors">
                         Get Citation Builder
                     </a>
@@ -347,7 +359,7 @@
                 <div class="bg-gradient-to-br from-blue-50 to-cyan-50 rounded-xl border border-blue-100 p-6">
                     <h4 class="font-semibold text-gray-900 mb-1">Authority Engine</h4>
                     <p class="text-2xl font-bold text-blue-600 mb-2">$499 <span class="text-sm font-normal text-gray-500">per domain</span></p>
-                    <p class="text-sm text-gray-600 mb-4">Everything in Citation Builder plus AI-generated content, schema deployment, scoring system, and 4-month roadmap.</p>
+                    <p class="text-sm text-gray-600 mb-4">Everything in Citation Builder plus AI-optimized content architectures, data layer deployment, scoring system, and 4-month roadmap.</p>
                     <a href="{{ route('onboarding.start') }}?plan=authority-engine" class="inline-flex items-center gap-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-sm font-medium transition-colors">
                         Get Authority Engine
                     </a>
@@ -373,7 +385,7 @@
             <div class="flex items-start justify-between mb-6">
                 <div>
                     <h3 class="text-lg font-bold text-gray-900 mb-1">Suggested Actions</h3>
-                    <p class="text-sm text-gray-600">Quick tasks to improve your SEO system</p>
+                    <p class="text-sm text-gray-600">Quick tasks to improve your citation system</p>
                 </div>
             </div>
 

@@ -84,6 +84,51 @@ class QuickScanResource extends Resource
                         default => 'danger',
                     }),
 
+                TextColumn::make('score_change')
+                    ->label('Δ')
+                    ->sortable()
+                    ->badge()
+                    ->formatStateUsing(fn(?int $state): string => match (true) {
+                        $state === null => '—',
+                        $state > 0 => "+{$state}",
+                        default => (string) $state,
+                    })
+                    ->color(fn(?int $state): string => match (true) {
+                        $state === null => 'gray',
+                        $state > 0 => 'success',
+                        $state < 0 => 'danger',
+                        default => 'gray',
+                    }),
+
+                TextColumn::make('domain_scan_count')
+                    ->label('Scans')
+                    ->sortable()
+                    ->badge()
+                    ->color(fn(?int $state): string => match (true) {
+                        $state === null || $state <= 1 => 'gray',
+                        $state >= 3 => 'warning',
+                        default => 'info',
+                    }),
+
+                TextColumn::make('opportunity_value')
+                    ->label('Opportunity')
+                    ->badge()
+                    ->getStateUsing(function (QuickScan $record): string {
+                        $score = $record->score ?? 100;
+                        $gap = 100 - $score;
+                        $scans = $record->domain_scan_count ?? 1;
+                        if ($gap >= 50 && $scans >= 2) return 'Hot';
+                        if ($gap >= 30) return 'High';
+                        if ($gap >= 15) return 'Medium';
+                        return 'Low';
+                    })
+                    ->color(fn(string $state): string => match ($state) {
+                        'Hot' => 'danger',
+                        'High' => 'warning',
+                        'Medium' => 'info',
+                        default => 'gray',
+                    }),
+
                 TextColumn::make('status')
                     ->badge()
                     ->sortable()
@@ -133,6 +178,12 @@ class QuickScanResource extends Resource
                     ->placeholder('—')
                     ->color(fn(?string $state): string => $state === 'admin_bypass' ? 'warning' : 'gray'),
 
+                TextColumn::make('is_repeat_scan')
+                    ->label('Repeat')
+                    ->badge()
+                    ->formatStateUsing(fn(bool $state): string => $state ? 'Yes' : '—')
+                    ->color(fn(bool $state): string => $state ? 'info' : 'gray'),
+
                 TextColumn::make('created_at')
                     ->label('Created')
                     ->dateTime('M j, Y g:i A')
@@ -151,6 +202,11 @@ class QuickScanResource extends Resource
                         'admin_bypass' => 'Internal QA',
                     ])
                     ->label('Source'),
+                SelectFilter::make('is_repeat_scan')
+                    ->options([
+                        '1' => 'Repeat Scans Only',
+                    ])
+                    ->label('Repeat'),
             ]);
     }
 

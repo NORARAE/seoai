@@ -262,8 +262,19 @@ class QuickScanController extends Controller
         try {
             $result = $scanner->scan($scan->url);
 
+            // Scan memory: capture previous score for same domain
+            $previousScan = QuickScan::where('domain', $scan->domain)
+                ->where('status', QuickScan::STATUS_SCANNED)
+                ->where('id', '!=', $scan->id)
+                ->latest('scanned_at')
+                ->first();
+            $lastScore = $previousScan?->score;
+            $scoreChange = $lastScore !== null ? ($result['score'] - $lastScore) : null;
+
             $scan->update([
                 'score' => $result['score'],
+                'last_score' => $lastScore,
+                'score_change' => $scoreChange,
                 'categories' => $result['categories'],
                 'issues' => $result['issues'],
                 'strengths' => $result['strengths'],
