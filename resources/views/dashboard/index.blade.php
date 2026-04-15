@@ -307,6 +307,27 @@
                         <h4 class="text-sm font-semibold text-gray-900 truncate" title="{{ $project->url }}">{{ $project->domain() }}</h4>
                         <p class="text-xs text-gray-500 mt-1">Scanned {{ $project->scanned_at?->diffForHumans() ?? $project->created_at->diffForHumans() }}</p>
 
+                        {{-- Scan Progression / Stagnation Messaging --}}
+                        @if($project->is_repeat_scan)
+                          @if($project->score_change !== null && $project->score_change > 0)
+                          <div class="mt-3 p-2.5 bg-green-50 border border-green-100 rounded-lg">
+                            <p class="text-xs font-medium text-green-700">↑ Progress detected — but {{ max(0, 100 - ($project->score ?? 0)) }}% of your market remains uncovered.</p>
+                          </div>
+                          @elseif($project->score_change !== null && $project->score_change === 0)
+                          <div class="mt-3 p-2.5 bg-amber-50 border border-amber-200 rounded-lg">
+                            <p class="text-xs font-medium text-amber-800">⚡ No improvement detected — your coverage hasn't evolved since your last scan. Competitors are pulling ahead.</p>
+                          </div>
+                          @elseif($project->score_change !== null && $project->score_change < 0)
+                          <div class="mt-3 p-2.5 bg-red-50 border border-red-200 rounded-lg">
+                            <p class="text-xs font-medium text-red-700">⚠ Your position is weakening — score dropped {{ abs($project->score_change) }} points. Without a coverage system, this trend continues.</p>
+                          </div>
+                          @else
+                          <div class="mt-3 p-2.5 bg-gray-50 border border-gray-200 rounded-lg">
+                            <p class="text-xs font-medium text-gray-600">Repeat scan — tracking changes reveals whether your market position is improving or eroding.</p>
+                          </div>
+                          @endif
+                        @endif
+
                         @if($project->fastest_fix && $project->status === 'scanned')
                         <div class="mt-3 p-2.5 bg-blue-50 border border-blue-100 rounded-lg">
                             <p class="text-xs font-medium text-blue-600 uppercase tracking-wider mb-0.5">Fastest Fix</p>
@@ -315,10 +336,10 @@
                         @endif
 
                         @if(!empty($project->issues) && is_array($project->issues))
-                        <p class="text-xs text-gray-500 mt-3">{{ count($project->issues) }} issue{{ count($project->issues) !== 1 ? 's' : '' }} found</p>
+                        <p class="text-xs text-gray-500 mt-3">{{ count($project->issues) }} coverage gap{{ count($project->issues) !== 1 ? 's' : '' }} detected</p>
                         @endif
 
-                        <!-- Action buttons -->
+                        {{-- Score-tiered action buttons --}}
                         <div class="mt-4 flex flex-wrap gap-2">
                             <a href="{{ route('quick-scan.result', ['scan_id' => $project->id, 'session_id' => $project->stripe_session_id]) }}" class="inline-flex items-center gap-1 px-3 py-1.5 text-xs font-medium text-gray-700 bg-gray-100 hover:bg-gray-200 rounded-lg transition-colors">
                                 <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
@@ -327,7 +348,7 @@
                             @if(!$project->upgrade_plan)
                             <a href="{{ route('onboarding.start') }}?plan=citation-builder&scan_id={{ $project->id }}" class="inline-flex items-center gap-1 px-3 py-1.5 text-xs font-medium text-white bg-indigo-600 hover:bg-indigo-700 rounded-lg transition-colors">
                                 <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/></svg>
-                                Upgrade
+                                @if(($project->score ?? 0) < 40) Fix Structure @elseif(($project->score ?? 0) < 70) Improve Visibility @elseif(($project->score ?? 0) < 90) Expand Coverage @else Own Market @endif
                             </a>
                             @elseif(!$project->onboarding_submission_id)
                             <a href="{{ route('onboarding.start') }}?scan_id={{ $project->id }}" class="inline-flex items-center gap-1 px-3 py-1.5 text-xs font-medium text-white bg-green-600 hover:bg-green-700 rounded-lg transition-colors">
@@ -346,22 +367,25 @@
                 @endforeach
             </div>
 
-            <!-- Upgrade packages row -->
+            <!-- Coverage System Packages -->
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6">
                 <div class="bg-gradient-to-br from-indigo-50 to-blue-50 rounded-xl border border-indigo-100 p-6">
+                    <p class="text-[10px] font-bold uppercase tracking-widest text-indigo-400 mb-1">Foundation</p>
                     <h4 class="font-semibold text-gray-900 mb-1">Citation Builder</h4>
                     <p class="text-2xl font-bold text-indigo-600 mb-2">$249 <span class="text-sm font-normal text-gray-500">per domain</span></p>
-                    <p class="text-sm text-gray-600 mb-4">Full opportunity mapping, direct answer optimization, entity structure, content connectivity plan, and actionable fixes.</p>
+                    <p class="text-sm text-gray-600 mb-4">Complete coverage mapping, entity structure deployment, content connectivity architecture, and a system to expand your market footprint.</p>
                     <a href="{{ route('onboarding.start') }}?plan=citation-builder" class="inline-flex items-center gap-2 px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg text-sm font-medium transition-colors">
-                        Get Citation Builder
+                        Build My Coverage System
                     </a>
                 </div>
-                <div class="bg-gradient-to-br from-blue-50 to-cyan-50 rounded-xl border border-blue-100 p-6">
+                <div class="bg-gradient-to-br from-blue-50 to-cyan-50 rounded-xl border border-blue-100 p-6 relative overflow-hidden">
+                    <div class="absolute top-3 right-3 px-2 py-0.5 bg-blue-600 text-white text-[10px] font-bold uppercase rounded-full">Most Popular</div>
+                    <p class="text-[10px] font-bold uppercase tracking-widest text-blue-400 mb-1">Full Coverage</p>
                     <h4 class="font-semibold text-gray-900 mb-1">Authority Engine</h4>
                     <p class="text-2xl font-bold text-blue-600 mb-2">$499 <span class="text-sm font-normal text-gray-500">per domain</span></p>
-                    <p class="text-sm text-gray-600 mb-4">Everything in Citation Builder plus AI-optimized content architectures, data layer deployment, scoring system, and 4-month roadmap.</p>
+                    <p class="text-sm text-gray-600 mb-4">Everything in Citation Builder plus AI-optimized coverage expansion, data layer deployment, scoring intelligence, and a 4-month growth roadmap to dominate your market.</p>
                     <a href="{{ route('onboarding.start') }}?plan=authority-engine" class="inline-flex items-center gap-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-sm font-medium transition-colors">
-                        Get Authority Engine
+                        Scale My Market Position
                     </a>
                 </div>
             </div>
@@ -384,8 +408,8 @@
         <div class="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-xl border-2 border-blue-100 p-6 shadow-sm">
             <div class="flex items-start justify-between mb-6">
                 <div>
-                    <h3 class="text-lg font-bold text-gray-900 mb-1">Suggested Actions</h3>
-                    <p class="text-sm text-gray-600">Quick tasks to improve your citation system</p>
+                    <h3 class="text-lg font-bold text-gray-900 mb-1">Expand Your Coverage</h3>
+                    <p class="text-sm text-gray-600">Actions that strengthen your market position</p>
                 </div>
             </div>
 

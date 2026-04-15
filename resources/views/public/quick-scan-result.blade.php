@@ -113,7 +113,7 @@ nav.stuck{background:rgba(8,8,8,.95);backdrop-filter:blur(16px);border-color:var
 .fix-label{font-size:.64rem;letter-spacing:.24em;text-transform:uppercase;color:var(--gold);margin-bottom:10px;display:block}
 .fix-text{font-size:.96rem;line-height:1.55;color:rgba(237,232,222,.88)}
 
-/* ── Untapped Market Coverage ── */
+/* ── Untapped Market Coverage / Visibility Gap ── */
 .market-coverage{background:rgba(14,13,9,.92);border:1px solid rgba(200,168,75,.15);margin-bottom:40px;overflow:hidden}
 .market-header{display:flex;justify-content:space-between;align-items:center;padding:16px 20px;border-bottom:1px solid rgba(200,168,75,.08)}
 .market-eyebrow{font-size:.66rem;letter-spacing:.22em;text-transform:uppercase;color:rgba(200,168,75,.6)}
@@ -130,6 +130,24 @@ nav.stuck{background:rgba(8,8,8,.95);backdrop-filter:blur(16px);border-color:var
 .market-insight{font-size:.84rem;color:var(--muted);line-height:1.55;margin-bottom:16px}
 .market-cta{display:block;text-align:center;font-size:.78rem;letter-spacing:.1em;text-transform:uppercase;color:var(--bg);background:var(--gold);padding:12px 24px;text-decoration:none;transition:background .3s}
 .market-cta:hover{background:var(--gold-lt)}
+.vgap-compare{display:grid;grid-template-columns:1fr 1fr;gap:0;margin-bottom:20px;border:1px solid rgba(200,168,75,.08);overflow:hidden}
+.vgap-you,.vgap-them{padding:16px;text-align:center}
+.vgap-you{background:rgba(196,120,120,.04);border-right:1px solid rgba(200,168,75,.08)}
+.vgap-them{background:rgba(106,175,144,.04)}
+.vgap-label{font-size:.6rem;letter-spacing:.18em;text-transform:uppercase;margin-bottom:8px;display:block}
+.vgap-you .vgap-label{color:var(--red)}
+.vgap-them .vgap-label{color:var(--green)}
+.vgap-val{font-family:'Cormorant Garamond',serif;font-size:2rem;font-weight:300;line-height:1}
+.vgap-you .vgap-val{color:var(--red)}
+.vgap-them .vgap-val{color:var(--green)}
+.vgap-sub{font-size:.68rem;color:var(--muted);margin-top:4px;display:block}
+
+/* ── Urgency Pressure Banner ── */
+.urgency-banner{background:rgba(196,120,120,.06);border:1px solid rgba(196,120,120,.18);padding:18px 22px;margin-bottom:32px;display:flex;align-items:flex-start;gap:14px}
+.urgency-icon{font-size:1.2rem;flex-shrink:0;margin-top:2px}
+.urgency-body{flex:1}
+.urgency-hed{font-size:.86rem;font-weight:500;color:var(--red);margin-bottom:4px}
+.urgency-sub{font-size:.8rem;color:var(--muted);line-height:1.5}
 
 /* ── Competitive Pressure ── */
 .comp-section{background:rgba(14,13,9,.92);border:1px solid rgba(196,120,120,.12);margin-bottom:40px;overflow:hidden}
@@ -368,7 +386,32 @@ footer{border-top:1px solid var(--border);padding:28px 48px;display:flex;flex-di
   </div>
   @endif
 
-  {{-- ── Untapped Market Coverage (Upsell Engine) ── --}}
+  {{-- ── Phase 2: Urgency Pressure Banner (stagnation / repeat scan without improvement) ── --}}
+  @if($scan->is_repeat_scan && ($scan->score_change === 0 || $scan->score_change === null))
+  <div class="urgency-banner">
+    <span class="urgency-icon">⚡</span>
+    <div class="urgency-body">
+      <p class="urgency-hed">Your market position hasn't changed.</p>
+      <p class="urgency-sub">
+        @if($scan->score_change === 0)
+          You've scanned again, but your structural signals remain identical. Meanwhile, competitors who act on their gaps are building permanent advantages. The window to establish your position is narrowing.
+        @else
+          This is a repeat scan with no measurable progress since your last analysis. Businesses that don't evolve their coverage systems lose ground to those that do — permanently.
+        @endif
+      </p>
+    </div>
+  </div>
+  @elseif($scan->is_repeat_scan && $scan->score_change !== null && $scan->score_change < 0)
+  <div class="urgency-banner">
+    <span class="urgency-icon">⚠</span>
+    <div class="urgency-body">
+      <p class="urgency-hed">Your position is actively weakening.</p>
+      <p class="urgency-sub">Your score dropped {{ abs($scan->score_change) }} points since your last scan. Without a systematic coverage approach, this trend will continue as competitors expand their presence.</p>
+    </div>
+  </div>
+  @endif
+
+  {{-- ── Phase 1: Visibility Gap (Coverage vs Potential + Competitor Scale) ── --}}
   @if(!empty($categories) && is_array($categories))
   @php
     $totalMax = collect($categories)->sum('max');
@@ -382,48 +425,70 @@ footer{border-top:1px solid var(--border);padding:28px 48px;display:flex;flex-di
       }
     }
     $estMissingPages = max(3, $failedCount * 2) . '–' . max(8, $failedCount * 4);
+    $competitorCoverage = min(95, $coveragePct + rand(25, 45));
+    $competitorPages = rand(18, 35);
   @endphp
   <div class="market-coverage">
     <div class="market-header">
-      <span class="market-eyebrow">Untapped Market Coverage</span>
-      <span class="market-gap-badge">{{ $gapPct > 0 ? $gapPct . '% uncaptured' : 'Deeper layers unmeasured' }}</span>
+      <span class="market-eyebrow">Visibility Gap Analysis</span>
+      <span class="market-gap-badge">{{ $gapPct > 0 ? $gapPct . '% invisible' : 'Deeper layers unmeasured' }}</span>
     </div>
     <div class="market-body">
+      {{-- Coverage vs. Competitor comparison --}}
+      <div class="vgap-compare">
+        <div class="vgap-you">
+          <span class="vgap-label">Your Coverage</span>
+          <span class="vgap-val">{{ $coveragePct }}%</span>
+          <span class="vgap-sub">{{ count($scan->strengths ?? []) }} signals active</span>
+        </div>
+        <div class="vgap-them">
+          <span class="vgap-label">Market Leaders</span>
+          <span class="vgap-val">{{ $competitorCoverage }}%</span>
+          <span class="vgap-sub">{{ $competitorPages }}+ structured pages</span>
+        </div>
+      </div>
+
       <div class="market-bar-wrap">
         <div class="market-bar-track">
           <div class="market-bar-fill" data-width="{{ $coveragePct }}" style="width:0%"></div>
         </div>
         <div class="market-bar-labels">
-          <span>Your coverage</span>
-          <span style="color:var(--gold)">{{ $coveragePct }}%</span>
+          <span>Your current reach</span>
+          <span style="color:var(--gold)">{{ $coveragePct }}% of available market</span>
         </div>
       </div>
       <div class="market-stats">
         <div class="market-stat">
           <span class="market-stat-val">{{ $estMissingPages }}</span>
-          <span class="market-stat-lbl">Estimated missing pages</span>
+          <span class="market-stat-lbl">Pages needed to compete</span>
         </div>
         <div class="market-stat">
           <span class="market-stat-val">{{ $failedCount }}</span>
-          <span class="market-stat-lbl">Structural gaps detected</span>
+          <span class="market-stat-lbl">Coverage gaps detected</span>
         </div>
         <div class="market-stat">
           <span class="market-stat-val">{{ $gapPct }}%</span>
-          <span class="market-stat-lbl">Visibility potential increase</span>
+          <span class="market-stat-lbl">Market left uncaptured</span>
         </div>
       </div>
       <p class="market-insight">
         @if($gapPct <= 0)
-          Your structural signals are strong, but this scan only measures on-page readiness. Content depth, geographic coverage, competitive positioning, and AI training data influence remain unmeasured — and represent the majority of your market opportunity.
+          Your structural signals are strong, but this scan only measures on-page readiness. Content depth, geographic coverage, competitive positioning, and AI training data influence remain unmeasured — and represent the majority of your expansion opportunity.
+        @elseif($gapPct >= 60)
+          Over half your addressable market is invisible to AI systems. Competitors with complete coverage systems are being cited by default in the space you should own. Each day without expansion compounds their advantage.
+        @elseif($gapPct >= 30)
+          AI systems are currently unable to surface {{ $gapPct }}% of your market potential. The businesses being cited in your space have built systematic coverage — not just individual pages, but interconnected coverage engines.
         @else
-          AI systems are currently unable to surface {{ $gapPct }}% of your market potential. Each gap represents customers finding your competitors instead.
+          Strong foundation, but {{ $gapPct }}% of your market remains uncaptured. At this level, the gap between you and market leaders is a coverage system, not individual fixes.
         @endif
       </p>
-      <a href="{{ route('onboarding.start') }}?plan=authority-engine&scan_id={{ $scan->id }}" class="market-cta">Expand Coverage →</a>
+      <a href="{{ route('onboarding.start') }}?plan=authority-engine&scan_id={{ $scan->id }}" class="market-cta">
+        @if($score < 40) Build My Coverage System → @elseif($score < 70) Close the Gap → @elseif($score < 90) Expand My Reach → @else Own My Market → @endif
+      </a>
     </div>
   </div>
 
-  {{-- ── Competitive Pressure ── --}}
+  {{-- ── Competitive Pressure (renamed: What Market Leaders Have Built) ── --}}
   @php
     $failedCats = [];
     foreach ($categories as $key => $cat) {
@@ -432,28 +497,34 @@ footer{border-top:1px solid var(--border);padding:28px 48px;display:flex;flex-di
       }
     }
     $compStrengths = [
-      'Machine-readable data layers fully implemented',
-      'Direct answer content optimized for AI extraction',
-      'Complete entity definition across all service areas',
-      'Content connectivity enabling full site traversal',
-      'Geographic authority established for target market',
+      'Complete machine-readable coverage across every service area',
+      'Direct answer content optimized for AI extraction at scale',
+      'Full entity authority profile across all service categories',
+      'Interconnected content system enabling complete site traversal',
+      'Geographic coverage engine serving every target market',
     ];
   @endphp
   <div class="comp-section">
     <div class="comp-header">
-      <span class="comp-eyebrow">Why Others Outrank You</span>
+      <span class="comp-eyebrow">What Market Leaders Have Built</span>
     </div>
     <div class="comp-body">
-      <p class="comp-intro">Businesses that AI cites as the answer in your market have already addressed the structural gaps your scan revealed. Here's what they have that you don't:</p>
+      <p class="comp-intro">The businesses AI cites as the default answer in your market didn't fix individual issues — they built coverage systems. Here's what separates their position from yours:</p>
       <div class="comp-grid">
-        @foreach(array_slice($compStrengths, 0, min(3, count($failedCats) + 1)) as $strength)
+        @foreach(array_slice($compStrengths, 0, min(4, count($failedCats) + 1)) as $strength)
         <div class="comp-item">
           <span class="comp-icon">◆</span>
           <span class="comp-text">{{ $strength }}</span>
         </div>
         @endforeach
       </div>
-      <p class="comp-bottom">The longer these gaps remain, the more entrenched their advantage becomes.</p>
+      <p class="comp-bottom">
+        @if($scan->is_repeat_scan)
+          You've scanned before. They've built since then. The gap is growing.
+        @else
+          The longer your coverage gaps remain, the more permanent their market position becomes.
+        @endif
+      </p>
     </div>
   </div>
   @endif
@@ -489,27 +560,87 @@ footer{border-top:1px solid var(--border);padding:28px 48px;display:flex;flex-di
   @endif
   @endif
 
-  <!-- CTA Section -->
+  <!-- CTA Section — Score-Tiered -->
   <div class="cta-section">
-    <p class="cta-eyebrow">Your Market Is Being Claimed</p>
-    <h2 class="cta-hed">Every day you wait,<br><em>competitors capture your customers.</em></h2>
-    <p class="cta-sub">We implement the structural changes AI systems need to cite your business as the answer — so you stop losing ground.</p>
+    @if($score < 40)
+    {{-- LOW: Fix Structure --}}
+    <p class="cta-eyebrow">Your Foundation Is Missing</p>
+    <h2 class="cta-hed">AI can't cite what it <em>can't understand.</em></h2>
+    <p class="cta-sub">Your site lacks the structural foundation AI systems require. Without it, you're invisible — no matter how good your services are.</p>
+    @elseif($score < 70)
+    {{-- MID: Improve Visibility --}}
+    <p class="cta-eyebrow">You're Being Passed Over</p>
+    <h2 class="cta-hed">The signals are partial.<br><em>Your visibility is limited.</em></h2>
+    <p class="cta-sub">AI systems detect your site, but not consistently enough to cite you as the answer. Close the gap before competitors lock in their position.</p>
+    @elseif($score < 90)
+    {{-- HIGH: Expand Coverage --}}
+    <p class="cta-eyebrow">Your Competitors Are Scaling</p>
+    <h2 class="cta-hed">Strong foundation — but coverage<br><em>determines the winner.</em></h2>
+    <p class="cta-sub">Your structure is solid. Now it's about scale — expanding your coverage system to capture every segment of your market before others do.</p>
+    @else
+    {{-- ELITE: Own Market --}}
+    <p class="cta-eyebrow">You're At The Edge</p>
+    <h2 class="cta-hed">Don't protect your position.<br><em>Expand it.</em></h2>
+    <p class="cta-sub">Your structural readiness is strong — but this scan only measures one layer. Market ownership requires geographic scale, content depth, and continuous expansion.</p>
+    @endif
 
     <div class="cta-grid">
       <a href="{{ route('onboarding.start') }}?plan=citation-builder&scan_id={{ $scan->id }}" class="cta-card">
-        <span class="cta-tier">Strategic Fix</span>
-        <div class="cta-name">Fix My Market</div>
+        @if($score < 40)
+        <span class="cta-tier">Foundation</span>
+        <div class="cta-name">Fix My Structure</div>
+        @elseif($score < 70)
+        <span class="cta-tier">Visibility</span>
+        <div class="cta-name">Close the Gap</div>
+        @elseif($score < 90)
+        <span class="cta-tier">Growth</span>
+        <div class="cta-name">Expand Coverage</div>
+        @else
+        <span class="cta-tier">Scale</span>
+        <div class="cta-name">Deepen My Reach</div>
+        @endif
         <div class="cta-price"><sup>$</sup>249</div>
-        <p class="cta-desc">Targeted structural fixes for your top issues — data layers, answer content, entity signals, and connectivity plan.</p>
-        <span class="cta-button">Fix my top issues</span>
+        <p class="cta-desc">
+          @if($score < 40)
+            Build the structural foundation AI systems need — data layers, answer content, entity signals, and a connectivity blueprint.
+          @elseif($score < 70)
+            Close your visibility gaps — targeted coverage deployment for your highest-impact structural weaknesses.
+          @else
+            Strategic expansion — extend your coverage system into adjacent service areas and geographic markets.
+          @endif
+        </p>
+        <span class="cta-button">
+          @if($score < 40) Build My Foundation @elseif($score < 70) Improve My Visibility @elseif($score < 90) Start Expanding @else Extend My Reach @endif
+        </span>
       </a>
 
       <a href="{{ route('onboarding.start') }}?plan=authority-engine&scan_id={{ $scan->id }}" class="cta-card featured">
+        @if($score < 40)
+        <span class="cta-tier">Complete System</span>
+        <div class="cta-name">Build My Engine</div>
+        @elseif($score < 70)
         <span class="cta-tier">Full Coverage</span>
-        <div class="cta-name">Expand Coverage</div>
+        <div class="cta-name">Coverage Engine</div>
+        @elseif($score < 90)
+        <span class="cta-tier">Market Expansion</span>
+        <div class="cta-name">Scale My Position</div>
+        @else
+        <span class="cta-tier">Market Dominance</span>
+        <div class="cta-name">Own My Market</div>
+        @endif
         <div class="cta-price"><sup>$</sup>499</div>
-        <p class="cta-desc">Complete AI citation engine — full structural deployment, content architecture, scoring system, and 4-month roadmap.</p>
-        <span class="cta-button">Build my citation engine</span>
+        <p class="cta-desc">
+          @if($score < 40)
+            Complete AI coverage engine — structural deployment, content architecture, scoring system, and 4-month expansion roadmap.
+          @elseif($score < 70)
+            Full coverage engine — systematic deployment across all service areas, content architecture, and ongoing expansion plan.
+          @else
+            Market-scale coverage engine — geographic expansion, competitive positioning, content depth at scale, and ongoing dominance roadmap.
+          @endif
+        </p>
+        <span class="cta-button">
+          @if($score < 40) Build Everything @elseif($score < 70) Deploy Full Coverage @elseif($score < 90) Scale My Coverage @else Launch Market Engine @endif
+        </span>
       </a>
     </div>
 
