@@ -327,12 +327,12 @@ footer{border-top:1px solid var(--border);padding:28px 48px;display:flex;flex-di
     <div class="qs-checks">
       <div class="qs-check">
         <div class="qs-check-icon">⬡</div>
-        <div class="qs-check-title">Schema / Structured Data</div>
-        <div class="qs-check-desc">Does your site have the markup AI systems use to identify your business type, services, and location?</div>
+        <div class="qs-check-title">Machine-Readable Context</div>
+        <div class="qs-check-desc">Does your site have the data layers AI systems use to identify your business type, services, and location?</div>
       </div>
       <div class="qs-check">
         <div class="qs-check-icon">?</div>
-        <div class="qs-check-title">FAQ &amp; Q&amp;A Content</div>
+        <div class="qs-check-title">Direct Answer Signals</div>
         <div class="qs-check-desc">Does your site have direct answers AI can extract and cite in response to customer questions?</div>
       </div>
       <div class="qs-check">
@@ -342,7 +342,7 @@ footer{border-top:1px solid var(--border);padding:28px 48px;display:flex;flex-di
       </div>
       <div class="qs-check">
         <div class="qs-check-icon">↗</div>
-        <div class="qs-check-title">Internal Link Structure</div>
+        <div class="qs-check-title">Content Connectivity</div>
         <div class="qs-check-desc">Can AI systems navigate your site to build a complete picture of your authority and coverage?</div>
       </div>
       <div class="qs-check">

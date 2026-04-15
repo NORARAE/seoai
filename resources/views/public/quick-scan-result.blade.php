@@ -357,12 +357,12 @@ footer{border-top:1px solid var(--border);padding:28px 48px;display:flex;flex-di
   <div class="broken-section">
     <p class="broken-title">
       <span style="font-size:1rem">⚠</span>
-      Broken Internal Links ({{ count($scan->broken_links) }})
+      Broken Pathways Detected ({{ count($scan->broken_links) }})
     </p>
     @foreach($scan->broken_links as $bl)
     <div class="broken-item">
       <span>{{ $bl['url'] ?? '' }}</span>
-      <span class="broken-status">HTTP {{ $bl['status'] ?? '?' }}</span>
+      <span class="broken-status">Unreachable</span>
     </div>
     @endforeach
   </div>

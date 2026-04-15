@@ -80,6 +80,17 @@ class QuickScanService
             mt_srand();
         }
 
+        // Shuffle category display order for variability (deterministic per URL)
+        $catKeys = array_keys($categories);
+        mt_srand($variantSeed + 7);
+        shuffle($catKeys);
+        mt_srand();
+        $shuffledCategories = [];
+        foreach ($catKeys as $k) {
+            $shuffledCategories[$k] = $categories[$k];
+        }
+        $categories = $shuffledCategories;
+
         // 404 detection on internal links
         $linkAudit = $this->auditInternalLinks($html, $url);
 
@@ -729,56 +740,280 @@ class QuickScanService
             'pass' => [
                 'Primary topic signal detected — AI systems can identify this page.',
                 'Topic signal present — AI platforms can recognize your page content.',
+                'Page topic clearly established — AI can classify your content.',
+                'Strong topic declaration found — machines can categorize this page.',
             ],
             'fail' => [
                 'Primary topic signal missing — AI systems cannot determine what this page covers.',
                 'No topic signal detected — AI platforms have no way to classify this page.',
+                'Page topic undefined — AI has no basis to categorize your content.',
+                'Topic declaration absent — machines skip pages they cannot classify.',
             ],
         ],
         'meta_description' => [
             'pass' => [
                 'Page summary signal present — AI systems have context for this page.',
                 'Summary signal detected — AI platforms can contextualize your content.',
+                'Content summary available — AI has the context it needs to surface this page.',
+                'Page context signal found — machines can evaluate your page relevance.',
             ],
             'fail' => [
                 'No page summary signal — AI systems have no context for this page.',
                 'Summary signal absent — AI platforms lack context to surface this page.',
+                'Page context missing — AI cannot determine when to recommend this content.',
+                'No content summary — machines have no basis to evaluate your page relevance.',
             ],
         ],
         'h1' => [
             'pass' => [
                 'Primary content marker detected — clear topic established.',
                 'Content marker found — your primary topic is clearly defined.',
+                'Strong content anchor present — AI can identify the page focus.',
+                'Page focus signal detected — machines can determine your core topic.',
             ],
             'fail' => [
                 'No primary content marker — the page lacks a clear topic signal.',
                 'Content marker missing — AI cannot identify your page\'s primary topic.',
+                'Page focus undefined — AI has no anchor point for your content.',
+                'No content anchor detected — machines cannot determine what this page is about.',
+            ],
+        ],
+        'h2_sections' => [
+            'pass' => [
+                'Multiple topic depth markers detected — strong content structure.',
+                'Content depth signals present — AI can map your topic coverage.',
+                'Topic structure established — machines can parse your content hierarchy.',
+                'Strong depth coverage — AI recognizes comprehensive topic treatment.',
+            ],
+            'fail' => [
+                'Insufficient topic depth markers — AI cannot map your content structure.',
+                'Content depth signals weak — machines see a flat, unstructured page.',
+                'Topic structure missing — AI cannot determine the scope of your coverage.',
+                'No depth hierarchy detected — your content appears shallow to AI systems.',
+            ],
+        ],
+        'word_count' => [
+            'pass' => [
+                'Sufficient content substance — AI systems have enough material to analyze.',
+                'Strong content depth — AI platforms can extract meaningful information.',
+                'Content volume adequate — machines have sufficient material to process.',
+                'Substantive content detected — AI can build a comprehensive understanding.',
+            ],
+            'fail' => [
+                'Insufficient content substance — AI systems deprioritize thin pages.',
+                'Content depth below threshold — AI platforms skip pages with limited material.',
+                'Page lacks substance — machines cannot extract enough to justify citing you.',
+                'Thin content detected — AI systems favor more comprehensive sources.',
             ],
         ],
         'json_ld' => [
             'pass' => [
                 'Structured data layer detected — AI systems can parse your business information.',
                 'Data layer present — machine-readable business information available.',
+                'Machine-readable context found — AI can extract your business details directly.',
+                'Business data layer active — platforms can parse your information automatically.',
             ],
             'fail' => [
                 'No structured data layer — AI systems cannot identify your business type or services.',
                 'Data layer missing — machines cannot parse your business information.',
+                'Machine-readable context absent — AI must guess your business details.',
+                'No business data layer — platforms cannot automatically identify what you offer.',
+            ],
+        ],
+        'schema_type' => [
+            'pass' => [
+                'Entity type declaration found — your business type is machine-readable.',
+                'Business classification detected — AI knows what category you belong to.',
+                'Entity category established — machines can properly classify your business.',
+                'Type declaration present — AI platforms can categorize your entity correctly.',
+            ],
+            'fail' => [
+                'No entity type declaration — AI cannot classify your business.',
+                'Business classification missing — machines cannot determine your category.',
+                'Entity category undefined — AI must infer what type of business you are.',
+                'No type declaration — platforms default to generic classification for your site.',
+            ],
+        ],
+        'entity_schema' => [
+            'pass' => [
+                'Business category signal detected — AI can identify your industry.',
+                'Industry classification present — machines can match you to relevant queries.',
+                'Category signal found — AI platforms know your business vertical.',
+                'Industry identifier active — your business sector is machine-readable.',
+            ],
+            'fail' => [
+                'No business category signal — AI cannot determine your industry.',
+                'Industry classification missing — machines cannot match you to relevant queries.',
+                'Category signal absent — AI platforms cannot place you in a business vertical.',
+                'No industry identifier — your business sector is invisible to machines.',
+            ],
+        ],
+        'rich_schema' => [
+            'pass' => [
+                'Multiple data layers detected — strong machine-readable foundation.',
+                'Rich data coverage present — AI has deep context for your business.',
+                'Comprehensive data signals found — machines can build a detailed profile.',
+                'Multi-layer data foundation — AI platforms have extensive business context.',
+            ],
+            'fail' => [
+                'Limited data depth — expand with additional machine-readable layers.',
+                'Single-layer data only — AI has a shallow view of your business.',
+                'Data coverage incomplete — machines lack the depth to fully profile your business.',
+                'Minimal data foundation — AI platforms need richer context to recommend you.',
+            ],
+        ],
+        'business_name' => [
+            'pass' => [
+                'Brand identity signal detected — AI can reference your business by name.',
+                'Business name recognized — machines can cite you directly.',
+                'Brand signal present — AI platforms can attribute information to your business.',
+                'Identity marker found — your business name is extractable by AI systems.',
+            ],
+            'fail' => [
+                'Brand identity signal missing — AI may not recognize your business by name.',
+                'Business name unclear — machines cannot confidently cite you.',
+                'Brand signal absent — AI platforms cannot attribute content to your business.',
+                'No identity marker — your business name is not extractable by AI systems.',
+            ],
+        ],
+        'services' => [
+            'pass' => [
+                'Offering clarity detected — AI can describe what your business provides.',
+                'Service descriptions found — machines can match you to relevant queries.',
+                'Clear offering signals present — AI knows what services you provide.',
+                'Service identification active — platforms can recommend you for specific needs.',
+            ],
+            'fail' => [
+                'No offering clarity — AI cannot describe what your business provides.',
+                'Service descriptions missing — machines cannot match you to relevant queries.',
+                'Offering signals absent — AI doesn\'t know what you provide.',
+                'No service identification — platforms cannot recommend you for specific needs.',
+            ],
+        ],
+        'location' => [
+            'pass' => [
+                'Geographic context detected — AI can surface you for location-relevant queries.',
+                'Location signals present — machines can associate you with a service area.',
+                'Geographic authority established — AI platforms know where you operate.',
+                'Area coverage identified — your service territory is machine-readable.',
+            ],
+            'fail' => [
+                'No geographic context — AI cannot associate you with a service area.',
+                'Location signals missing — machines cannot determine where you operate.',
+                'Geographic authority absent — AI platforms don\'t know your service area.',
+                'No area coverage — your service territory is invisible to AI systems.',
             ],
         ],
         'link_count' => [
+            'pass' => [
+                'Strong content graph — AI can traverse your site comprehensively.',
+                'Robust site connectivity — machines can discover your full content.',
+                'Content connections well-established — AI can map your site completely.',
+                'Healthy content network — platforms can navigate between your pages.',
+            ],
             'fail' => [
                 'Sparse content graph — AI cannot fully map your site.',
                 'Weak content connections — AI discovery of your pages is limited.',
+                'Content network fragmented — machines miss most of your pages.',
+                'Poor site connectivity — AI can only see a fraction of your content.',
             ],
         ],
         'faq' => [
             'pass' => [
                 'Direct answer content detected — AI can extract citable responses from your pages.',
                 'Answer-ready content found — AI platforms can cite your responses directly.',
+                'Extractable answers present — machines can quote your content in responses.',
+                'Citable content identified — AI systems can surface your answers to user questions.',
             ],
             'fail' => [
                 'No direct answer content — AI has no citable responses to extract.',
                 'Answer content missing — AI platforms cannot extract quotable information.',
+                'No extractable answers — machines have nothing to quote from your site.',
+                'Citable content absent — AI systems cannot find answers to surface from your pages.',
+            ],
+        ],
+        'definitions' => [
+            'pass' => [
+                'Authoritative definitions detected — your site frames topics AI references.',
+                'Definition content found — AI can use your framing as a reference source.',
+                'Authority language present — machines recognize your expertise signals.',
+                'Reference-quality definitions identified — AI can cite your explanations.',
+            ],
+            'fail' => [
+                'No authoritative definitions — AI cannot cite your site as a reference source.',
+                'Definition content missing — machines have no basis to reference your expertise.',
+                'Authority language absent — AI cannot establish your knowledge authority.',
+                'No reference-quality content — AI platforms prefer sites that define their domain.',
+            ],
+        ],
+        'structured_lists' => [
+            'pass' => [
+                'Organized content blocks detected — AI can extract structured information.',
+                'Structured information present — machines can parse your content efficiently.',
+                'Clear content organization found — AI can identify specific items and details.',
+                'Well-organized blocks identified — platforms can extract itemized information.',
+            ],
+            'fail' => [
+                'No organized content blocks — structured information improves AI extractability.',
+                'Content lacks structure — machines struggle to parse unorganized information.',
+                'No clear content organization — AI cannot isolate specific items and details.',
+                'Unstructured presentation — platforms cannot efficiently extract your information.',
+            ],
+        ],
+        'https' => [
+            'pass' => [
+                'Secure connection verified — trust signal established.',
+                'Connection security confirmed — AI trust requirements met.',
+                'Encryption active — your site meets baseline trust standards.',
+                'Secure protocol detected — machines trust your connection.',
+            ],
+            'fail' => [
+                'No secure connection — trust signals reduced for AI and users.',
+                'Connection security missing — AI trust requirements not met.',
+                'No encryption detected — trust signals are critically low.',
+                'Insecure protocol — machines deprioritize sites without connection security.',
+            ],
+        ],
+        'response_time' => [
+            'pass' => [
+                'Fast access — AI systems can efficiently reach your content.',
+                'Quick response detected — machines can process your site without delays.',
+                'Access speed confirmed — AI platforms prioritize responsive sites.',
+                'Responsive connection — your site meets AI accessibility standards.',
+            ],
+            'fail' => [
+                'Slow access — AI systems may deprioritize your site.',
+                'Response delays detected — machines may skip slow-loading content.',
+                'Access speed below threshold — AI platforms favor faster sites.',
+                'Sluggish connection — your site risks being deprioritized by AI crawlers.',
+            ],
+        ],
+        'indexable' => [
+            'pass' => [
+                'Page is discoverable — no access restrictions detected.',
+                'Discovery access confirmed — AI systems can reach this page.',
+                'No restrictions found — machines are free to access your content.',
+                'Full accessibility verified — AI platforms can discover and process this page.',
+            ],
+            'fail' => [
+                'Page is blocked from discovery — AI systems will skip this page entirely.',
+                'Discovery access restricted — machines cannot reach this content.',
+                'Access restriction detected — AI platforms are blocked from this page.',
+                'Page hidden from AI — your content is invisible to discovery systems.',
+            ],
+        ],
+        'canonical' => [
+            'pass' => [
+                'Authority consolidation set — prevents duplicate content dilution.',
+                'Content authority signal present — AI knows which version to prioritize.',
+                'Page authority established — machines won\'t split your citation strength.',
+                'Consolidation signal active — your page authority is properly concentrated.',
+            ],
+            'fail' => [
+                'No authority consolidation — duplicate content may dilute your citation strength.',
+                'Content authority signal missing — AI may split attention across page versions.',
+                'Page authority unconsolidated — machines may dilute your ranking potential.',
+                'No consolidation signal — your citation strength may be fragmented.',
             ],
         ],
     ];
