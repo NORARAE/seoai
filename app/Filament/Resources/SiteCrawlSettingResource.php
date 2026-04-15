@@ -41,7 +41,7 @@ class SiteCrawlSettingResource extends Resource
         $query = parent::getEloquentQuery();
         $user = Auth::user();
 
-        if (! $user instanceof User) {
+        if (!$user instanceof User) {
             return $query->whereRaw('1 = 0');
         }
 
@@ -79,7 +79,7 @@ class SiteCrawlSettingResource extends Resource
                 Action::make('edit')
                     ->label('Edit')
                     ->icon('heroicon-o-pencil-square')
-                    ->fillForm(fn (SiteCrawlSetting $record): array => [
+                    ->fillForm(fn(SiteCrawlSetting $record): array => [
                         'max_pages' => $record->max_pages,
                         'max_depth' => $record->max_depth,
                         'crawl_delay' => $record->crawl_delay,

@@ -53,7 +53,7 @@ class SeoOpportunityResource extends Resource
         $query = parent::getEloquentQuery();
         $user = Auth::user();
 
-        if (! $user instanceof User) {
+        if (!$user instanceof User) {
             return $query->whereRaw('1 = 0');
         }
 
@@ -94,20 +94,20 @@ class SeoOpportunityResource extends Resource
                     ->required(),
                 Forms\Components\Select::make('opportunity_type')
                     ->options([
-                        'new_page'       => 'New Page',
+                        'new_page' => 'New Page',
                         'underperforming' => 'Underperforming',
-                        'high_volume'    => 'High Volume',
-                        'quick_win'      => 'Quick Win',
-                        'content_gap'    => 'Content Gap',
+                        'high_volume' => 'High Volume',
+                        'quick_win' => 'Quick Win',
+                        'content_gap' => 'Content Gap',
                     ])
                     ->required(),
                 Forms\Components\Select::make('status')
                     ->options([
-                        'pending'    => 'Pending',
-                        'approved'   => 'Approved',
+                        'pending' => 'Pending',
+                        'approved' => 'Approved',
                         'in_progress' => 'In Progress',
-                        'completed'  => 'Completed',
-                        'dismissed'  => 'Dismissed',
+                        'completed' => 'Completed',
+                        'dismissed' => 'Dismissed',
                         'monitoring' => 'Monitoring',
                     ])
                     ->required(),
@@ -146,13 +146,13 @@ class SeoOpportunityResource extends Resource
                 $siteId = static::resolveTableSiteId();
                 $scanRunId = static::resolveTableScanRunId();
 
-                if (static::currentScanFilterRequested() && (! $siteId || ! $scanRunId)) {
+                if (static::currentScanFilterRequested() && (!$siteId || !$scanRunId)) {
                     return $query->whereRaw('1 = 0');
                 }
 
                 return $query->when(
                     $siteId,
-                    fn (Builder $query, int $resolvedSiteId): Builder => $query->where('site_id', $resolvedSiteId)
+                    fn(Builder $query, int $resolvedSiteId): Builder => $query->where('site_id', $resolvedSiteId)
                 );
             })
             ->columns([
@@ -162,7 +162,7 @@ class SeoOpportunityResource extends Resource
                 Tables\Columns\TextColumn::make('location.name')->label('City')->searchable()->sortable(),
                 Tables\Columns\BadgeColumn::make('opportunity_category')
                     ->label('Category')
-                    ->color(fn (?string $state): string => match ($state) {
+                    ->color(fn(?string $state): string => match ($state) {
                         'missing_page' => 'success',
                         'optimization_candidate' => 'warning',
                         'structural_weakness' => 'danger',
@@ -171,23 +171,23 @@ class SeoOpportunityResource extends Resource
                     }),
                 Tables\Columns\BadgeColumn::make('opportunity_type')
                     ->label('Type')
-                    ->color(fn (string $state): string => match ($state) {
-                        'new_page'        => 'success',
-                        'content_gap'     => 'info',
-                        'quick_win'       => 'warning',
+                    ->color(fn(string $state): string => match ($state) {
+                        'new_page' => 'success',
+                        'content_gap' => 'info',
+                        'quick_win' => 'warning',
                         'underperforming' => 'danger',
-                        'high_volume'     => 'primary',
-                        default           => 'secondary',
+                        'high_volume' => 'primary',
+                        default => 'secondary',
                     }),
                 Tables\Columns\BadgeColumn::make('status')
-                    ->color(fn (string $state): string => match ($state) {
-                        'pending'     => 'warning',
-                        'approved'    => 'success',
+                    ->color(fn(string $state): string => match ($state) {
+                        'pending' => 'warning',
+                        'approved' => 'success',
                         'in_progress' => 'primary',
-                        'completed'   => 'success',
-                        'dismissed'   => 'secondary',
-                        'monitoring'  => 'info',
-                        default       => 'secondary',
+                        'completed' => 'success',
+                        'dismissed' => 'secondary',
+                        'monitoring' => 'info',
+                        default => 'secondary',
                     }),
                 Tables\Columns\TextColumn::make('scan_visibility')
                     ->label('Scan Status')
@@ -195,13 +195,13 @@ class SeoOpportunityResource extends Resource
                     ->state(function (SeoOpportunity $record): string {
                         $scanRunId = static::resolveTableScanRunId();
 
-                        if (! $scanRunId) {
+                        if (!$scanRunId) {
                             return 'No current scan';
                         }
 
                         return $record->scan_run_id === $scanRunId ? 'In current scan' : 'Older scan';
                     })
-                    ->color(fn (string $state): string => match ($state) {
+                    ->color(fn(string $state): string => match ($state) {
                         'In current scan' => 'success',
                         'Older scan' => 'gray',
                         default => 'warning',
@@ -211,7 +211,7 @@ class SeoOpportunityResource extends Resource
                 Tables\Columns\TextColumn::make('risk_score')->label('Risk')->sortable()->numeric(decimalPlaces: 1)->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('coverage_confidence')
                     ->label('Confidence')
-                    ->state(fn (SeoOpportunity $record): ?int => $record->signals['coverage_confidence'] ?? null)
+                    ->state(fn(SeoOpportunity $record): ?int => $record->signals['coverage_confidence'] ?? null)
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\IconColumn::make('page_exists')
                     ->label('Page Exists')
@@ -224,21 +224,21 @@ class SeoOpportunityResource extends Resource
             ->filters([
                 Tables\Filters\SelectFilter::make('status')
                     ->options([
-                        'pending'     => 'Pending',
-                        'approved'    => 'Approved',
+                        'pending' => 'Pending',
+                        'approved' => 'Approved',
                         'in_progress' => 'In Progress',
-                        'completed'   => 'Completed',
-                        'dismissed'   => 'Dismissed',
-                        'monitoring'  => 'Monitoring',
+                        'completed' => 'Completed',
+                        'dismissed' => 'Dismissed',
+                        'monitoring' => 'Monitoring',
                     ]),
                 Tables\Filters\SelectFilter::make('opportunity_type')
                     ->label('Type')
                     ->options([
-                        'new_page'        => 'New Page',
+                        'new_page' => 'New Page',
                         'underperforming' => 'Underperforming',
-                        'high_volume'     => 'High Volume',
-                        'quick_win'       => 'Quick Win',
-                        'content_gap'     => 'Content Gap',
+                        'high_volume' => 'High Volume',
+                        'quick_win' => 'Quick Win',
+                        'content_gap' => 'Content Gap',
                     ]),
                 Tables\Filters\SelectFilter::make('opportunity_category')
                     ->label('Category')
@@ -261,11 +261,11 @@ class SeoOpportunityResource extends Resource
                         $siteId = static::resolveFilterSiteId($data);
                         $scanRunId = static::resolveFilterScanRunId($data);
 
-                        if (static::currentScanFilterRequested($data) && (! $siteId || ! $scanRunId)) {
+                        if (static::currentScanFilterRequested($data) && (!$siteId || !$scanRunId)) {
                             return $query->whereRaw('1 = 0');
                         }
 
-                        if (! $siteId || ! $scanRunId) {
+                        if (!$siteId || !$scanRunId) {
                             return $query;
                         }
 
@@ -273,7 +273,7 @@ class SeoOpportunityResource extends Resource
                             ->where('site_id', $siteId)
                             ->where('scan_run_id', $scanRunId);
                     })
-                    ->indicateUsing(fn (): ?string => CurrentScanResolver::indicatorForUser(Auth::user(), static::requestedCurrentScanSiteId(), static::requestedCurrentScanRunId())),
+                    ->indicateUsing(fn(): ?string => CurrentScanResolver::indicatorForUser(Auth::user(), static::requestedCurrentScanSiteId(), static::requestedCurrentScanRunId())),
                 Tables\Filters\TernaryFilter::make('page_exists')
                     ->label('Page Exists'),
             ])
@@ -282,7 +282,7 @@ class SeoOpportunityResource extends Resource
                     ->label('Approve')
                     ->icon('heroicon-o-check')
                     ->color('success')
-                    ->visible(fn (SeoOpportunity $record): bool => $record->status === 'pending')
+                    ->visible(fn(SeoOpportunity $record): bool => $record->status === 'pending')
                     ->action(function (SeoOpportunity $record): void {
                         $record->update(['status' => 'approved']);
                         Notification::make()->title('Opportunity approved')->success()->send();
@@ -293,7 +293,7 @@ class SeoOpportunityResource extends Resource
                     ->icon('heroicon-o-x-mark')
                     ->color('danger')
                     ->requiresConfirmation()
-                    ->visible(fn (SeoOpportunity $record): bool => in_array($record->status, ['pending', 'approved'], true))
+                    ->visible(fn(SeoOpportunity $record): bool => in_array($record->status, ['pending', 'approved'], true))
                     ->action(function (SeoOpportunity $record): void {
                         $record->update(['status' => 'dismissed']);
                         Notification::make()->title('Opportunity dismissed')->warning()->send();
@@ -303,7 +303,7 @@ class SeoOpportunityResource extends Resource
                     ->label('Generate Payload')
                     ->icon('heroicon-o-bolt')
                     ->color('primary')
-                    ->visible(fn (SeoOpportunity $record): bool => $record->status === 'approved' && ! $record->payload_id)
+                    ->visible(fn(SeoOpportunity $record): bool => $record->status === 'approved' && !$record->payload_id)
                     ->action(function (SeoOpportunity $record): void {
                         $record->update(['status' => 'in_progress']);
                         GeneratePagePayloadJob::dispatch($record->id);
@@ -317,7 +317,7 @@ class SeoOpportunityResource extends Resource
                     ->label('Approve Selected')
                     ->icon('heroicon-o-check-circle')
                     ->color('success')
-                    ->action(fn (Collection $records) => $records->each->update(['status' => 'approved']))
+                    ->action(fn(Collection $records) => $records->each->update(['status' => 'approved']))
                     ->deselectRecordsAfterCompletion(),
 
                 BulkAction::make('bulk_dismiss')
@@ -325,7 +325,7 @@ class SeoOpportunityResource extends Resource
                     ->icon('heroicon-o-x-circle')
                     ->color('danger')
                     ->requiresConfirmation()
-                    ->action(fn (Collection $records) => $records->each->update(['status' => 'dismissed']))
+                    ->action(fn(Collection $records) => $records->each->update(['status' => 'dismissed']))
                     ->deselectRecordsAfterCompletion(),
             ])
             ->emptyStateHeading(static::currentScanFilterRequested()
@@ -334,7 +334,7 @@ class SeoOpportunityResource extends Resource
             ->emptyStateDescription(static::currentScanFilterRequested()
                 ? 'Review discovered pages first, or wait for the current scan to finish.'
                 : 'No opportunities match the current filters.')
-                ->defaultSort('total_score', 'desc');
+            ->defaultSort('total_score', 'desc');
     }
 
     public static function getRelations(): array
@@ -345,9 +345,9 @@ class SeoOpportunityResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index'  => Pages\ListSeoOpportunities::route('/'),
+            'index' => Pages\ListSeoOpportunities::route('/'),
             'create' => Pages\CreateSeoOpportunity::route('/create'),
-            'edit'   => Pages\EditSeoOpportunity::route('/{record}/edit'),
+            'edit' => Pages\EditSeoOpportunity::route('/{record}/edit'),
         ];
     }
 

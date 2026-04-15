@@ -5,7 +5,7 @@ namespace App\Filament\Resources\QuickScanResource\Pages;
 use App\Filament\Resources\QuickScanResource;
 use App\Models\QuickScan;
 use Filament\Resources\Pages\ListRecords;
-use Filament\Resources\Pages\ListRecords\Tab;
+use Filament\Schemas\Components\Tabs\Tab;
 use Illuminate\Database\Eloquent\Builder;
 
 class ListQuickScans extends ListRecords

@@ -61,7 +61,7 @@ class PagePayloadResource extends Resource
 
         $user = Auth::user();
 
-        if (! $user instanceof User) {
+        if (!$user instanceof User) {
             return $query->whereRaw('1 = 0');
         }
 
@@ -88,12 +88,12 @@ class PagePayloadResource extends Resource
                         TextInput::make('title')
                             ->required()
                             ->maxLength(255)
-                            ->disabled(fn (?PagePayload $record) => $record !== null && ! $record->isEditable())
+                            ->disabled(fn(?PagePayload $record) => $record !== null && !$record->isEditable())
                             ->columnSpanFull(),
                         Textarea::make('meta_description')
                             ->rows(4)
                             ->maxLength(500)
-                            ->disabled(fn (?PagePayload $record) => $record !== null && ! $record->isEditable())
+                            ->disabled(fn(?PagePayload $record) => $record !== null && !$record->isEditable())
                             ->columnSpanFull(),
                     ]),
                 Section::make('Read-only Context')
@@ -126,7 +126,7 @@ class PagePayloadResource extends Resource
                     ->schema([
                         TextEntry::make('status')
                             ->badge()
-                            ->color(fn (string $state): string => match ($state) {
+                            ->color(fn(string $state): string => match ($state) {
                                 'draft' => 'secondary',
                                 'needs_review' => 'warning',
                                 'approved' => 'success',
@@ -135,18 +135,18 @@ class PagePayloadResource extends Resource
                                 'failed' => 'danger',
                                 default => 'gray',
                             })
-                            ->formatStateUsing(fn (string $state): string => str($state)->replace('_', ' ')->title()),
+                            ->formatStateUsing(fn(string $state): string => str($state)->replace('_', ' ')->title()),
                         TextEntry::make('publish_status')
                             ->label('Publish')
                             ->badge()
-                            ->color(fn (string $state): string => match ($state) {
+                            ->color(fn(string $state): string => match ($state) {
                                 'pending' => 'warning',
                                 'published' => 'success',
                                 'exported' => 'info',
                                 'failed' => 'danger',
                                 default => 'gray',
                             })
-                            ->formatStateUsing(fn (string $state): string => str($state)->replace('_', ' ')->title()),
+                            ->formatStateUsing(fn(string $state): string => str($state)->replace('_', ' ')->title()),
                         TextEntry::make('reviewedBy.name')
                             ->label('Reviewed By')
                             ->placeholder('—'),
@@ -168,7 +168,7 @@ class PagePayloadResource extends Resource
                         TextEntry::make('canonical_url_suggestion')
                             ->label('Canonical URL')
                             ->copyable()
-                            ->url(fn (?string $state) => $state, shouldOpenInNewTab: true)
+                            ->url(fn(?string $state) => $state, shouldOpenInNewTab: true)
                             ->placeholder('—')
                             ->columnSpanFull(),
                         TextEntry::make('slug')
@@ -183,7 +183,7 @@ class PagePayloadResource extends Resource
                             ->label('Sections'),
                         TextEntry::make('seo_score')
                             ->badge()
-                            ->color(fn ($state) => match (true) {
+                            ->color(fn($state) => match (true) {
                                 $state === null => 'gray',
                                 $state >= 85 => 'success',
                                 $state >= 70 => 'warning',
@@ -197,7 +197,7 @@ class PagePayloadResource extends Resource
                     ->schema([
                         TextEntry::make('preview_sections')
                             ->hiddenLabel()
-                            ->state(fn (PagePayload $record): array => collect($record->preview_sections)->pluck('heading')->all())
+                            ->state(fn(PagePayload $record): array => collect($record->preview_sections)->pluck('heading')->all())
                             ->listWithLineBreaks()
                             ->bulleted()
                             ->placeholder('No H2 sections detected.')
@@ -240,11 +240,11 @@ class PagePayloadResource extends Resource
             ->label('Preview')
             ->icon('heroicon-o-eye')
             ->color('gray')
-            ->modalHeading(fn (PagePayload $record) => $record->title)
+            ->modalHeading(fn(PagePayload $record) => $record->title)
             ->modalWidth('7xl')
             ->modalSubmitAction(false)
             ->modalCancelActionLabel('Close')
-            ->modalContent(fn (PagePayload $record): ViewContract => view('filament.page-payloads.quick-preview-modal', [
+            ->modalContent(fn(PagePayload $record): ViewContract => view('filament.page-payloads.quick-preview-modal', [
                 'payload' => $record,
             ]));
     }
@@ -254,7 +254,7 @@ class PagePayloadResource extends Resource
         return Action::make('approve')
             ->icon('heroicon-o-check-circle')
             ->color('success')
-            ->visible(fn (PagePayload $record) => in_array($record->status, ['needs_review', 'rejected'], true))
+            ->visible(fn(PagePayload $record) => in_array($record->status, ['needs_review', 'rejected'], true))
             ->form([
                 Textarea::make('review_note')
                     ->label('Approval Note')
@@ -277,7 +277,7 @@ class PagePayloadResource extends Resource
             ->label('Request Changes')
             ->icon('heroicon-o-x-circle')
             ->color('danger')
-            ->visible(fn (PagePayload $record) => in_array($record->status, ['needs_review', 'approved'], true))
+            ->visible(fn(PagePayload $record) => in_array($record->status, ['needs_review', 'approved'], true))
             ->form([
                 Textarea::make('review_note')
                     ->label('Change Request')
@@ -301,7 +301,7 @@ class PagePayloadResource extends Resource
         return Action::make('publish')
             ->icon('heroicon-o-cloud-arrow-up')
             ->color('success')
-            ->visible(fn (PagePayload $record) => $record->isReadyToPublish())
+            ->visible(fn(PagePayload $record) => $record->isReadyToPublish())
             ->requiresConfirmation()
             ->action(function (PagePayload $record): void {
                 \App\Jobs\PublishPagePayloadJob::dispatch($record->id);
@@ -355,7 +355,7 @@ class PagePayloadResource extends Resource
                 Tables\Columns\TextColumn::make('title')
                     ->searchable()
                     ->limit(50)
-                    ->tooltip(fn (PagePayload $record) => $record->title),
+                    ->tooltip(fn(PagePayload $record) => $record->title),
                 Tables\Columns\TextColumn::make('location_name')
                     ->label('Location')
                     ->toggleable(),
@@ -371,7 +371,7 @@ class PagePayloadResource extends Resource
                     ->sortable()
                     ->toggleable(),
                 Tables\Columns\BadgeColumn::make('status')
-                    ->color(fn (string $state): string => match ($state) {
+                    ->color(fn(string $state): string => match ($state) {
                         'draft' => 'secondary',
                         'needs_review' => 'warning',
                         'approved' => 'success',
@@ -424,13 +424,13 @@ class PagePayloadResource extends Resource
                     ->label('Site'),
                 Tables\Filters\Filter::make('review_queue')
                     ->label('Review Queue')
-                    ->query(fn (Builder $query): Builder => $query->where('status', 'needs_review')),
+                    ->query(fn(Builder $query): Builder => $query->where('status', 'needs_review')),
             ])
             ->actions([
                 ViewAction::make(),
                 static::makeQuickPreviewAction(),
                 EditAction::make()
-                    ->visible(fn (PagePayload $record) => $record->isEditable()),
+                    ->visible(fn(PagePayload $record) => $record->isEditable()),
                 static::makeApproveAction(),
                 static::makeRejectAction(),
                 static::makePublishAction(),

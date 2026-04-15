@@ -4,7 +4,7 @@ namespace App\Filament\Resources\LicenseResource\Pages;
 
 use App\Filament\Resources\LicenseResource;
 use Filament\Resources\Pages\ListRecords;
-use Filament\Resources\Pages\ListRecords\Tab;
+use Filament\Schemas\Components\Tabs\Tab;
 use Illuminate\Database\Eloquent\Builder;
 
 class ListLicenses extends ListRecords

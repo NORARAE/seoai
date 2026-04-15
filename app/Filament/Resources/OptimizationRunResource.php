@@ -62,11 +62,11 @@ class OptimizationRunResource extends Resource
                     ->formatStateUsing(function ($record) {
                         $before = $record->before_state_json['title'] ?? null;
                         $after = $record->applied_state_json['title'] ?? $record->proposed_state_json['title'] ?? null;
-                        
+
                         if ($before && $after && $before !== $after) {
                             return substr($before, 0, 30) . '... → ' . substr($after, 0, 30) . '...';
                         }
-                        
+
                         return '-';
                     })
                     ->wrap()
@@ -82,7 +82,7 @@ class OptimizationRunResource extends Resource
                     ->relationship('site', 'domain')
                     ->label('Site'),
                 Tables\Filters\SelectFilter::make('optimization_type')
-                    ->options(collect(OptimizationType::cases())->pluck('name', 'value')-> toArray())
+                    ->options(collect(OptimizationType::cases())->pluck('name', 'value')->toArray())
                     ->label('Type'),
                 Tables\Filters\SelectFilter::make('status')
                     ->options(collect(OptimizationStatus::cases())->pluck('name', 'value')->toArray())

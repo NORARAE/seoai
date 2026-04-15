@@ -207,7 +207,7 @@ class CoverageMap extends Page implements HasForms, HasTable
                     ->label('Priority')
                     ->sortable()
                     ->badge()
-                    ->color(fn($record) => match(true) {
+                    ->color(fn($record) => match (true) {
                         $record->priority_score >= 80 => 'success',
                         $record->priority_score >= 60 => 'warning',
                         default => 'gray'

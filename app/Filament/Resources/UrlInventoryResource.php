@@ -42,7 +42,7 @@ class UrlInventoryResource extends Resource
         $query = parent::getEloquentQuery();
         $user = Auth::user();
 
-        if (! $user instanceof User) {
+        if (!$user instanceof User) {
             return $query->whereRaw('1 = 0');
         }
 
@@ -66,13 +66,13 @@ class UrlInventoryResource extends Resource
                 $siteId = static::resolveTableSiteId();
                 $scanRunId = static::resolveTableScanRunId();
 
-                if (static::currentScanFilterRequested() && (! $siteId || ! $scanRunId)) {
+                if (static::currentScanFilterRequested() && (!$siteId || !$scanRunId)) {
                     return $query->whereRaw('1 = 0');
                 }
 
                 return $query->when(
                     $siteId,
-                    fn (Builder $query, int $resolvedSiteId): Builder => $query->where('site_id', $resolvedSiteId)
+                    fn(Builder $query, int $resolvedSiteId): Builder => $query->where('site_id', $resolvedSiteId)
                 );
             })
             ->columns([
@@ -81,14 +81,14 @@ class UrlInventoryResource extends Resource
                 Tables\Columns\TextColumn::make('url')
                     ->searchable()
                     ->limit(80)
-                    ->tooltip(fn (UrlInventory $record) => $record->url),
+                    ->tooltip(fn(UrlInventory $record) => $record->url),
                 Tables\Columns\TextColumn::make('scan_visibility')
                     ->label('Scan Status')
                     ->badge()
                     ->state(function (UrlInventory $record): string {
                         $scanRunId = static::resolveTableScanRunId();
 
-                        if (! $scanRunId) {
+                        if (!$scanRunId) {
                             return 'No current scan';
                         }
 
@@ -98,7 +98,7 @@ class UrlInventoryResource extends Resource
 
                         return 'Older scan';
                     })
-                    ->color(fn (string $state): string => match ($state) {
+                    ->color(fn(string $state): string => match ($state) {
                         'New in current scan' => 'success',
                         'Seen in current scan' => 'info',
                         'Older scan' => 'gray',
@@ -121,7 +121,7 @@ class UrlInventoryResource extends Resource
                     ]),
                 Tables\Columns\BadgeColumn::make('indexability_status')
                     ->label('Indexability')
-                    ->color(fn (string $state): string => match ($state) {
+                    ->color(fn(string $state): string => match ($state) {
                         'indexable' => 'success',
                         'canonicalized' => 'warning',
                         'noindex', 'blocked', 'non_200' => 'danger',
@@ -161,10 +161,10 @@ class UrlInventoryResource extends Resource
                     ]),
                 Tables\Filters\Filter::make('deep_pages')
                     ->label('Depth >= 3')
-                    ->query(fn ($query) => $query->where('depth', '>=', 3)),
+                    ->query(fn($query) => $query->where('depth', '>=', 3)),
                 Tables\Filters\Filter::make('thin_content')
                     ->label('Word count < 250')
-                    ->query(fn ($query) => $query->where('word_count', '<', 250)),
+                    ->query(fn($query) => $query->where('word_count', '<', 250)),
                 Tables\Filters\Filter::make('current_scan')
                     ->label('Seen in current scan')
                     ->form([
@@ -175,11 +175,11 @@ class UrlInventoryResource extends Resource
                         $siteId = static::resolveFilterSiteId($data);
                         $scanRunId = static::resolveFilterScanRunId($data);
 
-                        if (static::currentScanFilterRequested($data) && (! $siteId || ! $scanRunId)) {
+                        if (static::currentScanFilterRequested($data) && (!$siteId || !$scanRunId)) {
                             return $query->whereRaw('1 = 0');
                         }
 
-                        if (! $siteId || ! $scanRunId) {
+                        if (!$siteId || !$scanRunId) {
                             return $query;
                         }
 
@@ -187,7 +187,7 @@ class UrlInventoryResource extends Resource
                             ->where('site_id', $siteId)
                             ->where('last_seen_scan_run_id', $scanRunId);
                     })
-                        ->indicateUsing(fn (): ?string => CurrentScanResolver::indicatorForUser(Auth::user(), static::requestedCurrentScanSiteId(), static::requestedCurrentScanRunId())),
+                    ->indicateUsing(fn(): ?string => CurrentScanResolver::indicatorForUser(Auth::user(), static::requestedCurrentScanSiteId(), static::requestedCurrentScanRunId())),
             ])
             ->emptyStateHeading(static::currentScanFilterRequested()
                 ? 'No pages were captured in this snapshot yet'

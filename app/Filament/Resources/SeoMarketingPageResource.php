@@ -64,14 +64,14 @@ class SeoMarketingPageResource extends Resource
                     ->sortable()
                     ->placeholder('—')
                     ->badge()
-                    ->color(fn ($state) => $state !== null ? 'warning' : 'gray')
+                    ->color(fn($state) => $state !== null ? 'warning' : 'gray')
                     ->width('56px'),
 
                 // ── Health indicators ────────────────────────────────────────
                 IconColumn::make('health_meta_title')
                     ->label('Title')
                     ->tooltip('Meta Title')
-                    ->getStateUsing(fn (SeoMarketingPage $r): bool => filled($r->meta_title))
+                    ->getStateUsing(fn(SeoMarketingPage $r): bool => filled($r->meta_title))
                     ->boolean()
                     ->trueIcon(Heroicon::OutlinedCheckCircle)
                     ->falseIcon(Heroicon::OutlinedExclamationTriangle)
@@ -82,7 +82,7 @@ class SeoMarketingPageResource extends Resource
                 IconColumn::make('health_meta_desc')
                     ->label('Desc')
                     ->tooltip('Meta Description')
-                    ->getStateUsing(fn (SeoMarketingPage $r): bool => filled($r->meta_description))
+                    ->getStateUsing(fn(SeoMarketingPage $r): bool => filled($r->meta_description))
                     ->boolean()
                     ->trueIcon(Heroicon::OutlinedCheckCircle)
                     ->falseIcon(Heroicon::OutlinedExclamationTriangle)
@@ -93,7 +93,7 @@ class SeoMarketingPageResource extends Resource
                 IconColumn::make('health_schema')
                     ->label('Schema')
                     ->tooltip('Stored JSON-LD Schema')
-                    ->getStateUsing(fn (SeoMarketingPage $r): bool => ! empty($r->schema_json))
+                    ->getStateUsing(fn(SeoMarketingPage $r): bool => !empty($r->schema_json))
                     ->boolean()
                     ->trueIcon(Heroicon::OutlinedCheckCircle)
                     ->falseIcon(Heroicon::OutlinedMinusCircle)
@@ -104,7 +104,7 @@ class SeoMarketingPageResource extends Resource
                 IconColumn::make('health_links')
                     ->label('Links')
                     ->tooltip('Internal Links present')
-                    ->getStateUsing(fn (SeoMarketingPage $r): bool => ! empty($r->internal_links))
+                    ->getStateUsing(fn(SeoMarketingPage $r): bool => !empty($r->internal_links))
                     ->boolean()
                     ->trueIcon(Heroicon::OutlinedCheckCircle)
                     ->falseIcon(Heroicon::OutlinedExclamationTriangle)
@@ -117,7 +117,7 @@ class SeoMarketingPageResource extends Resource
                     ->label('Page Title (H1)')
                     ->searchable()
                     ->limit(60)
-                    ->tooltip(fn (SeoMarketingPage $r): string => $r->h1 ?? '')
+                    ->tooltip(fn(SeoMarketingPage $r): string => $r->h1 ?? '')
                     ->weight('semibold'),
 
                 TextColumn::make('url_slug')
@@ -134,22 +134,23 @@ class SeoMarketingPageResource extends Resource
                     ->label('Cluster')
                     ->badge()
                     ->sortable()
-                    ->color(fn (string $state): string => match ($state) {
-                        'core'     => 'primary',
-                        'agency'   => 'info',
-                        'local'    => 'success',
+                    ->color(fn(string $state): string => match ($state) {
+                        'core' => 'primary',
+                        'agency' => 'info',
+                        'local' => 'success',
                         'strategy' => 'warning',
                         'industry' => 'danger',
-                        default    => 'gray',
+                        default => 'gray',
                     }),
 
                 // ── Counts ────────────────────────────────────────────────────
                 TextColumn::make('h2_count')
                     ->label('H2s')
-                    ->getStateUsing(fn (SeoMarketingPage $r): int => count($r->h2_structure ?? []))
+                    ->getStateUsing(fn(SeoMarketingPage $r): int => count($r->h2_structure ?? []))
                     ->badge()
                     ->color('gray')
-                    ->sortable(query: fn (Builder $q, string $dir) =>
+                    ->sortable(
+                        query: fn(Builder $q, string $dir) =>
                         $q->orderByRaw("JSON_ARRAY_LENGTH(h2_structure) {$dir}")
                     )
                     ->width('56px'),
@@ -161,14 +162,14 @@ class SeoMarketingPageResource extends Resource
                         return count($r->lateral_links) + count($r->homepage_ctas);
                     })
                     ->badge()
-                    ->color(fn ($state): string => $state > 0 ? 'success' : 'warning')
+                    ->color(fn($state): string => $state > 0 ? 'success' : 'warning')
                     ->width('80px'),
 
                 // ── Priority ──────────────────────────────────────────────────
                 TextColumn::make('sitemap_priority')
                     ->label('Priority')
                     ->sortable()
-                    ->formatStateUsing(fn ($state) => number_format((float) $state, 2)),
+                    ->formatStateUsing(fn($state) => number_format((float) $state, 2)),
 
                 TextColumn::make('updated_at')
                     ->label('Updated')
@@ -180,16 +181,17 @@ class SeoMarketingPageResource extends Resource
             ->filters([
                 SelectFilter::make('cluster')
                     ->options([
-                        'core'     => 'Core',
-                        'agency'   => 'Agency',
-                        'local'    => 'Local',
+                        'core' => 'Core',
+                        'agency' => 'Agency',
+                        'local' => 'Local',
                         'strategy' => 'Strategy',
                         'industry' => 'Industry',
                     ]),
 
                 Filter::make('money_pages_only')
                     ->label('Money Pages Only')
-                    ->query(fn (Builder $query): Builder =>
+                    ->query(
+                        fn(Builder $query): Builder =>
                         $query->whereNotNull('money_page_rank')
                     ),
 
@@ -204,27 +206,31 @@ class SeoMarketingPageResource extends Resource
                         '0.60' => 'Tier 3 (0.60)',
                         '0.50' => 'Tier 3 (0.50)',
                     ])
-                    ->query(fn (Builder $query, array $data): Builder =>
+                    ->query(
+                        fn(Builder $query, array $data): Builder =>
                         isset($data['value']) && $data['value'] !== ''
-                            ? $query->where('sitemap_priority', (float) $data['value'])
-                            : $query
+                        ? $query->where('sitemap_priority', (float) $data['value'])
+                        : $query
                     ),
 
                 Filter::make('missing_meta_title')
                     ->label('Missing Meta Title')
-                    ->query(fn (Builder $query): Builder =>
+                    ->query(
+                        fn(Builder $query): Builder =>
                         $query->whereNull('meta_title')->orWhere('meta_title', '')
                     ),
 
                 Filter::make('missing_meta_description')
                     ->label('Missing Meta Description')
-                    ->query(fn (Builder $query): Builder =>
+                    ->query(
+                        fn(Builder $query): Builder =>
                         $query->whereNull('meta_description')->orWhere('meta_description', '')
                     ),
 
                 Filter::make('missing_schema')
                     ->label('Missing Stored Schema')
-                    ->query(fn (Builder $query): Builder =>
+                    ->query(
+                        fn(Builder $query): Builder =>
                         $query->whereNull('schema_json')
                             ->orWhere('schema_json', '[]')
                             ->orWhere('schema_json', 'null')
@@ -232,7 +238,8 @@ class SeoMarketingPageResource extends Resource
 
                 Filter::make('missing_internal_links')
                     ->label('Missing Internal Links')
-                    ->query(fn (Builder $query): Builder =>
+                    ->query(
+                        fn(Builder $query): Builder =>
                         $query->whereNull('internal_links')
                             ->orWhere('internal_links', '[]')
                             ->orWhere('internal_links', 'null')
@@ -246,16 +253,16 @@ class SeoMarketingPageResource extends Resource
                         ->label('View Live Page')
                         ->icon(Heroicon::OutlinedArrowTopRightOnSquare)
                         ->color('gray')
-                        ->url(fn (SeoMarketingPage $record): string => url('/' . $record->url_slug))
+                        ->url(fn(SeoMarketingPage $record): string => url('/' . $record->url_slug))
                         ->openUrlInNewTab(),
 
                     Action::make('copy_slug')
                         ->label('Copy Slug')
                         ->icon(Heroicon::OutlinedClipboard)
                         ->color('gray')
-                        ->action(fn () => null)  // client-side only via extraAttributes
-                        ->extraAttributes(fn (SeoMarketingPage $record): array => [
-                            'x-data'    => '',
+                        ->action(fn() => null)  // client-side only via extraAttributes
+                        ->extraAttributes(fn(SeoMarketingPage $record): array => [
+                            'x-data' => '',
                             'x-on:click.prevent' => "navigator.clipboard.writeText('/{$record->url_slug}').then(() => \$dispatch('notify', {message: 'Slug copied!'}))",
                         ]),
 
@@ -263,9 +270,9 @@ class SeoMarketingPageResource extends Resource
                         ->label('Copy Live URL')
                         ->icon(Heroicon::OutlinedLink)
                         ->color('gray')
-                        ->action(fn () => null)
-                        ->extraAttributes(fn (SeoMarketingPage $record): array => [
-                            'x-data'    => '',
+                        ->action(fn() => null)
+                        ->extraAttributes(fn(SeoMarketingPage $record): array => [
+                            'x-data' => '',
                             'x-on:click.prevent' => "navigator.clipboard.writeText('" . url('/') . "/{$record->url_slug}').then(() => \$dispatch('notify', {message: 'URL copied!'}))",
                         ]),
 
@@ -273,8 +280,9 @@ class SeoMarketingPageResource extends Resource
                         ->label('View Cluster Sitemap')
                         ->icon(Heroicon::OutlinedDocumentText)
                         ->color('gray')
-                        ->visible(fn (SeoMarketingPage $record): bool => filled($record->cluster))
-                        ->url(fn (SeoMarketingPage $record): string =>
+                        ->visible(fn(SeoMarketingPage $record): bool => filled($record->cluster))
+                        ->url(
+                            fn(SeoMarketingPage $record): string =>
                             url("/sitemaps/marketing-{$record->cluster}.xml")
                         )
                         ->openUrlInNewTab(),
@@ -286,7 +294,7 @@ class SeoMarketingPageResource extends Resource
     {
         return [
             'index' => ListSeoMarketingPages::route('/'),
-            'view'  => ViewSeoMarketingPage::route('/{record}'),
+            'view' => ViewSeoMarketingPage::route('/{record}'),
         ];
     }
 }

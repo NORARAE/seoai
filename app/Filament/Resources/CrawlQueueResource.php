@@ -45,7 +45,7 @@ class CrawlQueueResource extends Resource
         $query = parent::getEloquentQuery();
         $user = Auth::user();
 
-        if (! $user instanceof User) {
+        if (!$user instanceof User) {
             return $query->whereRaw('1 = 0');
         }
 
@@ -69,13 +69,13 @@ class CrawlQueueResource extends Resource
                 $siteId = static::resolveTableSiteId();
                 $scanRunId = static::resolveTableScanRunId();
 
-                if (static::currentScanFilterRequested() && (! $siteId || ! $scanRunId)) {
+                if (static::currentScanFilterRequested() && (!$siteId || !$scanRunId)) {
                     return $query->whereRaw('1 = 0');
                 }
 
                 return $query
-                    ->when($siteId, fn (Builder $query, int $resolvedSiteId): Builder => $query->where('site_id', $resolvedSiteId))
-                    ->when($scanRunId, fn (Builder $query, int $resolvedScanRunId): Builder => $query->where('scan_run_id', $resolvedScanRunId));
+                    ->when($siteId, fn(Builder $query, int $resolvedSiteId): Builder => $query->where('site_id', $resolvedSiteId))
+                    ->when($scanRunId, fn(Builder $query, int $resolvedScanRunId): Builder => $query->where('scan_run_id', $resolvedScanRunId));
             })
             ->columns([
                 Tables\Columns\TextColumn::make('id')->sortable(),
@@ -99,7 +99,7 @@ class CrawlQueueResource extends Resource
             ->filters([
                 Tables\Filters\Filter::make('active_only')
                     ->label('Active only (hide completed)')
-                    ->query(fn (Builder $query) => $query->whereIn('status', ['queued', 'processing', 'failed'])),
+                    ->query(fn(Builder $query) => $query->whereIn('status', ['queued', 'processing', 'failed'])),
                 Tables\Filters\SelectFilter::make('status')
                     ->options([
                         'queued' => 'Queued',
@@ -117,11 +117,11 @@ class CrawlQueueResource extends Resource
                         $siteId = static::resolveFilterSiteId($data);
                         $scanRunId = static::resolveFilterScanRunId($data);
 
-                        if (static::currentScanFilterRequested($data) && (! $siteId || ! $scanRunId)) {
+                        if (static::currentScanFilterRequested($data) && (!$siteId || !$scanRunId)) {
                             return $query->whereRaw('1 = 0');
                         }
 
-                        if (! $siteId || ! $scanRunId) {
+                        if (!$siteId || !$scanRunId) {
                             return $query;
                         }
 
@@ -129,17 +129,17 @@ class CrawlQueueResource extends Resource
                             ->where('site_id', $siteId)
                             ->where('scan_run_id', $scanRunId);
                     })
-                    ->indicateUsing(fn (): ?string => CurrentScanResolver::indicatorForUser(Auth::user(), static::requestedCurrentScanSiteId(), static::requestedCurrentScanRunId())),
+                    ->indicateUsing(fn(): ?string => CurrentScanResolver::indicatorForUser(Auth::user(), static::requestedCurrentScanSiteId(), static::requestedCurrentScanRunId())),
                 Tables\Filters\Filter::make('ready_now')
                     ->label('Ready now')
-                    ->query(fn (Builder $query) => $query->where('status', 'queued')->where(function ($q) {
+                    ->query(fn(Builder $query) => $query->where('status', 'queued')->where(function ($q) {
                         $q->whereNull('available_at')->orWhere('available_at', '<=', now());
                     })),
             ])
             ->actions([
                 Action::make('retry')
                     ->icon('heroicon-o-arrow-path')
-                    ->visible(fn (CrawlQueue $record) => in_array($record->status, ['failed', 'queued'], true))
+                    ->visible(fn(CrawlQueue $record) => in_array($record->status, ['failed', 'queued'], true))
                     ->action(function (CrawlQueue $record): void {
                         $record->update([
                             'status' => 'queued',

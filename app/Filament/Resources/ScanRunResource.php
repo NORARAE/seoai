@@ -65,7 +65,7 @@ class ScanRunResource extends Resource
         $query = parent::getEloquentQuery()->with('site');
         $user = Auth::user();
 
-        if (! $user instanceof User) {
+        if (!$user instanceof User) {
             return $query->whereRaw('1 = 0');
         }
 
@@ -90,12 +90,12 @@ class ScanRunResource extends Resource
                     ->sortable(),
                 Tables\Columns\TextColumn::make('site.domain')
                     ->label('Site')
-                    ->url(fn (ScanRun $record): string => SiteResource::getUrl('view', ['record' => $record->site_id]))
+                    ->url(fn(ScanRun $record): string => SiteResource::getUrl('view', ['record' => $record->site_id]))
                     ->searchable()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('status')
                     ->badge()
-                    ->color(fn (string $state): string => match ($state) {
+                    ->color(fn(string $state): string => match ($state) {
                         'running' => 'warning',
                         'completed' => 'success',
                         'failed' => 'danger',
@@ -111,7 +111,7 @@ class ScanRunResource extends Resource
                     ->sortable()
                     ->placeholder('—'),
                 Tables\Columns\TextColumn::make('duration')
-                    ->state(fn (ScanRun $record): string => static::formatDuration($record))
+                    ->state(fn(ScanRun $record): string => static::formatDuration($record))
                     ->label('Duration'),
                 Tables\Columns\TextColumn::make('pages_crawled')
                     ->sortable(),
@@ -123,7 +123,7 @@ class ScanRunResource extends Resource
             ->filters([
                 Tables\Filters\Filter::make('active_only')
                     ->label('Active only')
-                    ->query(fn (Builder $query): Builder => $query->where('status', 'running')),
+                    ->query(fn(Builder $query): Builder => $query->where('status', 'running')),
                 Tables\Filters\SelectFilter::make('status')
                     ->options([
                         'running' => 'Running',
@@ -141,7 +141,7 @@ class ScanRunResource extends Resource
             ])
             ->emptyStateHeading('No scan history yet')
             ->emptyStateDescription('Start the first site scan from Command Center to create a snapshot for this site.')
-            ->recordClasses(fn (ScanRun $record): ?string => $record->status === 'running'
+            ->recordClasses(fn(ScanRun $record): ?string => $record->status === 'running'
                 ? 'bg-warning-50/60 ring-1 ring-inset ring-warning-300 dark:bg-warning-950/20 dark:ring-warning-800'
                 : null)
             ->defaultSort('id', 'desc');
@@ -155,10 +155,10 @@ class ScanRunResource extends Resource
                     ->schema([
                         TextEntry::make('site.domain')
                             ->label('Site')
-                            ->url(fn (ScanRun $record): string => SiteResource::getUrl('view', ['record' => $record->site_id])),
+                            ->url(fn(ScanRun $record): string => SiteResource::getUrl('view', ['record' => $record->site_id])),
                         TextEntry::make('status')
                             ->badge()
-                            ->color(fn (string $state): string => match ($state) {
+                            ->color(fn(string $state): string => match ($state) {
                                 'running' => 'warning',
                                 'completed' => 'success',
                                 'failed' => 'danger',
@@ -172,7 +172,7 @@ class ScanRunResource extends Resource
                             ->dateTime()
                             ->placeholder('—'),
                         TextEntry::make('duration')
-                            ->state(fn (ScanRun $record): string => static::formatDuration($record))
+                            ->state(fn(ScanRun $record): string => static::formatDuration($record))
                             ->label('Duration'),
                     ])
                     ->columns(5),
@@ -198,7 +198,7 @@ class ScanRunResource extends Resource
 
     protected static function formatDuration(ScanRun $record): string
     {
-        if (! $record->started_at) {
+        if (!$record->started_at) {
             return '—';
         }
 

@@ -39,7 +39,7 @@ class CrawlPolicyResource extends Resource
         $query = parent::getEloquentQuery();
         $user = Auth::user();
 
-        if (! $user instanceof User) {
+        if (!$user instanceof User) {
             return $query->whereRaw('1 = 0');
         }
 
@@ -65,13 +65,13 @@ class CrawlPolicyResource extends Resource
                 Tables\Columns\TextColumn::make('crawl_delay')->label('Delay (s)')->sortable(),
                 Tables\Columns\TextColumn::make('allow_rules_count')
                     ->label('Allow Rules')
-                    ->state(fn ($record): int => count($record->allow_rules ?? [])),
+                    ->state(fn($record): int => count($record->allow_rules ?? [])),
                 Tables\Columns\TextColumn::make('disallow_rules_count')
                     ->label('Disallow Rules')
-                    ->state(fn ($record): int => count($record->disallow_rules ?? [])),
+                    ->state(fn($record): int => count($record->disallow_rules ?? [])),
                 Tables\Columns\TextColumn::make('sitemap_urls_count')
                     ->label('Sitemaps')
-                    ->state(fn ($record): int => count($record->sitemap_urls ?? [])),
+                    ->state(fn($record): int => count($record->sitemap_urls ?? [])),
                 Tables\Columns\TextColumn::make('last_fetched_at')->dateTime()->sortable(),
                 Tables\Columns\TextColumn::make('last_request_at')->dateTime()->sortable(),
             ])

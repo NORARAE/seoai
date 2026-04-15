@@ -9,7 +9,6 @@ use App\Models\PublishingLog;
 use App\Models\User;
 use BackedEnum;
 use Filament\Forms;
-use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
@@ -46,7 +45,7 @@ class PublishingLogResource extends Resource
         $query = parent::getEloquentQuery();
         $user = Auth::user();
 
-        if (! $user instanceof User) {
+        if (!$user instanceof User) {
             return $query->whereRaw('1 = 0');
         }
 
@@ -60,7 +59,7 @@ class PublishingLogResource extends Resource
             return $query->whereRaw('1 = 0');
         }
 
-        return $query->whereHas('payload', fn (Builder $payloadQuery) => $payloadQuery->whereIn('site_id', $siteIds));
+        return $query->whereHas('payload', fn(Builder $payloadQuery) => $payloadQuery->whereIn('site_id', $siteIds));
     }
 
     public static function table(Table $table): Table
@@ -69,23 +68,23 @@ class PublishingLogResource extends Resource
             ->columns([
                 Tables\Columns\TextColumn::make('id')
                     ->sortable(),
-                
+
                 Tables\Columns\TextColumn::make('payload.title')
                     ->searchable()
                     ->limit(30),
-                
+
                 Tables\Columns\TextColumn::make('payload.site.name')
                     ->label('Site')
                     ->searchable()
                     ->sortable(),
-                
+
                 Tables\Columns\BadgeColumn::make('adapter_type')
                     ->label('Adapter')
                     ->colors([
                         'primary' => 'wordpress',
                         'warning' => 'export',
                     ]),
-                
+
                 Tables\Columns\BadgeColumn::make('action')
                     ->colors([
                         'success' => 'publish',
@@ -93,24 +92,24 @@ class PublishingLogResource extends Resource
                         'info' => 'update',
                         'danger' => 'delete',
                     ]),
-                
+
                 Tables\Columns\BadgeColumn::make('result')
                     ->colors([
                         'success' => 'success',
                         'danger' => 'failure',
                     ]),
-                
+
                 Tables\Columns\TextColumn::make('remote_url')
                     ->limit(40)
-                    ->url(fn ($record) => $record->remote_url, shouldOpenInNewTab: true)
+                    ->url(fn($record) => $record->remote_url, shouldOpenInNewTab: true)
                     ->placeholder('N/A'),
-                
+
                 Tables\Columns\TextColumn::make('error_message')
                     ->limit(40)
                     ->searchable()
                     ->placeholder('—')
                     ->color('danger'),
-                
+
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable(),
@@ -121,14 +120,14 @@ class PublishingLogResource extends Resource
                         'success' => 'Success',
                         'failure' => 'Failed',
                     ]),
-                
+
                 Tables\Filters\SelectFilter::make('adapter_type')
                     ->label('Adapter')
                     ->options([
                         'wordpress' => 'WordPress',
                         'export' => 'Export',
                     ]),
-                
+
                 Tables\Filters\SelectFilter::make('action')
                     ->options([
                         'publish' => 'Publish',
@@ -136,7 +135,7 @@ class PublishingLogResource extends Resource
                         'update' => 'Update',
                         'delete' => 'Delete',
                     ]),
-                
+
                 Tables\Filters\Filter::make('created_at')
                     ->form([
                         Forms\Components\DatePicker::make('created_from'),
@@ -146,11 +145,11 @@ class PublishingLogResource extends Resource
                         return $query
                             ->when(
                                 $data['created_from'],
-                                fn (Builder $query, $date): Builder => $query->whereDate('created_at', '>=', $date),
+                                fn(Builder $query, $date): Builder => $query->whereDate('created_at', '>=', $date),
                             )
                             ->when(
                                 $data['created_until'],
-                                fn (Builder $query, $date): Builder => $query->whereDate('created_at', '<=', $date),
+                                fn(Builder $query, $date): Builder => $query->whereDate('created_at', '<=', $date),
                             );
                     }),
             ])

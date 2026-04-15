@@ -9,7 +9,6 @@ use App\Models\PageGenerationBatch;
 use App\Services\BulkPageExpansionService;
 use BackedEnum;
 use Filament\Forms;
-use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
@@ -39,15 +38,15 @@ class PageGenerationBatchResource extends Resource
             ->columns([
                 Tables\Columns\TextColumn::make('id')
                     ->sortable(),
-                
+
                 Tables\Columns\TextColumn::make('name')
                     ->searchable()
                     ->limit(30),
-                
+
                 Tables\Columns\TextColumn::make('site.name')
                     ->searchable()
                     ->sortable(),
-                
+
                 Tables\Columns\BadgeColumn::make('status')
                     ->colors([
                         'secondary' => 'pending',
@@ -55,19 +54,19 @@ class PageGenerationBatchResource extends Resource
                         'success' => 'completed',
                         'danger' => 'failed',
                     ]),
-                
+
                 Tables\Columns\TextColumn::make('requested_count')
                     ->label('Requested')
                     ->sortable(),
-                
+
                 Tables\Columns\TextColumn::make('payload_count')
                     ->label('Generated')
                     ->sortable(),
-                
+
                 Tables\Columns\TextColumn::make('published_count')
                     ->label('Published')
                     ->sortable(),
-                
+
                 Tables\Columns\TextColumn::make('failed_count')
                     ->label('Failed')
                     ->sortable()
@@ -75,9 +74,9 @@ class PageGenerationBatchResource extends Resource
 
                 Tables\Columns\TextColumn::make('duration_seconds')
                     ->label('Duration')
-                    ->formatStateUsing(fn (?int $state): string => $state ? gmdate('H:i:s', $state) : '—')
+                    ->formatStateUsing(fn(?int $state): string => $state ? gmdate('H:i:s', $state) : '—')
                     ->toggleable(),
-                
+
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable(),
@@ -95,29 +94,29 @@ class PageGenerationBatchResource extends Resource
                         'completed' => 'Completed',
                         'failed' => 'Failed',
                     ]),
-                
+
                 Tables\Filters\SelectFilter::make('site_id')
                     ->relationship('site', 'name')
                     ->label('Site'),
             ])
             ->actions([
                 ViewAction::make(),
-                
+
                 Action::make('publish')
                     ->icon('heroicon-o-cloud-arrow-up')
                     ->color('success')
-                    ->visible(fn ($record) => $record->status === 'completed' && $record->published_count < $record->payload_count)
+                    ->visible(fn($record) => $record->status === 'completed' && $record->published_count < $record->payload_count)
                     ->requiresConfirmation()
                     ->action(function ($record) {
                         $service = app(BulkPageExpansionService::class);
                         $dispatched = $service->publishBatch($record);
-                        
+
                         \Filament\Notifications\Notification::make()
                             ->title("{$dispatched} payloads queued for publishing")
                             ->success()
                             ->send();
                     }),
-                
+
                 Action::make('export')
                     ->icon('heroicon-o-arrow-down-tray')
                     ->color('info')
@@ -134,23 +133,23 @@ class PageGenerationBatchResource extends Resource
                     ->action(function ($record, array $data) {
                         $service = app(BulkPageExpansionService::class);
                         $exportPath = $service->exportBatch($record, $data['format']);
-                        
+
                         \Filament\Notifications\Notification::make()
                             ->title('Batch exported')
                             ->body("Download: {$exportPath}")
                             ->success()
                             ->send();
                     }),
-                
+
                 Action::make('cancel')
                     ->icon('heroicon-o-x-circle')
                     ->color('danger')
-                    ->visible(fn ($record) => $record->status === 'processing')
+                    ->visible(fn($record) => $record->status === 'processing')
                     ->requiresConfirmation()
                     ->action(function ($record) {
                         $service = app(BulkPageExpansionService::class);
                         $service->cancelBatch($record);
-                        
+
                         \Filament\Notifications\Notification::make()
                             ->title('Batch cancelled')
                             ->warning()

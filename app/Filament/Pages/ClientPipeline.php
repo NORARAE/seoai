@@ -26,7 +26,7 @@ class ClientPipeline extends Dashboard
 
     public static function canAccess(): bool
     {
-        if (! auth()->user()?->canApproveUsers()) {
+        if (!auth()->user()?->canApproveUsers()) {
             return false;
         }
 
@@ -40,7 +40,7 @@ class ClientPipeline extends Dashboard
 
     public static function shouldRegisterNavigation(array $parameters = []): bool
     {
-        if (! auth()->user()?->canApproveUsers()) {
+        if (!auth()->user()?->canApproveUsers()) {
             return false;
         }
 

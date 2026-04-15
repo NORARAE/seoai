@@ -49,7 +49,8 @@ class BaselineSnapshotResource extends Resource
                 Tables\Columns\TextColumn::make('performance_snapshot_json')
                     ->label('Performance')
                     ->formatStateUsing(function ($state) {
-                        if (!$state) return '-';
+                        if (!$state)
+                            return '-';
                         $clicks = $state['clicks'] ?? 0;
                         $impressions = $state['impressions'] ?? 0;
                         $ctr = isset($state['ctr']) ? round($state['ctr'] * 100, 2) . '%' : '-';
