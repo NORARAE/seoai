@@ -38,6 +38,7 @@ Route::get('/', [PublicController::class, 'landing'])->name('home');
 
 // Auth middleware redirects here when unauthenticated; forward to Filament login.
 Route::get('/login', fn() => redirect('/admin/login'))->name('login');
+Route::get('/register', fn() => redirect('/admin/register'))->name('register');
 
 // Google OAuth sign-in — routes registered regardless of enabled flag;
 // the controller itself returns 404 when GOOGLE_LOGIN_ENABLED=false.

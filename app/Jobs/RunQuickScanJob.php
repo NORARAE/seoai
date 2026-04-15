@@ -53,10 +53,13 @@ class RunQuickScanJob implements ShouldQueue, ShouldBeUnique
 
             $scan->update([
                 'score' => $result['score'],
+                'categories' => $result['categories'],
                 'issues' => $result['issues'],
                 'strengths' => $result['strengths'],
                 'fastest_fix' => $result['fastest_fix'],
                 'raw_checks' => $result['raw_checks'],
+                'broken_links' => $result['broken_links'],
+                'page_count' => $result['page_count'],
                 'status' => QuickScan::STATUS_SCANNED,
                 'scanned_at' => now(),
             ]);
