@@ -147,6 +147,11 @@ server {
         deny all;
     }
 
+    # Livewire JS/CSS served by Laravel, not static files
+    location ^~ /livewire {
+        try_files \$uri \$uri/ /index.php?\$query_string;
+    }
+
     # Cache static assets
     location ~* \.(css|js|ico|gif|jpe?g|png|svg|woff2?|ttf|eot)$ {
         expires 30d;
