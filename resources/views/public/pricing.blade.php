@@ -45,29 +45,29 @@
             'offers'      => [
                 [
                     '@type'         => 'Offer',
-                    'name'          => 'Foundation',
-                    'price'         => '99',
+                    'name'          => 'Quick Scan',
+                    'price'         => '2',
                     'priceCurrency' => 'USD',
-                    'description'   => 'AI readiness scan, top 10 citation opportunities, coverage map, and basic structural recommendations.',
+                    'description'   => 'Instant AI citation readiness score with limited diagnostic signals.',
                 ],
                 [
                     '@type'         => 'Offer',
-                    'name'          => 'Citation Builder',
+                    'name'          => 'Full Report',
+                    'price'         => '79',
+                    'priceCurrency' => 'USD',
+                    'description'   => 'Complete diagnostic breakdown with category-level analysis, expansion signals, and prioritized insights.',
+                ],
+                [
+                    '@type'         => 'Offer',
+                    'name'          => 'Optimization Plan',
                     'price'         => '249',
                     'priceCurrency' => 'USD',
-                    'description'   => 'Full opportunity mapping, internal linking plan, entity structure guidance, and FAQ and definition optimization.',
-                ],
-                [
-                    '@type'         => 'Offer',
-                    'name'          => 'Authority Engine',
-                    'price'         => '499',
-                    'priceCurrency' => 'USD',
-                    'description'   => 'AI-generated content structures, schema recommendations, citation scoring system, and advanced optimization.',
+                    'description'   => 'Structured optimization roadmap with deeper analysis and priority-ordered action items.',
                 ],
                 [
                     '@type'       => 'Offer',
-                    'name'        => 'AI Citation Engine™',
-                    'description' => 'Full implementation with programmatic expansion, entity and schema deployment, content structuring, and ongoing optimization. Starting at $1,500/month.',
+                    'name'        => 'Full System',
+                    'description' => 'Complete infrastructure and execution — full market coverage, structured for AI citation, and actively maintained. Starting at $4,799.',
                 ],
             ],
         ],
@@ -285,14 +285,14 @@ footer{border-top:1px solid rgba(200,168,75,.07);padding:32px 48px;display:flex;
      ══════════════════════════════════════════ --}}
 <section class="pricing-hero" aria-labelledby="hero-headline">
   <div class="wrap">
-    <span class="hero-eyebrow">AI Citation Engine™ — Access Plans</span>
+    <span class="hero-eyebrow">AI Citation Engine™ — Pricing</span>
     <h1 class="hero-headline" id="hero-headline">
-      Become the Answer<br><em>AI Gives.</em>
+      Start with a Scan.<br><em>Scale When You&rsquo;re Ready.</em>
     </h1>
-    <p class="hero-sub">SEOAIco's AI Citation Engine™ structures your content so platforms like Google AI Overviews and ChatGPT don't just find you — they cite you as the answer.</p>
+    <p class="hero-sub">From a $2 readiness check to full market infrastructure — every tier builds on the last. Your data carries forward.</p>
     <div class="hero-cta-row">
-      <a href="{{ route('onboarding.start') }}" class="btn-primary">Make your site the answer</a>
-      <a href="{{ route('ai-citation-engine') }}" class="btn-ghost">See how the engine works →</a>
+      <a href="{{ route('quick-scan.show') }}" class="btn-primary">Run $2 Scan</a>
+      <a href="#plans" class="btn-ghost">View all tiers →</a>
     </div>
   </div>
 </section>
@@ -347,96 +347,92 @@ footer{border-top:1px solid rgba(200,168,75,.07);padding:32px 48px;display:flex;
      ══════════════════════════════════════════ --}}
 <section class="pricing-section" id="plans" aria-labelledby="pricing-hed">
   <div class="wrap">
-    <span class="section-eyebrow">Choose your citation level</span>
-    <h2 class="section-hed" id="pricing-hed">Four paths to<br><em>getting cited.</em></h2>
-    <p class="section-sub">Start where you are. Every plan structures your content for AI citation — the question is how deep and how fast.</p>
+    <span class="section-eyebrow">Choose where to start</span>
+    <h2 class="section-hed" id="pricing-hed">Four tiers.<br><em>One clear path.</em></h2>
+    <p class="section-sub">Each tier builds on the last. Start with a scan and upgrade when you&rsquo;re ready &mdash; your data carries forward.</p>
 
     <div class="tiers-grid" role="list">
 
-      {{-- TIER 1 — FOUNDATION --}}
+      {{-- TIER 1 — Quick Scan --}}
       <div class="tier-card" role="listitem">
         <span class="tier-badge">Entry</span>
-        <h3 class="tier-name">Foundation</h3>
-        <p class="tier-desc">Understand where you stand and what it takes to start getting cited.</p>
+        <h3 class="tier-name">Quick Scan</h3>
+        <p class="tier-desc">Instant AI citation readiness score. See where you stand in seconds.</p>
         <div class="tier-price">
           <span class="tier-price-sup">$</span>
-          <span class="tier-price-val">99</span>
-          <span class="tier-price-per">/mo</span>
+          <span class="tier-price-val">2</span>
         </div>
-        <p class="tier-price-note">No long-term commitment</p>
+        <p class="tier-price-note">One-time &middot; No account required</p>
         <div class="tier-divider"></div>
         <ul class="tier-features">
-          <li>AI readiness scan</li>
-          <li>Top 10 citation opportunities</li>
-          <li>Coverage map of your market</li>
-          <li>Basic structural recommendations</li>
+          <li>0&ndash;100 AI citation score</li>
+          <li>Limited diagnostic signals</li>
+          <li>Sent to your inbox instantly</li>
         </ul>
-        <a href="{{ route('onboarding.start', ['tier' => 'foundation']) }}" class="tier-cta">Get AI-ready</a>
+        <a href="{{ route('quick-scan.show') }}" class="tier-cta">Run $2 Scan</a>
       </div>
 
-      {{-- TIER 2 — CITATION BUILDER --}}
+      {{-- TIER 2 — Full Report --}}
       <div class="tier-card" role="listitem">
-        <span class="tier-badge">Builder</span>
-        <h3 class="tier-name">Citation Builder</h3>
-        <p class="tier-desc">Map your full opportunity and build the structural foundation AI systems need.</p>
+        <span class="tier-badge">Diagnostic</span>
+        <h3 class="tier-name">Full Report</h3>
+        <p class="tier-desc">Complete diagnostic breakdown with category-level analysis and prioritized insights.</p>
+        <div class="tier-price">
+          <span class="tier-price-sup">$</span>
+          <span class="tier-price-val">79</span>
+          <span class="tier-price-per">&ndash;$99</span>
+        </div>
+        <p class="tier-price-note">One-time purchase</p>
+        <div class="tier-divider"></div>
+        <ul class="tier-features">
+          <li><strong>Full category breakdown</strong></li>
+          <li>Expansion signals revealed</li>
+          <li>Prioritized insights</li>
+        </ul>
+        <a href="{{ route('onboarding.start') }}?plan=full-report" class="tier-cta">Unlock Full Report</a>
+      </div>
+
+      {{-- TIER 3 — Optimization Plan (FOCAL) --}}
+      <div class="tier-card is-focal" role="listitem">
+        <span class="tier-popular">Most popular</span>
+        <span class="tier-badge">Optimization</span>
+        <h3 class="tier-name">Optimization Plan</h3>
+        <p class="tier-desc">Structured roadmap with deeper analysis and a clear path to improved AI citation confidence.</p>
         <div class="tier-price">
           <span class="tier-price-sup">$</span>
           <span class="tier-price-val">249</span>
-          <span class="tier-price-per">/mo</span>
+          <span class="tier-price-per">&ndash;$689</span>
         </div>
-        <p class="tier-price-note">Everything in Foundation, plus</p>
+        <p class="tier-price-note">One-time purchase</p>
         <div class="tier-divider"></div>
         <ul class="tier-features">
-          <li>Full opportunity mapping</li>
-          <li>Internal linking plan</li>
-          <li><strong>Entity structure guidance</strong></li>
-          <li>FAQ + definition optimization</li>
+          <li><strong>Structured optimization roadmap</strong></li>
+          <li><strong>Deeper structural analysis</strong></li>
+          <li>Priority-ordered action items</li>
+          <li>Content structure gaps identified</li>
         </ul>
-        <a href="{{ route('onboarding.start', ['tier' => 'builder']) }}" class="tier-cta">Start getting cited</a>
+        <a href="{{ route('onboarding.start') }}?plan=optimization" class="tier-cta">Get Optimization Plan</a>
       </div>
 
-      {{-- TIER 3 — AUTHORITY ENGINE (FOCAL) --}}
-      <div class="tier-card is-focal" role="listitem">
-        <span class="tier-popular">Most popular</span>
-        <span class="tier-badge">Authority</span>
-        <h3 class="tier-name">Authority Engine</h3>
-        <p class="tier-desc">Build a complete citation authority system with AI content structures and schema.</p>
-        <div class="tier-price">
-          <span class="tier-price-sup">$</span>
-          <span class="tier-price-val">499</span>
-          <span class="tier-price-per">/mo</span>
-        </div>
-        <p class="tier-price-note">Everything in Citation Builder, plus</p>
-        <div class="tier-divider"></div>
-        <ul class="tier-features">
-          <li><strong>AI-generated content structures</strong></li>
-          <li>Schema recommendations</li>
-          <li><strong>Citation scoring system</strong></li>
-          <li>Advanced optimization playbook</li>
-        </ul>
-        <a href="{{ route('onboarding.start') }}" class="tier-cta">Build your authority system</a>
-      </div>
-
-      {{-- TIER 4 — AI CITATION ENGINE™ (PREMIUM) --}}
+      {{-- TIER 4 — Full System (PREMIUM) --}}
       <div class="tier-card is-premium" role="listitem">
-        <span class="tier-badge">Full Service</span>
-        <h3 class="tier-name">AI Citation Engine™</h3>
-        <p class="tier-desc">Complete implementation. We build, deploy, and maintain your full citation infrastructure.</p>
+        <span class="tier-badge">Full Infrastructure</span>
+        <h3 class="tier-name">Full System</h3>
+        <p class="tier-desc">Complete infrastructure and execution. Your entire market covered, structured, and actively maintained.</p>
         <div class="tier-price">
           <span class="tier-price-sup">$</span>
-          <span class="tier-price-val">1,500</span>
-          <span class="tier-price-per">+/mo</span>
+          <span class="tier-price-val">4,799</span>
+          <span class="tier-price-per">+</span>
         </div>
         <p class="tier-price-note">Reviewed individually per market</p>
         <div class="tier-divider"></div>
         <ul class="tier-features">
-          <li><strong>Full implementation</strong> — done-for-you</li>
-          <li>Programmatic expansion at scale</li>
-          <li><strong>Entity + schema deployment</strong></li>
-          <li>Content structuring at every layer</li>
-          <li>Ongoing optimization + monitoring</li>
+          <li><strong>Full market infrastructure</strong></li>
+          <li><strong>Complete execution</strong> &mdash; built and deployed for you</li>
+          <li>Ongoing position maintenance</li>
+          <li>Strategic oversight across your full coverage</li>
         </ul>
-        <a href="{{ route('onboarding.start', ['tier' => 'dominance']) }}" class="tier-cta">Make your site the answer</a>
+        <a href="{{ route('onboarding.start', ['tier' => 'dominance']) }}" class="tier-cta">Review Full System</a>
       </div>
 
     </div>
@@ -554,12 +550,12 @@ footer{border-top:1px solid rgba(200,168,75,.07);padding:32px 48px;display:flex;
      ══════════════════════════════════════════ --}}
 <section class="final-cta" aria-labelledby="cta-hed">
   <div class="final-cta-inner">
-    <span class="final-cta-eye">The answer is available</span>
-    <h2 class="final-cta-hed" id="cta-hed">Don't just show up.<br><em>Be the answer.</em></h2>
-    <p class="final-cta-sub">AI systems are selecting sources right now. The businesses with structured citation infrastructure are the ones getting named. Start building yours today.</p>
+    <span class="final-cta-eye">Start where you are</span>
+    <h2 class="final-cta-hed" id="cta-hed">$2 to find out.<br><em>Upgrade when you&rsquo;re ready.</em></h2>
+    <p class="final-cta-sub">Your scan data carries forward to every tier. No wasted steps, no repeated work. Start with a readiness check and see where the opportunity is.</p>
     <div class="final-cta-actions">
-      <a href="{{ route('onboarding.start') }}" class="btn-primary">Start getting cited</a>
-      <a href="{{ route('ai-citation-engine') }}" class="btn-ghost">Learn how the AI Citation Engine™ works →</a>
+      <a href="{{ route('quick-scan.show') }}" class="btn-primary">Run $2 Scan</a>
+      <a href="#plans" class="btn-ghost">Compare all tiers →</a>
     </div>
   </div>
 </section>

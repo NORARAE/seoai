@@ -546,6 +546,53 @@ nav.stuck{background:rgba(8,8,8,.95);backdrop-filter:blur(16px);border-color:var
 .tier-grid-3 .tier:nth-child(1){transition-delay:.07s}
 .tier-grid-3 .tier:nth-child(2){transition-delay:.17s}
 .tier-grid-3 .tier:nth-child(3){transition-delay:.27s}
+/* ── 4-tier grid ── */
+.tier-grid-4{
+  display:grid;grid-template-columns:1fr 1fr 1fr 1fr;
+  gap:0;background:transparent;
+  align-items:start;
+  position:relative;z-index:2;
+}
+.tier-grid-4::before{
+  content:'';
+  position:absolute;top:-80px;left:50%;width:25%;height:calc(100% + 160px);
+  background:radial-gradient(ellipse at 50% 38%,rgba(200,168,75,.06) 0%,transparent 68%);
+  pointer-events:none;z-index:0;
+}
+.tier-grid-4 .tier:nth-child(1){transition-delay:.05s}
+.tier-grid-4 .tier:nth-child(2){transition-delay:.12s}
+.tier-grid-4 .tier:nth-child(3){transition-delay:.19s}
+.tier-grid-4 .tier:nth-child(4){transition-delay:.26s}
+/* ── Scan tier — lightest weight ── */
+.tier.scan-tier{
+  background:var(--deep);
+  padding:32px 28px;
+}
+.tier.scan-tier .tier-flag{color:rgba(200,168,75,.35);font-size:.62rem}
+.tier.scan-tier .tier-name{font-size:1.35rem;color:rgba(168,168,160,.78)}
+.tier.scan-tier .tier-price{font-size:2.2rem;color:rgba(200,168,75,.3)}
+.tier.scan-tier .tier-price sup{color:rgba(200,168,75,.3)}
+.tier.scan-tier .tier-cta{
+  color:rgba(200,168,75,.4);border:1px solid rgba(200,168,75,.14);font-size:.7rem;
+}
+.tier.scan-tier .tier-cta:hover{
+  background:rgba(200,168,75,.06);border-color:rgba(200,168,75,.28);color:var(--gold-dim);
+}
+/* ── Report tier ── */
+.tier.report-tier{
+  background:var(--deep);
+  padding:36px 32px;
+}
+.tier.report-tier .tier-flag{color:rgba(200,168,75,.45);font-size:.65rem}
+.tier.report-tier .tier-name{font-size:1.5rem;color:rgba(168,168,160,.86)}
+.tier.report-tier .tier-price{font-size:2.6rem;color:rgba(200,168,75,.45)}
+.tier.report-tier .tier-price sup{color:rgba(200,168,75,.45)}
+.tier.report-tier .tier-cta{
+  color:rgba(200,168,75,.5);border:1px solid rgba(200,168,75,.2);font-size:.72rem;
+}
+.tier.report-tier .tier-cta:hover{
+  background:rgba(200,168,75,.06);border-color:rgba(200,168,75,.35);color:var(--gold);
+}
 .tier:hover{
   background:rgba(13,12,10,1);
   transform:translateY(-4px);
@@ -1798,7 +1845,7 @@ footer{border-top:1px solid var(--border);padding:36px 64px;display:flex;flex-di
   .url-item{font-size:.78rem;padding:10px 12px}
   .offer-intro{grid-template-columns:1fr;gap:28px}
   .contact-inner{grid-template-columns:1fr;gap:36px}
-  .audience-grid,.tier-grid-3{grid-template-columns:1fr}
+  .audience-grid,.tier-grid-3,.tier-grid-4{grid-template-columns:1fr}
   .aud-card{padding:40px 24px}
   .aud-title{font-size:1.6rem}
   .wyl-grid{grid-template-columns:1fr 1fr;gap:14px}
@@ -2978,7 +3025,7 @@ body::before{
 .ace-cta{text-align:center;margin-top:8px}
 .ace-cta a{font-size:.82rem;color:rgba(200,168,75,.8);text-decoration:none;border-bottom:1px solid rgba(200,168,75,.25);padding-bottom:2px;letter-spacing:.04em;transition:color .2s,border-color .2s}
 .ace-cta a:hover{color:#e2c97d;border-color:rgba(226,201,125,.6)}
-@media(max-width:900px){.ace-section{padding:72px 40px}.ace-grid{grid-template-columns:repeat(3,1fr)}.feat-cards{grid-template-columns:1fr 1fr}}
+@media(max-width:900px){.ace-section{padding:72px 40px}.ace-grid{grid-template-columns:repeat(3,1fr)}.feat-cards{grid-template-columns:1fr 1fr}.tier-grid-4{grid-template-columns:1fr 1fr}}
 @media(max-width:600px){.ace-section{padding:56px 24px}.ace-grid{grid-template-columns:1fr 1fr}.feat-cards{grid-template-columns:1fr}.qs-preview-body{flex-direction:column;text-align:center}.qs-preview-score-wrap{border-right:none;border-bottom:1px solid rgba(200,168,75,.1);padding:0 0 14px;margin-bottom:0}.qs-preview-checks{align-items:center}}
 @media(max-width:400px){.ace-grid{grid-template-columns:1fr}}
 </style>
@@ -3200,12 +3247,12 @@ body::before{
   <canvas class="hero-anim-canvas" id="heroAnimCanvas" aria-hidden="true"></canvas>
 
   <div class="hero-stage">
-    <h1 id="heroSeq" aria-label="Be the Answer AI Returns. Structured for citation by Google AI Overviews, ChatGPT, and every AI search surface.">Be the Answer<br>AI Returns</h1>
+    <h1 id="heroSeq" aria-label="Will AI Cite Your Website? Instant AI citation readiness score in 60 seconds.">Will AI Cite<br>Your Website?</h1>
   </div>
-  <p class="hero-gold-accent">Structured for AI citation &#8202;&mdash;&#8202;built for Google, ChatGPT, and every AI search surface.</p>
-  <p class="hero-note">You found us organically. We make AI systems cite you the same way.</p>
+  <p class="hero-gold-accent">Instant AI citation readiness score in 60 seconds.</p>
   <div class="hero-actions" style="opacity:0;animation:up .85s .52s forwards">
-    <a href="/book" class="btn-primary">Make your site the answer</a>
+    <a href="{{ route('quick-scan.show') }}" class="btn-primary">Run $2 Scan</a>
+    <a href="#quick-scan" class="btn-ghost">View Example Report</a>
   </div>
 
 </section>
@@ -3216,32 +3263,28 @@ body::before{
   <div class="hero-scroll-arrow"></div>
 </div>
 
-<!-- ════════════ WHO THIS IS FOR ════════════ -->
-<section class="how-strip r" aria-label="Who this is for and what it works with">
-  <p class="how-strip-hed">Built for Real Businesses</p>
+<!-- ════════════ VALUE OUTCOMES ════════════ -->
+<section class="how-strip r" aria-label="What you discover">
+  <p class="how-strip-hed">What Your Scan Reveals</p>
   <div class="how-strip-bullets">
     <div class="how-strip-item">
       <span class="how-strip-dot" aria-hidden="true"></span>
-      <span class="how-strip-label">Local service businesses with multiple services or locations</span>
+      <span class="how-strip-label"><strong style="color:var(--ivory)">AI Visibility Confidence</strong> &mdash; how likely AI systems are to cite your business right now</span>
     </div>
     <div class="how-strip-item">
       <span class="how-strip-dot" aria-hidden="true"></span>
-      <span class="how-strip-label">WordPress sites and custom builds &mdash; structured for search from the ground up</span>
+      <span class="how-strip-label"><strong style="color:var(--ivory)">Structural Readiness</strong> &mdash; whether your site meets the conditions AI requires for citation</span>
     </div>
     <div class="how-strip-item">
       <span class="how-strip-dot" aria-hidden="true"></span>
-      <span class="how-strip-label">Businesses ready to grow without hiring an agency</span>
-    </div>
-    <div class="how-strip-item">
-      <span class="how-strip-dot" aria-hidden="true"></span>
-      <span class="how-strip-label">Expanded across Google, ChatGPT, and modern search &#8212; from day one</span>
+      <span class="how-strip-label"><strong style="color:var(--ivory)">Expansion Opportunity</strong> &mdash; where untapped visibility exists across your market</span>
     </div>
   </div>
-  <p class="how-strip-sub">Your domain &#8212; expanded across every search that matters.</p>
+  <p class="how-strip-sub">From a single scan &mdash; a clear picture of where you stand and where the opportunity is.</p>
 </section>
 
 <!-- ════════════ QUICK SCAN CTA ════════════ -->
-<section class="qs-mid r" aria-label="AI Citation Quick Scan">
+<section id="quick-scan" class="qs-mid r" aria-label="AI Citation Quick Scan">
   <p class="qs-mid-eyebrow">Not sure where you stand?</p>
   <h2 class="qs-mid-hed">Find out if AI would cite your site&nbsp;&#8212; <em>instantly</em></h2>
   <p class="qs-mid-sub">Our $2 scan checks 5 citation signals and returns an instant 0&#8211;100 AI Citation Score with a specific action to improve it.</p>
@@ -3262,21 +3305,21 @@ body::before{
         <div class="qs-preview-score-lbl">/ 100<br>citation<br>score</div>
       </div>
       <div class="qs-preview-checks">
-        <div class="qs-preview-check pass">Schema markup detected</div>
-        <div class="qs-preview-check fail">No FAQ / Q&amp;A content found</div>
-        <div class="qs-preview-check pass">Definition content present</div>
-        <div class="qs-preview-check fail">Internal link density low</div>
-        <div class="qs-preview-check pass">Content length sufficient</div>
+        <div class="qs-preview-check pass">Structured data signals detected</div>
+        <div class="qs-preview-check fail">Answerable content gaps found</div>
+        <div class="qs-preview-check pass">Entity authority present</div>
+        <div class="qs-preview-check fail">Content connectivity low</div>
+        <div class="qs-preview-check pass">Content depth sufficient</div>
       </div>
     </div>
-    <p class="qs-preview-footer">Fastest fix: Add a FAQ section &mdash; estimated +20 points</p>
+    <p class="qs-preview-footer">Fastest fix identified &mdash; estimated +20 points</p>
   </div>
 
   <div class="qs-checks-row">
-    <span class="qs-check-pill">Schema Markup</span>
-    <span class="qs-check-pill">FAQ Content</span>
-    <span class="qs-check-pill">Definition Signals</span>
-    <span class="qs-check-pill">Internal Links</span>
+    <span class="qs-check-pill">Data Signals</span>
+    <span class="qs-check-pill">Answerable Content</span>
+    <span class="qs-check-pill">Entity Authority</span>
+    <span class="qs-check-pill">Connectivity</span>
     <span class="qs-check-pill">Content Depth</span>
   </div>
 
@@ -3284,46 +3327,34 @@ body::before{
   <p style="font-size:.64rem;letter-spacing:.1em;text-transform:uppercase;color:rgba(168,168,160,.3);margin-top:14px">Results in seconds &nbsp;&middot;&nbsp; Sent to your inbox &nbsp;&middot;&nbsp; No account required</p>
 </section>
 
-<!-- ════════════ PRODUCT FEATURE GRID ════════════ -->
-<section class="feat-grid r" aria-label="What the AI Citation Engine checks">
-  <p class="feat-grid-eye">The AI Citation Engine™ — 6 infrastructure layers</p>
-  <h2 class="feat-grid-hed">Everything AI needs to <em>cite you by default</em></h2>
+<!-- ════════════ HOW IT WORKS — SCAN FLOW ════════════ -->
+<section class="feat-grid r" aria-label="How the scan and upgrade flow works">
+  <p class="feat-grid-eye">From Scan to System</p>
+  <h2 class="feat-grid-hed">A clear path from <em>diagnosis to dominance</em></h2>
   <div class="feat-cards">
     <div class="feat-card">
-      <div class="feat-card-icon">&#x7B;&#x7D;</div>
-      <p class="feat-card-title">Structured Data &amp; Schema</p>
-      <p class="feat-card-body">JSON-LD for LocalBusiness, Service, FAQPage, and DefinedTerm — machine-readable entity signals on every page.</p>
-      <span class="feat-card-score">Layer 1</span>
+      <div class="feat-card-icon">&#x25CE;</div>
+      <p class="feat-card-title">Run Your Scan</p>
+      <p class="feat-card-body">Enter your URL and get an instant AI citation readiness score. See exactly where your visibility stands — in seconds.</p>
+      <span class="feat-card-score">$2</span>
     </div>
     <div class="feat-card">
       <div class="feat-card-icon">&#x25A4;</div>
-      <p class="feat-card-title">Page Architecture</p>
-      <p class="feat-card-body">One service, one city, one self-contained page. The coverage structure AI systems use to establish geographic authority.</p>
-      <span class="feat-card-score">Layer 2</span>
-    </div>
-    <div class="feat-card">
-      <div class="feat-card-icon">&#x25CE;</div>
-      <p class="feat-card-title">Entity Definition</p>
-      <p class="feat-card-body">Every page defines what you do, where you do it, and who you are — structured for AI extraction in the first 150 words.</p>
-      <span class="feat-card-score">Layer 3</span>
+      <p class="feat-card-title">Get the Full Report</p>
+      <p class="feat-card-body">Unlock a complete diagnostic breakdown — category-level signals, expansion opportunities, and prioritized insights you can act on.</p>
+      <span class="feat-card-score">$79–$99</span>
     </div>
     <div class="feat-card">
       <div class="feat-card-icon">&#x2197;</div>
-      <p class="feat-card-title">Internal Link Graph</p>
-      <p class="feat-card-body">Topic clusters and hub pages that signal authority depth — the internal link pattern AI systems use to verify expertise.</p>
-      <span class="feat-card-score">Layer 4</span>
+      <p class="feat-card-title">Follow the Plan</p>
+      <p class="feat-card-body">A structured optimization roadmap — deeper analysis, identified gaps, and a prioritized path to improve AI citation confidence.</p>
+      <span class="feat-card-score">$249–$689</span>
     </div>
     <div class="feat-card">
-      <div class="feat-card-icon">&#x2318;</div>
-      <p class="feat-card-title">AI Guidance (llms.txt)</p>
-      <p class="feat-card-body">Explicit citation instructions for AI crawlers — tells LLMs what your site is authoritative about and how to reference it.</p>
-      <span class="feat-card-score">Layer 5</span>
-    </div>
-    <div class="feat-card">
-      <div class="feat-card-icon">&#x25FC;</div>
-      <p class="feat-card-title">Programmatic Coverage</p>
-      <p class="feat-card-body">Hundreds of structured pages deployed as a single operation — one page per service per city, from a single content model.</p>
-      <span class="feat-card-score">Layer 6</span>
+      <div class="feat-card-icon">&#x7B;&#x7D;</div>
+      <p class="feat-card-title">Deploy the Full System</p>
+      <p class="feat-card-body">Complete infrastructure and execution — your entire market covered, structured for AI citation, and actively maintained.</p>
+      <span class="feat-card-score">$4,799+</span>
     </div>
   </div>
 </section>
@@ -3502,28 +3533,28 @@ body::before{
     <div class="ace-grid">
       <div class="ace-block r">
         <p class="ace-block-num">01</p>
-        <p class="ace-block-title">Structure for AI</p>
-        <p class="ace-block-desc">Pages built with self-contained paragraphs and entity-first sentences &#8212; architecture AI systems can extract directly.</p>
+        <p class="ace-block-title">Content Structure</p>
+        <p class="ace-block-desc">Pages built with a format AI systems can extract and cite directly &#8212; structured for clarity, not just ranking.</p>
       </div>
       <div class="ace-block r">
         <p class="ace-block-num">02</p>
-        <p class="ace-block-title">Knowledge Graph</p>
-        <p class="ace-block-desc">Every page defines who you are, what you do, and where you operate &#8212; connecting your business to AI knowledge graphs.</p>
+        <p class="ace-block-title">Entity Authority</p>
+        <p class="ace-block-desc">Every page establishes who you are, what you do, and where you operate &#8212; the foundation AI uses to verify and cite businesses.</p>
       </div>
       <div class="ace-block r">
         <p class="ace-block-num">03</p>
-        <p class="ace-block-title">Extraction Optimization</p>
-        <p class="ace-block-desc">JSON-LD schema signals entity type, service scope, and geographic authority to every AI and search system that processes the page.</p>
+        <p class="ace-block-title">Machine-Readable Signals</p>
+        <p class="ace-block-desc">Structured signals that communicate your service scope and geographic authority to every AI and search system that processes your site.</p>
       </div>
       <div class="ace-block r">
         <p class="ace-block-num">04</p>
         <p class="ace-block-title">AI Guidance Layer</p>
-        <p class="ace-block-desc">An llms.txt file instructs AI crawlers on your site&#8217;s authority topics &#8212; a direct signal layer standard SEO doesn&#8217;t address.</p>
+        <p class="ace-block-desc">A direct instruction layer that tells AI systems what your site is authoritative about &#8212; not available from standard search optimization.</p>
       </div>
       <div class="ace-block r">
         <p class="ace-block-num">05</p>
         <p class="ace-block-title">Citation Positioning</p>
-        <p class="ace-block-desc">Structured internal link graphs create topical clusters that AI systems use to establish authority and cross-reference your coverage.</p>
+        <p class="ace-block-desc">A connected content structure that creates topical authority &#8212; the pattern AI systems use to select which sources to cite.</p>
       </div>
     </div>
     <div class="ace-cta">
@@ -4063,133 +4094,132 @@ body::before{
   </div>
   <div class="offer-intro r">
     <div>
-      <p class="s-eye">Market Access Plans</p>
+      <p class="s-eye">Pricing</p>
       <h2 class="s-h offer-hed-split">
-        <span>Structured access by coverage depth —</span>
-        <em>not generic packages.</em>
+        <span>Start with a scan.</span>
+        <em>Scale when you're ready.</em>
       </h2>
     </div>
     <div class="offer-panel">
-
-      <!-- A. SCARCITY -->
-      <div class="offer-scarcity">
-        <p class="offer-scarcity-main">Capacity is selective. Access is guided.</p>
-        <p class="offer-scarcity-sub">Market position is confirmed before activation.</p>
-      </div>
-
-      <!-- B. VALUE -->
-      <div class="offer-value">
-        <span class="offer-value-price">Annual engagements range from $36K&ndash;$60K+.</span>
-        <span class="offer-value-inline">Position.&ensp;Coverage.&ensp;Performance.</span>
-        <span class="offer-value-media">Paid media and ad management are separate.</span>
-      </div>
-
-      <!-- C. FINAL POSITIONING -->
       <div class="offer-positioning">
-        <p class="offer-positioning-bottom">Not a deliverable.<br>A position that is actively held.</p>
+        <p class="offer-positioning-bottom">Every level reveals more &mdash; from a quick readiness check to full market infrastructure.</p>
       </div>
-
     </div>
   </div>
 
   <div class="offer-guide r">
-    <p class="offer-guide-line">Select the level that matches your goal.</p>
-    <p style="font-size:.82rem;color:rgba(168,168,160,.52);text-align:center;margin-top:10px;letter-spacing:.02em">Access begins with onboarding. We review your market, confirm availability, and activate your system with you.</p>
+    <p class="offer-guide-line">Choose where to start.</p>
+    <p style="font-size:.82rem;color:rgba(168,168,160,.52);text-align:center;margin-top:10px;letter-spacing:.02em">Each tier builds on the last. Upgrade any time &mdash; your data carries forward.</p>
   </div>
 
-  <div class="tier-grid-3" id="tierGrid">
+  <div class="tier-grid-4" id="tierGrid">
 
-    <div class="tier starter">
-      <span class="tier-flag">Market Launch Access</span>
-      <h3 class="tier-name">Launch</h3>
-      <p class="tier-position">Structured entry into your market — foundation coverage, initial build, and a position to grow from.</p>
+    {{-- TIER 1 — Quick Scan --}}
+    <div class="tier scan-tier">
+      <span class="tier-flag">Entry</span>
+      <h3 class="tier-name">Quick Scan</h3>
+      <div class="tier-price"><sup>$</sup>2</div>
+      <p class="tier-position">Instant AI citation readiness score. See where you stand in seconds.</p>
       <ul class="tier-features">
         <li>
-          <svg fill="none" stroke="currentColor" stroke-width="1.4" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064"/></svg>
-          Core services and primary city coverage
-        </li>
-        <li>
-          <svg fill="none" stroke="currentColor" stroke-width="1.4" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
-          Structured 4-month foundation build
-        </li>
-        <li>
           <svg fill="none" stroke="currentColor" stroke-width="1.4" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
-          AI signals, schema, and search infrastructure
+          0&ndash;100 AI citation score
         </li>
         <li>
           <svg fill="none" stroke="currentColor" stroke-width="1.4" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/></svg>
-          Upgradeable as your market demands grow
+          Limited diagnostic signals
+        </li>
+        <li>
+          <svg fill="none" stroke="currentColor" stroke-width="1.4" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+          Sent to your inbox instantly
         </li>
       </ul>
-      <div class="tier-commitment">Standard 4-month build. Foundation licensing maintained thereafter.</div>
-      <div class="tier-gated">
-        <span class="tier-gated-icon">◈</span>
-        <span><strong>Access reviewed individually.</strong> Apply below to confirm availability.</span>
-      </div>
-      <a href="{{ route('onboarding.start', ['tier' => 'launch']) }}" class="tier-cta">Start Launch Setup</a>
-      <button class="tier-book" onclick="window._bkPending={id:{{ $consultTypes->get('discovery')?->id ?? 1 }},duration:{{ $consultTypes->get('discovery')?->duration_minutes ?? 15 }},name:{{ json_encode($consultTypes->get('discovery')?->name ?? 'Free Discovery Call') }},isFree:{{ ($consultTypes->get('discovery')?->is_free ?? true) ? 'true' : 'false' }}};window.dispatchEvent(new CustomEvent('open-booking',{detail:window._bkPending}));if(typeof gtag==='function')gtag('event','cta_click',{cta_location:'pricing_section',cta_label:'book_discovery_call'});">Book a Discovery Call</button>
+      <a href="{{ route('quick-scan.show') }}" class="tier-cta">Run $2 Scan</a>
     </div>
 
+    {{-- TIER 2 — Full Report --}}
+    <div class="tier report-tier">
+      <span class="tier-flag">Diagnostic</span>
+      <h3 class="tier-name">Full Report</h3>
+      <div class="tier-price"><sup>$</sup>79<sub>&ndash;$99</sub></div>
+      <p class="tier-position">Complete diagnostic breakdown with category-level analysis and prioritized insights.</p>
+      <ul class="tier-features">
+        <li>
+          <svg fill="none" stroke="currentColor" stroke-width="1.4" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
+          Full category breakdown
+        </li>
+        <li>
+          <svg fill="none" stroke="currentColor" stroke-width="1.4" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/></svg>
+          Expansion signals revealed
+        </li>
+        <li>
+          <svg fill="none" stroke="currentColor" stroke-width="1.4" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
+          Prioritized insights
+        </li>
+      </ul>
+      <a href="{{ route('onboarding.start') }}?plan=full-report" class="tier-cta">Unlock Full Report</a>
+    </div>
+
+    {{-- TIER 3 — Optimization Plan --}}
     <div class="tier focal">
-      <span class="tier-flag">Market Expansion Access</span>
-      <h3 class="tier-name">Expansion</h3>
-      <p class="tier-position">The most common serious-growth path — broader coverage, active reinforcement, continuous rollout.</p>
+      <span class="tier-flag">Optimization</span>
+      <h3 class="tier-name">Optimization Plan</h3>
+      <div class="tier-price"><sup>$</sup>249<sub>&ndash;$689</sub></div>
+      <p class="tier-position">Structured roadmap with deeper analysis and a clear path to improved AI citation confidence.</p>
       <ul class="tier-features">
         <li>
-          <svg fill="none" stroke="currentColor" stroke-width="1.4" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
-          <strong>Deeper service and city coverage</strong> — more surface area, more reach
+          <svg fill="none" stroke="currentColor" stroke-width="1.4" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
+          <strong>Structured optimization roadmap</strong>
         </li>
         <li>
           <svg fill="none" stroke="currentColor" stroke-width="1.4" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064"/></svg>
-          Continuous rollout across your active market
-        </li>
-        <li>
-          <svg fill="none" stroke="currentColor" stroke-width="1.4" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
-          <strong>Competitive reinforcement</strong> — active position maintained monthly
+          <strong>Deeper structural analysis</strong>
         </li>
         <li>
           <svg fill="none" stroke="currentColor" stroke-width="1.4" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/></svg>
-          Performance tracking and ongoing signal optimization
+          Priority-ordered action items
+        </li>
+        <li>
+          <svg fill="none" stroke="currentColor" stroke-width="1.4" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
+          Content structure gaps identified
         </li>
       </ul>
-      <div class="tier-price"><sup>$</sup>2,995<sub>/mo</sub></div>
-      <div class="tier-commitment">Structured 4-month build. Active licensing maintains coverage and reinforcement.</div>
-      <a href="{{ route('onboarding.start', ['tier' => 'expansion']) }}" class="tier-cta">Start Expansion Planning</a>
-      <button class="tier-book" onclick="window._bkPending={id:{{ $consultTypes->get('strategy')?->id ?? 2 }},duration:{{ $consultTypes->get('strategy')?->duration_minutes ?? 30 }},name:{{ json_encode($consultTypes->get('strategy')?->name ?? 'Strategy Call') }},isFree:{{ ($consultTypes->get('strategy')?->is_free ?? false) ? 'true' : 'false' }}};window.dispatchEvent(new CustomEvent('open-booking',{detail:window._bkPending}));if(typeof gtag==='function')gtag('event','cta_click',{cta_location:'pricing_section',cta_label:'book_strategy_call'});">Book a Strategy Call</button>
+      <a href="{{ route('onboarding.start') }}?plan=optimization" class="tier-cta">Get Optimization Plan</a>
     </div>
 
+    {{-- TIER 4 — Full System --}}
     <div class="tier prime">
-      <span class="tier-flag">Market Dominance Access</span>
-      <h3 class="tier-name">Dominance</h3>
-      <p class="tier-position">The fastest, deepest option — for businesses that want maximum coverage, priority speed, and full market depth.</p>
+      <span class="tier-flag">Full Infrastructure</span>
+      <h3 class="tier-name">Full System</h3>
+      <div class="tier-price"><sup>$</sup>4,799<sub>+</sub></div>
+      <p class="tier-position">Complete infrastructure and execution — your entire market covered, structured, and actively maintained.</p>
       <ul class="tier-features">
         <li>
           <svg fill="none" stroke="currentColor" stroke-width="1.4" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
-          <strong>Maximum coverage depth</strong> — broadest service and city matrix available
+          <strong>Full market infrastructure</strong>
         </li>
         <li>
           <svg fill="none" stroke="currentColor" stroke-width="1.4" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064"/></svg>
-          <strong>Priority deployment</strong> — faster build, faster market presence
+          <strong>Complete execution</strong> &mdash; built and deployed for you
         </li>
         <li>
           <svg fill="none" stroke="currentColor" stroke-width="1.4" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/></svg>
-          Advanced signal reinforcement — strongest ongoing position maintenance
+          Ongoing position maintenance and reinforcement
         </li>
         <li>
           <svg fill="none" stroke="currentColor" stroke-width="1.4" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>
-          Strategic oversight across your full coverage footprint
+          Strategic oversight across your full coverage
         </li>
       </ul>
-      <div class="tier-price"><sup>$</sup>4,799<sub>/mo</sub></div>
-      <div class="tier-commitment">Priority processing. Structured 4-month build. Maximum ongoing reinforcement.</div>
-      <a href="{{ route('onboarding.start', ['tier' => 'dominance']) }}" class="tier-cta">Review Dominance Setup</a>
-      <button class="tier-book" onclick="window._bkPending={id:{{ $consultTypes->get('agency-review')?->id ?? $consultTypes->get('agency')?->id ?? 3 }},duration:{{ $consultTypes->get('agency-review')?->duration_minutes ?? $consultTypes->get('agency')?->duration_minutes ?? 60 }},name:{{ json_encode($consultTypes->get('agency-review')?->name ?? $consultTypes->get('agency')?->name ?? 'Agency Licence Review') }},isFree:{{ ($consultTypes->get('agency-review')?->is_free ?? $consultTypes->get('agency')?->is_free ?? false) ? 'true' : 'false' }}};window.dispatchEvent(new CustomEvent('open-booking',{detail:window._bkPending}));if(typeof gtag==='function')gtag('event','cta_click',{cta_location:'pricing_section',cta_label:'book_agency_review'});">Book a Market Review</button>
+      <div class="tier-commitment">Structured 4-month build. Active coverage maintained thereafter.</div>
+      <a href="{{ route('onboarding.start', ['tier' => 'dominance']) }}" class="tier-cta">Review Full System</a>
+      <button class="tier-book" onclick="window._bkPending={id:{{ $consultTypes->get('strategy')?->id ?? 2 }},duration:{{ $consultTypes->get('strategy')?->duration_minutes ?? 30 }},name:{{ json_encode($consultTypes->get('strategy')?->name ?? 'Strategy Call') }},isFree:{{ ($consultTypes->get('strategy')?->is_free ?? false) ? 'true' : 'false' }}};window.dispatchEvent(new CustomEvent('open-booking',{detail:window._bkPending}));if(typeof gtag==='function')gtag('event','cta_click',{cta_location:'pricing_section',cta_label:'book_strategy_call'});">Book a Strategy Call</button>
     </div>
 
   </div>
 
-  <p style="text-align:center;font-size:.82rem;color:rgba(168,168,160,.48);letter-spacing:.03em;padding:12px 0 2px;position:relative;z-index:2;font-style:italic">Most businesses begin with Expansion. Dominance is used when speed and coverage matter most.</p>
-  <p style="text-align:center;font-size:.74rem;color:rgba(168,168,160,.28);letter-spacing:.04em;padding:4px 0 14px;position:relative;z-index:2">Applying selects your tier — not a payment. We review your market, confirm availability, and guide activation personally.<br><em>Coverage builds continuously — strengthening your domain across your full market footprint under an active agreement.</em></p>
+  <p style="text-align:center;font-size:.82rem;color:rgba(168,168,160,.48);letter-spacing:.03em;padding:12px 0 2px;position:relative;z-index:2;font-style:italic">Most businesses start with the $2 scan. Upgrade when you&rsquo;re ready.</p>
+  <p style="text-align:center;font-size:.74rem;color:rgba(168,168,160,.28);letter-spacing:.04em;padding:4px 0 14px;position:relative;z-index:2">Your scan data carries forward to every tier. No wasted steps.<br><em>$2 &rarr; $99 &rarr; $249 &rarr; $4,799+</em></p>
 
 </section>
 
@@ -4251,8 +4281,8 @@ body::before{
     <p class="va-main" style="margin-top:44px;margin-bottom:24px;font-size:clamp(1.3rem,2.1vw,1.7rem);letter-spacing:-.02em">This is how position is taken &#8212; before anyone else realizes it&#8217;s happening.</p>
     <p class="va-sub" style="margin-bottom:44px;opacity:.48">Most markets aren&#8217;t won by better businesses.<br>They&#8217;re won by the ones that get cited first.</p>
     <div class="va-act">
-      <a href="/book" class="btn-primary">Book a Strategy Session</a>
-      <a href="#how" class="btn-ghost">See How It Works</a>
+      <a href="{{ route('quick-scan.show') }}" class="btn-primary">Run $2 Scan</a>
+      <a href="#offer" class="btn-ghost">View Pricing</a>
     </div>
   </div>
 </div>
@@ -4335,7 +4365,7 @@ body::before{
     <div class="ss-item">
       {{-- schema CPU grid: structured data / technical SEO --}}
       <svg class="ss-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="4" width="16" height="16" rx="2"/><rect x="9" y="9" width="6" height="6"/><path d="M9 1v3M15 1v3M9 20v3M15 20v3M1 9h3M1 15h3M20 9h3M20 15h3"/></svg>
-      <span class="ss-label">Schema Markup &amp; Technical SEO</span>
+      <span class="ss-label">Structured Data &amp; Search Signals</span>
     </div>
 
     <div class="ss-item">
@@ -4376,10 +4406,10 @@ body::before{
 <!-- ════════════ PRICING CTA ════════════ -->
 <div class="pricing-cta r">
   <div class="pricing-cta-actions">
-    <a href="{{ route('onboarding.start') }}" class="btn-primary">Start My Market Setup</a>
+    <a href="{{ route('quick-scan.show') }}" class="btn-primary">Run $2 Scan</a>
   </div>
-  <p class="pricing-cta-meta">No commitment &nbsp;&middot;&nbsp; Access reviewed individually &nbsp;&middot;&nbsp; Takes ~2 minutes</p>
-  <p class="pricing-cta-trust">Private onboarding &nbsp;&middot;&nbsp; Client fit reviewed individually &nbsp;&middot;&nbsp; 4-month minimum engagement</p>
+  <p class="pricing-cta-meta">No account needed &nbsp;&middot;&nbsp; Results in seconds &nbsp;&middot;&nbsp; Upgrade any time</p>
+  <p class="pricing-cta-trust">$2 &rarr; $99 &rarr; $249 &rarr; $4,799+ &nbsp;&middot;&nbsp; Your data carries forward</p>
 </div>
 
 <!-- ════════════ FINAL CLOSE ════════════ -->
@@ -4477,8 +4507,8 @@ body::before{
   <p style="font-family:'Cormorant Garamond',serif;font-size:clamp(2rem,4.5vw,3rem);font-weight:300;color:rgba(237,232,222,.97);margin-bottom:18px;line-height:1.15">Positions are being claimed.<br><em>Be the one who moves first.</em></p>
   <p style="font-size:.96rem;color:rgba(168,168,160,.82);max-width:460px;margin:0 auto 12px;line-height:1.8">Delay gives competitors time to take ground in your market.</p>
   <p style="font-family:'Cormorant Garamond',serif;font-size:1.05rem;font-style:italic;color:rgba(237,232,222,.46);margin-bottom:32px">First movers hold the ground.</p>
-  <a href="{{ route('onboarding.start') }}" class="btn-primary">Turn your content into AI answers</a>
-  <p style="font-size:.68rem;letter-spacing:.14em;text-transform:uppercase;color:rgba(200,168,75,.62);margin-top:16px;font-weight:400">Territories narrow as engagements are secured &nbsp;&middot;&nbsp; Access reviewed individually</p>
+  <a href="{{ route('quick-scan.show') }}" class="btn-primary">Check your AI readiness &mdash; $2</a>
+  <p style="font-size:.68rem;letter-spacing:.14em;text-transform:uppercase;color:rgba(200,168,75,.62);margin-top:16px;font-weight:400">Instant results &nbsp;&middot;&nbsp; Upgrade when you&rsquo;re ready</p>
 </section>
 
 <!-- ════════════ CONTACT ════════════ -->
@@ -4588,8 +4618,8 @@ body::before{
     <p class="fcc-micro">Expansion moves continuously. Entry is guided.</p>
     <span class="fcc-rule" aria-hidden="true"></span>
     <div class="fcc-actions">
-      <a href="{{ route('onboarding.start') }}" class="fcc-primary" onclick="if(typeof gtag==='function')gtag('event','cta_click',{cta_location:'final_close',cta_label:'start_market_setup'});">Start My Market Setup</a>
-      <a href="{{ route('how-it-works') }}" class="fcc-secondary">See how it works</a>
+      <a href="{{ route('quick-scan.show') }}" class="fcc-primary" onclick="if(typeof gtag==='function')gtag('event','cta_click',{cta_location:'final_close',cta_label:'run_scan'});">Run $2 Scan</a>
+      <a href="#offer" class="fcc-secondary">View Pricing</a>
     </div>
     <p class="fcc-reassure">Guided entry.&ensp;Structured rollout.&ensp;Full support.</p>
     <p class="fcc-wait">Most businesses wait.<br>Some position early.<br><em>A few own their market.</em></p>
@@ -4599,8 +4629,8 @@ body::before{
 <!-- ════════════ STICKY MOBILE CTA (mobile only — hidden on desktop via CSS) ════════════ -->
 <div id="mobStickyCta" class="mob-sticky-cta" role="complementary" aria-label="Quick access — assess market availability">
   <div class="msc-inner">
-    <a href="{{ route('onboarding.start') }}" class="msc-primary">Check My Market</a>
-    <a href="/book" class="msc-secondary">Book a Call</a>
+    <a href="{{ route('quick-scan.show') }}" class="msc-primary">Run $2 Scan</a>
+    <a href="#offer" class="msc-secondary">Pricing</a>
   </div>
 </div>
 
@@ -4787,11 +4817,11 @@ body::before{
     var el = document.getElementById('heroSeq');
     if(!el) return;
     var headlines = [
-      'Be the Answer<br>AI Returns',
-      'Be the Answer Google Returns.<br>Be the Answer AI Uses.',
-      'Works with Your<br>Existing Site',
-      'Every Service.<br>Every City. Cited.',
-      'Structure That<br>Gets You Cited'
+      'Will AI Cite<br>Your Website?',
+      'Is Your Site<br>AI-Ready?',
+      'Would AI<br>Recommend You?',
+      'Are You Visible<br>to AI Search?',
+      'Check Your<br>AI Readiness'
     ];
     var current = 0;
     var FADE  = 560;  // ms — must match CSS transition duration
