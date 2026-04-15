@@ -27,6 +27,8 @@ class BookingResource extends Resource
 
     protected static string|\UnitEnum|null $navigationGroup = 'Operations';
 
+    protected static ?string $slug = 'booking-records';
+
     protected static ?int $navigationSort = 3;
 
     // Navigation handled by manual NavigationItem in AdminPanelProvider

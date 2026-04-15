@@ -14,6 +14,11 @@ REPO_DIR="$(cd "$(dirname "$0")/.." && pwd)"
 
 echo "═══ SEOAIco Deploy → ${SERVER_IP} ═══"
 
+# ── 0. Build frontend assets locally ──
+echo "→ Building frontend assets..."
+cd "${REPO_DIR}"
+npm run build 2>&1 | tail -5
+
 # ── 1. Sync code ──
 echo "→ Syncing code to server..."
 rsync -azP --delete \
