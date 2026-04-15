@@ -78,7 +78,7 @@ class LeadResource extends Resource
                 TextColumn::make('payment_status')
                     ->label('Payment')
                     ->badge()
-                    ->color(fn (?string $state): string => match ($state) {
+                    ->color(fn(?string $state): string => match ($state) {
                         'paid' => 'success',
                         'free' => 'info',
                         default => 'gray',
@@ -89,30 +89,30 @@ class LeadResource extends Resource
                     ->label('Stage')
                     ->badge()
                     ->sortable()
-                    ->color(fn (?string $state): string => match ($state) {
-                        Lead::STAGE_ACTIVE               => 'success',
-                        Lead::STAGE_APPROVED             => 'success',
+                    ->color(fn(?string $state): string => match ($state) {
+                        Lead::STAGE_ACTIVE => 'success',
+                        Lead::STAGE_APPROVED => 'success',
                         Lead::STAGE_ONBOARDING_SUBMITTED => 'info',
-                        Lead::STAGE_PAID                 => 'warning',
-                        Lead::STAGE_BOOKED               => 'gray',
-                        Lead::STAGE_REJECTED             => 'danger',
-                        Lead::STAGE_LOST                 => 'danger',
-                        default                          => 'gray',
+                        Lead::STAGE_PAID => 'warning',
+                        Lead::STAGE_BOOKED => 'gray',
+                        Lead::STAGE_REJECTED => 'danger',
+                        Lead::STAGE_LOST => 'danger',
+                        default => 'gray',
                     })
-                    ->formatStateUsing(fn (?string $state) => match ($state) {
+                    ->formatStateUsing(fn(?string $state) => match ($state) {
                         Lead::STAGE_ONBOARDING_SUBMITTED => 'Onboarding',
-                        default                          => ucwords(str_replace('_', ' ', $state ?? 'new')),
+                        default => ucwords(str_replace('_', ' ', $state ?? 'new')),
                     }),
 
                 TextColumn::make('onboarding_status')
                     ->label('Onboarding')
                     ->badge()
                     ->sortable()
-                    ->color(fn (string $state): string => match ($state) {
-                        'approved'  => 'success',
+                    ->color(fn(string $state): string => match ($state) {
+                        'approved' => 'success',
                         'submitted' => 'info',
-                        'rejected'  => 'danger',
-                        default     => 'gray',
+                        'rejected' => 'danger',
+                        default => 'gray',
                     }),
 
                 TextColumn::make('created_at')
@@ -124,10 +124,10 @@ class LeadResource extends Resource
                     ->label('Grade')
                     ->badge()
                     ->sortable()
-                    ->color(fn (?string $state): string => match ($state) {
-                        'A'     => 'success',
-                        'B'     => 'info',
-                        'C'     => 'warning',
+                    ->color(fn(?string $state): string => match ($state) {
+                        'A' => 'success',
+                        'B' => 'info',
+                        'C' => 'warning',
                         default => 'gray',
                     }),
 
@@ -140,12 +140,12 @@ class LeadResource extends Resource
                     ->label('Type')
                     ->badge()
                     ->sortable()
-                    ->color(fn (?string $state): string => match ($state) {
+                    ->color(fn(?string $state): string => match ($state) {
                         'agency_suspect' => 'danger',
                         'multi_domain' => 'warning',
                         default => 'gray',
                     })
-                    ->formatStateUsing(fn (?string $state): string => match ($state) {
+                    ->formatStateUsing(fn(?string $state): string => match ($state) {
                         'agency_suspect' => 'Agency',
                         'multi_domain' => 'Multi-Domain',
                         default => ucfirst($state ?? 'individual'),
@@ -155,7 +155,7 @@ class LeadResource extends Resource
                     ->label('Domains')
                     ->sortable()
                     ->badge()
-                    ->color(fn (?int $state): string => match (true) {
+                    ->color(fn(?int $state): string => match (true) {
                         $state >= 5 => 'danger',
                         $state >= 3 => 'warning',
                         default => 'gray',
@@ -171,22 +171,22 @@ class LeadResource extends Resource
                 SelectFilter::make('lifecycle_stage')
                     ->label('Pipeline Stage')
                     ->options([
-                        Lead::STAGE_NEW                  => 'New',
-                        Lead::STAGE_BOOKED               => 'Booked',
-                        Lead::STAGE_PAID                 => 'Paid',
+                        Lead::STAGE_NEW => 'New',
+                        Lead::STAGE_BOOKED => 'Booked',
+                        Lead::STAGE_PAID => 'Paid',
                         Lead::STAGE_ONBOARDING_SUBMITTED => 'Onboarding Submitted',
-                        Lead::STAGE_APPROVED             => 'Approved',
-                        Lead::STAGE_ACTIVE               => 'Active',
-                        Lead::STAGE_REJECTED             => 'Rejected',
-                        Lead::STAGE_LOST                 => 'Lost',
+                        Lead::STAGE_APPROVED => 'Approved',
+                        Lead::STAGE_ACTIVE => 'Active',
+                        Lead::STAGE_REJECTED => 'Rejected',
+                        Lead::STAGE_LOST => 'Lost',
                     ]),
 
                 SelectFilter::make('onboarding_status')
                     ->options([
-                        'pending'   => 'Pending',
+                        'pending' => 'Pending',
                         'submitted' => 'Submitted',
-                        'approved'  => 'Approved',
-                        'rejected'  => 'Rejected',
+                        'approved' => 'Approved',
+                        'rejected' => 'Rejected',
                     ]),
 
                 SelectFilter::make('payment_status')
@@ -203,14 +203,14 @@ class LeadResource extends Resource
                         'agency_suspect' => 'Agency Suspect',
                     ]),
             ])
-            ->recordUrl(fn (Lead $r) => static::getUrl('view', ['record' => $r]));
+            ->recordUrl(fn(Lead $r) => static::getUrl('view', ['record' => $r]));
     }
 
     public static function getPages(): array
     {
         return [
             'index' => ListLeads::route('/'),
-            'view'  => ViewLead::route('/{record}'),
+            'view' => ViewLead::route('/{record}'),
         ];
     }
 }

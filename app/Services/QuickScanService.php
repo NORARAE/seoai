@@ -135,10 +135,14 @@ class QuickScanService
         $block = function (string $reason) use ($url) {
             Log::warning("QuickScanService: SSRF blocked — {$reason}", ['url' => $url]);
             return [
-                'score' => 0, 'categories' => [],
+                'score' => 0,
+                'categories' => [],
                 'issues' => ['This URL resolves to a private or reserved network address and cannot be scanned.'],
-                'strengths' => [], 'fastest_fix' => 'Ensure your website is hosted on a public IP address.',
-                'raw_checks' => [], 'broken_links' => [], 'page_count' => 0,
+                'strengths' => [],
+                'fastest_fix' => 'Ensure your website is hosted on a public IP address.',
+                'raw_checks' => [],
+                'broken_links' => [],
+                'page_count' => 0,
                 'error' => "SSRF protection: {$reason}",
             ];
         };
@@ -213,7 +217,10 @@ class QuickScanService
         // Title tag (4 pts)
         $hasTitle = (bool) preg_match('/<title[^>]*>.+<\/title>/is', $html);
         $checks[] = [
-            'key' => 'title', 'passed' => $hasTitle, 'points' => $hasTitle ? 4 : 0, 'max' => 4,
+            'key' => 'title',
+            'passed' => $hasTitle,
+            'points' => $hasTitle ? 4 : 0,
+            'max' => 4,
             'label' => 'Primary Topic Signal',
             'pass' => 'Primary topic signal detected — AI systems can identify this page.',
             'fail' => 'Primary topic signal missing — AI systems cannot determine what this page covers.',
@@ -222,9 +229,12 @@ class QuickScanService
 
         // Meta description (4 pts)
         $hasDesc = (bool) preg_match('/<meta\s[^>]*name=["\']description["\'][^>]*content=["\'].+["\']/is', $html)
-                || (bool) preg_match('/<meta\s[^>]*content=["\'].+["\']\s[^>]*name=["\']description["\']/is', $html);
+            || (bool) preg_match('/<meta\s[^>]*content=["\'].+["\']\s[^>]*name=["\']description["\']/is', $html);
         $checks[] = [
-            'key' => 'meta_description', 'passed' => $hasDesc, 'points' => $hasDesc ? 4 : 0, 'max' => 4,
+            'key' => 'meta_description',
+            'passed' => $hasDesc,
+            'points' => $hasDesc ? 4 : 0,
+            'max' => 4,
             'label' => 'Page Summary Signal',
             'pass' => 'Page summary signal present — AI systems have context for this page.',
             'fail' => 'No page summary signal — AI systems have no context for this page.',
@@ -234,7 +244,10 @@ class QuickScanService
         // H1 tag (4 pts)
         $hasH1 = (bool) preg_match('/<h1[\s>]/i', $html);
         $checks[] = [
-            'key' => 'h1', 'passed' => $hasH1, 'points' => $hasH1 ? 4 : 0, 'max' => 4,
+            'key' => 'h1',
+            'passed' => $hasH1,
+            'points' => $hasH1 ? 4 : 0,
+            'max' => 4,
             'label' => 'Primary Content Marker',
             'pass' => 'Primary content marker detected — clear topic established.',
             'fail' => 'No primary content marker — the page lacks a clear topic signal.',
@@ -246,7 +259,10 @@ class QuickScanService
         $h2Count = count($h2s[0] ?? []);
         $hasH2s = $h2Count >= 2;
         $checks[] = [
-            'key' => 'h2_sections', 'passed' => $hasH2s, 'points' => $hasH2s ? 4 : 0, 'max' => 4,
+            'key' => 'h2_sections',
+            'passed' => $hasH2s,
+            'points' => $hasH2s ? 4 : 0,
+            'max' => 4,
             'label' => 'Topic Depth Markers',
             'pass' => "Multiple topic depth markers detected ({$h2Count}) — strong structure.",
             'fail' => 'Insufficient topic depth markers — AI cannot map your content structure.',
@@ -258,7 +274,10 @@ class QuickScanService
         $wordCount = str_word_count(trim($text));
         $hasWords = $wordCount >= 300;
         $checks[] = [
-            'key' => 'word_count', 'passed' => $hasWords, 'points' => $hasWords ? 4 : 0, 'max' => 4,
+            'key' => 'word_count',
+            'passed' => $hasWords,
+            'points' => $hasWords ? 4 : 0,
+            'max' => 4,
             'label' => 'Content Substance',
             'pass' => "Sufficient content substance ({$wordCount} words) — AI systems have enough to analyze.",
             'fail' => "Insufficient content substance ({$wordCount} words) — AI systems deprioritize thin pages.",
@@ -279,7 +298,10 @@ class QuickScanService
         // JSON-LD present (10 pts)
         $hasJsonLd = str_contains($html, 'application/ld+json');
         $checks[] = [
-            'key' => 'json_ld', 'passed' => $hasJsonLd, 'points' => $hasJsonLd ? 10 : 0, 'max' => 10,
+            'key' => 'json_ld',
+            'passed' => $hasJsonLd,
+            'points' => $hasJsonLd ? 10 : 0,
+            'max' => 10,
             'label' => 'Structured Data Layer',
             'pass' => 'Structured data layer detected — AI systems can parse your business information.',
             'fail' => 'No structured data layer — AI systems cannot identify your business type or services.',
@@ -289,7 +311,10 @@ class QuickScanService
         // Has @type (5 pts)
         $hasType = $hasJsonLd && str_contains($html, '"@type"');
         $checks[] = [
-            'key' => 'schema_type', 'passed' => $hasType, 'points' => $hasType ? 5 : 0, 'max' => 5,
+            'key' => 'schema_type',
+            'passed' => $hasType,
+            'points' => $hasType ? 5 : 0,
+            'max' => 5,
             'label' => 'Entity Type Declaration',
             'pass' => 'Entity type declaration found — your business type is machine-readable.',
             'fail' => 'No entity type declaration — AI cannot classify your business.',
@@ -297,9 +322,20 @@ class QuickScanService
         ];
 
         // Business entity type (5 pts)
-        $entityTypes = ['Organization', 'LocalBusiness', 'ProfessionalService', 'MedicalBusiness',
-            'LegalService', 'FinancialService', 'RealEstateAgent', 'HomeAndConstructionBusiness',
-            'Store', 'Restaurant', 'AutoRepair', 'Service'];
+        $entityTypes = [
+            'Organization',
+            'LocalBusiness',
+            'ProfessionalService',
+            'MedicalBusiness',
+            'LegalService',
+            'FinancialService',
+            'RealEstateAgent',
+            'HomeAndConstructionBusiness',
+            'Store',
+            'Restaurant',
+            'AutoRepair',
+            'Service'
+        ];
         $hasEntity = false;
         foreach ($entityTypes as $type) {
             if (str_contains($html, $type)) {
@@ -308,7 +344,10 @@ class QuickScanService
             }
         }
         $checks[] = [
-            'key' => 'entity_schema', 'passed' => $hasEntity, 'points' => $hasEntity ? 5 : 0, 'max' => 5,
+            'key' => 'entity_schema',
+            'passed' => $hasEntity,
+            'points' => $hasEntity ? 5 : 0,
+            'max' => 5,
             'label' => 'Business Category Signal',
             'pass' => 'Business category signal detected — AI can identify your industry.',
             'fail' => 'No business category signal — AI cannot determine your industry.',
@@ -321,7 +360,10 @@ class QuickScanService
         $hasMicrodata = (bool) preg_match('/itemtype=["\']https?:\/\/schema\.org\//i', $html);
         $richSchema = $typeCount >= 2 || ($hasJsonLd && $hasMicrodata);
         $checks[] = [
-            'key' => 'rich_schema', 'passed' => $richSchema, 'points' => $richSchema ? 5 : 0, 'max' => 5,
+            'key' => 'rich_schema',
+            'passed' => $richSchema,
+            'points' => $richSchema ? 5 : 0,
+            'max' => 5,
             'label' => 'Data Depth Coverage',
             'pass' => 'Multiple data layers detected — strong machine-readable foundation.',
             'fail' => 'Limited data depth — expand with additional machine-readable layers for your services.',
@@ -342,9 +384,12 @@ class QuickScanService
 
         // Business name identifiable (5 pts)
         $hasName = (bool) preg_match('/"name"\s*:\s*"[^"]+"/i', $html)
-                || (bool) preg_match('/<h1[^>]*>[^<]+<\/h1>/i', $html);
+            || (bool) preg_match('/<h1[^>]*>[^<]+<\/h1>/i', $html);
         $checks[] = [
-            'key' => 'business_name', 'passed' => $hasName, 'points' => $hasName ? 5 : 0, 'max' => 5,
+            'key' => 'business_name',
+            'passed' => $hasName,
+            'points' => $hasName ? 5 : 0,
+            'max' => 5,
             'label' => 'Brand Identity Signal',
             'pass' => 'Brand identity signal detected — AI can reference your business by name.',
             'fail' => 'Brand identity signal missing — AI may not recognize your business by name.',
@@ -361,7 +406,10 @@ class QuickScanService
             }
         }
         $checks[] = [
-            'key' => 'services', 'passed' => $hasServices, 'points' => $hasServices ? 5 : 0, 'max' => 5,
+            'key' => 'services',
+            'passed' => $hasServices,
+            'points' => $hasServices ? 5 : 0,
+            'max' => 5,
             'label' => 'Offering Clarity',
             'pass' => 'Offering clarity detected — AI can describe what your business provides.',
             'fail' => 'No offering clarity — AI cannot describe what your business provides.',
@@ -384,7 +432,10 @@ class QuickScanService
             $hasLocation = str_contains($html, '"address"') || str_contains($html, '"areaServed"');
         }
         $checks[] = [
-            'key' => 'location', 'passed' => $hasLocation, 'points' => $hasLocation ? 5 : 0, 'max' => 5,
+            'key' => 'location',
+            'passed' => $hasLocation,
+            'points' => $hasLocation ? 5 : 0,
+            'max' => 5,
             'label' => 'Geographic Context',
             'pass' => 'Geographic context detected — AI can surface you for location-relevant queries.',
             'fail' => 'No geographic context — AI cannot associate you with a service area.',
@@ -431,15 +482,20 @@ class QuickScanService
         }
 
         $passed = $points >= 8;
-        $checks = [[
-            'key' => 'link_count', 'passed' => $passed, 'points' => $points, 'max' => 15,
-            'label' => 'Content Graph Density',
-            'pass' => "Strong content graph ({$uniqueCount} connections) — AI can traverse your site.",
-            'fail' => $uniqueCount === 0
-                ? 'No content connections found — AI cannot discover your other pages.'
-                : "Sparse content graph ({$uniqueCount} connections) — AI cannot fully map your site.",
-            'fix' => 'Connect your core pages to strengthen AI discovery of your full site.',
-        ]];
+        $checks = [
+            [
+                'key' => 'link_count',
+                'passed' => $passed,
+                'points' => $points,
+                'max' => 15,
+                'label' => 'Content Graph Density',
+                'pass' => "Strong content graph ({$uniqueCount} connections) — AI can traverse your site.",
+                'fail' => $uniqueCount === 0
+                    ? 'No content connections found — AI cannot discover your other pages.'
+                    : "Sparse content graph ({$uniqueCount} connections) — AI cannot fully map your site.",
+                'fix' => 'Connect your core pages to strengthen AI discovery of your full site.',
+            ]
+        ];
 
         return ['score' => $points, 'max' => 15, 'label' => 'Site Connectivity', 'checks' => $checks];
     }
@@ -465,7 +521,10 @@ class QuickScanService
             $hasFaq = str_contains($html, 'FAQPage');
         }
         $checks[] = [
-            'key' => 'faq', 'passed' => $hasFaq, 'points' => $hasFaq ? 5 : 0, 'max' => 5,
+            'key' => 'faq',
+            'passed' => $hasFaq,
+            'points' => $hasFaq ? 5 : 0,
+            'max' => 5,
             'label' => 'Direct Answer Content',
             'pass' => 'Direct answer content detected — AI can extract citable responses from your pages.',
             'fail' => 'No direct answer content — AI has no citable responses to extract.',
@@ -482,7 +541,10 @@ class QuickScanService
             }
         }
         $checks[] = [
-            'key' => 'definitions', 'passed' => $hasDefs, 'points' => $hasDefs ? 5 : 0, 'max' => 5,
+            'key' => 'definitions',
+            'passed' => $hasDefs,
+            'points' => $hasDefs ? 5 : 0,
+            'max' => 5,
             'label' => 'Authoritative Definitions',
             'pass' => 'Authoritative definitions detected — your site frames topics AI references.',
             'fail' => 'No authoritative definitions — AI cannot cite your site as a reference source.',
@@ -499,7 +561,10 @@ class QuickScanService
         }
         $hasLists = $listCount >= 1;
         $checks[] = [
-            'key' => 'structured_lists', 'passed' => $hasLists, 'points' => $hasLists ? 5 : 0, 'max' => 5,
+            'key' => 'structured_lists',
+            'passed' => $hasLists,
+            'points' => $hasLists ? 5 : 0,
+            'max' => 5,
             'label' => 'Organized Content Blocks',
             'pass' => 'Organized content blocks detected — AI can extract structured information.',
             'fail' => 'No organized content blocks — structured information improves AI extractability.',
@@ -520,7 +585,10 @@ class QuickScanService
         // HTTPS (3 pts)
         $isHttps = str_starts_with($url, 'https://');
         $checks[] = [
-            'key' => 'https', 'passed' => $isHttps, 'points' => $isHttps ? 3 : 0, 'max' => 3,
+            'key' => 'https',
+            'passed' => $isHttps,
+            'points' => $isHttps ? 3 : 0,
+            'max' => 3,
             'label' => 'Secure Connection',
             'pass' => 'Secure connection verified — trust signal established.',
             'fail' => 'No secure connection — trust signals reduced for AI and users.',
@@ -530,7 +598,10 @@ class QuickScanService
         // Response time < 3s (3 pts)
         $fast = $responseTime < 3.0;
         $checks[] = [
-            'key' => 'response_time', 'passed' => $fast, 'points' => $fast ? 3 : 0, 'max' => 3,
+            'key' => 'response_time',
+            'passed' => $fast,
+            'points' => $fast ? 3 : 0,
+            'max' => 3,
             'label' => 'Access Speed',
             'pass' => "Fast access ({$responseTime}s) — AI systems can efficiently reach your content.",
             'fail' => "Slow access ({$responseTime}s) — AI systems may deprioritize your site.",
@@ -541,7 +612,10 @@ class QuickScanService
         $hasNoindex = (bool) preg_match('/<meta[^>]*name=["\']robots["\'][^>]*content=["\'][^"\']*noindex/i', $html);
         $indexable = !$hasNoindex;
         $checks[] = [
-            'key' => 'indexable', 'passed' => $indexable, 'points' => $indexable ? 2 : 0, 'max' => 2,
+            'key' => 'indexable',
+            'passed' => $indexable,
+            'points' => $indexable ? 2 : 0,
+            'max' => 2,
             'label' => 'Discoverability',
             'pass' => 'Page is discoverable — no access restrictions detected.',
             'fail' => 'Page is blocked from discovery — AI systems will skip this page entirely.',
@@ -551,7 +625,10 @@ class QuickScanService
         // Canonical URL (2 pts)
         $hasCanonical = (bool) preg_match('/<link[^>]*rel=["\']canonical["\']/i', $html);
         $checks[] = [
-            'key' => 'canonical', 'passed' => $hasCanonical, 'points' => $hasCanonical ? 2 : 0, 'max' => 2,
+            'key' => 'canonical',
+            'passed' => $hasCanonical,
+            'points' => $hasCanonical ? 2 : 0,
+            'max' => 2,
             'label' => 'Authority Consolidation',
             'pass' => 'Authority consolidation set — prevents duplicate content dilution.',
             'fail' => 'No authority consolidation — duplicate content may dilute your citation strength.',

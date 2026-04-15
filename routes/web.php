@@ -209,9 +209,9 @@ Route::middleware(['auth', EnsureUserIsApproved::class])->prefix('admin/bookings
 // PREVIEW LAYER - Public-facing location pages (with auth check for drafts)
 // ============================================================================
 
-Route::get('/seo/dashboard', [SeoController::class, 'dashboard'])
-    ->middleware('auth')
-    ->name('seo.dashboard');
+// Route::get('/seo/dashboard', [SeoController::class, 'dashboard'])
+//     ->middleware('auth')
+//     ->name('seo.dashboard');
 
 Route::get('/preview/{slug}', [LocationPagePreviewController::class, 'show'])
     ->name('location-pages.preview')

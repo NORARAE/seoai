@@ -117,9 +117,12 @@ class QuickScanResource extends Resource
                         $score = $record->score ?? 100;
                         $gap = 100 - $score;
                         $scans = $record->domain_scan_count ?? 1;
-                        if ($gap >= 50 && $scans >= 2) return 'Hot';
-                        if ($gap >= 30) return 'High';
-                        if ($gap >= 15) return 'Medium';
+                        if ($gap >= 50 && $scans >= 2)
+                            return 'Hot';
+                        if ($gap >= 30)
+                            return 'High';
+                        if ($gap >= 15)
+                            return 'Medium';
                         return 'Low';
                     })
                     ->color(fn(string $state): string => match ($state) {

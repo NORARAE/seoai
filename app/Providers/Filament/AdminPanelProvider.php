@@ -136,7 +136,7 @@ class AdminPanelProvider extends PanelProvider
                     ->recoverable()
                     ->brandName('SEOAIco'),
             ],
-            isRequired: fn () => auth()->user()?->isPrivilegedStaff() ?? false,
+            isRequired: fn() => auth()->user()?->isPrivilegedStaff() ?? false,
         );
 
         return $panel
