@@ -8,6 +8,7 @@ use App\Filament\Pages\Auth\RequestPasswordReset;
 use App\Filament\Pages\Auth\ResetPassword;
 use App\Filament\Pages\SeoGrowthCommandCenter;
 use App\Http\Middleware\FrontendDevAccessMiddleware;
+use Filament\Auth\MultiFactor\App\AppAuthentication;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\AuthenticateSession;
 use Filament\Http\Middleware\DisableBladeIconComponents;
@@ -128,28 +129,15 @@ class AdminPanelProvider extends PanelProvider
             $panel->viteTheme('resources/css/filament/admin/theme.css');
         }
 
-        // ─────────────────────────────────────────────────────────────────────
-        // MFA / TOTP — Phase 2 implementation plan
-        // ─────────────────────────────────────────────────────────────────────
-        // Filament v5 has built-in TOTP support. When ready to enable:
-        //
-        //   use Filament\Auth\MFA\TotpAuthenticationProvider;
-        //   $panel->multiFactorAuthentication([
-        //       TotpAuthenticationProvider::make()
-        //           ->issuer(config('app.name'))
-        //           ->requiresConfirmation()
-        //           // Optional: only enforce for staff roles
-        //           // ->requiredFor(fn(User $u) => $u->isPrivilegedStaff()),
-        //   ]);
-        //
-        // This adds:
-        //   - QR code enrollment in the user profile panel
-        //   - TOTP challenge on next login after enrollment
-        //   - Backup code generation
-        //
-        // Recommendation: require for super_admin/admin/owner; optional for all others.
-        // Google OAuth users inherit 2FA from their Google account — no extra step needed.
-        // ─────────────────────────────────────────────────────────────────────
+        // MFA / TOTP — required for privileged staff, optional for others
+        $panel->multiFactorAuthentication(
+            providers: [
+                AppAuthentication::make()
+                    ->recoverable()
+                    ->brandName('SEOAIco'),
+            ],
+            isRequired: fn () => auth()->user()?->isPrivilegedStaff() ?? false,
+        );
 
         return $panel
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\Filament\Resources')
