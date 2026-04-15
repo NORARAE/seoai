@@ -25,9 +25,9 @@ class SiteCrawlSettingResource extends Resource
 
     protected static ?string $navigationLabel = 'Scan Settings';
 
-    protected static string|\UnitEnum|null $navigationGroup = 'Settings';
+    protected static string|\UnitEnum|null $navigationGroup = 'System';
 
-    protected static ?int $navigationSort = 4;
+    protected static ?int $navigationSort = 6;
 
     public static function canViewAny(): bool
     {

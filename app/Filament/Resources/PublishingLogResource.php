@@ -25,7 +25,9 @@ class PublishingLogResource extends Resource
 
     protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-document-text';
 
-    protected static ?int $navigationSort = 3;
+    protected static string|\UnitEnum|null $navigationGroup = 'Content';
+
+    protected static ?int $navigationSort = 8;
 
     protected static ?string $label = 'Publishing Log';
 

@@ -17,9 +17,9 @@ class HelpGuides extends Page
 
     protected static ?string $title = 'Help & Guides';
 
-    protected static string|\UnitEnum|null $navigationGroup = 'Support';
+    protected static string|\UnitEnum|null $navigationGroup = 'System';
 
-    protected static ?int $navigationSort = 1;
+    protected static ?int $navigationSort = 13;
 
     protected string $view = 'filament.pages.help-guides';
 }

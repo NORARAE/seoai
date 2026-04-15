@@ -28,7 +28,7 @@ class LicenseResource extends Resource
 
     protected static ?string $navigationLabel = 'Licenses';
 
-    protected static string|\UnitEnum|null $navigationGroup = 'Operations';
+    protected static string|\UnitEnum|null $navigationGroup = 'Revenue';
 
     protected static ?int $navigationSort = 6;
 
@@ -72,38 +72,38 @@ class LicenseResource extends Resource
                 TextColumn::make('site_url')
                     ->label('Site')
                     ->searchable()
-                    ->url(fn ($state) => $state)
+                    ->url(fn($state) => $state)
                     ->openUrlInNewTab()
                     ->limit(40),
 
                 TextColumn::make('plan')
                     ->badge()
                     ->sortable()
-                    ->color(fn (string $state): string => match ($state) {
+                    ->color(fn(string $state): string => match ($state) {
                         'agency_10k' => 'success',
-                        'agency_5k'  => 'info',
-                        default      => 'gray',
+                        'agency_5k' => 'info',
+                        default => 'gray',
                     }),
 
                 TextColumn::make('status')
                     ->badge()
                     ->sortable()
-                    ->color(fn (string $state): string => match ($state) {
-                        'active'   => 'success',
-                        'trial'    => 'info',
-                        'expired'  => 'danger',
+                    ->color(fn(string $state): string => match ($state) {
+                        'active' => 'success',
+                        'trial' => 'info',
+                        'expired' => 'danger',
                         'inactive' => 'gray',
-                        default    => 'gray',
+                        default => 'gray',
                     }),
 
                 TextColumn::make('payment_method')
                     ->label('Payment')
                     ->badge()
                     ->sortable()
-                    ->color(fn ($state): string => match ($state ?? '') {
+                    ->color(fn($state): string => match ($state ?? '') {
                         'crypto' => 'warning',
                         'stripe' => 'info',
-                        default  => 'gray',
+                        default => 'gray',
                     })
                     ->placeholder('stripe'),
 
@@ -129,14 +129,14 @@ class LicenseResource extends Resource
             ->filters([
                 SelectFilter::make('status')
                     ->options([
-                        'active'   => 'Active',
-                        'trial'    => 'Trial',
-                        'expired'  => 'Expired',
+                        'active' => 'Active',
+                        'trial' => 'Trial',
+                        'expired' => 'Expired',
                         'inactive' => 'Inactive',
                     ]),
 
                 SelectFilter::make('plan')
-                    ->options(fn () => \App\Models\License::select('plan')->distinct()->pluck('plan', 'plan')->toArray()),
+                    ->options(fn() => \App\Models\License::select('plan')->distinct()->pluck('plan', 'plan')->toArray()),
 
                 SelectFilter::make('payment_method')
                     ->label('Payment Method')
@@ -147,11 +147,11 @@ class LicenseResource extends Resource
 
                 Filter::make('crypto_only')
                     ->label('Crypto Paid Only')
-                    ->query(fn (Builder $query): Builder => $query->where('payment_method', 'crypto')),
+                    ->query(fn(Builder $query): Builder => $query->where('payment_method', 'crypto')),
 
                 Filter::make('active_only')
                     ->label('Active Only')
-                    ->query(fn (Builder $query): Builder => $query->where('status', 'active')),
+                    ->query(fn(Builder $query): Builder => $query->where('status', 'active')),
             ])
             ->actions([
                 \Filament\Actions\ViewAction::make(),
@@ -167,7 +167,7 @@ class LicenseResource extends Resource
     {
         return [
             'index' => ListLicenses::route('/'),
-            'view'  => ViewLicense::route('/{record}'),
+            'view' => ViewLicense::route('/{record}'),
         ];
     }
 }

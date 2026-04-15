@@ -23,9 +23,9 @@ class CrawlPolicyResource extends Resource
 
     protected static ?string $navigationLabel = 'Advanced Scan Rules';
 
-    protected static string|\UnitEnum|null $navigationGroup = 'Settings';
+    protected static string|\UnitEnum|null $navigationGroup = 'System';
 
-    protected static ?int $navigationSort = 20;
+    protected static ?int $navigationSort = 7;
 
     public static function canViewAny(): bool
     {

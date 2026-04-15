@@ -22,11 +22,11 @@ class VisitorActivityResource extends Resource
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedEye;
 
-    protected static ?string $navigationLabel = 'Visitor Activity';
+    protected static ?string $navigationLabel = 'Activity Log';
 
-    protected static string|\UnitEnum|null $navigationGroup = 'Operations';
+    protected static string|\UnitEnum|null $navigationGroup = 'System';
 
-    protected static ?int $navigationSort = 10;
+    protected static ?int $navigationSort = 3;
 
     public static function canCreate(): bool
     {

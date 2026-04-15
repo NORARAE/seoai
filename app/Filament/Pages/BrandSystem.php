@@ -13,9 +13,9 @@ class BrandSystem extends Page
 
     protected static ?string $title = 'Brand System';
 
-    protected static string|\UnitEnum|null $navigationGroup = 'Support';
+    protected static string|\UnitEnum|null $navigationGroup = 'System';
 
-    protected static ?int $navigationSort = 2;
+    protected static ?int $navigationSort = 5;
 
     protected string $view = 'filament.pages.brand-system';
 }

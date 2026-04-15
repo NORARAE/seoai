@@ -22,7 +22,9 @@ class BaselineSnapshotResource extends Resource
 
     protected static ?string $navigationLabel = 'Baseline Snapshots';
 
-    protected static ?int $navigationSort = 103;
+    protected static string|\UnitEnum|null $navigationGroup = 'System';
+
+    protected static ?int $navigationSort = 10;
 
     public static function table(Table $table): Table
     {

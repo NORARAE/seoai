@@ -43,9 +43,9 @@ class CoverageMap extends Page implements HasForms, HasTable
 
     protected static ?string $title = 'Coverage Intelligence Map';
 
-    protected static UnitEnum|string|null $navigationGroup = 'Intelligence';
+    protected static UnitEnum|string|null $navigationGroup = 'Scans & Discovery';
 
-    protected static ?int $navigationSort = 3;
+    protected static ?int $navigationSort = 7;
 
     public ?State $selectedState = null;
     public ?Service $selectedService = null;

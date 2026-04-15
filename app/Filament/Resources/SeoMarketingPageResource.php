@@ -32,7 +32,7 @@ class SeoMarketingPageResource extends Resource
 
     protected static string|\UnitEnum|null $navigationGroup = 'Content';
 
-    protected static ?int $navigationSort = 10;
+    protected static ?int $navigationSort = 3;
 
     protected static ?string $modelLabel = 'SEO Page';
 

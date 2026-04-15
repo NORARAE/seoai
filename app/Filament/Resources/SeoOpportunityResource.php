@@ -34,9 +34,9 @@ class SeoOpportunityResource extends Resource
 
     protected static ?string $navigationLabel = 'SEO Opportunities';
 
-    protected static string|\UnitEnum|null $navigationGroup = 'Discovery';
+    protected static string|\UnitEnum|null $navigationGroup = 'Scans & Discovery';
 
-    protected static ?int $navigationSort = 5;
+    protected static ?int $navigationSort = 6;
 
     public static function canViewAny(): bool
     {

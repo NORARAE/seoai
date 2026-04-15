@@ -22,7 +22,9 @@ class PerformanceMetricResource extends Resource
 
     protected static ?string $navigationLabel = 'Performance Metrics';
 
-    protected static ?int $navigationSort = 101;
+    protected static string|\UnitEnum|null $navigationGroup = 'System';
+
+    protected static ?int $navigationSort = 8;
 
     public static function table(Table $table): Table
     {

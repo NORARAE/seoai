@@ -22,9 +22,9 @@ class MarketingIntelligence extends Dashboard
 
     protected static ?string $title = 'Marketing Intelligence';
 
-    protected static string|\UnitEnum|null $navigationGroup = 'Operations';
+    protected static string|\UnitEnum|null $navigationGroup = 'System';
 
-    protected static ?int $navigationSort = 7;
+    protected static ?int $navigationSort = 4;
 
     public static function canAccess(): bool
     {

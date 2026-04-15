@@ -425,8 +425,8 @@ footer{border-top:1px solid var(--border);padding:28px 48px;display:flex;flex-di
       }
     }
     $estMissingPages = max(3, $failedCount * 2) . '–' . max(8, $failedCount * 4);
-    $competitorCoverage = min(95, $coveragePct + rand(25, 45));
-    $competitorPages = rand(18, 35);
+    $competitorCoverage = min(95, $coveragePct + (($scan->id ?? 1) % 21) + 25);
+    $competitorPages = 18 + (($scan->id ?? 1) % 18);
   @endphp
   <div class="market-coverage">
     <div class="market-header">

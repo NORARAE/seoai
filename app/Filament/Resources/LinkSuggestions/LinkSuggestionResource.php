@@ -23,7 +23,9 @@ class LinkSuggestionResource extends Resource
 
     protected static ?string $navigationLabel = 'Link Suggestions';
 
-    protected static ?int $navigationSort = 4;
+    protected static string|\UnitEnum|null $navigationGroup = 'Content';
+
+    protected static ?int $navigationSort = 5;
 
     public static function table(Table $table): Table
     {

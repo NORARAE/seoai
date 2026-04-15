@@ -23,7 +23,9 @@ class OptimizationRunResource extends Resource
 
     protected static ?string $navigationLabel = 'Optimization Runs';
 
-    protected static ?int $navigationSort = 102;
+    protected static string|\UnitEnum|null $navigationGroup = 'System';
+
+    protected static ?int $navigationSort = 9;
 
     public static function table(Table $table): Table
     {

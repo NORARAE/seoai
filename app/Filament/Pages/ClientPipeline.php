@@ -20,9 +20,9 @@ class ClientPipeline extends Dashboard
 
     protected static ?string $title = 'Client Pipeline';
 
-    protected static string|\UnitEnum|null $navigationGroup = 'Operations';
+    protected static string|\UnitEnum|null $navigationGroup = 'Revenue';
 
-    protected static ?int $navigationSort = 6;
+    protected static ?int $navigationSort = 4;
 
     public static function canAccess(): bool
     {

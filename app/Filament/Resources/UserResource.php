@@ -31,9 +31,9 @@ class UserResource extends Resource
 
     protected static ?string $navigationLabel = 'Users';
 
-    protected static string|\UnitEnum|null $navigationGroup = 'Access Control';
+    protected static string|\UnitEnum|null $navigationGroup = 'System';
 
-    protected static ?int $navigationSort = 10;
+    protected static ?int $navigationSort = 1;
 
     /**
      * Only SuperAdmin / Admin / AccountManager can access this resource.
@@ -81,8 +81,8 @@ class UserResource extends Resource
                 TextColumn::make('approved')
                     ->label('Access')
                     ->badge()
-                    ->formatStateUsing(fn (bool $state): string => $state ? 'Approved' : 'Pending')
-                    ->color(fn (bool $state): string => $state ? 'success' : 'warning')
+                    ->formatStateUsing(fn(bool $state): string => $state ? 'Approved' : 'Pending')
+                    ->color(fn(bool $state): string => $state ? 'success' : 'warning')
                     ->sortable(),
 
                 TextColumn::make('created_at')
@@ -100,11 +100,11 @@ class UserResource extends Resource
 
                 SelectFilter::make('role')
                     ->options([
-                        'super_admin'     => 'Super Admin',
-                        'admin'           => 'Admin',
+                        'super_admin' => 'Super Admin',
+                        'admin' => 'Admin',
                         'account_manager' => 'Account Manager',
-                        'owner'           => 'Owner',
-                        'client'          => 'Client',
+                        'owner' => 'Owner',
+                        'client' => 'Client',
                     ]),
             ])
             ->actions([
@@ -113,7 +113,7 @@ class UserResource extends Resource
                     ->label('Approve')
                     ->icon(Heroicon::OutlinedCheckCircle)
                     ->color('success')
-                    ->visible(fn (User $record): bool => ! $record->approved)
+                    ->visible(fn(User $record): bool => !$record->approved)
                     ->requiresConfirmation()
                     ->action(function (User $record): void {
                         $record->update(['approved' => true]);
@@ -124,7 +124,7 @@ class UserResource extends Resource
                     ->label('Revoke')
                     ->icon(Heroicon::OutlinedXCircle)
                     ->color('danger')
-                    ->visible(fn (User $record): bool => $record->approved && ! $record->canApproveUsers())
+                    ->visible(fn(User $record): bool => $record->approved && !$record->canApproveUsers())
                     ->requiresConfirmation()
                     ->action(function (User $record): void {
                         $record->update(['approved' => false]);
@@ -140,8 +140,9 @@ class UserResource extends Resource
                         ->icon(Heroicon::OutlinedCheckCircle)
                         ->color('success')
                         ->requiresConfirmation()
-                        ->action(fn (\Illuminate\Support\Collection $records) =>
-                            $records->each(fn (User $r) => $r->update(['approved' => true]))
+                        ->action(
+                            fn(\Illuminate\Support\Collection $records) =>
+                            $records->each(fn(User $r) => $r->update(['approved' => true]))
                         ),
 
                     DeleteBulkAction::make(),
@@ -162,11 +163,11 @@ class UserResource extends Resource
 
             \Filament\Forms\Components\Select::make('role')
                 ->options([
-                    'super_admin'     => 'Super Admin',
-                    'admin'           => 'Admin',
+                    'super_admin' => 'Super Admin',
+                    'admin' => 'Admin',
                     'account_manager' => 'Account Manager',
-                    'owner'           => 'Owner',
-                    'client'          => 'Client',
+                    'owner' => 'Owner',
+                    'client' => 'Client',
                 ])
                 ->required(),
 
@@ -174,7 +175,7 @@ class UserResource extends Resource
                 ->label('Account Approved')
                 ->helperText('Only approved users can access the client dashboard.')
                 // Prevent a non-privileged user from editing their own approval
-                ->disabled(fn () => ! auth()->user()?->canApproveUsers()),
+                ->disabled(fn() => !auth()->user()?->canApproveUsers()),
 
             \Filament\Forms\Components\Toggle::make('is_active')
                 ->label('Active'),
@@ -185,7 +186,7 @@ class UserResource extends Resource
     {
         return [
             'index' => ListUsers::route('/'),
-            'edit'  => EditUser::route('/{record}/edit'),
+            'edit' => EditUser::route('/{record}/edit'),
         ];
     }
 }

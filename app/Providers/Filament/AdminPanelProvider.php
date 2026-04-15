@@ -150,8 +150,8 @@ class AdminPanelProvider extends PanelProvider
                     ->icon('heroicon-o-calendar-days')
                     ->url('/admin/bookings')
                     ->isActiveWhen(fn() => request()->is('admin/bookings*'))
-                    ->group('CRM')
-                    ->sort(1),
+                    ->group('Revenue')
+                    ->sort(3),
             ])
             ->discoverWidgets(in: app_path('Filament/Widgets'), for: 'App\Filament\Widgets')
             ->widgets([

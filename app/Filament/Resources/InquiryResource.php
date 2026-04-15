@@ -28,9 +28,9 @@ class InquiryResource extends Resource
 
     protected static ?string $navigationLabel = 'Inquiries';
 
-    protected static string|\UnitEnum|null $navigationGroup = 'Operations';
+    protected static string|\UnitEnum|null $navigationGroup = 'Revenue';
 
-    protected static ?int $navigationSort = 5;
+    protected static ?int $navigationSort = 2;
 
     public static function canViewAny(): bool
     {
@@ -72,16 +72,16 @@ class InquiryResource extends Resource
                 TextColumn::make('email')
                     ->searchable()
                     ->sortable()
-                    ->description(fn (Inquiry $r): string => $r->email_type ? strtoupper($r->email_type) : ''),
+                    ->description(fn(Inquiry $r): string => $r->email_type ? strtoupper($r->email_type) : ''),
 
                 TextColumn::make('tier')
                     ->badge()
                     ->sortable()
-                    ->color(fn (string $state): string => match ($state) {
+                    ->color(fn(string $state): string => match ($state) {
                         'legacy' => 'warning',
-                        '10k'    => 'success',
-                        '5k'     => 'info',
-                        default  => 'gray',
+                        '10k' => 'success',
+                        '5k' => 'info',
+                        default => 'gray',
                     }),
 
                 TextColumn::make('ip_country')
@@ -93,22 +93,22 @@ class InquiryResource extends Resource
                     ->label('Risk')
                     ->badge()
                     ->sortable()
-                    ->color(fn (string $state): string => match ($state) {
-                        'high'   => 'danger',
+                    ->color(fn(string $state): string => match ($state) {
+                        'high' => 'danger',
                         'medium' => 'warning',
-                        default  => 'success',
+                        default => 'success',
                     }),
 
                 TextColumn::make('status')
                     ->badge()
                     ->sortable()
-                    ->color(fn (string $state): string => match ($state) {
-                        'new'       => 'info',
+                    ->color(fn(string $state): string => match ($state) {
+                        'new' => 'info',
                         'contacted' => 'warning',
                         'converted' => 'success',
-                        'rejected'  => 'danger',
-                        'spam'      => 'danger',
-                        default     => 'gray',
+                        'rejected' => 'danger',
+                        'spam' => 'danger',
+                        default => 'gray',
                     }),
 
                 IconColumn::make('ip_is_proxy')
@@ -128,52 +128,55 @@ class InquiryResource extends Resource
             ->filters([
                 SelectFilter::make('status')
                     ->options([
-                        'new'       => 'New',
+                        'new' => 'New',
                         'contacted' => 'Contacted',
                         'converted' => 'Converted',
-                        'rejected'  => 'Rejected',
-                        'spam'      => 'Spam',
+                        'rejected' => 'Rejected',
+                        'spam' => 'Spam',
                     ]),
 
                 SelectFilter::make('spam_risk')
                     ->label('Spam Risk')
                     ->options([
-                        'high'   => 'High',
+                        'high' => 'High',
                         'medium' => 'Medium',
-                        'low'    => 'Low',
+                        'low' => 'Low',
                     ]),
 
                 SelectFilter::make('tier')
                     ->options([
                         'starter' => 'Starter',
-                        '5k'      => '5K',
-                        '10k'     => '10K',
-                        'legacy'  => 'Legacy',
+                        '5k' => '5K',
+                        '10k' => '10K',
+                        'legacy' => 'Legacy',
                     ]),
 
                 SelectFilter::make('email_type')
                     ->label('Email Type')
                     ->options([
-                        'business'   => 'Business',
-                        'free'       => 'Free',
+                        'business' => 'Business',
+                        'free' => 'Free',
                         'disposable' => 'Disposable',
                     ]),
 
                 Filter::make('proxy_or_hosting')
                     ->label('VPN / Proxy / Hosting')
-                    ->query(fn (Builder $query): Builder =>
+                    ->query(
+                        fn(Builder $query): Builder =>
                         $query->where('ip_is_proxy', true)->orWhere('ip_is_hosting', true)
                     ),
 
                 Filter::make('honeypot')
                     ->label('Honeypot Triggered')
-                    ->query(fn (Builder $query): Builder =>
+                    ->query(
+                        fn(Builder $query): Builder =>
                         $query->where('honeypot_triggered', true)
                     ),
 
                 Filter::make('rejected')
                     ->label('Rejected Only')
-                    ->query(fn (Builder $query): Builder =>
+                    ->query(
+                        fn(Builder $query): Builder =>
                         $query->where('status', 'rejected')
                     ),
             ])
@@ -184,17 +187,17 @@ class InquiryResource extends Resource
                     ->label('Mark Contacted')
                     ->icon(Heroicon::OutlinedChatBubbleLeftRight)
                     ->color('warning')
-                    ->visible(fn (Inquiry $record): bool => $record->status === 'new')
+                    ->visible(fn(Inquiry $record): bool => $record->status === 'new')
                     ->requiresConfirmation()
-                    ->action(fn (Inquiry $record) => $record->update(['status' => 'contacted'])),
+                    ->action(fn(Inquiry $record) => $record->update(['status' => 'contacted'])),
 
                 \Filament\Actions\Action::make('mark_converted')
                     ->label('Mark Converted')
                     ->icon(Heroicon::OutlinedCheckBadge)
                     ->color('success')
-                    ->visible(fn (Inquiry $record): bool => in_array($record->status, ['new', 'contacted']))
+                    ->visible(fn(Inquiry $record): bool => in_array($record->status, ['new', 'contacted']))
                     ->requiresConfirmation()
-                    ->action(fn (Inquiry $record) => $record->update(['status' => 'converted'])),
+                    ->action(fn(Inquiry $record) => $record->update(['status' => 'converted'])),
             ])
             ->bulkActions([
                 \Filament\Actions\BulkActionGroup::make([
@@ -207,7 +210,7 @@ class InquiryResource extends Resource
     {
         return [
             'index' => ListInquiries::route('/'),
-            'view'  => ViewInquiry::route('/{record}'),
+            'view' => ViewInquiry::route('/{record}'),
         ];
     }
 }

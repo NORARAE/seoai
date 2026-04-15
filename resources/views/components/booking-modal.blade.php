@@ -702,9 +702,7 @@ document.addEventListener('alpine:init', () => {
       }
     },
 
-    // ── AI assist stub ────────────────────────────────────────────────────────
-    // Full AI rewrite requires a backend endpoint (e.g. POST /api/ai/polish)
-    // connected to OpenAI or similar. This stub does basic text cleanup only.
+    // ── Message cleanup ───────────────────────────────────────────────────
     polishMessage() {
       if (!this.form.message || !this.form.message.trim()) return;
       this.form.message = this.form.message

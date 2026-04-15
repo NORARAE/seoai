@@ -23,9 +23,9 @@ class QuickScanResource extends Resource
 
     protected static ?string $navigationLabel = 'Quick Scans';
 
-    protected static string|\UnitEnum|null $navigationGroup = 'Operations';
+    protected static string|\UnitEnum|null $navigationGroup = 'Scans & Discovery';
 
-    protected static ?int $navigationSort = 6;
+    protected static ?int $navigationSort = 1;
 
     public static function canViewAny(): bool
     {

@@ -28,9 +28,9 @@ class ClientResource extends Resource
 
     protected static ?string $recordTitleAttribute = 'name';
 
-    protected static string|\UnitEnum|null $navigationGroup = 'Admin';
+    protected static string|\UnitEnum|null $navigationGroup = 'System';
 
-    protected static ?int $navigationSort = 20;
+    protected static ?int $navigationSort = 2;
 
     public static function form(Schema $schema): Schema
     {

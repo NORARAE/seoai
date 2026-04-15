@@ -28,11 +28,11 @@ class OpportunityResource extends Resource
 
     protected static ?string $navigationLabel = 'Site Issues';
 
-    protected static string|\UnitEnum|null $navigationGroup = 'Operations';
+    protected static string|\UnitEnum|null $navigationGroup = 'System';
 
     protected static ?string $recordTitleAttribute = 'issue_type';
 
-    protected static ?int $navigationSort = 20;
+    protected static ?int $navigationSort = 11;
 
     public static function form(Schema $schema): Schema
     {

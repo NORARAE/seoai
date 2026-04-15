@@ -19,9 +19,9 @@ class FunnelDashboard extends Dashboard
 
     protected static ?string $title = 'Funnel Dashboard';
 
-    protected static string|\UnitEnum|null $navigationGroup = 'Operations';
+    protected static string|\UnitEnum|null $navigationGroup = 'Revenue';
 
-    protected static ?int $navigationSort = 7;
+    protected static ?int $navigationSort = 5;
 
     public static function canAccess(): bool
     {

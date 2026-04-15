@@ -24,9 +24,9 @@ class LeadResource extends Resource
 
     protected static ?string $navigationLabel = 'Leads';
 
-    protected static string|\UnitEnum|null $navigationGroup = 'Operations';
+    protected static string|\UnitEnum|null $navigationGroup = 'Revenue';
 
-    protected static ?int $navigationSort = 4;
+    protected static ?int $navigationSort = 1;
 
     public static function canCreate(): bool
     {

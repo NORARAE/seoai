@@ -19,21 +19,28 @@ class InternalQaScan extends Page
 {
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedBeaker;
     protected static ?string $navigationLabel = 'Internal QA Scan';
-    protected static string|\UnitEnum|null $navigationGroup = 'Operations';
-    protected static ?int $navigationSort = 7;
+    protected static string|\UnitEnum|null $navigationGroup = 'Scans & Discovery';
+    protected static ?int $navigationSort = 2;
     protected string $view = 'filament.pages.internal-qa-scan';
     protected static ?string $title = 'Internal QA Scan';
     protected static ?string $slug = 'internal-qa-scan';
 
-    public ?string $url = '';
-    public ?string $email = '';
-    public bool $send_emails = false;
-    public bool $run_async = false;
+    public ?array $data = [];
 
     // Result state
     public ?int $lastScanId = null;
     public ?int $lastScore = null;
     public ?string $lastStatus = null;
+
+    public function mount(): void
+    {
+        $this->form->fill([
+            'url' => '',
+            'email' => '',
+            'send_emails' => false,
+            'run_async' => false,
+        ]);
+    }
 
     public static function canAccess(): bool
     {
@@ -66,7 +73,8 @@ class InternalQaScan extends Page
                 Checkbox::make('run_async')
                     ->label('Run scan asynchronously via job queue')
                     ->helperText('Default: OFF (synchronous). Enable to test the webhook/processing flow.'),
-            ]);
+            ])
+            ->statePath('data');
     }
 
     public function runScan(): void
@@ -81,27 +89,31 @@ class InternalQaScan extends Page
             return;
         }
 
+        $formData = $this->form->getState();
+
         // Normalize URL
-        $url = trim($this->url);
+        $url = trim($formData['url'] ?? '');
         if ($url !== '' && !preg_match('#^https?://#i', $url)) {
             $url = 'https://' . $url;
         }
         $url = rtrim($url, '/');
 
-        $email = trim($this->email) ?: $user->email;
+        $email = trim($formData['email'] ?? '') ?: $user->email;
+        $sendEmails = (bool) ($formData['send_emails'] ?? false);
+        $runAsync = (bool) ($formData['run_async'] ?? false);
 
         // Create the QA scan record
         $scan = QuickScan::create([
             'email' => strtolower($email),
             'url' => $url,
-            'url_input' => trim($this->url),
+            'url_input' => trim($formData['url'] ?? ''),
             'ip_address' => request()->ip(),
             'user_id' => $user->id,
             'paid' => true,
             'status' => QuickScan::STATUS_PAID,
             'is_internal' => true,
             'source' => 'admin_bypass',
-            'suppress_emails' => !$this->send_emails,
+            'suppress_emails' => !$sendEmails,
             'initiated_by' => $user->id,
         ]);
 
@@ -111,11 +123,11 @@ class InternalQaScan extends Page
             'email' => $email,
             'initiated_by' => $user->id,
             'user_name' => $user->name,
-            'send_emails' => $this->send_emails,
-            'async' => $this->run_async,
+            'send_emails' => $sendEmails,
+            'async' => $runAsync,
         ]);
 
-        if ($this->run_async) {
+        if ($runAsync) {
             // Dispatch to queue — mirrors webhook path
             RunQuickScanJob::dispatch($scan->id);
 

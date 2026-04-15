@@ -25,7 +25,7 @@ class BookingResource extends Resource
 
     protected static ?string $navigationLabel = 'Bookings';
 
-    protected static string|\UnitEnum|null $navigationGroup = 'Operations';
+    protected static string|\UnitEnum|null $navigationGroup = 'Revenue';
 
     protected static ?string $slug = 'booking-records';
 
