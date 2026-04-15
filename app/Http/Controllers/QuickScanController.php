@@ -104,13 +104,25 @@ class QuickScanController extends Controller
         RateLimiter::hit($emailKey, 86400);
 
         // ── All gates passed — create pending scan ────────────────────────
+        $domain = parse_url($url, PHP_URL_HOST) ?? $url;
+        $priorDomainCount = QuickScan::where('domain', $domain)
+            ->where('status', QuickScan::STATUS_SCANNED)
+            ->count();
+        $priorEmailCount = QuickScan::where('email', $email)
+            ->where('status', QuickScan::STATUS_SCANNED)
+            ->count();
+        $isRepeat = $priorDomainCount > 0 || $priorEmailCount > 0;
+
         $scan = QuickScan::create([
             'email' => $email,
             'url' => $url,
+            'domain' => $domain,
             'url_input' => $rawUrl,
             'ip_address' => $ip,
             'user_id' => Auth::id(),
             'status' => QuickScan::STATUS_PENDING,
+            'is_repeat_scan' => $isRepeat,
+            'domain_scan_count' => $priorDomainCount + 1,
         ]);
 
         Log::info('QuickScan: checkout initiated', [

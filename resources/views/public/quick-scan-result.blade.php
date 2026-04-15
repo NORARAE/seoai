@@ -58,7 +58,7 @@ nav.stuck{background:rgba(8,8,8,.95);backdrop-filter:blur(16px);border-color:var
 .score-ring-fill.animate{stroke-dashoffset:calc(440 - (440 * {{ $score }} / 100))}
 .score-number{font-family:'Cormorant Garamond',serif;font-size:3.8rem;font-weight:300;line-height:1;color:@if($score >= 70) var(--green) @elseif($score >= 40) var(--gold) @else var(--red) @endif}
 .score-label{font-size:.6rem;letter-spacing:.18em;text-transform:uppercase;color:rgba(200,168,75,.5);margin-top:2px}
-.score-verdict{font-family:'Cormorant Garamond',serif;font-size:clamp(1.4rem,3vw,2rem);font-weight:300;line-height:1.2;color:@if($score >= 70) var(--green) @elseif($score >= 40) var(--gold) @else var(--red) @endif}
+.score-verdict{font-family:'Cormorant Garamond',serif;font-size:clamp(1.4rem,3vw,2rem);font-weight:300;line-height:1.2;color:@if($score >= 90) var(--green) @elseif($score >= 70) var(--gold-lt) @elseif($score >= 40) var(--gold) @else var(--red) @endif}
 .score-ring-fill{stroke:@if($score >= 70) var(--green) @elseif($score >= 40) var(--gold) @else var(--red) @endif}
 
 /* ── Stats row ── */
@@ -89,6 +89,17 @@ nav.stuck{background:rgba(8,8,8,.95);backdrop-filter:blur(16px);border-color:var
 .check-item.failed .check-icon{color:var(--red)}
 .check-pts{font-size:.68rem;color:rgba(168,168,160,.4);margin-left:auto;flex-shrink:0}
 
+/* ── Locked / blurred sections ── */
+.locked-zone{position:relative;overflow:hidden}
+.locked-zone .check-text{filter:blur(5px);-webkit-filter:blur(5px);user-select:none;pointer-events:none}
+.locked-overlay{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;background:rgba(8,8,8,.55);backdrop-filter:blur(2px);z-index:10;gap:10px;padding:16px}
+.locked-overlay .lock-icon{font-size:1.4rem;opacity:.7;color:var(--gold)}
+.locked-overlay .lock-text{font-size:.72rem;letter-spacing:.16em;text-transform:uppercase;color:rgba(200,168,75,.7);text-align:center;line-height:1.5}
+.locked-overlay .lock-cta{font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;color:var(--bg);background:var(--gold);padding:8px 20px;text-decoration:none;transition:background .3s;display:inline-flex;align-items:center}
+.locked-overlay .lock-cta:hover{background:var(--gold-lt)}
+.fix-locked{position:relative;overflow:hidden}
+.fix-locked .fix-text{filter:blur(6px);-webkit-filter:blur(6px);user-select:none;pointer-events:none}
+
 /* ── Broken links ── */
 .broken-section{background:rgba(200,68,68,.04);border:1px solid rgba(200,68,68,.15);padding:20px;margin-bottom:32px}
 .broken-title{font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:var(--red);margin-bottom:12px;display:flex;align-items:center;gap:8px}
@@ -101,6 +112,36 @@ nav.stuck{background:rgba(8,8,8,.95);backdrop-filter:blur(16px);border-color:var
 .fastest-fix::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,rgba(200,168,75,.5),transparent)}
 .fix-label{font-size:.64rem;letter-spacing:.24em;text-transform:uppercase;color:var(--gold);margin-bottom:10px;display:block}
 .fix-text{font-size:.96rem;line-height:1.55;color:rgba(237,232,222,.88)}
+
+/* ── Untapped Market Coverage ── */
+.market-coverage{background:rgba(14,13,9,.92);border:1px solid rgba(200,168,75,.15);margin-bottom:40px;overflow:hidden}
+.market-header{display:flex;justify-content:space-between;align-items:center;padding:16px 20px;border-bottom:1px solid rgba(200,168,75,.08)}
+.market-eyebrow{font-size:.66rem;letter-spacing:.22em;text-transform:uppercase;color:rgba(200,168,75,.6)}
+.market-gap-badge{font-size:.68rem;letter-spacing:.1em;text-transform:uppercase;color:var(--red);background:rgba(196,120,120,.08);padding:4px 12px;border:1px solid rgba(196,120,120,.15)}
+.market-body{padding:20px}
+.market-bar-wrap{margin-bottom:20px}
+.market-bar-track{height:6px;background:rgba(200,168,75,.06);overflow:hidden;margin-bottom:6px}
+.market-bar-fill{height:100%;background:linear-gradient(90deg,var(--gold),var(--gold-dim));transition:width 1.2s cubic-bezier(.23,1,.32,1)}
+.market-bar-labels{display:flex;justify-content:space-between;font-size:.68rem;color:var(--muted)}
+.market-stats{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:16px}
+.market-stat{text-align:center;padding:12px 8px;background:rgba(200,168,75,.03);border:1px solid rgba(200,168,75,.06)}
+.market-stat-val{display:block;font-family:'Cormorant Garamond',serif;font-size:1.4rem;font-weight:300;color:var(--gold);line-height:1.2}
+.market-stat-lbl{font-size:.62rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-top:4px;display:block}
+.market-insight{font-size:.84rem;color:var(--muted);line-height:1.55;margin-bottom:16px}
+.market-cta{display:block;text-align:center;font-size:.78rem;letter-spacing:.1em;text-transform:uppercase;color:var(--bg);background:var(--gold);padding:12px 24px;text-decoration:none;transition:background .3s}
+.market-cta:hover{background:var(--gold-lt)}
+
+/* ── Competitive Pressure ── */
+.comp-section{background:rgba(14,13,9,.92);border:1px solid rgba(196,120,120,.12);margin-bottom:40px;overflow:hidden}
+.comp-header{padding:16px 20px;border-bottom:1px solid rgba(196,120,120,.08)}
+.comp-eyebrow{font-size:.66rem;letter-spacing:.22em;text-transform:uppercase;color:var(--red)}
+.comp-body{padding:20px}
+.comp-intro{font-size:.84rem;color:var(--muted);line-height:1.55;margin-bottom:16px}
+.comp-grid{display:flex;flex-direction:column;gap:10px;margin-bottom:16px}
+.comp-item{display:flex;align-items:flex-start;gap:10px;font-size:.82rem;line-height:1.4;padding:10px 14px;background:rgba(106,175,144,.04);border:1px solid rgba(106,175,144,.1)}
+.comp-icon{color:var(--green);flex-shrink:0;font-size:.64rem;margin-top:3px}
+.comp-text{color:rgba(168,168,160,.85)}
+.comp-bottom{font-size:.82rem;color:var(--red);font-style:italic;line-height:1.5}
 
 /* ── CTA section ── */
 .cta-section{border-top:1px solid rgba(200,168,75,.1);padding:64px 0 0;text-align:center}
@@ -203,12 +244,14 @@ footer{border-top:1px solid var(--border);padding:28px 48px;display:flex;flex-di
       </div>
     </div>
 
-    @if($score >= 70)
-      <p class="score-verdict">Strong AI citation foundation</p>
+    @if($score >= 90)
+      <p class="score-verdict">Strong foundation — but incomplete market coverage limits full visibility.</p>
+    @elseif($score >= 70)
+      <p class="score-verdict">Strong signals present — but gaps remain that limit your reach.</p>
     @elseif($score >= 40)
-      <p class="score-verdict">Partial — AI may cite you inconsistently</p>
+      <p class="score-verdict">AI systems detect your site, but confidence is inconsistent.</p>
     @else
-      <p class="score-verdict">AI systems are unlikely to cite your site</p>
+      <p class="score-verdict">AI systems cannot reliably understand or cite your site.</p>
     @endif
   </div>
 
@@ -242,9 +285,14 @@ footer{border-top:1px solid var(--border);padding:28px 48px;display:flex;flex-di
 <div class="result-body">
 
   @if(!empty($scan->fastest_fix))
-  <div class="fastest-fix">
+  <div class="fastest-fix fix-locked">
     <span class="fix-label">Your Fastest Fix</span>
     <p class="fix-text">{{ $scan->fastest_fix }}</p>
+    <div class="locked-overlay" style="top:auto;bottom:0;height:70%">
+      <span class="lock-icon">🔒</span>
+      <span class="lock-text">Exact fix strategy available with upgrade</span>
+      <a href="{{ route('onboarding.start') }}?plan=citation-builder&scan_id={{ $scan->id }}" class="lock-cta">Unlock Fix Plan</a>
+    </div>
   </div>
   @endif
 
@@ -264,14 +312,21 @@ footer{border-top:1px solid var(--border);padding:28px 48px;display:flex;flex-di
       <div class="cat-bar">
         <div class="cat-bar-fill {{ $catLevel }}" data-width="{{ $catPct }}" style="width:0%"></div>
       </div>
-      <div class="check-list">
-        @foreach($cat['checks'] as $check)
+      <div class="check-list locked-zone">
+        @foreach($cat['checks'] as $cIdx => $check)
         <div class="check-item {{ $check['passed'] ? 'passed' : 'failed' }}">
           <span class="check-icon">{{ $check['passed'] ? '✓' : '✕' }}</span>
-          <span>{{ $check['passed'] ? $check['pass'] : $check['fail'] }}</span>
+          <span class="check-text">{{ $check['label'] }}</span>
           <span class="check-pts">{{ $check['points'] }}/{{ $check['max'] }}</span>
         </div>
         @endforeach
+        @if(collect($cat['checks'])->contains('passed', false))
+        <div class="locked-overlay">
+          <span class="lock-icon">🔒</span>
+          <span class="lock-text">Detailed analysis locked</span>
+          <a href="{{ route('onboarding.start') }}?plan=citation-builder&scan_id={{ $scan->id }}" class="lock-cta">See Exact Fix Strategy</a>
+        </div>
+        @endif
       </div>
     </div>
     @endforeach
@@ -290,6 +345,90 @@ footer{border-top:1px solid var(--border);padding:28px 48px;display:flex;flex-di
       <span class="broken-status">HTTP {{ $bl['status'] ?? '?' }}</span>
     </div>
     @endforeach
+  </div>
+  @endif
+
+  {{-- ── Untapped Market Coverage (Upsell Engine) ── --}}
+  @if(!empty($categories) && is_array($categories))
+  @php
+    $totalMax = collect($categories)->sum('max');
+    $totalScore = collect($categories)->sum('score');
+    $coveragePct = $totalMax > 0 ? round(($totalScore / $totalMax) * 100) : 0;
+    $gapPct = 100 - $coveragePct;
+    $failedCount = 0;
+    foreach ($categories as $cat) {
+      foreach ($cat['checks'] ?? [] as $check) {
+        if (!$check['passed']) $failedCount++;
+      }
+    }
+    $estMissingPages = max(3, $failedCount * 2) . '–' . max(8, $failedCount * 4);
+  @endphp
+  <div class="market-coverage">
+    <div class="market-header">
+      <span class="market-eyebrow">Untapped Market Coverage</span>
+      <span class="market-gap-badge">{{ $gapPct }}% uncaptured</span>
+    </div>
+    <div class="market-body">
+      <div class="market-bar-wrap">
+        <div class="market-bar-track">
+          <div class="market-bar-fill" data-width="{{ $coveragePct }}" style="width:0%"></div>
+        </div>
+        <div class="market-bar-labels">
+          <span>Your coverage</span>
+          <span style="color:var(--gold)">{{ $coveragePct }}%</span>
+        </div>
+      </div>
+      <div class="market-stats">
+        <div class="market-stat">
+          <span class="market-stat-val">{{ $estMissingPages }}</span>
+          <span class="market-stat-lbl">Estimated missing pages</span>
+        </div>
+        <div class="market-stat">
+          <span class="market-stat-val">{{ $failedCount }}</span>
+          <span class="market-stat-lbl">Structural gaps detected</span>
+        </div>
+        <div class="market-stat">
+          <span class="market-stat-val">{{ $gapPct }}%</span>
+          <span class="market-stat-lbl">Visibility potential increase</span>
+        </div>
+      </div>
+      <p class="market-insight">AI systems are currently unable to surface {{ $gapPct }}% of your market potential. Each gap represents customers finding your competitors instead.</p>
+      <a href="{{ route('onboarding.start') }}?plan=authority-engine&scan_id={{ $scan->id }}" class="market-cta">Expand Coverage →</a>
+    </div>
+  </div>
+
+  {{-- ── Competitive Pressure ── --}}
+  @php
+    $failedCats = [];
+    foreach ($categories as $key => $cat) {
+      if ($cat['score'] < $cat['max']) {
+        $failedCats[] = $cat['label'];
+      }
+    }
+    $compStrengths = [
+      'Machine-readable data layers fully implemented',
+      'Direct answer content optimized for AI extraction',
+      'Complete entity definition across all service areas',
+      'Content connectivity enabling full site traversal',
+      'Geographic authority established for target market',
+    ];
+  @endphp
+  <div class="comp-section">
+    <div class="comp-header">
+      <span class="comp-eyebrow">Why Others Outrank You</span>
+    </div>
+    <div class="comp-body">
+      <p class="comp-intro">Businesses that AI cites as the answer in your market have already addressed the structural gaps your scan revealed. Here's what they have that you don't:</p>
+      <div class="comp-grid">
+        @foreach(array_slice($compStrengths, 0, min(3, count($failedCats) + 1)) as $strength)
+        <div class="comp-item">
+          <span class="comp-icon">◆</span>
+          <span class="comp-text">{{ $strength }}</span>
+        </div>
+        @endforeach
+      </div>
+      <p class="comp-bottom">The longer these gaps remain, the more entrenched their advantage becomes.</p>
+    </div>
   </div>
   @endif
 
@@ -326,16 +465,16 @@ footer{border-top:1px solid var(--border);padding:28px 48px;display:flex;flex-di
 
   <!-- CTA Section -->
   <div class="cta-section">
-    <p class="cta-eyebrow">Turn This Score Into Revenue</p>
-    <h2 class="cta-hed">Stop losing customers to<br><em>AI-invisible competitors.</em></h2>
-    <p class="cta-sub">We fix your schema, content structure, internal linking, and entity signals so AI systems cite you as the answer.</p>
+    <p class="cta-eyebrow">Your Market Is Being Claimed</p>
+    <h2 class="cta-hed">Every day you wait,<br><em>competitors capture your customers.</em></h2>
+    <p class="cta-sub">We implement the structural changes AI systems need to cite your business as the answer — so you stop losing ground.</p>
 
     <div class="cta-grid">
       <a href="{{ route('onboarding.start') }}?plan=citation-builder&scan_id={{ $scan->id }}" class="cta-card">
         <span class="cta-tier">Strategic Fix</span>
         <div class="cta-name">Fix My Market</div>
         <div class="cta-price"><sup>$</sup>249</div>
-        <p class="cta-desc">Targeted fixes for your top issues — schema markup, FAQ optimization, entity structure, and internal linking plan.</p>
+        <p class="cta-desc">Targeted structural fixes for your top issues — data layers, answer content, entity signals, and connectivity plan.</p>
         <span class="cta-button">Fix my top issues</span>
       </a>
 
@@ -343,7 +482,7 @@ footer{border-top:1px solid var(--border);padding:28px 48px;display:flex;flex-di
         <span class="cta-tier">Full Coverage</span>
         <div class="cta-name">Expand Coverage</div>
         <div class="cta-price"><sup>$</sup>499</div>
-        <p class="cta-desc">Complete AI citation engine — content structures, schema deployment, citation scoring system, and 4-month roadmap.</p>
+        <p class="cta-desc">Complete AI citation engine — full structural deployment, content architecture, scoring system, and 4-month roadmap.</p>
         <span class="cta-button">Build my citation engine</span>
       </a>
     </div>
@@ -406,7 +545,7 @@ footer{border-top:1px solid var(--border);padding:28px 48px;display:flex;flex-di
 
     // Animate category bars
     setTimeout(function() {
-      document.querySelectorAll('.cat-bar-fill').forEach(function(bar) {
+      document.querySelectorAll('.cat-bar-fill, .market-bar-fill').forEach(function(bar) {
         bar.style.width = bar.dataset.width + '%';
       });
     }, 600);

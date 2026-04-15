@@ -25,10 +25,10 @@
         <p style="font-size:16px;font-weight:500;color:#ede8de;margin:0 0 4px">Citation Builder</p>
         <p style="font-size:22px;font-weight:300;color:#c8a84b;margin:0 0 10px">$249 <span style="font-size:13px;color:#777">one-time</span></p>
         <ul style="padding-left:16px;margin:0">
-          <li style="font-size:12px;color:#aaa;margin-bottom:6px;line-height:1.55">Schema markup for your core pages</li>
-          <li style="font-size:12px;color:#aaa;margin-bottom:6px;line-height:1.55">FAQ section written and formatted</li>
-          <li style="font-size:12px;color:#aaa;margin-bottom:6px;line-height:1.55">Definition content for your top services</li>
-          <li style="font-size:12px;color:#aaa;margin-bottom:0;line-height:1.55">Internal link audit &amp; recommendations</li>
+          <li style="font-size:12px;color:#aaa;margin-bottom:6px;line-height:1.55">Machine-readable data layers for core pages</li>
+          <li style="font-size:12px;color:#aaa;margin-bottom:6px;line-height:1.55">Direct answer content structured for AI extraction</li>
+          <li style="font-size:12px;color:#aaa;margin-bottom:6px;line-height:1.55">Authoritative definitions for your top services</li>
+          <li style="font-size:12px;color:#aaa;margin-bottom:0;line-height:1.55">Content connectivity audit &amp; implementation plan</li>
         </ul>
         <div style="margin-top:14px">
           <a href="{{ url('/onboarding/start?plan=citation-builder') }}" style="display:inline-block;border:1px solid #c8a84b;color:#c8a84b;font-size:11px;font-weight:600;text-decoration:none;padding:9px 24px;letter-spacing:.08em">Get Citation Builder →</a>
@@ -43,7 +43,7 @@
         <ul style="padding-left:16px;margin:0">
           <li style="font-size:12px;color:#c9c09a;margin-bottom:6px;line-height:1.55">Everything in Citation Builder</li>
           <li style="font-size:12px;color:#c9c09a;margin-bottom:6px;line-height:1.55">Full entity authority profile built</li>
-          <li style="font-size:12px;color:#c9c09a;margin-bottom:6px;line-height:1.55">3 authority-optimised content pages</li>
+          <li style="font-size:12px;color:#c9c09a;margin-bottom:6px;line-height:1.55">3 authority-optimized content architectures</li>
           <li style="font-size:12px;color:#c9c09a;margin-bottom:6px;line-height:1.55">6-month citation monitoring</li>
           <li style="font-size:12px;color:#c9c09a;margin-bottom:0;line-height:1.55">Re-scan included after 90 days</li>
         </ul>

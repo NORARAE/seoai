@@ -16,9 +16,10 @@
     <div style="font-size:56px;font-weight:300;line-height:1;color:{{ $score >= 70 ? '#6aaf90' : ($score >= 40 ? '#c8a84b' : '#c47878') }};font-family:Georgia,serif">{{ $score }}</div>
     <div style="font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:rgba(168,168,160,.6);margin-top:4px">out of 100</div>
     <div style="font-size:14px;color:{{ $score >= 70 ? '#6aaf90' : ($score >= 40 ? '#c8a84b' : '#c47878') }};margin-top:8px;font-style:italic">
-      @if($score >= 70) Strong AI citation foundation
-      @elseif($score >= 40) AI may cite you inconsistently
-      @else AI systems are unlikely to cite your site
+      @if($score >= 90) Strong foundation — but incomplete coverage limits full visibility.
+      @elseif($score >= 70) Strong signals present — but gaps remain.
+      @elseif($score >= 40) AI systems detect your site, but confidence is inconsistent.
+      @else AI systems cannot reliably understand or cite your site.
       @endif
     </div>
   </div>
@@ -37,20 +38,23 @@
 
     @if($scan->issues && count($scan->issues) > 0)
     <div style="margin-bottom:20px">
-      <p style="font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:#999;margin:0 0 10px">Issues Found</p>
-      @foreach($scan->issues as $issue)
+      <p style="font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:#999;margin:0 0 10px">Gaps Detected</p>
+      @foreach(array_slice($scan->issues, 0, 3) as $issue)
       <div style="display:flex;gap:10px;margin-bottom:8px;padding:10px 12px;background:#fdf5f5;border:1px solid #f0e0e0">
         <span style="color:#c47878;flex-shrink:0;font-size:12px;margin-top:1px">✕</span>
         <span style="font-size:13px;color:#555;line-height:1.55">{{ $issue }}</span>
       </div>
       @endforeach
+      @if(count($scan->issues) > 3)
+      <p style="font-size:12px;color:#bbb;margin:8px 0 0;font-style:italic">+ {{ count($scan->issues) - 3 }} additional gaps identified — full analysis available with upgrade.</p>
+      @endif
     </div>
     @endif
 
     @if($scan->strengths && count($scan->strengths) > 0)
     <div style="margin-bottom:24px">
-      <p style="font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:#999;margin:0 0 10px">What's Working</p>
-      @foreach($scan->strengths as $strength)
+      <p style="font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:#999;margin:0 0 10px">Signals Detected</p>
+      @foreach(array_slice($scan->strengths, 0, 3) as $strength)
       <div style="display:flex;gap:10px;margin-bottom:8px;padding:10px 12px;background:#f5fdf8;border:1px solid #e0f0e8">
         <span style="color:#6aaf90;flex-shrink:0;font-size:12px;margin-top:1px">✓</span>
         <span style="font-size:13px;color:#555;line-height:1.55">{{ $strength }}</span>
@@ -61,8 +65,8 @@
 
     <!-- CTA -->
     <div style="text-align:center;margin:28px 0 20px;padding:20px;background:#f9f8f5;border:1px solid #ede8de">
-      <p style="font-size:14px;font-weight:500;color:#222;margin:0 0 6px">Want to fix this automatically?</p>
-      <p style="font-size:12px;color:#888;margin:0 0 16px;line-height:1.5">We do the work — schema, FAQ, entity structure, and content — so AI systems cite you.</p>
+      <p style="font-size:14px;font-weight:500;color:#222;margin:0 0 6px">Ready to close these gaps?</p>
+      <p style="font-size:12px;color:#888;margin:0 0 16px;line-height:1.5">We implement the structural changes so AI systems cite your business as the answer.</p>
       <a href="{{ url('/pricing') }}" style="display:inline-block;background:#c8a84b;color:#080808;font-size:12px;font-weight:600;text-decoration:none;padding:12px 32px;letter-spacing:.08em">See Plans</a>
     </div>
 

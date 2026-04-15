@@ -12,38 +12,38 @@
 
   <!-- Body -->
   <div style="padding:32px 28px">
-    <h1 style="font-size:20px;font-weight:400;color:#111;margin:0 0 16px;line-height:1.3">Why AI won't cite your site <span style="color:#c8a84b;font-style:italic">(yet)</span></h1>
+    <h1 style="font-size:20px;font-weight:400;color:#111;margin:0 0 16px;line-height:1.3">Your site has gaps AI systems <span style="color:#c8a84b;font-style:italic">can't ignore</span></h1>
 
     <p style="font-size:14px;color:#555;margin:0 0 16px;line-height:1.65">
-      Yesterday you ran a quick scan on <strong style="color:#333">{{ $scan->url }}</strong> and got a score of <strong style="color:#c8a84b">{{ $scan->score ?? 0 }}/100</strong>.
+      Yesterday you ran a scan on <strong style="color:#333">{{ $scan->url }}</strong> and scored <strong style="color:#c8a84b">{{ $scan->score ?? 0 }}/100</strong>.
     </p>
 
     <p style="font-size:14px;color:#555;margin:0 0 16px;line-height:1.65">
-      Most sites score under 40 on their first scan. Not because the content is bad — because it's not <em>structured</em> the way AI systems expect.
+      Most sites score under 40 on their first scan. Not because the content is bad — because the <em>structural signals</em> AI systems need aren't in place.
     </p>
 
     <div style="background:#f9f8f5;border-left:3px solid #c8a84b;padding:16px 18px;margin-bottom:20px">
       <p style="font-size:14px;font-style:italic;color:#444;margin:0;line-height:1.65">
-        AI systems don't read your site the way a human does. They look for specific signals — schema, definitions, FAQ structure, entity relationships. Without those, your content doesn't get cited.
+        AI systems don't read your site the way a human does. They look for machine-readable signals — structured data layers, direct answer content, entity definitions, and content connectivity. Without these, your site gets overlooked.
       </p>
     </div>
 
     <p style="font-size:14px;color:#555;margin:0 0 16px;line-height:1.65">
-      The three signals AI looks for most:
+      The three structural categories AI evaluates most heavily:
     </p>
 
     <ol style="padding-left:20px;margin:0 0 20px">
-      <li style="font-size:13px;color:#555;margin-bottom:10px;line-height:1.55"><strong style="color:#333">Structured Data (Schema)</strong> — Tells AI what type of business you are, what services you offer, and where you operate. Without it, AI systems make assumptions — or skip you entirely.</li>
-      <li style="font-size:13px;color:#555;margin-bottom:10px;line-height:1.55"><strong style="color:#333">Q&amp;A / FAQ Content</strong> — AI systems are built to find and cite direct answers. A page with clear questions and answers gets cited. A page with only general copy doesn't.</li>
-      <li style="font-size:13px;color:#555;margin-bottom:10px;line-height:1.55"><strong style="color:#333">Definitions and Explanations</strong> — "What is [service]?" content is the most frequently cited type of web content across Google AI Overviews, ChatGPT, and Perplexity. If your site doesn't define your services clearly, you won't appear in those answers.</li>
+      <li style="font-size:13px;color:#555;margin-bottom:10px;line-height:1.55"><strong style="color:#333">Machine-Readable Context</strong> — The data layer that tells AI what type of business you are, what you offer, and where you operate. Without it, AI systems make assumptions — or skip you.</li>
+      <li style="font-size:13px;color:#555;margin-bottom:10px;line-height:1.55"><strong style="color:#333">Direct Answer Content</strong> — AI systems are built to extract and cite direct responses. Pages with clear, structured answers get cited. General copy doesn't.</li>
+      <li style="font-size:13px;color:#555;margin-bottom:10px;line-height:1.55"><strong style="color:#333">Entity Definition Strength</strong> — How clearly your site establishes <em>what</em> your business is, <em>what</em> it offers, and <em>where</em> it operates. Weak entity signals mean AI cannot confidently recommend you.</li>
     </ol>
 
     <p style="font-size:13px;color:#777;margin:0 0 24px;line-height:1.6">
-      Tomorrow I'll show you exactly how far a few structural changes could take your score — and how quickly we can implement them.
+      Tomorrow I'll show you exactly how far a few structural changes could take your score — and what that means for your market visibility.
     </p>
 
     <div style="text-align:center;margin:20px 0">
-      <a href="{{ url('/pricing') }}" style="display:inline-block;background:#c8a84b;color:#080808;font-size:12px;font-weight:600;text-decoration:none;padding:13px 36px;letter-spacing:.08em">See how to fix it</a>
+      <a href="{{ url('/pricing') }}" style="display:inline-block;background:#c8a84b;color:#080808;font-size:12px;font-weight:600;text-decoration:none;padding:13px 36px;letter-spacing:.08em">See how we fix it</a>
     </div>
 
     <p style="font-size:12px;color:#bbb;text-align:center;margin:16px 0 0">

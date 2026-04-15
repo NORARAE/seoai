@@ -30,11 +30,11 @@
     @endif
 
     <p style="font-size:14px;color:#555;margin:0 0 12px;line-height:1.65">
-      The businesses that get cited by AI aren't the ones with perfect websites. They're the ones whose sites are <em>structured</em> correctly — with schema, definitions, FAQ content, and clear entity signals.
+      The businesses that get cited by AI aren't the ones with the best websites. They're the ones whose sites have the right <em>structural signals</em> — machine-readable context, direct answer content, entity definitions, and content connectivity.
     </p>
 
     <p style="font-size:14px;color:#555;margin:0 0 16px;line-height:1.65">
-      Our <strong style="color:#333">Citation Builder</strong> handles schema implementation, Q&amp;A templates, definition pages, and internal linking — the exact signals your score is based on — in one structured engagement.
+      Our <strong style="color:#333">Citation Builder</strong> implements these structural signals — the exact systems your score measures — in one focused engagement.
     </p>
 
     <!-- Comparison mini-table -->
