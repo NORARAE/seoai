@@ -154,11 +154,11 @@ class LicenseResource extends Resource
                     ->query(fn (Builder $query): Builder => $query->where('status', 'active')),
             ])
             ->actions([
-                \Filament\Tables\Actions\ViewAction::make(),
+                \Filament\Actions\ViewAction::make(),
             ])
             ->bulkActions([
-                \Filament\Tables\Actions\BulkActionGroup::make([
-                    \Filament\Tables\Actions\DeleteBulkAction::make(),
+                \Filament\Actions\BulkActionGroup::make([
+                    \Filament\Actions\DeleteBulkAction::make(),
                 ]),
             ]);
     }

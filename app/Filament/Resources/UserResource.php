@@ -17,8 +17,8 @@ use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\Filter;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
-use Filament\Tables\Actions\BulkActionGroup;
-use Filament\Tables\Actions\DeleteBulkAction;
+use Filament\Actions\BulkActionGroup;
+use Filament\Actions\DeleteBulkAction;
 use Illuminate\Database\Eloquent\Builder;
 
 class UserResource extends Resource
@@ -109,7 +109,7 @@ class UserResource extends Resource
             ])
             ->actions([
                 // Approve action — visible only when not approved
-                \Filament\Tables\Actions\Action::make('approve')
+                \Filament\Actions\Action::make('approve')
                     ->label('Approve')
                     ->icon(Heroicon::OutlinedCheckCircle)
                     ->color('success')
@@ -120,7 +120,7 @@ class UserResource extends Resource
                     }),
 
                 // Revoke action — visible only when approved and not a privileged user
-                \Filament\Tables\Actions\Action::make('revoke')
+                \Filament\Actions\Action::make('revoke')
                     ->label('Revoke')
                     ->icon(Heroicon::OutlinedXCircle)
                     ->color('danger')
@@ -130,12 +130,12 @@ class UserResource extends Resource
                         $record->update(['approved' => false]);
                     }),
 
-                \Filament\Tables\Actions\EditAction::make(),
+                \Filament\Actions\EditAction::make(),
             ])
             ->bulkActions([
                 BulkActionGroup::make([
                     // Bulk approve — only approves pending, non-privileged users
-                    \Filament\Tables\Actions\BulkAction::make('bulk_approve')
+                    \Filament\Actions\BulkAction::make('bulk_approve')
                         ->label('Approve Selected')
                         ->icon(Heroicon::OutlinedCheckCircle)
                         ->color('success')

@@ -178,9 +178,9 @@ class InquiryResource extends Resource
                     ),
             ])
             ->actions([
-                \Filament\Tables\Actions\ViewAction::make(),
+                \Filament\Actions\ViewAction::make(),
 
-                \Filament\Tables\Actions\Action::make('mark_contacted')
+                \Filament\Actions\Action::make('mark_contacted')
                     ->label('Mark Contacted')
                     ->icon(Heroicon::OutlinedChatBubbleLeftRight)
                     ->color('warning')
@@ -188,7 +188,7 @@ class InquiryResource extends Resource
                     ->requiresConfirmation()
                     ->action(fn (Inquiry $record) => $record->update(['status' => 'contacted'])),
 
-                \Filament\Tables\Actions\Action::make('mark_converted')
+                \Filament\Actions\Action::make('mark_converted')
                     ->label('Mark Converted')
                     ->icon(Heroicon::OutlinedCheckBadge)
                     ->color('success')
@@ -197,8 +197,8 @@ class InquiryResource extends Resource
                     ->action(fn (Inquiry $record) => $record->update(['status' => 'converted'])),
             ])
             ->bulkActions([
-                \Filament\Tables\Actions\BulkActionGroup::make([
-                    \Filament\Tables\Actions\DeleteBulkAction::make(),
+                \Filament\Actions\BulkActionGroup::make([
+                    \Filament\Actions\DeleteBulkAction::make(),
                 ]),
             ]);
     }
