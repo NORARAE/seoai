@@ -132,7 +132,9 @@ class GoogleAuthController extends Controller
                 $user->google_id = $googleUser->getId();
             }
             $user->google_avatar = $googleUser->getAvatar();
-            $user->auth_provider = 'google';
+            // Don't overwrite auth_provider — it was set at account creation and
+            // tracks the original signup method (null=email, 'google'=Google signup).
+            // This lets Login.php correctly identify Google-only users.
             $user->last_login_at = now();
             if (blank($user->email_verified_at)) {
                 $user->email_verified_at = now();

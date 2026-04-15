@@ -48,7 +48,7 @@ class Login extends BaseLogin
     public function authenticate(): ?LoginResponse
     {
         $email = Str::lower($this->data['email'] ?? '');
-        $key   = 'login:' . $email . ':' . request()->ip();
+        $key = 'login:' . $email . ':' . request()->ip();
 
         if (RateLimiter::tooManyAttempts($key, 5)) {
             $seconds = RateLimiter::availableIn($key);
@@ -84,7 +84,7 @@ class Login extends BaseLogin
             if ($user && $user->auth_provider === 'google' && !Hash::check($this->data['password'] ?? '', $user->password)) {
                 RateLimiter::hit($key, 60);
                 throw ValidationException::withMessages([
-                    'data.email' => 'This account uses Google sign-in. Click "Continue with Google" above.',
+                    'data.email' => 'This account uses Google sign-in. Click "Continue with Google" above, or use "Forgot password?" to set an email password.',
                 ]);
             }
 

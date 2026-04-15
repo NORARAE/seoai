@@ -178,25 +178,29 @@ class InternalQaScan extends Page
 
     public function getResultUrl(): ?string
     {
-        if (!$this->lastScanId) return null;
+        if (!$this->lastScanId)
+            return null;
         return url('/quick-scan/result') . '?session_id=internal_qa&scan_id=' . $this->lastScanId;
     }
 
     public function getProcessingUrl(): ?string
     {
-        if (!$this->lastScanId) return null;
+        if (!$this->lastScanId)
+            return null;
         return url('/quick-scan/result') . '?session_id=internal_qa&scan_id=' . $this->lastScanId;
     }
 
     public function getDashboardUrl(): ?string
     {
-        if (!$this->lastScanId) return null;
+        if (!$this->lastScanId)
+            return null;
         return url('/dashboard') . '#ai-scans';
     }
 
     public function getOAuthTestUrl(): ?string
     {
-        if (!$this->lastScanId) return null;
+        if (!$this->lastScanId)
+            return null;
         return url('/auth/google/redirect') . '?scan_id=' . $this->lastScanId;
     }
 }
