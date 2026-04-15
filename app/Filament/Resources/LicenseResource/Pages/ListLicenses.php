@@ -15,26 +15,26 @@ class ListLicenses extends ListRecords
     {
         return [
             'all' => Tab::make('All')
-                ->badge(fn () => \App\Models\License::count()),
+                ->badge(fn() => \App\Models\License::count()),
 
             'active' => Tab::make('Active')
-                ->modifyQueryUsing(fn (Builder $query) => $query->where('status', 'active'))
-                ->badge(fn () => \App\Models\License::where('status', 'active')->count())
+                ->modifyQueryUsing(fn(Builder $query) => $query->where('status', 'active'))
+                ->badge(fn() => \App\Models\License::where('status', 'active')->count())
                 ->badgeColor('success'),
 
             'trial' => Tab::make('Trial')
-                ->modifyQueryUsing(fn (Builder $query) => $query->where('status', 'trial'))
-                ->badge(fn () => \App\Models\License::where('status', 'trial')->count())
+                ->modifyQueryUsing(fn(Builder $query) => $query->where('status', 'trial'))
+                ->badge(fn() => \App\Models\License::where('status', 'trial')->count())
                 ->badgeColor('info'),
 
             'crypto' => Tab::make('Crypto Paid')
-                ->modifyQueryUsing(fn (Builder $query) => $query->where('payment_method', 'crypto'))
-                ->badge(fn () => \App\Models\License::where('payment_method', 'crypto')->count())
+                ->modifyQueryUsing(fn(Builder $query) => $query->where('payment_method', 'crypto'))
+                ->badge(fn() => \App\Models\License::where('payment_method', 'crypto')->count())
                 ->badgeColor('warning'),
 
             'expired' => Tab::make('Expired')
-                ->modifyQueryUsing(fn (Builder $query) => $query->where('status', 'expired'))
-                ->badge(fn () => \App\Models\License::where('status', 'expired')->count())
+                ->modifyQueryUsing(fn(Builder $query) => $query->where('status', 'expired'))
+                ->badge(fn() => \App\Models\License::where('status', 'expired')->count())
                 ->badgeColor('danger'),
         ];
     }

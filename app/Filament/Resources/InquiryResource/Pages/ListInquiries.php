@@ -15,26 +15,26 @@ class ListInquiries extends ListRecords
     {
         return [
             'all' => Tab::make('All')
-                ->badge(fn () => \App\Models\Inquiry::count()),
+                ->badge(fn() => \App\Models\Inquiry::count()),
 
             'new' => Tab::make('New')
-                ->modifyQueryUsing(fn (Builder $query) => $query->where('status', 'new'))
-                ->badge(fn () => \App\Models\Inquiry::where('status', 'new')->count())
+                ->modifyQueryUsing(fn(Builder $query) => $query->where('status', 'new'))
+                ->badge(fn() => \App\Models\Inquiry::where('status', 'new')->count())
                 ->badgeColor('info'),
 
             'high_risk' => Tab::make('High Risk')
-                ->modifyQueryUsing(fn (Builder $query) => $query->where('spam_risk', 'high'))
-                ->badge(fn () => \App\Models\Inquiry::where('spam_risk', 'high')->count())
+                ->modifyQueryUsing(fn(Builder $query) => $query->where('spam_risk', 'high'))
+                ->badge(fn() => \App\Models\Inquiry::where('spam_risk', 'high')->count())
                 ->badgeColor('danger'),
 
             'rejected' => Tab::make('Rejected')
-                ->modifyQueryUsing(fn (Builder $query) => $query->where('status', 'rejected'))
-                ->badge(fn () => \App\Models\Inquiry::where('status', 'rejected')->count())
+                ->modifyQueryUsing(fn(Builder $query) => $query->where('status', 'rejected'))
+                ->badge(fn() => \App\Models\Inquiry::where('status', 'rejected')->count())
                 ->badgeColor('danger'),
 
             'converted' => Tab::make('Converted')
-                ->modifyQueryUsing(fn (Builder $query) => $query->where('status', 'converted'))
-                ->badge(fn () => \App\Models\Inquiry::where('status', 'converted')->count())
+                ->modifyQueryUsing(fn(Builder $query) => $query->where('status', 'converted'))
+                ->badge(fn() => \App\Models\Inquiry::where('status', 'converted')->count())
                 ->badgeColor('success'),
         ];
     }
