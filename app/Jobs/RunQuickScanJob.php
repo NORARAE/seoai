@@ -82,9 +82,13 @@ class RunQuickScanJob implements ShouldQueue, ShouldBeUnique
             Log::warning('RunQuickScanJob: Lead upsert failed', ['scan_id' => $scan->id, 'error' => $e->getMessage()]);
         }
 
-        // Guard: only send emails once
-        if ($scan->emails_sent) {
-            Log::info('RunQuickScanJob: emails already sent, skipping', ['scan_id' => $scan->id]);
+        // Guard: only send emails once, and skip for internal QA scans
+        if ($scan->emails_sent || $scan->suppress_emails) {
+            Log::info('RunQuickScanJob: emails skipped', [
+                'scan_id' => $scan->id,
+                'emails_sent' => $scan->emails_sent,
+                'suppress_emails' => $scan->suppress_emails,
+            ]);
             return;
         }
 

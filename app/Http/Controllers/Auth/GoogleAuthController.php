@@ -24,6 +24,12 @@ class GoogleAuthController extends Controller
             abort(404);
         }
 
+        // Preserve optional scan_id so we can return the user to their scan
+        $scanId = (int) request()->query('scan_id', 0);
+        if ($scanId) {
+            request()->session()->put('oauth_scan_id', $scanId);
+        }
+
         return Socialite::driver('google')
             ->scopes(['openid', 'email', 'profile'])
             ->redirect();
@@ -143,6 +149,17 @@ class GoogleAuthController extends Controller
             ->whereNull('user_id')
             ->update(['user_id' => $user->id]);
 
+        // Also link the specific scan from the OAuth flow (handles email mismatch:
+        // user may have purchased as work@co.com but signed in with personal@gmail.com).
+        $oauthScanId = (int) request()->session()->get('oauth_scan_id', 0);
+        if ($oauthScanId) {
+            $oauthScan = QuickScan::find($oauthScanId);
+            if ($oauthScan && is_null($oauthScan->user_id)) {
+                $oauthScan->update(['user_id' => $user->id]);
+                $linked++;
+            }
+        }
+
         // Auto-approve users who have at least one paid scan.
         if (!$user->isApproved() && $user->quickScans()->where('paid', true)->exists()) {
             $user->update(['approved' => true]);
@@ -152,14 +169,18 @@ class GoogleAuthController extends Controller
             'user_id' => $user->id,
             'email' => $user->email,
             'scans_linked' => $linked,
+            'oauth_scan_id' => $oauthScanId ?: null,
         ]);
 
         // Approval check: unapproved non-staff users go to pending page.
         if (!$user->isPrivilegedStaff() && !$user->isApproved()) {
+            // Keep oauth_scan_id in session — it will be available when the user
+            // is eventually approved and completes onboarding.
             return redirect()->route('pending-approval');
         }
 
-        // Approved but onboarding not yet complete
+        // Approved but onboarding not yet complete — scan_id stays in session
+        // so UserOnboardingController can redirect to dashboard#ai-scans after setup.
         if (!$user->isPrivilegedStaff() && $user->isApproved() && is_null($user->onboarding_completed_at)) {
             return redirect()->route('user.onboarding');
         }
@@ -170,6 +191,17 @@ class GoogleAuthController extends Controller
         }
 
         // Regular approved + onboarded user → SaaS dashboard
+        // If a scan ID was saved before OAuth, take user back to the dashboard
+        $oauthScanId = (int) request()->session()->pull('oauth_scan_id', 0);
+        if ($oauthScanId) {
+            // Confirm the scan exists and is associated (by email or now by user_id)
+            $scan = QuickScan::find($oauthScanId);
+            if ($scan && ($scan->user_id === $user->id || $scan->email === $user->email)) {
+                return redirect()->to(url('/dashboard') . '#ai-scans')
+                    ->with('scan_saved', 'Your scan has been saved');
+            }
+        }
+
         return redirect()->intended('/dashboard');
     }
 

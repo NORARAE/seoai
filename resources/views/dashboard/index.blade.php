@@ -9,6 +9,22 @@
     <p class="text-gray-600">Monitor your SEO location intelligence system performance and health</p>
 </div>
 
+@if(session('scan_saved'))
+    <div class="mb-6">
+        <div class="rounded-md bg-green-50 p-4">
+            <div class="flex">
+                <div class="flex-shrink-0">
+                    <svg class="h-5 w-5 text-green-400" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414L8.414 15l-4.121-4.121a1 1 0 011.414-1.414L8.414 12.172l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
+                </div>
+                <div class="ml-3">
+                    <p class="text-sm font-medium text-green-800">{{ session('scan_saved') }}</p>
+                    <p class="mt-1 text-sm text-green-700">Your scan is now in your dashboard under AI Scan Projects.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+@endif
+
 <!-- Summary Stats Grid -->
 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6 mb-8">
             <x-dashboard.stat-card 

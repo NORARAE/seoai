@@ -127,6 +127,12 @@ class QuickScanResource extends Resource
                     ->formatStateUsing(fn(bool $state): string => $state ? 'Yes' : 'No')
                     ->color(fn(bool $state): string => $state ? 'success' : 'gray'),
 
+                TextColumn::make('source')
+                    ->label('Source')
+                    ->badge()
+                    ->placeholder('—')
+                    ->color(fn(?string $state): string => $state === 'admin_bypass' ? 'warning' : 'gray'),
+
                 TextColumn::make('created_at')
                     ->label('Created')
                     ->dateTime('M j, Y g:i A')
@@ -140,6 +146,11 @@ class QuickScanResource extends Resource
                         'scanned' => 'Scanned',
                         'error' => 'Error',
                     ]),
+                SelectFilter::make('source')
+                    ->options([
+                        'admin_bypass' => 'Internal QA',
+                    ])
+                    ->label('Source'),
             ]);
     }
 

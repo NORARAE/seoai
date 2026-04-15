@@ -179,6 +179,12 @@ footer{border-top:1px solid var(--border);padding:28px 48px;display:flex;flex-di
           window.location.href = resultUrl + '?session_id=' + encodeURIComponent(sessionId) + '&scan_id=' + scanId;
           return;
         }
+        if (data.status === 'error') {
+          statusEl.innerHTML = 'Something went wrong with your scan. <a href="' + resultUrl + '?session_id=' + encodeURIComponent(sessionId) + '&scan_id=' + scanId + '">Try loading results</a> or contact <a href="mailto:hello@seoaico.com">hello@seoaico.com</a>.';
+          statusEl.classList.add('error');
+          document.getElementById('spinner').style.display = 'none';
+          return;
+        }
         if (attempts >= maxAttempts) {
           statusEl.innerHTML = 'Taking longer than expected. <a href="' + resultUrl + '?session_id=' + encodeURIComponent(sessionId) + '&scan_id=' + scanId + '">Refresh manually</a> or contact <a href="mailto:hello@seoaico.com">hello@seoaico.com</a>.';
           statusEl.classList.add('error');

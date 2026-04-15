@@ -36,7 +36,7 @@ p{font-size:.96rem;color:var(--muted);max-width:440px;margin:0 auto 32px;line-he
   <p class="eyebrow">Payment Cancelled</p>
   <h1>Your scan wasn't<br><em>completed.</em></h1>
   <p>No charge was made. Head back and try again whenever you're ready — it only takes 60 seconds.</p>
-  <a href="{{ route('quick-scan.show') }}" class="btn">Try Again</a>
+  <a href="{{ route('quick-scan.show') }}{{ $scan ? '?url=' . urlencode($scan->url_input ?? $scan->url) . '&email=' . urlencode($scan->email) : '' }}" class="btn">Try Again</a>
   <a href="/" class="btn-ghost">Return Home</a>
 @include('components.tm-style')
 </body>

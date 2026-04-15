@@ -25,7 +25,7 @@
   --score: {{ $scan->score ?? 0 }};
 }
 html{font-size:18px;scroll-behavior:smooth}
-body{background:var(--bg);color:var(--ivory);font-family:'DM Sans',sans-serif;font-weight:300;line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+body{background:var(--bg);color:var(--ivory);font-family:'DM Sans',sans-serif;font-weight:300;line-height:1.55;-webkit-font-smoothing:antialiased;overflow-x:hidden}
 
 /* ── Nav ── */
 nav{position:fixed;top:0;left:0;right:0;z-index:200;display:flex;align-items:center;justify-content:space-between;padding:28px 64px;border-bottom:1px solid transparent;transition:all .4s}
@@ -58,9 +58,9 @@ nav.stuck{background:rgba(8,8,8,.95);backdrop-filter:blur(16px);border-color:var
 .result-url{
   font-size:.82rem;color:rgba(168,168,160,.48);
   font-family:'DM Sans',sans-serif;font-weight:300;
-  letter-spacing:.04em;margin-bottom:36px;
+  letter-spacing:.04em;margin-bottom:24px;
   max-width:560px;margin-left:auto;margin-right:auto;
-  overflow-wrap:break-word;
+  overflow-wrap:break-word;white-space:normal;word-break:normal;
 }
 
 /* ── Score display ── */
@@ -133,9 +133,9 @@ nav.stuck{background:rgba(8,8,8,.95);backdrop-filter:blur(16px);border-color:var
 .r-list{list-style:none;display:flex;flex-direction:column;gap:12px}
 .r-list-item{
   display:flex;align-items:flex-start;gap:14px;
-  padding:16px 18px;
+  padding:12px 14px;
   border:1px solid rgba(200,168,75,.07);
-  font-size:.92rem;line-height:1.65;
+  font-size:.92rem;line-height:1.45;word-break:normal;white-space:normal;
 }
 .r-list-item.issue{border-color:rgba(200,68,68,.18);background:rgba(200,68,68,.04)}
 .r-list-item.strength{border-color:rgba(74,140,110,.18);background:rgba(74,140,110,.04)}
@@ -160,7 +160,7 @@ nav.stuck{background:rgba(8,8,8,.95);backdrop-filter:blur(16px);border-color:var
   font-size:.64rem;letter-spacing:.24em;text-transform:uppercase;
   color:var(--gold);margin-bottom:10px;display:block;
 }
-.fix-text{font-size:.96rem;line-height:1.7;color:rgba(237,232,222,.88)}
+.fix-text{font-size:.96rem;line-height:1.55;color:rgba(237,232,222,.88);white-space:normal;word-break:normal}
 
 /* ── Upsell section ── */
 .upsell-section{
@@ -180,9 +180,9 @@ nav.stuck{background:rgba(8,8,8,.95);backdrop-filter:blur(16px);border-color:var
 }
 .upsell-hed em{font-style:italic;color:var(--gold)}
 .upsell-sub{
-  font-size:.96rem;color:rgba(168,168,160,.7);
-  max-width:540px;margin:0 auto 48px;
-  line-height:1.75;
+  font-size:.92rem;color:rgba(168,168,160,.7);
+  max-width:540px;margin:0 auto 36px;
+  line-height:1.5;white-space:normal;word-break:normal;
 }
 
 .upsell-grid{
@@ -190,14 +190,16 @@ nav.stuck{background:rgba(8,8,8,.95);backdrop-filter:blur(16px);border-color:var
   gap:20px;max-width:720px;margin:0 auto 32px;
 }
 .upsell-card{
-  background:rgba(14,13,9,.9);
-  border:1px solid rgba(200,168,75,.1);
-  padding:36px 30px;
+  background:rgba(18,16,14,.92);
+  border:1px solid rgba(200,168,75,.08);
+  padding:20px 18px;
   text-align:left;
   position:relative;
-  transition:border-color .3s,box-shadow .3s;
+  transition:all .2s ease;
 }
-.upsell-card:hover{border-color:rgba(200,168,75,.22);box-shadow:0 8px 32px rgba(0,0,0,.4)}
+@media(min-width:769px){
+  .upsell-card:hover{border-color:rgba(200,168,75,.22);box-shadow:0 8px 24px rgba(0,0,0,.45);transform:translateY(-4px)}
+}
 .upsell-card::before{
   content:'';position:absolute;top:0;left:0;right:0;height:1px;
   background:linear-gradient(90deg,transparent,rgba(200,168,75,.2),transparent);
@@ -220,14 +222,13 @@ nav.stuck{background:rgba(8,8,8,.95);backdrop-filter:blur(16px);border-color:var
 }
 .upsell-price sup{font-size:.9rem;vertical-align:top;margin-top:4px;color:rgba(200,168,75,.6)}
 .upsell-desc{
-  font-size:.84rem;color:var(--muted);line-height:1.7;
-  margin-bottom:22px;
+  font-size:.84rem;color:var(--muted);line-height:1.5;white-space:normal;word-break:normal;
+  margin-bottom:14px;
 }
 .upsell-cta{
   display:block;text-align:center;
-  font-size:.76rem;letter-spacing:.14em;text-transform:uppercase;
-  padding:14px 20px;text-decoration:none;
-  transition:all .3s;
+  font-size:.82rem;letter-spacing:.06em;text-transform:none;
+  padding:12px 18px;text-decoration:none;transition:all .2s ease;border-radius:6px
 }
 .upsell-card .upsell-cta{border:1px solid rgba(200,168,75,.22);color:var(--gold)}
 .upsell-card .upsell-cta:hover{background:rgba(200,168,75,.08);border-color:rgba(200,168,75,.4)}
@@ -265,14 +266,15 @@ footer{border-top:1px solid var(--border);padding:28px 48px;display:flex;flex-di
 
 /* ── Mobile ── */
 @media(max-width:768px){
-  nav{padding:14px 20px}
+  nav{padding:12px 16px}
   .nav-link{display:none}
-  .nav-btn{padding:10px 20px;font-size:.72rem}
-  .result-hero{padding:100px 24px 60px}
-  .result-body{padding:0 20px 60px}
+  .nav-btn{padding:8px 16px;font-size:.72rem}
+  .result-hero{padding:48px 20px 40px}
+  .result-body{padding:0 16px 48px}
   .upsell-grid{grid-template-columns:1fr}
-  .upsell-section{padding:48px 0 0}
-  footer{padding:24px 20px}
+  .upsell-section{padding:40px 0 0}
+  .upsell-hed{font-size:clamp(1.6rem,4vw,2.4rem)}
+  footer{padding:20px 16px}
 }
 </style>
 @include('partials.clarity')
@@ -369,7 +371,7 @@ footer{border-top:1px solid var(--border);padding:28px 48px;display:flex;flex-di
         <div class="upsell-name">Citation Builder</div>
         <div class="upsell-price"><sup>$</sup>249</div>
         <p class="upsell-desc">Full opportunity mapping, FAQ optimization, entity structure, internal linking plan, and actionable fixes delivered within two weeks.</p>
-        <a href="{{ route('onboarding.start') }}?plan=citation-builder&scan_id={{ $scan->id }}" class="upsell-cta">Get Citation Builder</a>
+        <a href="{{ route('onboarding.start') }}?plan=citation-builder&scan_id={{ $scan->id }}" class="upsell-cta">See how to improve this site</a>
       </div>
 
       <div class="upsell-card featured">
@@ -377,7 +379,7 @@ footer{border-top:1px solid var(--border);padding:28px 48px;display:flex;flex-di
         <div class="upsell-name">Authority Engine</div>
         <div class="upsell-price"><sup>$</sup>499</div>
         <p class="upsell-desc">Everything in Citation Builder plus AI-generated content structures, schema deployment, citation scoring system, and 4-month roadmap.</p>
-        <a href="{{ route('onboarding.start') }}?plan=authority-engine&scan_id={{ $scan->id }}" class="upsell-cta">Get Authority Engine</a>
+        <a href="{{ route('onboarding.start') }}?plan=authority-engine&scan_id={{ $scan->id }}" class="upsell-cta">Fix this for me</a>
       </div>
 
     </div>
@@ -397,13 +399,13 @@ footer{border-top:1px solid var(--border);padding:28px 48px;display:flex;flex-di
     </a>
   </div>
   @else
-  <div style="text-align:center;padding:40px 0 0;border-top:1px solid rgba(200,168,75,.1);margin-top:48px">
-    <p style="font-size:.66rem;letter-spacing:.24em;text-transform:uppercase;color:rgba(200,168,75,.55);margin-bottom:12px">Save your results</p>
-    <a href="{{ route('auth.google.redirect') }}" style="display:inline-flex;align-items:center;gap:10px;padding:14px 32px;background:var(--gold);color:#080808;font-size:.78rem;letter-spacing:.12em;text-transform:uppercase;text-decoration:none;transition:background .3s">
+  <div style="text-align:center;padding:32px 0 0;border-top:1px solid rgba(200,168,75,.1);margin-top:36px">  
+    <p style="font-size:.76rem;color:rgba(200,168,75,.55);margin-bottom:10px">Save your results</p>
+    <a href="{{ route('auth.google.redirect') }}?scan_id={{ $scan->id }}" style="display:inline-flex;align-items:center;gap:10px;padding:12px 28px;background:var(--gold);color:#080808;font-size:.86rem;letter-spacing:.02em;text-transform:none;text-decoration:none;transition:background .2s;border-radius:6px">
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 01-2.2 3.32v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.1z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18A10.96 10.96 0 001 12c0 1.77.42 3.45 1.18 4.93l3.66-2.84z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg>
       Save to Dashboard with Google
     </a>
-    <p style="font-size:.76rem;color:rgba(168,168,160,.4);margin-top:12px">Track your score, scan history, and get upgrade recommendations.</p>
+    <p style="font-size:.78rem;color:rgba(168,168,160,.6);margin-top:12px">Track your score, scan history, and access upgrade recommendations instantly.</p>
   </div>
   @endauth
 

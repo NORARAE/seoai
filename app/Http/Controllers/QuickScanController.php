@@ -317,8 +317,11 @@ class QuickScanController extends Controller
      * GET /quick-scan/cancelled
      * Show a cancelled payment page.
      */
-    public function cancelled()
+    public function cancelled(Request $request)
     {
-        return view('public.quick-scan-cancelled');
+        $scanId = (int) $request->query('scan_id', 0);
+        $scan = $scanId ? QuickScan::find($scanId) : null;
+
+        return view('public.quick-scan-cancelled', ['scan' => $scan]);
     }
 }

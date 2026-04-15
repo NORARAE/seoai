@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\QuickScan;
 use App\Models\UserProfile;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -13,11 +14,11 @@ class UserOnboardingController extends Controller
     {
         $user = auth()->user();
 
-        if (! $user->isApproved()) {
+        if (!$user->isApproved()) {
             return redirect()->route('pending-approval');
         }
 
-        if (! is_null($user->onboarding_completed_at)) {
+        if (!is_null($user->onboarding_completed_at)) {
             return redirect()->route('app.dashboard');
         }
 
@@ -28,19 +29,19 @@ class UserOnboardingController extends Controller
     {
         $user = auth()->user();
 
-        if (! $user->isApproved()) {
+        if (!$user->isApproved()) {
             return redirect()->route('pending-approval');
         }
 
         $validated = $request->validate([
-            'business_name'     => ['required', 'string', 'max:255'],
-            'website_url'       => ['nullable', 'url', 'max:500'],
-            'industry'          => ['required', 'string', 'max:255'],
-            'role_at_company'   => ['required', 'string', 'max:255'],
-            'primary_market'    => ['required', 'string', 'max:255'],
-            'services'          => ['nullable', 'array'],
-            'services.*'        => ['string', 'max:100'],
-            'top_goal'          => ['required', 'string', 'max:255'],
+            'business_name' => ['required', 'string', 'max:255'],
+            'website_url' => ['nullable', 'url', 'max:500'],
+            'industry' => ['required', 'string', 'max:255'],
+            'role_at_company' => ['required', 'string', 'max:255'],
+            'primary_market' => ['required', 'string', 'max:255'],
+            'services' => ['nullable', 'array'],
+            'services.*' => ['string', 'max:100'],
+            'top_goal' => ['required', 'string', 'max:255'],
             'biggest_challenge' => ['required', 'string', 'max:2000'],
         ]);
 
@@ -50,6 +51,17 @@ class UserOnboardingController extends Controller
         );
 
         $user->update(['onboarding_completed_at' => now()]);
+
+        // If the user came from a Quick Scan → OAuth flow, redirect to
+        // dashboard with the scan anchor so they see their results immediately.
+        $oauthScanId = (int) $request->session()->pull('oauth_scan_id', 0);
+        if ($oauthScanId) {
+            $scan = QuickScan::find($oauthScanId);
+            if ($scan && ($scan->user_id === $user->id || $scan->email === $user->email)) {
+                return redirect()->to(url('/dashboard') . '#ai-scans')
+                    ->with('scan_saved', 'Your scan has been saved');
+            }
+        }
 
         return redirect()->route('app.dashboard');
     }

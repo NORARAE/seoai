@@ -280,7 +280,7 @@ footer{border-top:1px solid var(--border);padding:28px 48px;display:flex;flex-di
           id="url"
           name="url"
           placeholder="yoursite.com"
-          value="{{ old('url') }}"
+          value="{{ old('url', request('url')) }}"
           autocomplete="url"
           autocorrect="off"
           autocapitalize="off"
@@ -300,7 +300,7 @@ footer{border-top:1px solid var(--border);padding:28px 48px;display:flex;flex-di
           id="email"
           name="email"
           placeholder="you@yoursite.com"
-          value="{{ old('email') }}"
+          value="{{ old('email', request('email')) }}"
           autocomplete="email"
           required
         >
