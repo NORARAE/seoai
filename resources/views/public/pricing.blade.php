@@ -132,13 +132,13 @@ html{scroll-behavior:smooth;font-size:18px}
 body{background:var(--bg);color:var(--ivory);font-family:'DM Sans',sans-serif;font-weight:300;line-height:1.75;min-height:100vh}
 
 /* ── Logo (color-locked — prevents :visited blue bleed) ── */
-.logo,.logo:visited,.logo:hover,.logo:active,.logo:focus{display:inline-flex;align-items:baseline;text-decoration:none;line-height:1;color:inherit}
+.logo,.logo:visited,.logo:hover,.logo:active,.logo:focus{display:inline-flex;align-items:baseline;text-decoration:none;line-height:1;color:inherit;padding:8px 4px;margin:-8px -4px;position:relative;z-index:1}
 .logo-seo,.logo-seo:visited,.logo-seo:link{font-family:'DM Sans',sans-serif;font-weight:300;font-size:1.2rem;letter-spacing:.06em;color:#f5f0e8}
 .logo-ai,.logo-ai:visited,.logo-ai:link{font-family:'Cormorant Garamond',serif;font-weight:600;font-size:1.42rem;color:#c8a84b;letter-spacing:.02em;display:inline-block;transform:skewX(-11deg) translateY(-1px)}
 .logo-co,.logo-co:visited,.logo-co:link{font-family:'DM Sans',sans-serif;font-weight:300;font-size:1.05rem;color:rgba(255,255,255,.45);letter-spacing:.04em}
 
 /* ── Nav ── */
-nav{position:sticky;top:0;z-index:200;display:flex;align-items:center;justify-content:space-between;padding:22px 48px;border-bottom:1px solid rgba(200,168,75,.07);background:rgba(8,8,8,.97);backdrop-filter:blur(8px)}
+#nav{position:sticky;top:0;z-index:200;display:flex;align-items:center;justify-content:space-between;padding:22px 48px;border-bottom:1px solid rgba(200,168,75,.07);background:rgba(8,8,8,.97);backdrop-filter:blur(8px)}
 .nav-right{display:flex;align-items:center;gap:26px}
 .nav-link{font-size:.76rem;letter-spacing:.14em;text-transform:uppercase;color:rgba(168,168,160,.72);text-decoration:none;transition:color .3s;position:relative;padding-bottom:2px;font-weight:400}
 .nav-link::after{content:'';position:absolute;bottom:0;left:0;right:100%;height:1px;background:var(--gold);transition:right .3s cubic-bezier(.23,1,.32,1)}
@@ -267,7 +267,7 @@ footer{border-top:1px solid rgba(200,168,75,.07);padding:32px 48px;display:flex;
 .footer-links a:hover{color:var(--gold)}
 
 @media(max-width:700px){
-  nav{padding:18px 24px}.nav-right{gap:22px}
+  #nav{padding:18px 24px}.nav-right{gap:22px}
   .wrap{padding:0 24px}
   .pricing-hero{padding:64px 0 56px}
   .compare-table{font-size:.82rem}
@@ -276,7 +276,7 @@ footer{border-top:1px solid rgba(200,168,75,.07);padding:32px 48px;display:flex;
   footer{padding:28px 24px;flex-direction:column;align-items:flex-start}
 }
 @media(max-width:560px){
-  nav{flex-wrap:wrap;gap:10px;justify-content:center}
+  #nav{flex-wrap:wrap;gap:10px;justify-content:center}
   .nav-right{gap:10px;flex-wrap:wrap;justify-content:center}
   .nav-link{font-size:.68rem;letter-spacing:.1em}
   .nav-btn{font-size:.64rem;padding:8px 18px}

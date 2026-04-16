@@ -1,7 +1,7 @@
 /* ══ Shared Public Nav CSS ══ */
 /* Logo — hard-locked branding */
 .logo{display:inline-flex;align-items:baseline;text-decoration:none;line-height:1;color:inherit}
-.logo,.logo:visited,.logo:hover,.logo:active,.logo:focus{text-decoration:none}
+.logo,.logo:visited,.logo:hover,.logo:active,.logo:focus{text-decoration:none;padding:8px 4px;margin:-8px -4px;position:relative;z-index:1}
 .logo-seo{font-family:'DM Sans',sans-serif;font-weight:300;font-size:1.2rem;letter-spacing:.06em;color:#f5f0e8;color:rgba(245,240,232,1)}
 .logo-seo:visited,.logo-seo:link{color:#f5f0e8}
 .logo-ai{font-family:'Cormorant Garamond',serif;font-weight:600;font-size:1.42rem;color:#c8a84b;letter-spacing:.02em;display:inline-block;transform:skewX(-11deg) translateY(-1px)}
@@ -10,8 +10,8 @@
 .logo-co:visited,.logo-co:link{color:rgba(255,255,255,.45)}
 
 /* Nav container */
-nav{position:fixed;top:0;left:0;right:0;z-index:200;display:flex;align-items:center;justify-content:space-between;padding:28px 64px;border-bottom:1px solid transparent;transition:all .4s}
-nav.stuck{background:rgba(8,8,8,.95);backdrop-filter:blur(16px);border-color:var(--border);padding:16px 64px}
+#nav{position:fixed;top:0;left:0;right:0;z-index:200;display:flex;align-items:center;justify-content:space-between;padding:28px 64px;border-bottom:1px solid transparent;transition:all .4s}
+#nav.stuck{background:rgba(8,8,8,.95);backdrop-filter:blur(16px);border-color:var(--border);padding:16px 64px}
 
 /* Nav links */
 .nav-right{display:flex;align-items:center;gap:26px}
@@ -26,8 +26,8 @@ nav.stuck{background:rgba(8,8,8,.95);backdrop-filter:blur(16px);border-color:var
 
 /* 1200px breakpoint */
 @media(max-width:1200px){
-  nav{padding:20px 36px}
-  nav.stuck{padding:14px 36px}
+  #nav{padding:20px 36px}
+  #nav.stuck{padding:14px 36px}
   .nav-right{gap:20px}
   .nav-link{font-size:.7rem;letter-spacing:.12em}
   .nav-btn{font-size:.68rem;letter-spacing:.12em;padding:10px 22px;min-height:38px}

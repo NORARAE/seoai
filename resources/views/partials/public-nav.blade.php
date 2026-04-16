@@ -1,6 +1,6 @@
 {{-- Shared public navigation — single source of truth --}}
 <nav id="nav" aria-label="Site navigation">
-  <a href="/" class="logo" aria-label="SEO AI Co home">
+  <a href="/" class="logo" aria-label="SEO AI Co — home">
     <span class="logo-seo">SEO</span><span class="logo-ai">AI</span><span class="logo-co">co</span>
   </a>
   <div class="nav-right">

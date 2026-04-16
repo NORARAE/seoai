@@ -47,7 +47,7 @@ body::after{
 }
 
 /* ── Logo (color-locked — prevents :visited blue bleed) ── */
-.logo,.logo:visited,.logo:hover,.logo:active,.logo:focus{display:inline-flex;align-items:baseline;text-decoration:none;line-height:1;color:inherit}
+.logo,.logo:visited,.logo:hover,.logo:active,.logo:focus{display:inline-flex;align-items:baseline;text-decoration:none;line-height:1;color:inherit;padding:8px 4px;margin:-8px -4px;position:relative;z-index:1}
 .logo-seo,.logo-seo:visited,.logo-seo:link{font-family:'DM Sans',sans-serif;font-weight:300;font-size:1.2rem;letter-spacing:.06em;color:#f5f0e8}
 .logo-ai,.logo-ai:visited,.logo-ai:link{
   font-family:'Cormorant Garamond',serif;font-weight:600;font-size:1.42rem;
@@ -57,12 +57,12 @@ body::after{
 .logo-co,.logo-co:visited,.logo-co:link{font-family:'DM Sans',sans-serif;font-weight:300;font-size:1.05rem;color:rgba(255,255,255,.45);letter-spacing:.04em}
 
 /* ── Nav ── */
-nav{
+#nav{
   position:fixed;top:0;left:0;right:0;z-index:200;
   display:flex;align-items:center;justify-content:space-between;
   padding:28px 64px;border-bottom:1px solid transparent;transition:all .4s;
 }
-nav.stuck{background:rgba(8,8,8,.95);backdrop-filter:blur(16px);border-color:var(--border);padding:16px 64px}
+#nav.stuck{background:rgba(8,8,8,.95);backdrop-filter:blur(16px);border-color:var(--border);padding:16px 64px}
 .nav-right{display:flex;align-items:center;gap:26px}
 .nav-link{font-size:.76rem;letter-spacing:.14em;text-transform:uppercase;color:rgba(168,168,160,.72);text-decoration:none;transition:color .3s;position:relative;padding-bottom:2px;font-weight:400}
 .nav-link::after{content:'';position:absolute;bottom:0;left:0;right:100%;height:1px;background:var(--gold);transition:right .3s cubic-bezier(.23,1,.32,1)}
@@ -1603,8 +1603,8 @@ footer{border-top:1px solid var(--border);padding:36px 64px;display:flex;flex-di
 
 /* ── Large tablet / small desktop nav compact ── */
 @media(max-width:1200px){
-  nav{padding:20px 36px}
-  nav.stuck{padding:14px 36px}
+  #nav{padding:20px 36px}
+  #nav.stuck{padding:14px 36px}
   .nav-right{gap:20px}
   .nav-link{font-size:.7rem;letter-spacing:.12em}
   .nav-btn{font-size:.68rem;letter-spacing:.12em;padding:10px 22px;min-height:38px}
@@ -1818,7 +1818,7 @@ footer{border-top:1px solid var(--border);padding:36px 64px;display:flex;flex-di
 @media(max-width:900px){
   html{font-size:17px;-webkit-text-size-adjust:100%}
   body{-webkit-overflow-scrolling:touch}
-  nav{padding:14px 20px}nav.stuck{padding:10px 20px}.nav-link{display:none}
+  #nav{padding:14px 20px}#nav.stuck{padding:10px 20px}.nav-link{display:none}
   .nav-btn{display:none}
   .nav-btn.nav-book{display:inline-flex;font-size:.68rem;padding:9px 18px;letter-spacing:.1em}
   .nav-account{display:none}
