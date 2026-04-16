@@ -3153,7 +3153,7 @@ body::before{
     @auth
       <a href="/dashboard" class="nav-btn nav-account" style="background:linear-gradient(90deg,var(--gold),var(--gold-lt));color:var(--deep);box-shadow:0 2px 12px 0 rgba(200,168,75,.13);font-weight:500;letter-spacing:.18em;"><span class="nav-account-full">My Dashboard</span><span class="nav-account-short">Dashboard</span></a>
     @else
-      <a href="/admin/login" class="nav-btn nav-account" style="background:linear-gradient(90deg,var(--gold),var(--gold-lt));color:var(--deep);box-shadow:0 2px 12px 0 rgba(200,168,75,.13);font-weight:500;letter-spacing:.18em;"><span class="nav-account-full">Portal</span><span class="nav-account-short">Portal</span></a>
+      <a href="/login" class="nav-btn nav-account" style="background:linear-gradient(90deg,var(--gold),var(--gold-lt));color:var(--deep);box-shadow:0 2px 12px 0 rgba(200,168,75,.13);font-weight:500;letter-spacing:.18em;"><span class="nav-account-full">Sign In</span><span class="nav-account-short">Sign In</span></a>
     @endauth
   </div>
   <button class="nav-hamburger" id="navHamburger" aria-label="Open menu" aria-expanded="false" aria-controls="navMenu">
@@ -3191,8 +3191,8 @@ body::before{
     @auth
       <a href="/dashboard" class="nm-portal" data-menu-close>My Dashboard</a>
     @else
-      <a href="/admin/login" class="nm-link" data-menu-close>Portal</a>
-      <a href="/admin/login" class="nm-link nm-muted" data-menu-close>Sign In</a>
+      <a href="/login" class="nm-link" data-menu-close>Sign In</a>
+      <a href="/login" class="nm-link nm-muted" data-menu-close>Portal</a>
     @endauth
 
   </div>
@@ -3253,42 +3253,21 @@ body::before{
   <p class="hero-gold-accent">Instant AI citation readiness score in 60 seconds.</p>
   <div class="hero-actions" style="opacity:0;animation:up .85s .52s forwards">
     <a href="{{ route('quick-scan.show') }}" class="btn-primary">See Where You Stand — $2</a>
-    <a href="#quick-scan" class="btn-ghost">See an Example</a>
+    <a href="#proof" class="btn-ghost">See an Example</a>
   </div>
 
 </section>
 
 <div class="hero-transition">
-  <a href="#how" class="hero-scroll-label" style="text-decoration:none">See how it works</a>
   <div class="hero-rule-shimmer"></div>
   <div class="hero-scroll-arrow"></div>
 </div>
 
-<!-- ════════════ VALUE OUTCOMES ════════════ -->
-<section class="how-strip r" aria-label="What you discover">
-  <p class="how-strip-hed">What Your Scan Reveals</p>
-  <div class="how-strip-bullets">
-    <div class="how-strip-item">
-      <span class="how-strip-dot" aria-hidden="true"></span>
-      <span class="how-strip-label"><strong style="color:var(--ivory)">AI Visibility Confidence</strong> &mdash; how likely AI systems are to cite your business right now</span>
-    </div>
-    <div class="how-strip-item">
-      <span class="how-strip-dot" aria-hidden="true"></span>
-      <span class="how-strip-label"><strong style="color:var(--ivory)">Structural Readiness</strong> &mdash; whether your site meets the conditions AI requires for citation</span>
-    </div>
-    <div class="how-strip-item">
-      <span class="how-strip-dot" aria-hidden="true"></span>
-      <span class="how-strip-label"><strong style="color:var(--ivory)">Expansion Opportunity</strong> &mdash; where untapped visibility exists across your market</span>
-    </div>
-  </div>
-  <p class="how-strip-sub">From a single scan &mdash; a clear picture of where you stand and where the opportunity is.</p>
-</section>
-
-<!-- ════════════ QUICK SCAN CTA ════════════ -->
-<section id="quick-scan" class="qs-mid r" aria-label="AI Citation Quick Scan">
-  <p class="qs-mid-eyebrow">Not sure where you stand?</p>
-  <h2 class="qs-mid-hed">Find out if AI would cite your site&nbsp;&#8212; <em>instantly</em></h2>
-  <p class="qs-mid-sub">Our $2 scan maps structural readiness across your discovered site footprint and returns an instant 0&#8211;100 score with a prioritized signal.</p>
+<!-- ════════════ PHASE 2 — IMMEDIATE VISUAL PROOF ════════════ -->
+<section id="proof" class="qs-mid r" aria-label="AI Citation Quick Scan">
+  <p class="qs-mid-eyebrow">Instant visibility score</p>
+  <h2 class="qs-mid-hed">See exactly where you stand&nbsp;&#8212; <em>in seconds</em></h2>
+  <p class="qs-mid-sub">Enter your URL. Get a 0–100 AI citation readiness score with your top structural gaps and fastest correction — all for $2.</p>
 
   <!-- Scan result preview mockup -->
   <div class="qs-preview r">
@@ -3328,36 +3307,80 @@ body::before{
   <p style="font-size:.64rem;letter-spacing:.1em;text-transform:uppercase;color:rgba(168,168,160,.3);margin-top:14px">Results in seconds &nbsp;&middot;&nbsp; Sent to your inbox &nbsp;&middot;&nbsp; No account required</p>
 </section>
 
-<!-- ════════════ HOW IT WORKS — SCAN FLOW ════════════ -->
-<section class="feat-grid r" aria-label="How the scan and upgrade flow works">
-  <p class="feat-grid-eye">From Scan to System</p>
-  <h2 class="feat-grid-hed">One scan. Five levels of <em>expanding control.</em></h2>
+<!-- ════════════ PHASE 3 — DOCTRINE ════════════ -->
+<section class="how-strip r" aria-label="The shift">
+  <p class="how-strip-hed">The Rules Have Changed</p>
+  <div class="how-strip-bullets">
+    <div class="how-strip-item">
+      <span class="how-strip-dot" aria-hidden="true"></span>
+      <span class="how-strip-label"><strong style="color:var(--ivory)">Search engines rank pages.</strong> AI systems choose answers. The selection criteria are different.</span>
+    </div>
+    <div class="how-strip-item">
+      <span class="how-strip-dot" aria-hidden="true"></span>
+      <span class="how-strip-label"><strong style="color:var(--ivory)">This is not SEO.</strong> It&rsquo;s retrieval infrastructure &mdash; the structural layer that determines whether AI can find, trust, and cite your business.</span>
+    </div>
+    <div class="how-strip-item">
+      <span class="how-strip-dot" aria-hidden="true"></span>
+      <span class="how-strip-label"><strong style="color:var(--ivory)">Most sites aren&rsquo;t built for this.</strong> The businesses AI cites are the ones who structured their content for it. Everyone else is invisible.</span>
+    </div>
+  </div>
+  <p class="how-strip-sub">Your scan measures exactly how ready your site is for this new landscape.</p>
+</section>
+
+<!-- ════════════ PHASE 4 — SYSTEM ABSTRACTION ════════════ -->
+<section class="feat-grid r" aria-label="Four layers of AI visibility">
+  <p class="feat-grid-eye">How the System Works</p>
+  <h2 class="feat-grid-hed">Four layers. One compounding <em>advantage.</em></h2>
   <div class="feat-cards">
     <div class="feat-card">
       <div class="feat-card-icon">&#x25CE;</div>
-      <p class="feat-card-title">Citation Scan</p>
-      <p class="feat-card-body">Enter your URL and see where you stand. One scan reveals your citation readiness across key structural signals — in seconds.</p>
-      <span class="feat-card-score">$2</span>
+      <p class="feat-card-title">Signals</p>
+      <p class="feat-card-body">Structured data, entity markers, and machine-readable context that tell AI systems your business exists and what it does.</p>
     </div>
     <div class="feat-card">
       <div class="feat-card-icon">&#x25A4;</div>
-      <p class="feat-card-title">Signal Expansion</p>
-      <p class="feat-card-body">Complete signal mapping with visibility analysis, every gap ranked by business impact, and exportable intelligence for your team.</p>
-      <span class="feat-card-score">$99</span>
+      <p class="feat-card-title">Structure</p>
+      <p class="feat-card-body">The content architecture that makes your answers retrievable &mdash; organized so AI can find, parse, and cite specific claims.</p>
     </div>
     <div class="feat-card">
       <div class="feat-card-icon">&#x2197;</div>
-      <p class="feat-card-title">Structural Leverage</p>
-      <p class="feat-card-body">Your complete action sequence — every correction prioritized, every action sequenced, opportunity sized. The core product.</p>
-      <span class="feat-card-score">$249</span>
+      <p class="feat-card-title">Coverage</p>
+      <p class="feat-card-body">Expanding your citation footprint across every service, location, and query type where your market searches for answers.</p>
     </div>
     <div class="feat-card">
       <div class="feat-card-icon">&#x7B;&#x7D;</div>
-      <p class="feat-card-title">System Activation</p>
-      <p class="feat-card-body">Competitive positioning, market mapping, and your complete coverage architecture across 50+ pages of your site footprint.</p>
-      <span class="feat-card-score">$489+</span>
+      <p class="feat-card-title">Market</p>
+      <p class="feat-card-body">Full infrastructure deployment &mdash; your citation system built, maintained, and reinforced across every surface that matters.</p>
     </div>
   </div>
+</section>
+
+<!-- ════════════ PHASE 5 — MID-PAGE CTA ════════════ -->
+<div class="pricing-cta r">
+  <div class="pricing-cta-actions">
+    <a href="{{ route('quick-scan.show') }}" class="btn-primary">Run Your Scan — $2</a>
+  </div>
+  <p class="pricing-cta-meta">Instant score &nbsp;&middot;&nbsp; No account needed &nbsp;&middot;&nbsp; One URL, 60 seconds</p>
+</div>
+
+<!-- ════════════ PHASE 6 — TIER FRAMING ════════════ -->
+<section class="how-strip r" aria-label="Upgrade progression">
+  <p class="how-strip-hed">One Scan. Multiple Levels of Control.</p>
+  <div class="how-strip-bullets">
+    <div class="how-strip-item">
+      <span class="how-strip-dot" aria-hidden="true"></span>
+      <span class="how-strip-label"><strong style="color:var(--ivory)">Some stop at insight.</strong> The $2 scan shows where you stand. That alone is worth knowing.</span>
+    </div>
+    <div class="how-strip-item">
+      <span class="how-strip-dot" aria-hidden="true"></span>
+      <span class="how-strip-label"><strong style="color:var(--ivory)">Some build leverage.</strong> Expand your scan into a full signal map, structural plan, and action sequence.</span>
+    </div>
+    <div class="how-strip-item">
+      <span class="how-strip-dot" aria-hidden="true"></span>
+      <span class="how-strip-label"><strong style="color:var(--ivory)">Some take the market.</strong> Deploy the full system &mdash; infrastructure built, maintained, and scaled for dominance.</span>
+    </div>
+  </div>
+  <p class="how-strip-sub">Every level builds on the last. Your data carries forward. No wasted steps.</p>
 </section>
 
 <!-- ════════════ PRICING ════════════ -->
@@ -3554,81 +3577,6 @@ body::before{
 
 <div style="margin:0 auto;width:60%;max-width:540px;height:1px;background:rgba(200,168,75,.06)"></div>
 
-<!-- ════════════ SERVICE SUPPORT ════════════ -->
-<div class="svc-support r">
-  <p class="ss-eye">Full-Spectrum Capability</p>
-  <h2 class="ss-hed">Every capability your market requires.</h2>
-  <p class="ss-intro">One agreement. One team. Every capability your market requires &mdash; search, AI visibility, and the full infrastructure to scale with you.</p>
-  <div class="ss-grid">
-
-    <div class="ss-item">
-      {{-- magnifier: SEO / search --}}
-      <svg class="ss-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
-      <span class="ss-label">Programmatic SEO &amp; Market Expansion</span>
-    </div>
-
-    <div class="ss-item">
-      {{-- code brackets: web development --}}
-      <svg class="ss-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
-      <span class="ss-label">Website Development &amp; Conversion Architecture</span>
-    </div>
-
-    <div class="ss-item">
-      {{-- trending arrow: paid media growth --}}
-      <svg class="ss-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg>
-      <span class="ss-label">Paid Media Strategy &amp; Campaign Growth</span>
-    </div>
-
-    <div class="ss-item">
-      {{-- precision crosshair: brand / market delivery --}}
-      <svg class="ss-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
-      <span class="ss-label">Brand, Creative Direction &amp; Market Delivery</span>
-    </div>
-
-    <div class="ss-item">
-      {{-- pen/edit: WordPress management --}}
-      <svg class="ss-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
-      <span class="ss-label">WordPress Management &amp; Technical Support</span>
-    </div>
-
-    <div class="ss-item">
-      {{-- broadcast arcs: content / search signals --}}
-      <svg class="ss-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="2"/><path d="M8.5 9a5 5 0 0 0 0 6"/><path d="M15.5 9a5 5 0 0 1 0 6"/><path d="M5 6A11 11 0 0 0 5 18"/><path d="M19 6a11 11 0 0 1 0 12"/></svg>
-      <span class="ss-label">Content Strategy &amp; Search Signal Architecture</span>
-    </div>
-
-    <div class="ss-item">
-      {{-- schema CPU grid: structured data / technical SEO --}}
-      <svg class="ss-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="4" width="16" height="16" rx="2"/><rect x="9" y="9" width="6" height="6"/><path d="M9 1v3M15 1v3M9 20v3M15 20v3M1 9h3M1 15h3M20 9h3M20 15h3"/></svg>
-      <span class="ss-label">Structured Data &amp; Search Signals</span>
-    </div>
-
-    <div class="ss-item">
-      {{-- bar chart: performance / market tracking --}}
-      <svg class="ss-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
-      <span class="ss-label">Performance Intelligence &amp; Market Tracking</span>
-    </div>
-
-  </div>
-  <p class="ss-note">One agreement. Every capability. Nothing outsourced, nothing disconnected.</p>
-</div>
-
-<!-- ════════════ PRICING CTA ════════════ -->
-<div class="pricing-cta r">
-  <div class="pricing-cta-actions">
-    <a href="{{ route('quick-scan.show') }}" class="btn-primary">See Where You Stand — $2</a>
-  </div>
-  <p class="pricing-cta-meta">No account needed &nbsp;&middot;&nbsp; Results in seconds &nbsp;&middot;&nbsp; Expand any time</p>
-  <p class="pricing-cta-trust">$2 &rarr; $99 &rarr; $249 &rarr; $489+ &rarr; $4,799+ &nbsp;&middot;&nbsp; Your data carries forward</p>
-</div>
-
-<!-- ════════════ FINAL CLOSE ════════════ -->
-<div class="final-close r">
-  <p class="fc-main">Your market will be claimed.</p>
-  <p class="fc-question">The only question is — by whom.</p>
-  <p class="fc-tagline">First to structure. First to deploy. First to be cited.</p>
-</div>
-
 <!-- ════════════ CONTACT ════════════ -->
 <section id="contact">
   <div class="contact-inner">
@@ -3722,7 +3670,7 @@ body::before{
   </div>
 </section>
 
-<!-- ════════════ FINAL CLOSING CTA ════════════ -->
+<!-- ════════════ FINAL CLOSING CTA — DUAL SPLIT ════════════ -->
 <section class="fcc r" aria-label="Start your market expansion">
   <canvas class="fcc-canvas" id="fccCanvas" aria-hidden="true"></canvas>
   <div class="fcc-inner">
@@ -3731,16 +3679,24 @@ body::before{
       <span class="fcc-hed-1">The territory will be owned.</span>
       <span class="fcc-hed-2">The only question is by whom.</span>
     </h2>
-    <p class="fcc-sub">Markets are structured, expanded, and secured over time.<br>Early positioning establishes long-term visibility.</p>
-    <span class="fcc-gold">First to structure. First to scale.</span>
-    <p class="fcc-micro">Expansion moves continuously. Entry is guided.</p>
+    <p class="fcc-sub">Start with a scan. Or skip ahead and deploy the full system.</p>
+    <span class="fcc-gold">First to structure. First to scale. First to be cited.</span>
     <span class="fcc-rule" aria-hidden="true"></span>
-    <div class="fcc-actions">
-      <a href="{{ route('quick-scan.show') }}" class="fcc-primary" onclick="if(typeof gtag==='function')gtag('event','cta_click',{cta_location:'final_close',cta_label:'run_scan'});">See Where You Stand — $2</a>
-      <a href="#offer" class="fcc-secondary">View Pricing</a>
+    <div class="fcc-actions" style="display:flex;gap:18px;flex-wrap:wrap;justify-content:center;align-items:stretch">
+      <div style="flex:1;min-width:220px;max-width:340px;background:rgba(200,168,75,.06);border:1px solid rgba(200,168,75,.10);border-radius:10px;padding:28px 24px;text-align:center">
+        <p style="font-size:.62rem;letter-spacing:.14em;text-transform:uppercase;color:rgba(168,168,160,.48);margin-bottom:6px">Start here</p>
+        <p style="font-size:1.04rem;color:var(--ivory);font-family:var(--serif);margin-bottom:16px">See where you stand</p>
+        <a href="{{ route('quick-scan.show') }}" class="fcc-primary" onclick="if(typeof gtag==='function')gtag('event','cta_click',{cta_location:'final_close',cta_label:'run_scan'});">Run Your Scan — $2</a>
+        <p style="font-size:.64rem;letter-spacing:.08em;color:rgba(168,168,160,.3);margin-top:10px">Results in seconds &middot; No account needed</p>
+      </div>
+      <div style="flex:1;min-width:220px;max-width:340px;background:rgba(106,175,144,.04);border:1px solid rgba(106,175,144,.10);border-radius:10px;padding:28px 24px;text-align:center">
+        <p style="font-size:.62rem;letter-spacing:.14em;text-transform:uppercase;color:rgba(168,168,160,.48);margin-bottom:6px">Skip ahead</p>
+        <p style="font-size:1.04rem;color:var(--ivory);font-family:var(--serif);margin-bottom:16px">Deploy the full system</p>
+        <a href="{{ route('onboarding.start', ['tier' => 'dominance']) }}" class="fcc-secondary" style="background:rgba(106,175,144,.12);color:var(--green);border-color:var(--green)" onclick="if(typeof gtag==='function')gtag('event','cta_click',{cta_location:'final_close',cta_label:'deploy_system'});">Start Market Control</a>
+        <p style="font-size:.64rem;letter-spacing:.08em;color:rgba(168,168,160,.3);margin-top:10px">Guided onboarding &middot; Strategy call included</p>
+      </div>
     </div>
     <p class="fcc-reassure">Guided entry.&ensp;Structured rollout.&ensp;Full support.</p>
-    <p class="fcc-wait">Most businesses wait.<br>Some position early.<br><em>A few own their market.</em></p>
   </div>
 </section>
 
