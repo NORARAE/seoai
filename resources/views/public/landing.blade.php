@@ -1819,6 +1819,7 @@ footer{border-top:1px solid var(--border);padding:36px 64px;display:flex;flex-di
   body{-webkit-overflow-scrolling:touch}
   nav{padding:14px 20px}nav.stuck{padding:10px 20px}.nav-link{display:none}
   .nav-btn{display:none}
+  .nav-btn.nav-book{display:inline-flex;font-size:.68rem;padding:9px 18px;letter-spacing:.1em}
   .nav-account{display:none}
   .nav-hamburger{display:flex}
   #hero{padding:88px 24px 60px}
@@ -3148,7 +3149,7 @@ body::before{
   </a>
   <div class="nav-right">
     <a href="/how-it-works" class="nav-link">How It Works</a>
-    <a href="/book" class="nav-btn nav-book">Book</a>
+    <a href="{{ route('quick-scan.show') }}" class="nav-btn nav-book">Run Scan</a>
     @auth
       <a href="/dashboard" class="nav-btn nav-account" style="background:linear-gradient(90deg,var(--gold),var(--gold-lt));color:var(--deep);box-shadow:0 2px 12px 0 rgba(200,168,75,.13);font-weight:500;letter-spacing:.18em;"><span class="nav-account-full">My Dashboard</span><span class="nav-account-short">Dashboard</span></a>
     @else
@@ -3173,8 +3174,8 @@ body::before{
 
     {{-- GET STARTED --}}
     <div class="nm-group"><span class="nm-group-label">Get Started</span></div>
-    <a href="{{ route('onboarding.start') }}" class="nm-link nm-featured" data-menu-close>Check Availability &nbsp;&rarr;</a>
-    <a href="/book" class="nm-link" data-menu-close>Book a Session</a>
+    <a href="{{ route('quick-scan.show') }}" class="nm-link nm-featured" data-menu-close>Run a $2 Scan &nbsp;&rarr;</a>
+    <a href="{{ route('pricing') }}" class="nm-link" data-menu-close>View All Tiers</a>
 
     <div class="nm-divider"></div>
 
@@ -3251,8 +3252,8 @@ body::before{
   </div>
   <p class="hero-gold-accent">Instant AI citation readiness score in 60 seconds.</p>
   <div class="hero-actions" style="opacity:0;animation:up .85s .52s forwards">
-    <a href="{{ route('quick-scan.show') }}" class="btn-primary">Run $2 Scan</a>
-    <a href="#quick-scan" class="btn-ghost">View Example Report</a>
+    <a href="{{ route('quick-scan.show') }}" class="btn-primary">See Where You Stand — $2</a>
+    <a href="#quick-scan" class="btn-ghost">See an Example</a>
   </div>
 
 </section>
@@ -3287,7 +3288,7 @@ body::before{
 <section id="quick-scan" class="qs-mid r" aria-label="AI Citation Quick Scan">
   <p class="qs-mid-eyebrow">Not sure where you stand?</p>
   <h2 class="qs-mid-hed">Find out if AI would cite your site&nbsp;&#8212; <em>instantly</em></h2>
-  <p class="qs-mid-sub">Our $2 scan checks 5 citation signals and returns an instant 0&#8211;100 AI Citation Score with a specific action to improve it.</p>
+  <p class="qs-mid-sub">Our $2 scan maps structural readiness across your discovered site footprint and returns an instant 0&#8211;100 score with a prioritized signal.</p>
 
   <!-- Scan result preview mockup -->
   <div class="qs-preview r">
@@ -3312,7 +3313,7 @@ body::before{
         <div class="qs-preview-check pass">Content depth sufficient</div>
       </div>
     </div>
-    <p class="qs-preview-footer">Fastest fix identified &mdash; estimated +20 points</p>
+    <p class="qs-preview-footer">Fastest correction identified &mdash; estimated +20 points</p>
   </div>
 
   <div class="qs-checks-row">
@@ -3323,768 +3324,41 @@ body::before{
     <span class="qs-check-pill">Content Depth</span>
   </div>
 
-  <a href="{{ route('quick-scan.show') }}" class="btn-cta r" style="display:inline-block;background:var(--gold);color:var(--bg);font-size:.72rem;font-weight:600;letter-spacing:.12em;text-transform:uppercase;text-decoration:none;padding:13px 38px">Run a $2 Quick Scan</a>
+  <a href="{{ route('quick-scan.show') }}" class="btn-cta r" style="display:inline-block;background:var(--gold);color:var(--bg);font-size:.72rem;font-weight:600;letter-spacing:.12em;text-transform:uppercase;text-decoration:none;padding:13px 38px">See Where You Stand — $2</a>
   <p style="font-size:.64rem;letter-spacing:.1em;text-transform:uppercase;color:rgba(168,168,160,.3);margin-top:14px">Results in seconds &nbsp;&middot;&nbsp; Sent to your inbox &nbsp;&middot;&nbsp; No account required</p>
 </section>
 
 <!-- ════════════ HOW IT WORKS — SCAN FLOW ════════════ -->
 <section class="feat-grid r" aria-label="How the scan and upgrade flow works">
   <p class="feat-grid-eye">From Scan to System</p>
-  <h2 class="feat-grid-hed">A clear path from <em>diagnosis to dominance</em></h2>
+  <h2 class="feat-grid-hed">One scan. Five levels of <em>expanding control.</em></h2>
   <div class="feat-cards">
     <div class="feat-card">
       <div class="feat-card-icon">&#x25CE;</div>
-      <p class="feat-card-title">Run Your Scan</p>
-      <p class="feat-card-body">Enter your URL and get an instant AI citation readiness score. See exactly where your visibility stands — in seconds.</p>
+      <p class="feat-card-title">Citation Scan</p>
+      <p class="feat-card-body">Enter your URL and see where you stand. One scan reveals your citation readiness across key structural signals — in seconds.</p>
       <span class="feat-card-score">$2</span>
     </div>
     <div class="feat-card">
       <div class="feat-card-icon">&#x25A4;</div>
-      <p class="feat-card-title">Get the Full Report</p>
-      <p class="feat-card-body">Unlock a complete diagnostic breakdown — category-level signals, expansion opportunities, and prioritized insights you can act on.</p>
-      <span class="feat-card-score">$79–$99</span>
+      <p class="feat-card-title">Signal Expansion</p>
+      <p class="feat-card-body">Complete signal mapping with visibility analysis, every gap ranked by business impact, and exportable intelligence for your team.</p>
+      <span class="feat-card-score">$99</span>
     </div>
     <div class="feat-card">
       <div class="feat-card-icon">&#x2197;</div>
-      <p class="feat-card-title">Follow the Plan</p>
-      <p class="feat-card-body">A structured optimization roadmap — deeper analysis, identified gaps, and a prioritized path to improve AI citation confidence.</p>
-      <span class="feat-card-score">$249–$689</span>
+      <p class="feat-card-title">Structural Leverage</p>
+      <p class="feat-card-body">Your complete action sequence — every correction prioritized, every action sequenced, opportunity sized. The core product.</p>
+      <span class="feat-card-score">$249</span>
     </div>
     <div class="feat-card">
       <div class="feat-card-icon">&#x7B;&#x7D;</div>
-      <p class="feat-card-title">Deploy the Full System</p>
-      <p class="feat-card-body">Complete infrastructure and execution — your entire market covered, structured for AI citation, and actively maintained.</p>
-      <span class="feat-card-score">$4,799+</span>
+      <p class="feat-card-title">System Activation</p>
+      <p class="feat-card-body">Competitive positioning, market mapping, and your complete coverage architecture across 50+ pages of your site footprint.</p>
+      <span class="feat-card-score">$489+</span>
     </div>
   </div>
 </section>
-
-<!-- ════════════ SYSTEM STRUCTURE ════════════ -->
-<section class="sys-struct r">
-  <div class="sys-struct-inner">
-
-    {{-- Left: domain expansion copy --}}
-    <div>
-      <p class="sys-eyebrow">Your Domain. Expanded.</p>
-      <h2 class="sys-hed">This is how your<br>domain takes position.<br><em>Built on your URL. Expanded across your market.</em></h2>
-      <p class="sys-gold-line">
-        <span class="sys-gold-phrase">Every service.</span>
-        <span class="sys-gold-phrase">Every city.</span>
-        <span class="sys-gold-phrase">Every search that matters.</span>
-      </p>
-      <p class="sys-sub">We build structured, hyper-local pages on your domain — so you appear where your competitors can’t.</p>
-      <div class="sys-clarity-block">
-        <p class="sys-cl-unit">We build on your domain.</p>
-        <p class="sys-cl-unit sys-cl-dim" style="margin-top:-14px">Not beside it.</p>
-        <p class="sys-cl-unit">One page. One service. One city.</p>
-        <p class="sys-cl-dim">That&#8217;s what modern search returns.</p>
-        <p class="sys-cl-unit">A homepage can&#8217;t rank for everything.</p>
-        <p class="sys-cl-dim" style="margin-top:-14px">A network that covers your entire market can.</p>
-        <p class="sys-cl-sub">Expanded across Google, ChatGPT, and modern search.</p>
-      </div>
-    </div>
-
-    {{-- Right: URL expansion card grid --}}
-    <div>
-      <div class="sys-city-grid r">
-
-        <div class="sys-city-card">
-          <div class="sys-city-name">Personal Injury Law</div>
-          <div class="sys-domain">client.com</div>
-          <ul class="sys-url-list">
-            <li class="sys-url-item">/personal-injury-lawyer-<span class="sys-url-loc">seattle</span></li>
-            <li class="sys-url-item">/car-accident-lawyer-<span class="sys-url-loc">seattle</span></li>
-            <li class="sys-url-item">/personal-injury-lawyer-<span class="sys-url-loc">alki</span></li>
-          </ul>
-        </div>
-
-        <div class="sys-city-card">
-          <div class="sys-city-name">Biohazard Cleanup</div>
-          <div class="sys-domain">client.com</div>
-          <ul class="sys-url-list">
-            <li class="sys-url-item">/biohazard-cleanup-<span class="sys-url-loc">olympia</span></li>
-            <li class="sys-url-item">/crime-scene-cleanup-<span class="sys-url-loc">lacey</span></li>
-            <li class="sys-url-item">/unattended-death-cleanup-<span class="sys-url-loc">tumwater</span></li>
-          </ul>
-        </div>
-
-        <div class="sys-city-card">
-          <div class="sys-city-name">HVAC Repair</div>
-          <div class="sys-domain">client.com</div>
-          <ul class="sys-url-list">
-            <li class="sys-url-item">/hvac-repair-<span class="sys-url-loc">bellevue</span></li>
-            <li class="sys-url-item">/ac-installation-<span class="sys-url-loc">redmond</span></li>
-            <li class="sys-url-item">/furnace-repair-<span class="sys-url-loc">kirkland</span></li>
-          </ul>
-        </div>
-
-        <div class="sys-city-card">
-          <div class="sys-city-name">Emergency Plumbing</div>
-          <div class="sys-domain">client.com</div>
-          <ul class="sys-url-list">
-            <li class="sys-url-item">/emergency-plumber-<span class="sys-url-loc">tacoma</span></li>
-            <li class="sys-url-item">/water-heater-repair-<span class="sys-url-loc">lakewood</span></li>
-            <li class="sys-url-item">/burst-pipe-repair-<span class="sys-url-loc">puyallup</span></li>
-          </ul>
-        </div>
-
-        <div class="sys-city-card">
-          <div class="sys-city-name">Cosmetic Dentistry</div>
-          <div class="sys-domain">client.com</div>
-          <ul class="sys-url-list">
-            <li class="sys-url-item">/cosmetic-dentist-<span class="sys-url-loc">portland</span></li>
-            <li class="sys-url-item">/teeth-whitening-<span class="sys-url-loc">beaverton</span></li>
-            <li class="sys-url-item">/dental-implants-<span class="sys-url-loc">hillsboro</span></li>
-          </ul>
-        </div>
-
-        <div class="sys-city-card">
-          <div class="sys-city-name">Roofing</div>
-          <div class="sys-domain">client.com</div>
-          <ul class="sys-url-list">
-            <li class="sys-url-item">/roof-replacement-<span class="sys-url-loc">denver</span></li>
-            <li class="sys-url-item">/roof-repair-<span class="sys-url-loc">aurora</span></li>
-            <li class="sys-url-item">/emergency-roofing-<span class="sys-url-loc">lakewood</span></li>
-          </ul>
-        </div>
-
-      </div>
-      <p class="sys-city-clarity r">Your domain &#8212; expanded across every search that matters.</p>
-    </div>
-
-  </div>
-</section>
-
-<div class="gold-rule"></div>
-
-<!-- ════════════ STEPS — PROCESS (TRANSITION) ════════════ -->
-<section id="how">
-  <div class="steps-section">
-    <div class="steps-wrap">
-      <p class="s-eye r">How It Works</p>
-      <h2 class="s-h r">Three steps to getting cited<br><em>everywhere your customers search.</em></h2>
-      <div class="steps-panel r">
-        <div class="steps-grid">
-          <div class="step">
-            <div class="step-n">01</div>
-            <div class="step-rule"></div>
-            <h3 class="step-title">We Map Your Market</h3>
-            <p class="step-desc">Identify every service, city, and coverage gap across your entire service area — before anything goes live.</p>
-          </div>
-          <div class="step">
-            <div class="step-n">02</div>
-            <div class="step-rule"></div>
-            <h3 class="step-title">We Deploy the<wbr> AI Citation Engine™</h3>
-            <p class="step-desc">Deploy structured pages directly into your existing site — built with schema, internal linking, and extraction-optimized content so AI systems cite you.</p>
-          </div>
-          <div class="step">
-            <div class="step-n">03</div>
-            <div class="step-rule"></div>
-            <h3 class="step-title">You Start Getting Cited</h3>
-            <p class="step-desc">Appear across Google, Bing, AI platforms, maps, and voice search &#8212; as the answer AI systems return to your customers.</p>
-          </div>
-        </div>
-      </div>
-      <div class="steps-trust r">
-        <p class="steps-trust-label">Visible Across Every Search Surface</p>
-        <div class="steps-surface-row">
-          <span class="steps-surface">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
-            Google
-          </span>
-          <span class="steps-surface">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
-            Bing
-          </span>
-          <span class="steps-surface">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
-            ChatGPT
-          </span>
-          <span class="steps-surface">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
-            Apple Maps
-          </span>
-          <span class="steps-surface">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg>
-            Voice Assistants
-          </span>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ════════════ DIFFERENTIATOR ════════════ -->
-<div class="commitment-note r">
-  <p class="cn-hed">Works with your existing site.<br><em>Or we rebuild it the right way.</em></p>
-  <p class="cn-aha">Your site isn&#8217;t the problem.<br>Your coverage is.</p>
-  <p class="cn-body">Search returns what it can find.<br>We give it every service, every city &#8212; matched to how your customers actually search.</p>
-  <p class="cn-surface">Structure over shortcuts.</p>
-</div>
-
-<div class="gold-rule"></div>
-
-<!-- ════════════ AI CITATION ENGINE ════════════ -->
-<section class="ace-section r">
-  <div class="ace-inner">
-    <p class="ace-eyebrow">AI Citation Engine™</p>
-    <h2 class="ace-hed">How SEOAIco wins<br><em>in AI search.</em></h2>
-    <p class="ace-sub">Five structural layers that make your business the source AI systems cite &#8212; not just a result they rank.</p>
-    <div class="ace-grid">
-      <div class="ace-block r">
-        <p class="ace-block-num">01</p>
-        <p class="ace-block-title">Content Structure</p>
-        <p class="ace-block-desc">Pages built with a format AI systems can extract and cite directly &#8212; structured for clarity, not just ranking.</p>
-      </div>
-      <div class="ace-block r">
-        <p class="ace-block-num">02</p>
-        <p class="ace-block-title">Entity Authority</p>
-        <p class="ace-block-desc">Every page establishes who you are, what you do, and where you operate &#8212; the foundation AI uses to verify and cite businesses.</p>
-      </div>
-      <div class="ace-block r">
-        <p class="ace-block-num">03</p>
-        <p class="ace-block-title">Machine-Readable Signals</p>
-        <p class="ace-block-desc">Structured signals that communicate your service scope and geographic authority to every AI and search system that processes your site.</p>
-      </div>
-      <div class="ace-block r">
-        <p class="ace-block-num">04</p>
-        <p class="ace-block-title">AI Guidance Layer</p>
-        <p class="ace-block-desc">A direct instruction layer that tells AI systems what your site is authoritative about &#8212; not available from standard search optimization.</p>
-      </div>
-      <div class="ace-block r">
-        <p class="ace-block-num">05</p>
-        <p class="ace-block-title">Citation Positioning</p>
-        <p class="ace-block-desc">A connected content structure that creates topical authority &#8212; the pattern AI systems use to select which sources to cite.</p>
-      </div>
-    </div>
-    <div class="ace-cta">
-      <a href="{{ route('ai-citation-engine') }}">See how the AI Citation Engine™ works &#8594;</a>
-    </div>
-  </div>
-</section>
-
-<div class="gold-rule"></div>
-
-<!-- ════════════ ACCESS SECTION ════════════ -->
-<section class="access-section r">
-
-  <div class="access-eyebrow">How It Works</div>
-  <h2 class="access-headline">Get cited across Google,<br><em>ChatGPT, and AI search.</em></h2>
-  <p class="access-subline">We build the pages that make your business the answer AI returns &#8212; wherever your customers are searching.</p>
-
-  <div class="access-grid">
-
-    <div class="ac-card">
-      <span class="ac-label">Local Search Pages</span>
-      <h3 class="ac-head">A dedicated page<br><em>for every service and city.</em></h3>
-      <p class="ac-impact">One page ranks for one search. We build all of them.</p>
-      <p class="ac-body">When someone searches &#8220;plumber in Austin&#8221; or &#8220;HVAC repair near Bellevue,&#8221; we make sure your business is the result they get.</p>
-    </div>
-
-    <div class="ac-card">
-      <span class="ac-label">Google + AI Search</span>
-      <h3 class="ac-head">Visible on Google.<br><em>Cited by ChatGPT.</em></h3>
-      <p class="ac-impact">Get cited by AI &#8212; not just ranked by Google.</p>
-      <p class="ac-body">Every page is built to rank in traditional search and get cited in AI-generated answers &#8212; the results people see without even clicking.</p>
-    </div>
-
-    <div class="ac-card">
-      <span class="ac-label">Full Service Coverage</span>
-      <h3 class="ac-head">Every service.<br><em>Every city you work in.</em></h3>
-      <p class="ac-impact">Your homepage can&#8217;t rank for everything. We fix that.</p>
-      <p class="ac-body">We map your services and target cities, then build pages for every combination &#8212; so customers find you no matter which service or location they search for.</p>
-    </div>
-
-    <div class="ac-card">
-      <span class="ac-label">Managed for You</span>
-      <h3 class="ac-head">We run it.<br><em>You get the customers.</em></h3>
-      <p class="ac-impact">No dashboards. No maintenance. No learning curve.</p>
-      <p class="ac-body">Your pages are built, monitored, and kept up to date under your active plan. You focus on your business &#8212; we handle everything that keeps you visible.</p>
-    </div>
-
-  </div><!-- /tier-grid-3 -->
-
-  <div class="offer-fomo r">
-    <p class="offer-fomo-line">The businesses AI cites by default win the most customers. We make yours one of them.</p>
-  </div>
-
-</section>
-
-<div class="gold-rule"></div>
-
-<!-- ════════════ MARKET ALLOCATION ════════════ -->
-<section id="alloc" class="alloc-section r">
-  <div class="alloc-layout">
-
-    <!-- Left: editorial copy -->
-    <div class="alloc-copy">
-      <p class="alloc-eyebrow">Market Mapping</p>
-      <h2 class="alloc-hed">
-        Your Market,<br>
-        <em>Mapped.</em>
-      </h2>
-      <p class="alloc-urgency">We don&#8217;t guess where to grow &#8212; we show you exactly where your market is unclaimed and where opportunity is highest.</p>
-
-      <p class="alloc-body-intro">SEO AI Co™ analyzes your services, locations, and search demand to map your entire market. You’ll see:</p>
-
-      <div class="alloc-insight-cols">
-        <div class="alloc-insight-col alloc-col-covered">
-          <span class="alloc-insight-dot"></span>
-          <span class="alloc-insight-label">Covered</span>
-          <p class="alloc-insight-desc">Where you already show up in search</p>
-        </div>
-        <div class="alloc-insight-col alloc-col-missing">
-          <span class="alloc-insight-dot"></span>
-          <span class="alloc-insight-label">Missing</span>
-          <p class="alloc-insight-desc">Where you’re invisible to customers</p>
-        </div>
-        <div class="alloc-insight-col alloc-col-building">
-          <span class="alloc-insight-dot"></span>
-          <span class="alloc-insight-label">Expanding</span>
-          <p class="alloc-insight-desc">Where demand is high and we build next</p>
-        </div>
-      </div>
-
-      <p class="alloc-differentiator">No spreadsheets. No guesswork. Just a clear picture of what&#8217;s yours to claim.</p>
-
-      <div class="alloc-actions">
-        <a href="/book" class="btn-primary">Book a Strategy Session</a>
-      </div>
-      <p class="alloc-access-note">Free strategy session · No commitment required</p>
-    </div>
-
-    <!-- Right: regional allocation grid (data rendered from JS array below) -->
-    <div class="alloc-panel">
-      <p style="font-size:.68rem;letter-spacing:.22em;text-transform:uppercase;color:rgba(200,168,75,.82);margin-bottom:6px;font-weight:500">Live Market Status</p>
-      <p class="alloc-panel-label">U.S. Market Coverage</p>
-      <div class="alloc-grid" id="allocGrid"></div>
-      <div class="alloc-legend">
-        <div class="alloc-legend-item">
-          <span class="alloc-dot allocated"></span>
-          <div class="alloc-legend-text">
-            <span class="alloc-legend-label">Active</span>
-            <span class="alloc-legend-desc">Established and expanding</span>
-          </div>
-        </div>
-        <div class="alloc-legend-item">
-          <span class="alloc-dot limited"></span>
-          <div class="alloc-legend-text">
-            <span class="alloc-legend-label">Limited Entry</span>
-            <span class="alloc-legend-desc">Selective access only</span>
-          </div>
-        </div>
-        <div class="alloc-legend-item">
-          <span class="alloc-dot open"></span>
-          <div class="alloc-legend-text">
-            <span class="alloc-legend-label">Open for Expansion</span>
-            <span class="alloc-legend-desc">Available now</span>
-          </div>
-        </div>
-      </div>
-    </div>
-
-  </div>
-</section>
-
-<div class="gold-rule"></div>
-
-<!-- ════════════ INFRASTRUCTURE PRINCIPLE ════════════ -->
-<section class="infra-principle r">
-  <canvas class="infra-canvas" id="infraCanvas" aria-hidden="true"></canvas>
-  <div class="infra-overlay" aria-hidden="true"></div>
-  <div class="infra-inner">
-    <p class="infra-eyebrow">The AI Citation Engine™</p>
-    <h2 class="infra-hed">
-      <span class="infra-hed-1">Built first.</span>
-      <span class="infra-hed-2">Held through execution.</span>
-    </h2>
-    <p class="infra-stmt">Structure wins.</p>
-    <p class="infra-tagline">Every page &middot; Every market &middot; Every signal</p>
-    <ul class="infra-tenets">
-      <li class="infra-tenet" style="color:rgba(237,232,222,.72);">You appear where others can&#8217;t.</li>
-      <li class="infra-tenet">Authority compounds with every deployment.</li>
-      <li class="infra-tenet">Harder to displace over time.</li>
-    </ul>
-    <p class="infra-close">Position isn&#8217;t claimed.<br>It&#8217;s built &#8212; and defended.</p>
-    <div class="infra-bridge">
-      <div class="infra-bridge-left">
-        <strong>This is how modern visibility is built.</strong><br>
-        Not through effort.<br>Through structure.
-      </div>
-      <div class="infra-bridge-right">
-        <span class="infra-bridge-item">Pages mapped to intent</span>
-        <span class="infra-bridge-item">Signals structured for discovery</span>
-        <span class="infra-bridge-item">Coverage expanded continuously</span>
-      </div>
-    </div>
-    <div class="infra-pillars">
-      <div class="infra-pillar">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
-        <span class="infra-pillar-title">Cited Everywhere</span>
-        <span class="infra-pillar-desc">Every service and city structured to surface before competitors do.</span>
-      </div>
-      <div class="infra-pillar">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2L2 7l10 5 10-5-10-5z"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg>
-        <span class="infra-pillar-title">Built on Your Domain</span>
-        <span class="infra-pillar-desc">Expand authority on the site you already own.</span>
-      </div>
-      <div class="infra-pillar">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="4" width="16" height="16" rx="2"/><rect x="9" y="9" width="6" height="6"/><path d="M9 1v3M15 1v3M9 20v3M15 20v3M1 9h3M1 15h3M20 9h3M20 15h3"/></svg>
-        <span class="infra-pillar-title">Visible to AI</span>
-        <span class="infra-pillar-desc">Structured for AI platforms and modern discovery.</span>
-      </div>
-      <div class="infra-pillar">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
-        <span class="infra-pillar-title">Search-Ready by Design</span>
-        <span class="infra-pillar-desc">Built with schema, structure, and internal linking from the start.</span>
-      </div>
-      <div class="infra-pillar">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
-        <span class="infra-pillar-title">Position Compounds</span>
-        <span class="infra-pillar-desc">The longer you&#8217;re live, the stronger your footprint gets.</span>
-      </div>
-      <div class="infra-pillar">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-        <span class="infra-pillar-title">Hard to Replicate</span>
-        <span class="infra-pillar-desc">Competitors cannot quickly match the structure you build.</span>
-      </div>
-      <div class="infra-pillar">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
-        <span class="infra-pillar-title">No Rebuild Required</span>
-        <span class="infra-pillar-desc">Deploy directly into your existing website.</span>
-      </div>
-      <div class="infra-pillar">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg>
-        <span class="infra-pillar-title">Coverage at Scale</span>
-        <span class="infra-pillar-desc">Expand market by market without starting from scratch.</span>
-      </div>
-    </div>
-    <div class="infra-ticker" aria-hidden="true">
-      <div class="itk-track">
-        <div class="itk-set">Google <span class="itk-dot">&middot;</span> ChatGPT <span class="itk-dot">&middot;</span> AI Search <span class="itk-dot">&middot;</span> Local Results <span class="itk-dot">&middot;</span></div>
-        <div class="itk-set">Google <span class="itk-dot">&middot;</span> ChatGPT <span class="itk-dot">&middot;</span> AI Search <span class="itk-dot">&middot;</span> Local Results <span class="itk-dot">&middot;</span></div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ════════════ CONVERSION BRIDGE ════════════ -->
-<section class="cvb r">
-  <p class="cvb-lead">This isn&#8217;t just SEO.</p>
-  <h2 class="cvb-hed">It&#8217;s your growth system &#8212;<br><em>built to work together.</em></h2>
-  <p class="cvb-body">We expand your reach, drive the traffic, and shape the message &#8212; so your coverage turns into position, and your position turns into revenue.</p>
-  <ul class="cvb-points">
-    <li class="cvb-point">Organic visibility across Google, AI, and modern search</li>
-    <li class="cvb-point">Paid ads that accelerate what&#8217;s already working</li>
-    <li class="cvb-point">Websites and landing pages built to convert</li>
-    <li class="cvb-point">Positioning, messaging, and marketing materials that hold attention</li>
-  </ul>
-  <p class="cvb-close">One system. One strategy. Built to grow your market &#8212; and hold it.</p>
-  <div class="cvb-actions">
-    <a href="/book" class="btn-primary">Book a Strategy Session</a>
-    <a href="#how" class="btn-ghost">See How It Works</a>
-  </div>
-</section>
-<section class="trust-diff r">
-  <h2 class="trust-diff-hed">We don&#8217;t sell backlinks.<br>We build the coverage that owns it.</h2>
-  <p class="trust-diff-body">No spam. No shortcuts. No risky tactics that can get your site buried.</p>
-  <p class="trust-diff-body">We expand your domain across every relevant search &#8212; so Google, ChatGPT, and modern search engines know exactly what you do, where you do it, and why your site is the right result.</p>
-  <p class="trust-diff-close">That&#8217;s why your position holds.<br>Not through tricks. Through structure.</p>
-</section>
-
-<!--
-  ╔══════════════════════════════════════════════════════════════════╗
-  ║  BEGIN SAVED SECTION: legacy infra concept                      ║
-  ║                                                                  ║
-  ║  This was the previous version of the Infrastructure Principle  ║
-  ║  section (5-card, 3+2 centered layout) before it was upgraded   ║
-  ║  to the active 8-card 4×2 system grid above.                    ║
-  ║                                                                  ║
-  ║  Potential reuse: secondary proof block, differentiation deep-  ║
-  ║  dive, or CTA-prelude section below the fold. The copy is       ║
-  ║  tighter / more declarative than the 8-card descriptive grid    ║
-  ║  and may work well as a follow-up reinforcement section.        ║
-  ║                                                                  ║
-  ║  DO NOT delete. Review before next major copy pass.             ║
-  ╚══════════════════════════════════════════════════════════════════╝
-
-<section class="infra-principle r">
-  <canvas class="infra-canvas" id="infraCanvasLegacy" aria-hidden="true"></canvas>
-  <div class="infra-overlay" aria-hidden="true"></div>
-  <div class="infra-inner">
-    <p class="infra-eyebrow">The Coverage Engine</p>
-    <h2 class="infra-hed">
-      <span class="infra-hed-1">Coverage your competitors</span>
-      <span class="infra-hed-2">can&#8217;t replicate.</span>
-    </h2>
-    <p class="infra-sub-copy">A hyper-local coverage engine built to expand your visibility across every service, every city, and every search surface.</p>
-    <div class="infra-pillars" style="grid-template-columns:repeat(3,1fr);max-width:860px">
-      <div class="infra-pillar">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
-        <span class="infra-pillar-title">You're cited everywhere.</span>
-      </div>
-      <div class="infra-pillar">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
-        <span class="infra-pillar-title">Built on your domain.</span>
-      </div>
-      <div class="infra-pillar">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
-        <span class="infra-pillar-title">Visible to AI systems.</span>
-      </div>
-      <div class="infra-pillar" style="grid-column:1;justify-self:end">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
-        <span class="infra-pillar-title">Position compounds over time.</span>
-      </div>
-      <div class="infra-pillar">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M4.93 4.93a10 10 0 0 0 0 14.14"/></svg>
-        <span class="infra-pillar-title">The system runs itself.</span>
-      </div>
-    </div>
-    <p class="infra-gold">Google &middot; ChatGPT &middot; AI Search &middot; Local Results</p>
-    <span class="infra-rule"></span>
-  </div>
-</section>
-
-  END SAVED SECTION: legacy infra concept
---><div class="gold-rule"></div>
-
-<!-- ════════════ AUDIENCE — SELL ════════════ -->
-<section id="who">
-  <div class="audience-section">
-    <p class="s-eye r">Who This Is For</p>
-    <h2 class="s-h r">Whether you're a business owner<br><em>or an agency — we've got you covered.</em></h2>
-    <div class="audience-grid">
-
-      <div class="aud-card r">
-        <span class="aud-tag">For Agencies</span>
-        <h3 class="aud-title">Own search<br><em>for every client.</em></h3>
-        <p class="aud-body">White-label deployment, entirely under your brand — complete market coverage across your client portfolio, with no third-party attribution anywhere.</p>
-        <ul class="aud-list">
-          <li><strong>Zero attribution</strong> — invisible to clients and competitors alike</li>
-          <li><strong>Full portfolio coverage under one agreement</strong></li>
-          <li><strong>Structured coverage per client</strong> — depth that builds retention</li>
-        </ul>
-        <p style="font-size:.82rem;color:var(--muted);letter-spacing:.04em;margin-bottom:12px">Not ads. Not campaigns. Ownership.</p>
-        <a href="#offer" class="aud-cta">Review Agency Deployment &rarr;</a>
-      </div>
-
-      <div class="aud-card r">
-        <span class="aud-tag">For Operators &amp; Business Owners</span>
-        <h3 class="aud-title">Get cited wherever<br><em>your customers search.</em></h3>
-        <p class="aud-body">SEO AI Co™ expands your domain across every service and city you serve &#8212; so you're cited across Google, ChatGPT, and AI search results in your entire market.</p>
-        <ul class="aud-list">
-          <li><strong>Every service. Every city. Total coverage.</strong></li>
-          <li><strong>Visible across organic, AI, and emerging search</strong></li>
-          <li><strong>Move first, compound faster</strong> — early coverage builds stronger authority</li>
-          <li><strong>Harder to displace over time</strong> — position that strengthens with every deployment</li>
-        </ul>
-        <p style="font-size:.82rem;color:var(--muted);letter-spacing:.04em;margin-bottom:12px">Position built first holds longest. The system compounds in your favor.</p>
-        <a href="/book" class="aud-cta">Book a Strategy Session &rarr;</a>
-      </div>
-
-    </div>
-  </div>
-</section>
-
-{{--
-  BEGIN SAVED SECTION: legacy infra cards (WYL — features / value grid)
-
-  This section ("What Your Deployment Delivers") was a 6-card features grid
-  using the same value props as the active 8-card Infrastructure Principle grid.
-  Replaced by: active infra-principle section (8-card 4x2 grid, above).
-  Removed from live output to eliminate the duplicate system/value-prop story.
-
-  Potential reuse: post-pricing proof block, onboarding explainer, or inline
-  feature detail section with a different copy direction. DO NOT delete.
-
-  ════════════ WYL — FEATURES / WOW ════════════
-  <section id="wyl">
-    <div class="wyl-section">
-      <div class="wyl-inner">
-        <p class="s-eye r">What Your Deployment Delivers</p>
-        <h2 class="s-h r">The system behind<br><em>every page, every market.</em></h2>
-        <p class="s-p r" style="max-width:640px">Every result this system produces comes from structure — not effort. <strong>This is what takes and keeps your market position.</strong></p>
-        <div class="wyl-grid">
-          <div class="wyl-card r">
-            <span class="wyl-icon">⬡</span>
-            <h3 class="wyl-title">You're the answer everywhere.</h3>
-            <p class="wyl-desc">Every service, every city — structured pages built for citation ahead of your competitors.</p>
-          </div>
-          <div class="wyl-card r">
-            <span class="wyl-icon">◈</span>
-            <h3 class="wyl-title">Built on your domain.</h3>
-            <p class="wyl-desc">Expands your own URL footprint — domain authority you own, built from your existing site outward.</p>
-          </div>
-          <div class="wyl-card r">
-            <span class="wyl-icon">⊹</span>
-            <h3 class="wyl-title">Visible to AI systems.</h3>
-            <p class="wyl-desc">Structured to surface in AI, search engines, and every discovery layer that indexes the web.</p>
-          </div>
-          <div class="wyl-card r">
-            <span class="wyl-icon">◎</span>
-            <h3 class="wyl-title">Position compounds over time.</h3>
-            <p class="wyl-desc">Every month you're live, your position deepens — harder for competitors to displace, compounding automatically.</p>
-          </div>
-          <div class="wyl-card r">
-            <span class="wyl-icon">⬧</span>
-            <h3 class="wyl-title">Coverage they can't replicate.</h3>
-            <p class="wyl-desc">A hyper-local coverage structure competitors cannot quickly build, match, or replicate.</p>
-          </div>
-          <div class="wyl-card r">
-            <span class="wyl-icon">◼</span>
-            <h3 class="wyl-title">The system runs itself.</h3>
-            <p class="wyl-desc">Deployed, held, and expanded for you — no dashboards, no management overhead required.</p>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  END SAVED SECTION: legacy infra cards (WYL)
---}}
-
-<!-- ════════════ POSITIONING BLOCK ════════════ -->
-<section class="pos-block">
-  <div class="pos-block-inner">
-
-    <!-- LEFT: text hierarchy -->
-    <div class="pos-left">
-      <h2 class="pos-h2 r">Your territory.<br><em>Claimed by structure.</em></h2>
-      <div class="pos-rule r"></div>
-      <p class="pos-support r">Every deployment locks your position in a new market.</p>
-      <span class="pos-gold r">Service. City. Coverage. Yours.</span>
-      <ul class="pos-proof r">
-        <li>Pages built first hold position longest.</li>
-        <li>Each deployment narrows the window for competitors.</li>
-        <li>The system scales &#8212; your lead grows with it.</li>
-      </ul>
-      <span class="pos-close r">Move before your market is claimed.</span>
-    </div>
-
-    <!-- RIGHT: territory lock canvas -->
-    <div class="pos-right r">
-      <canvas class="pos-canvas" id="territoryCanvas" aria-hidden="true"></canvas>
-    </div>
-
-  </div>
-</section>
-<script>
-(function(){
-  var C=document.getElementById('territoryCanvas');
-  if(!C)return;
-  var ctx=C.getContext('2d');
-  var DPR=window.devicePixelRatio||1;
-  var COLS=10,ROWS=7;
-  var W,H,cW,cH,nodes=[],lastClaim=0;
-  var INTERVAL=900;
-
-  function resize(){
-    var r=C.getBoundingClientRect();
-    W=r.width;H=r.height;
-    if(!W||!H)return;
-    C.width=Math.round(W*DPR);C.height=Math.round(H*DPR);
-    ctx.setTransform(DPR,0,0,DPR,0,0);
-    cW=W/COLS;cH=H/ROWS;
-    build();
-  }
-
-  function shuffle(a){return a.slice().sort(function(){return Math.random()-.5});}
-
-  function build(){
-    nodes=[];
-    for(var ro=0;ro<ROWS;ro++){
-      for(var co=0;co<COLS;co++){
-        nodes.push({x:cW*(co+.5),y:cH*(ro+.5),ri:ro,ci:co,state:'n',prog:0});
-      }
-    }
-    shuffle(nodes).slice(0,Math.floor(nodes.length*.32)).forEach(function(n){n.state='l';n.prog=1;});
-  }
-
-  function frame(ts){
-    ctx.clearRect(0,0,W,H);
-
-    // faint grid
-    ctx.strokeStyle='rgba(200,168,75,.05)';ctx.lineWidth=.5;
-    for(var c=0;c<=COLS;c++){ctx.beginPath();ctx.moveTo(cW*c,0);ctx.lineTo(cW*c,H);ctx.stroke();}
-    for(var ro=0;ro<=ROWS;ro++){ctx.beginPath();ctx.moveTo(0,cH*ro);ctx.lineTo(W,cH*ro);ctx.stroke();}
-
-    // connection lines between adjacent locked nodes
-    for(var i=0;i<nodes.length;i++){
-      var n=nodes[i];
-      if(n.state!=='l')continue;
-      var dirs=[[0,1],[1,0]];
-      for(var d=0;d<dirs.length;d++){
-        var dr=dirs[d][0],dc=dirs[d][1];
-        for(var j=0;j<nodes.length;j++){
-          var nb=nodes[j];
-          if(nb.ri===n.ri+dr&&nb.ci===n.ci+dc&&nb.state==='l'){
-            ctx.beginPath();ctx.moveTo(n.x,n.y);ctx.lineTo(nb.x,nb.y);
-            ctx.strokeStyle='rgba(200,168,75,.07)';ctx.lineWidth=.5;ctx.stroke();
-            break;
-          }
-        }
-      }
-    }
-
-    // claim new node
-    if(!lastClaim||ts-lastClaim>INTERVAL){
-      var avail=nodes.filter(function(n){return n.state==='n';});
-      if(avail.length){
-        shuffle(avail)[0].state='a';
-      } else {
-        shuffle(nodes.filter(function(n){return n.state==='l';})).slice(0,Math.floor(nodes.length*.22)).forEach(function(n){n.state='n';n.prog=0;});
-      }
-      lastClaim=ts;
-    }
-
-    // draw nodes
-    for(var k=0;k<nodes.length;k++){
-      var n=nodes[k];
-      if(n.state==='a'){
-        n.prog=Math.min(1,n.prog+.016);
-        var ring=cW*.38*(0.4+0.6*n.prog);
-        var g=ctx.createRadialGradient(n.x,n.y,0,n.x,n.y,ring);
-        g.addColorStop(0,'rgba(200,168,75,'+(0.18+0.18*n.prog)+')');
-        g.addColorStop(1,'rgba(200,168,75,0)');
-        ctx.fillStyle=g;ctx.beginPath();ctx.arc(n.x,n.y,ring,0,Math.PI*2);ctx.fill();
-        ctx.fillStyle='rgba(200,168,75,'+(0.55+0.35*n.prog)+')';
-        ctx.beginPath();ctx.arc(n.x,n.y,3,0,Math.PI*2);ctx.fill();
-        if(n.prog>=1)n.state='l';
-      } else if(n.state==='l'){
-        var s=5;
-        ctx.strokeStyle='rgba(200,168,75,.2)';ctx.lineWidth=.7;
-        ctx.strokeRect(n.x-s,n.y-s,s*2,s*2);
-        ctx.fillStyle='rgba(200,168,75,.48)';
-        ctx.beginPath();ctx.arc(n.x,n.y,2.5,0,Math.PI*2);ctx.fill();
-      } else {
-        ctx.fillStyle='rgba(200,168,75,.07)';
-        ctx.beginPath();ctx.arc(n.x,n.y,1.8,0,Math.PI*2);ctx.fill();
-      }
-    }
-
-    requestAnimationFrame(frame);
-  }
-
-  function init(){
-    resize();
-    if(W&&H)requestAnimationFrame(frame);
-  }
-
-  // Defer until element is visible
-  if('IntersectionObserver' in window){
-    var obs=new IntersectionObserver(function(entries){
-      if(entries[0].isIntersecting){init();obs.disconnect();}
-    },{threshold:.1});
-    obs.observe(C);
-  } else {
-    init();
-  }
-
-  window.addEventListener('resize',function(){
-    resize();
-  });
-})();
-</script>
 
 <!-- ════════════ PRICING ════════════ -->
 <section id="offer">
@@ -4096,8 +3370,8 @@ body::before{
     <div>
       <p class="s-eye">Pricing</p>
       <h2 class="s-h offer-hed-split">
-        <span>Start with a scan.</span>
-        <em>Scale when you're ready.</em>
+        <span>One system.</span>
+        <em>Five levels of control.</em>
       </h2>
     </div>
     <div class="offer-panel">
@@ -4109,90 +3383,117 @@ body::before{
 
   <div class="offer-guide r">
     <p class="offer-guide-line">Choose where to start.</p>
-    <p style="font-size:.82rem;color:rgba(168,168,160,.52);text-align:center;margin-top:10px;letter-spacing:.02em">Each tier builds on the last. Upgrade any time &mdash; your data carries forward.</p>
+    <p style="font-size:.82rem;color:rgba(168,168,160,.52);text-align:center;margin-top:10px;letter-spacing:.02em">Each level builds on the last. Upgrade any time &mdash; your data carries forward.</p>
   </div>
 
   <div class="tier-grid-4" id="tierGrid">
 
-    {{-- TIER 1 — Quick Scan --}}
+    {{-- TIER 1 — Start: Citation Scan --}}
     <div class="tier scan-tier">
-      <span class="tier-flag">Entry</span>
-      <h3 class="tier-name">Quick Scan</h3>
+      <span class="tier-flag">Start</span>
+      <h3 class="tier-name">Citation Scan</h3>
       <div class="tier-price"><sup>$</sup>2</div>
-      <p class="tier-position">Instant AI citation readiness score. See where you stand in seconds.</p>
+      <p class="tier-position">Discover where you stand. One scan reveals your citation readiness — how visible you are to the systems answering your customers' questions.</p>
       <ul class="tier-features">
         <li>
           <svg fill="none" stroke="currentColor" stroke-width="1.4" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
-          0&ndash;100 AI citation score
+          0&ndash;100 citation readiness score
         </li>
         <li>
           <svg fill="none" stroke="currentColor" stroke-width="1.4" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/></svg>
-          Limited diagnostic signals
+          Limited signal detection
         </li>
         <li>
           <svg fill="none" stroke="currentColor" stroke-width="1.4" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
           Sent to your inbox instantly
         </li>
       </ul>
-      <a href="{{ route('quick-scan.show') }}" class="tier-cta">Run $2 Scan</a>
+      <a href="{{ route('quick-scan.show') }}" class="tier-cta">See Where You Stand — $2</a>
     </div>
 
-    {{-- TIER 2 — Full Report --}}
+    {{-- TIER 2 — Grow: Signal Expansion --}}
     <div class="tier report-tier">
-      <span class="tier-flag">Diagnostic</span>
-      <h3 class="tier-name">Full Report</h3>
-      <div class="tier-price"><sup>$</sup>79<sub>&ndash;$99</sub></div>
-      <p class="tier-position">Complete diagnostic breakdown with category-level analysis and prioritized insights.</p>
+      <span class="tier-flag">Grow</span>
+      <h3 class="tier-name">Signal Expansion</h3>
+      <div class="tier-price"><sup>$</sup>99</div>
+      <p class="tier-position">See the full picture. Complete signal mapping across your footprint — where you're visible, where you're invisible, and what's costing you citations.</p>
       <ul class="tier-features">
         <li>
           <svg fill="none" stroke="currentColor" stroke-width="1.4" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
-          Full category breakdown
+          <strong>Full visibility mapping</strong>
         </li>
         <li>
           <svg fill="none" stroke="currentColor" stroke-width="1.4" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/></svg>
-          Expansion signals revealed
+          <strong>Every gap ranked by impact</strong>
         </li>
         <li>
           <svg fill="none" stroke="currentColor" stroke-width="1.4" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
-          Prioritized insights
+          Exportable intelligence + dashboard
         </li>
       </ul>
-      <a href="{{ route('onboarding.start') }}?plan=full-report" class="tier-cta">Unlock Full Report</a>
+      <a href="{{ route('quick-scan.show') }}" class="tier-cta">Start with $2 Scan</a>
     </div>
 
-    {{-- TIER 3 — Optimization Plan --}}
+    {{-- TIER 3 — Scale: Structural Leverage (FOCAL / CORE) --}}
     <div class="tier focal">
-      <span class="tier-flag">Optimization</span>
-      <h3 class="tier-name">Optimization Plan</h3>
-      <div class="tier-price"><sup>$</sup>249<sub>&ndash;$689</sub></div>
-      <p class="tier-position">Structured roadmap with deeper analysis and a clear path to improved AI citation confidence.</p>
+      <span class="tier-flag">Scale — Core</span>
+      <h3 class="tier-name">Structural Leverage</h3>
+      <div class="tier-price"><sup>$</sup>249</div>
+      <p class="tier-position">Turn visibility into structure. Your complete action sequence — every correction prioritized, every opportunity sized, every gap closed systematically.</p>
       <ul class="tier-features">
         <li>
           <svg fill="none" stroke="currentColor" stroke-width="1.4" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
-          <strong>Structured optimization roadmap</strong>
+          <strong>Everything in Signal Expansion</strong>
         </li>
         <li>
           <svg fill="none" stroke="currentColor" stroke-width="1.4" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064"/></svg>
-          <strong>Deeper structural analysis</strong>
+          <strong>Priority correction sequence</strong> &mdash; ordered by impact
         </li>
         <li>
           <svg fill="none" stroke="currentColor" stroke-width="1.4" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/></svg>
-          Priority-ordered action items
+          Structural guidance for every gap
         </li>
         <li>
           <svg fill="none" stroke="currentColor" stroke-width="1.4" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
-          Content structure gaps identified
+          Opportunity sizing per correction
         </li>
       </ul>
-      <a href="{{ route('onboarding.start') }}?plan=optimization" class="tier-cta">Get Optimization Plan</a>
+      <a href="{{ route('quick-scan.show') }}" class="tier-cta">Start with $2 Scan</a>
     </div>
 
-    {{-- TIER 4 — Full System --}}
+    {{-- TIER 4 — Implement: System Activation --}}
+    <div class="tier">
+      <span class="tier-flag">Implement</span>
+      <h3 class="tier-name">System Activation</h3>
+      <div class="tier-price"><sup>$</sup>489<sub>+</sub></div>
+      <p class="tier-position">Activate the full system. Competitive positioning, market mapping, and complete coverage architecture across 50+ pages — built for compounding authority.</p>
+      <ul class="tier-features">
+        <li>
+          <svg fill="none" stroke="currentColor" stroke-width="1.4" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
+          <strong>Everything in Structural Leverage</strong>
+        </li>
+        <li>
+          <svg fill="none" stroke="currentColor" stroke-width="1.4" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064"/></svg>
+          <strong>Competitive benchmarks</strong>
+        </li>
+        <li>
+          <svg fill="none" stroke="currentColor" stroke-width="1.4" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/></svg>
+          Coverage expansion map
+        </li>
+        <li>
+          <svg fill="none" stroke="currentColor" stroke-width="1.4" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
+          50+ pages with full structural architecture
+        </li>
+      </ul>
+      <a href="{{ route('quick-scan.show') }}" class="tier-cta">Start with $2 Scan</a>
+    </div>
+
+    {{-- TIER 5 — Dominate: Market Control --}}
     <div class="tier prime">
-      <span class="tier-flag">Full Infrastructure</span>
-      <h3 class="tier-name">Full System</h3>
+      <span class="tier-flag">Dominate</span>
+      <h3 class="tier-name">Market Control</h3>
       <div class="tier-price"><sup>$</sup>4,799<sub>+</sub></div>
-      <p class="tier-position">Complete infrastructure and execution — your entire market covered, structured, and actively maintained.</p>
+      <p class="tier-position">Total market delegation. Your entire citation infrastructure built, deployed, and actively maintained — full coverage across every surface that matters.</p>
       <ul class="tier-features">
         <li>
           <svg fill="none" stroke="currentColor" stroke-width="1.4" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
@@ -4200,7 +3501,7 @@ body::before{
         </li>
         <li>
           <svg fill="none" stroke="currentColor" stroke-width="1.4" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064"/></svg>
-          <strong>Complete execution</strong> &mdash; built and deployed for you
+          <strong>Complete system activation</strong> &mdash; built and deployed for you
         </li>
         <li>
           <svg fill="none" stroke="currentColor" stroke-width="1.4" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/></svg>
@@ -4212,82 +3513,16 @@ body::before{
         </li>
       </ul>
       <div class="tier-commitment">Structured 4-month build. Active coverage maintained thereafter.</div>
-      <a href="{{ route('onboarding.start', ['tier' => 'dominance']) }}" class="tier-cta">Review Full System</a>
+      <a href="{{ route('onboarding.start', ['tier' => 'dominance']) }}" class="tier-cta">Dominate Your Market</a>
       <button class="tier-book" onclick="window._bkPending={id:{{ $consultTypes->get('strategy')?->id ?? 2 }},duration:{{ $consultTypes->get('strategy')?->duration_minutes ?? 30 }},name:{{ json_encode($consultTypes->get('strategy')?->name ?? 'Strategy Call') }},isFree:{{ ($consultTypes->get('strategy')?->is_free ?? false) ? 'true' : 'false' }}};window.dispatchEvent(new CustomEvent('open-booking',{detail:window._bkPending}));if(typeof gtag==='function')gtag('event','cta_click',{cta_location:'pricing_section',cta_label:'book_strategy_call'});">Book a Strategy Call</button>
     </div>
 
   </div>
 
-  <p style="text-align:center;font-size:.82rem;color:rgba(168,168,160,.48);letter-spacing:.03em;padding:12px 0 2px;position:relative;z-index:2;font-style:italic">Most businesses start with the $2 scan. Upgrade when you&rsquo;re ready.</p>
-  <p style="text-align:center;font-size:.74rem;color:rgba(168,168,160,.28);letter-spacing:.04em;padding:4px 0 14px;position:relative;z-index:2">Your scan data carries forward to every tier. No wasted steps.<br><em>$2 &rarr; $99 &rarr; $249 &rarr; $4,799+</em></p>
+  <p style="text-align:center;font-size:.82rem;color:rgba(168,168,160,.48);letter-spacing:.03em;padding:12px 0 2px;position:relative;z-index:2;font-style:italic">Most businesses start with the $2 scan. Expand when you&rsquo;re ready.</p>
+  <p style="text-align:center;font-size:.74rem;color:rgba(168,168,160,.28);letter-spacing:.04em;padding:4px 0 14px;position:relative;z-index:2">Your scan data carries forward through every level. No wasted steps.<br><em>$2 &rarr; $99 &rarr; $249 &rarr; $489+ &rarr; $4,799+</em></p>
 
 </section>
-
-<!-- ════════════ LICENCE LOCK ════════════ -->
-<section id="integrity">
-<div class="url-lock">
-  <div class="url-lock-inner">
-    <div class="ul-head r">
-      <p class="s-eye">The Licence Is the Product</p>
-      <h2 class="ul-title">Your URLs are assets.<br><em>The licence is the key.</em></h2>
-      <p class="ul-lead">Every page, every ranking, every lead — tied to one thing: your active licence.</p>
-    </div>
-    <div class="r">
-      <div class="ul-states">
-        <div class="ul-state active">
-          <span class="ul-state-label">Active Licence</span>
-          <div class="ul-state-title">Fully live — ranking, indexing, generating leads</div>
-          <div class="ul-state-desc">All structured content, search signals, and internal link architecture active. Your pages rank, index, and compound in authority across every city in your coverage.</div>
-        </div>
-        <div class="ul-state inactive">
-          <span class="ul-state-label">Licence Lapsed</span>
-          <div class="ul-state-title">Pages revert — company name &amp; phone number only</div>
-          <div class="ul-state-desc">All structured content, search signals, and internal link architecture removed. Pages remain on your site, but <strong>search coverage is inactive. Position is no longer held.</strong> Reactivate the agreement to restore full coverage.</div>
-        </div>
-      </div>
-      <div class="ul-note">
-        <p><strong>Need more pages?</strong> Upgrade to the next tier — your existing pages carry over.</p>
-      </div>
-    </div>
-  </div>
-</div>
-</section>
-
-<script>
-(function(){
-  var grid=document.getElementById('tierGrid');
-  if(!grid)return;
-  var cards=grid.querySelectorAll('.tier');
-  if('IntersectionObserver' in window){
-    var io=new IntersectionObserver(function(entries){
-      if(entries[0].isIntersecting){
-        cards.forEach(function(c){c.classList.add('vis');});
-        io.disconnect();
-      }
-    },{threshold:.12});
-    io.observe(grid);
-  } else {
-    cards.forEach(function(c){c.classList.add('vis');});
-  }
-})();
-</script>
-
-<!-- ════════════ VALUE ANCHOR ════════════ -->
-<div class="value-anchor r">
-  <div class="value-anchor-inner">
-    <p class="va-main">What happens when you start</p>
-    <p class="va-sub" style="margin-bottom:40px;line-height:1.9">Your structure is built &#8212; your coverage expands &#8212; your visibility compounds.</p>
-    <p class="va-close">While others are still planning,<br><em>you&#8217;re already being cited &#8212; everywhere it matters.</em></p>
-    <p class="va-main" style="margin-top:44px;margin-bottom:24px;font-size:clamp(1.3rem,2.1vw,1.7rem);letter-spacing:-.02em">This is how position is taken &#8212; before anyone else realizes it&#8217;s happening.</p>
-    <p class="va-sub" style="margin-bottom:44px;opacity:.48">Most markets aren&#8217;t won by better businesses.<br>They&#8217;re won by the ones that get cited first.</p>
-    <div class="va-act">
-      <a href="{{ route('quick-scan.show') }}" class="btn-primary">Run $2 Scan</a>
-      <a href="#offer" class="btn-ghost">View Pricing</a>
-    </div>
-  </div>
-</div>
-
-<div class="gold-rule"></div>
 
 <!-- ════════════ EXECUTION SERVICES ════════════ -->
 <section class="exec-services r">
@@ -4378,38 +3613,13 @@ body::before{
   <p class="ss-note">One agreement. Every capability. Nothing outsourced, nothing disconnected.</p>
 </div>
 
-<div class="gold-rule"></div>
-
-<!-- ════════════ POSITIONING ════════════ -->
-<div class="access-position r">
-  <div>
-    <p class="ap-main">This system is not limited to the largest companies.<br><em>It rewards those who move first.</em></p>
-    <p style="font-size:.96rem;color:rgba(168,168,160,.70);line-height:1.82;margin-top:14px">A smaller, faster business can establish market presence before larger competitors — and hold it.</p>
-  </div>
-  <div>
-    <p class="ap-qualifier">Built for growth-focused businesses — from emerging operators to established teams scaling beyond their current reach.</p>
-  </div>
-</div>
-
-<!-- ════════════ FIT SCREENING ════════════ -->
-<div class="fit-screen r">
-  <p class="fs-hed">We work selectively.</p>
-  <div class="fs-body">
-    <p>Before expansion begins, we review whether a business is legitimate, growth-ready, and aligned with platform and search-quality standards.</p>
-    <p>This protects the system, the market, and the businesses we choose to support.</p>
-  </div>
-  <p class="fs-note">We may decline businesses that are not a fit, not aligned with our standards, or not positioned for the kind of growth this system is built to deliver.</p>
-</div>
-
-<div class="gold-rule"></div>
-
 <!-- ════════════ PRICING CTA ════════════ -->
 <div class="pricing-cta r">
   <div class="pricing-cta-actions">
-    <a href="{{ route('quick-scan.show') }}" class="btn-primary">Run $2 Scan</a>
+    <a href="{{ route('quick-scan.show') }}" class="btn-primary">See Where You Stand — $2</a>
   </div>
-  <p class="pricing-cta-meta">No account needed &nbsp;&middot;&nbsp; Results in seconds &nbsp;&middot;&nbsp; Upgrade any time</p>
-  <p class="pricing-cta-trust">$2 &rarr; $99 &rarr; $249 &rarr; $4,799+ &nbsp;&middot;&nbsp; Your data carries forward</p>
+  <p class="pricing-cta-meta">No account needed &nbsp;&middot;&nbsp; Results in seconds &nbsp;&middot;&nbsp; Expand any time</p>
+  <p class="pricing-cta-trust">$2 &rarr; $99 &rarr; $249 &rarr; $489+ &rarr; $4,799+ &nbsp;&middot;&nbsp; Your data carries forward</p>
 </div>
 
 <!-- ════════════ FINAL CLOSE ════════════ -->
@@ -4418,98 +3628,6 @@ body::before{
   <p class="fc-question">The only question is — by whom.</p>
   <p class="fc-tagline">First to structure. First to deploy. First to be cited.</p>
 </div>
-
-<!-- ════════════ SETTLEMENT ════════════ -->
-<div class="settlement">
-  <div class="settlement-inner">
-    <div class="settle-cards">
-
-      <div class="settle-card r">
-        <span class="settle-card-hed">Your Data. Your Domain.</span>
-        <p class="settle-card-body">Everything we build lives on your domain, under your control.<br>No rented presence. No shared infrastructure. No borrowed authority.</p>
-      </div>
-
-      <div class="settle-card r">
-        <span class="settle-card-hed">Reviewed Before We Begin.</span>
-        <p class="settle-card-body">We do not onboard every business.<br>Each engagement is reviewed for market fit, growth potential, and operational readiness before activation.</p>
-      </div>
-
-      <div class="settle-card r">
-        <span class="settle-card-hed">Built as a Real Engagement.</span>
-        <p class="settle-card-body">This is a 4-month minimum engagement designed to build real market position.<br>Not a quick fix. Not a one-off project. Not a Fiverr-style SEO service.</p>
-      </div>
-
-    </div>
-  </div>
-</div>
-
-<!-- ════════════ PLATFORM EXPANSION ════════════ -->
-<div class="expansion">
-  <div class="expansion-inner">
-    <div class="exp-hed-block">
-      <p class="s-eye r">Platform Expansion</p>
-      <h2 class="s-h r">The system expands<br><em>with you.</em></h2>
-      <span class="exp-gold-line r">Your position compounds.</span>
-    </div>
-    <div class="exp-grid" id="expGrid">
-      <div class="exp-card">
-        <span class="exp-dev-tag">In Development</span>
-        <h3 class="exp-title">Agency Dashboard</h3>
-        <p class="exp-punch">Full visibility. Real ownership.</p>
-        <p class="exp-body">Manage deployment, track coverage, and oversee expansion across your full market — every page, every city, one place.</p>
-      </div>
-      <div class="exp-card">
-        <span class="exp-dev-tag">In Development</span>
-        <h3 class="exp-title">Per-URL Search Tracking</h3>
-        <p class="exp-punch">Know exactly where you stand.</p>
-        <p class="exp-body">Track performance at the page level — visibility, indexing, and the compounding advantage of your position as it builds.</p>
-      </div>
-      <div class="exp-card">
-        <span class="exp-dev-tag">In Development</span>
-        <h3 class="exp-title">Reseller Sub-Licensing</h3>
-        <p class="exp-punch">Expand under your brand.</p>
-        <p class="exp-body">Bring clients into your system with structured access and scalable territory allocation. The advantage is yours to extend.</p>
-      </div>
-    </div>
-    <div class="exp-footer r">
-      <span class="exp-footer-line">New capabilities are deployed as the network expands.</span>
-      <span class="exp-footer-accent">The advantage compounds over time.</span>
-    </div>
-    <div class="exp-momentum r">
-      <p class="exp-momentum-main">Your position expands over time.<br><em>Without restarting. Without renegotiating.</em></p>
-      <p class="exp-momentum-sub">New capabilities deploy continuously</p>
-    </div>
-  </div>
-</div>
-<script>
-(function(){
-  var grid=document.getElementById('expGrid');
-  if(!grid)return;
-  var cards=grid.querySelectorAll('.exp-card');
-  if('IntersectionObserver' in window){
-    var io=new IntersectionObserver(function(entries){
-      if(entries[0].isIntersecting){
-        cards.forEach(function(c){c.classList.add('vis');});
-        io.disconnect();
-      }
-    },{threshold:.15});
-    io.observe(grid);
-  } else {
-    cards.forEach(function(c){c.classList.add('vis');});
-  }
-})();
-</script>
-
-<!-- ════════════ TERRITORY PREVIEW ════════════ -->
-<section id="preview" style="padding:64px 40px;text-align:center;border-top:1px solid rgba(200,168,75,.09);position:relative;overflow:hidden">
-  <div style="pointer-events:none;position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:600px;height:320px;background:radial-gradient(ellipse,rgba(200,168,75,.045) 0%,transparent 68%);z-index:0" aria-hidden="true"></div>
-  <p style="font-size:.72rem;letter-spacing:.22em;text-transform:uppercase;color:rgba(200,168,75,.72);margin-bottom:20px;font-weight:500">Your market is active now</p>
-  <p style="font-family:'Cormorant Garamond',serif;font-size:clamp(2rem,4.5vw,3rem);font-weight:300;color:rgba(237,232,222,.97);margin-bottom:18px;line-height:1.15">Positions are being claimed.<br><em>Be the one who moves first.</em></p>
-  <p style="font-size:.96rem;color:rgba(168,168,160,.82);max-width:460px;margin:0 auto 12px;line-height:1.8">Delay gives competitors time to take ground in your market.</p>
-  <p style="font-family:'Cormorant Garamond',serif;font-size:1.05rem;font-style:italic;color:rgba(237,232,222,.46);margin-bottom:32px">First movers hold the ground.</p>
-  <a href="{{ route('quick-scan.show') }}" class="btn-primary">Check your AI readiness &mdash; $2</a>
-  <p style="font-size:.68rem;letter-spacing:.14em;text-transform:uppercase;color:rgba(200,168,75,.62);margin-top:16px;font-weight:400">Instant results &nbsp;&middot;&nbsp; Upgrade when you&rsquo;re ready</p>
-</section>
 
 <!-- ════════════ CONTACT ════════════ -->
 <section id="contact">
@@ -4618,7 +3736,7 @@ body::before{
     <p class="fcc-micro">Expansion moves continuously. Entry is guided.</p>
     <span class="fcc-rule" aria-hidden="true"></span>
     <div class="fcc-actions">
-      <a href="{{ route('quick-scan.show') }}" class="fcc-primary" onclick="if(typeof gtag==='function')gtag('event','cta_click',{cta_location:'final_close',cta_label:'run_scan'});">Run $2 Scan</a>
+      <a href="{{ route('quick-scan.show') }}" class="fcc-primary" onclick="if(typeof gtag==='function')gtag('event','cta_click',{cta_location:'final_close',cta_label:'run_scan'});">See Where You Stand — $2</a>
       <a href="#offer" class="fcc-secondary">View Pricing</a>
     </div>
     <p class="fcc-reassure">Guided entry.&ensp;Structured rollout.&ensp;Full support.</p>
@@ -4629,7 +3747,7 @@ body::before{
 <!-- ════════════ STICKY MOBILE CTA (mobile only — hidden on desktop via CSS) ════════════ -->
 <div id="mobStickyCta" class="mob-sticky-cta" role="complementary" aria-label="Quick access — assess market availability">
   <div class="msc-inner">
-    <a href="{{ route('quick-scan.show') }}" class="msc-primary">Run $2 Scan</a>
+    <a href="{{ route('quick-scan.show') }}" class="msc-primary">See Where You Stand — $2</a>
     <a href="#offer" class="msc-secondary">Pricing</a>
   </div>
 </div>
@@ -4648,17 +3766,17 @@ body::before{
     <p class="gate-desc">Deploy the AI Citation Engine™ into your existing site.<br><br>This includes:<br><strong>&#8226; Structured service + location pages<br>&#8226; Schema, internal linking, and AI guidance signals<br>&#8226; Citation infrastructure across your full service area</strong><br><br>Deployed and managed under a single agreement.</p>
     <div class="gate-tiers">
       <div class="gate-tier" data-tier="expansion">
-        <div class="gate-tier-name">Expansion</div>
+        <div class="gate-tier-name">System Activation</div>
         <div class="gate-tier-price">$2,995/mo</div>
-        <div class="gate-tier-urls">Foundation tier</div>
+        <div class="gate-tier-urls">Foundation level</div>
       </div>
       <div class="gate-tier selected" data-tier="dominance">
-        <div class="gate-tier-name">Dominance</div>
+        <div class="gate-tier-name">Market Control</div>
         <div class="gate-tier-price">$4,799/mo</div>
         <div class="gate-tier-urls">Preferred · Priority access</div>
       </div>
     </div>
-    <p class="gate-guidance">Most businesses start with Expansion, then scale into Dominance.</p>
+    <p class="gate-guidance">Most businesses start with System Activation, then scale into Market Control.</p>
     <a href="/onboarding/start" class="gate-cta" id="gateCta">Activate My Market</a>
     <button class="gate-skip" id="gateSkip">Continue browsing</button>
   </div>

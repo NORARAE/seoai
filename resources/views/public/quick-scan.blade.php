@@ -127,7 +127,7 @@ nav.stuck{background:rgba(8,8,8,.95);backdrop-filter:blur(16px);border-color:var
 .qs-form-group input::placeholder{color:rgba(168,168,160,.3)}
 .qs-form-group input:focus{
   border-color:rgba(200,168,75,.5);
-  box-shadow:0 0 0 3px rgba(200,168,75,.07);
+  box-shadow:0 0 0 3px rgba(200,168,75,.07),0 0 20px rgba(200,168,75,.08);
 }
 .qs-form-group .field-error{
   font-size:.74rem;color:#cf8f8f;margin-top:2px;
@@ -146,10 +146,13 @@ nav.stuck{background:rgba(8,8,8,.95);backdrop-filter:blur(16px);border-color:var
   transition:background .3s,transform .2s,box-shadow .2s;
   min-height:60px;
   margin-top:8px;
+  position:relative;overflow:hidden;
 }
 .qs-submit:hover{background:var(--gold-lt);box-shadow:0 6px 24px rgba(200,168,75,.22);transform:translateY(-1px)}
 .qs-submit:active{transform:scale(.98)}
 .qs-submit:disabled{opacity:.55;cursor:not-allowed;transform:none;box-shadow:none}
+@keyframes scanShimmer{0%{transform:translateX(-100%)}100%{transform:translateX(100%)}}
+.qs-submit::after{content:'';position:absolute;top:0;left:0;width:100%;height:100%;background:linear-gradient(105deg,transparent 40%,rgba(255,255,255,.13) 50%,transparent 60%);animation:scanShimmer 3.5s ease-in-out infinite;pointer-events:none}
 
 .qs-trust{
   margin-top:18px;
@@ -243,7 +246,7 @@ footer{border-top:1px solid var(--border);padding:28px 48px;display:flex;flex-di
   <div class="nav-right">
     <a href="/how-it-works" class="nav-link">How It Works</a>
     <a href="/pricing" class="nav-link">Pricing</a>
-    <a href="/book" class="nav-btn">Book</a>
+    <a href="/how-it-works" class="nav-btn">How It Works</a>
   </div>
 </nav>
 
@@ -288,6 +291,7 @@ footer{border-top:1px solid var(--border);padding:28px 48px;display:flex;flex-di
           required
         >
         <span class="field-hint">Enter any domain or URL — we'll handle the formatting.</span>
+        <span style="display:block;font-size:.72rem;color:rgba(200,168,75,.45);margin-top:6px;font-style:italic;letter-spacing:.02em">This becomes your system baseline.</span>
         @error('url')
           <span class="field-error">{{ $message }}</span>
         @enderror
@@ -310,7 +314,7 @@ footer{border-top:1px solid var(--border);padding:28px 48px;display:flex;flex-di
       </div>
 
       <button type="submit" class="qs-submit" id="submitBtn">
-        <span id="btnText">Run $2 Scan</span>
+        <span id="btnText">See Where You Stand — $2</span>
         <span id="btnSpinner" style="display:none">Redirecting to payment…</span>
       </button>
 

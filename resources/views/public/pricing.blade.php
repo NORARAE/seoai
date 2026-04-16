@@ -10,13 +10,13 @@
 <link rel="manifest" href="/site.webmanifest">
 <meta name="theme-color" content="#080808">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>AI Citation Engine™ Pricing — Get Cited by AI | SEO AI Co™</title>
-<meta name="description" content="Choose your AI citation plan. SEO AI Co™ structures your content so Google AI Overviews, ChatGPT, and Perplexity cite you as the answer — not just rank you in results.">
+<title>AI Citation Infrastructure — Levels of Market Control | SEO AI Co™</title>
+<meta name="description" content="Five levels of market control. SEO AI Co™ structures your visibility so AI systems cite you as the answer — not just rank you in results.">
 <link rel="canonical" href="{{ url('/pricing') }}">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="SEO AI Co™">
-<meta property="og:title" content="AI Citation Engine™ Pricing — Get Cited by AI | SEO AI Co™">
-<meta property="og:description" content="Choose your AI citation plan. Structured for citation by Google AI Overviews, ChatGPT, Perplexity, and Gemini.">
+<meta property="og:title" content="AI Citation Infrastructure — Levels of Market Control | SEO AI Co™">
+<meta property="og:description" content="Five levels of market control. From a $2 scan to full market dominance — structured for citation by AI systems.">
 <meta property="og:url" content="{{ url('/pricing') }}">
 <script type="application/ld+json">
 {!! json_encode([
@@ -45,29 +45,36 @@
             'offers'      => [
                 [
                     '@type'         => 'Offer',
-                    'name'          => 'Quick Scan',
+                    'name'          => 'Citation Scan',
                     'price'         => '2',
                     'priceCurrency' => 'USD',
-                    'description'   => 'Instant AI citation readiness score with limited diagnostic signals.',
+                    'description'   => 'Discover your citation readiness — how visible you are to the AI systems answering your customers questions.',
                 ],
                 [
                     '@type'         => 'Offer',
-                    'name'          => 'Full Report',
-                    'price'         => '79',
+                    'name'          => 'Signal Expansion',
+                    'price'         => '99',
                     'priceCurrency' => 'USD',
-                    'description'   => 'Complete diagnostic breakdown with category-level analysis, expansion signals, and prioritized insights.',
+                    'description'   => 'Complete signal mapping across your footprint — where you are visible, where you are invisible, and what is costing you citations.',
                 ],
                 [
                     '@type'         => 'Offer',
-                    'name'          => 'Optimization Plan',
+                    'name'          => 'Structural Leverage',
                     'price'         => '249',
                     'priceCurrency' => 'USD',
-                    'description'   => 'Structured optimization roadmap with deeper analysis and priority-ordered action items.',
+                    'description'   => 'Your complete action sequence — every correction prioritized, every opportunity sized, every gap closed systematically.',
+                ],
+                [
+                    '@type'         => 'Offer',
+                    'name'          => 'System Activation',
+                    'price'         => '489',
+                    'priceCurrency' => 'USD',
+                    'description'   => 'Competitive positioning, market mapping, and complete coverage architecture across 50+ pages.',
                 ],
                 [
                     '@type'       => 'Offer',
-                    'name'        => 'Full System',
-                    'description' => 'Complete infrastructure and execution — full market coverage, structured for AI citation, and actively maintained. Starting at $4,799.',
+                    'name'        => 'Market Control',
+                    'description' => 'Complete infrastructure — your entire market structured, covered, and actively defended. Starting at $4,799.',
                 ],
             ],
         ],
@@ -95,7 +102,7 @@
                     'name'  => 'How long does it take to start getting cited by AI?',
                     'acceptedAnswer' => [
                         '@type' => 'Answer',
-                        'text'  => 'Foundation and Citation Builder plans deliver structured recommendations within two weeks of onboarding. Authority Engine and full AI Citation Engine™ implementations follow a 4-month structured deployment cycle, with citation improvements observable as coverage compounds.',
+                        'text'  => 'Signal Expansion and Structural Leverage levels deliver structured intelligence within two weeks of activation. System Activation and Market Control implementations follow a 4-month structured deployment cycle, with citation improvements observable as coverage compounds.',
                     ],
                 ],
                 [
@@ -182,8 +189,8 @@ nav.site-nav{display:flex;align-items:center;justify-content:space-between;paddi
 
 /* ── Pricing tiers ── */
 .pricing-section{padding:80px 0;border-bottom:1px solid var(--border)}
-.tiers-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:2px;margin-top:48px}
-.tier-card{background:var(--card);border:1px solid var(--border);padding:36px 28px;display:flex;flex-direction:column;position:relative;transition:border-color .25s}
+.tiers-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:2px;margin-top:48px}
+.tier-card{background:var(--card);border:1px solid var(--border);padding:32px 22px;display:flex;flex-direction:column;position:relative;transition:border-color .25s}
 .tier-card:hover{border-color:rgba(200,168,75,.18)}
 .tier-card.is-focal{border-color:rgba(200,168,75,.28)}
 .tier-card.is-focal:hover{border-color:rgba(200,168,75,.42)}
@@ -211,7 +218,8 @@ nav.site-nav{display:flex;align-items:center;justify-content:space-between;paddi
 .tier-card.is-focal .tier-cta:hover{background:var(--gold-lt);border-color:var(--gold-lt)}
 .tier-card.is-premium .tier-cta{background:transparent;border:1px solid rgba(237,232,222,.18);color:var(--ivory)}
 .tier-card.is-premium .tier-cta:hover{border-color:var(--gold);color:var(--gold)}
-@media(max-width:960px){.tiers-grid{grid-template-columns:1fr 1fr}}
+@media(max-width:1100px){.tiers-grid{grid-template-columns:repeat(3,1fr)}}
+@media(max-width:760px){.tiers-grid{grid-template-columns:1fr 1fr}}
 @media(max-width:560px){.tiers-grid{grid-template-columns:1fr}.tier-card{padding:28px 22px}}
 
 /* ── Comparison ── */
@@ -260,8 +268,21 @@ footer{border-top:1px solid rgba(200,168,75,.07);padding:32px 48px;display:flex;
   nav.site-nav{padding:18px 24px}.nav-links{gap:16px}
   .wrap{padding:0 24px}
   .pricing-hero{padding:64px 0 56px}
+  .compare-table{font-size:.82rem}
+  .compare-table thead th,.compare-table tbody td{padding:12px 14px}
   .final-cta-inner{padding:0 24px}
   footer{padding:28px 24px;flex-direction:column;align-items:flex-start}
+}
+@media(max-width:560px){
+  nav.site-nav{flex-wrap:wrap;gap:10px;justify-content:center}
+  .nav-links{gap:10px;flex-wrap:wrap;justify-content:center}
+  .nav-links a{font-size:.72rem;letter-spacing:.06em}
+  .hero-headline{font-size:clamp(2.4rem,8vw,3rem)}
+  .compare-table thead th,.compare-table tbody td{padding:10px 10px}
+  .compare-table thead th:first-child{width:auto}
+  .pos-category-line{grid-template-columns:1fr;gap:8px;text-align:center}
+  .pos-category-line .cat-old,.pos-category-line .cat-new{padding:0;text-align:center}
+  .pos-category-line .cat-div{display:none}
 }
 </style>
 @include('partials.clarity')
@@ -275,7 +296,7 @@ footer{border-top:1px solid rgba(200,168,75,.07);padding:32px 48px;display:flex;
   <ul class="nav-links">
     <li><a href="{{ route('ai-citation-engine') }}">AI Citation Engine™</a></li>
     <li><a href="{{ route('how-it-works') }}">How It Works</a></li>
-    <li><a href="{{ route('onboarding.start') }}" class="nav-cta">Get Started</a></li>
+    <li><a href="{{ route('quick-scan.show') }}" class="nav-cta">Get Started</a></li>
   </ul>
 </nav>
 
@@ -285,14 +306,14 @@ footer{border-top:1px solid rgba(200,168,75,.07);padding:32px 48px;display:flex;
      ══════════════════════════════════════════ --}}
 <section class="pricing-hero" aria-labelledby="hero-headline">
   <div class="wrap">
-    <span class="hero-eyebrow">AI Citation Engine™ — Pricing</span>
+    <span class="hero-eyebrow">AI Citation Infrastructure</span>
     <h1 class="hero-headline" id="hero-headline">
-      Start with a Scan.<br><em>Scale When You&rsquo;re Ready.</em>
+      Every level reveals what<br><em>your site is missing.</em>
     </h1>
-    <p class="hero-sub">From a $2 readiness check to full market infrastructure — every tier builds on the last. Your data carries forward.</p>
+    <p class="hero-sub">$2 shows where you stand. Each level expands what you can see — and what you can control.</p>
     <div class="hero-cta-row">
-      <a href="{{ route('quick-scan.show') }}" class="btn-primary">Run $2 Scan</a>
-      <a href="#plans" class="btn-ghost">View all tiers →</a>
+      <a href="{{ route('quick-scan.show') }}" class="btn-primary">See Where You Stand — $2</a>
+      <a href="#plans" class="btn-ghost">View all levels →</a>
     </div>
   </div>
 </section>
@@ -347,17 +368,17 @@ footer{border-top:1px solid rgba(200,168,75,.07);padding:32px 48px;display:flex;
      ══════════════════════════════════════════ --}}
 <section class="pricing-section" id="plans" aria-labelledby="pricing-hed">
   <div class="wrap">
-    <span class="section-eyebrow">Choose where to start</span>
-    <h2 class="section-hed" id="pricing-hed">Four tiers.<br><em>One clear path.</em></h2>
-    <p class="section-sub">Each tier builds on the last. Start with a scan and upgrade when you&rsquo;re ready &mdash; your data carries forward.</p>
+    <span class="section-eyebrow">Levels of market control</span>
+    <h2 class="section-hed" id="pricing-hed">One system.<br><em>Five levels of control.</em></h2>
+    <p class="section-sub">Each level compounds on the last — broader visibility, deeper infrastructure, stronger position. Enter at any point.</p>
 
-    <div class="tiers-grid" role="list">
+    <div class="tiers-grid" role="list" style="grid-template-columns:repeat(5,1fr)">
 
-      {{-- TIER 1 — Quick Scan --}}
+      {{-- TIER 1 — Start: Awareness --}}
       <div class="tier-card" role="listitem">
-        <span class="tier-badge">Entry</span>
-        <h3 class="tier-name">Quick Scan</h3>
-        <p class="tier-desc">Instant AI citation readiness score. See where you stand in seconds.</p>
+        <span class="tier-badge">Start</span>
+        <h3 class="tier-name">Citation Scan</h3>
+        <p class="tier-desc">Discover where you stand. One scan reveals your citation readiness — how visible you are to the systems answering your customers' questions.</p>
         <div class="tier-price">
           <span class="tier-price-sup">$</span>
           <span class="tier-price-val">2</span>
@@ -365,60 +386,83 @@ footer{border-top:1px solid rgba(200,168,75,.07);padding:32px 48px;display:flex;
         <p class="tier-price-note">One-time &middot; No account required</p>
         <div class="tier-divider"></div>
         <ul class="tier-features">
-          <li>0&ndash;100 AI citation score</li>
-          <li>Limited diagnostic signals</li>
-          <li>Sent to your inbox instantly</li>
+          <li>0&ndash;100 citation readiness score</li>
+          <li>Surface-level signal detection</li>
+          <li>Instant — results in seconds</li>
         </ul>
-        <a href="{{ route('quick-scan.show') }}" class="tier-cta">Run $2 Scan</a>
+        <a href="{{ route('quick-scan.show') }}" class="tier-cta">See Where You Stand — $2</a>
+        <p style="font-size:.68rem;color:rgba(168,168,160,.4);margin-top:10px;line-height:1.5;font-style:italic">Most users stop here — and stay partially visible.</p>
       </div>
 
-      {{-- TIER 2 — Full Report --}}
+      {{-- TIER 2 — Grow: Signal Expansion --}}
       <div class="tier-card" role="listitem">
-        <span class="tier-badge">Diagnostic</span>
-        <h3 class="tier-name">Full Report</h3>
-        <p class="tier-desc">Complete diagnostic breakdown with category-level analysis and prioritized insights.</p>
+        <span class="tier-badge">Grow</span>
+        <h3 class="tier-name">Signal Expansion</h3>
+        <p class="tier-desc">See the full picture. Complete signal mapping across your footprint — where you're visible, where you're invisible, and what's costing you citations.</p>
         <div class="tier-price">
           <span class="tier-price-sup">$</span>
-          <span class="tier-price-val">79</span>
-          <span class="tier-price-per">&ndash;$99</span>
+          <span class="tier-price-val">99</span>
         </div>
         <p class="tier-price-note">One-time purchase</p>
         <div class="tier-divider"></div>
         <ul class="tier-features">
-          <li><strong>Full category breakdown</strong></li>
-          <li>Expansion signals revealed</li>
-          <li>Prioritized insights</li>
+          <li><strong>Full visibility mapping</strong></li>
+          <li><strong>Every gap ranked by impact</strong></li>
+          <li>Exportable intelligence + dashboard</li>
         </ul>
-        <a href="{{ route('onboarding.start') }}?plan=full-report" class="tier-cta">Unlock Full Report</a>
+        <a href="{{ route('quick-scan.show') }}" class="tier-cta">Start with $2 Scan</a>
+        <p style="font-size:.68rem;color:rgba(168,168,160,.4);margin-top:10px;line-height:1.5;font-style:italic">Then upgrade to Signal Expansion from your results.</p>
       </div>
 
-      {{-- TIER 3 — Optimization Plan (FOCAL) --}}
+      {{-- TIER 3 — Scale: Structural Leverage (FOCAL / CORE) --}}
       <div class="tier-card is-focal" role="listitem">
         <span class="tier-popular">Most popular</span>
-        <span class="tier-badge">Optimization</span>
-        <h3 class="tier-name">Optimization Plan</h3>
-        <p class="tier-desc">Structured roadmap with deeper analysis and a clear path to improved AI citation confidence.</p>
+        <span class="tier-badge">Scale — Core</span>
+        <h3 class="tier-name">Structural Leverage</h3>
+        <p class="tier-desc">Turn visibility into structure. Your complete action sequence — every correction prioritized, every opportunity sized, every gap closed systematically.</p>
         <div class="tier-price">
           <span class="tier-price-sup">$</span>
           <span class="tier-price-val">249</span>
-          <span class="tier-price-per">&ndash;$689</span>
         </div>
         <p class="tier-price-note">One-time purchase</p>
         <div class="tier-divider"></div>
         <ul class="tier-features">
-          <li><strong>Structured optimization roadmap</strong></li>
-          <li><strong>Deeper structural analysis</strong></li>
-          <li>Priority-ordered action items</li>
-          <li>Content structure gaps identified</li>
+          <li><strong>Everything in Signal Expansion</strong></li>
+          <li><strong>Priority correction sequence</strong> &mdash; ordered by impact</li>
+          <li>Structural guidance for every gap</li>
+          <li>Opportunity sizing per correction</li>
         </ul>
-        <a href="{{ route('onboarding.start') }}?plan=optimization" class="tier-cta">Get Optimization Plan</a>
+        <a href="{{ route('quick-scan.show') }}" class="tier-cta">Start with $2 Scan</a>
+        <p style="font-size:.68rem;color:rgba(168,168,160,.4);margin-top:10px;line-height:1.5;font-style:italic">Then upgrade to Structural Leverage from your results.</p>
       </div>
 
-      {{-- TIER 4 — Full System (PREMIUM) --}}
+      {{-- TIER 4 — Implement: System Activation --}}
+      <div class="tier-card" role="listitem">
+        <span class="tier-badge">Implement</span>
+        <h3 class="tier-name">System Activation</h3>
+        <p class="tier-desc">Activate the full system. Competitive positioning, market mapping, and complete coverage architecture across 50+ pages — built for compounding authority.</p>
+        <div class="tier-price">
+          <span class="tier-price-sup">$</span>
+          <span class="tier-price-val">489</span>
+          <span class="tier-price-per">+</span>
+        </div>
+        <p class="tier-price-note">One-time purchase</p>
+        <div class="tier-divider"></div>
+        <ul class="tier-features">
+          <li><strong>Everything in Structural Leverage</strong></li>
+          <li><strong>Competitive positioning intelligence</strong></li>
+          <li>Market expansion map</li>
+          <li>50+ pages with full system architecture</li>
+        </ul>
+        <a href="{{ route('quick-scan.show') }}" class="tier-cta">Start with $2 Scan</a>
+        <p style="font-size:.68rem;color:rgba(168,168,160,.4);margin-top:10px;line-height:1.5;font-style:italic">Then upgrade to System Activation from your results.</p>
+      </div>
+
+      {{-- TIER 5 — Dominate: Market Control (PREMIUM) --}}
       <div class="tier-card is-premium" role="listitem">
-        <span class="tier-badge">Full Infrastructure</span>
-        <h3 class="tier-name">Full System</h3>
-        <p class="tier-desc">Complete infrastructure and execution. Your entire market covered, structured, and actively maintained.</p>
+        <span class="tier-badge">Dominate</span>
+        <h3 class="tier-name">Market Control</h3>
+        <p class="tier-desc">We build it. We deploy it. We maintain it. Your entire market — structured, covered, and actively defended.</p>
         <div class="tier-price">
           <span class="tier-price-sup">$</span>
           <span class="tier-price-val">4,799</span>
@@ -429,10 +473,11 @@ footer{border-top:1px solid rgba(200,168,75,.07);padding:32px 48px;display:flex;
         <ul class="tier-features">
           <li><strong>Full market infrastructure</strong></li>
           <li><strong>Complete execution</strong> &mdash; built and deployed for you</li>
-          <li>Ongoing position maintenance</li>
+          <li>Ongoing position defense</li>
           <li>Strategic oversight across your full coverage</li>
         </ul>
-        <a href="{{ route('onboarding.start', ['tier' => 'dominance']) }}" class="tier-cta">Review Full System</a>
+        <a href="{{ route('onboarding.start', ['tier' => 'dominance']) }}" class="tier-cta">Dominate Your Market</a>
+        <p style="font-size:.68rem;color:rgba(168,168,160,.4);margin-top:10px;line-height:1.5;font-style:italic">The system runs. You own the market.</p>
       </div>
 
     </div>
@@ -491,7 +536,7 @@ footer{border-top:1px solid rgba(200,168,75,.07);padding:32px 48px;display:flex;
           <tr>
             <td>AI search readiness</td>
             <td>Incidental — not by design</td>
-            <td>Core requirement — built into every layer</td>
+            <td>Core requirement — built into every level</td>
           </tr>
         </tbody>
       </table>
@@ -529,7 +574,7 @@ footer{border-top:1px solid rgba(200,168,75,.07);padding:32px 48px;display:flex;
       <div class="faq-item" itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
         <h3 class="faq-q" itemprop="name">How long does it take to start getting cited by AI?</h3>
         <div itemprop="acceptedAnswer" itemscope itemtype="https://schema.org/Answer">
-          <p class="faq-a" itemprop="text">Foundation and Citation Builder plans deliver structured recommendations within two weeks of onboarding. Authority Engine and full AI Citation Engine™ implementations follow a <strong>4-month structured deployment cycle</strong>, with citation improvements observable as coverage compounds across your service area and topic set.</p>
+          <p class="faq-a" itemprop="text">Signal Expansion and Structural Leverage levels deliver structured intelligence within two weeks of activation. System Activation and Market Control implementations follow a <strong>4-month structured deployment cycle</strong>, with citation improvements observable as coverage compounds across your service area and topic set.</p>
         </div>
       </div>
 
@@ -550,12 +595,12 @@ footer{border-top:1px solid rgba(200,168,75,.07);padding:32px 48px;display:flex;
      ══════════════════════════════════════════ --}}
 <section class="final-cta" aria-labelledby="cta-hed">
   <div class="final-cta-inner">
-    <span class="final-cta-eye">Start where you are</span>
-    <h2 class="final-cta-hed" id="cta-hed">$2 to find out.<br><em>Upgrade when you&rsquo;re ready.</em></h2>
-    <p class="final-cta-sub">Your scan data carries forward to every tier. No wasted steps, no repeated work. Start with a readiness check and see where the opportunity is.</p>
+    <span class="final-cta-eye">Enter the system</span>
+    <h2 class="final-cta-hed" id="cta-hed">$2 to see where you stand.<br><em>Expand when you&rsquo;re ready.</em></h2>
+    <p class="final-cta-sub">Your data carries forward through every level. No wasted steps, no repeated work. Each level compounds on the last.</p>
     <div class="final-cta-actions">
-      <a href="{{ route('quick-scan.show') }}" class="btn-primary">Run $2 Scan</a>
-      <a href="#plans" class="btn-ghost">Compare all tiers →</a>
+      <a href="{{ route('quick-scan.show') }}" class="btn-primary">See Where You Stand — $2</a>
+      <a href="#plans" class="btn-ghost">Compare all levels →</a>
     </div>
   </div>
 </section>

@@ -208,6 +208,30 @@ class QuickScanController extends Controller
 
         // ── Phase 2: already complete — show results ─────────────────────
         if ($scan->status === QuickScan::STATUS_SCANNED && $scan->score !== null) {
+            // Check if returning from upgrade checkout
+            if ($sessionId && $scan->upgrade_stripe_session_id === $sessionId && $scan->upgrade_status !== 'paid') {
+                try {
+                    $upgradeSession = Cashier::stripe()->checkout->sessions->retrieve($sessionId);
+                    if (($upgradeSession->payment_status ?? null) === 'paid') {
+                        $scan->update([
+                            'upgrade_status' => 'paid',
+                            'upgraded_at' => now(),
+                        ]);
+                        $scan->refresh();
+                        Log::info('QuickScan: upgrade payment confirmed', [
+                            'scan_id' => $scan->id,
+                            'plan' => $scan->upgrade_plan,
+                            'session' => $sessionId,
+                        ]);
+                    }
+                } catch (\Throwable $e) {
+                    Log::error('QuickScan: upgrade session retrieval failed', [
+                        'session_id' => $sessionId,
+                        'scan_id' => $scan->id,
+                        'error' => $e->getMessage(),
+                    ]);
+                }
+            }
             Log::info('QuickScan: result page revisited', ['scan_id' => $scan->id]);
             return view('public.quick-scan-result', compact('scan'));
         }
@@ -349,5 +373,91 @@ class QuickScanController extends Controller
         $scan = $scanId ? QuickScan::find($scanId) : null;
 
         return view('public.quick-scan-cancelled', ['scan' => $scan]);
+    }
+
+    /**
+     * Upgrade plan definitions: slug → [label, price in cents].
+     */
+    private const UPGRADE_PLANS = [
+        'diagnostic' => ['Signal Expansion', 9900],
+        'fix-strategy' => ['Structural Leverage', 24900],
+        'optimization' => ['System Activation', 48900],
+    ];
+
+    /**
+     * GET /quick-scan/upgrade?plan=diagnostic&scan_id=4
+     * Create Stripe checkout for a scan upgrade and redirect.
+     */
+    public function upgradeCheckout(Request $request)
+    {
+        $plan = $request->query('plan');
+        $scanId = (int) $request->query('scan_id', 0);
+
+        if (!$plan || !isset(self::UPGRADE_PLANS[$plan]) || !$scanId) {
+            return redirect()->route('quick-scan.show')
+                ->withErrors(['error' => 'Invalid upgrade link.']);
+        }
+
+        $scan = QuickScan::find($scanId);
+
+        if (!$scan || $scan->status !== QuickScan::STATUS_SCANNED) {
+            return redirect()->route('quick-scan.show')
+                ->withErrors(['error' => 'Scan not found or not yet complete.']);
+        }
+
+        [$productName, $unitAmount] = self::UPGRADE_PLANS[$plan];
+
+        try {
+            $successUrl = url('/quick-scan/result') . '?session_id={CHECKOUT_SESSION_ID}&scan_id=' . $scan->id;
+            $cancelUrl = url('/quick-scan/result') . '?session_id=' . ($scan->stripe_session_id ?? 'none') . '&scan_id=' . $scan->id;
+
+            $session = Cashier::stripe()->checkout->sessions->create([
+                'mode' => 'payment',
+                'customer_email' => $scan->email,
+                'line_items' => [
+                    [
+                        'price_data' => [
+                            'currency' => 'usd',
+                            'unit_amount' => $unitAmount,
+                            'product_data' => [
+                                'name' => $productName . ' — ' . parse_url($scan->url, PHP_URL_HOST),
+                                'description' => $productName . ' upgrade for scan #' . $scan->id,
+                            ],
+                        ],
+                        'quantity' => 1,
+                    ],
+                ],
+                'metadata' => [
+                    'scan_id' => $scan->id,
+                    'upgrade_plan' => $plan,
+                    'url' => $scan->url,
+                    'email' => $scan->email,
+                ],
+                'success_url' => $successUrl,
+                'cancel_url' => $cancelUrl,
+            ]);
+
+            $scan->update([
+                'upgrade_plan' => $plan,
+                'upgrade_status' => 'pending',
+                'upgrade_stripe_session_id' => $session->id,
+            ]);
+
+            Log::info('QuickScan: upgrade checkout initiated', [
+                'scan_id' => $scan->id,
+                'plan' => $plan,
+                'amount' => $unitAmount,
+                'session' => $session->id,
+            ]);
+
+            return redirect($session->url);
+        } catch (\Throwable $e) {
+            Log::error('QuickScan: upgrade checkout failed', [
+                'scan_id' => $scan->id,
+                'plan' => $plan,
+                'error' => $e->getMessage(),
+            ]);
+            return back()->withErrors(['error' => 'Upgrade payment could not be initiated. Please try again.']);
+        }
     }
 }

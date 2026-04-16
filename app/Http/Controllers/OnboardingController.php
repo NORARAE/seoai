@@ -22,9 +22,29 @@ class OnboardingController extends Controller
      * Show the onboarding intake form.
      * GET /onboarding/start?booking={id}
      */
+    /**
+     * Scan-tier plan slugs that belong in the Stripe quick-scan flow,
+     * NOT the intake/onboarding form.
+     */
+    private const SCAN_TIER_PLANS = [
+        'diagnostic',
+        'fix-strategy',
+        'optimization',
+        'full-report',      // legacy live slug
+    ];
+
     public function start(Request $request)
     {
         $bookingId = (int) $request->query('booking', 0);
+        $plan = $request->query('plan');
+
+        // Redirect scan-tier plan slugs to the quick scan entry point.
+        // These tiers are unlocked via Stripe from the scan result page,
+        // not via the intake/onboarding form.
+        if ($bookingId === 0 && in_array($plan, self::SCAN_TIER_PLANS, true)) {
+            return redirect()->route('quick-scan.show');
+        }
+
         $allowedTiers = ['launch', 'expansion', 'dominance'];
         $tier = in_array($request->query('tier'), $allowedTiers, true)
             ? $request->query('tier')
@@ -32,7 +52,6 @@ class OnboardingController extends Controller
 
         // Quick Scan project linkage
         $scanId = (int) $request->query('scan_id', 0);
-        $plan = $request->query('plan');
 
         // Preview mode — no booking required
         if ($bookingId === 0) {

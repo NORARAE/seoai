@@ -90,9 +90,10 @@ body{background:var(--bg);color:var(--ivory);font-family:'DM Sans',sans-serif;fo
 
 /* ── Comparison table ── */
 .compare-table{width:100%;border-collapse:collapse;margin:28px 0}
-.compare-table th{font-size:.6rem;letter-spacing:.2em;text-transform:uppercase;color:var(--gold-dim);text-align:left;padding:10px 16px;border-bottom:1px solid rgba(200,168,75,.12)}
-.compare-table td{font-size:.86rem;color:var(--muted);padding:14px 16px;border-bottom:1px solid rgba(200,168,75,.06);vertical-align:top;line-height:1.6}
+.compare-table th{font-size:.6rem;letter-spacing:.2em;text-transform:uppercase;color:var(--gold-dim);text-align:left;padding:12px 20px;border-bottom:1px solid rgba(200,168,75,.12)}
+.compare-table td{font-size:.86rem;color:var(--muted);padding:16px 20px;border-bottom:1px solid rgba(200,168,75,.06);vertical-align:top;line-height:1.65}
 .compare-table td:first-child{color:rgba(237,232,222,.72);font-size:.84rem}
+.compare-table tbody tr:nth-child(even) td{background:rgba(200,168,75,.02)}
 .compare-table tr:last-child td{border-bottom:none}
 
 /* ── FAQ ── */
@@ -104,28 +105,37 @@ body{background:var(--bg);color:var(--ivory);font-family:'DM Sans',sans-serif;fo
 .faq-q{font-family:'DM Sans',sans-serif;font-size:.9rem;font-weight:400;color:var(--ivory);margin-bottom:8px;line-height:1.5}
 .faq-a{font-size:.86rem;line-height:1.78;color:rgba(168,168,160,.68)}
 
-.divider{height:1px;background:var(--border);margin:52px 0}
+.divider{height:1px;background:var(--border);margin:64px 0}
 
 /* ── Surface grid ── */
 .surface-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:2px;margin:32px 0}
-.surface-item{padding:28px 24px;background:var(--card);border:1px solid var(--border);transition:border-color .25s,transform .25s cubic-bezier(.23,1,.32,1),box-shadow .25s}
+.surface-item{padding:32px 28px;background:var(--card);border:1px solid var(--border);transition:border-color .25s,transform .25s cubic-bezier(.23,1,.32,1),box-shadow .25s}
 .surface-item:hover{border-color:rgba(200,168,75,.18);transform:translateY(-2px);box-shadow:0 8px 24px rgba(0,0,0,.3)}
 .surface-name{font-family:'Cormorant Garamond',serif;font-size:1.1rem;font-weight:400;color:var(--ivory);margin-bottom:8px}
 .surface-desc{font-size:.82rem;color:var(--muted);line-height:1.65}
 
-/* ── Pillar list ── */
-.pillar-list{list-style:none;padding:0;margin:28px 0;display:flex;flex-direction:column;gap:0}
-.pillar-list li{padding:16px 0;border-bottom:1px solid var(--border);font-size:.88rem;color:var(--muted);line-height:1.65;display:flex;gap:16px;align-items:baseline}
-.pillar-list li:last-child{border-bottom:none}
-.pillar-list li::before{content:'—';color:rgba(200,168,75,.28);flex-shrink:0}
-.pillar-list li strong{color:var(--ivory);font-weight:400}
+/* ── Pillar cards ── */
+.pillar-grid{display:flex;flex-direction:column;gap:2px;margin:36px 0}
+.pillar-card{padding:28px 30px;background:var(--card);border:1px solid var(--border);display:flex;flex-direction:column;gap:8px;transition:border-color .25s}
+.pillar-card:hover{border-color:rgba(200,168,75,.16)}
+.pillar-num{font-size:.5rem;letter-spacing:.24em;text-transform:uppercase;color:var(--gold-dim)}
+.pillar-name{font-family:'Cormorant Garamond',serif;font-size:1.12rem;font-weight:400;color:var(--ivory);line-height:1.25;letter-spacing:-.01em;margin:0}
+.pillar-desc{font-size:.84rem;color:var(--muted);line-height:1.72;max-width:580px}
+.pillar-desc a{color:var(--gold-lt);text-decoration:none;border-bottom:1px solid rgba(200,168,75,.2)}
+.pillar-desc a:hover{border-color:var(--gold-lt)}
+/* ── Example cards ── */
+.example-grid{display:flex;flex-direction:column;gap:16px;margin:28px 0}
+.example-card{padding:26px 28px;border:1px solid var(--border);background:var(--card);transition:border-color .25s}
+.example-card:hover{border-color:rgba(200,168,75,.16)}
+.example-label{font-size:.56rem;letter-spacing:.2em;text-transform:uppercase;color:var(--gold-dim);display:block;margin-bottom:10px}
+.example-desc{font-size:.86rem;color:var(--muted);line-height:1.78;max-width:620px}
 
 /* ── Prose ── */
-.prose{font-size:.94rem;color:var(--muted);line-height:1.82}
+.prose{font-size:.94rem;color:var(--muted);line-height:1.82;max-width:680px}
 .prose+.prose{margin-top:20px}
 .prose a{color:var(--gold-lt);text-decoration:none;border-bottom:1px solid rgba(200,168,75,.2);transition:border-color .2s}
 .prose a:hover{border-color:var(--gold-lt)}
-h2.section-hed{font-family:'Cormorant Garamond',serif;font-size:clamp(1.3rem,2.4vw,1.9rem);font-weight:300;color:var(--ivory);margin:52px 0 18px;letter-spacing:-.01em;line-height:1.2}
+h2.section-hed{font-family:'Cormorant Garamond',serif;font-size:clamp(1.3rem,2.4vw,1.9rem);font-weight:300;color:var(--ivory);margin:56px 0 22px;letter-spacing:-.01em;line-height:1.2}
 h2.section-hed em{font-style:italic;color:var(--gold-lt)}
 
 /* ── Related nav ── */
@@ -154,9 +164,9 @@ footer{border-top:1px solid var(--border);padding:32px 64px;display:flex;align-i
 
 /* ── Snippet bands ── */
 .snippet-band{margin:0 0 28px;display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:rgba(200,168,75,.06)}
-.snippet-item{background:var(--card);padding:16px 18px}
-.snippet-item-label{font-size:.52rem;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);opacity:.65;margin-bottom:6px}
-.snippet-item-text{font-size:.88rem;color:rgba(237,232,222,.85);line-height:1.6}
+.snippet-item{background:var(--card);padding:22px 22px 20px}
+.snippet-item-label{font-size:.52rem;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);opacity:.65;margin-bottom:8px}
+.snippet-item-text{font-size:.84rem;color:rgba(237,232,222,.82);line-height:1.72}
 .byline{font-size:.8rem;color:var(--muted);margin-bottom:28px}
 .byline a{color:var(--gold);text-decoration:none}
 .byline a:hover{text-decoration:underline}
@@ -165,7 +175,7 @@ footer{border-top:1px solid var(--border);padding:32px 64px;display:flex;align-i
 .def-angles{margin:-12px 0 32px;padding:0 24px 0 26px;border-left:2px solid rgba(200,168,75,.14)}
 .def-angle-row{display:flex;gap:12px;padding:9px 0;border-bottom:1px solid rgba(200,168,75,.05)}
 .def-angle-row:last-child{border-bottom:none}
-.def-angle-label{font-size:.54rem;letter-spacing:.2em;text-transform:uppercase;color:var(--gold-dim);width:108px;flex-shrink:0;padding-top:3px;line-height:1.4}
+.def-angle-label{font-size:.54rem;letter-spacing:.2em;text-transform:uppercase;color:var(--gold-dim);width:120px;flex-shrink:0;padding-top:3px;line-height:1.4}
 .def-angle-text{font-size:.88rem;color:var(--muted);line-height:1.72}
 /* ── Citation bait ── */
 .citation-block{margin:40px 0;padding:22px 26px;background:rgba(200,168,75,.03);border:1px solid rgba(200,168,75,.1)}
@@ -177,6 +187,12 @@ footer{border-top:1px solid var(--border);padding:32px 64px;display:flex;align-i
   .page{padding:48px 24px 72px}
   .surface-grid{grid-template-columns:1fr}
   .related-grid{grid-template-columns:1fr}
+  .snippet-band{grid-template-columns:1fr}
+  .pillar-card{padding:22px 20px}
+  .example-card{padding:22px 20px}
+  .def-angle-row{flex-direction:column;gap:4px}
+  .def-angle-label{width:auto}
+  .compare-table td{padding:12px 14px}
   footer{padding:24px;flex-direction:column;gap:16px;text-align:center}
 }
 </style>
@@ -294,13 +310,33 @@ footer{border-top:1px solid var(--border);padding:32px 64px;display:flex;align-i
 
   <h2 class="section-hed">The pillars of AI search optimization</h2>
 
-  <ul class="pillar-list" aria-label="AI search optimization pillars">
-    <li><strong>Structured page coverage</strong> — Dedicated pages per service and location, each answering a specific, identifiable query. See the <a href="{{ route('programmatic-seo-platform') }}" style="color:var(--gold-lt);border-bottom:1px solid rgba(200,168,75,.2);text-decoration:none">programmatic SEO platform</a> that generates this at scale.</li>
-    <li><strong>Entity clarity</strong> — Every page defines its subject unambiguously: the business, the service, the location, the relationship between them.</li>
-    <li><strong>Schema markup</strong> — LocalBusiness, Service, FAQPage, and BreadcrumbList schemas that allow AI systems to classify and extract content without inference.</li>
-    <li><strong>Extractable content blocks</strong> — Sections structured as direct answers — question, definition, structured response — that AI systems can cite without needing surrounding context.</li>
-    <li><strong>Internal link architecture</strong> — Link paths that establish topical authority and surface the relationship between service pages, location pages, and category-level content.</li>
-  </ul>
+  <div class="pillar-grid" aria-label="AI search optimization pillars">
+    <div class="pillar-card">
+      <span class="pillar-num">01</span>
+      <h3 class="pillar-name">Structured page coverage</h3>
+      <p class="pillar-desc">Dedicated pages per service and location, each answering a specific, identifiable query. See the <a href="{{ route('programmatic-seo-platform') }}">programmatic SEO platform</a> that generates this at scale.</p>
+    </div>
+    <div class="pillar-card">
+      <span class="pillar-num">02</span>
+      <h3 class="pillar-name">Entity clarity</h3>
+      <p class="pillar-desc">Every page defines its subject unambiguously: the business, the service, the location, the relationship between them.</p>
+    </div>
+    <div class="pillar-card">
+      <span class="pillar-num">03</span>
+      <h3 class="pillar-name">Schema markup</h3>
+      <p class="pillar-desc">LocalBusiness, Service, FAQPage, and BreadcrumbList schemas that allow AI systems to classify and extract content without inference.</p>
+    </div>
+    <div class="pillar-card">
+      <span class="pillar-num">04</span>
+      <h3 class="pillar-name">Extractable content blocks</h3>
+      <p class="pillar-desc">Sections structured as direct answers — question, definition, structured response — that AI systems can cite without needing surrounding context.</p>
+    </div>
+    <div class="pillar-card">
+      <span class="pillar-num">05</span>
+      <h3 class="pillar-name">Internal link architecture</h3>
+      <p class="pillar-desc">Link paths that establish topical authority and surface the relationship between service pages, location pages, and category-level content.</p>
+    </div>
+  </div>
 
   <div class="divider"></div>
 
@@ -312,11 +348,20 @@ footer{border-top:1px solid var(--border);padding:32px 64px;display:flex;align-i
 
   <h2 class="section-hed">In practice</h2>
 
-  <ul class="signal-list" aria-label="AI search optimization examples">
-    <li><strong>Home services contractor</strong> — A roofing company serving 15 cities builds one structured page per service-city pair. When someone asks ChatGPT for a roofer in those markets, the company appears in the generated answer across all 15 locations — not just where they rank on Google page one.</li>
-    <li><strong>Professional services firm</strong> — A law firm creates dedicated practice area pages each with an explicit entity definition and FAQ schema. Those pages surface in AI Overviews when someone researches legal topics relevant to the firm’s specializations.</li>
-    <li><strong>Regional franchise</strong> — A multi-location franchise adds LocalBusiness schema and geographic coverage pages. AI systems begin surfacing specific franchise locations by name in response to local service queries — supplementing the map pack rather than depending on it.</li>
-  </ul>
+  <div class="example-grid" aria-label="AI search optimization examples">
+    <div class="example-card">
+      <span class="example-label">Home services contractor</span>
+      <p class="example-desc">A roofing company serving 15 cities builds one structured page per service-city pair. When someone asks ChatGPT for a roofer in those markets, the company appears in the generated answer across all 15 locations — not just where they rank on Google page one.</p>
+    </div>
+    <div class="example-card">
+      <span class="example-label">Professional services firm</span>
+      <p class="example-desc">A law firm creates dedicated practice area pages each with an explicit entity definition and FAQ schema. Those pages surface in AI Overviews when someone researches legal topics relevant to the firm’s specializations.</p>
+    </div>
+    <div class="example-card">
+      <span class="example-label">Regional franchise</span>
+      <p class="example-desc">A multi-location franchise adds LocalBusiness schema and geographic coverage pages. AI systems begin surfacing specific franchise locations by name in response to local service queries — supplementing the map pack rather than depending on it.</p>
+    </div>
+  </div>
 
   <div class="divider"></div>
 

@@ -31,7 +31,8 @@ class User extends Authenticatable implements FilamentUser, HasAppAuthentication
      */
     public function canAccessPanel(Panel $panel): bool
     {
-        return $this->is_active !== false;
+        return $this->is_active !== false
+            && ($this->isPrivilegedStaff() || $this->isFrontendDev());
     }
 
     /**

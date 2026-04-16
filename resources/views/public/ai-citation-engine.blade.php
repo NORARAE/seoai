@@ -160,6 +160,44 @@ footer{border-top:1px solid rgba(200,168,75,.07);padding:32px 40px;display:flex;
 .footer-links a{font-size:.72rem;color:rgba(168,168,160,.38);text-decoration:none;transition:color .2s}
 .footer-links a:hover{color:var(--gold)}
 @media(max-width:640px){article{padding:48px 24px 72px}nav.site-nav{padding:18px 24px}.nav-links{gap:16px}}
+
+/* ── Doctrine section ── */
+.doctrine{margin:0 0 8px}
+.doctrine-hed{
+  font-family:'Cormorant Garamond',serif;
+  font-size:clamp(1.5rem,2.6vw,2rem);font-weight:300;
+  color:var(--ivory);line-height:1.18;margin:0 0 48px;
+  padding-bottom:18px;border-bottom:1px solid rgba(200,168,75,.12);
+  letter-spacing:.01em;
+}
+.doctrine-hed em{font-style:italic;color:var(--gold-lt)}
+.doctrine-block{margin-bottom:48px;position:relative;padding-left:20px;border-left:2px solid rgba(200,168,75,.10)}
+.doctrine-block:last-child{margin-bottom:0}
+.doctrine-block-hed{
+  font-family:'Cormorant Garamond',serif;
+  font-size:clamp(1.35rem,2.2vw,1.7rem);font-weight:300;
+  color:var(--ivory);line-height:1.25;margin-bottom:14px;
+}
+.doctrine-block-hed em{font-style:italic;color:var(--gold-lt)}
+.doctrine-block-text{font-size:.95rem;color:var(--muted);line-height:1.88}
+.doctrine-block-text strong{color:var(--ivory);font-weight:400}
+.doctrine-block--accent{border-left-color:rgba(200,168,75,.35);padding:24px 24px 24px 22px;background:rgba(200,168,75,.03);border-radius:0 4px 4px 0}
+.doctrine-block--accent .doctrine-block-hed{
+  font-size:clamp(1.1rem,1.8vw,1.35rem);color:var(--gold);
+  font-style:italic;margin-bottom:10px;letter-spacing:.015em;
+}
+.doctrine-block--shift{border-left-color:rgba(200,168,75,.22)}
+.doctrine-block--shift .doctrine-block-text{font-size:1rem;color:rgba(237,232,222,.85)}
+
+/* ── Doctrine bridge ── */
+.doctrine-bridge{text-align:center;padding:56px 24px;margin:0 0 8px;position:relative}
+.doctrine-bridge::before{content:'';position:absolute;top:0;left:50%;transform:translateX(-50%);width:50%;height:1px;background:linear-gradient(90deg,transparent,rgba(200,168,75,.2),transparent)}
+.doctrine-bridge-hed{font-family:'Cormorant Garamond',serif;font-size:clamp(1.4rem,2.4vw,1.9rem);font-weight:300;color:var(--ivory);line-height:1.2;margin-bottom:14px}
+.doctrine-bridge-hed em{font-style:italic;color:var(--gold-lt)}
+.doctrine-bridge-sub{font-size:.92rem;color:var(--muted);line-height:1.75;max-width:520px;margin:0 auto 28px}
+.doctrine-bridge-cta{display:inline-flex;align-items:center;gap:8px;font-size:.82rem;letter-spacing:.1em;text-transform:uppercase;color:#080808;background:linear-gradient(135deg,var(--gold),var(--gold-lt));padding:16px 42px;text-decoration:none;transition:all .3s;box-shadow:0 4px 20px rgba(200,168,75,.18)}
+.doctrine-bridge-cta:hover{box-shadow:0 8px 36px rgba(200,168,75,.28);transform:translateY(-2px)}
+.doctrine-bridge-note{font-size:.74rem;color:rgba(168,168,160,.5);margin-top:14px;letter-spacing:.03em}
 </style>
 </head>
 <body>
@@ -171,7 +209,7 @@ footer{border-top:1px solid rgba(200,168,75,.07);padding:32px 40px;display:flex;
   <ul class="nav-links">
     <li><a href="{{ route('ai-search-optimization') }}">AI Search</a></li>
     <li><a href="{{ route('how-it-works') }}">How It Works</a></li>
-    <li><a href="{{ route('book.index') }}">Book</a></li>
+    <li><a href="{{ route('quick-scan.show') }}" class="nav-cta">Run Scan</a></li>
   </ul>
 </nav>
 
@@ -182,6 +220,50 @@ footer{border-top:1px solid rgba(200,168,75,.07);padding:32px 40px;display:flex;
   <p class="byline">SEOAIco Editorial Team</p>
 
   <p class="lead">The AI Citation Engine™ is the infrastructure layer that makes web content the source AI systems cite — not just a page they rank. It generates structured pages, applies schema, establishes entity relationships, and optimizes content at the sentence level for retrieval in AI-generated answers.</p>
+
+  {{-- ── Doctrine: What it actually does ── --}}
+  <section class="doctrine" aria-labelledby="doctrine-hed">
+    <h2 class="doctrine-hed" id="doctrine-hed">What the AI Citation Engine™ <em>Actually Does</em></h2>
+
+    <div class="doctrine-block">
+      <p class="doctrine-block-hed">Search engines rank pages.<br>AI systems choose answers.</p>
+      <p class="doctrine-block-text">The AI Citation Engine™ structures your site so AI systems select it as the answer — not just list it as an option.</p>
+    </div>
+
+    <div class="doctrine-block">
+      <p class="doctrine-block-hed">This is not SEO. It's retrieval infrastructure.</p>
+      <p class="doctrine-block-text">Traditional SEO optimizes for position. The AI Citation Engine™ builds structured, extractable, entity-defined pages designed to be selected, cited, and reused in AI-generated answers.</p>
+    </div>
+
+    <div class="doctrine-block">
+      <p class="doctrine-block-hed">It aligns your site with how AI systems <em>actually read the web.</em></p>
+      <p class="doctrine-block-text">Instead of optimizing for rankings, it aligns page structure, entity clarity, and content architecture with the signals AI systems use to extract, validate, and assemble answers.</p>
+    </div>
+
+    <div class="doctrine-block doctrine-block--accent">
+      <p class="doctrine-block-hed">In simple terms</p>
+      <p class="doctrine-block-text"><strong>It makes AI systems quote your site instead of your competitor's.</strong></p>
+    </div>
+
+    <div class="doctrine-block doctrine-block--shift">
+      <p class="doctrine-block-hed">This is the shift</p>
+      <p class="doctrine-block-text">Traditional SEO earns rankings. The AI Citation Engine™ earns citations — the new unit of visibility in AI search.<br><br>Sites built for rankings get listed.<br>Sites built for citation get <strong>used</strong>.</p>
+    </div>
+  </section>
+
+  <div class="doctrine-bridge">
+    <p class="doctrine-bridge-hed">You can <em>measure this</em> instantly.</p>
+    <p class="doctrine-bridge-sub">The Citation Scan evaluates your site's structural readiness for AI retrieval — schema clarity, entity definition, extraction signals — in 60 seconds. $2. No subscription.</p>
+    <a href="{{ route('quick-scan.show') }}" class="doctrine-bridge-cta">See Where You Stand — $2</a>
+    <p class="doctrine-bridge-note">Instant score · See exactly what AI systems can and can't read</p>
+  </div>
+
+  {{-- ── System dependency signal ── --}}
+  <div style="max-width:540px;margin:0 auto;padding:0 24px 8px;text-align:center">
+    <p style="font-size:.82rem;color:rgba(168,168,160,.55);line-height:1.75;letter-spacing:.02em">The system is not a theme or template.<br>It is a structured expansion layer.<br><span style="color:rgba(200,168,75,.6)">Without it, most sites revert to traditional visibility.</span></p>
+  </div>
+
+  <div class="divider"></div>
 
   <div class="def-card">
     <p class="def-card-label">Definition</p>
@@ -396,7 +478,7 @@ footer{border-top:1px solid rgba(200,168,75,.07);padding:32px 40px;display:flex;
     <span class="page-cta-eye">Make your site the answer</span>
     <h2>Get cited by AI — <em>not just ranked.</em></h2>
     <p>We deploy the AI Citation Engine™ into your existing site — structuring your service pages for extraction and citation across every AI search platform that matters.</p>
-    <a href="{{ route('book.index') }}" class="cta-btn">Get cited by AI</a>
+    <a href="{{ route('quick-scan.show') }}" class="cta-btn">See Where You Stand — $2</a>
     <a href="{{ route('how-it-works') }}" class="cta-ghost">See how it works →</a>
   </div>
 
@@ -410,7 +492,7 @@ footer{border-top:1px solid rgba(200,168,75,.07);padding:32px 40px;display:flex;
   <nav class="footer-links">
     <a href="{{ route('ai-search-optimization') }}">AI Search</a>
     <a href="{{ route('how-it-works') }}">How It Works</a>
-    <a href="{{ route('book.index') }}">Book</a>
+    <a href="/pricing">Pricing</a>
     <a href="{{ route('privacy') }}">Privacy</a>
   </nav>
 </footer>

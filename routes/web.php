@@ -94,6 +94,7 @@ Route::post('/quick-scan/checkout', [\App\Http\Controllers\QuickScanController::
 Route::get('/quick-scan/result', [\App\Http\Controllers\QuickScanController::class, 'result'])->name('quick-scan.result');
 Route::get('/quick-scan/status', [\App\Http\Controllers\QuickScanController::class, 'status'])->name('quick-scan.status');
 Route::get('/quick-scan/cancelled', [\App\Http\Controllers\QuickScanController::class, 'cancelled'])->name('quick-scan.cancelled');
+Route::get('/quick-scan/upgrade', [\App\Http\Controllers\QuickScanController::class, 'upgradeCheckout'])->name('quick-scan.upgrade');
 
 // ── Booking / Consult System ──
 Route::post('/track/modal-open', [TrackingController::class, 'modalOpen'])->middleware('throttle:30,1')->name('track.modal-open');

@@ -69,6 +69,12 @@ class QuickScanResource extends Resource
                     ->limit(50)
                     ->tooltip(fn(QuickScan $r): string => $r->url ?? ''),
 
+                TextColumn::make('domain')
+                    ->searchable()
+                    ->sortable()
+                    ->placeholder('—')
+                    ->toggleable(isToggledHiddenByDefault: true),
+
                 TextColumn::make('user.name')
                     ->label('User')
                     ->sortable()
@@ -83,6 +89,12 @@ class QuickScanResource extends Resource
                         $state >= 40 => 'warning',
                         default => 'danger',
                     }),
+
+                TextColumn::make('page_count')
+                    ->label('Pages')
+                    ->sortable()
+                    ->placeholder('—')
+                    ->toggleable(isToggledHiddenByDefault: true),
 
                 TextColumn::make('score_change')
                     ->label('Δ')
@@ -148,13 +160,15 @@ class QuickScanResource extends Resource
                     ->badge()
                     ->placeholder('—')
                     ->formatStateUsing(fn(?string $state): string => match ($state) {
-                        'citation-builder' => 'Citation Builder',
-                        'authority-engine' => 'Authority Engine',
+                        'diagnostic' => 'Signal Expansion',
+                        'fix-strategy' => 'Structural Leverage',
+                        'optimization' => 'System Activation',
                         default => $state ?? '',
                     })
                     ->color(fn(?string $state): string => match ($state) {
-                        'citation-builder' => 'info',
-                        'authority-engine' => 'warning',
+                        'diagnostic' => 'info',
+                        'fix-strategy' => 'warning',
+                        'optimization' => 'success',
                         default => 'gray',
                     }),
 
@@ -168,6 +182,20 @@ class QuickScanResource extends Resource
                         'completed' => 'info',
                         default => 'gray',
                     }),
+
+                TextColumn::make('stripe_session_id')
+                    ->label('Stripe')
+                    ->limit(20)
+                    ->tooltip(fn(QuickScan $r): string => $r->stripe_session_id ?? '—')
+                    ->placeholder('—')
+                    ->toggleable(isToggledHiddenByDefault: true),
+
+                TextColumn::make('upgrade_stripe_session_id')
+                    ->label('Upgrade Stripe')
+                    ->limit(20)
+                    ->tooltip(fn(QuickScan $r): string => $r->upgrade_stripe_session_id ?? '—')
+                    ->placeholder('—')
+                    ->toggleable(isToggledHiddenByDefault: true),
 
                 TextColumn::make('paid')
                     ->label('Paid')
@@ -210,6 +238,18 @@ class QuickScanResource extends Resource
                         '1' => 'Repeat Scans Only',
                     ])
                     ->label('Repeat'),
+                SelectFilter::make('upgrade_status')
+                    ->options([
+                        'paid' => 'Upgraded (Paid)',
+                        'pending' => 'Upgrade Pending',
+                    ])
+                    ->label('Upgrade'),
+                SelectFilter::make('is_internal')
+                    ->options([
+                        '1' => 'Internal Only',
+                        '0' => 'External Only',
+                    ])
+                    ->label('Internal'),
             ]);
     }
 

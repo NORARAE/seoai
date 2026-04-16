@@ -19,13 +19,13 @@
 <meta name="theme-color" content="#080808">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="csrf-token" content="{{ csrf_token() }}">
-<title>Book a Free Market Strategy Session | SEO AI Co™</title>
-<meta name="description" content="Not a sales call — a focused session where we map out exactly where your business can show up in search and what steps get you there.">
+<title>Skip the System — Book a Strategy Session | SEO AI Co™</title>
+<meta name="description" content="Already know what you need? Book a strategy session and we'll build the full system for you. For businesses ready to delegate.">
 <link rel="canonical" href="{{ url('/book') }}">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="SEO AI Co™">
-<meta property="og:title" content="Book a Free Market Strategy Session | SEO AI Co™">
-<meta property="og:description" content="Not a sales call — a focused session where we map out exactly where your business can show up in search and what steps get you there.">
+<meta property="og:title" content="Skip the System — Deploy Full Infrastructure | SEO AI Co™">
+<meta property="og:description" content="The acceleration path for businesses ready to deploy the full AI Citation Engine™ system. Infrastructure built and maintained for you.">
 <meta property="og:url" content="{{ url('/book') }}">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -249,9 +249,9 @@ body{background:var(--bg);color:var(--ivory);font-family:'DM Sans',sans-serif;fo
           <circle cx="318" cy="316" r="1" fill="#c8a84b" fill-opacity=".03"/>
           <circle cx="462" cy="310" r="1" fill="#c8a84b" fill-opacity=".03"/>
         </svg>
-        <h1>See exactly where your market stands &mdash; and what to do next.</h1>
-        <p class="hero-sub">A focused session that reveals your position, your gaps, and your next move.</p>
-        <p class="bk-supporting-line" style="margin:0 auto 10px">No guesswork. No recycled strategy. Only real signal.</p>
+        <h1>You can keep building this system.<br><em>Or deploy it all at once.</em></h1>
+        <p class="hero-sub">This is the acceleration path. We build the full infrastructure, deploy it into your environment, and maintain it.</p>
+        <p class="bk-supporting-line" style="margin:0 auto 10px">Most clients continue through the system first. This is for those ready to skip ahead.</p>
         <p class="bk-signal-copy" style="font-size:1.14rem;opacity:.85;letter-spacing:0em;margin:28px auto 34px;color:var(--ivory,#ede8de)">Your position is not held unless secured.</p>
 
         @if(request('payment') === 'cancelled')
@@ -260,11 +260,11 @@ body{background:var(--bg);color:var(--ivory);font-family:'DM Sans',sans-serif;fo
         </div>
         @endif
 
-        <button class="bk-cta-btn" onclick="openSession()">Reserve Your Market Position Session</button>
-        <p class="bk-cta-support">AI-powered search expansion. Branded market rollout. Limited access.</p>
-        <p class="bk-cta-note">Takes ~2 minutes to start</p>
-        <span class="bk-active-indicator"><span class="bk-active-dot">&bull;</span> Live system &mdash; tracking search signals in real time</span>
-        <span class="bk-trust-source">Powered by live search data, AI-driven analysis, and real market signals</span>
+        <button class="bk-cta-btn" onclick="openSession()">Start Activation</button>
+        <p class="bk-cta-support">Full system deployment starting at $4,799+</p>
+        <p class="bk-cta-note">Or <a href="{{ route('quick-scan.show') }}" style="color:var(--gold);text-decoration:none;border-bottom:1px solid rgba(200,168,75,.3)">start with the $2 scan</a> — most clients continue through the system first.</p>
+        <span class="bk-active-indicator"><span class="bk-active-dot">&bull;</span> System active &mdash; deployment capacity limited</span>
+        <span class="bk-trust-source">Structured deployment across your full market footprint</span>
         <div class="bk-trust-row" aria-label="Platform integrations">
           <span class="bk-trust-item">
             <svg width="12" height="12" viewBox="0 0 14 14" fill="currentColor" aria-hidden="true"><rect x="1" y="8" width="3" height="5"/><rect x="5.5" y="5" width="3" height="8"/><rect x="10" y="2" width="3" height="11"/></svg>
@@ -296,7 +296,7 @@ body{background:var(--bg);color:var(--ivory);font-family:'DM Sans',sans-serif;fo
             LLM Discovery
           </span>
         </div>
-        <p class="bk-trust-caption">Deploy structured service + location expansion across your entire market &mdash; built for Google, AI search, and LLM discovery.</p>
+        <p class="bk-trust-caption">Full infrastructure deployment &#8212; citation architecture, coverage expansion, and ongoing system maintenance.</p>
       </section>
 
 
@@ -312,9 +312,9 @@ body{background:var(--bg);color:var(--ivory);font-family:'DM Sans',sans-serif;fo
     {{-- Booking entry section --}}
     <section id="book-now">
       <div class="bk-entry-intro">
-        <p class="bk-section-label">Reserve Your Session</p>
-        <h2>Start growing your market.</h2>
-        <p class="bk-entry-system-note">Choose how you want to begin — and how fast you want to move.</p>
+        <p class="bk-section-label">Deploy Full System</p>
+        <h2>Begin activation.</h2>
+        <p class="bk-entry-system-note">Select your deployment scope. The system scales to your market.</p>
       </div>
       @include('components.booking-modal', ['disableOverlayDismiss' => true, 'panelMode' => true])
     </section>

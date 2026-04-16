@@ -88,7 +88,28 @@ class QuickScanWebhookController extends Controller
             return response()->json(['message' => 'Scan not found.']);
         }
 
-        // Mark paid (idempotent — may already be paid from result handler)
+        // ── Handle upgrade payments (idempotent) ─────────────────────────
+        $upgradePlan = $session->metadata?->upgrade_plan ?? null;
+
+        if ($upgradePlan && in_array($upgradePlan, ['diagnostic', 'fix-strategy', 'optimization'], true)) {
+            if ($scan->upgrade_status !== 'paid') {
+                $scan->update([
+                    'upgrade_plan' => $upgradePlan,
+                    'upgrade_status' => 'paid',
+                    'upgrade_stripe_session_id' => $session->id,
+                    'upgraded_at' => now(),
+                ]);
+                Log::info('QuickScan webhook: upgrade payment confirmed', [
+                    'scan_id' => $scanId,
+                    'plan' => $upgradePlan,
+                    'session_id' => $session->id,
+                ]);
+            }
+
+            return response()->json(['message' => 'Upgrade confirmed.', 'scan_id' => $scanId]);
+        }
+
+        // ── Handle initial $2 payment (idempotent) ───────────────────────
         if (!$scan->paid) {
             $scan->update([
                 'paid' => true,
