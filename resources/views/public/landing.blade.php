@@ -63,16 +63,16 @@ nav{
   padding:28px 64px;border-bottom:1px solid transparent;transition:all .4s;
 }
 nav.stuck{background:rgba(8,8,8,.95);backdrop-filter:blur(16px);border-color:var(--border);padding:16px 64px}
-.nav-right{display:flex;align-items:center;gap:32px}
-.nav-link{font-size:.82rem;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);text-decoration:none;transition:color .3s;position:relative;padding-bottom:2px}
+.nav-right{display:flex;align-items:center;gap:28px}
+.nav-link{font-size:.74rem;letter-spacing:.18em;text-transform:uppercase;color:rgba(168,168,160,.6);text-decoration:none;transition:color .3s;position:relative;padding-bottom:2px;font-weight:400}
 .nav-link::after{content:'';position:absolute;bottom:0;left:0;right:100%;height:1px;background:var(--gold);transition:right .3s cubic-bezier(.23,1,.32,1)}
 .nav-link:hover{color:var(--gold)}
 .nav-link:hover::after{right:0}
 .nav-btn{
-  font-size:.78rem;letter-spacing:.14em;text-transform:uppercase;
-  color:var(--bg);background:var(--gold);padding:12px 28px;text-decoration:none;
+  font-size:.7rem;letter-spacing:.16em;text-transform:uppercase;
+  color:var(--bg);background:var(--gold);padding:10px 26px;text-decoration:none;
   transition:background .3s cubic-bezier(.23,1,.32,1),box-shadow .3s cubic-bezier(.23,1,.32,1);
-  display:inline-flex;align-items:center;white-space:nowrap;
+  display:inline-flex;align-items:center;white-space:nowrap;font-weight:500;margin-left:4px;
 }
 .nav-btn:hover{background:var(--gold-lt);box-shadow:0 4px 16px rgba(200,168,75,.22)}
 .nav-account-short{display:none}
@@ -1605,8 +1605,9 @@ footer{border-top:1px solid var(--border);padding:36px 64px;display:flex;flex-di
 @media(max-width:1200px){
   nav{padding:20px 36px}
   nav.stuck{padding:14px 36px}
-  .nav-link{font-size:.72rem;letter-spacing:.13em}
-  .nav-btn{font-size:.72rem;letter-spacing:.13em;padding:12px 22px;min-height:40px}
+  .nav-right{gap:22px}
+  .nav-link{font-size:.68rem;letter-spacing:.14em}
+  .nav-btn{font-size:.66rem;letter-spacing:.14em;padding:9px 20px;min-height:38px}
   .nav-account-full{display:none}
   .nav-account-short{display:inline}
 }
@@ -2111,14 +2112,16 @@ body::before{
 .qs-preview-check.pass::before{content:'\2713';color:#6aaf90;font-size:.7rem;flex-shrink:0}
 .qs-preview-check.fail::before{content:'\2717';color:#c47878;font-size:.7rem;flex-shrink:0}
 .qs-preview-footer{font-size:.7rem;color:rgba(168,168,160,.45);padding:8px 20px 12px;border-top:1px solid rgba(200,168,75,.07);letter-spacing:.02em}
-.qs-checks-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:32px 48px;max-width:860px;margin:0 auto 24px;text-align:left}
-.qs-check-item{padding:0}
-.qs-check-item-title{font-family:'Cormorant Garamond',serif;font-size:.96rem;color:var(--ivory);font-weight:400;margin-bottom:5px;letter-spacing:.01em}
-.qs-check-item-body{font-size:.76rem;color:rgba(178,178,170,.65);line-height:1.65;font-weight:300}
-.qs-check-capstone-wrap{max-width:860px;margin:0 auto 32px;text-align:center}
-.qs-check-capstone{display:inline-block;max-width:420px}
-.qs-check-capstone .qs-check-item-title{font-size:1.05rem;color:var(--gold);margin-bottom:6px}
-.qs-check-capstone .qs-check-item-body{color:rgba(178,178,170,.55)}
+.qs-checks-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:28px 56px;max-width:740px;margin:0 auto 20px;text-align:left}
+.qs-check-item{padding:0;max-width:320px}
+.qs-check-item::before{content:'';display:block;width:24px;height:1px;background:rgba(200,168,75,.45);margin-bottom:12px}
+.qs-check-item-title{font-family:'Cormorant Garamond',serif;font-size:1.05rem;color:var(--ivory);font-weight:500;margin-bottom:6px;letter-spacing:.01em;line-height:1.25}
+.qs-check-item-body{font-size:.74rem;color:rgba(178,178,170,.55);line-height:1.7;font-weight:300;max-width:290px}
+.qs-check-capstone-wrap{max-width:740px;margin:4px auto 28px;text-align:center}
+.qs-check-capstone{display:inline-block;max-width:340px}
+.qs-check-capstone::before{content:'';display:block;width:24px;height:1px;background:rgba(200,168,75,.45);margin:0 auto 12px}
+.qs-check-capstone .qs-check-item-title{font-size:1.1rem;color:var(--gold);font-weight:500;margin-bottom:7px}
+.qs-check-capstone .qs-check-item-body{color:rgba(178,178,170,.48);max-width:300px;margin:0 auto}
 /* product feature grid */
 .feat-grid{padding:64px 24px;text-align:center;max-width:1100px;margin:0 auto}
 .feat-grid-eye{font-size:.64rem;letter-spacing:.26em;text-transform:uppercase;color:rgba(200,168,75,.55);margin-bottom:12px}
@@ -3033,7 +3036,7 @@ body::before{
 .ace-cta a{font-size:.82rem;color:rgba(200,168,75,.8);text-decoration:none;border-bottom:1px solid rgba(200,168,75,.25);padding-bottom:2px;letter-spacing:.04em;transition:color .2s,border-color .2s}
 .ace-cta a:hover{color:#e2c97d;border-color:rgba(226,201,125,.6)}
 @media(max-width:900px){.ace-section{padding:72px 40px}.ace-grid{grid-template-columns:repeat(3,1fr)}.feat-cards{grid-template-columns:1fr 1fr}.tier-grid-4{grid-template-columns:1fr 1fr}}
-@media(max-width:600px){.ace-section{padding:56px 24px}.ace-grid{grid-template-columns:1fr 1fr}.feat-cards{grid-template-columns:1fr}.qs-preview-body{flex-direction:column;text-align:center}.qs-preview-score-wrap{border-right:none;border-bottom:1px solid rgba(200,168,75,.1);padding:0 0 14px;margin-bottom:0}.qs-preview-checks{align-items:center}.qs-checks-grid{grid-template-columns:1fr;gap:24px;text-align:center}}
+@media(max-width:600px){.ace-section{padding:56px 24px}.ace-grid{grid-template-columns:1fr 1fr}.feat-cards{grid-template-columns:1fr}.qs-preview-body{flex-direction:column;text-align:center}.qs-preview-score-wrap{border-right:none;border-bottom:1px solid rgba(200,168,75,.1);padding:0 0 14px;margin-bottom:0}.qs-preview-checks{align-items:center}.qs-checks-grid{grid-template-columns:1fr;gap:22px;text-align:center}.qs-check-item{max-width:none;margin:0 auto}.qs-check-item::before{margin:0 auto 10px}.qs-check-item-body{max-width:none}.qs-check-capstone .qs-check-item-body{max-width:none}}
 @media(max-width:400px){.ace-grid{grid-template-columns:1fr}}
 </style>
 @if(config('services.recaptcha.site_key'))
