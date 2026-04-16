@@ -54,10 +54,10 @@ body{background:var(--bg);color:var(--ivory);font-family:'DM Sans',sans-serif;fo
 /* ── Nav ── */
 nav{position:fixed;top:0;left:0;right:0;z-index:200;display:flex;align-items:center;justify-content:space-between;padding:28px 64px;border-bottom:1px solid transparent;transition:all .4s}
 nav.stuck{background:rgba(8,8,8,.95);backdrop-filter:blur(16px);border-color:var(--border);padding:16px 64px}
-.logo{display:inline-flex;align-items:baseline;text-decoration:none;line-height:1}
-.logo-seo{font-family:'DM Sans',sans-serif;font-weight:300;font-size:1.2rem;letter-spacing:.06em;color:var(--white)}
-.logo-ai{font-family:'Cormorant Garamond',serif;font-weight:600;font-size:1.42rem;color:var(--gold);letter-spacing:.02em;display:inline-block;transform:skewX(-11deg) translateY(-1px)}
-.logo-co{font-family:'DM Sans',sans-serif;font-weight:300;font-size:1.05rem;color:rgba(255,255,255,.45);letter-spacing:.04em}
+.logo,.logo:visited,.logo:hover,.logo:active,.logo:focus{display:inline-flex;align-items:baseline;text-decoration:none;line-height:1;color:inherit}
+.logo-seo,.logo-seo:visited,.logo-seo:link{font-family:'DM Sans',sans-serif;font-weight:300;font-size:1.2rem;letter-spacing:.06em;color:#f5f0e8}
+.logo-ai,.logo-ai:visited,.logo-ai:link{font-family:'Cormorant Garamond',serif;font-weight:600;font-size:1.42rem;color:#c8a84b;letter-spacing:.02em;display:inline-block;transform:skewX(-11deg) translateY(-1px)}
+.logo-co,.logo-co:visited,.logo-co:link{font-family:'DM Sans',sans-serif;font-weight:300;font-size:1.05rem;color:rgba(255,255,255,.45);letter-spacing:.04em}
 .nav-right{display:flex;align-items:center;gap:26px}
 .nav-link{font-size:.76rem;letter-spacing:.14em;text-transform:uppercase;color:rgba(168,168,160,.72);text-decoration:none;transition:color .3s;position:relative;padding-bottom:2px;font-weight:400}
 .nav-link::after{content:'';position:absolute;bottom:0;left:0;right:100%;height:1px;background:var(--gold);transition:right .3s cubic-bezier(.23,1,.32,1)}
@@ -456,18 +456,7 @@ footer{border-top:1px solid var(--border);padding:32px 48px;display:flex;flex-di
 <body>
 
 <!-- Nav -->
-<nav id="nav">
-  <a href="/" class="logo">
-    <span class="logo-seo">SEO</span><span class="logo-ai">AI</span><span class="logo-co">co</span>
-  </a>
-  <div class="nav-right">
-    <a href="/how-it-works" class="nav-link">How It Works</a>
-    <a href="/pricing" class="nav-link">Pricing</a>
-    <a href="/book" class="nav-link">Book</a>
-    <a href="/dashboard" class="nav-link">Portal</a>
-    <a href="/quick-scan" class="nav-btn">Get Started</a>
-  </div>
-</nav>
+@include('partials.public-nav')
 
 <!-- Hero -->
 <section class="result-hero">

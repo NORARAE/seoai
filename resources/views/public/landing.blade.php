@@ -46,15 +46,15 @@ body::after{
   opacity:.022;
 }
 
-/* ── Logo ── */
-.logo{display:inline-flex;align-items:baseline;text-decoration:none;line-height:1}
-.logo-seo{font-family:'DM Sans',sans-serif;font-weight:300;font-size:1.2rem;letter-spacing:.06em;color:var(--white)}
-.logo-ai{
+/* ── Logo (color-locked — prevents :visited blue bleed) ── */
+.logo,.logo:visited,.logo:hover,.logo:active,.logo:focus{display:inline-flex;align-items:baseline;text-decoration:none;line-height:1;color:inherit}
+.logo-seo,.logo-seo:visited,.logo-seo:link{font-family:'DM Sans',sans-serif;font-weight:300;font-size:1.2rem;letter-spacing:.06em;color:#f5f0e8}
+.logo-ai,.logo-ai:visited,.logo-ai:link{
   font-family:'Cormorant Garamond',serif;font-weight:600;font-size:1.42rem;
-  color:var(--gold);letter-spacing:.02em;
+  color:#c8a84b;letter-spacing:.02em;
   display:inline-block;transform:skewX(-11deg) translateY(-1px);
 }
-.logo-co{font-family:'DM Sans',sans-serif;font-weight:300;font-size:1.05rem;color:rgba(255,255,255,.45);letter-spacing:.04em}
+.logo-co,.logo-co:visited,.logo-co:link{font-family:'DM Sans',sans-serif;font-weight:300;font-size:1.05rem;color:rgba(255,255,255,.45);letter-spacing:.04em}
 
 /* ── Nav ── */
 nav{
@@ -3152,57 +3152,7 @@ body::before{
 <div class="amb-shimmer" aria-hidden="true"></div>
 
 <!-- ════════════ NAV ════════════ -->
-<nav id="nav">
-  <a href="/" class="logo">
-    <span class="logo-seo">SEO</span><span class="logo-ai">AI</span><span class="logo-co">co</span>
-  </a>
-  <div class="nav-right">
-    <a href="/how-it-works" class="nav-link">How It Works</a>
-    <a href="{{ route('pricing') }}" class="nav-link">Pricing</a>
-    <a href="{{ route('book.index') }}" class="nav-link">Book</a>
-    <a href="/dashboard" class="nav-link">Portal</a>
-    <a href="{{ route('quick-scan.show') }}" class="nav-btn">Get Started</a>
-  </div>
-  <button class="nav-hamburger" id="navHamburger" aria-label="Open menu" aria-expanded="false" aria-controls="navMenu">
-    <span></span><span></span><span></span>
-  </button>
-</nav>
-
-<!-- ════════════ MOBILE SLIDE-IN PANEL ════════════ -->
-<div id="navBackdrop" class="nav-backdrop" aria-hidden="true"></div>
-<div id="navMenu" class="nav-menu" aria-hidden="true" role="dialog" aria-label="Site navigation">
-  <div class="nav-menu-inner">
-
-    {{-- Identity block --}}
-    <div class="nm-identity">
-      <div class="nm-identity-brand">SEO AI <em>Co&trade;</em></div>
-      <div class="nm-identity-sub">Control your search presence.</div>
-    </div>
-
-    {{-- GET STARTED --}}
-    <div class="nm-group"><span class="nm-group-label">Get Started</span></div>
-    <a href="{{ route('quick-scan.show') }}" class="nm-link nm-featured" data-menu-close>Run a $2 Scan &nbsp;&rarr;</a>
-
-    <div class="nm-divider"></div>
-
-    {{-- EXPLORE --}}
-    <div class="nm-group"><span class="nm-group-label">Explore</span></div>
-    <a href="/how-it-works" class="nm-link" data-menu-close>How It Works</a>
-    <a href="/pricing" class="nm-link" data-menu-close>Pricing</a>
-    <a href="/book" class="nm-link" data-menu-close>Book</a>
-
-    <div class="nm-divider"></div>
-
-    {{-- ACCOUNT --}}
-    <div class="nm-group"><span class="nm-group-label">Account</span></div>
-    @auth
-      <a href="/dashboard" class="nm-portal" data-menu-close>My Dashboard</a>
-    @else
-      <a href="/login" class="nm-link" data-menu-close>Sign In</a>
-    @endauth
-
-  </div>
-</div>
+@include('partials.public-nav', ['showHamburger' => true])
 
 <!-- ════════════ HERO ════════════ -->
 <section id="hero">
