@@ -3777,7 +3777,7 @@ body::before{
       </div>
     </div>
     <p class="gate-guidance">Most businesses start with System Activation, then scale into Market Control.</p>
-    <a href="/onboarding/start" class="gate-cta" id="gateCta">Activate My Market</a>
+    <a href="/onboarding/start?tier=dominance" class="gate-cta" id="gateCta">Activate My Market</a>
     <button class="gate-skip" id="gateSkip">Continue browsing</button>
   </div>
 </div>
@@ -3918,6 +3918,8 @@ body::before{
   gateTiers.forEach(t => t.addEventListener('click', () => {
     gateTiers.forEach(x => x.classList.remove('selected'));
     t.classList.add('selected');
+    var selectedTier = t.getAttribute('data-tier');
+    gateCta.href = '/onboarding/start?tier=' + encodeURIComponent(selectedTier);
   }));
 
   // Skip closes gate; CTA navigates (href handles it after gate closes)

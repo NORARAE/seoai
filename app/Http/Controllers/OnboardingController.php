@@ -31,7 +31,14 @@ class OnboardingController extends Controller
         'fix-strategy',
         'optimization',
         'full-report',      // legacy live slug
+        'citation-builder', // mid-tier — requires scan context
     ];
+
+    /** High-ticket plans that may enter onboarding directly. */
+    private const HIGH_TICKET_PLANS = ['authority-engine'];
+
+    /** High-ticket tiers that may enter onboarding directly. */
+    private const HIGH_TICKET_TIERS = ['launch', 'expansion', 'dominance'];
 
     public function start(Request $request)
     {
@@ -42,19 +49,40 @@ class OnboardingController extends Controller
         // These tiers are unlocked via Stripe from the scan result page,
         // not via the intake/onboarding form.
         if ($bookingId === 0 && in_array($plan, self::SCAN_TIER_PLANS, true)) {
-            return redirect()->route('quick-scan.show');
+            return redirect()->route('quick-scan.show')
+                ->with('flow_message', 'Start with a scan to unlock this level.');
         }
 
-        $allowedTiers = ['launch', 'expansion', 'dominance'];
-        $tier = in_array($request->query('tier'), $allowedTiers, true)
+        $tier = in_array($request->query('tier'), self::HIGH_TICKET_TIERS, true)
             ? $request->query('tier')
             : null;
 
         // Quick Scan project linkage
         $scanId = (int) $request->query('scan_id', 0);
 
-        // Preview mode — no booking required
+        // ── Preview mode gate ──────────────────────────────────────────
+        // Without a booking, only high-ticket paths may enter onboarding:
+        //   1. High-ticket tier (expansion/dominance/launch)
+        //   2. High-ticket plan (authority-engine)
+        //   3. Scan with a paid optimization upgrade ($489+)
         if ($bookingId === 0) {
+            $hasHighTicketTier = $tier !== null;
+            $hasHighTicketPlan = in_array($plan, self::HIGH_TICKET_PLANS, true);
+            $hasQualifyingScan = false;
+
+            if ($scanId > 0) {
+                $qualifyingScan = QuickScan::where('id', $scanId)
+                    ->where('upgrade_plan', 'optimization')
+                    ->where('upgrade_status', 'paid')
+                    ->first();
+                $hasQualifyingScan = $qualifyingScan !== null;
+            }
+
+            if (!$hasHighTicketTier && !$hasHighTicketPlan && !$hasQualifyingScan) {
+                return redirect()->route('quick-scan.show')
+                    ->with('flow_message', 'Start with a scan to unlock this level.');
+            }
+
             FunnelEvent::fire(FunnelEvent::ONBOARDING_STARTED);
             return view('public.onboarding-start', [
                 'booking' => null,

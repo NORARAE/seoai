@@ -31,7 +31,7 @@
           <li style="font-size:12px;color:#aaa;margin-bottom:0;line-height:1.55">Content connectivity audit &amp; implementation plan</li>
         </ul>
         <div style="margin-top:14px">
-          <a href="{{ url('/onboarding/start?plan=citation-builder') }}" style="display:inline-block;border:1px solid #c8a84b;color:#c8a84b;font-size:11px;font-weight:600;text-decoration:none;padding:9px 24px;letter-spacing:.08em">Get Citation Builder →</a>
+          <a href="{{ url('/quick-scan') }}" style="display:inline-block;border:1px solid #c8a84b;color:#c8a84b;font-size:11px;font-weight:600;text-decoration:none;padding:9px 24px;letter-spacing:.08em">Start with a Scan →</a>
         </div>
       </div>
 

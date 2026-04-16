@@ -259,6 +259,12 @@ footer{border-top:1px solid var(--border);padding:28px 48px;display:flex;flex-di
 
   <div class="qs-card">
 
+    @if(session('flow_message'))
+      <div class="qs-error-banner" style="background:rgba(200,168,75,.12);border-color:rgba(200,168,75,.3);color:#c8a84b;">
+        {{ session('flow_message') }}
+      </div>
+    @endif
+
     @if ($errors->any())
       <div class="qs-error-banner">
         {{ $errors->first() }}
