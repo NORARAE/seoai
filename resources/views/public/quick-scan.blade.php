@@ -46,12 +46,12 @@ nav.stuck{background:rgba(8,8,8,.95);backdrop-filter:blur(16px);border-color:var
 .logo-seo{font-family:'DM Sans',sans-serif;font-weight:300;font-size:1.2rem;letter-spacing:.06em;color:var(--white)}
 .logo-ai{font-family:'Cormorant Garamond',serif;font-weight:600;font-size:1.42rem;color:var(--gold);letter-spacing:.02em;display:inline-block;transform:skewX(-11deg) translateY(-1px)}
 .logo-co{font-family:'DM Sans',sans-serif;font-weight:300;font-size:1.05rem;color:rgba(255,255,255,.45);letter-spacing:.04em}
-.nav-right{display:flex;align-items:center;gap:28px}
-.nav-link{font-size:.74rem;letter-spacing:.18em;text-transform:uppercase;color:rgba(168,168,160,.6);text-decoration:none;transition:color .3s;position:relative;padding-bottom:2px;font-weight:400}
+.nav-right{display:flex;align-items:center;gap:26px}
+.nav-link{font-size:.76rem;letter-spacing:.14em;text-transform:uppercase;color:rgba(168,168,160,.72);text-decoration:none;transition:color .3s;position:relative;padding-bottom:2px;font-weight:400}
 .nav-link::after{content:'';position:absolute;bottom:0;left:0;right:100%;height:1px;background:var(--gold);transition:right .3s cubic-bezier(.23,1,.32,1)}
 .nav-link:hover{color:var(--gold)}
 .nav-link:hover::after{right:0}
-.nav-btn{font-size:.7rem;letter-spacing:.16em;text-transform:uppercase;color:var(--bg);background:var(--gold);padding:10px 26px;text-decoration:none;transition:background .3s cubic-bezier(.23,1,.32,1),box-shadow .3s cubic-bezier(.23,1,.32,1);display:inline-flex;align-items:center;white-space:nowrap;font-weight:500;margin-left:4px}
+.nav-btn{font-size:.74rem;letter-spacing:.14em;text-transform:uppercase;color:var(--bg);background:var(--gold);padding:11px 28px;text-decoration:none;transition:background .3s cubic-bezier(.23,1,.32,1),box-shadow .3s cubic-bezier(.23,1,.32,1);display:inline-flex;align-items:center;white-space:nowrap;font-weight:500;margin-left:6px}
 .nav-btn:hover{background:var(--gold-lt);box-shadow:0 4px 16px rgba(200,168,75,.22)}
 
 /* ── Hero ── */

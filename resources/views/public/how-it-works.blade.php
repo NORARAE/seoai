@@ -63,16 +63,16 @@ nav{
   padding:28px 64px;border-bottom:1px solid transparent;transition:all .4s;
 }
 nav.stuck{background:rgba(8,8,8,.95);backdrop-filter:blur(16px);border-color:var(--border);padding:16px 64px}
-.nav-right{display:flex;align-items:center;gap:28px}
-.nav-link{font-size:.74rem;letter-spacing:.18em;text-transform:uppercase;color:rgba(168,168,160,.6);text-decoration:none;transition:color .3s;position:relative;padding-bottom:2px;font-weight:400}
+.nav-right{display:flex;align-items:center;gap:26px}
+.nav-link{font-size:.76rem;letter-spacing:.14em;text-transform:uppercase;color:rgba(168,168,160,.72);text-decoration:none;transition:color .3s;position:relative;padding-bottom:2px;font-weight:400}
 .nav-link::after{content:'';position:absolute;bottom:0;left:0;right:100%;height:1px;background:var(--gold);transition:right .3s cubic-bezier(.23,1,.32,1)}
 .nav-link:hover{color:var(--gold)}
 .nav-link:hover::after{right:0}
 .nav-btn{
-  font-size:.7rem;letter-spacing:.16em;text-transform:uppercase;
-  color:var(--bg);background:var(--gold);padding:10px 26px;text-decoration:none;
+  font-size:.74rem;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--bg);background:var(--gold);padding:11px 28px;text-decoration:none;
   transition:background .3s cubic-bezier(.23,1,.32,1),box-shadow .3s cubic-bezier(.23,1,.32,1);
-  display:inline-flex;align-items:center;white-space:nowrap;font-weight:500;margin-left:4px;
+  display:inline-flex;align-items:center;white-space:nowrap;font-weight:500;margin-left:6px;
 }
 .nav-btn:hover{background:var(--gold-lt);box-shadow:0 4px 16px rgba(200,168,75,.22)}
 
@@ -1604,9 +1604,9 @@ footer{border-top:1px solid var(--border);padding:36px 64px;display:flex;flex-di
 @media(max-width:1200px){
   nav{padding:20px 36px}
   nav.stuck{padding:14px 36px}
-  .nav-right{gap:22px}
-  .nav-link{font-size:.68rem;letter-spacing:.14em}
-  .nav-btn{font-size:.66rem;letter-spacing:.14em;padding:9px 20px;min-height:38px}
+  .nav-right{gap:20px}
+  .nav-link{font-size:.7rem;letter-spacing:.12em}
+  .nav-btn{font-size:.68rem;letter-spacing:.12em;padding:10px 22px;min-height:38px}
 }
 
 /* ── Mobile hamburger ── */
