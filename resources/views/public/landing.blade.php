@@ -569,8 +569,8 @@ body::after{
 
 /* Intentional premium anchor row (tier 5) */
 .tier-anchor-row{
-  margin-top:34px;
-  padding-top:18px;
+  margin-top:44px;
+  padding-top:26px;
   display:grid;
   grid-template-columns:1fr minmax(340px,560px) 1fr;
   align-items:start;
@@ -582,10 +582,23 @@ body::after{
   position:absolute;
   top:0;
   left:50%;
-  width:220px;
-  height:1px;
+  width:320px;
+  height:2px;
   transform:translateX(-50%);
-  background:linear-gradient(90deg,transparent,rgba(200,168,75,.24),transparent);
+  background:linear-gradient(90deg,transparent,rgba(200,168,75,.10) 8%,rgba(200,168,75,.42) 50%,rgba(200,168,75,.10) 92%,transparent);
+}
+.tier-anchor-row::after{
+  content:'';
+  position:absolute;
+  top:14px;
+  left:50%;
+  width:min(620px,92%);
+  height:calc(100% + 18px);
+  transform:translateX(-50%);
+  border:1px solid rgba(200,168,75,.06);
+  background:linear-gradient(180deg,rgba(11,10,8,.62) 0%,rgba(10,9,8,.24) 68%,transparent 100%);
+  pointer-events:none;
+  z-index:0;
 }
 .tier-anchor-row .tier.prime{grid-column:2}
 /* ── Scan tier — lightest weight ── */
@@ -700,6 +713,11 @@ body::after{
   position:absolute;top:0;left:0;right:0;height:1px;
   background:linear-gradient(90deg,transparent,rgba(200,168,75,.25),transparent);
 }
+.tier-anchor-row .tier.prime{
+  background:linear-gradient(180deg,rgba(15,13,10,.98) 0%,rgba(11,10,8,.98) 100%);
+  border-color:rgba(200,168,75,.16);
+  box-shadow:0 0 0 1px rgba(200,168,75,.06),0 16px 46px rgba(0,0,0,.46);
+}
 .tier.prime .tier-cta{background:var(--gold);color:var(--bg);border:1px solid var(--gold)}
 .tier.prime .tier-cta:hover{
   background:var(--gold-lt);border-color:var(--gold-lt);
@@ -707,6 +725,17 @@ body::after{
   transform:translateY(-2px);
 }
 .tier.prime .tier-name{font-weight:400}
+.tier.prime .tier-price{margin-bottom:16px}
+.tier.prime .tier-position{margin-bottom:24px;line-height:1.72}
+.tier.prime .tier-features{gap:16px}
+.tier.prime .tier-actions{padding-top:22px}
+.tier.prime .tier-cta{
+  width:100%;
+  padding:18px 18px;
+  letter-spacing:.19em;
+  background:linear-gradient(180deg,#d8be72 0%,#c8a84b 100%);
+  border-color:rgba(226,201,125,.65);
+}
 
 /* ── Shared type ── */
 .tier-flag{font-size:.65rem;letter-spacing:.22em;text-transform:uppercase;color:var(--gold-dim);margin-bottom:20px;display:block}
@@ -1881,7 +1910,7 @@ footer{border-top:1px solid var(--border);padding:36px 64px;display:flex;flex-di
   .offer-intro{grid-template-columns:1fr;gap:28px}
   .contact-inner{grid-template-columns:1fr;gap:36px}
   .audience-grid,.tier-grid-3,.tier-grid-4{grid-template-columns:1fr}
-  .tier-anchor-row{grid-template-columns:1fr;margin-top:18px}
+  .tier-anchor-row{grid-template-columns:1fr;margin-top:26px;padding-top:20px}
   .tier-anchor-row .tier.prime{grid-column:auto}
   .aud-card{padding:40px 24px}
   .aud-title{font-size:1.6rem}
