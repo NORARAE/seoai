@@ -13,6 +13,7 @@ use App\Http\Controllers\TrackingController;
 use App\Http\Controllers\UserOnboardingController;
 use App\Http\Middleware\EnsureOnboardingComplete;
 use App\Http\Controllers\PublicSitemapController;
+use App\Http\Controllers\Auth\CustomerLoginController;
 use App\Http\Controllers\Auth\GoogleAuthController;
 use App\Http\Controllers\UnsubscribeController;
 use App\Http\Middleware\EnsureUserIsApproved;
@@ -36,8 +37,9 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', [PublicController::class, 'landing'])->name('home');
 
-// Auth middleware redirects here when unauthenticated; forward to Filament login.
-Route::get('/login', fn() => redirect('/admin/login'))->name('login');
+// Customer-facing login — standalone branded page (no /admin in URL).
+Route::get('/login', [CustomerLoginController::class, 'show'])->name('login');
+Route::post('/login', [CustomerLoginController::class, 'authenticate']);
 Route::get('/register', fn() => redirect('/admin/register'))->name('register');
 
 // Google OAuth sign-in — routes registered regardless of enabled flag;

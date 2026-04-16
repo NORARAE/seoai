@@ -16,12 +16,12 @@ class Login extends BaseLogin
 {
     public function getHeading(): string|Htmlable|null
     {
-        return 'Access your workspace';
+        return 'Staff access';
     }
 
     public function getSubheading(): string|Htmlable|null
     {
-        return 'Your SEOAIco intelligence platform';
+        return 'SEOAIco administration panel';
     }
 
     /**

@@ -234,8 +234,9 @@ class GoogleAuthController extends Controller
             }
         }
 
-        return redirect()->route('filament.admin.auth.login')
-            ->with('google_error', $message);
+        return redirect()->to('/login')
+            ->with('google_error', $message)
+            ->with('google_error_type', $this->classifyError($message));
     }
 
     private function isEnabled(): bool
@@ -252,5 +253,19 @@ class GoogleAuthController extends Controller
         }
 
         return array_values(array_filter(array_map('trim', explode(',', $domains))));
+    }
+
+    private function classifyError(string $message): string
+    {
+        if (str_contains($message, 'No account found')) {
+            return 'no-account';
+        }
+        if (str_contains($message, 'domain is not authorised')) {
+            return 'domain-blocked';
+        }
+        if (str_contains($message, 'No email')) {
+            return 'no-email';
+        }
+        return 'failed';
     }
 }

@@ -5,8 +5,8 @@
 @section('content')
 <!-- Page Header -->
 <div class="mb-8">
-    <h2 class="text-3xl font-bold text-gray-900 mb-2">Dashboard</h2>
-    <p class="text-gray-600">Monitor your AI citation system performance and market coverage</p>
+    <h2 class="text-3xl font-bold text-gray-900 mb-2">Your SEO System</h2>
+    <p class="text-gray-600">Your current AI visibility baseline and market position</p>
 </div>
 
 @if(session('scan_saved'))
@@ -18,7 +18,7 @@
                 </div>
                 <div class="ml-3">
                     <p class="text-sm font-medium text-green-800">{{ session('scan_saved') }}</p>
-                    <p class="mt-1 text-sm text-green-700">Your scan is now in your dashboard under AI Scan Projects.</p>
+                    <p class="mt-1 text-sm text-green-700">Your scan baseline has been saved. View it below under Your Visibility Baselines.</p>
                 </div>
             </div>
         </div>
@@ -66,7 +66,7 @@
             <!-- System Health Card -->
             <div class="bg-white rounded-xl border-2 border-gray-100 p-6 shadow-sm">
                 <div class="flex items-center justify-between mb-6">
-                    <h3 class="text-lg font-bold text-gray-900">System Health</h3>
+                    <h3 class="text-lg font-bold text-gray-900">Visibility Score</h3>
                     <span class="px-3 py-1 bg-{{ $health['color'] }}-100 text-{{ $health['color'] }}-800 rounded-full text-sm font-semibold border border-{{ $health['color'] }}-200">
                         {{ $health['grade'] }}
                     </span>
@@ -76,7 +76,7 @@
                     <div class="inline-flex items-center justify-center w-32 h-32 rounded-full bg-gradient-to-br from-{{ $health['color'] }}-400 to-{{ $health['color'] }}-600 text-white mb-3">
                         <span class="text-4xl font-bold">{{ $health['score'] }}</span>
                     </div>
-                    <p class="text-sm text-gray-600">Overall Health Score</p>
+                    <p class="text-sm text-gray-600">Overall Visibility Score</p>
                 </div>
 
                 <div class="space-y-3">
@@ -111,7 +111,7 @@
             <!-- Action Queue Card -->
             <div class="bg-white rounded-xl border-2 border-gray-100 p-6 shadow-sm">
                 <div class="flex items-center justify-between mb-6">
-                    <h3 class="text-lg font-bold text-gray-900">Action Queue</h3>
+                    <h3 class="text-lg font-bold text-gray-900">Priority Actions</h3>
                     <span class="px-3 py-1 bg-gray-100 text-gray-700 rounded-full text-sm font-semibold">
                         {{ array_sum($actionQueue) }} items
                     </span>
@@ -246,8 +246,8 @@
         <div id="ai-scans" class="mb-8">
             <div class="flex items-center justify-between mb-6">
                 <div>
-                    <h3 class="text-xl font-bold text-gray-900">AI Scan Projects</h3>
-                    <p class="text-sm text-gray-600 mt-1">{{ $totalScans }} {{ Str::plural('project', $totalScans) }} &mdash; each domain is an independent project</p>
+                    <h3 class="text-xl font-bold text-gray-900">Your Visibility Baselines</h3>
+                    <p class="text-sm text-gray-600 mt-1">{{ $totalScans }} {{ Str::plural('baseline', $totalScans) }} &mdash; each domain is an independent project</p>
                 </div>
                 <a href="{{ route('quick-scan.show') }}" class="inline-flex items-center gap-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-sm font-medium transition-colors">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
@@ -399,10 +399,10 @@
                 <svg class="mx-auto h-12 w-12 text-gray-400 mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"/>
                 </svg>
-                <p class="font-medium text-gray-900">No scan projects yet</p>
-                <p class="text-sm text-gray-500 mt-1 mb-4">Run your first AI Citation Scan to add a project.</p>
+                <p class="font-medium text-gray-900">No baselines established yet</p>
+                <p class="text-sm text-gray-500 mt-1 mb-4">Run your first AI Citation Scan to establish your visibility baseline.</p>
                 <a href="{{ route('quick-scan.show') }}" class="inline-flex items-center gap-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-sm font-medium transition-colors">
-                    Run Your First Scan
+                    Establish Your Baseline
                 </a>
             </div>
             @endif

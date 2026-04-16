@@ -54,6 +54,6 @@ class RequestPasswordReset extends BaseRequestPasswordReset
             ->info()
             ->send();
 
-        $this->js("setTimeout(() => window.location.href = '/admin/login', 3000)");
+        $this->js("setTimeout(() => window.location.href = '/login', 3000)");
     }
 }

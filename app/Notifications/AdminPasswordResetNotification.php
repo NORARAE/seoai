@@ -15,7 +15,9 @@ use Illuminate\Support\Facades\Config;
  */
 class AdminPasswordResetNotification extends Notification
 {
-    public function __construct(public string $token) {}
+    public function __construct(public string $token)
+    {
+    }
 
     public function via(object $notifiable): array
     {
@@ -30,7 +32,7 @@ class AdminPasswordResetNotification extends Notification
         return (new MailMessage)
             ->subject('Reset Your SEOAIco Password')
             ->view('emails.password-reset', [
-                'url'           => $url,
+                'url' => $url,
                 'expireMinutes' => $expireMinutes,
             ]);
     }

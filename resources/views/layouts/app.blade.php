@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@yield('title', 'Dashboard') - SEOAI</title>
+    <title>@yield('title', 'Dashboard') - SEOAIco</title>
     <link rel="icon" type="image/x-icon" href="/favicon.ico">
     <link rel="icon" type="image/svg+xml" href="/favicon.svg">
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
@@ -34,8 +34,8 @@
                             </svg>
                         </div>
                         <div>
-                            <h1 class="text-xl font-bold text-gray-900">SEOAI</h1>
-                            <p class="text-xs text-gray-500">SEO Command Center</p>
+                            <h1 class="text-xl font-bold text-gray-900">SEOAIco</h1>
+                            <p class="text-xs text-gray-500">Your AI Visibility System</p>
                         </div>
                     </a>
                     
@@ -88,7 +88,7 @@
                     <!-- User Menu -->
                     <div class="flex items-center gap-2">
                         <div class="w-9 h-9 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-full flex items-center justify-center text-white font-semibold text-sm">
-                            NG
+                            {{ strtoupper(substr(auth()->user()?->name ?? 'U', 0, 1)) }}{{ strtoupper(substr(strrchr(auth()->user()?->name ?? '', ' ') ?: '', 1, 1)) }}
                         </div>
                     </div>
                 </div>
