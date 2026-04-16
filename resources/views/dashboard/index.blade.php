@@ -477,6 +477,8 @@
                         default => 0,
                     };
                 })->max() ?? 0;
+                // Signal-based escalation: high-intent = multiple scans or tier 2+
+                $dashHighIntent = ($totalScans ?? 0) >= 3 || $tierRank >= 2;
             @endphp
 
             @if($tierRank >= 3)
@@ -502,14 +504,15 @@
             </div>
             @else
             {{-- Has $489 but hasn't onboarded — push to full system deployment --}}
-            <div class="mt-6 bg-white rounded-xl border-2 border-amber-200 shadow-sm overflow-hidden">
+            <div class="mt-6 bg-white rounded-xl border-2 {{ $dashHighIntent ? 'border-amber-400 shadow-md' : 'border-amber-200 shadow-sm' }} overflow-hidden">
                 <div class="px-6 py-3 bg-gradient-to-r from-amber-50 to-yellow-50 border-b border-amber-100">
                     <p class="text-[10px] font-bold uppercase tracking-widest text-amber-600">Ready For Deployment</p>
                 </div>
                 <div class="p-6">
                     <h4 class="text-lg font-semibold text-gray-900 mb-2">You've seen your gaps. You know what's missing.</h4>
-                    <p class="text-sm text-gray-600 mb-2">Your system activation revealed the complete competitive picture. The next step: we build it for you.</p>
-                    <p class="text-sm text-gray-600 mb-4">Full Market Control includes entity architecture, content infrastructure, coverage defense — deployed and maintained. Starting at $4,799+.</p>
+                    <p class="text-sm text-gray-600 mb-2">We build the structure that makes AI systems return you as the answer — entity architecture, content infrastructure, coverage defense — deployed and maintained.</p>
+                    <p class="text-xs text-amber-700 mb-2 font-medium">Best for businesses ready to expand across multiple cities and services.</p>
+                    <p class="text-sm text-gray-600 mb-4">Starting at $4,799+. <span class="text-gray-400 italic">Limited deployment capacity each month.</span></p>
                     <div class="flex flex-wrap gap-3">
                         @php $deployableScan = $scanProjects->where('upgrade_plan', 'optimization')->first() ?? $scanProjects->first(); @endphp
                         <a href="{{ route('onboarding.start', ['tier' => 'expansion', 'scan_id' => $deployableScan->id, 'plan' => 'authority-engine']) }}" class="inline-flex items-center gap-2 px-5 py-2.5 bg-amber-600 hover:bg-amber-700 text-white rounded-lg text-sm font-medium transition-colors shadow-sm">
@@ -530,7 +533,8 @@
                     <p class="text-[10px] font-bold uppercase tracking-widest text-indigo-400">Your Next Level</p>
                 </div>
                 <h4 class="font-semibold text-gray-900 mb-1">You've activated structural leverage — now deploy the full system</h4>
-                <p class="text-sm text-gray-600 mb-4">You've unlocked the blueprint. System Activation ($489) puts it into motion — entity architecture, content connectivity, and live market coverage expansion.</p>
+                <p class="text-sm text-gray-600 mb-2">You've unlocked the blueprint. System Activation ($489) puts it into motion — entity architecture, content connectivity, and live market coverage expansion.</p>
+                <p class="text-xs text-gray-400 italic mb-4">Or skip ahead — we build the structure that makes AI return you as the answer. Limited builds each month.</p>
                 <div class="flex flex-wrap gap-3">
                     <a href="{{ url('/pricing') }}" class="inline-flex items-center gap-2 px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg text-sm font-medium transition-colors">
                         See Full System Plans
@@ -554,6 +558,9 @@
                 <a href="{{ url('/pricing') }}" class="inline-flex items-center gap-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-sm font-medium transition-colors">
                     See Coverage Plans
                 </a>
+                @if($dashHighIntent)
+                <p class="text-xs text-gray-400 mt-3 italic">Or go further — we also build full systems. <a href="{{ route('onboarding.start', ['tier' => 'expansion', 'plan' => 'authority-engine']) }}" class="text-amber-600 hover:text-amber-700 underline">Learn about Full Deployment →</a></p>
+                @endif
             </div>
 
             @else
@@ -654,7 +661,7 @@
                 <a href="{{ route('onboarding.start', ['tier' => 'expansion', 'plan' => 'authority-engine']) }}" class="block p-4 bg-white rounded-lg border border-amber-200 hover:border-amber-400 hover:shadow-md transition-all group">
                     <div class="text-2xl mb-2">🚀</div>
                     <h4 class="font-semibold text-gray-900 mb-1 group-hover:text-amber-600">Deploy Your System</h4>
-                    <p class="text-xs text-gray-600">We build it. You own it.</p>
+                    <p class="text-xs text-gray-600">We build it. AI returns you as the answer.</p>
                 </a>
                 @else
                 <a href="{{ url('/book') }}" class="block p-4 bg-white rounded-lg border border-gray-200 hover:border-blue-300 hover:shadow-md transition-all group">

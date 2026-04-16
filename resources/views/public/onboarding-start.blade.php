@@ -1165,7 +1165,8 @@ body {
   </a>
 
   <span class="ob-eye">{{ ($isPreview ?? false) ? 'System Deployment' : 'System Deployment' }}</span>
-  <p style="font-size:.86rem;color:rgba(168,168,160,.60);margin:0 0 24px;letter-spacing:.01em">You've seen your gaps. You know what's missing. Let's build it.</p>
+  <p style="font-size:.86rem;color:rgba(168,168,160,.60);margin:0 0 12px;letter-spacing:.01em">You've seen your gaps. You know what's missing. Let's build it.</p>
+  <p style="font-size:.72rem;color:rgba(200,168,75,.4);margin:0 0 24px;font-style:italic">We build the structure that makes AI systems return you as the answer.</p>
   <h1 class="ob-hed">
     @if($isPreview ?? false)
       Deploy your<br><em>market system.</em>

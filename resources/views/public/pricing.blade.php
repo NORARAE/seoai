@@ -477,7 +477,8 @@ footer{border-top:1px solid rgba(200,168,75,.07);padding:32px 48px;display:flex;
           <li>Strategic oversight across your full coverage</li>
         </ul>
         <a href="{{ route('onboarding.start', ['tier' => 'dominance']) }}" class="tier-cta">Deploy Your System</a>
-        <p style="font-size:.68rem;color:rgba(168,168,160,.4);margin-top:10px;line-height:1.5;font-style:italic">We build it. We deploy it. You own the market.</p>
+        <p style="font-size:.66rem;color:rgba(200,168,75,.35);margin-top:8px;line-height:1.5">Best for businesses expanding across multiple cities and services.</p>
+        <p style="font-size:.64rem;color:rgba(168,168,160,.35);margin-top:4px;line-height:1.5;font-style:italic">We build the structure that makes AI return you as the answer. Limited capacity each month.</p>
       </div>
 
     </div>
