@@ -2111,18 +2111,14 @@ body::before{
 .qs-preview-check.pass::before{content:'\2713';color:#6aaf90;font-size:.7rem;flex-shrink:0}
 .qs-preview-check.fail::before{content:'\2717';color:#c47878;font-size:.7rem;flex-shrink:0}
 .qs-preview-footer{font-size:.7rem;color:rgba(168,168,160,.45);padding:8px 20px 12px;border-top:1px solid rgba(200,168,75,.07);letter-spacing:.02em}
-.qs-checks-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:1px;background:rgba(200,168,75,.07);max-width:540px;margin:0 auto 20px}
-.qs-check-card{background:#080808;padding:22px 20px;text-align:left;display:flex;flex-direction:column;gap:6px;transition:background .25s}
-.qs-check-card:hover{background:#0e0d09}
-.qs-check-card-icon{font-size:.9rem;opacity:.6;line-height:1}
-.qs-check-card-title{font-size:.78rem;color:var(--ivory);font-weight:400;letter-spacing:.02em}
-.qs-check-card-body{font-size:.7rem;color:var(--muted);line-height:1.55}
-.qs-check-capstone-wrap{max-width:540px;margin:0 auto 28px;background:rgba(200,168,75,.07);padding:1px;display:flex;justify-content:center}
-.qs-check-capstone{background:#080808;padding:26px 28px;text-align:center;width:62%;min-width:280px;border-top:2px solid rgba(200,168,75,.18);position:relative;transition:background .25s}
-.qs-check-capstone:hover{background:#0e0d09}
-.qs-check-capstone::before{content:'';position:absolute;top:0;left:20%;right:20%;height:1px;background:linear-gradient(90deg,transparent,rgba(200,168,75,.12),transparent)}
-.qs-check-capstone .qs-check-card-title{font-size:.86rem;color:var(--gold);margin-bottom:4px}
-.qs-check-capstone .qs-check-card-body{max-width:320px;margin:0 auto}
+.qs-checks-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:32px 48px;max-width:860px;margin:0 auto 24px;text-align:left}
+.qs-check-item{padding:0}
+.qs-check-item-title{font-family:'Cormorant Garamond',serif;font-size:.96rem;color:var(--ivory);font-weight:400;margin-bottom:5px;letter-spacing:.01em}
+.qs-check-item-body{font-size:.76rem;color:rgba(178,178,170,.65);line-height:1.65;font-weight:300}
+.qs-check-capstone-wrap{max-width:860px;margin:0 auto 32px;text-align:center}
+.qs-check-capstone{display:inline-block;max-width:420px}
+.qs-check-capstone .qs-check-item-title{font-size:1.05rem;color:var(--gold);margin-bottom:6px}
+.qs-check-capstone .qs-check-item-body{color:rgba(178,178,170,.55)}
 /* product feature grid */
 .feat-grid{padding:64px 24px;text-align:center;max-width:1100px;margin:0 auto}
 .feat-grid-eye{font-size:.64rem;letter-spacing:.26em;text-transform:uppercase;color:rgba(200,168,75,.55);margin-bottom:12px}
@@ -3037,7 +3033,7 @@ body::before{
 .ace-cta a{font-size:.82rem;color:rgba(200,168,75,.8);text-decoration:none;border-bottom:1px solid rgba(200,168,75,.25);padding-bottom:2px;letter-spacing:.04em;transition:color .2s,border-color .2s}
 .ace-cta a:hover{color:#e2c97d;border-color:rgba(226,201,125,.6)}
 @media(max-width:900px){.ace-section{padding:72px 40px}.ace-grid{grid-template-columns:repeat(3,1fr)}.feat-cards{grid-template-columns:1fr 1fr}.tier-grid-4{grid-template-columns:1fr 1fr}}
-@media(max-width:600px){.ace-section{padding:56px 24px}.ace-grid{grid-template-columns:1fr 1fr}.feat-cards{grid-template-columns:1fr}.qs-preview-body{flex-direction:column;text-align:center}.qs-preview-score-wrap{border-right:none;border-bottom:1px solid rgba(200,168,75,.1);padding:0 0 14px;margin-bottom:0}.qs-preview-checks{align-items:center}.qs-checks-grid{grid-template-columns:1fr;max-width:320px}.qs-check-capstone{width:100%;min-width:0}.qs-check-capstone-wrap{max-width:320px}}
+@media(max-width:600px){.ace-section{padding:56px 24px}.ace-grid{grid-template-columns:1fr 1fr}.feat-cards{grid-template-columns:1fr}.qs-preview-body{flex-direction:column;text-align:center}.qs-preview-score-wrap{border-right:none;border-bottom:1px solid rgba(200,168,75,.1);padding:0 0 14px;margin-bottom:0}.qs-preview-checks{align-items:center}.qs-checks-grid{grid-template-columns:1fr;gap:24px;text-align:center}}
 @media(max-width:400px){.ace-grid{grid-template-columns:1fr}}
 </style>
 @if(config('services.recaptcha.site_key'))
@@ -3159,12 +3155,14 @@ body::before{
   </a>
   <div class="nav-right">
     <a href="/how-it-works" class="nav-link">How It Works</a>
-    <a href="{{ route('quick-scan.show') }}" class="nav-btn nav-book">Run Scan</a>
+    <a href="{{ route('pricing') }}" class="nav-link">Pricing</a>
+    <a href="{{ route('book.index') }}" class="nav-link">Book</a>
     @auth
-      <a href="/dashboard" class="nav-btn nav-account" style="background:linear-gradient(90deg,var(--gold),var(--gold-lt));color:var(--deep);box-shadow:0 2px 12px 0 rgba(200,168,75,.13);font-weight:500;letter-spacing:.18em;"><span class="nav-account-full">My Dashboard</span><span class="nav-account-short">Dashboard</span></a>
+      <a href="/dashboard" class="nav-link">Portal</a>
     @else
-      <a href="/login" class="nav-btn nav-account" style="background:linear-gradient(90deg,var(--gold),var(--gold-lt));color:var(--deep);box-shadow:0 2px 12px 0 rgba(200,168,75,.13);font-weight:500;letter-spacing:.18em;"><span class="nav-account-full">Sign In</span><span class="nav-account-short">Sign In</span></a>
+      <a href="/login" class="nav-link">Portal</a>
     @endauth
+    <a href="{{ route('quick-scan.show') }}" class="nav-btn">Get Started</a>
   </div>
   <button class="nav-hamburger" id="navHamburger" aria-label="Open menu" aria-expanded="false" aria-controls="navMenu">
     <span></span><span></span><span></span>
@@ -3306,32 +3304,27 @@ body::before{
   </div>
 
   <div class="qs-checks-grid">
-    <div class="qs-check-card">
-      <div class="qs-check-card-icon">&#x25CE;</div>
-      <p class="qs-check-card-title">Data Signals</p>
-      <p class="qs-check-card-body">Are your structured data markers present and machine-readable?</p>
+    <div class="qs-check-item">
+      <p class="qs-check-item-title">Machine-Readable Context</p>
+      <p class="qs-check-item-body">Are your structured data markers present and formatted so AI systems can parse them?</p>
     </div>
-    <div class="qs-check-card">
-      <div class="qs-check-card-icon">&#x2753;</div>
-      <p class="qs-check-card-title">Answerable Content</p>
-      <p class="qs-check-card-body">Can AI systems extract direct answers from your pages?</p>
+    <div class="qs-check-item">
+      <p class="qs-check-item-title">Direct Answer Signals</p>
+      <p class="qs-check-item-body">Can AI extract clear, citable answers directly from your pages?</p>
     </div>
-    <div class="qs-check-card">
-      <div class="qs-check-card-icon">&#x2726;</div>
-      <p class="qs-check-card-title">Entity Authority</p>
-      <p class="qs-check-card-body">Does your site establish clear entity identity AI can trust?</p>
+    <div class="qs-check-item">
+      <p class="qs-check-item-title">Definitions &amp; Explanations</p>
+      <p class="qs-check-item-body">Does your site establish clear entity identity that AI systems can trust and reference?</p>
     </div>
-    <div class="qs-check-card">
-      <div class="qs-check-card-icon">&#x2197;</div>
-      <p class="qs-check-card-title">Connectivity</p>
-      <p class="qs-check-card-body">Are your pages linked in ways that reinforce topical authority?</p>
+    <div class="qs-check-item">
+      <p class="qs-check-item-title">Content Connectivity</p>
+      <p class="qs-check-item-body">Are your pages linked in ways that reinforce topical authority across your domain?</p>
     </div>
   </div>
   <div class="qs-check-capstone-wrap">
     <div class="qs-check-capstone">
-      <div class="qs-check-card-icon" style="text-align:center;margin-bottom:6px">&#x7B;&#x7D;</div>
-      <p class="qs-check-card-title">Authority Depth</p>
-      <p class="qs-check-card-body">Do your pages provide enough structured depth for AI systems to confidently cite you as the answer?</p>
+      <p class="qs-check-item-title">Authority Depth</p>
+      <p class="qs-check-item-body">Do your pages provide enough structured depth for AI systems to confidently cite you as the answer?</p>
     </div>
   </div>
 
