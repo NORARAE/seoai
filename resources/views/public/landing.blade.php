@@ -537,7 +537,7 @@ body::after{
   background:var(--deep);padding:44px 40px;
   position:relative;overflow:hidden;z-index:1;
   border:1px solid rgba(200,168,75,.08);
-  opacity:0;transform:translateY(18px);
+  opacity:1;transform:none;
   transition:
     opacity .65s cubic-bezier(.23,1,.32,1),
     transform .65s cubic-bezier(.23,1,.32,1),
