@@ -48,10 +48,13 @@ class FunnelConversionWidget extends BaseWidget
         };
 
         $color = function (int $num, int $den): string {
-            if ($den === 0) return 'gray';
+            if ($den === 0)
+                return 'gray';
             $rate = $num / $den * 100;
-            if ($rate >= 50) return 'success';
-            if ($rate >= 20) return 'warning';
+            if ($rate >= 50)
+                return 'success';
+            if ($rate >= 20)
+                return 'warning';
             return 'danger';
         };
 
@@ -75,7 +78,7 @@ class FunnelConversionWidget extends BaseWidget
             ->toArray();
 
         $upgradeBreakdown = collect($upgradePlans)
-            ->map(fn($count, $plan) => match($plan) {
+            ->map(fn($count, $plan) => match ($plan) {
                 'diagnostic' => "$count × \$99",
                 'fix-strategy' => "$count × \$249",
                 'optimization' => "$count × \$489",

@@ -2111,8 +2111,18 @@ body::before{
 .qs-preview-check.pass::before{content:'\2713';color:#6aaf90;font-size:.7rem;flex-shrink:0}
 .qs-preview-check.fail::before{content:'\2717';color:#c47878;font-size:.7rem;flex-shrink:0}
 .qs-preview-footer{font-size:.7rem;color:rgba(168,168,160,.45);padding:8px 20px 12px;border-top:1px solid rgba(200,168,75,.07);letter-spacing:.02em}
-.qs-checks-row{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;margin:0 auto 28px;max-width:480px}
-.qs-check-pill{font-size:.62rem;letter-spacing:.07em;color:rgba(168,168,160,.55);background:rgba(200,168,75,.04);border:1px solid rgba(200,168,75,.1);padding:4px 11px}
+.qs-checks-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:1px;background:rgba(200,168,75,.07);max-width:540px;margin:0 auto 20px}
+.qs-check-card{background:#080808;padding:22px 20px;text-align:left;display:flex;flex-direction:column;gap:6px;transition:background .25s}
+.qs-check-card:hover{background:#0e0d09}
+.qs-check-card-icon{font-size:.9rem;opacity:.6;line-height:1}
+.qs-check-card-title{font-size:.78rem;color:var(--ivory);font-weight:400;letter-spacing:.02em}
+.qs-check-card-body{font-size:.7rem;color:var(--muted);line-height:1.55}
+.qs-check-capstone-wrap{max-width:540px;margin:0 auto 28px;background:rgba(200,168,75,.07);padding:1px;display:flex;justify-content:center}
+.qs-check-capstone{background:#080808;padding:26px 28px;text-align:center;width:62%;min-width:280px;border-top:2px solid rgba(200,168,75,.18);position:relative;transition:background .25s}
+.qs-check-capstone:hover{background:#0e0d09}
+.qs-check-capstone::before{content:'';position:absolute;top:0;left:20%;right:20%;height:1px;background:linear-gradient(90deg,transparent,rgba(200,168,75,.12),transparent)}
+.qs-check-capstone .qs-check-card-title{font-size:.86rem;color:var(--gold);margin-bottom:4px}
+.qs-check-capstone .qs-check-card-body{max-width:320px;margin:0 auto}
 /* product feature grid */
 .feat-grid{padding:64px 24px;text-align:center;max-width:1100px;margin:0 auto}
 .feat-grid-eye{font-size:.64rem;letter-spacing:.26em;text-transform:uppercase;color:rgba(200,168,75,.55);margin-bottom:12px}
@@ -3027,7 +3037,7 @@ body::before{
 .ace-cta a{font-size:.82rem;color:rgba(200,168,75,.8);text-decoration:none;border-bottom:1px solid rgba(200,168,75,.25);padding-bottom:2px;letter-spacing:.04em;transition:color .2s,border-color .2s}
 .ace-cta a:hover{color:#e2c97d;border-color:rgba(226,201,125,.6)}
 @media(max-width:900px){.ace-section{padding:72px 40px}.ace-grid{grid-template-columns:repeat(3,1fr)}.feat-cards{grid-template-columns:1fr 1fr}.tier-grid-4{grid-template-columns:1fr 1fr}}
-@media(max-width:600px){.ace-section{padding:56px 24px}.ace-grid{grid-template-columns:1fr 1fr}.feat-cards{grid-template-columns:1fr}.qs-preview-body{flex-direction:column;text-align:center}.qs-preview-score-wrap{border-right:none;border-bottom:1px solid rgba(200,168,75,.1);padding:0 0 14px;margin-bottom:0}.qs-preview-checks{align-items:center}}
+@media(max-width:600px){.ace-section{padding:56px 24px}.ace-grid{grid-template-columns:1fr 1fr}.feat-cards{grid-template-columns:1fr}.qs-preview-body{flex-direction:column;text-align:center}.qs-preview-score-wrap{border-right:none;border-bottom:1px solid rgba(200,168,75,.1);padding:0 0 14px;margin-bottom:0}.qs-preview-checks{align-items:center}.qs-checks-grid{grid-template-columns:1fr;max-width:320px}.qs-check-capstone{width:100%;min-width:0}.qs-check-capstone-wrap{max-width:320px}}
 @media(max-width:400px){.ace-grid{grid-template-columns:1fr}}
 </style>
 @if(config('services.recaptcha.site_key'))
@@ -3289,18 +3299,40 @@ body::before{
         <div class="qs-preview-check fail">Answerable content gaps found</div>
         <div class="qs-preview-check pass">Entity authority present</div>
         <div class="qs-preview-check fail">Content connectivity low</div>
-        <div class="qs-preview-check pass">Content depth sufficient</div>
+        <div class="qs-preview-check pass">Authority depth sufficient</div>
       </div>
     </div>
     <p class="qs-preview-footer">Fastest correction identified &mdash; estimated +20 points</p>
   </div>
 
-  <div class="qs-checks-row">
-    <span class="qs-check-pill">Data Signals</span>
-    <span class="qs-check-pill">Answerable Content</span>
-    <span class="qs-check-pill">Entity Authority</span>
-    <span class="qs-check-pill">Connectivity</span>
-    <span class="qs-check-pill">Content Depth</span>
+  <div class="qs-checks-grid">
+    <div class="qs-check-card">
+      <div class="qs-check-card-icon">&#x25CE;</div>
+      <p class="qs-check-card-title">Data Signals</p>
+      <p class="qs-check-card-body">Are your structured data markers present and machine-readable?</p>
+    </div>
+    <div class="qs-check-card">
+      <div class="qs-check-card-icon">&#x2753;</div>
+      <p class="qs-check-card-title">Answerable Content</p>
+      <p class="qs-check-card-body">Can AI systems extract direct answers from your pages?</p>
+    </div>
+    <div class="qs-check-card">
+      <div class="qs-check-card-icon">&#x2726;</div>
+      <p class="qs-check-card-title">Entity Authority</p>
+      <p class="qs-check-card-body">Does your site establish clear entity identity AI can trust?</p>
+    </div>
+    <div class="qs-check-card">
+      <div class="qs-check-card-icon">&#x2197;</div>
+      <p class="qs-check-card-title">Connectivity</p>
+      <p class="qs-check-card-body">Are your pages linked in ways that reinforce topical authority?</p>
+    </div>
+  </div>
+  <div class="qs-check-capstone-wrap">
+    <div class="qs-check-capstone">
+      <div class="qs-check-card-icon" style="text-align:center;margin-bottom:6px">&#x7B;&#x7D;</div>
+      <p class="qs-check-card-title">Authority Depth</p>
+      <p class="qs-check-card-body">Do your pages provide enough structured depth for AI systems to confidently cite you as the answer?</p>
+    </div>
   </div>
 
   <a href="{{ route('quick-scan.show') }}" class="btn-cta r" style="display:inline-block;background:var(--gold);color:var(--bg);font-size:.72rem;font-weight:600;letter-spacing:.12em;text-transform:uppercase;text-decoration:none;padding:13px 38px">See Where You Stand — $2</a>
