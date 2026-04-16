@@ -538,6 +538,8 @@ body::after{
   position:relative;overflow:hidden;z-index:1;
   border:1px solid rgba(200,168,75,.08);
   opacity:1;transform:none;
+  display:flex;flex-direction:column;
+  min-height:100%;
   transition:
     opacity .65s cubic-bezier(.23,1,.32,1),
     transform .65s cubic-bezier(.23,1,.32,1),
@@ -564,6 +566,17 @@ body::after{
 .tier-grid-4 .tier:nth-child(2){transition-delay:.12s}
 .tier-grid-4 .tier:nth-child(3){transition-delay:.19s}
 .tier-grid-4 .tier:nth-child(4){transition-delay:.26s}
+
+/* Intentional premium anchor row (tier 5) */
+.tier-anchor-row{
+  margin-top:28px;
+  display:grid;
+  grid-template-columns:1fr minmax(340px,560px) 1fr;
+  align-items:start;
+  position:relative;
+  z-index:2;
+}
+.tier-anchor-row .tier.prime{grid-column:2}
 /* ── Scan tier — lightest weight ── */
 .tier.scan-tier{
   background:var(--deep);
@@ -634,16 +647,16 @@ body::after{
 .tier.focal{
   background:rgba(14,13,11,1);
   padding:52px 44px;
-  transform:scale(1.03) translateY(12px);
+  transform:translateY(-2px);
   z-index:2;
   border-color:rgba(200,168,75,.16);
   box-shadow:
     0 0 64px rgba(200,168,75,.04),
     0 28px 72px rgba(0,0,0,.55);
 }
-.tier.focal.vis{opacity:1;transform:scale(1.03) translateY(-6px)}
+.tier.focal.vis{opacity:1;transform:translateY(-2px)}
 .tier.focal:hover{
-  transform:scale(1.03) translateY(-10px);
+  transform:translateY(-6px);
   border-color:rgba(200,168,75,.26);
   box-shadow:
     0 0 80px rgba(200,168,75,.07),
@@ -739,6 +752,11 @@ body::after{
   line-height:1.6;font-style:italic;margin-bottom:20px;
   border-left:2px solid rgba(200,168,75,.18);padding-left:12px;
 }
+
+/* Card composition discipline */
+.tier-stack{display:flex;flex-direction:column}
+.tier-grid-4 .tier-position{min-height:7.4em}
+.tier-actions{margin-top:auto;display:flex;flex-direction:column;gap:10px}
 
 /* ── Value anchor ── */
 .value-anchor{
@@ -1849,6 +1867,8 @@ footer{border-top:1px solid var(--border);padding:36px 64px;display:flex;flex-di
   .offer-intro{grid-template-columns:1fr;gap:28px}
   .contact-inner{grid-template-columns:1fr;gap:36px}
   .audience-grid,.tier-grid-3,.tier-grid-4{grid-template-columns:1fr}
+  .tier-anchor-row{grid-template-columns:1fr;margin-top:18px}
+  .tier-anchor-row .tier.prime{grid-column:auto}
   .aud-card{padding:40px 24px}
   .aud-title{font-size:1.6rem}
   .wyl-grid{grid-template-columns:1fr 1fr;gap:14px}
@@ -3036,7 +3056,7 @@ body::before{
 .ace-cta{text-align:center;margin-top:8px}
 .ace-cta a{font-size:.82rem;color:rgba(200,168,75,.8);text-decoration:none;border-bottom:1px solid rgba(200,168,75,.25);padding-bottom:2px;letter-spacing:.04em;transition:color .2s,border-color .2s}
 .ace-cta a:hover{color:#e2c97d;border-color:rgba(226,201,125,.6)}
-@media(max-width:900px){.ace-section{padding:72px 40px}.ace-grid{grid-template-columns:repeat(3,1fr)}.tier-grid-4{grid-template-columns:1fr 1fr}}
+@media(max-width:900px){.ace-section{padding:72px 40px}.ace-grid{grid-template-columns:repeat(3,1fr)}.tier-grid-4{grid-template-columns:1fr 1fr}.tier-anchor-row{grid-template-columns:1fr minmax(280px,540px) 1fr}}
 @media(max-width:600px){.ace-section{padding:56px 24px}.ace-grid{grid-template-columns:1fr 1fr}.feat-cards{grid-template-columns:1fr}.qs-preview-body{flex-direction:column;text-align:center}.qs-preview-score-wrap{border-right:none;border-bottom:1px solid rgba(200,168,75,.1);padding:0 0 14px;margin-bottom:0}.qs-preview-checks{align-items:center}.qs-checks-grid{grid-template-columns:1fr;gap:22px;text-align:center}.qs-check-item{max-width:none;margin:0 auto}.qs-check-item::before{margin:0 auto 10px}.qs-check-item-body{max-width:none}.qs-check-capstone .qs-check-item-body{max-width:none}}
 @media(max-width:400px){.ace-grid{grid-template-columns:1fr}}
 </style>
@@ -3389,129 +3409,153 @@ body::before{
     <div class="tier scan-tier">
       <span class="tier-flag">Start</span>
       <h3 class="tier-name">Citation Scan</h3>
-      <div class="tier-price"><sup>$</sup>2</div>
-      <p class="tier-position">Discover where you stand. One scan reveals your citation readiness — how visible you are to the systems answering your customers' questions.</p>
-      <ul class="tier-features">
-        <li>
-          <svg fill="none" stroke="currentColor" stroke-width="1.4" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
-          0&ndash;100 citation readiness score
-        </li>
-        <li>
-          <svg fill="none" stroke="currentColor" stroke-width="1.4" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/></svg>
-          Limited signal detection
-        </li>
-        <li>
-          <svg fill="none" stroke="currentColor" stroke-width="1.4" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
-          Sent to your inbox instantly
-        </li>
-      </ul>
-      <a href="{{ route('quick-scan.show') }}" class="tier-cta">See Where You Stand — $2</a>
+      <div class="tier-stack">
+        <div class="tier-price"><sup>$</sup>2</div>
+        <p class="tier-position">Discover where you stand. One scan reveals your citation readiness — how visible you are to the systems answering your customers' questions.</p>
+        <ul class="tier-features">
+          <li>
+            <svg fill="none" stroke="currentColor" stroke-width="1.4" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
+            0&ndash;100 citation readiness score
+          </li>
+          <li>
+            <svg fill="none" stroke="currentColor" stroke-width="1.4" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/></svg>
+            Limited signal detection
+          </li>
+          <li>
+            <svg fill="none" stroke="currentColor" stroke-width="1.4" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+            Sent to your inbox instantly
+          </li>
+        </ul>
+      </div>
+      <div class="tier-actions">
+        <a href="{{ route('quick-scan.show') }}" class="tier-cta">See Where You Stand — $2</a>
+      </div>
     </div>
 
     {{-- TIER 2 — Grow: Signal Expansion --}}
     <div class="tier report-tier">
       <span class="tier-flag">Grow</span>
       <h3 class="tier-name">Signal Expansion</h3>
-      <div class="tier-price"><sup>$</sup>99</div>
-      <p class="tier-position">See the full picture. Complete signal mapping across your footprint — where you're visible, where you're invisible, and what's costing you citations.</p>
-      <ul class="tier-features">
-        <li>
-          <svg fill="none" stroke="currentColor" stroke-width="1.4" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
-          <strong>Full visibility mapping</strong>
-        </li>
-        <li>
-          <svg fill="none" stroke="currentColor" stroke-width="1.4" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/></svg>
-          <strong>Every gap ranked by impact</strong>
-        </li>
-        <li>
-          <svg fill="none" stroke="currentColor" stroke-width="1.4" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
-          Exportable intelligence + dashboard
-        </li>
-      </ul>
-      <a href="{{ route('quick-scan.show') }}" class="tier-cta">Start with $2 Scan</a>
+      <div class="tier-stack">
+        <div class="tier-price"><sup>$</sup>99</div>
+        <p class="tier-position">See the full picture. Complete signal mapping across your footprint — where you're visible, where you're invisible, and what's costing you citations.</p>
+        <ul class="tier-features">
+          <li>
+            <svg fill="none" stroke="currentColor" stroke-width="1.4" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
+            <strong>Full visibility mapping</strong>
+          </li>
+          <li>
+            <svg fill="none" stroke="currentColor" stroke-width="1.4" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/></svg>
+            <strong>Every gap ranked by impact</strong>
+          </li>
+          <li>
+            <svg fill="none" stroke="currentColor" stroke-width="1.4" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
+            Exportable intelligence + dashboard
+          </li>
+        </ul>
+      </div>
+      <div class="tier-actions">
+        <a href="{{ route('quick-scan.show') }}" class="tier-cta">Start with $2 Scan</a>
+      </div>
     </div>
 
     {{-- TIER 3 — Scale: Structural Leverage (FOCAL / CORE) --}}
     <div class="tier focal">
       <span class="tier-flag">Scale — Core</span>
       <h3 class="tier-name">Structural Leverage</h3>
-      <div class="tier-price"><sup>$</sup>249</div>
-      <p class="tier-position">Turn visibility into structure. Your complete action sequence — every correction prioritized, every opportunity sized, every gap closed systematically.</p>
-      <ul class="tier-features">
-        <li>
-          <svg fill="none" stroke="currentColor" stroke-width="1.4" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
-          <strong>Everything in Signal Expansion</strong>
-        </li>
-        <li>
-          <svg fill="none" stroke="currentColor" stroke-width="1.4" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064"/></svg>
-          <strong>Priority correction sequence</strong> &mdash; ordered by impact
-        </li>
-        <li>
-          <svg fill="none" stroke="currentColor" stroke-width="1.4" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/></svg>
-          Structural guidance for every gap
-        </li>
-        <li>
-          <svg fill="none" stroke="currentColor" stroke-width="1.4" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
-          Opportunity sizing per correction
-        </li>
-      </ul>
-      <a href="{{ route('quick-scan.show') }}" class="tier-cta">Start with $2 Scan</a>
+      <div class="tier-stack">
+        <div class="tier-price"><sup>$</sup>249</div>
+        <p class="tier-position">Turn visibility into structure. Your complete action sequence — every correction prioritized, every opportunity sized, every gap closed systematically.</p>
+        <ul class="tier-features">
+          <li>
+            <svg fill="none" stroke="currentColor" stroke-width="1.4" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
+            <strong>Everything in Signal Expansion</strong>
+          </li>
+          <li>
+            <svg fill="none" stroke="currentColor" stroke-width="1.4" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064"/></svg>
+            <strong>Priority correction sequence</strong> &mdash; ordered by impact
+          </li>
+          <li>
+            <svg fill="none" stroke="currentColor" stroke-width="1.4" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/></svg>
+            Structural guidance for every gap
+          </li>
+          <li>
+            <svg fill="none" stroke="currentColor" stroke-width="1.4" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
+            Opportunity sizing per correction
+          </li>
+        </ul>
+      </div>
+      <div class="tier-actions">
+        <a href="{{ route('quick-scan.show') }}" class="tier-cta">Start with $2 Scan</a>
+      </div>
     </div>
 
     {{-- TIER 4 — Implement: System Activation --}}
     <div class="tier">
       <span class="tier-flag">Implement</span>
       <h3 class="tier-name">System Activation</h3>
-      <div class="tier-price"><sup>$</sup>489<sub>+</sub></div>
-      <p class="tier-position">Activate the full system. Competitive positioning, market mapping, and complete coverage architecture across 50+ pages — built for compounding authority.</p>
-      <ul class="tier-features">
-        <li>
-          <svg fill="none" stroke="currentColor" stroke-width="1.4" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
-          <strong>Everything in Structural Leverage</strong>
-        </li>
-        <li>
-          <svg fill="none" stroke="currentColor" stroke-width="1.4" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064"/></svg>
-          <strong>Competitive benchmarks</strong>
-        </li>
-        <li>
-          <svg fill="none" stroke="currentColor" stroke-width="1.4" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/></svg>
-          Coverage expansion map
-        </li>
-        <li>
-          <svg fill="none" stroke="currentColor" stroke-width="1.4" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
-          50+ pages with full structural architecture
-        </li>
-      </ul>
-      <a href="{{ route('quick-scan.show') }}" class="tier-cta">Start with $2 Scan</a>
+      <div class="tier-stack">
+        <div class="tier-price"><sup>$</sup>489<sub>+</sub></div>
+        <p class="tier-position">Activate the full system. Competitive positioning, market mapping, and complete coverage architecture across 50+ pages — built for compounding authority.</p>
+        <ul class="tier-features">
+          <li>
+            <svg fill="none" stroke="currentColor" stroke-width="1.4" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
+            <strong>Everything in Structural Leverage</strong>
+          </li>
+          <li>
+            <svg fill="none" stroke="currentColor" stroke-width="1.4" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064"/></svg>
+            <strong>Competitive benchmarks</strong>
+          </li>
+          <li>
+            <svg fill="none" stroke="currentColor" stroke-width="1.4" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/></svg>
+            Coverage expansion map
+          </li>
+          <li>
+            <svg fill="none" stroke="currentColor" stroke-width="1.4" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
+            50+ pages with full structural architecture
+          </li>
+        </ul>
+      </div>
+      <div class="tier-actions">
+        <a href="{{ route('quick-scan.show') }}" class="tier-cta">Start with $2 Scan</a>
+      </div>
     </div>
+
+  </div>
+
+  <div class="tier-anchor-row">
 
     {{-- TIER 5 — Dominate: Market Control --}}
     <div class="tier prime">
       <span class="tier-flag">Dominate</span>
       <h3 class="tier-name">Market Control</h3>
-      <div class="tier-price"><sup>$</sup>4,799<sub>+</sub></div>
-      <p class="tier-position">Total market delegation. Your entire citation infrastructure built, deployed, and actively maintained — full coverage across every surface that matters.</p>
-      <ul class="tier-features">
-        <li>
-          <svg fill="none" stroke="currentColor" stroke-width="1.4" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
-          <strong>Full market infrastructure</strong>
-        </li>
-        <li>
-          <svg fill="none" stroke="currentColor" stroke-width="1.4" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064"/></svg>
-          <strong>Complete system activation</strong> &mdash; built and deployed for you
-        </li>
-        <li>
-          <svg fill="none" stroke="currentColor" stroke-width="1.4" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/></svg>
-          Ongoing position maintenance and reinforcement
-        </li>
-        <li>
-          <svg fill="none" stroke="currentColor" stroke-width="1.4" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>
-          Strategic oversight across your full coverage
-        </li>
-      </ul>
-      <div class="tier-commitment">Structured 4-month build. Active coverage maintained thereafter.</div>
-      <a href="{{ route('onboarding.start', ['tier' => 'dominance']) }}" class="tier-cta">Dominate Your Market</a>
-      <button class="tier-book" onclick="window._bkPending={id:{{ $consultTypes->get('strategy')?->id ?? 2 }},duration:{{ $consultTypes->get('strategy')?->duration_minutes ?? 30 }},name:{{ json_encode($consultTypes->get('strategy')?->name ?? 'Strategy Call') }},isFree:{{ ($consultTypes->get('strategy')?->is_free ?? false) ? 'true' : 'false' }}};window.dispatchEvent(new CustomEvent('open-booking',{detail:window._bkPending}));if(typeof gtag==='function')gtag('event','cta_click',{cta_location:'pricing_section',cta_label:'book_strategy_call'});">Book a Strategy Call</button>
+      <div class="tier-stack">
+        <div class="tier-price"><sup>$</sup>4,799<sub>+</sub></div>
+        <p class="tier-position">Total market delegation. Your entire citation infrastructure built, deployed, and actively maintained — full coverage across every surface that matters.</p>
+        <ul class="tier-features">
+          <li>
+            <svg fill="none" stroke="currentColor" stroke-width="1.4" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+            <strong>Full market infrastructure</strong>
+          </li>
+          <li>
+            <svg fill="none" stroke="currentColor" stroke-width="1.4" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064"/></svg>
+            <strong>Complete system activation</strong> &mdash; built and deployed for you
+          </li>
+          <li>
+            <svg fill="none" stroke="currentColor" stroke-width="1.4" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/></svg>
+            Ongoing position maintenance and reinforcement
+          </li>
+          <li>
+            <svg fill="none" stroke="currentColor" stroke-width="1.4" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>
+            Strategic oversight across your full coverage
+          </li>
+        </ul>
+      </div>
+      <div class="tier-actions">
+        <div class="tier-commitment">Structured 4-month build. Active coverage maintained thereafter.</div>
+        <a href="{{ route('onboarding.start', ['tier' => 'dominance']) }}" class="tier-cta">Dominate Your Market</a>
+        <button class="tier-book" onclick="window._bkPending={id:{{ $consultTypes->get('strategy')?->id ?? 2 }},duration:{{ $consultTypes->get('strategy')?->duration_minutes ?? 30 }},name:{{ json_encode($consultTypes->get('strategy')?->name ?? 'Strategy Call') }},isFree:{{ ($consultTypes->get('strategy')?->is_free ?? false) ? 'true' : 'false' }}};window.dispatchEvent(new CustomEvent('open-booking',{detail:window._bkPending}));if(typeof gtag==='function')gtag('event','cta_click',{cta_location:'pricing_section',cta_label:'book_strategy_call'});">Book a Strategy Call</button>
+      </div>
     </div>
 
   </div>
