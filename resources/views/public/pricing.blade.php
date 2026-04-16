@@ -621,5 +621,14 @@ footer{border-top:1px solid rgba(200,168,75,.07);padding:32px 48px;display:flex;
 </footer>
 
 @include('components.tm-style')
+<script>
+(function(){
+  document.querySelectorAll('a[href*="onboarding/start"]').forEach(function(el){
+    el.addEventListener('click',function(){
+      fetch('/api/v1/track',{method:'POST',headers:{'Content-Type':'application/json','Accept':'application/json'},body:JSON.stringify({event:'deployment_cta_click',metadata:{label:el.textContent.trim().substring(0,60),page:'pricing'}})}).catch(function(){});
+    });
+  });
+})();
+</script>
 </body>
 </html>

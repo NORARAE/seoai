@@ -4420,6 +4420,15 @@ body::before{
 <script>
   if(typeof gtag==='function'){gtag('event','view_landing',{page_location:window.location.href});}
 </script>
+<script>
+(function(){
+  document.querySelectorAll('a[href*="/quick-scan"]').forEach(function(el){
+    el.addEventListener('click',function(){
+      fetch('/api/v1/track',{method:'POST',headers:{'Content-Type':'application/json','Accept':'application/json'},body:JSON.stringify({event:'homepage_cta_click',metadata:{label:el.textContent.trim().substring(0,60),href:el.getAttribute('href')}})}).catch(function(){});
+    });
+  });
+})();
+</script>
 @include('components.tm-style')
 </body>
 </html>

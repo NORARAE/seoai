@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Jobs\RunQuickScanJob;
+use App\Models\FunnelEvent;
 use App\Models\QuickScan;
 use App\Services\QuickScanService;
 use App\Services\UrlValidator;
@@ -163,6 +164,12 @@ class QuickScanController extends Controller
 
             $scan->update(['stripe_session_id' => $session->id]);
 
+            FunnelEvent::fire(FunnelEvent::SCAN_STARTED, scanId: $scan->id, metadata: [
+                'url' => $url,
+                'email' => $email,
+                'is_repeat' => $isRepeat,
+            ]);
+
             return redirect($session->url);
         } catch (\Throwable $e) {
             Log::error('QuickScan Stripe session failed', [
@@ -222,6 +229,10 @@ class QuickScanController extends Controller
                             'scan_id' => $scan->id,
                             'plan' => $scan->upgrade_plan,
                             'session' => $sessionId,
+                        ]);
+
+                        FunnelEvent::fire(FunnelEvent::UPGRADE_PURCHASED, scanId: $scan->id, metadata: [
+                            'plan' => $scan->upgrade_plan,
                         ]);
                     }
                 } catch (\Throwable $e) {
@@ -317,6 +328,11 @@ class QuickScanController extends Controller
                 'url' => $scan->url,
                 'email' => $scan->email,
                 'ip' => $scan->ip_address,
+            ]);
+
+            FunnelEvent::fire(FunnelEvent::SCAN_COMPLETED, scanId: $scan->id, metadata: [
+                'score' => $scan->score,
+                'url' => $scan->url,
             ]);
         } catch (\Throwable $e) {
             Log::error('QuickScan: synchronous scan failed', [
@@ -441,6 +457,11 @@ class QuickScanController extends Controller
                 'upgrade_plan' => $plan,
                 'upgrade_status' => 'pending',
                 'upgrade_stripe_session_id' => $session->id,
+            ]);
+
+            FunnelEvent::fire(FunnelEvent::UPGRADE_CLICK, scanId: $scan->id, metadata: [
+                'plan' => $plan,
+                'amount' => $unitAmount,
             ]);
 
             Log::info('QuickScan: upgrade checkout initiated', [

@@ -19,6 +19,10 @@ Route::prefix('v1')->group(function (): void {
     // Register in Stripe Dashboard: checkout.session.completed
     Route::post('/quick-scan/stripe-webhook', [QuickScanWebhookController::class, 'handle']);
 
+    // Funnel event tracking — lightweight endpoint for client-side events.
+    Route::post('/track', [\App\Http\Controllers\FunnelTrackController::class, 'store'])
+        ->middleware('throttle:60,1');
+
     // Stripe checkout — public, called from WP plugin admin page.
     Route::post('/checkout', [LicenseController::class, 'createCheckoutSession'])->middleware('throttle:api-public');
 

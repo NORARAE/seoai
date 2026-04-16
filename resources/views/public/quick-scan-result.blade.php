@@ -1376,6 +1376,15 @@ footer{border-top:1px solid var(--border);padding:32px 48px;display:flex;flex-di
     document.querySelectorAll('.report-layer').forEach(function(el) { io.observe(el); });
   });
 </script>
+<script>
+(function(){
+  document.querySelectorAll('a[href*="onboarding/start"]').forEach(function(el){
+    el.addEventListener('click',function(){
+      fetch('/api/v1/track',{method:'POST',headers:{'Content-Type':'application/json','Accept':'application/json'},body:JSON.stringify({event:'deployment_cta_click',metadata:{label:el.textContent.trim().substring(0,60),page:'scan_result'}})}).catch(function(){});
+    });
+  });
+})();
+</script>
 @include('components.tm-style')
 </body>
 </html>

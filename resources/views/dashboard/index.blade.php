@@ -675,4 +675,17 @@
         </div>
 
 </div>
+
+@push('scripts')
+<script>
+(function(){
+  document.querySelectorAll('a[href*="onboarding/start"]').forEach(function(el){
+    el.addEventListener('click',function(){
+      fetch('/api/v1/track',{method:'POST',headers:{'Content-Type':'application/json','Accept':'application/json'},body:JSON.stringify({event:'deployment_cta_click',metadata:{label:el.textContent.trim().substring(0,60),page:'dashboard'}})}).catch(function(){});
+    });
+  });
+})();
+</script>
+@endpush
+
 @endsection
