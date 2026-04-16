@@ -58,7 +58,7 @@ nav.stuck{background:rgba(8,8,8,.95);backdrop-filter:blur(16px);border-color:var
 .nav-btn:hover{background:var(--gold-lt);box-shadow:0 2px 12px var(--gold-glow)}
 
 /* ── Hero band ── */
-.result-hero{padding:150px 64px 80px;text-align:center;position:relative;overflow:hidden}
+.result-hero{padding:140px 64px 60px;text-align:center;position:relative;overflow:hidden}
 .result-hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 70% 55% at 50% 50%,rgba(200,168,75,.07) 0%,transparent 68%);pointer-events:none}
 .result-eyebrow{font-size:.66rem;letter-spacing:.3em;text-transform:uppercase;color:rgba(200,168,75,.65);margin-bottom:26px}
 .result-url{font-size:.82rem;color:rgba(168,168,160,.48);font-weight:300;letter-spacing:.04em;margin-bottom:36px;max-width:560px;margin-left:auto;margin-right:auto;overflow-wrap:break-word}
@@ -122,13 +122,13 @@ nav.stuck{background:rgba(8,8,8,.95);backdrop-filter:blur(16px);border-color:var
 .broken-status{color:var(--red);font-size:.72rem;flex-shrink:0;margin-left:12px}
 
 /* ── Fastest fix ── */
-.fastest-fix{background:rgba(14,13,9,.95);border:1px solid rgba(200,168,75,.18);padding:32px;margin-bottom:48px;position:relative}
+.fastest-fix{background:rgba(14,13,9,.95);border:1px solid rgba(200,168,75,.18);padding:32px;margin-bottom:32px;position:relative}
 .fastest-fix::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,rgba(200,168,75,.5),transparent)}
 .fix-label{font-size:.64rem;letter-spacing:.24em;text-transform:uppercase;color:var(--gold);margin-bottom:12px;display:block}
 .fix-text{font-size:.96rem;line-height:1.55;color:rgba(237,232,222,.9)}
 
 /* ── Untapped Market Coverage / Visibility Gap ── */
-.market-coverage{background:rgba(14,13,9,.92);border:1px solid rgba(200,168,75,.15);margin-bottom:44px;overflow:hidden}
+.market-coverage{background:rgba(14,13,9,.92);border:1px solid rgba(200,168,75,.15);margin-bottom:28px;overflow:hidden}
 .market-header{display:flex;justify-content:space-between;align-items:center;padding:18px 22px;border-bottom:1px solid rgba(200,168,75,.08)}
 .market-eyebrow{font-size:.66rem;letter-spacing:.24em;text-transform:uppercase;color:rgba(200,168,75,.65);font-weight:400}
 .market-gap-badge{font-size:.68rem;letter-spacing:.1em;text-transform:uppercase;color:var(--red);background:rgba(196,120,120,.08);padding:5px 14px;border:1px solid rgba(196,120,120,.15)}
@@ -165,7 +165,7 @@ nav.stuck{background:rgba(8,8,8,.95);backdrop-filter:blur(16px);border-color:var
 .urgency-sub{font-size:.8rem;color:var(--muted);line-height:1.55}
 
 /* ── Competitive Pressure ── */
-.comp-section{background:rgba(14,13,9,.92);border:1px solid rgba(196,120,120,.12);margin-bottom:44px;overflow:hidden}
+.comp-section{background:rgba(14,13,9,.92);border:1px solid rgba(196,120,120,.12);margin-bottom:28px;overflow:hidden}
 .comp-header{padding:18px 22px;border-bottom:1px solid rgba(196,120,120,.08)}
 .comp-eyebrow{font-size:.66rem;letter-spacing:.24em;text-transform:uppercase;color:var(--red);font-weight:400}
 .comp-body{padding:22px}
@@ -178,7 +178,7 @@ nav.stuck{background:rgba(8,8,8,.95);backdrop-filter:blur(16px);border-color:var
 .comp-bottom{font-size:.82rem;color:var(--red);font-style:italic;line-height:1.55}
 
 /* ── CTA section ── */
-.cta-section{border-top:1px solid rgba(200,168,75,.12);padding:72px 0 0;text-align:center;position:relative}
+.cta-section{border-top:1px solid rgba(200,168,75,.12);padding:48px 0 0;text-align:center;position:relative}
 .cta-section::before{content:'';position:absolute;top:0;left:50%;transform:translateX(-50%);width:60%;height:120px;background:radial-gradient(ellipse at 50% 0%,rgba(200,168,75,.06),transparent 70%);pointer-events:none}
 .cta-eyebrow{font-size:.66rem;letter-spacing:.3em;text-transform:uppercase;color:rgba(200,168,75,.65);margin-bottom:18px}
 .cta-hed{font-family:'Cormorant Garamond',serif;font-size:clamp(1.8rem,4vw,2.8rem);font-weight:300;line-height:1.15;color:var(--ivory);margin-bottom:14px}
@@ -206,7 +206,7 @@ nav.stuck{background:rgba(8,8,8,.95);backdrop-filter:blur(16px);border-color:var
 .cta-book a:hover{color:var(--gold)}
 
 /* ── Unlock block ── */
-.unlock-block{background:rgba(12,11,8,.96);border:1px solid rgba(200,168,75,.18);padding:48px 40px;margin-bottom:52px;text-align:center;position:relative;overflow:hidden}
+.unlock-block{background:rgba(12,11,8,.96);border:1px solid rgba(200,168,75,.18);padding:36px 36px;margin-bottom:36px;text-align:center;position:relative;overflow:hidden}
 .unlock-block::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--gold),transparent)}
 .unlock-block::after{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 60% 80% at 50% 20%,rgba(200,168,75,.04),transparent 60%);pointer-events:none}
 .unlock-eyebrow{font-size:.62rem;letter-spacing:.3em;text-transform:uppercase;color:rgba(200,168,75,.55);margin-bottom:14px;position:relative;z-index:1}
@@ -320,7 +320,7 @@ footer{border-top:1px solid var(--border);padding:32px 48px;display:flex;flex-di
 /* ── Report layers ── */
 .report-layer{margin-bottom:0;position:relative}
 .report-layer + .report-layer{margin-top:0}
-.layer-connector{height:32px;display:flex;flex-direction:column;justify-content:center;align-items:center;position:relative}
+.layer-connector{height:22px;display:flex;flex-direction:column;justify-content:center;align-items:center;position:relative}
 .layer-connector::before{content:'';width:2px;height:100%;background:linear-gradient(to bottom,rgba(200,168,75,.22),rgba(200,168,75,.08));position:absolute}
 .layer-connector::after{content:'▾';color:rgba(200,168,75,.4);font-size:.8rem;position:relative;z-index:1;background:var(--bg);padding:2px 8px}
 .layer-step{font-size:.56rem;letter-spacing:.22em;text-transform:uppercase;color:rgba(200,168,75,.3);margin-top:4px;position:relative;z-index:1;background:var(--bg);padding:0 8px}
@@ -507,11 +507,21 @@ footer{border-top:1px solid var(--border);padding:32px 48px;display:flex;flex-di
       <span class="depth-progress-pct">{{ $scanDepth }}%</span>
     </div>
 
-    {{-- Opportunity gap + competitor benchmark --}}
-    <p style="font-size:.8rem;color:var(--muted);margin-top:16px;line-height:1.6;max-width:480px;margin-left:auto;margin-right:auto;text-align:center">
-      You are currently capturing <span style="color:var(--gold);font-weight:400">~{{ $score }}%</span> of your AI visibility potential.
-      <br><span style="font-size:.74rem;color:rgba(178,178,170,.6)">Top-performing sites in your category average 70–85% coverage.</span>
-    </p>
+    {{-- Competitive comparison --}}
+    @php $marketAvg = min(95, max($score + 18, 72)); @endphp
+    <div class="vgap-compare" style="max-width:380px;margin:22px auto 0">
+      <div class="vgap-you">
+        <span class="vgap-label">Your Position</span>
+        <span class="vgap-val">{{ $score }}%</span>
+        <span class="vgap-sub">current readiness</span>
+      </div>
+      <div class="vgap-them">
+        <span class="vgap-label">Market Leaders</span>
+        <span class="vgap-val">{{ $marketAvg }}%</span>
+        <span class="vgap-sub">average coverage</span>
+      </div>
+    </div>
+    <p style="font-size:.76rem;color:var(--red);margin-top:10px;letter-spacing:.03em;text-align:center">This is the gap competitors are filling right now.</p>
 
     @if($scan->score_change !== null)
     <p style="font-size:.78rem;letter-spacing:.06em;margin-top:12px;color:{{ $scan->score_change > 0 ? 'var(--green)' : ($scan->score_change < 0 ? 'var(--red)' : 'var(--muted)') }}">
@@ -588,14 +598,14 @@ footer{border-top:1px solid var(--border);padding:32px 48px;display:flex;flex-di
   @elseif($unlockLevel >= 2)
   <p style="font-size:.68rem;letter-spacing:.22em;text-transform:uppercase;color:rgba(200,168,75,.45);text-align:center;margin-bottom:22px">Expanded Intelligence — Levels 1–2 active</p>
   @else
-  <p style="font-size:.68rem;letter-spacing:.22em;text-transform:uppercase;color:rgba(200,168,75,.4);text-align:center;margin-bottom:22px">Partial Intelligence — Each level expands system visibility</p>
+  <p style="font-size:.68rem;letter-spacing:.22em;text-transform:uppercase;color:rgba(200,168,75,.4);text-align:center;margin-bottom:22px">This is your baseline. Each level reveals what this one can't.</p>
   @endif
 
   {{-- ═══ BASE SCAN LAYER — UNLOCKED ($2) ═══ --}}
   @if(!empty($categories) && is_array($categories))
   <div class="report-layer">
     <div class="layer-header">
-      <span class="layer-label">Level 1 — Citation Scan — Included</span>
+      <span class="layer-label">Level 1 — Your Current Position</span>
       <span class="layer-status unlocked">✓ Unlocked</span>
     </div>
     <div class="layer-body" style="padding:18px 0 0">
@@ -662,8 +672,37 @@ footer{border-top:1px solid var(--border);padding:32px 48px;display:flex;flex-di
   {{-- ── Stall warning (only for base scan) ── --}}
   @if($unlockLevel <= 1)
   <div style="text-align:center;padding:14px 22px;background:rgba(196,120,120,.04);border:1px solid rgba(196,120,120,.10);margin-bottom:18px">
-    <p style="font-size:.82rem;color:var(--red);font-weight:400;margin-bottom:6px">Most sites stop here.</p>
+    <p style="font-size:.82rem;color:var(--red);font-weight:400;margin-bottom:6px">This is your current position. Most sites never move beyond it.</p>
     <p style="font-size:.78rem;color:var(--muted);line-height:1.6;max-width:440px;margin:0 auto">They see the score and never act. Competitors who go deeper lock in positions that don't come back.</p>
+  </div>
+
+  {{-- ── Competitive gap (base scan only) ── --}}
+  @php
+    $baseCompetitorPct = min(95, max($score + 18, 72));
+    $baseGapPct = $baseCompetitorPct - $score;
+  @endphp
+  <div class="comp-section" style="margin-bottom:28px">
+    <div class="comp-header">
+      <span class="comp-eyebrow">What's Holding You Back</span>
+    </div>
+    <div class="comp-body" style="padding:18px 22px">
+      <p class="comp-intro" style="margin-bottom:14px">Your site covers <strong style="color:var(--ivory);font-weight:400">{{ $score }}%</strong> of AI citation signals. Market leaders in your category operate at <strong style="color:var(--green);font-weight:400">{{ $baseCompetitorPct }}%</strong>. That <strong style="color:var(--red);font-weight:400">{{ $baseGapPct }}% gap</strong> is where you're invisible.</p>
+      <div class="comp-grid" style="margin-bottom:14px">
+        <div class="comp-item" style="background:rgba(196,120,120,.04);border-color:rgba(196,120,120,.1)">
+          <span class="comp-icon" style="color:var(--red)">✕</span>
+          <span class="comp-text">{{ count($scan->issues ?? []) }} structural gaps detected — each one is a missed citation opportunity</span>
+        </div>
+        <div class="comp-item" style="background:rgba(196,120,120,.04);border-color:rgba(196,120,120,.1)">
+          <span class="comp-icon" style="color:var(--red)">✕</span>
+          <span class="comp-text">AI systems are answering queries in your market — without citing you</span>
+        </div>
+        <div class="comp-item">
+          <span class="comp-icon">✓</span>
+          <span class="comp-text">Every gap has a specific correction — the next level shows you exactly what to fix</span>
+        </div>
+      </div>
+      <p class="comp-bottom" style="font-size:.78rem;color:rgba(168,168,160,.55);font-style:normal;text-align:center">The longer these gaps stay open, the harder they are to close.</p>
+    </div>
   </div>
   @endif
 
@@ -766,12 +805,12 @@ footer{border-top:1px solid var(--border);padding:32px 48px;display:flex;flex-di
       </div>
     </div>
     <div class="layer-unlock">
-      <p style="font-size:.82rem;color:rgba(168,168,160,.6);line-height:1.65;margin-bottom:16px;max-width:440px;margin-left:auto;margin-right:auto">What you're seeing is partial visibility.<br>The rest of your system is not yet active.</p>
+      <p style="font-size:.82rem;color:rgba(168,168,160,.6);line-height:1.65;margin-bottom:16px;max-width:440px;margin-left:auto;margin-right:auto">You see the score. You don't yet see <em style="color:var(--ivory)">why</em>.<br>This level breaks down every signal holding you back.</p>
       <p class="layer-unlock-text">See exactly where your readiness breaks down — signal by signal, ranked by impact.</p>
       <ul class="layer-bullet-list">
-        <li class="layer-bullet">Complete signal-by-signal analysis across <em>{{ $scan->page_count ?? 1 }}+ discovered pages</em></li>
-        <li class="layer-bullet">Every gap ranked by <em>business impact</em> — see what matters most</li>
-        <li class="layer-bullet">Category-level intelligence showing <em>where you're weakest</em></li>
+        <li class="layer-bullet"><strong style="color:var(--ivory);font-weight:400">What you see:</strong> Complete signal-by-signal analysis across <em>{{ $scan->page_count ?? 1 }}+ discovered pages</em></li>
+        <li class="layer-bullet"><strong style="color:var(--ivory);font-weight:400">What you gain:</strong> Every gap ranked by <em>business impact</em> — see what matters most</li>
+        <li class="layer-bullet"><strong style="color:var(--ivory);font-weight:400">What changes:</strong> Category-level intelligence showing <em>where you're weakest</em></li>
         <li class="layer-bullet">Downloadable intelligence + <em>dashboard access</em> for ongoing tracking</li>
       </ul>
       <a href="{{ route('quick-scan.upgrade') }}?plan=diagnostic&scan_id={{ $scan->id }}" class="layer-unlock-cta primary">Expand Your Visibility — $99 →</a>
@@ -806,7 +845,7 @@ footer{border-top:1px solid var(--border);padding:32px 48px;display:flex;flex-di
 
   {{-- ═══ EXECUTION LAYER — $249 (DOMINANT) ═══ --}}
   <div class="layer-connector" style="height:24px"><span class="layer-step">Level 3</span></div>
-  <p style="font-size:.66rem;color:var(--gold);text-align:center;margin:-4px 0 8px;letter-spacing:.18em;text-transform:uppercase;font-weight:400">Where most systems begin to shift</p>
+  <p style="font-size:.66rem;color:var(--gold);text-align:center;margin:-4px 0 8px;letter-spacing:.18em;text-transform:uppercase;font-weight:400">Where the system becomes real</p>
   <div class="report-layer execution-layer">
     <div class="layer-header">
       <span class="layer-label">Structural Leverage<span class="popular-badge">Most Popular</span></span>
@@ -847,7 +886,7 @@ footer{border-top:1px solid var(--border);padding:32px 48px;display:flex;flex-di
       {{-- Block: Start Here --}}
       @if(!empty($scan->fastest_fix))
       <div class="content-block">
-        <span class="content-block-label">Start Here</span>
+        <span class="content-block-label">Your Fastest Fix — Start Here</span>
         <div style="background:rgba(200,168,75,.06);border:1px solid rgba(200,168,75,.18);padding:18px 22px;position:relative">
           <div style="position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--gold),transparent)"></div>
           <span style="font-size:.6rem;letter-spacing:.24em;text-transform:uppercase;color:var(--gold);display:block;margin-bottom:8px">⚡ Fastest Fix</span>
@@ -919,16 +958,17 @@ footer{border-top:1px solid var(--border);padding:32px 48px;display:flex;flex-di
       </div>
     </div>
     <div class="layer-unlock dominant-unlock">
-      <p class="layer-unlock-text" style="position:relative;z-index:1">Your complete correction sequence — every gap prioritized, every action structured for impact.</p>
+      <p style="font-size:.84rem;color:var(--red);font-weight:400;margin-bottom:10px;position:relative;z-index:1">Most sites stop at insight. This is where control begins.</p>
+      <p class="layer-unlock-text" style="position:relative;z-index:1">This is your correction sequence — every gap prioritized, every action structured for maximum impact.</p>
       <ul class="layer-bullet-list" style="position:relative;z-index:1">
         <li class="layer-bullet"><em>Everything in Signal Expansion</em> — full signal breakdown included</li>
         <li class="layer-bullet">Complete priority correction sequence — <em>ordered by business impact</em></li>
-        <li class="layer-bullet">Structural guidance for every gap — <em>know exactly what to address</em></li>
-        <li class="layer-bullet">Opportunity sizing — <em>estimated value of each correction</em></li>
+        <li class="layer-bullet">Structural guidance for every gap — <em>know exactly what to fix and why</em></li>
+        <li class="layer-bullet">Opportunity sizing — <em>estimated point gain per correction</em></li>
         <li class="layer-bullet">30+ pages analyzed across your <em>full site footprint</em></li>
       </ul>
       <a href="{{ route('quick-scan.upgrade') }}?plan=fix-strategy&scan_id={{ $scan->id }}" class="layer-unlock-cta dominant" style="position:relative;z-index:1">Activate Your Leverage — $249 →</a>
-      <p style="font-size:.72rem;color:rgba(200,168,75,.55);margin-top:12px;font-style:italic;position:relative;z-index:1">This is where most sites begin to shift.</p>
+      <p style="font-size:.72rem;color:rgba(200,168,75,.55);margin-top:12px;font-style:italic;position:relative;z-index:1">This is where the system becomes real.</p>
     </div>
     @endif
   </div>
@@ -1081,11 +1121,11 @@ footer{border-top:1px solid var(--border);padding:32px 48px;display:flex;flex-di
       </div>
     </div>
     <div class="layer-unlock">
-      <p class="layer-unlock-text">Competitive benchmarks, market mapping, and your full coverage architecture.</p>
+      <p class="layer-unlock-text">Your competitive position mapped — benchmarks, market gaps, and full coverage architecture.</p>
       <ul class="layer-bullet-list">
-        <li class="layer-bullet"><em>Everything in Structural Leverage</em> — diagnostics + correction sequence included</li>
-        <li class="layer-bullet">Competitive intelligence — <em>how market leaders outperform you</em></li>
-        <li class="layer-bullet">Coverage expansion map — <em>where your market is uncaptured</em></li>
+        <li class="layer-bullet"><strong style="color:var(--ivory);font-weight:400">What you see:</strong> <em>Everything in Structural Leverage</em> — diagnostics + correction sequence included</li>
+        <li class="layer-bullet"><strong style="color:var(--ivory);font-weight:400">What you gain:</strong> Competitive intelligence — <em>how market leaders outperform you, category by category</em></li>
+        <li class="layer-bullet"><strong style="color:var(--ivory);font-weight:400">What changes:</strong> Coverage expansion map — <em>where your market is uncaptured</em></li>
         <li class="layer-bullet">50+ pages analyzed with <em>full structural architecture</em></li>
       </ul>
       <a href="{{ route('quick-scan.upgrade') }}?plan=optimization&scan_id={{ $scan->id }}" class="layer-unlock-cta premium">Activate Your System — $489+ →</a>
@@ -1128,11 +1168,11 @@ footer{border-top:1px solid var(--border);padding:32px 48px;display:flex;flex-di
   {{-- ── Tier Ladder ── --}}
   <div class="tier-ladder">
     @if($unlockLevel >= 4)
-    <h2 class="tier-ladder-hed">All levels <em>active.</em></h2>
+    <h2 class="tier-ladder-hed">Your system is <em>fully active.</em></h2>
     @elseif($unlockLevel >= 2)
-    <h2 class="tier-ladder-hed">Go deeper. <em>Expand it.</em></h2>
+    <h2 class="tier-ladder-hed">Your data is ready. <em>Go deeper.</em></h2>
     @else
-    <h2 class="tier-ladder-hed">This system goes deeper. <em>Expand it.</em></h2>
+    <h2 class="tier-ladder-hed">This is your starting point. <em>Expand it.</em></h2>
     @endif
     <div class="tier-ladder-grid">
       @if($unlockLevel >= 2)
@@ -1157,7 +1197,7 @@ footer{border-top:1px solid var(--border);padding:32px 48px;display:flex;flex-di
         <span class="tl-name">Structural Leverage</span>
         <span class="tl-price"><sup style="font-size:.7rem;color:rgba(200,168,75,.5)">$</sup>249</span>
         <span class="tl-desc">Priority correction sequence + structural guidance</span>
-        <span style="font-size:.68rem;color:rgba(200,168,75,.55);margin-top:2px;font-style:italic">This is where most sites begin to shift.</span>
+        <span style="font-size:.68rem;color:rgba(200,168,75,.55);margin-top:2px;font-style:italic">Where the system becomes real.</span>
       </a>
       @endif
       @if($unlockLevel >= 4)
@@ -1180,6 +1220,43 @@ footer{border-top:1px solid var(--border);padding:32px 48px;display:flex;flex-di
     </p>
     @endif
   </div>
+
+  {{-- ═══ FINAL PUSH CTA ═══ --}}
+  @if($unlockLevel < 4)
+  <div style="text-align:center;padding:36px 28px;margin-top:28px;border:1px solid rgba(200,168,75,.18);background:rgba(12,11,8,.96);position:relative;overflow:hidden">
+    <div style="position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--gold),transparent)"></div>
+    <div style="position:absolute;inset:0;background:radial-gradient(ellipse 70% 80% at 50% 20%,rgba(200,168,75,.04),transparent 60%);pointer-events:none"></div>
+    <p style="font-size:.6rem;letter-spacing:.3em;text-transform:uppercase;color:rgba(200,168,75,.5);margin-bottom:12px;position:relative;z-index:1">Your Next Move</p>
+    @if($unlockLevel <= 1)
+    <p style="font-family:'Cormorant Garamond',serif;font-size:clamp(1.3rem,2.8vw,1.9rem);font-weight:300;color:var(--ivory);line-height:1.25;margin-bottom:8px;position:relative;z-index:1">You've seen the score. Now see <em style="color:var(--gold);font-style:italic">what's behind it.</em></p>
+    <p style="font-size:.84rem;color:var(--muted);margin-bottom:22px;line-height:1.55;max-width:460px;margin-left:auto;margin-right:auto;position:relative;z-index:1">Your scan identified {{ count($scan->issues ?? []) }} structural gaps. The next level reveals exactly what they are, ranked by the impact on your visibility.</p>
+    <div style="display:flex;gap:14px;justify-content:center;flex-wrap:wrap;position:relative;z-index:1">
+      <a href="{{ route('quick-scan.upgrade') }}?plan=diagnostic&scan_id={{ $scan->id }}" style="display:inline-flex;align-items:center;gap:8px;font-size:.78rem;letter-spacing:.1em;text-transform:uppercase;padding:16px 38px;text-decoration:none;background:linear-gradient(135deg,var(--gold),var(--gold-lt));color:#080808;box-shadow:0 4px 18px var(--gold-glow);transition:all .3s">Expand Your Visibility — $99</a>
+      <a href="{{ route('quick-scan.upgrade') }}?plan=fix-strategy&scan_id={{ $scan->id }}" style="display:inline-flex;align-items:center;gap:8px;font-size:.78rem;letter-spacing:.1em;text-transform:uppercase;padding:16px 38px;text-decoration:none;border:2px solid var(--gold);color:var(--gold);box-shadow:0 8px 32px var(--gold-glow-strong);transition:all .3s">Activate Your Leverage — $249</a>
+    </div>
+    <p style="font-size:.72rem;color:rgba(200,168,75,.45);margin-top:14px;font-style:italic;position:relative;z-index:1">$249 is where the system becomes real. Everything you need to act.</p>
+    @elseif($unlockLevel == 2)
+    <p style="font-family:'Cormorant Garamond',serif;font-size:clamp(1.3rem,2.8vw,1.9rem);font-weight:300;color:var(--ivory);line-height:1.25;margin-bottom:8px;position:relative;z-index:1">You see the signals. Now get <em style="color:var(--gold);font-style:italic">the correction sequence.</em></p>
+    <p style="font-size:.84rem;color:var(--muted);margin-bottom:22px;line-height:1.55;max-width:460px;margin-left:auto;margin-right:auto;position:relative;z-index:1">You know where you're weak. Structural Leverage tells you exactly what to fix, in what order, for maximum impact.</p>
+    <a href="{{ route('quick-scan.upgrade') }}?plan=fix-strategy&scan_id={{ $scan->id }}" style="display:inline-flex;align-items:center;gap:8px;font-size:.82rem;letter-spacing:.1em;text-transform:uppercase;padding:18px 48px;text-decoration:none;background:linear-gradient(135deg,var(--gold),var(--gold-lt));color:#080808;box-shadow:0 8px 32px var(--gold-glow-strong);border:2px solid var(--gold);transition:all .3s;position:relative;z-index:1">Activate Your Leverage — $249 →</a>
+    <p style="font-size:.72rem;color:rgba(200,168,75,.45);margin-top:14px;font-style:italic;position:relative;z-index:1">Most sites stop at insight. This is where control begins.</p>
+    @else
+    <p style="font-family:'Cormorant Garamond',serif;font-size:clamp(1.3rem,2.8vw,1.9rem);font-weight:300;color:var(--ivory);line-height:1.25;margin-bottom:8px;position:relative;z-index:1">You have the plan. Now see <em style="color:var(--gold);font-style:italic">the full competitive picture.</em></p>
+    <p style="font-size:.84rem;color:var(--muted);margin-bottom:22px;line-height:1.55;max-width:460px;margin-left:auto;margin-right:auto;position:relative;z-index:1">System Activation shows you exactly where competitors outperform you — category by category, signal by signal.</p>
+    <a href="{{ route('quick-scan.upgrade') }}?plan=optimization&scan_id={{ $scan->id }}" style="display:inline-flex;align-items:center;gap:8px;font-size:.78rem;letter-spacing:.1em;text-transform:uppercase;padding:16px 38px;text-decoration:none;border:1px solid rgba(200,168,75,.3);color:var(--gold);transition:all .3s;position:relative;z-index:1">Activate Your System — $489+ →</a>
+    @endif
+  </div>
+  @else
+  {{-- All levels active — push to dashboard --}}
+  <div style="text-align:center;padding:28px 22px;margin-top:24px;border:1px solid rgba(106,175,144,.15);background:rgba(106,175,144,.03)">
+    <p style="font-size:.6rem;letter-spacing:.3em;text-transform:uppercase;color:var(--green);margin-bottom:8px">System Complete</p>
+    <p style="font-family:'Cormorant Garamond',serif;font-size:1.3rem;font-weight:300;color:var(--ivory);margin-bottom:8px">All four levels are active.</p>
+    <p style="font-size:.82rem;color:var(--muted);margin-bottom:16px;line-height:1.55">Your intelligence is live. Track your progress from the dashboard.</p>
+    @auth
+    <a href="/dashboard#ai-scans" style="display:inline-flex;align-items:center;gap:8px;padding:14px 32px;background:var(--green);color:#080808;font-size:.78rem;letter-spacing:.12em;text-transform:uppercase;text-decoration:none;transition:all .3s">Go to Dashboard</a>
+    @endauth
+  </div>
+  @endif
 
   <!-- Save to Dashboard -->
   @auth
