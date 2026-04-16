@@ -82,6 +82,7 @@ body::after{
   display:flex;flex-direction:column;
   justify-content:flex-start;align-items:flex-start;
   padding:clamp(100px,13vh,148px) 64px 44px;position:relative;
+  min-height:68vh;
   max-width:1200px;margin:0 auto;
 }
 .hero-grid{
@@ -1963,7 +1964,7 @@ body::before{
   color:var(--ivory);letter-spacing:-.02em;margin:0;
   /* position:absolute removes from flow — animation is visual only */
   position:absolute;top:0;left:0;width:100%;
-  opacity:0;transform:translateY(24px);
+  opacity:1;transform:none;
   transition:opacity 560ms cubic-bezier(.16,1,.3,1),
              transform 560ms cubic-bezier(.16,1,.3,1);
 }
@@ -1973,7 +1974,7 @@ body::before{
   font-family:'Cormorant Garamond',serif;font-style:italic;font-weight:400;
   font-size:clamp(1.45rem,2.75vw,2.15rem);
   color:var(--gold);letter-spacing:.025em;line-height:1.35;
-  opacity:0;animation:up .75s .2s forwards;
+  opacity:1;
   margin-bottom:36px;
 }
 .hero-note{
@@ -3207,7 +3208,7 @@ body::before{
     <h1 id="heroSeq" aria-label="Will AI Cite Your Website? Instant AI citation readiness score in 60 seconds.">Will AI Cite<br>Your Website?</h1>
   </div>
   <p class="hero-gold-accent">Instant AI citation readiness score in 60 seconds.</p>
-  <div class="hero-actions" style="opacity:0;animation:up .85s .52s forwards">
+  <div class="hero-actions">
     <a href="{{ route('quick-scan.show') }}" class="btn-primary">See Where You Stand — $2</a>
     <a href="#proof" class="btn-ghost">See an Example</a>
   </div>
