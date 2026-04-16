@@ -63,19 +63,18 @@ nav{
   padding:28px 64px;border-bottom:1px solid transparent;transition:all .4s;
 }
 nav.stuck{background:rgba(8,8,8,.95);backdrop-filter:blur(16px);border-color:var(--border);padding:16px 64px}
-.nav-right{display:flex;align-items:center;gap:32px}
-.nav-link{font-size:.82rem;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);text-decoration:none;transition:color .3s;position:relative;padding-bottom:2px}
+.nav-right{display:flex;align-items:center;gap:28px}
+.nav-link{font-size:.74rem;letter-spacing:.18em;text-transform:uppercase;color:rgba(168,168,160,.6);text-decoration:none;transition:color .3s;position:relative;padding-bottom:2px;font-weight:400}
 .nav-link::after{content:'';position:absolute;bottom:0;left:0;right:100%;height:1px;background:var(--gold);transition:right .3s cubic-bezier(.23,1,.32,1)}
 .nav-link:hover{color:var(--gold)}
 .nav-link:hover::after{right:0}
 .nav-btn{
-  font-size:.78rem;letter-spacing:.14em;text-transform:uppercase;
-  color:var(--bg);background:var(--gold);padding:12px 28px;text-decoration:none;
+  font-size:.7rem;letter-spacing:.16em;text-transform:uppercase;
+  color:var(--bg);background:var(--gold);padding:10px 26px;text-decoration:none;
   transition:background .3s cubic-bezier(.23,1,.32,1),box-shadow .3s cubic-bezier(.23,1,.32,1);
-  display:inline-flex;align-items:center;white-space:nowrap;
+  display:inline-flex;align-items:center;white-space:nowrap;font-weight:500;margin-left:4px;
 }
 .nav-btn:hover{background:var(--gold-lt);box-shadow:0 4px 16px rgba(200,168,75,.22)}
-.nav-account-short{display:none}
 
 /* ── Hero ── */
 #hero{
@@ -1605,10 +1604,9 @@ footer{border-top:1px solid var(--border);padding:36px 64px;display:flex;flex-di
 @media(max-width:1200px){
   nav{padding:20px 36px}
   nav.stuck{padding:14px 36px}
-  .nav-link{font-size:.72rem;letter-spacing:.13em}
-  .nav-btn{font-size:.72rem;letter-spacing:.13em;padding:12px 22px;min-height:40px}
-  .nav-account-full{display:none}
-  .nav-account-short{display:inline}
+  .nav-right{gap:22px}
+  .nav-link{font-size:.68rem;letter-spacing:.14em}
+  .nav-btn{font-size:.66rem;letter-spacing:.14em;padding:9px 20px;min-height:38px}
 }
 
 /* ── Mobile hamburger ── */
@@ -1819,8 +1817,6 @@ footer{border-top:1px solid var(--border);padding:36px 64px;display:flex;flex-di
   body{-webkit-overflow-scrolling:touch}
   nav{padding:14px 20px}nav.stuck{padding:10px 20px}.nav-link{display:none}
   .nav-btn{display:none}
-  .nav-btn.nav-book{display:inline-flex;font-size:.68rem;padding:9px 18px;letter-spacing:.1em}
-  .nav-account{display:none}
   .nav-hamburger{display:flex}
   #hero{padding:88px 24px 60px}
   .hero-actions{flex-direction:column;gap:16px;width:100%}
@@ -2121,7 +2117,7 @@ body::before{
 .feat-grid-eye{font-size:.64rem;letter-spacing:.26em;text-transform:uppercase;color:rgba(200,168,75,.55);margin-bottom:12px}
 .feat-grid-hed{font-family:'Cormorant Garamond',serif;font-size:clamp(1.4rem,2.8vw,2rem);font-weight:300;color:var(--ivory);line-height:1.25;margin:0 auto 36px;max-width:560px}
 .feat-grid-hed em{font-style:italic;color:var(--gold)}
-.feat-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:rgba(200,168,75,.07);max-width:900px;margin:0 auto}
+.feat-cards{display:grid;grid-template-columns:repeat(2,1fr);gap:1px;background:rgba(200,168,75,.07);max-width:720px;margin:0 auto}
 .feat-card{background:#080808;padding:28px 24px;text-align:left;transition:background .25s,transform .25s cubic-bezier(.23,1,.32,1),box-shadow .25s}
 .feat-card:hover{background:#0e0d09;transform:translateY(-2px);box-shadow:0 8px 24px rgba(0,0,0,.35)}
 .feat-card:hover .feat-card-icon{opacity:1}
@@ -3029,7 +3025,7 @@ body::before{
 .ace-cta{text-align:center;margin-top:8px}
 .ace-cta a{font-size:.82rem;color:rgba(200,168,75,.8);text-decoration:none;border-bottom:1px solid rgba(200,168,75,.25);padding-bottom:2px;letter-spacing:.04em;transition:color .2s,border-color .2s}
 .ace-cta a:hover{color:#e2c97d;border-color:rgba(226,201,125,.6)}
-@media(max-width:900px){.ace-section{padding:72px 40px}.ace-grid{grid-template-columns:repeat(3,1fr)}.feat-cards{grid-template-columns:1fr 1fr}.tier-grid-4{grid-template-columns:1fr 1fr}}
+@media(max-width:900px){.ace-section{padding:72px 40px}.ace-grid{grid-template-columns:repeat(3,1fr)}.tier-grid-4{grid-template-columns:1fr 1fr}}
 @media(max-width:600px){.ace-section{padding:56px 24px}.ace-grid{grid-template-columns:1fr 1fr}.feat-cards{grid-template-columns:1fr}.qs-preview-body{flex-direction:column;text-align:center}.qs-preview-score-wrap{border-right:none;border-bottom:1px solid rgba(200,168,75,.1);padding:0 0 14px;margin-bottom:0}.qs-preview-checks{align-items:center}}
 @media(max-width:400px){.ace-grid{grid-template-columns:1fr}}
 </style>
@@ -3084,12 +3080,10 @@ body::before{
   </a>
   <div class="nav-right">
     <a href="/how-it-works" class="nav-link">How It Works</a>
-    <a href="{{ route('quick-scan.show') }}" class="nav-btn nav-book">Run Scan</a>
-    @auth
-      <a href="/dashboard" class="nav-btn nav-account" style="background:linear-gradient(90deg,var(--gold),var(--gold-lt));color:var(--deep);box-shadow:0 2px 12px 0 rgba(200,168,75,.13);font-weight:500;letter-spacing:.18em;"><span class="nav-account-full">My Dashboard</span><span class="nav-account-short">Dashboard</span></a>
-    @else
-      <a href="/admin/login" class="nav-btn nav-account" style="background:linear-gradient(90deg,var(--gold),var(--gold-lt));color:var(--deep);box-shadow:0 2px 12px 0 rgba(200,168,75,.13);font-weight:500;letter-spacing:.18em;"><span class="nav-account-full">Portal</span><span class="nav-account-short">Portal</span></a>
-    @endauth
+    <a href="/pricing" class="nav-link">Pricing</a>
+    <a href="/book" class="nav-link">Book</a>
+    <a href="/dashboard" class="nav-link">Portal</a>
+    <a href="/quick-scan" class="nav-btn">Get Started</a>
   </div>
   <button class="nav-hamburger" id="navHamburger" aria-label="Open menu" aria-expanded="false" aria-controls="navMenu">
     <span></span><span></span><span></span>
@@ -3109,15 +3103,15 @@ body::before{
 
     {{-- GET STARTED --}}
     <div class="nm-group"><span class="nm-group-label">Get Started</span></div>
-    <a href="{{ route('onboarding.start') }}" class="nm-link nm-featured" data-menu-close>Check Availability &nbsp;&rarr;</a>
-    <a href="{{ route('quick-scan.show') }}" class="nm-link" data-menu-close>Run a Scan — $2</a>
+    <a href="/quick-scan" class="nm-link nm-featured" data-menu-close>Run a $2 Scan &nbsp;&rarr;</a>
 
     <div class="nm-divider"></div>
 
     {{-- EXPLORE --}}
     <div class="nm-group"><span class="nm-group-label">Explore</span></div>
     <a href="/how-it-works" class="nm-link" data-menu-close>How It Works</a>
-    <a href="/solutions" class="nm-link" data-menu-close>Solutions</a>
+    <a href="/pricing" class="nm-link" data-menu-close>Pricing</a>
+    <a href="/book" class="nm-link" data-menu-close>Book</a>
 
     <div class="nm-divider"></div>
 
@@ -3126,8 +3120,7 @@ body::before{
     @auth
       <a href="/dashboard" class="nm-portal" data-menu-close>My Dashboard</a>
     @else
-      <a href="/admin/login" class="nm-link" data-menu-close>Portal</a>
-      <a href="/admin/login" class="nm-link nm-muted" data-menu-close>Sign In</a>
+      <a href="/login" class="nm-link" data-menu-close>Sign In</a>
     @endauth
 
   </div>

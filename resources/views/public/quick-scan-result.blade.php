@@ -54,15 +54,17 @@ body{background:var(--bg);color:var(--ivory);font-family:'DM Sans',sans-serif;fo
 /* ── Nav ── */
 nav{position:fixed;top:0;left:0;right:0;z-index:200;display:flex;align-items:center;justify-content:space-between;padding:28px 64px;border-bottom:1px solid transparent;transition:all .4s}
 nav.stuck{background:rgba(8,8,8,.95);backdrop-filter:blur(16px);border-color:var(--border);padding:16px 64px}
-.logo{text-decoration:none;display:flex;align-items:baseline;gap:1px;flex-shrink:0}
-.logo-seo{font-family:'DM Sans',sans-serif;font-size:1.38rem;font-weight:300;letter-spacing:-.02em;color:var(--ivory)}
-.logo-ai{font-family:'Cormorant Garamond',serif;font-size:1.6rem;font-weight:400;letter-spacing:.02em;color:var(--gold);font-style:italic;margin:0 1px}
-.logo-co{font-family:'DM Sans',sans-serif;font-size:1.18rem;font-weight:300;color:rgba(168,168,160,.65)}
+.logo{display:inline-flex;align-items:baseline;text-decoration:none;line-height:1}
+.logo-seo{font-family:'DM Sans',sans-serif;font-weight:300;font-size:1.2rem;letter-spacing:.06em;color:var(--white)}
+.logo-ai{font-family:'Cormorant Garamond',serif;font-weight:600;font-size:1.42rem;color:var(--gold);letter-spacing:.02em;display:inline-block;transform:skewX(-11deg) translateY(-1px)}
+.logo-co{font-family:'DM Sans',sans-serif;font-weight:300;font-size:1.05rem;color:rgba(255,255,255,.45);letter-spacing:.04em}
 .nav-right{display:flex;align-items:center;gap:28px}
-.nav-link{font-size:.78rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);text-decoration:none;transition:color .3s}
+.nav-link{font-size:.74rem;letter-spacing:.18em;text-transform:uppercase;color:rgba(168,168,160,.6);text-decoration:none;transition:color .3s;position:relative;padding-bottom:2px;font-weight:400}
+.nav-link::after{content:'';position:absolute;bottom:0;left:0;right:100%;height:1px;background:var(--gold);transition:right .3s cubic-bezier(.23,1,.32,1)}
 .nav-link:hover{color:var(--gold)}
-.nav-btn{font-size:.78rem;letter-spacing:.14em;text-transform:uppercase;color:var(--bg);background:var(--gold);padding:12px 28px;text-decoration:none;transition:all .3s;display:inline-flex;align-items:center}
-.nav-btn:hover{background:var(--gold-lt);box-shadow:0 2px 12px var(--gold-glow)}
+.nav-link:hover::after{right:0}
+.nav-btn{font-size:.7rem;letter-spacing:.16em;text-transform:uppercase;color:var(--bg);background:var(--gold);padding:10px 26px;text-decoration:none;transition:background .3s cubic-bezier(.23,1,.32,1),box-shadow .3s cubic-bezier(.23,1,.32,1);display:inline-flex;align-items:center;white-space:nowrap;font-weight:500;margin-left:4px}
+.nav-btn:hover{background:var(--gold-lt);box-shadow:0 4px 16px rgba(200,168,75,.22)}
 
 /* ── Hero band ── */
 .result-hero{padding:140px 64px 60px;text-align:center;position:relative;overflow:hidden}
@@ -410,7 +412,7 @@ footer{border-top:1px solid var(--border);padding:32px 48px;display:flex;flex-di
 @media(max-width:768px){
   nav{padding:12px 16px}
   .nav-link{display:none}
-  .nav-btn{padding:8px 16px;font-size:.72rem}
+  .nav-btn{padding:9px 18px;font-size:.66rem}
   .result-hero{padding:100px 20px 48px}
   .score-ring-svg{width:150px;height:150px}
   .score-number{font-size:3.2rem}
@@ -459,8 +461,11 @@ footer{border-top:1px solid var(--border);padding:32px 48px;display:flex;flex-di
     <span class="logo-seo">SEO</span><span class="logo-ai">AI</span><span class="logo-co">co</span>
   </a>
   <div class="nav-right">
+    <a href="/how-it-works" class="nav-link">How It Works</a>
     <a href="/pricing" class="nav-link">Pricing</a>
-    <a href="/how-it-works" class="nav-btn">How It Works</a>
+    <a href="/book" class="nav-link">Book</a>
+    <a href="/dashboard" class="nav-link">Portal</a>
+    <a href="/quick-scan" class="nav-btn">Get Started</a>
   </div>
 </nav>
 

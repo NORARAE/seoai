@@ -2123,11 +2123,11 @@ body::before{
 .qs-check-capstone .qs-check-item-title{font-size:1.1rem;color:var(--gold);font-weight:500;margin-bottom:7px}
 .qs-check-capstone .qs-check-item-body{color:rgba(178,178,170,.48);max-width:300px;margin:0 auto}
 /* product feature grid */
-.feat-grid{padding:64px 24px;text-align:center;max-width:1100px;margin:0 auto}
+.feat-grid{padding:56px 24px;text-align:center;max-width:1100px;margin:0 auto}
 .feat-grid-eye{font-size:.64rem;letter-spacing:.26em;text-transform:uppercase;color:rgba(200,168,75,.55);margin-bottom:12px}
-.feat-grid-hed{font-family:'Cormorant Garamond',serif;font-size:clamp(1.4rem,2.8vw,2rem);font-weight:300;color:var(--ivory);line-height:1.25;margin:0 auto 36px;max-width:560px}
+.feat-grid-hed{font-family:'Cormorant Garamond',serif;font-size:clamp(1.4rem,2.8vw,2rem);font-weight:300;color:var(--ivory);line-height:1.25;margin:0 auto 28px;max-width:560px}
 .feat-grid-hed em{font-style:italic;color:var(--gold)}
-.feat-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:rgba(200,168,75,.07);max-width:900px;margin:0 auto}
+.feat-cards{display:grid;grid-template-columns:repeat(2,1fr);gap:1px;background:rgba(200,168,75,.07);max-width:720px;margin:0 auto}
 .feat-card{background:#080808;padding:28px 24px;text-align:left;transition:background .25s,transform .25s cubic-bezier(.23,1,.32,1),box-shadow .25s}
 .feat-card:hover{background:#0e0d09;transform:translateY(-2px);box-shadow:0 8px 24px rgba(0,0,0,.35)}
 .feat-card:hover .feat-card-icon{opacity:1}
@@ -3035,7 +3035,7 @@ body::before{
 .ace-cta{text-align:center;margin-top:8px}
 .ace-cta a{font-size:.82rem;color:rgba(200,168,75,.8);text-decoration:none;border-bottom:1px solid rgba(200,168,75,.25);padding-bottom:2px;letter-spacing:.04em;transition:color .2s,border-color .2s}
 .ace-cta a:hover{color:#e2c97d;border-color:rgba(226,201,125,.6)}
-@media(max-width:900px){.ace-section{padding:72px 40px}.ace-grid{grid-template-columns:repeat(3,1fr)}.feat-cards{grid-template-columns:1fr 1fr}.tier-grid-4{grid-template-columns:1fr 1fr}}
+@media(max-width:900px){.ace-section{padding:72px 40px}.ace-grid{grid-template-columns:repeat(3,1fr)}.tier-grid-4{grid-template-columns:1fr 1fr}}
 @media(max-width:600px){.ace-section{padding:56px 24px}.ace-grid{grid-template-columns:1fr 1fr}.feat-cards{grid-template-columns:1fr}.qs-preview-body{flex-direction:column;text-align:center}.qs-preview-score-wrap{border-right:none;border-bottom:1px solid rgba(200,168,75,.1);padding:0 0 14px;margin-bottom:0}.qs-preview-checks{align-items:center}.qs-checks-grid{grid-template-columns:1fr;gap:22px;text-align:center}.qs-check-item{max-width:none;margin:0 auto}.qs-check-item::before{margin:0 auto 10px}.qs-check-item-body{max-width:none}.qs-check-capstone .qs-check-item-body{max-width:none}}
 @media(max-width:400px){.ace-grid{grid-template-columns:1fr}}
 </style>
@@ -3160,11 +3160,7 @@ body::before{
     <a href="/how-it-works" class="nav-link">How It Works</a>
     <a href="{{ route('pricing') }}" class="nav-link">Pricing</a>
     <a href="{{ route('book.index') }}" class="nav-link">Book</a>
-    @auth
-      <a href="/dashboard" class="nav-link">Portal</a>
-    @else
-      <a href="/login" class="nav-link">Portal</a>
-    @endauth
+    <a href="/dashboard" class="nav-link">Portal</a>
     <a href="{{ route('quick-scan.show') }}" class="nav-btn">Get Started</a>
   </div>
   <button class="nav-hamburger" id="navHamburger" aria-label="Open menu" aria-expanded="false" aria-controls="navMenu">
@@ -3186,14 +3182,14 @@ body::before{
     {{-- GET STARTED --}}
     <div class="nm-group"><span class="nm-group-label">Get Started</span></div>
     <a href="{{ route('quick-scan.show') }}" class="nm-link nm-featured" data-menu-close>Run a $2 Scan &nbsp;&rarr;</a>
-    <a href="{{ route('pricing') }}" class="nm-link" data-menu-close>View All Tiers</a>
 
     <div class="nm-divider"></div>
 
     {{-- EXPLORE --}}
     <div class="nm-group"><span class="nm-group-label">Explore</span></div>
     <a href="/how-it-works" class="nm-link" data-menu-close>How It Works</a>
-    <a href="/solutions" class="nm-link" data-menu-close>Solutions</a>
+    <a href="/pricing" class="nm-link" data-menu-close>Pricing</a>
+    <a href="/book" class="nm-link" data-menu-close>Book</a>
 
     <div class="nm-divider"></div>
 
@@ -3203,7 +3199,6 @@ body::before{
       <a href="/dashboard" class="nm-portal" data-menu-close>My Dashboard</a>
     @else
       <a href="/login" class="nm-link" data-menu-close>Sign In</a>
-      <a href="/login" class="nm-link nm-muted" data-menu-close>Portal</a>
     @endauth
 
   </div>

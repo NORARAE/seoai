@@ -133,17 +133,19 @@ body{background:var(--bg);color:var(--ivory);font-family:'DM Sans',sans-serif;fo
 
 /* ── Logo ── */
 .logo{display:inline-flex;align-items:baseline;text-decoration:none;line-height:1}
-.logo-seo{font-family:'DM Sans',sans-serif;font-weight:300;font-size:1.2rem;letter-spacing:.06em;color:var(--ivory)}
-.logo-ai{font-family:'Cormorant Garamond',serif;font-weight:600;font-size:1.42rem;color:var(--gold);letter-spacing:.02em}
-.logo-co{font-family:'DM Sans',sans-serif;font-weight:300;font-size:1.05rem;color:rgba(150,150,150,.5);letter-spacing:.04em}
+.logo-seo{font-family:'DM Sans',sans-serif;font-weight:300;font-size:1.2rem;letter-spacing:.06em;color:var(--white)}
+.logo-ai{font-family:'Cormorant Garamond',serif;font-weight:600;font-size:1.42rem;color:var(--gold);letter-spacing:.02em;display:inline-block;transform:skewX(-11deg) translateY(-1px)}
+.logo-co{font-family:'DM Sans',sans-serif;font-weight:300;font-size:1.05rem;color:rgba(255,255,255,.45);letter-spacing:.04em}
 
 /* ── Nav ── */
-nav.site-nav{display:flex;align-items:center;justify-content:space-between;padding:22px 48px;border-bottom:1px solid rgba(200,168,75,.07);position:sticky;top:0;z-index:100;background:rgba(8,8,8,.97);backdrop-filter:blur(8px)}
-.nav-links{display:flex;gap:28px;list-style:none;align-items:center}
-.nav-links a{font-size:.78rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);text-decoration:none;transition:color .2s}
-.nav-links a:hover{color:var(--gold)}
-.nav-cta{background:var(--gold)!important;color:#080808!important;padding:8px 18px;border-radius:2px;font-weight:500!important}
-.nav-cta:hover{background:var(--gold-lt)!important;color:#080808!important}
+nav{position:sticky;top:0;z-index:200;display:flex;align-items:center;justify-content:space-between;padding:22px 48px;border-bottom:1px solid rgba(200,168,75,.07);background:rgba(8,8,8,.97);backdrop-filter:blur(8px)}
+.nav-right{display:flex;align-items:center;gap:28px}
+.nav-link{font-size:.74rem;letter-spacing:.18em;text-transform:uppercase;color:rgba(168,168,160,.6);text-decoration:none;transition:color .3s;position:relative;padding-bottom:2px;font-weight:400}
+.nav-link::after{content:'';position:absolute;bottom:0;left:0;right:100%;height:1px;background:var(--gold);transition:right .3s cubic-bezier(.23,1,.32,1)}
+.nav-link:hover{color:var(--gold)}
+.nav-link:hover::after{right:0}
+.nav-btn{font-size:.7rem;letter-spacing:.16em;text-transform:uppercase;color:var(--bg);background:var(--gold);padding:10px 26px;text-decoration:none;transition:background .3s cubic-bezier(.23,1,.32,1),box-shadow .3s cubic-bezier(.23,1,.32,1);display:inline-flex;align-items:center;white-space:nowrap;font-weight:500;margin-left:4px}
+.nav-btn:hover{background:var(--gold-lt);box-shadow:0 4px 16px rgba(200,168,75,.22)}
 
 /* ── Layout wrap ── */
 .wrap{max-width:1160px;margin:0 auto;padding:0 40px}
@@ -265,7 +267,7 @@ footer{border-top:1px solid rgba(200,168,75,.07);padding:32px 48px;display:flex;
 .footer-links a:hover{color:var(--gold)}
 
 @media(max-width:700px){
-  nav.site-nav{padding:18px 24px}.nav-links{gap:16px}
+  nav{padding:18px 24px}.nav-right{gap:22px}
   .wrap{padding:0 24px}
   .pricing-hero{padding:64px 0 56px}
   .compare-table{font-size:.82rem}
@@ -274,9 +276,10 @@ footer{border-top:1px solid rgba(200,168,75,.07);padding:32px 48px;display:flex;
   footer{padding:28px 24px;flex-direction:column;align-items:flex-start}
 }
 @media(max-width:560px){
-  nav.site-nav{flex-wrap:wrap;gap:10px;justify-content:center}
-  .nav-links{gap:10px;flex-wrap:wrap;justify-content:center}
-  .nav-links a{font-size:.72rem;letter-spacing:.06em}
+  nav{flex-wrap:wrap;gap:10px;justify-content:center}
+  .nav-right{gap:10px;flex-wrap:wrap;justify-content:center}
+  .nav-link{font-size:.68rem;letter-spacing:.1em}
+  .nav-btn{font-size:.64rem;padding:8px 18px}
   .hero-headline{font-size:clamp(2.4rem,8vw,3rem)}
   .compare-table thead th,.compare-table tbody td{padding:10px 10px}
   .compare-table thead th:first-child{width:auto}
@@ -289,15 +292,17 @@ footer{border-top:1px solid rgba(200,168,75,.07);padding:32px 48px;display:flex;
 </head>
 <body>
 
-<nav class="site-nav" aria-label="Site navigation">
-  <a href="{{ url('/') }}" class="logo" aria-label="SEO AI Co home">
+<nav aria-label="Site navigation">
+  <a href="/" class="logo" aria-label="SEO AI Co home">
     <span class="logo-seo">SEO</span><span class="logo-ai">AI</span><span class="logo-co">co</span>
   </a>
-  <ul class="nav-links">
-    <li><a href="{{ route('ai-citation-engine') }}">AI Citation Engine™</a></li>
-    <li><a href="{{ route('how-it-works') }}">How It Works</a></li>
-    <li><a href="{{ route('quick-scan.show') }}" class="nav-cta">Get Started</a></li>
-  </ul>
+  <div class="nav-right">
+    <a href="/how-it-works" class="nav-link">How It Works</a>
+    <a href="/pricing" class="nav-link">Pricing</a>
+    <a href="/book" class="nav-link">Book</a>
+    <a href="/dashboard" class="nav-link">Portal</a>
+    <a href="/quick-scan" class="nav-btn">Get Started</a>
+  </div>
 </nav>
 
 
