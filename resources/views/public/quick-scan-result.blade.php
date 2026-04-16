@@ -1107,7 +1107,7 @@ footer{border-top:1px solid var(--border);padding:32px 48px;display:flex;flex-di
       @endif
 
       <p style="font-size:.72rem;color:var(--muted);line-height:1.6;font-style:italic;text-align:center;margin-top:16px">
-        For teams ready to delegate the complete system build — <a href="{{ route('book.index') }}" style="color:rgba(200,168,75,.55);text-decoration:none;border-bottom:1px solid rgba(200,168,75,.15)">Full System starts at $4,799+</a>
+        Ready to skip ahead? <a href="{{ route('onboarding.start', ['tier' => 'expansion', 'scan_id' => $scan->id, 'plan' => 'authority-engine']) }}" style="color:rgba(200,168,75,.55);text-decoration:none;border-bottom:1px solid rgba(200,168,75,.15)">Deploy your full system — starts at $4,799+</a>
       </p>
     </div>
     @else
@@ -1129,7 +1129,7 @@ footer{border-top:1px solid var(--border);padding:32px 48px;display:flex;flex-di
         <li class="layer-bullet">50+ pages analyzed with <em>full structural architecture</em></li>
       </ul>
       <a href="{{ route('quick-scan.upgrade') }}?plan=optimization&scan_id={{ $scan->id }}" class="layer-unlock-cta premium">Activate Your System — $489+ →</a>
-      <p style="font-size:.68rem;color:rgba(168,168,160,.4);margin-top:14px">For teams ready to delegate the entire system build — <a href="{{ route('book.index') }}" style="color:rgba(200,168,75,.5);text-decoration:none;border-bottom:1px solid rgba(200,168,75,.15)">Full System starts at $4,799+</a></p>
+      <p style="font-size:.68rem;color:rgba(168,168,160,.4);margin-top:14px">Ready to skip ahead? <a href="{{ route('onboarding.start', ['tier' => 'expansion', 'scan_id' => $scan->id, 'plan' => 'authority-engine']) }}" style="color:rgba(200,168,75,.5);text-decoration:none;border-bottom:1px solid rgba(200,168,75,.15)">Deploy your full system — starts at $4,799+</a></p>
     </div>
     @endif
   </div>
@@ -1219,6 +1219,18 @@ footer{border-top:1px solid var(--border);padding:32px 48px;display:flex;flex-di
       <a href="/pricing">See all levels</a> — find the right depth for your site.
     </p>
     @endif
+
+    {{-- High-ticket escalation — visible to users at $249+ or $489 --}}
+    @if($unlockLevel >= 3)
+    <div style="text-align:center;margin-top:28px;padding:28px 24px;border:1px solid rgba(200,168,75,.14);background:rgba(200,168,75,.02);position:relative;overflow:hidden">
+      <div style="position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(200,168,75,.18),transparent)"></div>
+      <p style="font-size:.58rem;letter-spacing:.3em;text-transform:uppercase;color:rgba(200,168,75,.45);margin-bottom:8px">Full Market Deployment</p>
+      <p style="font-family:'Cormorant Garamond',serif;font-size:1.2rem;font-weight:300;color:var(--ivory);line-height:1.3;margin-bottom:6px">Ready to stop managing and start <em style="color:var(--gold);font-style:italic">owning?</em></p>
+      <p style="font-size:.78rem;color:var(--muted);line-height:1.55;max-width:420px;margin:0 auto 18px">We build the complete system. Entity architecture, content infrastructure, coverage defense — deployed and maintained for you.</p>
+      <a href="{{ route('onboarding.start', ['tier' => 'expansion', 'scan_id' => $scan->id, 'plan' => 'authority-engine']) }}" style="display:inline-flex;align-items:center;gap:8px;font-size:.74rem;letter-spacing:.12em;text-transform:uppercase;padding:14px 32px;text-decoration:none;border:1px solid rgba(200,168,75,.3);color:var(--gold);transition:all .3s">Start System Deployment →</a>
+      <p style="font-size:.64rem;color:rgba(168,168,160,.35);margin-top:12px">Starts at $4,799+ — reviewed individually per market.</p>
+    </div>
+    @endif
   </div>
 
   {{-- ═══ FINAL PUSH CTA ═══ --}}
@@ -1241,20 +1253,28 @@ footer{border-top:1px solid var(--border);padding:32px 48px;display:flex;flex-di
     <a href="{{ route('quick-scan.upgrade') }}?plan=fix-strategy&scan_id={{ $scan->id }}" style="display:inline-flex;align-items:center;gap:8px;font-size:.82rem;letter-spacing:.1em;text-transform:uppercase;padding:18px 48px;text-decoration:none;background:linear-gradient(135deg,var(--gold),var(--gold-lt));color:#080808;box-shadow:0 8px 32px var(--gold-glow-strong);border:2px solid var(--gold);transition:all .3s;position:relative;z-index:1">Activate Your Leverage — $249 →</a>
     <p style="font-size:.72rem;color:rgba(200,168,75,.45);margin-top:14px;font-style:italic;position:relative;z-index:1">Most sites stop at insight. This is where control begins.</p>
     @else
-    <p style="font-family:'Cormorant Garamond',serif;font-size:clamp(1.3rem,2.8vw,1.9rem);font-weight:300;color:var(--ivory);line-height:1.25;margin-bottom:8px;position:relative;z-index:1">You have the plan. Now see <em style="color:var(--gold);font-style:italic">the full competitive picture.</em></p>
-    <p style="font-size:.84rem;color:var(--muted);margin-bottom:22px;line-height:1.55;max-width:460px;margin-left:auto;margin-right:auto;position:relative;z-index:1">System Activation shows you exactly where competitors outperform you — category by category, signal by signal.</p>
-    <a href="{{ route('quick-scan.upgrade') }}?plan=optimization&scan_id={{ $scan->id }}" style="display:inline-flex;align-items:center;gap:8px;font-size:.78rem;letter-spacing:.1em;text-transform:uppercase;padding:16px 38px;text-decoration:none;border:1px solid rgba(200,168,75,.3);color:var(--gold);transition:all .3s;position:relative;z-index:1">Activate Your System — $489+ →</a>
+    <p style="font-family:'Cormorant Garamond',serif;font-size:clamp(1.3rem,2.8vw,1.9rem);font-weight:300;color:var(--ivory);line-height:1.25;margin-bottom:8px;position:relative;z-index:1">You have the blueprint. <em style="color:var(--gold);font-style:italic">We can build it for you.</em></p>
+    <p style="font-size:.84rem;color:var(--muted);margin-bottom:22px;line-height:1.55;max-width:460px;margin-left:auto;margin-right:auto;position:relative;z-index:1">You've seen your gaps. You know what's missing. System Activation maps the competitive picture — or skip ahead and deploy the full system.</p>
+    <div style="display:flex;gap:14px;justify-content:center;flex-wrap:wrap;position:relative;z-index:1">
+      <a href="{{ route('quick-scan.upgrade') }}?plan=optimization&scan_id={{ $scan->id }}" style="display:inline-flex;align-items:center;gap:8px;font-size:.78rem;letter-spacing:.1em;text-transform:uppercase;padding:16px 38px;text-decoration:none;background:linear-gradient(135deg,var(--gold),var(--gold-lt));color:#080808;box-shadow:0 4px 18px var(--gold-glow);transition:all .3s;position:relative;z-index:1">Activate Your System — $489+</a>
+      <a href="{{ route('onboarding.start', ['tier' => 'expansion', 'scan_id' => $scan->id, 'plan' => 'authority-engine']) }}" style="display:inline-flex;align-items:center;gap:8px;font-size:.78rem;letter-spacing:.1em;text-transform:uppercase;padding:16px 38px;text-decoration:none;border:1px solid rgba(200,168,75,.25);color:var(--gold);transition:all .3s;position:relative;z-index:1">Deploy Full System →</a>
+    </div>
+    <p style="font-size:.68rem;color:rgba(168,168,160,.4);margin-top:14px;font-style:italic;position:relative;z-index:1">Full Market Control starts at $4,799+ — we build it, deploy it, and defend it.</p>
     @endif
   </div>
   @else
-  {{-- All levels active — push to dashboard --}}
-  <div style="text-align:center;padding:28px 22px;margin-top:24px;border:1px solid rgba(106,175,144,.15);background:rgba(106,175,144,.03)">
-    <p style="font-size:.6rem;letter-spacing:.3em;text-transform:uppercase;color:var(--green);margin-bottom:8px">System Complete</p>
-    <p style="font-family:'Cormorant Garamond',serif;font-size:1.3rem;font-weight:300;color:var(--ivory);margin-bottom:8px">All four levels are active.</p>
-    <p style="font-size:.82rem;color:var(--muted);margin-bottom:16px;line-height:1.55">Your intelligence is live. Track your progress from the dashboard.</p>
-    @auth
-    <a href="/dashboard#ai-scans" style="display:inline-flex;align-items:center;gap:8px;padding:14px 32px;background:var(--green);color:#080808;font-size:.78rem;letter-spacing:.12em;text-transform:uppercase;text-decoration:none;transition:all .3s">Go to Dashboard</a>
-    @endauth
+  {{-- All levels active — push to system deployment --}}
+  <div style="text-align:center;padding:36px 28px;margin-top:24px;border:1px solid rgba(200,168,75,.18);background:rgba(12,11,8,.96);position:relative;overflow:hidden">
+    <div style="position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--gold),transparent)"></div>
+    <div style="position:absolute;inset:0;background:radial-gradient(ellipse 70% 80% at 50% 20%,rgba(200,168,75,.06),transparent 60%);pointer-events:none"></div>
+    <p style="font-size:.6rem;letter-spacing:.3em;text-transform:uppercase;color:rgba(200,168,75,.5);margin-bottom:10px;position:relative;z-index:1">System Complete</p>
+    <p style="font-family:'Cormorant Garamond',serif;font-size:clamp(1.3rem,2.8vw,1.9rem);font-weight:300;color:var(--ivory);line-height:1.25;margin-bottom:8px;position:relative;z-index:1">You've seen the full picture. <em style="color:var(--gold);font-style:italic">Now deploy it.</em></p>
+    <p style="font-size:.84rem;color:var(--muted);margin-bottom:24px;line-height:1.55;max-width:480px;margin-left:auto;margin-right:auto;position:relative;z-index:1">You know what's missing. You know where you're exposed. We build the complete system — structured, deployed, and defended — so you own your market.</p>
+    <div style="display:flex;gap:14px;justify-content:center;flex-wrap:wrap;position:relative;z-index:1">
+      <a href="{{ route('onboarding.start', ['tier' => 'expansion', 'scan_id' => $scan->id, 'plan' => 'authority-engine']) }}" style="display:inline-flex;align-items:center;gap:8px;font-size:.78rem;letter-spacing:.1em;text-transform:uppercase;padding:16px 38px;text-decoration:none;background:linear-gradient(135deg,var(--gold),var(--gold-lt));color:#080808;box-shadow:0 4px 18px var(--gold-glow);transition:all .3s">Start System Deployment</a>
+      <a href="/dashboard#ai-scans" style="display:inline-flex;align-items:center;gap:8px;font-size:.78rem;letter-spacing:.1em;text-transform:uppercase;padding:16px 38px;text-decoration:none;border:1px solid rgba(200,168,75,.25);color:var(--gold);transition:all .3s">View Dashboard</a>
+    </div>
+    <p style="font-size:.68rem;color:rgba(168,168,160,.4);margin-top:14px;position:relative;z-index:1">Full Market Control starts at $4,799+ — reviewed individually per market.</p>
   </div>
   @endif
 

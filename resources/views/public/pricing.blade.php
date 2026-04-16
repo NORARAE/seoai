@@ -476,8 +476,8 @@ footer{border-top:1px solid rgba(200,168,75,.07);padding:32px 48px;display:flex;
           <li>Ongoing position defense</li>
           <li>Strategic oversight across your full coverage</li>
         </ul>
-        <a href="{{ route('onboarding.start', ['tier' => 'dominance']) }}" class="tier-cta">Dominate Your Market</a>
-        <p style="font-size:.68rem;color:rgba(168,168,160,.4);margin-top:10px;line-height:1.5;font-style:italic">The system runs. You own the market.</p>
+        <a href="{{ route('onboarding.start', ['tier' => 'dominance']) }}" class="tier-cta">Deploy Your System</a>
+        <p style="font-size:.68rem;color:rgba(168,168,160,.4);margin-top:10px;line-height:1.5;font-style:italic">We build it. We deploy it. You own the market.</p>
       </div>
 
     </div>

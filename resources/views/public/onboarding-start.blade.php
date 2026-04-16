@@ -18,7 +18,7 @@
 <link rel="manifest" href="/site.webmanifest">
 <meta name="theme-color" content="#080808">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Start Your Client Onboarding | SEO AI Co™</title>
+<title>Start Your System Deployment | SEO AI Co™</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
@@ -1164,19 +1164,19 @@ body {
     <span style="font-family:'DM Sans',sans-serif;font-weight:300;font-size:1.1rem;letter-spacing:.06em;color:var(--ivory)">SEO</span><span style="font-family:'Cormorant Garamond',serif;font-weight:600;font-size:1.3rem;color:var(--gold)">AI</span><span style="font-family:'DM Sans',sans-serif;font-weight:300;font-size:.9rem;color:rgba(150,150,150,.5);letter-spacing:.04em">co</span>
   </a>
 
-  <span class="ob-eye">{{ ($isPreview ?? false) ? 'SEO Opportunity Preview' : 'Client Onboarding' }}</span>
-  <p style="font-size:.86rem;color:rgba(168,168,160,.60);margin:0 0 24px;letter-spacing:.01em">Your position is under evaluation. Access is reviewed before activation.</p>
+  <span class="ob-eye">{{ ($isPreview ?? false) ? 'System Deployment' : 'System Deployment' }}</span>
+  <p style="font-size:.86rem;color:rgba(168,168,160,.60);margin:0 0 24px;letter-spacing:.01em">You've seen your gaps. You know what's missing. Let's build it.</p>
   <h1 class="ob-hed">
     @if($isPreview ?? false)
-      Let's map your<br><em>opportunity.</em>
+      Deploy your<br><em>market system.</em>
     @else
-      Let's prepare<br><em>your market opportunity session.</em>
+      Let's prepare<br><em>your system deployment.</em>
     @endif
   </h1>
-  <p class="ob-sub">Takes about 2 minutes. This helps us prepare everything before your call.</p>
+  <p class="ob-sub">Takes about 2 minutes. This maps what we need to build and deploy your coverage infrastructure.</p>
 
   @if(!empty($tier))
-  <p style="font-size:.78rem;letter-spacing:.12em;text-transform:uppercase;color:var(--gold);opacity:.72;margin:0 0 28px">{{ $tier === 'launch' ? "You're beginning with Launch setup." : ($tier === 'expansion' ? "You're starting with Expansion planning." : "You're entering Dominance review.") }}</p>
+  <p style="font-size:.78rem;letter-spacing:.12em;text-transform:uppercase;color:var(--gold);opacity:.72;margin:0 0 28px">{{ $tier === 'launch' ? "Starting with Launch deployment." : ($tier === 'expansion' ? "Starting with Expansion deployment." : "Entering Dominance deployment.") }}</p>
   @endif
 
   {{-- ── Booking badge (only when a booking exists) ── --}}
@@ -1227,7 +1227,7 @@ body {
     <div x-show="step === 1" x-transition:enter="ob-step-enter" x-transition:enter-start="ob-step-from" x-transition:enter-end="ob-step-to">
       <span class="ob-step-eye">Step 1 of 3</span>
       <h2 class="ob-step-title">Tell us about your business.</h2>
-      <p class="ob-step-hint">This helps us prepare your market opportunity session.</p>
+      <p class="ob-step-hint">This helps us scope your system deployment.</p>
 
       <div class="ob-field">
         <label class="ob-label" for="business_name">Business Name <span class="req">*</span></label>

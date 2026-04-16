@@ -446,12 +446,12 @@
                             @elseif($project->upgrade_plan === 'optimization' && !$project->onboarding_submission_id)
                             <a href="{{ route('onboarding.start') }}?scan_id={{ $project->id }}&plan=authority-engine" class="inline-flex items-center gap-1 px-3 py-1.5 text-xs font-medium text-white bg-green-600 hover:bg-green-700 rounded-lg transition-colors">
                                 <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>
-                                Start Onboarding
+                                Start Deployment
                             </a>
                             @elseif($project->onboarding_submission_id)
                             <span class="inline-flex items-center gap-1 px-3 py-1.5 text-xs font-medium text-green-700 bg-green-100 rounded-lg">
                                 <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
-                                Onboarded
+                                Deploying
                             </span>
                             @else
                             {{-- Mid-tier upgrade (diagnostic/fix-strategy) — link back to expanded report --}}
@@ -480,22 +480,51 @@
             @endphp
 
             @if($tierRank >= 3)
-            {{-- User has optimization or authority-engine — active system --}}
+            {{-- User has optimization or authority-engine — system deployment path --}}
+            @php
+                $hasOnboarded = $scanProjects->whereNotNull('onboarding_submission_id')->count() > 0;
+                $hasAuthorityEngine = $scanProjects->where('upgrade_plan', 'authority-engine')->count() > 0;
+            @endphp
+
+            @if($hasOnboarded || $hasAuthorityEngine)
+            {{-- Already onboarded or on authority-engine — deployment in progress --}}
             <div class="mt-6 bg-gradient-to-br from-green-50 to-emerald-50 rounded-xl border border-green-200 p-6">
                 <div class="flex items-center gap-3 mb-2">
                     <span class="inline-flex items-center justify-center w-8 h-8 rounded-full bg-green-100 text-green-700">
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
                     </span>
-                    <h4 class="font-semibold text-gray-900">Your Coverage System Is Active</h4>
+                    <h4 class="font-semibold text-gray-900">Your System Is Being Deployed</h4>
                 </div>
-                <p class="text-sm text-gray-600 mb-4">Your market position is being built. Continue scanning to track your trajectory as the system takes effect.</p>
+                <p class="text-sm text-gray-600 mb-4">Your market infrastructure is being built. Continue scanning to track your trajectory as the system takes effect.</p>
                 <a href="{{ route('quick-scan.show') }}" class="inline-flex items-center gap-2 px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded-lg text-sm font-medium transition-colors">
                     Re-check Your Position
                 </a>
             </div>
+            @else
+            {{-- Has $489 but hasn't onboarded — push to full system deployment --}}
+            <div class="mt-6 bg-white rounded-xl border-2 border-amber-200 shadow-sm overflow-hidden">
+                <div class="px-6 py-3 bg-gradient-to-r from-amber-50 to-yellow-50 border-b border-amber-100">
+                    <p class="text-[10px] font-bold uppercase tracking-widest text-amber-600">Ready For Deployment</p>
+                </div>
+                <div class="p-6">
+                    <h4 class="text-lg font-semibold text-gray-900 mb-2">You've seen your gaps. You know what's missing.</h4>
+                    <p class="text-sm text-gray-600 mb-2">Your system activation revealed the complete competitive picture. The next step: we build it for you.</p>
+                    <p class="text-sm text-gray-600 mb-4">Full Market Control includes entity architecture, content infrastructure, coverage defense — deployed and maintained. Starting at $4,799+.</p>
+                    <div class="flex flex-wrap gap-3">
+                        @php $deployableScan = $scanProjects->where('upgrade_plan', 'optimization')->first() ?? $scanProjects->first(); @endphp
+                        <a href="{{ route('onboarding.start', ['tier' => 'expansion', 'scan_id' => $deployableScan->id, 'plan' => 'authority-engine']) }}" class="inline-flex items-center gap-2 px-5 py-2.5 bg-amber-600 hover:bg-amber-700 text-white rounded-lg text-sm font-medium transition-colors shadow-sm">
+                            Start System Deployment
+                        </a>
+                        <a href="{{ url('/book') }}" class="inline-flex items-center gap-2 px-4 py-2 bg-white border border-gray-200 hover:border-amber-300 text-gray-700 rounded-lg text-sm font-medium transition-colors">
+                            Talk Strategy First
+                        </a>
+                    </div>
+                </div>
+            </div>
+            @endif
 
             @elseif($tierRank === 2)
-            {{-- User has fix-strategy ($249) — push toward $489 --}}
+            {{-- User has fix-strategy ($249) — push toward $489 and intro full system --}}
             <div class="mt-6 bg-gradient-to-br from-indigo-50 to-blue-50 rounded-xl border border-indigo-200 p-6">
                 <div class="mb-1">
                     <p class="text-[10px] font-bold uppercase tracking-widest text-indigo-400">Your Next Level</p>
@@ -506,10 +535,12 @@
                     <a href="{{ url('/pricing') }}" class="inline-flex items-center gap-2 px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg text-sm font-medium transition-colors">
                         See Full System Plans
                     </a>
-                    <a href="{{ url('/book') }}" class="inline-flex items-center gap-2 px-4 py-2 bg-white border border-gray-200 hover:border-indigo-300 text-gray-700 rounded-lg text-sm font-medium transition-colors">
-                        Book Strategy Call
+                    @php $deployableScan = $scanProjects->where('upgrade_plan', 'fix-strategy')->first() ?? $scanProjects->first(); @endphp
+                    <a href="{{ route('onboarding.start', ['tier' => 'expansion', 'scan_id' => $deployableScan->id, 'plan' => 'authority-engine']) }}" class="inline-flex items-center gap-2 px-4 py-2 bg-white border border-gray-200 hover:border-indigo-300 text-gray-700 rounded-lg text-sm font-medium transition-colors">
+                        Or Deploy Everything →
                     </a>
                 </div>
+                <p class="text-xs text-gray-400 mt-3 italic">Full Market Control starts at $4,799+ — we build it, you own it.</p>
             </div>
 
             @elseif($tierRank === 1)
@@ -619,11 +650,19 @@
                     <p class="text-xs text-gray-600">See all coverage plans</p>
                 </a>
 
+                @if(isset($tierRank) && $tierRank >= 2)
+                <a href="{{ route('onboarding.start', ['tier' => 'expansion', 'plan' => 'authority-engine']) }}" class="block p-4 bg-white rounded-lg border border-amber-200 hover:border-amber-400 hover:shadow-md transition-all group">
+                    <div class="text-2xl mb-2">🚀</div>
+                    <h4 class="font-semibold text-gray-900 mb-1 group-hover:text-amber-600">Deploy Your System</h4>
+                    <p class="text-xs text-gray-600">We build it. You own it.</p>
+                </a>
+                @else
                 <a href="{{ url('/book') }}" class="block p-4 bg-white rounded-lg border border-gray-200 hover:border-blue-300 hover:shadow-md transition-all group">
                     <div class="text-2xl mb-2">📞</div>
                     <h4 class="font-semibold text-gray-900 mb-1 group-hover:text-blue-600">Strategy Call</h4>
                     <p class="text-xs text-gray-600">Book a free consultation</p>
                 </a>
+                @endif
                 @endif
             </div>
         </div>
