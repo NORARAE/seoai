@@ -4,14 +4,14 @@ namespace App\Notifications;
 
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
-use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Config;
-use Illuminate\Support\Facades\Lang;
 
 /**
  * Custom password reset notification that points to the Filament admin
  * reset route — not the standard Laravel `password.reset` route which
  * does not exist in this Filament-only application.
+ *
+ * Uses a branded HTML view matching the SEOAIco black/gold design system.
  */
 class AdminPasswordResetNotification extends Notification
 {
@@ -28,11 +28,11 @@ class AdminPasswordResetNotification extends Notification
         $expireMinutes = Config::get('auth.passwords.users.expire', 60);
 
         return (new MailMessage)
-            ->subject(Lang::get('Reset Your Password'))
-            ->line(Lang::get('You are receiving this email because a password reset request was made for your account.'))
-            ->action(Lang::get('Reset Password'), $url)
-            ->line(Lang::get('This link will expire in :count minutes.', ['count' => $expireMinutes]))
-            ->line(Lang::get('If you did not request a password reset, no further action is required.'));
+            ->subject('Reset Your SEOAIco Password')
+            ->view('emails.password-reset', [
+                'url'           => $url,
+                'expireMinutes' => $expireMinutes,
+            ]);
     }
 
     protected function resetUrl(object $notifiable): string

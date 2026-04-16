@@ -148,9 +148,11 @@
                 </div>
 
                 <div class="mt-6 pt-5 border-t border-gray-100">
+                    @if(auth()->user()?->isPrivilegedStaff() || auth()->user()?->isFrontendDev())
                     <a href="/admin/location-pages" class="block w-full text-center px-4 py-2.5 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-medium transition-colors">
                         View All Pages in Admin
                     </a>
+                    @endif
                 </div>
             </div>
 
@@ -215,10 +217,12 @@
                                         <a href="/preview/{{ $page['slug'] }}" target="_blank" class="text-blue-600 hover:text-blue-900 font-medium">
                                             Preview
                                         </a>
+                                        @if(auth()->user()?->isPrivilegedStaff() || auth()->user()?->isFrontendDev())
                                         <span class="text-gray-300">|</span>
                                         <a href="/admin/location-pages/{{ $page['id'] }}" class="text-gray-600 hover:text-gray-900 font-medium">
                                             Edit
                                         </a>
+                                        @endif
                                     </div>
                                 </td>
                             </tr>
@@ -346,7 +350,7 @@
                                 View Report
                             </a>
                             @if(!$project->upgrade_plan)
-                            <a href="{{ route('onboarding.start') }}?plan=citation-builder&scan_id={{ $project->id }}" class="inline-flex items-center gap-1 px-3 py-1.5 text-xs font-medium text-white bg-indigo-600 hover:bg-indigo-700 rounded-lg transition-colors">
+                            <a href="{{ url('/pricing') }}" class="inline-flex items-center gap-1 px-3 py-1.5 text-xs font-medium text-white bg-indigo-600 hover:bg-indigo-700 rounded-lg transition-colors">
                                 <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/></svg>
                                 @if(($project->score ?? 0) < 40) Fix Structure @elseif(($project->score ?? 0) < 70) Improve Visibility @elseif(($project->score ?? 0) < 90) Expand Coverage @else Own Market @endif
                             </a>
@@ -370,22 +374,22 @@
             <!-- Coverage System Packages -->
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6">
                 <div class="bg-gradient-to-br from-indigo-50 to-blue-50 rounded-xl border border-indigo-100 p-6">
-                    <p class="text-[10px] font-bold uppercase tracking-widest text-indigo-400 mb-1">Foundation</p>
-                    <h4 class="font-semibold text-gray-900 mb-1">Citation Builder</h4>
-                    <p class="text-2xl font-bold text-indigo-600 mb-2">$249 <span class="text-sm font-normal text-gray-500">per domain</span></p>
-                    <p class="text-sm text-gray-600 mb-4">Complete coverage mapping, entity structure deployment, content connectivity architecture, and a system to expand your market footprint.</p>
-                    <a href="{{ route('onboarding.start') }}?plan=citation-builder" class="inline-flex items-center gap-2 px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg text-sm font-medium transition-colors">
-                        Build My Coverage System
+                    <p class="text-[10px] font-bold uppercase tracking-widest text-indigo-400 mb-1">Level 2</p>
+                    <h4 class="font-semibold text-gray-900 mb-1">Signal Expansion</h4>
+                    <p class="text-2xl font-bold text-indigo-600 mb-2">$99 <span class="text-sm font-normal text-gray-500">per domain</span></p>
+                    <p class="text-sm text-gray-600 mb-4">Expanded gap analysis, competitive signal mapping, and actionable fix priorities to strengthen your AI citation coverage.</p>
+                    <a href="{{ url('/pricing') }}" class="inline-flex items-center gap-2 px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg text-sm font-medium transition-colors">
+                        See Coverage Plans
                     </a>
                 </div>
                 <div class="bg-gradient-to-br from-blue-50 to-cyan-50 rounded-xl border border-blue-100 p-6 relative overflow-hidden">
                     <div class="absolute top-3 right-3 px-2 py-0.5 bg-blue-600 text-white text-[10px] font-bold uppercase rounded-full">Most Popular</div>
-                    <p class="text-[10px] font-bold uppercase tracking-widest text-blue-400 mb-1">Full Coverage</p>
-                    <h4 class="font-semibold text-gray-900 mb-1">Authority Engine</h4>
-                    <p class="text-2xl font-bold text-blue-600 mb-2">$499 <span class="text-sm font-normal text-gray-500">per domain</span></p>
-                    <p class="text-sm text-gray-600 mb-4">Everything in Citation Builder plus AI-optimized coverage expansion, data layer deployment, scoring intelligence, and a 4-month growth roadmap to dominate your market.</p>
-                    <a href="{{ route('onboarding.start') }}?plan=authority-engine" class="inline-flex items-center gap-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-sm font-medium transition-colors">
-                        Scale My Market Position
+                    <p class="text-[10px] font-bold uppercase tracking-widest text-blue-400 mb-1">Level 3</p>
+                    <h4 class="font-semibold text-gray-900 mb-1">Structural Leverage</h4>
+                    <p class="text-2xl font-bold text-blue-600 mb-2">$249 <span class="text-sm font-normal text-gray-500">per domain</span></p>
+                    <p class="text-sm text-gray-600 mb-4">Full structural audit, entity architecture deployment, content connectivity mapping, and a system to expand your market footprint.</p>
+                    <a href="{{ url('/pricing') }}" class="inline-flex items-center gap-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-sm font-medium transition-colors">
+                        See Coverage Plans
                     </a>
                 </div>
             </div>
@@ -414,6 +418,8 @@
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                @if(auth()->user()?->isPrivilegedStaff() || auth()->user()?->isFrontendDev())
+                {{-- Staff actions: admin-linked --}}
                 <a href="/admin/location-pages?tableFilters[content_quality_status][value]=unreviewed" class="block p-4 bg-white rounded-lg border border-gray-200 hover:border-blue-300 hover:shadow-md transition-all group">
                     <div class="text-2xl mb-2">👀</div>
                     <h4 class="font-semibold text-gray-900 mb-1 group-hover:text-blue-600">Review Pages</h4>
@@ -437,6 +443,32 @@
                     <h4 class="font-semibold text-gray-900 mb-1 group-hover:text-blue-600">Preview Sample</h4>
                     <p class="text-xs text-gray-600">View Seattle page</p>
                 </a>
+                @else
+                {{-- Customer actions: scan-centric, no admin links --}}
+                <a href="{{ route('quick-scan.show') }}" class="block p-4 bg-white rounded-lg border border-gray-200 hover:border-blue-300 hover:shadow-md transition-all group">
+                    <div class="text-2xl mb-2">🔍</div>
+                    <h4 class="font-semibold text-gray-900 mb-1 group-hover:text-blue-600">Run a Scan</h4>
+                    <p class="text-xs text-gray-600">Check your AI citation score</p>
+                </a>
+
+                <a href="{{ url('/pricing') }}" class="block p-4 bg-white rounded-lg border border-gray-200 hover:border-blue-300 hover:shadow-md transition-all group">
+                    <div class="text-2xl mb-2">📈</div>
+                    <h4 class="font-semibold text-gray-900 mb-1 group-hover:text-blue-600">Upgrade Coverage</h4>
+                    <p class="text-xs text-gray-600">See all coverage plans</p>
+                </a>
+
+                <a href="{{ url('/book') }}" class="block p-4 bg-white rounded-lg border border-gray-200 hover:border-blue-300 hover:shadow-md transition-all group">
+                    <div class="text-2xl mb-2">📞</div>
+                    <h4 class="font-semibold text-gray-900 mb-1 group-hover:text-blue-600">Strategy Call</h4>
+                    <p class="text-xs text-gray-600">Book a free consultation</p>
+                </a>
+
+                <a href="{{ url('/') }}" class="block p-4 bg-white rounded-lg border border-gray-200 hover:border-blue-300 hover:shadow-md transition-all group">
+                    <div class="text-2xl mb-2">🏠</div>
+                    <h4 class="font-semibold text-gray-900 mb-1 group-hover:text-blue-600">Home</h4>
+                    <p class="text-xs text-gray-600">Back to seoaico.com</p>
+                </a>
+                @endif
             </div>
         </div>
 

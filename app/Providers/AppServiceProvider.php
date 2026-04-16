@@ -41,6 +41,7 @@ class AppServiceProvider extends ServiceProvider
         });
 
         // After login: gate on approval + onboarding completion.
+        // Staff → admin panel, customers → public dashboard.
         $this->app->bind(LoginResponse::class, function (): object {
             return new class implements LoginResponse {
                 public function toResponse($request)
@@ -57,7 +58,13 @@ class AppServiceProvider extends ServiceProvider
                         return redirect()->route('user.onboarding');
                     }
 
-                    return redirect()->intended(Filament::getUrl());
+                    // Staff and frontend devs → admin panel
+                    if ($user && ($user->isPrivilegedStaff() || $user->isFrontendDev())) {
+                        return redirect()->intended(Filament::getUrl());
+                    }
+
+                    // Customers → public dashboard
+                    return redirect()->intended('/dashboard');
                 }
             };
         });
