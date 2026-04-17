@@ -71,9 +71,11 @@ Route::get('/checkout/signal-expansion', [CheckoutController::class, 'signalExpa
 Route::get('/checkout/structural-leverage', [CheckoutController::class, 'structuralLeverage'])->middleware('throttle:10,1')->name('checkout.structural-leverage');
 Route::get('/checkout/system-activation', [CheckoutController::class, 'systemActivation'])->middleware('throttle:10,1')->name('checkout.system-activation');
 
-// ── Post-purchase result pages ──
-Route::get('/results/expanded', fn() => view('public.results.expanded'))->name('results.expanded');
-Route::get('/results/structural', fn() => view('public.results.structural'))->name('results.structural');
+// ── Post-purchase result pages (auth-gated) ──
+Route::middleware('auth')->group(function () {
+    Route::get('/results/expanded', fn() => view('public.results.expanded'))->name('results.expanded');
+    Route::get('/results/structural', fn() => view('public.results.structural'))->name('results.structural');
+});
 
 Route::get('/rd-tax-credit', fn() => view('public.rd-tax-credit'))->name('rd-tax-credit');
 

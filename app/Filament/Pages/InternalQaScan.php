@@ -103,6 +103,7 @@ class InternalQaScan extends Page
         $runAsync = (bool) ($formData['run_async'] ?? false);
 
         // Create the QA scan record
+        $qaSessionId = 'internal_qa_' . now()->timestamp . '_' . $user->id;
         $scan = QuickScan::create([
             'email' => strtolower($email),
             'url' => $url,
@@ -110,6 +111,7 @@ class InternalQaScan extends Page
             'ip_address' => request()->ip(),
             'user_id' => $user->id,
             'paid' => true,
+            'stripe_session_id' => $qaSessionId,
             'status' => QuickScan::STATUS_PAID,
             'is_internal' => true,
             'source' => 'admin_bypass',
@@ -195,14 +197,18 @@ class InternalQaScan extends Page
     {
         if (!$this->lastScanId)
             return null;
-        return url('/quick-scan/result') . '?session_id=internal_qa&scan_id=' . $this->lastScanId;
+        $scan = QuickScan::find($this->lastScanId);
+        $sid = $scan?->stripe_session_id ?? 'internal_qa';
+        return url('/quick-scan/result') . '?session_id=' . urlencode($sid) . '&scan_id=' . $this->lastScanId;
     }
 
     public function getProcessingUrl(): ?string
     {
         if (!$this->lastScanId)
             return null;
-        return url('/quick-scan/result') . '?session_id=internal_qa&scan_id=' . $this->lastScanId;
+        $scan = QuickScan::find($this->lastScanId);
+        $sid = $scan?->stripe_session_id ?? 'internal_qa';
+        return url('/quick-scan/result') . '?session_id=' . urlencode($sid) . '&scan_id=' . $this->lastScanId;
     }
 
     public function getDashboardUrl(): ?string

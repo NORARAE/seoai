@@ -887,7 +887,7 @@ footer{border-top:1px solid var(--border);padding:32px 48px;display:flex;flex-di
             <span class="locked-teaser-item">Complete Signal Map</span>
             <span class="locked-teaser-item">Priority Gap Analysis</span>
           </div>
-          <a href="{{ route('quick-scan.upgrade') }}?plan=diagnostic&scan_id={{ $scan->id }}" class="lock-cta">Unlock Signal Expansion — $99</a>
+          <a href="{{ route('quick-scan.upgrade') }}?plan=diagnostic&scan_id={{ $scan->id }}&sid={{ $scan->stripe_session_id }}" class="lock-cta">Unlock Signal Expansion — $99</a>
         </div>
         @endif
       </div>
@@ -1002,7 +1002,7 @@ footer{border-top:1px solid var(--border);padding:32px 48px;display:flex;flex-di
     <p class="not-done-title">Layer 1 of 4 complete.</p>
     <p class="not-done-sub">Your visibility score and primary bottleneck are identified &mdash; but the full signal map, priority ranking, and fix sequence remain locked.</p>
     <p class="not-done-consequence">What you can&rsquo;t see is what competitors are already acting on.</p>
-    <a href="{{ route('quick-scan.upgrade') }}?plan=diagnostic&scan_id={{ $scan->id }}" class="layer-unlock-cta primary cta-pulse-anim">Unlock Full Signal Map &mdash; $99</a>
+    <a href="{{ route('quick-scan.upgrade') }}?plan=diagnostic&scan_id={{ $scan->id }}&sid={{ $scan->stripe_session_id }}" class="layer-unlock-cta primary cta-pulse-anim">Unlock Full Signal Map &mdash; $99</a>
   </div>
   @endif
 
@@ -1113,7 +1113,7 @@ footer{border-top:1px solid var(--border);padding:32px 48px;display:flex;flex-di
         <li class="layer-bullet"><strong style="color:var(--ivory);font-weight:400">What changes:</strong> Category-level intelligence showing <em>where you're weakest</em></li>
         <li class="layer-bullet">Downloadable intelligence + <em>dashboard access</em> for ongoing tracking</li>
       </ul>
-      <a href="{{ route('quick-scan.upgrade') }}?plan=diagnostic&scan_id={{ $scan->id }}" class="layer-unlock-cta primary">Unlock Signal Expansion — $99 →</a>
+      <a href="{{ route('quick-scan.upgrade') }}?plan=diagnostic&scan_id={{ $scan->id }}&sid={{ $scan->stripe_session_id }}" class="layer-unlock-cta primary">Unlock Signal Expansion — $99 →</a>
     </div>
     @endif
   </div>
@@ -1267,7 +1267,7 @@ footer{border-top:1px solid var(--border);padding:32px 48px;display:flex;flex-di
         <li class="layer-bullet">Opportunity sizing — <em>estimated point gain per correction</em></li>
         <li class="layer-bullet">30+ pages analyzed across your <em>full site footprint</em></li>
       </ul>
-      <a href="{{ route('quick-scan.upgrade') }}?plan=fix-strategy&scan_id={{ $scan->id }}" class="layer-unlock-cta dominant" style="position:relative;z-index:1">Resolve Structural Gaps — $249 →</a>
+      <a href="{{ route('quick-scan.upgrade') }}?plan=fix-strategy&scan_id={{ $scan->id }}&sid={{ $scan->stripe_session_id }}" class="layer-unlock-cta dominant" style="position:relative;z-index:1">Resolve Structural Gaps — $249 →</a>
       <p style="font-size:.72rem;color:rgba(200,168,75,.55);margin-top:12px;font-style:italic;position:relative;z-index:1">Stop guessing. Start fixing. This is where control begins.</p>
     </div>
     @endif
@@ -1429,7 +1429,7 @@ footer{border-top:1px solid var(--border);padding:32px 48px;display:flex;flex-di
         <li class="layer-bullet"><strong style="color:var(--ivory);font-weight:400">What changes:</strong> Coverage expansion map — <em>where your market is uncaptured</em></li>
         <li class="layer-bullet">50+ pages analyzed with <em>full structural architecture</em></li>
       </ul>
-      <a href="{{ route('quick-scan.upgrade') }}?plan=optimization&scan_id={{ $scan->id }}" class="layer-unlock-cta premium">Activate Full System — $489+ →</a>
+      <a href="{{ route('quick-scan.upgrade') }}?plan=optimization&scan_id={{ $scan->id }}&sid={{ $scan->stripe_session_id }}" class="layer-unlock-cta premium">Activate Full System — $489+ →</a>
       <p style="font-size:.68rem;color:rgba(168,168,160,.4);margin-top:14px">Ready to skip ahead? <a href="{{ route('onboarding.start', ['tier' => 'expansion', 'scan_id' => $scan->id, 'plan' => 'authority-engine']) }}" style="color:rgba(200,168,75,.5);text-decoration:none;border-bottom:1px solid rgba(200,168,75,.15)">Deploy your full system — starts at $4,799+</a></p>
     </div>
     @endif
@@ -1482,7 +1482,7 @@ footer{border-top:1px solid var(--border);padding:32px 48px;display:flex;flex-di
         <span style="font-size:.68rem;color:var(--green)">✓ Active</span>
       </div>
       @else
-      <a href="{{ route('quick-scan.upgrade') }}?plan=diagnostic&scan_id={{ $scan->id }}" class="tier-ladder-item">
+      <a href="{{ route('quick-scan.upgrade') }}?plan=diagnostic&scan_id={{ $scan->id }}&sid={{ $scan->stripe_session_id }}" class="tier-ladder-item">
         <span class="tl-name">Signal Expansion</span>
         <span class="tl-price"><sup style="font-size:.7rem;color:rgba(200,168,75,.5)">$</sup>99</span>
         <span class="tl-desc">Full signal mapping + priority gaps + exportable intelligence</span>
@@ -1494,7 +1494,7 @@ footer{border-top:1px solid var(--border);padding:32px 48px;display:flex;flex-di
         <span style="font-size:.68rem;color:var(--green)">✓ Active</span>
       </div>
       @else
-      <a href="{{ route('quick-scan.upgrade') }}?plan=fix-strategy&scan_id={{ $scan->id }}" class="tier-ladder-item tl-dominant">
+      <a href="{{ route('quick-scan.upgrade') }}?plan=fix-strategy&scan_id={{ $scan->id }}&sid={{ $scan->stripe_session_id }}" class="tier-ladder-item tl-dominant">
         <span class="tl-name">Structural Leverage</span>
         <span class="tl-price"><sup style="font-size:.7rem;color:rgba(200,168,75,.5)">$</sup>249</span>
         <span class="tl-desc">Priority correction sequence + structural guidance</span>
@@ -1507,7 +1507,7 @@ footer{border-top:1px solid var(--border);padding:32px 48px;display:flex;flex-di
         <span style="font-size:.68rem;color:var(--green)">✓ Active</span>
       </div>
       @else
-      <a href="{{ route('quick-scan.upgrade') }}?plan=optimization&scan_id={{ $scan->id }}" class="tier-ladder-item">
+      <a href="{{ route('quick-scan.upgrade') }}?plan=optimization&scan_id={{ $scan->id }}&sid={{ $scan->stripe_session_id }}" class="tier-ladder-item">
         <span class="tl-name">System Activation</span>
         <span class="tl-price"><sup style="font-size:.7rem;color:rgba(200,168,75,.5)">$</sup>489<sup style="font-size:.6rem;color:rgba(200,168,75,.4)">+</sup></span>
         <span class="tl-desc">Competitive positioning + coverage architecture</span>
@@ -1555,20 +1555,20 @@ footer{border-top:1px solid var(--border);padding:32px 48px;display:flex;flex-di
     <p style="font-family:'Cormorant Garamond',serif;font-size:clamp(1.3rem,2.8vw,1.9rem);font-weight:300;color:var(--ivory);line-height:1.25;margin-bottom:8px;position:relative;z-index:1">You've seen the score. Now see <em style="color:var(--gold);font-style:italic">what's behind it.</em></p>
     <p style="font-size:.84rem;color:var(--muted);margin-bottom:22px;line-height:1.55;max-width:460px;margin-left:auto;margin-right:auto;position:relative;z-index:1">Your scan identified {{ count($scan->issues ?? []) }} structural gaps. The next level reveals exactly what they are, ranked by the impact on your visibility.</p>
     <div style="display:flex;gap:14px;justify-content:center;flex-wrap:wrap;position:relative;z-index:1">
-      <a href="{{ route('quick-scan.upgrade') }}?plan=diagnostic&scan_id={{ $scan->id }}" class="cta-pulse-anim" style="display:inline-flex;align-items:center;gap:8px;font-size:.78rem;letter-spacing:.1em;text-transform:uppercase;padding:16px 38px;text-decoration:none;background:linear-gradient(135deg,var(--gold),var(--gold-lt));color:#080808;box-shadow:0 4px 18px var(--gold-glow);transition:all .3s">Unlock Signal Expansion — $99</a>
-      <a href="{{ route('quick-scan.upgrade') }}?plan=fix-strategy&scan_id={{ $scan->id }}" style="display:inline-flex;align-items:center;gap:8px;font-size:.78rem;letter-spacing:.1em;text-transform:uppercase;padding:16px 38px;text-decoration:none;border:2px solid var(--gold);color:var(--gold);box-shadow:0 8px 32px var(--gold-glow-strong);transition:all .3s">Resolve Structural Gaps — $249</a>
+      <a href="{{ route('quick-scan.upgrade') }}?plan=diagnostic&scan_id={{ $scan->id }}&sid={{ $scan->stripe_session_id }}" class="cta-pulse-anim" style="display:inline-flex;align-items:center;gap:8px;font-size:.78rem;letter-spacing:.1em;text-transform:uppercase;padding:16px 38px;text-decoration:none;background:linear-gradient(135deg,var(--gold),var(--gold-lt));color:#080808;box-shadow:0 4px 18px var(--gold-glow);transition:all .3s">Unlock Signal Expansion — $99</a>
+      <a href="{{ route('quick-scan.upgrade') }}?plan=fix-strategy&scan_id={{ $scan->id }}&sid={{ $scan->stripe_session_id }}" style="display:inline-flex;align-items:center;gap:8px;font-size:.78rem;letter-spacing:.1em;text-transform:uppercase;padding:16px 38px;text-decoration:none;border:2px solid var(--gold);color:var(--gold);box-shadow:0 8px 32px var(--gold-glow-strong);transition:all .3s">Resolve Structural Gaps — $249</a>
     </div>
     <p style="font-size:.72rem;color:rgba(200,168,75,.45);margin-top:14px;font-style:italic;position:relative;z-index:1">The $249 level is where you stop guessing and start fixing.</p>
     @elseif($unlockLevel == 2)
     <p style="font-family:'Cormorant Garamond',serif;font-size:clamp(1.3rem,2.8vw,1.9rem);font-weight:300;color:var(--ivory);line-height:1.25;margin-bottom:8px;position:relative;z-index:1">You see the signals. Now get <em style="color:var(--gold);font-style:italic">the correction sequence.</em></p>
     <p style="font-size:.84rem;color:var(--muted);margin-bottom:22px;line-height:1.55;max-width:460px;margin-left:auto;margin-right:auto;position:relative;z-index:1">You know where you're weak. Structural Leverage tells you exactly what to fix, in what order, for maximum impact.</p>
-    <a href="{{ route('quick-scan.upgrade') }}?plan=fix-strategy&scan_id={{ $scan->id }}" style="display:inline-flex;align-items:center;gap:8px;font-size:.82rem;letter-spacing:.1em;text-transform:uppercase;padding:18px 48px;text-decoration:none;background:linear-gradient(135deg,var(--gold),var(--gold-lt));color:#080808;box-shadow:0 8px 32px var(--gold-glow-strong);border:2px solid var(--gold);transition:all .3s;position:relative;z-index:1">Resolve Structural Gaps — $249 →</a>
+    <a href="{{ route('quick-scan.upgrade') }}?plan=fix-strategy&scan_id={{ $scan->id }}&sid={{ $scan->stripe_session_id }}" style="display:inline-flex;align-items:center;gap:8px;font-size:.82rem;letter-spacing:.1em;text-transform:uppercase;padding:18px 48px;text-decoration:none;background:linear-gradient(135deg,var(--gold),var(--gold-lt));color:#080808;box-shadow:0 8px 32px var(--gold-glow-strong);border:2px solid var(--gold);transition:all .3s;position:relative;z-index:1">Resolve Structural Gaps — $249 →</a>
     <p style="font-size:.72rem;color:rgba(200,168,75,.45);margin-top:14px;font-style:italic;position:relative;z-index:1">Stop analyzing. Start fixing. This is where control begins.</p>
     @else
     <p style="font-family:'Cormorant Garamond',serif;font-size:clamp(1.3rem,2.8vw,1.9rem);font-weight:300;color:var(--ivory);line-height:1.25;margin-bottom:8px;position:relative;z-index:1">You have the blueprint. <em style="color:var(--gold);font-style:italic">We can build it for you.</em></p>
     <p style="font-size:.84rem;color:var(--muted);margin-bottom:22px;line-height:1.55;max-width:460px;margin-left:auto;margin-right:auto;position:relative;z-index:1">We build the structure that makes AI systems return you as the answer — or start with System Activation to map the competitive picture first.</p>
     <div style="display:flex;gap:14px;justify-content:center;flex-wrap:wrap;position:relative;z-index:1">
-      <a href="{{ route('quick-scan.upgrade') }}?plan=optimization&scan_id={{ $scan->id }}" style="display:inline-flex;align-items:center;gap:8px;font-size:.78rem;letter-spacing:.1em;text-transform:uppercase;padding:16px 38px;text-decoration:none;background:linear-gradient(135deg,var(--gold),var(--gold-lt));color:#080808;box-shadow:0 4px 18px var(--gold-glow);transition:all .3s;position:relative;z-index:1">Activate Full System — $489+</a>
+      <a href="{{ route('quick-scan.upgrade') }}?plan=optimization&scan_id={{ $scan->id }}&sid={{ $scan->stripe_session_id }}" style="display:inline-flex;align-items:center;gap:8px;font-size:.78rem;letter-spacing:.1em;text-transform:uppercase;padding:16px 38px;text-decoration:none;background:linear-gradient(135deg,var(--gold),var(--gold-lt));color:#080808;box-shadow:0 4px 18px var(--gold-glow);transition:all .3s;position:relative;z-index:1">Activate Full System — $489+</a>
       <a href="{{ route('onboarding.start', ['tier' => 'expansion', 'scan_id' => $scan->id, 'plan' => 'authority-engine']) }}" style="display:inline-flex;align-items:center;gap:8px;font-size:.78rem;letter-spacing:.1em;text-transform:uppercase;padding:16px 38px;text-decoration:none;border:1px solid rgba(200,168,75,.25);color:var(--gold);transition:all .3s;position:relative;z-index:1">Deploy Full System →</a>
     </div>
     <p style="font-size:.66rem;color:rgba(200,168,75,.35);margin-top:10px;position:relative;z-index:1">Best for businesses expanding across multiple cities and services.</p>

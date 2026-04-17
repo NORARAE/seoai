@@ -396,6 +396,7 @@ class GoogleLoginTest extends TestCase
             'email' => 'scanner@example.com',
             'status' => 'scanned',
             'paid' => true,
+            'stripe_session_id' => 'cs_test_oauth_flow',
         ]);
 
         $user = User::factory()->create([
@@ -412,9 +413,10 @@ class GoogleLoginTest extends TestCase
         ]));
 
         // Start with scan_id in session (set during redirect to Google)
+        // Controller redirects to result page so user can view their saved scan
         $this->withSession(['oauth_scan_id' => $scan->id])
             ->get(route('auth.google.callback'))
-            ->assertRedirect(url('/dashboard') . '#ai-scans');
+            ->assertRedirect(url('/quick-scan/result') . '?session_id=cs_test_oauth_flow&scan_id=' . $scan->id);
 
         // Scan should be linked to the user
         $this->assertSame($user->id, $scan->fresh()->user_id);

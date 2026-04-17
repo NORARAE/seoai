@@ -216,6 +216,22 @@ class QuickScanController extends Controller
 
         // ── Phase 2: already complete — show results ─────────────────────
         if ($scan->status === QuickScan::STATUS_SCANNED && $scan->score !== null) {
+            // Verify session ownership — prevent scan_id enumeration
+            $isSessionOwner = $scan->stripe_session_id === $sessionId
+                || $scan->upgrade_stripe_session_id === $sessionId;
+            $isAuthOwner = Auth::check()
+                && ($scan->user_id === Auth::id() || $scan->email === Auth::user()->email);
+
+            if (!$isSessionOwner && !$isAuthOwner) {
+                Log::warning('QuickScan: unauthorized result access attempt', [
+                    'scan_id' => $scan->id,
+                    'provided_session' => $sessionId,
+                    'ip' => $request->ip(),
+                ]);
+                return redirect()->route('quick-scan.show')
+                    ->withErrors(['error' => 'Invalid result link.']);
+            }
+
             // Check if returning from upgrade checkout
             if ($sessionId && $scan->upgrade_stripe_session_id === $sessionId && $scan->upgrade_status !== 'paid') {
                 try {
@@ -375,20 +391,26 @@ class QuickScanController extends Controller
     }
 
     /**
-     * GET /quick-scan/status?scan_id=yyy
+     * GET /quick-scan/status?scan_id=yyy&session_id=cs_xxx
      * JSON polling endpoint for the processing view.
      */
     public function status(Request $request)
     {
         $scanId = $request->query('scan_id');
+        $sessionId = $request->query('session_id');
 
-        if (!$scanId) {
+        if (!$scanId || !$sessionId) {
             return response()->json(['ready' => false]);
         }
 
         $scan = QuickScan::find((int) $scanId);
 
         if (!$scan) {
+            return response()->json(['ready' => false]);
+        }
+
+        // Verify session ownership
+        if ($scan->stripe_session_id !== $sessionId && $scan->upgrade_stripe_session_id !== $sessionId) {
             return response()->json(['ready' => false]);
         }
 
@@ -408,6 +430,11 @@ class QuickScanController extends Controller
         $scanId = (int) $request->query('scan_id', 0);
         $scan = $scanId ? QuickScan::find($scanId) : null;
 
+        // Only expose scan context if session_id matches (prevent enumeration)
+        if ($scan && $scan->stripe_session_id !== $request->query('session_id')) {
+            $scan = null;
+        }
+
         return view('public.quick-scan-cancelled', ['scan' => $scan]);
     }
 
@@ -421,13 +448,14 @@ class QuickScanController extends Controller
     ];
 
     /**
-     * GET /quick-scan/upgrade?plan=diagnostic&scan_id=4
+     * GET /quick-scan/upgrade?plan=diagnostic&scan_id=4&sid=cs_xxx
      * Create Stripe checkout for a scan upgrade and redirect.
      */
     public function upgradeCheckout(Request $request)
     {
         $plan = $request->query('plan');
         $scanId = (int) $request->query('scan_id', 0);
+        $sid = $request->query('sid');
 
         if (!$plan || !isset(self::UPGRADE_PLANS[$plan]) || !$scanId) {
             return redirect()->route('quick-scan.show')
@@ -439,6 +467,16 @@ class QuickScanController extends Controller
         if (!$scan || $scan->status !== QuickScan::STATUS_SCANNED) {
             return redirect()->route('quick-scan.show')
                 ->withErrors(['error' => 'Scan not found or not yet complete.']);
+        }
+
+        // Verify ownership — prevent unauthorized upgrade initiation
+        if (!$sid || $scan->stripe_session_id !== $sid) {
+            Log::warning('QuickScan: upgrade sid mismatch', [
+                'scan_id' => $scan->id,
+                'ip' => $request->ip(),
+            ]);
+            return redirect()->route('quick-scan.show')
+                ->withErrors(['error' => 'Invalid upgrade link.']);
         }
 
         [$productName, $unitAmount] = self::UPGRADE_PLANS[$plan];

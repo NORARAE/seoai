@@ -171,7 +171,7 @@ footer{border-top:1px solid var(--border);padding:28px 48px;display:flex;flex-di
     if (!scanId) return;
     attempts++;
 
-    fetch('/quick-scan/status?scan_id=' + scanId)
+    fetch('/quick-scan/status?scan_id=' + scanId + '&session_id=' + encodeURIComponent(sessionId))
       .then(r => r.json())
       .then(data => {
         if (data.ready) {
