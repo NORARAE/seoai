@@ -392,18 +392,16 @@ html:not(.js-enabled) .r{opacity:1;transform:none}
       </div>
       <div class="hiw-happens-block r">
         <div class="hiw-happens-num">02</div>
-        <div class="hiw-happens-title">You see what AI sees</div>
+        <div class="hiw-happens-title">Your scored report arrives</div>
         <p class="hiw-happens-text">
-          Not rankings &mdash; but whether your business is even considered.
-          A scored report shows exactly where you stand.
+          A 0&ndash;100 citation score with your top gaps and the fastest correction path &mdash; delivered in seconds.
         </p>
       </div>
       <div class="hiw-happens-block r">
         <div class="hiw-happens-num">03</div>
-        <div class="hiw-happens-title">You unlock what's missing</div>
+        <div class="hiw-happens-title">You decide what to build</div>
         <p class="hiw-happens-text">
-          Each layer reveals and fixes what competitors already have.
-          Your data carries forward through every level.
+          Each level reveals what competitors already have &mdash; and builds the structure to close the gap.
         </p>
       </div>
     </div>
@@ -414,9 +412,9 @@ html:not(.js-enabled) .r{opacity:1;transform:none}
 
 <!-- ════════════ CTA BLOCK 1 ════════════ -->
 <div class="hiw-cta-block">
-  <p class="r">Find out if AI is citing your website &mdash; or sending customers to your competitors.</p>
+  <p class="r">You've seen the system. Now see where your site stands.</p>
   <div class="hiw-cta-actions r">
-    <a href="{{ route('scan.start') }}" class="btn-primary" onclick="if(typeof gtag==='function')gtag('event','cta_click',{cta_location:'cta_block_1',cta_label:'start_scan'});">Start AI Citation Scan &mdash; $2</a>
+    <a href="{{ route('scan.start') }}" class="btn-primary" onclick="if(typeof gtag==='function')gtag('event','cta_click',{cta_location:'cta_block_1',cta_label:'start_scan'});">See Where You Stand &mdash; $2</a>
     <a href="/book" class="btn-ghost">Book a Strategy Call &rarr;</a>
   </div>
 </div>
@@ -469,8 +467,7 @@ html:not(.js-enabled) .r{opacity:1;transform:none}
     </div>
 
     <p class="hiw-progression-note r">
-      Every level builds on the last.<br>
-      <strong>You don't restart. You expand.</strong>
+      Start at $2. Expand when the next move is clear.
     </p>
   </div>
 </section>
@@ -484,11 +481,10 @@ html:not(.js-enabled) .r{opacity:1;transform:none}
       You don't need to decide everything now.
     </h2>
     <p class="hiw-momentum-sub r">
-      You just need to enter the system.
-      It shows you exactly what to do next.
+      The first scan shows you exactly what to do next &mdash; and every step after.
     </p>
     <div class="hiw-cta-actions r">
-      <a href="{{ route('scan.start') }}" class="btn-primary" onclick="if(typeof gtag==='function')gtag('event','cta_click',{cta_location:'momentum',cta_label:'start_scan'});">Start with AI Citation Scan &mdash; $2</a>
+      <a href="{{ route('scan.start') }}" class="btn-primary" onclick="if(typeof gtag==='function')gtag('event','cta_click',{cta_location:'momentum',cta_label:'start_scan'});">Enter the System &mdash; $2</a>
     </div>
   </div>
 </section>
@@ -506,7 +502,7 @@ html:not(.js-enabled) .r{opacity:1;transform:none}
       The only question is whether your business is included.
     </p>
     <div class="hiw-cta-actions r">
-      <a href="{{ route('scan.start') }}" class="btn-primary" onclick="if(typeof gtag==='function')gtag('event','cta_click',{cta_location:'final_cta',cta_label:'start_scan'});">Start AI Scan &mdash; $2</a>
+      <a href="{{ route('scan.start') }}" class="btn-primary" onclick="if(typeof gtag==='function')gtag('event','cta_click',{cta_location:'final_cta',cta_label:'start_scan'});">Start Your Scan &mdash; $2</a>
       <a href="/book" class="btn-ghost">Book a Strategy Call &rarr;</a>
     </div>
     <p class="hiw-final-reassure r">Guided entry.&ensp;Structured rollout.&ensp;Full support.</p>

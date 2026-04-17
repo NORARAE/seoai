@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Actions\NotifyOwnerOfPurchase;
 use App\Jobs\RunQuickScanJob;
 use App\Models\QuickScan;
 use Illuminate\Http\JsonResponse;
@@ -104,6 +105,15 @@ class QuickScanWebhookController extends Controller
                     'plan' => $upgradePlan,
                     'session_id' => $session->id,
                 ]);
+
+                // Notify owner of upgrade purchase
+                $upgradeTiers = [
+                    'diagnostic' => ['name' => 'Signal Expansion — Full Analysis', 'amount' => 9900],
+                    'fix-strategy' => ['name' => 'Structural Leverage — Fix Strategy', 'amount' => 24900],
+                    'optimization' => ['name' => 'System Activation — Full Deployment', 'amount' => 48900],
+                ];
+                $ut = $upgradeTiers[$upgradePlan] ?? ['name' => $upgradePlan, 'amount' => 0];
+                (new NotifyOwnerOfPurchase)->execute($scan, $ut['name'], $ut['amount']);
             }
 
             return response()->json(['message' => 'Upgrade confirmed.', 'scan_id' => $scanId]);
@@ -117,6 +127,9 @@ class QuickScanWebhookController extends Controller
                 'status' => QuickScan::STATUS_PAID,
             ]);
             Log::info('QuickScan webhook: marked paid', ['scan_id' => $scanId]);
+
+            // Notify owner of $2 scan purchase
+            (new NotifyOwnerOfPurchase)->execute($scan, 'AI Citation Quick Scan', 200);
         }
 
         // Always dispatch — the job is fully idempotent:

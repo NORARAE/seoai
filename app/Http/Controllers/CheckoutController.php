@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Actions\NotifyOwnerOfPurchase;
 use App\Enums\SystemTier;
 use App\Jobs\SendUpgradeFunnelEmailsJob;
 use App\Models\FunnelEvent;
@@ -201,6 +202,9 @@ class CheckoutController extends Controller
 
         // Dispatch tier-specific funnel email sequence
         SendUpgradeFunnelEmailsJob::dispatch($scan->id, $user->id, $tierSlug);
+
+        // Notify owner of purchase
+        (new NotifyOwnerOfPurchase)->execute($scan, self::TIERS[$tierSlug]['name'], self::TIERS[$tierSlug]['amount']);
 
         Log::info('CheckoutController: unified entry completed', [
             'user_id' => $user->id,

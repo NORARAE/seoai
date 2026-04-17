@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Actions\NotifyOwnerOfPurchase;
 use App\Jobs\RunQuickScanJob;
 use App\Models\FunnelEvent;
 use App\Models\QuickScan;
@@ -234,6 +235,15 @@ class QuickScanController extends Controller
                         FunnelEvent::fire(FunnelEvent::UPGRADE_PURCHASED, scanId: $scan->id, metadata: [
                             'plan' => $scan->upgrade_plan,
                         ]);
+
+                        // Notify owner of upgrade purchase
+                        $upgradeTiers = [
+                            'diagnostic' => ['name' => 'Signal Expansion — Full Analysis', 'amount' => 9900],
+                            'fix-strategy' => ['name' => 'Structural Leverage — Fix Strategy', 'amount' => 24900],
+                            'optimization' => ['name' => 'System Activation — Full Deployment', 'amount' => 48900],
+                        ];
+                        $ut = $upgradeTiers[$scan->upgrade_plan] ?? ['name' => $scan->upgrade_plan, 'amount' => 0];
+                        (new NotifyOwnerOfPurchase)->execute($scan, $ut['name'], $ut['amount']);
                     }
                 } catch (\Throwable $e) {
                     Log::error('QuickScan: upgrade session retrieval failed', [
@@ -283,6 +293,9 @@ class QuickScanController extends Controller
                 'stripe_session_id' => $sessionId,
                 'status' => QuickScan::STATUS_PAID,
             ]);
+
+            // Notify owner of $2 scan purchase
+            (new NotifyOwnerOfPurchase)->execute($scan, 'AI Citation Quick Scan', 200);
 
             // Set system tier on the user if logged in
             if ($user = Auth::user()) {

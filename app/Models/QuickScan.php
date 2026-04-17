@@ -28,6 +28,7 @@ class QuickScan extends Model
         'broken_links',
         'status',
         'emails_sent',
+        'owner_notified_at',
         'is_internal',
         'source',
         'suppress_emails',
@@ -64,6 +65,7 @@ class QuickScan extends Model
         'upgraded_at' => 'datetime',
         'dimensions' => 'array',
         'intelligence' => 'array',
+        'owner_notified_at' => 'datetime',
     ];
 
     const STATUS_PENDING = 'pending';
