@@ -415,14 +415,26 @@
 
 @media(max-width:600px){
   .prev-page{padding:40px 16px 80px}
-  .prev-card,.prev-locked{padding:26px 20px}
+  .prev-card,.prev-locked{padding:28px 24px}
   .prev-inner{max-width:100%}
   .prev-hed{font-size:clamp(1.5rem,6vw,1.9rem)}
-  .prev-cta{padding:18px 36px;font-size:.8rem}
-  .prev-sticky{gap:12px;padding:12px 16px}
-  .prev-sticky-text{font-size:.7rem}
-  .prev-sticky-cta{padding:12px 24px;font-size:.68rem}
-  .prev-locked{padding:32px 20px}
+  .prev-cta{padding:18px 36px;font-size:.82rem;min-height:50px}
+  .prev-sticky{gap:12px;padding:14px 18px}
+  .prev-sticky-text{font-size:.76rem}
+  .prev-sticky-cta{padding:14px 28px;font-size:.76rem;min-height:46px}
+  .prev-locked{padding:32px 24px}
+}
+
+/* ── Small phones ── */
+@media(max-width:430px){
+  .prev-page{padding:36px 14px 76px}
+  .prev-card,.prev-locked{padding:26px 22px}
+  .prev-hed{font-size:clamp(1.4rem,6.5vw,1.8rem)}
+  .prev-sub{font-size:.90rem}
+  .prev-signal-text{font-size:.88rem}
+  .prev-cta{padding:16px 32px;font-size:.80rem;min-height:48px}
+  .prev-sticky-cta{padding:12px 24px;font-size:.74rem;min-height:44px}
+  .prev-locked{padding:28px 20px}
 }
 
 /* ── Very small phones ── */

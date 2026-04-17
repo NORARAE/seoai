@@ -794,36 +794,36 @@
 @media(max-width:600px){
   /* A. Above the fold — compact */
   .p-hero{padding:44px 0 36px}
-  .p-hero-eye{margin-bottom:18px;font-size:.58rem}
+  .p-hero-eye{margin-bottom:18px;font-size:.62rem}
   .p-hero-hed{margin-bottom:16px}
-  .p-hero-sub{font-size:.86rem;margin-bottom:28px;max-width:420px}
+  .p-hero-sub{font-size:.90rem;margin-bottom:28px;max-width:420px}
   .p-bridge{height:40px}
-  /* B. Cards — single column, tight */
+  /* B. Cards — single column, readable */
   .tier-grid-5{grid-template-columns:1fr;gap:2px}
-  .tier{padding:22px 18px}
+  .tier{padding:26px 22px}
   .tier-name{font-size:1.18rem}
   .tier-price{font-size:2.2rem}
-  .tier-position{font-size:.74rem;margin-bottom:14px}
-  .tier-features li{font-size:.74rem}
-  .tier-cta{padding:12px 14px;font-size:.62rem}
-  .tier-divider{margin:4px 0 12px}
+  .tier-position{font-size:.80rem;margin-bottom:14px;line-height:1.7}
+  .tier-features li{font-size:.80rem;line-height:1.65}
+  .tier-cta{padding:16px 20px;font-size:.78rem;min-height:50px}
+  .tier-divider{margin:6px 0 14px}
   /* Prime tier mobile */
   .tier.prime .tier-name{font-size:1.36rem}
   .tier.prime .tier-price{font-size:2.8rem}
-  .tier.prime .tier-cta{min-height:48px;padding:14px 18px;font-size:.62rem}
+  .tier.prime .tier-cta{min-height:52px;padding:16px 22px;font-size:.78rem}
   .tier-anchor-row{margin-top:12px}
   .tier-anchor-row::before{height:24px;top:-12px}
-  /* D. Layers — single column */
+  /* D. Layers — single column, readable */
   .layers-grid{grid-template-columns:1fr;gap:2px}
-  .layer-card{padding:24px 18px}
-  .layer-body{font-size:.74rem;margin-bottom:16px}
-  .layer-items li{font-size:.7rem}
-  .layer-items{gap:6px;margin-bottom:16px}
-  .layer-cta{padding:10px 12px;font-size:.58rem}
-  /* E. Decision — compact rows */
-  .guide-item{padding:18px 20px;gap:10px}
-  .guide-cond{font-size:.76rem}
-  .guide-action{font-size:.66rem}
+  .layer-card{padding:26px 22px}
+  .layer-body{font-size:.80rem;margin-bottom:16px;line-height:1.68}
+  .layer-items li{font-size:.76rem;line-height:1.6}
+  .layer-items{gap:8px;margin-bottom:16px}
+  .layer-cta{padding:14px 18px;font-size:.72rem;min-height:46px}
+  /* E. Decision — readable */
+  .guide-item{padding:20px 22px;gap:12px}
+  .guide-cond{font-size:.82rem;line-height:1.7}
+  .guide-action{font-size:.72rem;line-height:1.6}
   .guide-marker{font-size:1.1rem;min-width:18px}
   /* Section spacing */
   #plans{padding:40px 0 48px}
@@ -833,19 +833,19 @@
   .layers-intro{margin-bottom:32px}
   .section-divide{height:44px}
   .s-hed{margin-bottom:10px}
-  .s-clarify{font-size:.72rem;margin-top:6px}
+  .s-clarify{font-size:.76rem;margin-top:6px;line-height:1.7}
   .faq-section{padding:40px 0}
   .faq-item{padding:20px 0}
   .faq-q{font-size:1.08rem;margin-bottom:10px}
-  .faq-a{font-size:.8rem}
+  .faq-a{font-size:.84rem;line-height:1.76}
   .final-cta{padding:48px 0}
   .final-cta-eye{margin-bottom:16px}
   .final-cta-hed{margin-bottom:14px}
-  .final-cta-sub{margin-bottom:28px;font-size:.8rem}
+  .final-cta-sub{margin-bottom:28px;font-size:.84rem;line-height:1.72}
   /* Nav */
   #nav{padding:16px 20px}
   .nav-right{gap:14px}
-  .nav-btn{padding:9px 22px;font-size:.68rem}
+  .nav-btn{padding:10px 24px;font-size:.72rem;min-height:42px}
 }
 @media(max-width:560px){
   #nav{flex-wrap:wrap;gap:8px;justify-content:center}
@@ -887,9 +887,9 @@
   .tier-features li svg{width:14px;height:14px;margin-top:3px}
   .tier-features{gap:12px;margin-bottom:6px}
   .tier-divider{margin:6px 0 14px}
-  .tier-cta{padding:16px 18px;font-size:.72rem;min-height:52px;letter-spacing:.14em}
-  .tier-book{padding:13px 16px;font-size:.66rem}
-  .tier-commitment{font-size:.74rem;line-height:1.76;margin-top:10px}
+  .tier-cta{padding:16px 22px;font-size:.80rem;min-height:52px;letter-spacing:.14em}
+  .tier-book{padding:14px 18px;font-size:.72rem}
+  .tier-commitment{font-size:.78rem;line-height:1.76;margin-top:10px}
   .tier-actions{padding-top:16px}
 
   /* Focal tier — more prominent */
@@ -901,7 +901,7 @@
   .tier.prime .tier-price{font-size:3rem}
   .tier.prime .tier-position{font-size:.86rem;line-height:1.76}
   .tier.prime .tier-features li{font-size:.84rem}
-  .tier.prime .tier-cta{min-height:54px;padding:16px 20px;font-size:.72rem}
+  .tier.prime .tier-cta{min-height:54px;padding:16px 24px;font-size:.80rem}
 
   /* Execution layers — readable */
   .layer-card{padding:26px 22px}
@@ -909,7 +909,7 @@
   .layer-body{font-size:.82rem;line-height:1.72;margin-bottom:16px}
   .layer-items li{font-size:.78rem;line-height:1.66}
   .layer-items{gap:8px;margin-bottom:16px}
-  .layer-cta{padding:13px 16px;font-size:.66rem;min-height:48px}
+  .layer-cta{padding:14px 18px;font-size:.74rem;min-height:48px}
 
   /* Decision guide — readable */
   .guide-item{padding:22px 22px;gap:14px}
@@ -940,13 +940,39 @@
 /* ── Small phones ── */
 @media(max-width:430px){
   .p-hero-hed{font-size:clamp(1.8rem,7vw,2.4rem)}
-  .p-hero-sub{font-size:.92rem}
+  .p-hero-sub{font-size:.90rem}
+  .tier{padding:26px 22px}
   .tier-name{font-size:1.14rem}
   .tier-price{font-size:2.4rem}
-  .tier-position{font-size:.8rem}
-  .tier-features li{font-size:.8rem}
+  .tier-position{font-size:.80rem;line-height:1.68}
+  .tier-features li{font-size:.80rem}
+  .tier-cta{padding:16px 20px;font-size:.78rem;min-height:50px}
   .tier.prime .tier-name{font-size:1.3rem}
   .tier.prime .tier-price{font-size:2.6rem}
+  .tier.prime .tier-cta{font-size:.78rem;min-height:52px}
+  .layer-card{padding:26px 22px}
+  .layer-cta{padding:14px 16px;font-size:.72rem;min-height:46px}
+  .guide-action{font-size:.72rem}
+  .faq-a{font-size:.82rem}
+  .btn-primary{font-size:.80rem;min-height:50px}
+  .nav-btn{font-size:.70rem}
+}
+@media(max-width:390px){
+  .p-hero-hed{font-size:clamp(1.6rem,8vw,2.1rem)}
+  .p-hero-sub{font-size:.88rem}
+  .tier{padding:24px 20px}
+  .tier-name{font-size:1.1rem}
+  .tier-price{font-size:2.2rem}
+  .tier-position{font-size:.78rem}
+  .tier-features li{font-size:.78rem}
+  .tier-cta{font-size:.76rem;min-height:48px}
+  .tier.prime .tier-name{font-size:1.24rem}
+  .tier.prime .tier-price{font-size:2.4rem}
+  .tier.prime .tier-cta{font-size:.76rem;min-height:50px}
+  .layer-cta{font-size:.70rem}
+  .faq-q{font-size:1rem}
+  .faq-a{font-size:.80rem}
+  .final-cta-sub{font-size:.82rem}
 }
 </style>
 @include('partials.clarity')

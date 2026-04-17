@@ -3160,7 +3160,7 @@ body::before{
   .stmt-split-card .split-body{font-size:.91rem;line-height:1.76}
   .aud-list{gap:18px}
   .aud-list li{line-height:1.76;padding-left:20px}
-  .alloc-cell{padding:22px 18px}
+  .alloc-cell{padding:24px 22px}
   .licence-stmt-principle{font-size:clamp(1.08rem,3.8vw,1.28rem)}
   .licence-stmt-body p{font-size:.9rem;letter-spacing:.03em;line-height:1.88}
   #preview{padding:56px 22px}
