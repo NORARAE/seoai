@@ -366,31 +366,39 @@
   .prev-urgency{font-size:.82rem;margin-bottom:10px}
   .prev-url{font-size:.78rem;margin-bottom:32px}
 
-  /* Issue counter */
-  .prev-issue-badge .count{font-size:1.4rem}
-  .prev-issue-badge .label{font-size:.76rem}
-  .prev-issue-badge{padding:12px 24px}
+  /* Issue counter — dominant score feel */
+  .prev-issue-badge .count{font-size:clamp(2.4rem,8vw,3rem);font-weight:800;line-height:1}
+  .prev-issue-badge .label{font-size:.9rem;opacity:.85}
+  .prev-issue-badge{padding:16px 28px;gap:12px;border-radius:6px}
   .prev-hidden-count{font-size:.78rem;margin-bottom:24px}
 
-  /* Signal rows — bigger text */
-  .prev-signal{padding:15px 0;gap:14px}
-  .prev-signal-text{font-size:.9rem;line-height:1.72}
-  .prev-signal-text .impact{font-size:.74rem;margin-top:4px;line-height:1.5}
+  /* Signal rows — readable bullets */
+  .prev-signal{padding:11px 0;gap:14px}
+  .prev-signal-text{font-size:.95rem;line-height:1.65}
+  .prev-signal-text .impact{font-size:.76rem;margin-top:3px;line-height:1.5}
   .prev-icon{width:26px;height:26px;font-size:.8rem}
 
-  /* Cards — more padding */
-  .prev-card{padding:30px 26px;margin-bottom:28px}
-  .prev-card-head{font-size:.62rem;margin-bottom:18px;padding-bottom:14px}
+  /* Cards — centered floating panels */
+  .prev-card,.prev-locked{
+    padding:34px 26px 30px;margin-bottom:28px;
+    border-radius:8px;
+  }
+  .prev-card-head{font-size:.62rem;margin-bottom:16px;padding-bottom:12px;
+    border-bottom-color:rgba(200,168,75,.1)}
 
-  /* Locked section */
-  .prev-locked{padding:36px 26px;margin-bottom:28px}
+  /* Locked section — hierarchy */
+  .prev-locked{padding:38px 26px 32px}
   .prev-locked-badge{font-size:.66rem;padding:11px 22px}
   .prev-locked-unlock-text{font-size:.82rem;line-height:1.6;max-width:280px}
+  .prev-locked-score{font-size:2.6rem;opacity:.4}
+  .prev-locked-row{padding:12px 0}
+  .prev-locked-label{font-size:.88rem}
 
-  /* CTA — bigger, more dominant */
-  .prev-cta{padding:20px 48px;font-size:.84rem;letter-spacing:.12em}
-  .prev-cta-sub{font-size:.84rem;line-height:1.7;margin-top:18px}
+  /* CTA — dominant, clear next action */
+  .prev-cta{padding:20px 48px;font-size:.88rem;letter-spacing:.12em;min-height:54px}
+  .prev-cta-sub{font-size:.86rem;line-height:1.7;margin-top:18px}
   .prev-reassure{font-size:.74rem;margin-top:16px}
+  .prev-secondary a{font-size:.78rem}
 
   /* Progression bar — readable labels */
   .prev-prog-label{font-size:.6rem;letter-spacing:.1em}
@@ -407,42 +415,96 @@
   .prev-status{margin-bottom:28px}
   .prev-status-text{font-size:.62rem;letter-spacing:.2em}
 
-  /* Sticky bar — bigger CTA */
+  /* Sticky bar */
   .prev-sticky{padding:14px 20px;gap:14px}
   .prev-sticky-text{font-size:.74rem}
-  .prev-sticky-cta{padding:14px 28px;font-size:.72rem;min-height:48px}
+  .prev-sticky-cta{padding:14px 28px;font-size:.76rem;min-height:48px}
 }
 
-@media(max-width:600px){
+@media(max-width:520px){
+  /* ── True centered floating cards ── */
+  .prev-card,.prev-locked,.prev-value-card{
+    width:94%;max-width:420px;margin-left:auto;margin-right:auto;
+    padding:36px 28px 32px;
+  }
+
+  /* Issue badge — centered score module */
+  .prev-issue-badge{
+    padding:18px 30px;gap:14px;
+    border-radius:8px;
+  }
+  .prev-issue-badge .count{font-size:clamp(2.4rem,8vw,3rem)}
+  .prev-issue-badge .label{font-size:.9rem;letter-spacing:.05em}
+
+  /* Background isolation — card foreground dominance */
+  .prev-page::after{opacity:.5}
+  .prev-scanline{opacity:.5}
+
+  /* Header tighten */
   .prev-page{padding:40px 16px 80px}
-  .prev-card,.prev-locked{padding:28px 24px}
   .prev-inner{max-width:100%}
   .prev-hed{font-size:clamp(1.5rem,6vw,1.9rem)}
-  .prev-cta{padding:18px 36px;font-size:.82rem;min-height:50px}
+
+  /* Signal rows — clean bullet alignment */
+  .prev-signal{padding:10px 0;gap:12px}
+  .prev-signal-text{font-size:.95rem;line-height:1.62}
+  .prev-signal-text .impact{font-size:.76rem;margin-top:2px}
+  .prev-icon{width:24px;height:24px;font-size:.76rem;margin-top:2px}
+
+  /* Card section spacing — tighter flow */
+  .prev-card-head{margin-bottom:14px;padding-bottom:10px;
+    border-bottom:1px solid rgba(200,168,75,.12)}
+
+  /* Locked panel — hierarchy: score → status → findings */
+  .prev-locked{padding:36px 28px 30px}
+  .prev-locked-score{font-size:2.8rem;padding-top:16px;opacity:.35}
+  .prev-locked-row{padding:10px 0}
+  .prev-locked-label{font-size:.86rem}
+  .prev-locked-bar{height:4px}
+
+  /* CTA — strong next-action */
+  .prev-cta{padding:18px 36px;font-size:.88rem;min-height:52px}
+  .prev-cta-sub{font-size:.86rem}
+  .prev-secondary a{font-size:.8rem;opacity:.65}
+  .prev-secondary a:hover{opacity:1}
+
+  /* Sticky bar */
   .prev-sticky{gap:12px;padding:14px 18px}
   .prev-sticky-text{font-size:.76rem}
   .prev-sticky-cta{padding:14px 28px;font-size:.76rem;min-height:46px}
-  .prev-locked{padding:32px 24px}
 }
 
 /* ── Small phones ── */
 @media(max-width:430px){
   .prev-page{padding:36px 14px 76px}
-  .prev-card,.prev-locked{padding:26px 22px}
+  .prev-card,.prev-locked,.prev-value-card{
+    width:94%;max-width:400px;padding:32px 24px 28px;
+  }
   .prev-hed{font-size:clamp(1.4rem,6.5vw,1.8rem)}
   .prev-sub{font-size:.90rem}
-  .prev-signal-text{font-size:.88rem}
-  .prev-cta{padding:16px 32px;font-size:.80rem;min-height:48px}
+  .prev-signal{padding:9px 0}
+  .prev-signal-text{font-size:.92rem;line-height:1.6}
+  .prev-signal-text .impact{font-size:.74rem}
+  .prev-issue-badge .count{font-size:clamp(2.2rem,7.5vw,2.8rem)}
+  .prev-issue-badge .label{font-size:.86rem}
+  .prev-cta{padding:16px 32px;font-size:.84rem;min-height:48px}
   .prev-sticky-cta{padding:12px 24px;font-size:.74rem;min-height:44px}
-  .prev-locked{padding:28px 20px}
+  .prev-locked-score{font-size:2.4rem}
+  .prev-locked-label{font-size:.84rem}
+  .prev-locked-row{padding:9px 0}
 }
 
 /* ── Very small phones ── */
 @media(max-width:390px){
-  .prev-hed{font-size:clamp(1.4rem,7vw,1.7rem)}
+  .prev-card,.prev-locked,.prev-value-card{width:96%;max-width:380px;padding:28px 20px 24px}
+  .prev-hed{font-size:clamp(1.3rem,7vw,1.7rem)}
   .prev-sub{font-size:.88rem}
-  .prev-cta{padding:16px 28px;font-size:.78rem}
-  .prev-signal-text{font-size:.86rem}
+  .prev-cta{padding:16px 28px;font-size:.82rem}
+  .prev-signal{padding:8px 0}
+  .prev-signal-text{font-size:.88rem}
+  .prev-issue-badge .count{font-size:clamp(2rem,7vw,2.6rem)}
+  .prev-issue-badge .label{font-size:.84rem}
+  .prev-locked-score{font-size:2.2rem}
 }
 </style>
 </head>
@@ -591,7 +653,7 @@
   </div>
 
   <!-- Inline value statement -->
-  <div style="text-align:center;padding:32px 28px;margin-bottom:28px;background:rgba(14,13,9,.88);border:1px solid rgba(200,168,75,.08);border-radius:6px">
+  <div class="prev-value-card" style="text-align:center;padding:32px 28px;margin-bottom:28px;background:rgba(14,13,9,.88);border:1px solid rgba(200,168,75,.08);border-radius:6px">
     <p style="font-family:'Cormorant Garamond',serif;font-size:clamp(1.2rem,2.2vw,1.55rem);font-weight:300;color:var(--ivory);line-height:1.25;margin-bottom:14px">
       Full analysis and priority fix path unlock next.
     </p>
