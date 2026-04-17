@@ -267,15 +267,17 @@
   text-align:center;font-size:.68rem;color:rgba(168,168,160,.35);
   line-height:1.7;margin-top:14px;letter-spacing:.01em;
 }
+.prev-reassure .chk{color:rgba(106,175,144,.5);font-weight:600}
 
 .prev-secondary{
   text-align:center;margin-top:20px;
 }
 .prev-secondary a{
-  font-size:.72rem;color:rgba(200,168,75,.45);text-decoration:none;
-  letter-spacing:.02em;transition:color .3s;
+  font-size:.72rem;color:rgba(200,168,75,.4);text-decoration:none;
+  letter-spacing:.04em;transition:color .3s,opacity .3s;
+  opacity:.6;
 }
-.prev-secondary a:hover{color:var(--gold)}
+.prev-secondary a:hover{color:var(--gold);opacity:1}
 
 /* ── Progression ── */
 .prev-progression{
@@ -565,7 +567,7 @@
   @else
   <!-- CTA for clean scans -->
   <div class="prev-cta-wrap" style="margin-bottom:32px">
-    <a href="{{ route('checkout.scan-basic') }}" class="prev-cta" onclick="if(typeof gtag==='function')gtag('event','cta_click',{cta_location:'above_fold_clean',cta_label:'scan_basic'});">Unlock Full Report&nbsp;&mdash;&nbsp;$2</a>
+    <a href="{{ route('checkout.scan-basic') }}" class="prev-cta prev-cta-pulse" onclick="if(typeof gtag==='function')gtag('event','cta_click',{cta_location:'above_fold_clean',cta_label:'scan_basic'});">Unlock Full Report&nbsp;&mdash;&nbsp;$2</a>
   </div>
   @endif
 
@@ -660,7 +662,7 @@
     <p style="font-size:.78rem;color:var(--muted);line-height:1.7;max-width:380px;margin:0 auto 22px">
       Your Layer&nbsp;1 report includes visibility score, signal status, primary bottleneck, and next-step guidance.
     </p>
-    <a href="{{ route('checkout.scan-basic') }}" class="prev-cta" onclick="if(typeof gtag==='function')gtag('event','cta_click',{cta_location:'inline_cta',cta_label:'scan_basic'});">Unlock Full Report&nbsp;&mdash;&nbsp;$2</a>
+    <a href="{{ route('checkout.scan-basic') }}" class="prev-cta prev-cta-pulse" onclick="if(typeof gtag==='function')gtag('event','cta_click',{cta_location:'inline_cta',cta_label:'scan_basic'});">Unlock Full Report&nbsp;&mdash;&nbsp;$2</a>
   </div>
 
   <!-- Locked intelligence section -->
@@ -670,7 +672,7 @@
         <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="7" width="10" height="8" rx="1.5"/><path d="M5 7V5a3 3 0 0 1 6 0v2"/></svg>
         Layer 1 &mdash; Locked
       </span>
-      <p class="prev-locked-unlock-text">Your visibility score and signal intelligence are ready to view.</p>
+      <p class="prev-locked-unlock-text">Your visibility score and priority fix path are ready&nbsp;&mdash;&nbsp;unlock below.</p>
     </div>
     <div class="prev-locked-content" aria-hidden="true">
       <div class="prev-locked-row">
@@ -707,7 +709,7 @@
     <a href="{{ route('checkout.scan-basic') }}" class="prev-cta prev-cta-pulse" id="mainCta" onclick="if(typeof gtag==='function')gtag('event','cta_click',{cta_location:'primary_cta',cta_label:'scan_basic'});">Unlock Full Report&nbsp;&mdash;&nbsp;$2</a>
   </div>
   <p class="prev-cta-sub">Unlocks your visibility score, signal status, primary bottleneck, and next-step guidance.</p>
-  <p class="prev-reassure">Your scan data carries forward&nbsp;&bull;&nbsp;Nothing repeated&nbsp;&bull;&nbsp;Secure checkout</p>
+  <p class="prev-reassure"><span class="chk">✓</span> Scan data carries forward&nbsp;&nbsp;&bull;&nbsp;&nbsp;<span class="chk">✓</span> Nothing repeated&nbsp;&nbsp;&bull;&nbsp;&nbsp;<span class="chk">✓</span> Secure checkout</p>
 
   <!-- Secondary $99 path (non-distracting) -->
   <div class="prev-secondary">
