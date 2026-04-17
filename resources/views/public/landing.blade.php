@@ -1467,15 +1467,18 @@ body::after{
   .fcc::after{opacity:.4}
   .fcc-eye{margin-bottom:36px}
   .fcc-hed{margin-bottom:28px}
-  .fcc-sub{font-size:.92rem;margin-bottom:22px}
-  .fcc-gold{font-size:clamp(1.2rem,4.5vw,1.6rem);margin-bottom:16px}
-  .fcc-rule{width:60px;margin:0 auto 36px}
-  .fcc-actions{flex-direction:column;align-items:stretch;gap:14px}
-  .fcc-card{max-width:100%;min-width:auto;padding:28px 22px 24px}
-  .fcc-card-title{font-size:1.02rem;margin-bottom:18px}
-  .fcc-primary{justify-content:center;width:100%;padding:18px 32px;min-height:54px}
-  .fcc-secondary{width:100%;padding:16px 28px;min-height:52px}
-  .fcc-reassure{font-size:.68rem}
+  .fcc-sub{font-size:.94rem;margin-bottom:24px}
+  .fcc-gold{font-size:clamp(1.2rem,4.5vw,1.6rem);margin-bottom:18px}
+  .fcc-rule{width:60px;margin:0 auto 40px}
+  /* Card centering — NOT full bleed */
+  .fcc-actions{flex-direction:column;align-items:center;gap:20px}
+  .fcc-card{width:92%;max-width:420px;min-width:auto;padding:36px 28px 32px;margin:0 auto}
+  .fcc-card-label{font-size:.72rem;letter-spacing:.18em;margin-bottom:14px}
+  .fcc-card-title{font-size:clamp(1.22rem,4vw,1.45rem);margin-bottom:24px}
+  .fcc-card-note{font-size:.92rem;line-height:1.65;margin-top:16px;color:rgba(168,168,160,.38)}
+  .fcc-primary{justify-content:center;width:100%;font-size:.88rem;padding:20px 36px;min-height:58px}
+  .fcc-secondary{width:100%;font-size:.86rem;padding:18px 32px;min-height:56px}
+  .fcc-reassure{font-size:.72rem;margin-top:10px}
   .commitment-note{padding:32px 20px 28px}
   .fit-screen{padding:32px 20px}
   .dg-row{flex-wrap:wrap;gap:8px}
@@ -1488,26 +1491,31 @@ body::after{
   .fcc{padding:56px 18px}
   .fcc-hed-1{font-size:clamp(1.5rem,8vw,2.1rem)}
   .fcc-hed-2{font-size:clamp(1.3rem,7vw,1.9rem)}
-  .fcc-sub{font-size:.88rem}
+  .fcc-sub{font-size:.90rem}
   .fcc-gold{font-size:clamp(1.1rem,5vw,1.4rem)}
-  .fcc-card{padding:26px 20px 22px}
-  .fcc-card-title{font-size:.98rem}
-  .fcc-primary{font-size:.78rem;padding:16px 28px;min-height:52px}
-  .fcc-secondary{font-size:.76rem;padding:14px 24px;min-height:50px}
-  .fcc-card-note{font-size:.62rem}
+  .fcc-card{width:94%;padding:32px 24px 28px}
+  .fcc-card-label{font-size:.68rem;margin-bottom:12px}
+  .fcc-card-title{font-size:clamp(1.16rem,4.2vw,1.35rem);margin-bottom:22px}
+  .fcc-card-note{font-size:.88rem}
+  .fcc-primary{font-size:.84rem;padding:18px 32px;min-height:56px}
+  .fcc-secondary{font-size:.82rem;padding:16px 28px;min-height:54px}
 }
 @media(max-width:390px){
   .fcc{padding:48px 16px}
-  .fcc-eye{font-size:.58rem;margin-bottom:28px}
+  .fcc-eye{font-size:.60rem;margin-bottom:28px}
   .fcc-hed{gap:.22em;margin-bottom:24px}
   .fcc-hed-1{font-size:clamp(1.4rem,8.5vw,1.9rem)}
   .fcc-hed-2{font-size:clamp(1.2rem,7.5vw,1.7rem)}
-  .fcc-sub{font-size:.86rem;line-height:1.75}
+  .fcc-sub{font-size:.88rem;line-height:1.75}
   .fcc-gold{font-size:clamp(1rem,5.5vw,1.3rem)}
-  .fcc-rule{margin:0 auto 28px}
-  .fcc-card{padding:24px 18px 20px}
-  .fcc-primary{font-size:.76rem;min-height:50px}
-  .fcc-secondary{font-size:.74rem;min-height:48px}
+  .fcc-rule{margin:0 auto 32px}
+  .fcc-card{width:96%;padding:30px 22px 26px}
+  .fcc-card-label{font-size:.66rem;margin-bottom:11px}
+  .fcc-card-title{font-size:clamp(1.1rem,4.5vw,1.28rem);margin-bottom:20px}
+  .fcc-card-note{font-size:.84rem;line-height:1.6}
+  .fcc-primary{font-size:.82rem;padding:18px 28px;min-height:54px}
+  .fcc-secondary{font-size:.80rem;padding:16px 24px;min-height:52px}
+  .fcc-reassure{font-size:.68rem}
 }
 
 /* ── Market Allocation ── */
