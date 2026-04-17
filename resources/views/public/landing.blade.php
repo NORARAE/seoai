@@ -1866,8 +1866,8 @@ footer{border-top:1px solid var(--border);padding:36px 64px;display:flex;flex-di
   .nav-btn.nav-book{display:inline-flex;font-size:.68rem;padding:9px 18px;letter-spacing:.1em}
   .nav-account{display:none}
   .nav-hamburger{display:flex}
-  #hero{padding:88px 24px 32px;min-height:0}
-  .hero-actions{flex-direction:column;gap:16px;width:100%}
+  #hero{padding:88px 24px 24px;min-height:0}
+  .hero-actions{flex-direction:column;gap:12px;width:100%;align-items:center}
   .btn-primary{width:100%;text-align:center;padding:16px 24px}
   .btn-ghost{text-align:center}
   /* Mobile: stronger ambient atmosphere for cinematic first-screen feel */
@@ -1876,8 +1876,8 @@ footer{border-top:1px solid var(--border);padding:36px 64px;display:flex;flex-di
   .amb-bloom{background:radial-gradient(ellipse at 42% 46%,rgba(200,168,75,.07) 0%,transparent 65%);opacity:1}
   .amb-shimmer{display:block}
   .hero-scroll{left:20px;bottom:32px}
-  .hero-transition{padding:16px 0 0}
-  .hero-scroll-arrow{margin:10px auto 0}
+  .hero-transition{padding:6px 0 0}
+  .hero-scroll-arrow{margin:8px auto 0}
   .alloc-section{padding:64px 24px}
   .alloc-layout{grid-template-columns:1fr;gap:48px}
   .alloc-actions{flex-direction:column;gap:16px;width:100%;}
@@ -1937,7 +1937,7 @@ footer{border-top:1px solid var(--border);padding:36px 64px;display:flex;flex-di
 }
 @media(max-width:520px){
   html{font-size:16px}
-  #hero{padding:80px 20px 28px;min-height:0}
+  #hero{padding:76px 20px 18px;min-height:0}
   .hero-scroll{display:none}
   .alloc-section{padding:48px 20px}
   .alloc-sub{max-width:100%}
@@ -3056,17 +3056,18 @@ body::before{
   .wyl-title{font-size:1.28rem}
   .step-title{font-size:1.18rem}
 
-  /* Hero supporting copy */
-  .hero-stage{font-size:clamp(2.8rem,7.5vw,4rem)} /* covers 520–768px gap */
-  .hero-gold-accent{margin-bottom:18px;line-height:1.3}
-  .hero-transition{padding:12px 0 0}
+  /* Hero zone structure: Z1=headline+accent, Z2=actions, Z3=transition */
+  .hero-stage{font-size:clamp(2.8rem,7.5vw,4rem);margin-bottom:12px;height:calc(2em * 1.18)}
+  .hero-gold-accent{margin-bottom:30px;line-height:1.3;font-size:clamp(1.15rem,3.8vw,1.6rem)}
+  .hero-transition{padding:6px 0 0}
   .hero-scroll-arrow{margin:8px auto 0}
   .hero-note{font-size:clamp(1rem,4vw,1.2rem);margin-bottom:22px;padding-left:12px;max-width:100%}
   .hero-diff{font-size:.82rem;margin-bottom:20px}
   .hero-cities{font-size:.96rem;margin-bottom:24px;letter-spacing:.09em;padding-left:14px}
   .hero-cta-note{font-size:.64rem;letter-spacing:.12em}
   .hero-net{opacity:.11}
-  .hero-scroll-label{font-size:.60rem;letter-spacing:.16em}
+  .hero-scroll-label{font-size:.60rem;letter-spacing:.16em;margin-bottom:8px}
+  #proof{padding:48px 24px 0}
 }
 
 /* ── 2. Section spacing ── */
@@ -3087,14 +3088,15 @@ body::before{
 
 /* ── 3. CTA hierarchy ── */
 @media(max-width:768px){
-  /* Primary — dominant, thumb-friendly */
+  /* Primary — dominant, inevitable center of gravity */
   .btn-primary{
-    min-height:56px;padding:18px 28px;font-size:.84rem;
+    min-height:54px;padding:16px 28px;font-size:.82rem;
     display:flex;align-items:center;justify-content:center;
+    box-shadow:0 4px 28px rgba(200,168,75,.18);
   }
-  /* Secondary — quieter, still accessible */
-  .btn-ghost{opacity:.68;font-size:.78rem;letter-spacing:.13em;padding-bottom:3px}
-  .hero-actions{gap:20px}
+  /* Secondary — quieter, a clear secondary path downward */
+  .btn-ghost{opacity:.68;font-size:.76rem;letter-spacing:.12em;padding-bottom:5px;border-bottom-color:rgba(200,168,75,.28)}
+  .hero-actions{gap:12px}
   .alloc-actions{gap:22px}
   /* Audience CTAs — full-width on card */
   .aud-cta{
@@ -3260,18 +3262,20 @@ body::before{
   .cm span{font-size:.92rem;line-height:1.6}
 }
 
-/* ── 11. Hero headline — very small phones (≤390px) ── */
+/* ── 11. Hero — very small phones (≤390px): zone model preserved ── */
 @media(max-width:390px){
-  /* Reduce font-size floor so 5-word headlines wrap to 2 lines max, not 3 */
-  .hero-stage{font-size:clamp(2.4rem,8.5vw,3rem)}
-  /* Compensate: stage height is 2em × line-height — keep reserve at 2 lines */
-  /* (height is set via JS-matchable clamp; CSS height:2.12em still correct) */
-
-  /* Gold accent — slightly tighter */
-  .hero-gold-accent{font-size:clamp(1rem,4.2vw,1.3rem);margin-bottom:12px}
-
-  /* Hero section padding — recover vertical space gained */
-  #hero{padding:76px 20px 24px;min-height:0}
+  /* Z1: headline — tighter internal bond */
+  .hero-stage{font-size:clamp(2.4rem,8.5vw,3rem);margin-bottom:8px}
+  /* Z1→Z2: zone break maintained at small scale */
+  .hero-gold-accent{font-size:clamp(1rem,4.2vw,1.3rem);margin-bottom:24px}
+  /* Container — minimal base padding */
+  #hero{padding:72px 18px 16px;min-height:0}
+  /* Z3: transition — compact descent */
+  .hero-transition{padding:4px 0 0}
+  .hero-scroll-arrow{margin:4px auto 0}
+  /* CTA — compact but dominant */
+  .btn-primary{min-height:50px;padding:14px 24px;font-size:.8rem}
+  .btn-ghost{margin-top:2px}
 }
 /* ── AI Citation Engine section ── */
 .ace-section{padding:96px 64px;max-width:1200px;margin:0 auto}
