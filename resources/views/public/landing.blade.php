@@ -1237,34 +1237,34 @@ body::after{
 /* ── Final Closing CTA section ── */
 .fcc{
   position:relative;overflow:hidden;
-  padding:100px 64px;text-align:center;
-  border-top:1px solid rgba(200,168,75,.14);
+  padding:110px 64px;text-align:center;
+  border-top:1px solid rgba(200,168,75,.10);
 }
 .fcc::before{
   content:'';
   position:absolute;inset:0;
-  background:radial-gradient(ellipse 82% 74% at 50% 46%,rgba(200,168,75,.17) 0%,rgba(200,168,75,.05) 52%,transparent 70%);
+  background:radial-gradient(ellipse 70% 60% at 50% 48%,rgba(200,168,75,.08) 0%,rgba(200,168,75,.02) 55%,transparent 72%);
   pointer-events:none;
-  animation:fccGlow 8s ease-in-out infinite;
+  animation:fccGlow 12s ease-in-out infinite;
   z-index:0;
 }
 .fcc::after{
   content:'';
   position:absolute;inset:0;
   background-image:
-    linear-gradient(rgba(200,168,75,.018) 1px,transparent 1px),
-    linear-gradient(90deg,rgba(200,168,75,.018) 1px,transparent 1px);
+    linear-gradient(rgba(200,168,75,.01) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(200,168,75,.01) 1px,transparent 1px);
   background-size:72px 72px;
   pointer-events:none;
   z-index:0;
 }
 @keyframes fccGlow{
-  0%,100%{opacity:.72}
-  50%{opacity:1}
+  0%,100%{opacity:.55}
+  50%{opacity:.82}
 }
 .fcc-canvas{
   position:absolute;inset:0;width:100%;height:100%;
-  pointer-events:none;z-index:0;
+  pointer-events:none;z-index:0;opacity:.55;
 }
 .fcc-inner{
   position:relative;z-index:1;
@@ -1272,15 +1272,15 @@ body::after{
 }
 .fcc-eye{
   font-size:.63rem;letter-spacing:.38em;text-transform:uppercase;
-  color:rgba(200,168,75,.58);margin-bottom:52px;
+  color:rgba(200,168,75,.50);margin-bottom:48px;
   display:flex;align-items:center;justify-content:center;gap:20px;
 }
 .fcc-eye::before,.fcc-eye::after{
-  content:'';width:44px;height:1px;background:rgba(200,168,75,.2);
+  content:'';width:44px;height:1px;background:rgba(200,168,75,.16);
 }
 .fcc-hed{
   font-family:'Cormorant Garamond',serif;font-weight:200;
-  line-height:1.08;margin-bottom:44px;
+  line-height:1.08;margin-bottom:36px;
   display:flex;flex-direction:column;gap:.30em;
 }
 .fcc-hed-1{
@@ -1295,61 +1295,95 @@ body::after{
 }
 .fcc-sub{
   font-size:.96rem;color:rgba(168,168,160,.70);
-  line-height:1.85;margin-bottom:32px;
+  line-height:1.85;margin-bottom:28px;
   max-width:560px;margin-left:auto;margin-right:auto;
 }
 .fcc-gold{
   font-family:'Cormorant Garamond',serif;font-weight:400;font-style:italic;
   font-size:clamp(1.4rem,2.4vw,2.0rem);
   letter-spacing:.01em;
-  background:linear-gradient(90deg,var(--gold) 0%,rgba(245,228,152,.98) 44%,var(--gold) 62%,var(--gold) 100%);
+  background:linear-gradient(90deg,var(--gold) 0%,rgba(245,228,152,.92) 44%,var(--gold) 62%,var(--gold) 100%);
   background-size:260% 100%;
   -webkit-background-clip:text;
   -webkit-text-fill-color:transparent;
   background-clip:text;
-  animation:fccGoldShimmer 10s ease-in-out infinite;
-  margin-bottom:18px;
+  animation:fccGoldShimmer 14s ease-in-out infinite;
+  margin-bottom:20px;
   display:block;
 }
 @keyframes fccGoldShimmer{
   0%,100%{background-position:120% 0}
-  40%,60%{background-position:0% 0}
+  35%,65%{background-position:0% 0}
 }
 .fcc-micro{
   font-size:.70rem;letter-spacing:.22em;text-transform:uppercase;
   color:rgba(168,168,160,.42);margin-bottom:56px;
 }
 .fcc-rule{
-  display:block;width:64px;height:1px;margin:0 auto 48px;
-  background:linear-gradient(90deg,transparent,rgba(200,168,75,.32),transparent);
+  display:block;width:80px;height:1px;margin:0 auto 52px;
+  background:linear-gradient(90deg,transparent,rgba(200,168,75,.24),transparent);
 }
 .fcc-actions{
-  display:flex;align-items:center;justify-content:center;gap:22px;
-  flex-wrap:wrap;margin-bottom:22px;
+  display:flex;align-items:stretch;justify-content:center;gap:24px;
+  flex-wrap:wrap;margin-bottom:28px;
+}
+/* ── FCC path cards ── */
+.fcc-card{
+  flex:1;min-width:240px;max-width:340px;
+  border-radius:10px;padding:34px 28px 30px;
+  text-align:center;position:relative;
+  backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);
+}
+.fcc-card--scan{
+  background:rgba(200,168,75,.05);
+  border:1px solid rgba(200,168,75,.10);
+}
+.fcc-card--system{
+  background:rgba(106,175,144,.03);
+  border:1px solid rgba(106,175,144,.09);
+}
+.fcc-card-label{
+  font-size:.62rem;letter-spacing:.16em;text-transform:uppercase;
+  color:rgba(168,168,160,.45);margin-bottom:10px;
+}
+.fcc-card-title{
+  font-size:1.08rem;color:var(--ivory);font-family:'Cormorant Garamond',serif;
+  font-weight:300;margin-bottom:20px;line-height:1.3;
+}
+.fcc-card-note{
+  font-size:.64rem;letter-spacing:.06em;color:rgba(168,168,160,.28);
+  margin-top:14px;line-height:1.5;
 }
 .fcc-primary{
-  display:inline-flex;align-items:center;
+  display:inline-flex;align-items:center;justify-content:center;
   background:var(--gold);color:#080808;
   font-family:'DM Sans',sans-serif;
   font-size:.82rem;font-weight:500;letter-spacing:.14em;text-transform:uppercase;
   padding:18px 44px;border-radius:6px;border:none;cursor:pointer;
   transition:background .3s,transform .2s,box-shadow .2s;
-  min-height:56px;
+  min-height:56px;text-decoration:none;
 }
 .fcc-primary:hover{
   background:var(--gold-lt);transform:translateY(-2px);
-  box-shadow:0 10px 32px rgba(200,168,75,.26);
+  box-shadow:0 8px 28px rgba(200,168,75,.22);
 }
 .fcc-secondary{
+  display:inline-flex;align-items:center;justify-content:center;
   font-size:.80rem;letter-spacing:.14em;text-transform:uppercase;
-  color:rgba(168,168,160,.65);text-decoration:none;
-  border-bottom:1px solid rgba(168,168,160,.18);padding-bottom:2px;
-  transition:color .2s,border-color .2s;
+  color:var(--green);text-decoration:none;
+  background:rgba(106,175,144,.10);
+  border:1px solid rgba(106,175,144,.18);
+  padding:16px 36px;border-radius:6px;
+  transition:background .3s,transform .2s,border-color .2s;
+  min-height:54px;
 }
-.fcc-secondary:hover{color:var(--gold);border-color:rgba(200,168,75,.42)}
+.fcc-secondary:hover{
+  background:rgba(106,175,144,.16);border-color:rgba(106,175,144,.32);
+  transform:translateY(-2px);
+}
 .fcc-reassure{
-  font-size:.70rem;letter-spacing:.14em;text-transform:uppercase;
-  color:rgba(168,168,160,.35);
+  font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;
+  color:rgba(168,168,160,.32);margin-top:6px;
 }
 
 /* ── How-this-works trust strip ── */
@@ -1414,6 +1448,9 @@ body::after{
   .value-anchor,.exec-services,.access-position,.access-model,.decision-guide,.pricing-cta,.final-close{padding:48px 24px}
   .fcc{padding:80px 32px}
   .fcc-hed-1,.fcc-hed-2{font-size:clamp(1.9rem,5.2vw,2.8rem)}
+  .fcc-canvas{opacity:.4}
+  .fcc::before{background:radial-gradient(ellipse 70% 60% at 50% 48%,rgba(200,168,75,.06) 0%,transparent 65%)}
+  .fcc-card{max-width:300px;padding:30px 24px 26px}
   .commitment-note{padding:40px 28px 36px}
   .fit-screen{padding:40px 24px}
   .exec-grid{grid-template-columns:1fr}
@@ -1421,20 +1458,56 @@ body::after{
 }
 @media(max-width:520px){
   .value-anchor,.exec-services,.access-position,.access-model,.decision-guide,.pricing-cta,.final-close{padding:36px 20px}
-  .fcc{padding:60px 20px}
+  .fcc{padding:64px 20px}
   .fcc-hed-1,.fcc-hed-2{white-space:normal}
   .fcc-hed-1{font-size:clamp(1.65rem,7.8vw,2.4rem)}
   .fcc-hed-2{font-size:clamp(1.45rem,6.8vw,2.1rem)}
+  .fcc-canvas{opacity:.3}
+  .fcc::before{animation:none;opacity:.6}
+  .fcc::after{opacity:.4}
+  .fcc-eye{margin-bottom:36px}
+  .fcc-hed{margin-bottom:28px}
+  .fcc-sub{font-size:.92rem;margin-bottom:22px}
+  .fcc-gold{font-size:clamp(1.2rem,4.5vw,1.6rem);margin-bottom:16px}
+  .fcc-rule{width:60px;margin:0 auto 36px}
+  .fcc-actions{flex-direction:column;align-items:stretch;gap:14px}
+  .fcc-card{max-width:100%;min-width:auto;padding:28px 22px 24px}
+  .fcc-card-title{font-size:1.02rem;margin-bottom:18px}
+  .fcc-primary{justify-content:center;width:100%;padding:18px 32px;min-height:54px}
+  .fcc-secondary{width:100%;padding:16px 28px;min-height:52px}
+  .fcc-reassure{font-size:.68rem}
   .commitment-note{padding:32px 20px 28px}
   .fit-screen{padding:32px 20px}
-  .fcc-actions{flex-direction:column;align-items:stretch}
-  .fcc-primary{justify-content:center;width:100%}
-  .fcc-secondary{text-align:center}
   .dg-row{flex-wrap:wrap;gap:8px}
   .dg-tier{text-align:left;min-width:auto}
   .dg-if{width:auto}
   .pricing-cta-actions{flex-direction:column;gap:16px}
   .pricing-cta-actions .btn-primary{width:100%;text-align:center;justify-content:center}
+}
+@media(max-width:430px){
+  .fcc{padding:56px 18px}
+  .fcc-hed-1{font-size:clamp(1.5rem,8vw,2.1rem)}
+  .fcc-hed-2{font-size:clamp(1.3rem,7vw,1.9rem)}
+  .fcc-sub{font-size:.88rem}
+  .fcc-gold{font-size:clamp(1.1rem,5vw,1.4rem)}
+  .fcc-card{padding:26px 20px 22px}
+  .fcc-card-title{font-size:.98rem}
+  .fcc-primary{font-size:.78rem;padding:16px 28px;min-height:52px}
+  .fcc-secondary{font-size:.76rem;padding:14px 24px;min-height:50px}
+  .fcc-card-note{font-size:.62rem}
+}
+@media(max-width:390px){
+  .fcc{padding:48px 16px}
+  .fcc-eye{font-size:.58rem;margin-bottom:28px}
+  .fcc-hed{gap:.22em;margin-bottom:24px}
+  .fcc-hed-1{font-size:clamp(1.4rem,8.5vw,1.9rem)}
+  .fcc-hed-2{font-size:clamp(1.2rem,7.5vw,1.7rem)}
+  .fcc-sub{font-size:.86rem;line-height:1.75}
+  .fcc-gold{font-size:clamp(1rem,5.5vw,1.3rem)}
+  .fcc-rule{margin:0 auto 28px}
+  .fcc-card{padding:24px 18px 20px}
+  .fcc-primary{font-size:.76rem;min-height:50px}
+  .fcc-secondary{font-size:.74rem;min-height:48px}
 }
 
 /* ── Market Allocation ── */
@@ -4065,18 +4138,18 @@ body::before{
     <p class="fcc-sub">Start with a scan. Or skip ahead and deploy the full system.</p>
     <span class="fcc-gold">First to structure. First to scale. First to be cited.</span>
     <span class="fcc-rule" aria-hidden="true"></span>
-    <div class="fcc-actions" style="display:flex;gap:18px;flex-wrap:wrap;justify-content:center;align-items:stretch">
-      <div style="flex:1;min-width:220px;max-width:340px;background:rgba(200,168,75,.06);border:1px solid rgba(200,168,75,.10);border-radius:10px;padding:28px 24px;text-align:center">
-        <p style="font-size:.62rem;letter-spacing:.14em;text-transform:uppercase;color:rgba(168,168,160,.48);margin-bottom:6px">Start here</p>
-        <p style="font-size:1.04rem;color:var(--ivory);font-family:var(--serif);margin-bottom:16px">See where you stand</p>
+    <div class="fcc-actions">
+      <div class="fcc-card fcc-card--scan">
+        <p class="fcc-card-label">Start here</p>
+        <p class="fcc-card-title">See where you stand</p>
         <a href="{{ route('scan.start') }}" class="fcc-primary" onclick="if(typeof gtag==='function')gtag('event','cta_click',{cta_location:'final_close',cta_label:'run_scan'});">Start Your Scan — $2</a>
-        <p style="font-size:.64rem;letter-spacing:.08em;color:rgba(168,168,160,.3);margin-top:10px">Results in seconds &middot; No account needed</p>
+        <p class="fcc-card-note">Results in seconds &middot; No account needed</p>
       </div>
-      <div style="flex:1;min-width:220px;max-width:340px;background:rgba(106,175,144,.04);border:1px solid rgba(106,175,144,.10);border-radius:10px;padding:28px 24px;text-align:center">
-        <p style="font-size:.62rem;letter-spacing:.14em;text-transform:uppercase;color:rgba(168,168,160,.48);margin-bottom:6px">Skip ahead</p>
-        <p style="font-size:1.04rem;color:var(--ivory);font-family:var(--serif);margin-bottom:16px">Deploy the full system</p>
-        <a href="{{ route('onboarding.start', ['tier' => 'dominance']) }}" class="fcc-secondary" style="background:rgba(106,175,144,.12);color:var(--green);border-color:var(--green)" onclick="if(typeof gtag==='function')gtag('event','cta_click',{cta_location:'final_close',cta_label:'deploy_system'});">Start Market Control</a>
-        <p style="font-size:.64rem;letter-spacing:.08em;color:rgba(168,168,160,.3);margin-top:10px">Guided onboarding &middot; Strategy call included</p>
+      <div class="fcc-card fcc-card--system">
+        <p class="fcc-card-label">Skip ahead</p>
+        <p class="fcc-card-title">Deploy the full system</p>
+        <a href="{{ route('onboarding.start', ['tier' => 'dominance']) }}" class="fcc-secondary" onclick="if(typeof gtag==='function')gtag('event','cta_click',{cta_location:'final_close',cta_label:'deploy_system'});">Start Market Control</a>
+        <p class="fcc-card-note">Guided onboarding &middot; Strategy call included</p>
       </div>
     </div>
     <p class="fcc-reassure">Guided entry.&ensp;Structured rollout.&ensp;Full support.</p>
@@ -4652,7 +4725,7 @@ body::before{
     if(!canvas) return;
     var ctx = canvas.getContext('2d');
     var nodes=[], raf, W, H;
-    var COUNT=46, LINK=260, G='200,168,75';
+    var COUNT=30, LINK=200, G='200,168,75';
     var reduced = window.matchMedia('(prefers-reduced-motion:reduce)').matches;
     var tick=0;
 
@@ -4688,8 +4761,8 @@ body::before{
             ctx.beginPath();
             ctx.moveTo(nodes[i].x,nodes[i].y);
             ctx.lineTo(nodes[j].x,nodes[j].y);
-            ctx.strokeStyle='rgba('+G+','+(1-d/LINK)*.44+')';
-            ctx.lineWidth=.60;
+            ctx.strokeStyle='rgba('+G+','+(1-d/LINK)*.22+')';
+            ctx.lineWidth=.45;
             ctx.stroke();
           }
         }
@@ -4697,10 +4770,10 @@ body::before{
 
       for(var i=0;i<nodes.length;i++){
         var n = nodes[i];
-        var pulse = .42 + Math.sin(tick + n.phase) * .14;
+        var pulse = .28 + Math.sin(tick + n.phase) * .10;
         var glow  = n.glowMult;
-        ctx.shadowBlur  = glow * 14;
-        ctx.shadowColor = 'rgba('+G+','+(glow*.46).toFixed(2)+')';
+        ctx.shadowBlur  = glow * 8;
+        ctx.shadowColor = 'rgba('+G+','+(glow*.28).toFixed(2)+')';
         ctx.beginPath();
         ctx.arc(n.x, n.y, n.r, 0, Math.PI*2);
         ctx.fillStyle   = 'rgba('+G+','+pulse.toFixed(3)+')';
@@ -4708,8 +4781,8 @@ body::before{
         ctx.shadowBlur  = 0;
 
         if(!reduced){
-          n.x += n.vx * .90;
-          n.y += n.vy * .90;
+          n.x += n.vx * .65;
+          n.y += n.vy * .65;
           if(n.x<0)n.x=W; if(n.x>W)n.x=0;
           if(n.y<0)n.y=H; if(n.y>H)n.y=0;
         }
