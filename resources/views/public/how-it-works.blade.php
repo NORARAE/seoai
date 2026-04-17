@@ -281,6 +281,84 @@ html:not(.js-enabled) .r{opacity:1;transform:none}
   .hiw-tiers{grid-template-columns:1fr}
 }
 
+/* ═══════════════════════════════════════════
+   MOBILE UX REFINEMENT PASS
+   ═══════════════════════════════════════════ */
+
+/* ── Typography + spacing — instant readability ── */
+@media(max-width:768px){
+  /* Hero — bigger, cleaner */
+  .hiw-hero{padding:clamp(88px,12vh,128px) 0 48px}
+  .hiw-hero-hed{font-size:clamp(1.9rem,5.5vw,2.8rem);margin-bottom:18px}
+  .hiw-hero-sub{font-size:.96rem;line-height:1.82;margin-bottom:32px}
+  .hiw-hero-eye{font-size:.66rem;letter-spacing:.22em;margin-bottom:16px}
+
+  /* Section headings — bigger */
+  .hiw-section-hed{font-size:clamp(1.5rem,4.5vw,2rem);margin-bottom:14px}
+  .hiw-section-sub{font-size:.92rem;line-height:1.8;margin-bottom:32px}
+  .hiw-section-eye{font-size:.64rem;letter-spacing:.2em;margin-bottom:12px}
+  .hiw-section{padding:clamp(40px,5vw,64px) 0}
+
+  /* Pipeline steps — readable text */
+  .hiw-pipe-label{font-size:.98rem;margin-bottom:6px}
+  .hiw-pipe-desc{font-size:.78rem;line-height:1.68}
+  .hiw-pipe-num{font-size:.58rem;margin-bottom:8px}
+  .hiw-pipe-step{padding:22px 16px 18px}
+
+  /* "What happens" cards — bigger text + more padding */
+  .hiw-happens-block{padding:30px 24px}
+  .hiw-happens-title{font-size:1.16rem;margin-bottom:10px}
+  .hiw-happens-text{font-size:.88rem;line-height:1.78}
+  .hiw-happens-num{font-size:.58rem;margin-bottom:10px}
+
+  /* General cards — bigger text + more padding */
+  .hiw-card{padding:30px 24px}
+  .hiw-card-title{font-size:1.18rem;margin-bottom:10px}
+  .hiw-card-text{font-size:.88rem;line-height:1.78}
+  .hiw-card-num{font-size:.6rem;margin-bottom:10px}
+
+  /* Tier progression cards — readable */
+  .hiw-tier{padding:26px 22px}
+  .hiw-tier-price{font-size:1.5rem;margin-bottom:6px}
+  .hiw-tier-name{font-size:.76rem;letter-spacing:.14em;margin-bottom:10px}
+  .hiw-tier-desc{font-size:.84rem;line-height:1.74}
+  .hiw-tier-level{font-size:.6rem;margin-bottom:6px}
+  .hiw-tier-badge{font-size:.54rem;margin-bottom:10px}
+  .hiw-progression-note{font-size:.9rem;line-height:1.78;margin-top:24px}
+
+  /* CTA blocks — bigger buttons + text */
+  .hiw-cta-block{padding:44px 0 48px}
+  .hiw-cta-block p{font-size:.9rem;line-height:1.8;margin-bottom:24px}
+  .btn-primary{min-height:52px;padding:16px 28px;font-size:.8rem;display:flex;align-items:center;justify-content:center}
+  .btn-ghost{font-size:.78rem;padding-bottom:4px}
+  .hiw-hero-cta .btn-primary{width:100%;text-align:center;justify-content:center}
+
+  /* Momentum section */
+  .hiw-momentum-hed{font-size:clamp(1.4rem,4.5vw,1.9rem);margin-bottom:14px}
+  .hiw-momentum-sub{font-size:.92rem;line-height:1.8;margin-bottom:28px}
+
+  /* Final section */
+  .hiw-final-hed{font-size:clamp(1.5rem,5vw,2.2rem);margin-bottom:14px}
+  .hiw-final-sub{font-size:.92rem;line-height:1.8;margin-bottom:28px}
+  .hiw-final-reassure{font-size:.78rem;margin-top:18px}
+
+  /* Gold rules — breathing room */
+  .gold-rule{margin:8px 0}
+}
+
+/* ── Small phones ── */
+@media(max-width:430px){
+  .hiw-hero{padding:clamp(80px,10vh,100px) 0 40px}
+  .hiw-hero-hed{font-size:clamp(1.7rem,7vw,2.2rem)}
+  .hiw-hero-sub{font-size:.92rem}
+  .hiw-section-hed{font-size:clamp(1.35rem,5.5vw,1.8rem)}
+  .hiw-happens-title{font-size:1.1rem}
+  .hiw-card-title{font-size:1.12rem}
+  .hiw-cta-block p{font-size:.86rem}
+  .hiw-tier-price{font-size:1.4rem}
+  .wrap{padding:0 20px}
+}
+
 @include('partials.public-nav-mobile-css')
 
 /* ── Mobile nav ── */

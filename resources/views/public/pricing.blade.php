@@ -855,6 +855,99 @@
   .btn-primary{padding:13px 28px;font-size:.7rem}
   .btn-ghost{font-size:.74rem}
 }
+
+/* ═══════════════════════════════════════════
+   MOBILE UX REFINEMENT PASS
+   ═══════════════════════════════════════════ */
+
+/* ── Typography scaling — instant readability ── */
+@media(max-width:768px){
+  /* Hero — bigger, more assertive */
+  .p-hero{padding:48px 0 44px}
+  .p-hero-hed{font-size:clamp(2rem,6vw,3rem);margin-bottom:18px}
+  .p-hero-sub{font-size:.96rem;line-height:1.82;margin-bottom:32px;max-width:420px}
+  .p-hero-eye{font-size:.66rem;letter-spacing:.24em;margin-bottom:20px}
+  .p-hero-actions{gap:14px}
+  .p-bridge{height:40px}
+
+  /* Section headings — bigger */
+  .s-hed{font-size:clamp(1.6rem,5vw,2.2rem);margin-bottom:14px}
+  .s-sub{font-size:.92rem;line-height:1.78;margin-bottom:10px}
+  .s-eye{font-size:.66rem;letter-spacing:.2em;margin-bottom:16px}
+  .s-clarify{font-size:.78rem;line-height:1.76}
+
+  /* Tier cards — readable text + bigger tap targets */
+  .tier{padding:26px 22px}
+  .tier-name{font-size:1.22rem;margin-bottom:10px}
+  .tier-price{font-size:2.6rem;margin-bottom:6px}
+  .tier-position{font-size:.82rem;line-height:1.72;min-height:auto;margin-bottom:16px}
+  .tier-step{font-size:.56rem;margin-bottom:8px}
+  .tier-flag{font-size:.6rem;letter-spacing:.14em;margin-bottom:6px}
+  .tier-features li{font-size:.82rem;line-height:1.68;gap:10px}
+  .tier-features li svg{width:14px;height:14px;margin-top:3px}
+  .tier-features{gap:12px;margin-bottom:6px}
+  .tier-divider{margin:6px 0 14px}
+  .tier-cta{padding:16px 18px;font-size:.72rem;min-height:52px;letter-spacing:.14em}
+  .tier-book{padding:13px 16px;font-size:.66rem}
+  .tier-commitment{font-size:.74rem;line-height:1.76;margin-top:10px}
+  .tier-actions{padding-top:16px}
+
+  /* Focal tier — more prominent */
+  .tier.focal .tier-price{font-size:2.8rem}
+
+  /* Prime / Market Control tier */
+  .tier.prime{padding:28px 22px}
+  .tier.prime .tier-name{font-size:1.4rem}
+  .tier.prime .tier-price{font-size:3rem}
+  .tier.prime .tier-position{font-size:.86rem;line-height:1.76}
+  .tier.prime .tier-features li{font-size:.84rem}
+  .tier.prime .tier-cta{min-height:54px;padding:16px 20px;font-size:.72rem}
+
+  /* Execution layers — readable */
+  .layer-card{padding:26px 22px}
+  .layer-title{font-size:1rem;margin-bottom:8px}
+  .layer-body{font-size:.82rem;line-height:1.72;margin-bottom:16px}
+  .layer-items li{font-size:.78rem;line-height:1.66}
+  .layer-items{gap:8px;margin-bottom:16px}
+  .layer-cta{padding:13px 16px;font-size:.66rem;min-height:48px}
+
+  /* Decision guide — readable */
+  .guide-item{padding:22px 22px;gap:14px}
+  .guide-cond{font-size:.84rem;line-height:1.72}
+  .guide-action{font-size:.72rem;line-height:1.6}
+  .guide-marker{font-size:1.2rem}
+
+  /* FAQ — bigger text */
+  .faq-q{font-size:1.14rem;margin-bottom:12px;line-height:1.3}
+  .faq-a{font-size:.86rem;line-height:1.76}
+  .faq-item{padding:24px 0}
+
+  /* Final CTA — prominent */
+  .final-cta{padding:56px 0}
+  .final-cta-hed{font-size:clamp(1.6rem,5vw,2.2rem)}
+  .final-cta-sub{font-size:.88rem;line-height:1.78;margin-bottom:28px}
+  .final-cta-eye{font-size:.66rem;letter-spacing:.22em;margin-bottom:18px}
+
+  /* Buttons — bigger tap targets */
+  .btn-primary{min-height:52px;padding:16px 28px;font-size:.8rem;display:flex;align-items:center;justify-content:center}
+  .btn-ghost{font-size:.78rem;padding-bottom:4px}
+
+  /* Section spacing */
+  .section-divide{height:48px}
+  .plans-intro{margin-bottom:32px}
+}
+
+/* ── Small phones ── */
+@media(max-width:430px){
+  .p-hero-hed{font-size:clamp(1.8rem,7vw,2.4rem)}
+  .p-hero-sub{font-size:.92rem}
+  .tier-name{font-size:1.14rem}
+  .tier-price{font-size:2.4rem}
+  .tier-position{font-size:.8rem}
+  .tier-features li{font-size:.8rem}
+  .tier.prime .tier-name{font-size:1.3rem}
+  .tier.prime .tier-price{font-size:2.6rem}
+}
 </style>
 @include('partials.clarity')
 </head>

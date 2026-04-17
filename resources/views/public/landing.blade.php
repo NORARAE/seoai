@@ -3023,22 +3023,22 @@ body::before{
 /* ── 1. Typography ── */
 @media(max-width:768px){
   /* Body copy — lift to ≥16px at 17px root */
-  .wyl-desc{font-size:.95rem;line-height:1.76;color:rgba(168,168,160,.92)}
-  .step-desc{font-size:.95rem;line-height:1.74;color:rgba(168,168,160,.92)}
-  .tier-features li{font-size:.93rem;line-height:1.72}
-  .tier-commitment{font-size:.86rem;line-height:1.82}
-  .tier-urls{font-size:.86rem;line-height:1.7}
-  .ul-body{font-size:.97rem;line-height:1.76}
-  .ul-state-desc{font-size:.9rem;line-height:1.76}
-  .pos-support{font-size:.97rem;line-height:1.74}
-  .pos-proof li{font-size:.97rem;line-height:1.72}
-  .alloc-reinforce span{font-size:.97rem;line-height:1.76}
-  .alloc-sub p{font-size:1rem;line-height:1.82}
-  .offer-note{font-size:.95rem;line-height:1.84}
-  .alloc-avail-note{font-size:.91rem;line-height:1.86}
-  .exp-body{font-size:.93rem;line-height:1.76}
-  .ac-body{font-size:.93rem;line-height:1.76}
-  .stmt-body p{font-size:.97rem;line-height:1.8}
+  .wyl-desc{font-size:.98rem;line-height:1.78;color:rgba(168,168,160,.92)}
+  .step-desc{font-size:.98rem;line-height:1.76;color:rgba(168,168,160,.92)}
+  .tier-features li{font-size:.95rem;line-height:1.74}
+  .tier-commitment{font-size:.88rem;line-height:1.84}
+  .tier-urls{font-size:.88rem;line-height:1.72}
+  .ul-body{font-size:1rem;line-height:1.78}
+  .ul-state-desc{font-size:.92rem;line-height:1.78}
+  .pos-support{font-size:1rem;line-height:1.76}
+  .pos-proof li{font-size:1rem;line-height:1.74}
+  .alloc-reinforce span{font-size:1rem;line-height:1.78}
+  .alloc-sub p{font-size:1.02rem;line-height:1.84}
+  .offer-note{font-size:.98rem;line-height:1.86}
+  .alloc-avail-note{font-size:.93rem;line-height:1.88}
+  .exp-body{font-size:.96rem;line-height:1.78}
+  .ac-body{font-size:.96rem;line-height:1.78}
+  .stmt-body p{font-size:1rem;line-height:1.82}
 
   /* Small uppercase labels — reduce letter-spacing */
   .s-eye{letter-spacing:.18em;font-size:.72rem}
@@ -3050,11 +3050,11 @@ body::before{
   .alloc-panel-label{letter-spacing:.18em;font-size:.75rem}
 
   /* Display headings — tighter so wrapping is intentional, not accidental */
-  .pos-h2{line-height:1.07}
-  .alloc-hed{line-height:1.11}
-  .access-headline{line-height:1.13}
-  .wyl-title{font-size:1.28rem}
-  .step-title{font-size:1.18rem}
+  .pos-h2{line-height:1.07;font-size:clamp(1.8rem,5vw,2.4rem)}
+  .alloc-hed{line-height:1.11;font-size:clamp(1.8rem,5vw,2.4rem)}
+  .access-headline{line-height:1.13;font-size:clamp(1.7rem,5vw,2.2rem)}
+  .wyl-title{font-size:1.32rem}
+  .step-title{font-size:1.22rem}
 
   /* Hero zone structure: Z1=headline+accent, Z2=actions, Z3=transition */
   .hero-stage{font-size:clamp(2.8rem,7.5vw,4rem);margin-bottom:12px;height:calc(2em * 1.18)}
@@ -3262,7 +3262,66 @@ body::before{
   .cm span{font-size:.92rem;line-height:1.6}
 }
 
-/* ── 11. Hero — very small phones (≤390px): zone model preserved ── */
+/* ── 11. Section spacing + breathing room ── */
+@media(max-width:768px){
+  /* More space between major sections */
+  .gold-rule{margin:12px 0}
+  .audience-section,.url-lock,.wyl-section,.url-section{padding:56px 24px}
+  .steps-wrap,.licence-stmt-section{padding:48px 24px}
+  #offer,#contact{padding:56px 24px}
+  /* Section headings — bigger + more breathing room */
+  .s-h{margin-bottom:24px}
+  .s-p{font-size:1rem;line-height:1.82}
+  .s-eye{margin-bottom:18px}
+  /* Diagnostic section — bigger text */
+  .diag-hed{font-size:clamp(1.6rem,5vw,2.2rem)}
+  .diag-sub{font-size:.95rem;line-height:1.78}
+  .diag-eyebrow{font-size:.68rem;letter-spacing:.2em;margin-bottom:16px}
+  .diag-score-num{font-size:2.8rem}
+  .diag-score-denom{font-size:.82rem}
+  .diag-result-row{font-size:.9rem;line-height:1.72;padding:6px 0}
+  .diag-panel-footer{font-size:.82rem}
+  .diag-cta-meta{font-size:.68rem}
+  /* Feature cards — bigger text */
+  .feat-card-title{font-size:.9rem}
+  .feat-card-body{font-size:.84rem;line-height:1.74}
+  /* ACE section — bigger text */
+  .ace-block-title{font-size:.96rem;margin-bottom:10px}
+  .ace-block-desc{font-size:.86rem;line-height:1.74}
+  .ace-sub{font-size:1rem}
+  /* System structure section */
+  .sys-hed{font-size:clamp(1.8rem,5vw,2.4rem)}
+  .sys-sub{font-size:1rem;line-height:1.8}
+  .sys-position-note{font-size:.92rem;line-height:1.76}
+  .sys-domain{font-size:.82rem}
+  .sys-url-item{font-size:.78rem}
+  .sys-city-name{font-size:.72rem}
+  /* Infrastructure section */
+  .infra-sub-copy{font-size:.95rem;line-height:1.8}
+  .infra-pillar-title{font-size:1.06rem}
+  .infra-pillar-desc{font-size:.82rem;line-height:1.76}
+  /* Settlement section */
+  .settle-hed{font-size:clamp(1.4rem,4.5vw,1.9rem)}
+  .settle-card-title{font-size:1rem}
+  .settle-card-body{font-size:.88rem;line-height:1.76}
+  /* Expansion section */
+  .exp-hed{font-size:clamp(1.6rem,5vw,2.2rem)}
+  .exp-body{font-size:.96rem;line-height:1.78}
+  /* Contact form section — bigger labels + copy */
+  .contact-hed{font-size:clamp(1.6rem,5vw,2rem)}
+  /* CVB / trust-diff — bigger copy */
+  .cvb-hed{font-size:clamp(1.6rem,5vw,2.2rem)}
+  .cvb-body{font-size:.95rem;line-height:1.78}
+  .cvb-point{font-size:.95rem;line-height:1.72}
+  .trust-hed{font-size:clamp(1.5rem,5vw,2rem)}
+  .trust-body{font-size:.94rem;line-height:1.78}
+  /* Crypto section */
+  .crypto-lines{font-size:.95rem;line-height:1.76}
+  .crypto-emphasis{font-size:1.1rem}
+  .crypto-sub{font-size:.86rem}
+}
+
+/* ── 12. Hero — very small phones (≤390px): zone model preserved ── */
 @media(max-width:390px){
   /* Z1: headline — tighter internal bond */
   .hero-stage{font-size:clamp(2.4rem,8.5vw,3rem);margin-bottom:8px}

@@ -410,51 +410,182 @@ footer{border-top:1px solid var(--border);padding:32px 48px;display:flex;flex-di
 .report-layer .layer-body{position:relative}
 .report-layer .layer-body::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 80% 60% at 50% 0%,rgba(200,168,75,.03),transparent 70%);pointer-events:none;z-index:0}
 
-/* ── Mobile ── */
+/* ── Mobile Refinement Pass ── */
 @media(max-width:768px){
+  /* 1. Nav */
   #nav{padding:12px 16px}
   .nav-link{display:none}
-  .nav-btn{padding:9px 18px;font-size:.66rem}
+  .nav-btn{padding:10px 20px;font-size:.68rem;min-height:44px}
+
+  /* 2. Hero + score ring */
   .result-hero{padding:100px 20px 56px}
+  .result-eyebrow{font-size:.68rem;letter-spacing:.28em;margin-bottom:22px}
+  .result-url{font-size:.82rem;margin-bottom:28px}
   .score-ring-svg{width:150px;height:150px}
-  .score-number{font-size:3.2rem}
+  .score-number{font-size:3.4rem}
+  .score-label{font-size:.64rem}
+  .score-verdict{font-size:clamp(1.35rem,4vw,1.9rem);max-width:90%}
+  .score-subline{font-size:.8rem;opacity:.62}
+  .res-progression{gap:4px;max-width:360px}
+  .res-prog-label{font-size:.62rem}
+
+  /* 3. Stats row */
+  .stats-row{gap:20px;padding:16px 20px;max-width:100%}
+  .stat-value{font-size:1.5rem}
+  .stat-label{font-size:.6rem;letter-spacing:.18em}
+
+  /* 4. Category grid */
   .result-body{padding:0 16px 48px}
   .cat-grid{grid-template-columns:1fr;gap:14px}
-  .cat-card{min-height:auto;padding:24px 22px 26px}
-  .stats-row{gap:20px;padding:16px 20px;max-width:100%}
-  .stat-value{font-size:1.4rem}
-  .cta-grid{grid-template-columns:1fr}
-  .cta-card{padding:24px 20px}
-  .cta-section{padding:48px 0 0}
+  .cat-card{min-height:auto;padding:26px 22px 28px}
+  .cat-name{font-size:.72rem;letter-spacing:.16em}
+  .cat-score{font-size:1.4rem}
+  .cat-status{font-size:.56rem}
+  .check-item{font-size:.84rem;line-height:1.55}
+  .check-icon{font-size:.8rem}
+  .check-pts{font-size:.7rem}
+
+  /* 5. Fastest fix + broken links */
+  .fastest-fix{padding:26px 22px}
+  .fix-label{font-size:.68rem}
+  .fix-text{font-size:1rem;line-height:1.6}
+  .broken-title{font-size:.76rem}
+  .broken-item{font-size:.86rem}
+  .broken-status{font-size:.76rem}
+
+  /* 6. Market coverage */
+  .market-eyebrow{font-size:.7rem}
+  .market-bar-labels{font-size:.72rem}
+  .market-stats{grid-template-columns:1fr 1fr 1fr;gap:10px}
+  .market-stat-val{font-size:1.4rem}
+  .market-stat-lbl{font-size:.66rem}
+  .market-insight{font-size:.88rem;line-height:1.65}
+  .market-cta{font-size:.82rem;padding:16px 28px;min-height:48px}
+  .vgap-label{font-size:.64rem}
+  .vgap-val{font-size:1.9rem}
+  .vgap-sub{font-size:.72rem}
+
+  /* 7. Urgency + competitive */
+  .urgency-hed{font-size:.9rem}
+  .urgency-sub{font-size:.84rem;line-height:1.6}
+  .comp-eyebrow{font-size:.66rem}
+  .comp-intro{font-size:.86rem}
+  .comp-item{font-size:.84rem}
+  .comp-bottom{font-size:.82rem}
+
+  /* 8. Report layers + tier ladder */
   .tier-ladder-grid{grid-template-columns:1fr}
-  .layer-header{padding:12px 16px}
+  .tier-ladder-hed{font-size:clamp(1.25rem,4vw,1.7rem);margin-bottom:22px}
+  .tl-name{font-size:.68rem}
+  .tl-price{font-size:1.5rem}
+  .tl-desc{font-size:.76rem}
+  .layer-header{padding:14px 18px}
+  .layer-label{font-size:.66rem;letter-spacing:.22em}
+  .layer-status{font-size:.6rem}
   .layer-unlock{padding:28px 20px}
-  .layer-preview{padding:16px}
+  .layer-unlock-text{font-size:.88rem;line-height:1.65}
+  .layer-unlock-cta{min-height:48px;padding:16px 36px;font-size:.8rem}
+  .layer-unlock-cta.dominant{padding:18px 44px;font-size:.84rem;min-height:52px}
+  .layer-bullet{font-size:.82rem}
+  .layer-preview{padding:18px}
+  .layer-preview-item{font-size:.82rem}
   .depth-progress{padding:12px 16px;gap:10px}
-  .layer-connector{height:32px}
-  .locked-overlay{padding:28px 20px;gap:14px}
-  .locked-overlay .lock-text{max-width:200px;font-size:.64rem}
-  .locked-overlay .lock-cta{padding:12px 24px}
-  .unlock-block{padding:32px 20px}
+  .depth-progress-label{font-size:.66rem}
+  .depth-progress-pct{font-size:1.15rem}
+  .layer-connector{height:28px}
+  .depth-signal{font-size:.78rem}
+
+  /* 9. Locked overlays + unlock blocks */
+  .locked-overlay{padding:28px 22px;gap:14px}
+  .locked-overlay .lock-text{max-width:220px;font-size:.72rem;line-height:1.75}
+  .locked-overlay .lock-cta{padding:14px 28px;font-size:.74rem;min-height:46px}
+  .unlock-block{padding:32px 22px}
+  .unlock-eyebrow{font-size:.66rem}
+  .unlock-title{font-size:clamp(1.4rem,4vw,2rem)}
+  .unlock-sub{font-size:.92rem;line-height:1.6}
+  .unlock-benefit{font-size:.88rem}
+  .unlock-cta{padding:16px 38px;font-size:.84rem;min-height:50px}
   .unlock-benefits{max-width:100%}
-  .fastest-fix{padding:24px 20px}
-  .activation-inner{padding:22px 20px}
-  .activation-title{font-size:1.3rem}
+
+  /* 10. CTA section */
+  .cta-section{padding:44px 0 0}
+  .cta-eyebrow{font-size:.7rem}
+  .cta-hed{font-size:clamp(1.6rem,5vw,2.4rem)}
+  .cta-sub{font-size:.96rem;line-height:1.6}
+  .cta-grid{grid-template-columns:1fr}
+  .cta-card{padding:26px 22px}
+  .cta-tier{font-size:.66rem}
+  .cta-name{font-size:1.4rem}
+  .cta-price{font-size:2rem}
+  .cta-desc{font-size:.88rem;line-height:1.6}
+  .cta-button{font-size:.84rem;padding:16px 24px;min-height:48px;display:flex;align-items:center;justify-content:center}
+  .cta-book{font-size:.84rem}
+
+  /* 11. Activation + biggest issue + not-done */
+  .activation-inner{padding:24px 22px}
+  .activation-eyebrow{font-size:.62rem}
+  .activation-title{font-size:clamp(1.3rem,4vw,1.8rem)}
+  .activation-sub{font-size:.82rem;line-height:1.65}
   .biggest-issue{padding:28px 22px 24px;margin:28px auto 16px}
+  .biggest-issue .bi-eye{font-size:.62rem}
+  .biggest-issue .bi-title{font-size:clamp(1.05rem,3vw,1.25rem)}
+  .biggest-issue .bi-loss{font-size:.86rem}
+  .biggest-issue .bi-why{font-size:.82rem;line-height:1.7}
   .not-done-block{padding:32px 22px;margin:32px auto 32px}
-  footer{padding:20px 16px}
+  .not-done-title{font-size:clamp(1.15rem,3.5vw,1.5rem)}
+  .not-done-sub{font-size:.86rem;line-height:1.72}
+  .not-done-consequence{font-size:.86rem;line-height:1.6}
+
+  /* 12. Locked intel panel */
+  .locked-intel{padding:36px 22px;margin:28px 0 28px}
+  .locked-intel-badge{font-size:.62rem;padding:10px 20px}
+  .locked-intel-text{font-size:.78rem;line-height:1.65}
+  .locked-intel-label{font-size:.84rem}
+
+  /* 13. Footer */
+  footer{padding:22px 16px}
+  .footer-copy{font-size:.7rem}
+  .footer-legal a{font-size:.68rem}
 }
 @media(max-width:480px){
   .result-hero{padding:88px 16px 44px}
   .score-ring-svg{width:136px;height:136px}
   .score-number{font-size:2.8rem}
-  .score-verdict{font-size:1.2rem}
+  .score-verdict{font-size:clamp(1.1rem,4.5vw,1.35rem)}
+  .score-subline{font-size:.76rem}
   .stats-row{gap:16px;padding:12px 16px;flex-direction:row}
   .stat-item{min-width:56px}
-  .cat-card{min-height:auto}
-  .locked-overlay .lock-cta{padding:11px 20px;font-size:.68rem}
+  .stat-value{font-size:1.3rem}
+  .stat-label{font-size:.56rem}
+  .cat-card{min-height:auto;padding:22px 18px 24px}
+  .cat-name{font-size:.68rem}
+  .check-item{font-size:.82rem}
+  .locked-overlay .lock-cta{padding:12px 22px;font-size:.7rem;min-height:44px}
+  .unlock-block{padding:28px 18px}
+  .unlock-title{font-size:clamp(1.25rem,5vw,1.7rem)}
+  .unlock-sub{font-size:.88rem}
+  .cta-card{padding:22px 18px}
+  .cta-button{min-height:46px}
+  .layer-unlock-cta{min-height:46px;padding:14px 30px}
+  .biggest-issue{padding:24px 18px 20px}
   .not-done-block{padding:28px 18px}
+  .not-done-title{font-size:clamp(1.1rem,4vw,1.35rem)}
   .locked-intel{padding:32px 18px}
+}
+@media(max-width:390px){
+  .result-hero{padding:82px 14px 38px}
+  .result-eyebrow{font-size:.64rem}
+  .score-ring-svg{width:122px;height:122px}
+  .score-number{font-size:2.5rem}
+  .score-verdict{font-size:clamp(1rem,5vw,1.2rem)}
+  .cat-card{padding:20px 16px 22px}
+  .check-item{font-size:.8rem}
+  .cta-hed{font-size:clamp(1.3rem,6vw,1.8rem)}
+  .cta-sub{font-size:.9rem}
+  .unlock-title{font-size:clamp(1.15rem,5.5vw,1.5rem)}
+  .biggest-issue{padding:22px 16px 18px}
+  .not-done-block{padding:24px 16px}
+  footer{padding:18px 14px}
 }
 
 /* ── Progression Pipeline ── */
@@ -517,7 +648,6 @@ footer{border-top:1px solid var(--border);padding:32px 48px;display:flex;flex-di
 .locked-intel-label{font-size:.8rem;color:var(--ivory);flex:1;letter-spacing:.01em}
 .locked-intel-bar{height:4px;border-radius:3px;background:rgba(200,168,75,.07);max-width:110px;width:100%}
 .locked-intel-bar.long{max-width:140px}
-@media(max-width:768px){.locked-intel{padding:36px 22px;margin:28px 0 28px}}
 </style>
 @include('partials.clarity')
 </head>

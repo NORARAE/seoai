@@ -353,16 +353,84 @@
 .prev-sticky-cta:hover::before{transform:translateX(100%)}
 
 /* ── Responsive ── */
+
+/* ── Mobile UX refinement ── */
+@media(max-width:768px){
+  /* Page container — breathing room */
+  .prev-page{padding:48px 20px 88px}
+
+  /* Header — bigger, more assertive */
+  .prev-hed{font-size:clamp(1.7rem,5vw,2.4rem);margin-bottom:14px}
+  .prev-sub{font-size:.92rem;line-height:1.8;margin-bottom:8px}
+  .prev-eye{font-size:.66rem;letter-spacing:.24em;margin-bottom:14px}
+  .prev-urgency{font-size:.82rem;margin-bottom:10px}
+  .prev-url{font-size:.78rem;margin-bottom:32px}
+
+  /* Issue counter */
+  .prev-issue-badge .count{font-size:1.4rem}
+  .prev-issue-badge .label{font-size:.76rem}
+  .prev-issue-badge{padding:12px 24px}
+  .prev-hidden-count{font-size:.78rem;margin-bottom:24px}
+
+  /* Signal rows — bigger text */
+  .prev-signal{padding:15px 0;gap:14px}
+  .prev-signal-text{font-size:.9rem;line-height:1.72}
+  .prev-signal-text .impact{font-size:.74rem;margin-top:4px;line-height:1.5}
+  .prev-icon{width:26px;height:26px;font-size:.8rem}
+
+  /* Cards — more padding */
+  .prev-card{padding:30px 26px;margin-bottom:28px}
+  .prev-card-head{font-size:.62rem;margin-bottom:18px;padding-bottom:14px}
+
+  /* Locked section */
+  .prev-locked{padding:36px 26px;margin-bottom:28px}
+  .prev-locked-badge{font-size:.66rem;padding:11px 22px}
+  .prev-locked-unlock-text{font-size:.82rem;line-height:1.6;max-width:280px}
+
+  /* CTA — bigger, more dominant */
+  .prev-cta{padding:20px 48px;font-size:.84rem;letter-spacing:.12em}
+  .prev-cta-sub{font-size:.84rem;line-height:1.7;margin-top:18px}
+  .prev-reassure{font-size:.74rem;margin-top:16px}
+
+  /* Progression bar — readable labels */
+  .prev-prog-label{font-size:.6rem;letter-spacing:.1em}
+  .prev-prog-dot{width:11px;height:11px}
+  .prev-progression{gap:2px;margin-bottom:32px}
+  .prev-prog-step{padding:0 12px}
+
+  /* Layer block */
+  .prev-layer{padding:22px 24px;margin-top:32px}
+  .prev-layer-label{font-size:.64rem;margin-bottom:8px}
+  .prev-layer-sub{font-size:.8rem;line-height:1.68}
+
+  /* Status indicator */
+  .prev-status{margin-bottom:28px}
+  .prev-status-text{font-size:.62rem;letter-spacing:.2em}
+
+  /* Sticky bar — bigger CTA */
+  .prev-sticky{padding:14px 20px;gap:14px}
+  .prev-sticky-text{font-size:.74rem}
+  .prev-sticky-cta{padding:14px 28px;font-size:.72rem;min-height:48px}
+}
+
 @media(max-width:600px){
   .prev-page{padding:40px 16px 80px}
-  .prev-card,.prev-locked{padding:24px 20px}
+  .prev-card,.prev-locked{padding:26px 20px}
   .prev-inner{max-width:100%}
-  .prev-hed{font-size:1.6rem}
-  .prev-cta{padding:18px 36px;font-size:.76rem}
+  .prev-hed{font-size:clamp(1.5rem,6vw,1.9rem)}
+  .prev-cta{padding:18px 36px;font-size:.8rem}
   .prev-sticky{gap:12px;padding:12px 16px}
-  .prev-sticky-text{font-size:.66rem}
-  .prev-sticky-cta{padding:10px 20px;font-size:.64rem}
+  .prev-sticky-text{font-size:.7rem}
+  .prev-sticky-cta{padding:12px 24px;font-size:.68rem}
   .prev-locked{padding:32px 20px}
+}
+
+/* ── Very small phones ── */
+@media(max-width:390px){
+  .prev-hed{font-size:clamp(1.4rem,7vw,1.7rem)}
+  .prev-sub{font-size:.88rem}
+  .prev-cta{padding:16px 28px;font-size:.78rem}
+  .prev-signal-text{font-size:.86rem}
 }
 </style>
 </head>
