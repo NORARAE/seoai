@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=Cormorant+Garamond:wght@400;600&family=JetBrains+Mono:wght@500;600;700&display=swap');
 @import '../../../../vendor/filament/filament/resources/css/theme.css';
 
 @source '../../../../app/Filament/**/*.php';
@@ -6,19 +6,25 @@
 @source '../../../../vendor/filament/**/*.blade.php';
 
 :root {
-    --seoai-bg: #0b0f14;
-    --seoai-panel: #111827;
-    --seoai-panel-2: #1f2937;
-    --seoai-green: #22c55e;
-    --seoai-blue: #3b82f6;
-    --seoai-gold: #6f541d;
+    --seoai-bg: #080808;
+    --seoai-panel: #0e0d09;
+    --seoai-panel-2: #141310;
+    --seoai-green: #6aaf90;
+    --seoai-blue: #c8a84b;
+    --seoai-gold: #c8a84b;
+    --seoai-gold-dim: rgba(200,168,75,.4);
+    --seoai-ivory: #ede8de;
+    --seoai-muted: rgba(168,168,160,.72);
+    --seoai-border: rgba(200,168,75,.09);
 }
 
 body.filament-panel {
-    font-family: 'Inter', ui-sans-serif, system-ui, sans-serif;
+    font-family: 'DM Sans', ui-sans-serif, system-ui, sans-serif;
     background-color: var(--seoai-bg);
-    background-image: radial-gradient(circle at 1px 1px, rgba(59, 130, 246, 0.035) 1px, transparent 0);
-    background-size: 36px 36px;
+    background-image:
+        linear-gradient(rgba(200,168,75,.025) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(200,168,75,.025) 1px, transparent 1px);
+    background-size: 48px 48px;
 }
 
 .fi-main,
@@ -27,7 +33,7 @@ body.filament-panel {
 .fi-ta-ctn,
 .fi-wi-widget {
     background-color: var(--seoai-panel);
-    border-color: rgba(148, 163, 184, 0.18);
+    border-color: var(--seoai-border);
 }
 
 .fi-sidebar-nav,
@@ -39,8 +45,8 @@ body.filament-panel {
 .fi-section,
 .fi-wi-widget > .fi-section,
 .fi-ta-ctn {
-    border-color: rgba(148, 163, 184, 0.16);
-    box-shadow: 0 14px 34px rgba(2, 6, 23, 0.18);
+    border-color: var(--seoai-border);
+    box-shadow: 0 14px 34px rgba(0,0,0,.25);
 }
 
 .fi-section-content,
@@ -53,7 +59,7 @@ body.filament-panel {
 .fi-ta-header-heading,
 .fi-section-header-heading,
 .fi-topbar .fi-user-menu-trigger {
-    color: #e5e7eb;
+    color: var(--seoai-ivory);
 }
 
 .fi-body,
@@ -61,15 +67,14 @@ body.filament-panel {
 .fi-section-description,
 .fi-ta-header-description,
 .fi-wi-stats-overview-stat-description {
-    color: #94a3b8;
+    color: var(--seoai-muted);
     line-height: 1.55;
 }
 
 .fi-btn-color-primary {
-    --c-400: var(--seoai-blue);
-    --c-500: var(--seoai-blue);
-    --c-600: #2563eb;
-    --seoai-gold: #8f6f2a;
+    --c-400: var(--seoai-gold);
+    --c-500: var(--seoai-gold);
+    --c-600: #a88a3a;
 }
 
 .fi-badge-color-success {
@@ -79,7 +84,7 @@ body.filament-panel {
 .fi-badge,
 .fi-ta-col-header-cell-label,
 .fi-wi-stats-overview-stat-value {
-    font-family: 'Inter', ui-sans-serif, system-ui, sans-serif;
+    font-family: 'DM Sans', ui-sans-serif, system-ui, sans-serif;
 }
 
 .fi-badge {
@@ -88,7 +93,43 @@ body.filament-panel {
 
 .fi-topbar,
 .fi-sidebar {
-    backdrop-filter: blur(8px);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+}
+
+/* Sidebar active state — gold accent */
+.fi-sidebar-item-active,
+.fi-sidebar-item-active .fi-sidebar-item-label,
+.fi-sidebar-item-active .fi-sidebar-item-icon {
+    color: var(--seoai-gold) !important;
+}
+.fi-sidebar-item-active {
+    background: rgba(200,168,75,.06) !important;
+    border-color: rgba(200,168,75,.12) !important;
+}
+
+/* Sidebar hover */
+.fi-sidebar-item:hover {
+    background: rgba(200,168,75,.04) !important;
+}
+.fi-sidebar-item:hover .fi-sidebar-item-label {
+    color: var(--seoai-ivory) !important;
+}
+
+/* Sidebar labels */
+.fi-sidebar-item-label {
+    color: rgba(168,168,160,.6) !important;
+}
+.fi-sidebar-item-icon {
+    color: rgba(200,168,75,.35) !important;
+}
+
+/* Sidebar group labels */
+.fi-sidebar-group-label {
+    color: rgba(200,168,75,.4) !important;
+    font-size: .65rem !important;
+    letter-spacing: .1em !important;
+    text-transform: uppercase !important;
 }
 
 /* ─── Login / Auth pages ─────────────────────────────────────── */
@@ -97,8 +138,8 @@ body.filament-panel {
 .fi-simple-layout {
     position: relative;
     z-index: 1;
-    background-color: #0c0c0c !important;
-    background-image: radial-gradient(ellipse 70% 50% at 50% -5%, rgba(111,84,29,.07), transparent) !important;
+    background-color: #080808 !important;
+    background-image: radial-gradient(ellipse 70% 50% at 50% -5%, rgba(200,168,75,.05), transparent) !important;
     background-size: auto !important;
     min-height: 100vh;
 }
@@ -107,10 +148,10 @@ body.filament-panel {
 .fi-simple-main {
     position: relative;
     z-index: 2;
-    background: linear-gradient(160deg, #1f1f1f 0%, #161616 100%) !important;
-    border: 1px solid rgba(111,84,29,.3) !important;
-    box-shadow: 0 24px 64px rgba(0,0,0,.65), 0 0 0 1px rgba(111,84,29,.1), inset 0 1px 0 rgba(255,255,255,.04) !important;
-    border-radius: 14px !important;
+    background: linear-gradient(160deg, #141310 0%, #0e0d09 100%) !important;
+    border: 1px solid rgba(200,168,75,.12) !important;
+    box-shadow: 0 24px 64px rgba(0,0,0,.65), 0 0 0 1px rgba(200,168,75,.06), inset 0 1px 0 rgba(255,255,255,.02) !important;
+    border-radius: 8px !important;
 }
 
 /* Input fields */
@@ -118,73 +159,73 @@ body.filament-panel {
 .fi-fo-field-wrp input,
 .fi-fo-field-wrp textarea,
 .fi-input-wrp {
-    background-color: #232323 !important;
-    border-color: rgba(255,255,255,.13) !important;
-    color: #f1f5f9 !important;
+    background-color: rgba(8,8,8,.6) !important;
+    border-color: rgba(200,168,75,.1) !important;
+    color: #ede8de !important;
     transition: border-color .2s ease, box-shadow .2s ease !important;
 }
 
 .fi-input:focus,
 .fi-fo-field-wrp input:focus {
-    border-color: rgba(111,84,29,.7) !important;
-    box-shadow: 0 0 0 3px rgba(111,84,29,.13), 0 1px 3px rgba(0,0,0,.3) !important;
+    border-color: rgba(200,168,75,.35) !important;
+    box-shadow: 0 0 0 3px rgba(200,168,75,.08), 0 1px 3px rgba(0,0,0,.3) !important;
     outline: none !important;
 }
 
 /* Labels */
 .fi-fo-field-wrp label,
 .fi-fo-label {
-    color: #b0bec8 !important;
+    color: rgba(168,168,160,.72) !important;
 }
 
 /* "Remember me" text */
 .fi-fo-checkbox-input + label,
 .fi-fo-field-wrp .fi-fo-checkbox label {
-    color: #b0bec8 !important;
+    color: rgba(168,168,160,.6) !important;
 }
 
-/* Forgot password / links — readable bronze on dark card */
+/* Forgot password / links — gold */
 .fi-link {
-    color: #a87828 !important;
+    color: rgba(200,168,75,.65) !important;
 }
 .fi-link:hover {
-    color: #c49235 !important;
+    color: #c8a84b !important;
 }
 
-/* Sign In button — deep bronze, strong contrast */
+/* Sign In button — gold gradient, matching site CTAs */
 .fi-btn-color-primary {
-    background: linear-gradient(180deg, #7a5e22 0%, #5b4416 100%) !important;
-    border-color: #4a3610 !important;
-    box-shadow: 0 2px 8px rgba(0,0,0,.45), inset 0 1px 0 rgba(255,255,255,.09) !important;
-    color: #ffffff !important;
+    background: linear-gradient(180deg, #d8be72 0%, #c8a84b 100%) !important;
+    border-color: rgba(226,201,125,.4) !important;
+    box-shadow: 0 2px 8px rgba(0,0,0,.35), inset 0 1px 0 rgba(255,255,255,.09) !important;
+    color: #080808 !important;
     font-weight: 600 !important;
     letter-spacing: .03em !important;
     transition: background .2s ease, box-shadow .2s ease !important;
 }
 .fi-btn-color-primary:hover {
-    background: linear-gradient(180deg, #896827 0%, #6a501c 100%) !important;
-    border-color: #5a4418 !important;
-    box-shadow: 0 4px 14px rgba(0,0,0,.55), inset 0 1px 0 rgba(255,255,255,.12) !important;
-    color: #ffffff !important;
+    background: linear-gradient(180deg, #e0c97e 0%, #d4b45a 100%) !important;
+    border-color: rgba(226,201,125,.65) !important;
+    box-shadow: 0 4px 14px rgba(200,168,75,.2), inset 0 1px 0 rgba(255,255,255,.12) !important;
+    color: #080808 !important;
 }
-/* Force bright white text on Sign In button — covers all Filament v5 button structures */
+/* Force dark text on gold buttons */
 .fi-simple-main .fi-btn-color-primary span,
 .fi-simple-main .fi-btn-color-primary .fi-btn-label,
 .fi-simple-main button[type="submit"],
 .fi-simple-main button[type="submit"] span,
 .fi-simple-main button[type="submit"] * {
-    color: #ffffff !important;
-    text-shadow: 0 1px 2px rgba(0,0,0,.35) !important;
+    color: #080808 !important;
+    text-shadow: none !important;
 }
 
 /* Page heading & subheading */
 .fi-simple-main h1,
 .fi-simple-main .fi-simple-page-heading {
-    color: #f1f5f9 !important;
+    color: #ede8de !important;
 }
 .fi-simple-main p,
 .fi-simple-main .fi-simple-page-subheading {
-    color: #94a3b8 !important;
+    color: rgba(168,168,160,.72) !important;
 }
 
 /* Brand logo brightness boost in auth header */
@@ -194,57 +235,57 @@ body.filament-panel {
 
 /* Auth header: heading + subheading */
 .fi-simple-header-heading {
-    color: #f1f5f9 !important;
+    color: #ede8de !important;
     font-size: 1.35rem !important;
     font-weight: 600 !important;
     letter-spacing: .01em !important;
 }
 
 .fi-simple-header-subheading {
-    color: #c8d4e0 !important;
+    color: rgba(168,168,160,.65) !important;
     font-size: .9rem !important;
 }
 
-/* Logo brand text — force white/gold so it's visible on dark bg */
+/* Logo brand text — force ivory/gold so it's visible on dark bg */
 .fi-simple-header .fi-logo,
 .fi-simple-header .fi-logo * {
-    color: #f1f5f9 !important;
+    color: #ede8de !important;
 }
 /* The gold "AI" span uses inline color already — protect it */
 .fi-simple-header .fi-logo span[style*="7c6127"] {
-    color: #7c6127 !important;
+    color: #c8a84b !important;
 }
 
 /* Any other text inside the card — labels & base copy */
 .fi-simple-main,
 .fi-simple-main label {
-    color: #d1d5db;
+    color: rgba(168,168,160,.72);
 }
-/* Paragraphs and secondary text — readable but clearly secondary */
+/* Paragraphs and secondary text */
 .fi-simple-main p {
-    color: #b0bec8;
+    color: rgba(168,168,160,.6);
 }
 /* Links must always win — gold, higher specificity */
 .fi-simple-main a,
 .fi-link {
-    color: #a87828 !important;
+    color: rgba(200,168,75,.65) !important;
 }
 .fi-simple-main a:hover,
 .fi-link:hover {
-    color: #c49235 !important;
+    color: #c8a84b !important;
 }
 
 /* Headings inside card */
 .fi-simple-main h1,
 .fi-simple-main h2,
 .fi-simple-main h3 {
-    color: #f1f5f9 !important;
+    color: #ede8de !important;
 }
 
 /* Validation error messages */
 .fi-fo-field-wrp [data-validation-error],
 .fi-simple-main .fi-fo-field-wrp p.text-sm {
-    color: #f87171 !important;
+    color: #c47878 !important;
 }
 
 /* ─── Select / Dropdown components on auth pages ────────────────────────── */
@@ -253,37 +294,37 @@ body.filament-panel {
 .fi-simple-main .fi-select-input,
 .fi-simple-main .fi-select > button,
 .fi-simple-main [role="combobox"] {
-    background-color: #232323 !important;
-    border-color: rgba(255,255,255,.13) !important;
-    color: #f1f5f9 !important;
+    background-color: rgba(8,8,8,.6) !important;
+    border-color: rgba(200,168,75,.1) !important;
+    color: #ede8de !important;
 }
 
 /* Selected-value span inside the trigger */
 .fi-simple-main .fi-select-input span,
 .fi-simple-main .fi-select > button span,
 .fi-simple-main [role="combobox"] span {
-    color: #f1f5f9 !important;
+    color: #ede8de !important;
 }
 
 /* Placeholder text in select trigger */
 .fi-simple-main .fi-select-input [data-placeholder],
 .fi-simple-main [role="combobox"][aria-expanded="false"] span:first-child {
-    color: rgba(148,163,184,.55) !important;
+    color: rgba(168,168,160,.45) !important;
 }
 
 /* Options dropdown panel — teleported outside .fi-simple-main */
 [data-headlessui-portal] [role="listbox"],
 [data-headlessui-portal] .fi-select-option-list {
-    background-color: #1c1c1c !important;
-    border: 1px solid rgba(111,84,29,.25) !important;
+    background-color: #0e0d09 !important;
+    border: 1px solid rgba(200,168,75,.12) !important;
     box-shadow: 0 8px 32px rgba(0,0,0,.55) !important;
-    border-radius: 8px !important;
+    border-radius: 6px !important;
 }
 
 /* Option items */
 [data-headlessui-portal] [role="option"],
 [data-headlessui-portal] .fi-select-option {
-    color: #e2e8f0 !important;
+    color: #ede8de !important;
     background-color: transparent !important;
 }
 
@@ -292,6 +333,6 @@ body.filament-panel {
 [data-headlessui-portal] [role="option"][aria-selected="true"],
 [data-headlessui-portal] .fi-select-option:hover,
 [data-headlessui-portal] .fi-select-option[data-active-option] {
-    background-color: rgba(111,84,29,.2) !important;
-    color: #f1f5f9 !important;
+    background-color: rgba(200,168,75,.08) !important;
+    color: #ede8de !important;
 }
