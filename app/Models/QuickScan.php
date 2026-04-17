@@ -40,6 +40,8 @@ class QuickScan extends Model
         'upgrade_stripe_session_id',
         'upgraded_at',
         'onboarding_submission_id',
+        'dimensions',
+        'intelligence',
     ];
 
     protected $casts = [
@@ -60,6 +62,8 @@ class QuickScan extends Model
         'page_count' => 'integer',
         'scanned_at' => 'datetime',
         'upgraded_at' => 'datetime',
+        'dimensions' => 'array',
+        'intelligence' => 'array',
     ];
 
     const STATUS_PENDING = 'pending';

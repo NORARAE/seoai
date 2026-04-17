@@ -95,6 +95,68 @@ class DashboardController extends Controller
             ->get();
         $totalScans = $user->quickScans()->count();
 
+        // System tier state
+        $systemTier = $user->system_tier;
+        $completedLayers = $systemTier?->completedLayers() ?? [];
+        $nextStep = $systemTier?->nextStep();
+        $nextRoute = $systemTier?->nextRoute();
+        $tierRank = $user->tierRank();
+
+        // Build analysis layer completion map
+        $analysisLayers = [
+            ['key' => 'scan-basic', 'label' => 'Base Scan', 'price' => '$2', 'complete' => $tierRank >= 1],
+            ['key' => 'signal-expansion', 'label' => 'Signal Expansion', 'price' => '$99', 'complete' => $tierRank >= 2],
+            ['key' => 'structural-leverage', 'label' => 'Structural Leverage', 'price' => '$249', 'complete' => $tierRank >= 3],
+            ['key' => 'system-activation', 'label' => 'System Activation', 'price' => '$489', 'complete' => $tierRank >= 4],
+        ];
+
+        // Pull scan intelligence from the latest scanned record (for findings + upgrade triggers)
+        $latestScanned = $scanProjects->first();
+        $scanIntelligence = $latestScanned?->intelligence ?? [];
+        $scanDimensions = $latestScanned?->dimensions ?? [];
+
+        // Build top findings from intelligence tiers — up to 5 most important issues
+        $topFindings = [];
+        foreach ($scanIntelligence as $tierBlock) {
+            foreach ($tierBlock['issues'] ?? [] as $issue) {
+                $topFindings[] = [
+                    'what_missing' => $issue['what_missing'] ?? $issue['key'] ?? 'Unknown',
+                    'why_it_matters' => $issue['why_it_matters'] ?? '',
+                    'fix' => $issue['fix'] ?? '',
+                    'fix_tier' => $tierBlock['label'] ?? '',
+                    'fix_price' => $tierBlock['price'] ?? '',
+                    'fix_route' => $tierBlock['route'] ?? '',
+                ];
+                if (count($topFindings) >= 5)
+                    break 2;
+            }
+        }
+
+        // Determine the next best upgrade action based on intelligence
+        $nextUpgrade = null;
+        if ($tierRank < 4 && !empty($scanIntelligence)) {
+            // Find the first tier with issues that the user hasn't unlocked yet
+            foreach ($scanIntelligence as $tierBlock) {
+                $blockTier = $tierBlock['tier'] ?? null;
+                $blockRank = match ($blockTier) {
+                    'signal-expansion' => 2,
+                    'structural-leverage' => 3,
+                    'system-activation' => 4,
+                    default => 0,
+                };
+                if ($blockRank > $tierRank && !empty($tierBlock['issues'])) {
+                    $nextUpgrade = [
+                        'label' => $tierBlock['label'],
+                        'price' => $tierBlock['price'],
+                        'route' => $tierBlock['route'],
+                        'description' => $tierBlock['description'] ?? '',
+                        'issue_count' => count($tierBlock['issues']),
+                    ];
+                    break;
+                }
+            }
+        }
+
         return view('dashboard.index', compact(
             'stats',
             'health',
@@ -104,7 +166,16 @@ class DashboardController extends Controller
             'statusBreakdown',
             'contentQualityBreakdown',
             'scanProjects',
-            'totalScans'
+            'totalScans',
+            'systemTier',
+            'completedLayers',
+            'nextStep',
+            'nextRoute',
+            'tierRank',
+            'analysisLayers',
+            'topFindings',
+            'nextUpgrade',
+            'scanIntelligence'
         ));
     }
 

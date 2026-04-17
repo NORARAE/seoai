@@ -3,6 +3,7 @@
 use App\Http\Controllers\AdminBookingController;
 use App\Http\Controllers\BookingController;
 use App\Http\Controllers\BookingManageController;
+use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\LocationPagePreviewController;
 use App\Http\Controllers\MarketingPageController;
@@ -15,6 +16,7 @@ use App\Http\Middleware\EnsureOnboardingComplete;
 use App\Http\Controllers\PublicSitemapController;
 use App\Http\Controllers\Auth\CustomerLoginController;
 use App\Http\Controllers\Auth\GoogleAuthController;
+use App\Http\Controllers\ScanEntryController;
 use App\Http\Controllers\UnsubscribeController;
 use App\Http\Middleware\EnsureUserIsApproved;
 use Illuminate\Support\Facades\Route;
@@ -55,6 +57,24 @@ Route::get('/licensing-inquiry', fn() => redirect(url('/') . '#contact'))->name(
 
 Route::get('/checkout/success', fn() => view('public.checkout-success'))->name('checkout.success');
 Route::get('/checkout/cancelled', fn() => view('public.checkout-cancelled'))->name('checkout.cancelled');
+
+// ── Scan entry flow (URL + email before payment) ──
+Route::get('/scan/start', [ScanEntryController::class, 'start'])->name('scan.start');
+Route::post('/scan/submit', [ScanEntryController::class, 'submit'])->middleware('throttle:10,1')->name('scan.submit');
+Route::get('/scan/process', [ScanEntryController::class, 'process'])->name('scan.process');
+Route::get('/scan/preview', [ScanEntryController::class, 'preview'])->name('scan.preview');
+
+// ── Direct-purchase checkout routes (Path B — skip scan) ──
+Route::get('/checkout/complete', [CheckoutController::class, 'complete'])->name('checkout.complete');
+Route::get('/checkout/scan-basic', [CheckoutController::class, 'scanBasic'])->middleware('throttle:10,1')->name('checkout.scan-basic');
+Route::get('/checkout/signal-expansion', [CheckoutController::class, 'signalExpansion'])->middleware('throttle:10,1')->name('checkout.signal-expansion');
+Route::get('/checkout/structural-leverage', [CheckoutController::class, 'structuralLeverage'])->middleware('throttle:10,1')->name('checkout.structural-leverage');
+Route::get('/checkout/system-activation', [CheckoutController::class, 'systemActivation'])->middleware('throttle:10,1')->name('checkout.system-activation');
+
+// ── Post-purchase result pages ──
+Route::get('/results/expanded', fn() => view('public.results.expanded'))->name('results.expanded');
+Route::get('/results/structural', fn() => view('public.results.structural'))->name('results.structural');
+
 Route::get('/rd-tax-credit', fn() => view('public.rd-tax-credit'))->name('rd-tax-credit');
 
 // ── Sitemap: static/scaffold pages (all routes in the locked sitemap) ──

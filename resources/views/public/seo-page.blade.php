@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+<script>document.documentElement.classList.add('js-enabled')</script>
 <!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-LNPGQ0GN69"></script>
 <script>
@@ -174,9 +175,10 @@ footer{border-top:1px solid var(--border);padding:36px 64px;display:flex;flex-di
 .btt.show{opacity:1;pointer-events:auto;transform:none}
 .btt:hover{background:var(--gold-lt);transform:translateY(-2px)}
 
-/* ── Reveal animation ── */
-.r{opacity:0;transform:translateY(32px);transition:opacity .85s cubic-bezier(.23,1,.32,1),transform .85s cubic-bezier(.23,1,.32,1)}
-.r.on{opacity:1;transform:none}
+/* ── Reveal animation (progressive enhancement: visible by default) ── */
+.r{opacity:1;transform:none;transition:opacity .85s cubic-bezier(.23,1,.32,1),transform .85s cubic-bezier(.23,1,.32,1)}
+.js-enabled .r{opacity:0;transform:translateY(32px)}
+.js-enabled .r.on{opacity:1;transform:none}
 
 /* ── Discovery strip ── */
 .discovery-strip{display:grid;grid-template-columns:repeat(5,1fr);border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
@@ -233,7 +235,7 @@ footer{border-top:1px solid var(--border);padding:36px 64px;display:flex;flex-di
   footer{padding:36px 24px}
   .footer-main{flex-direction:column;gap:12px;text-align:center}
   .s-h{font-size:clamp(1.7rem,6vw,2.4rem)}
-  .r{transform:translateY(20px)}
+  .js-enabled .r{transform:translateY(20px)}
 }
 @media(max-width:520px){
   html{font-size:16px}
@@ -534,7 +536,7 @@ footer{border-top:1px solid var(--border);padding:36px 64px;display:flex;flex-di
 <script>
   // Nav scroll
   const nav = document.getElementById('nav');
-  window.addEventListener('scroll', () => nav.classList.toggle('stuck', scrollY > 60), {passive:true});
+  if(nav) window.addEventListener('scroll', () => nav.classList.toggle('stuck', scrollY > 60), {passive:true});
 
   // Reveal on scroll
   const items = document.querySelectorAll('.r');
@@ -550,8 +552,10 @@ footer{border-top:1px solid var(--border);padding:36px 64px;display:flex;flex-di
 
   // Back to top
   const btt = document.getElementById('btt');
-  window.addEventListener('scroll', () => btt.classList.toggle('show', scrollY > 600), {passive:true});
-  btt.addEventListener('click', () => window.scrollTo({top: 0, behavior: 'smooth'}));
+  if(btt){
+    window.addEventListener('scroll', () => btt.classList.toggle('show', scrollY > 600), {passive:true});
+    btt.addEventListener('click', () => window.scrollTo({top: 0, behavior: 'smooth'}));
+  }
 </script>
 
 @include('components.tm-style')

@@ -1,6 +1,7 @@
 <?php
 
 use App\Jobs\DailyGscSyncJob;
+use App\Jobs\SendInactiveUserNudgeJob;
 use App\Jobs\WeeklyOpportunityScanJob;
 use App\Jobs\MonthlyContentRefreshJob;
 use Illuminate\Foundation\Inspiring;
@@ -61,4 +62,10 @@ Schedule::command('bookings:dispatch-reminders')
     ->name('booking_reminders')
     ->withoutOverlapping()
     ->runInBackground();
+
+// Daily: Nudge inactive users who paid but haven't upgraded (3 days post-scan)
+Schedule::job(new SendInactiveUserNudgeJob())
+    ->dailyAt('10:00')
+    ->name('inactive_user_nudge')
+    ->withoutOverlapping();
 

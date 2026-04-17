@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+<script>document.documentElement.classList.add('js-enabled')</script>
 <!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-LNPGQ0GN69"></script>
 <script>
@@ -31,50 +32,21 @@
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
 <meta name="csrf-token" content="{{ csrf_token() }}">
 <style>
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+@include('partials.design-system')
+@include('partials.public-nav-css')
+
+/* ── Landing page token overrides ── */
 :root{
-  --bg:#080808;--deep:#0b0b0b;--card:#101010;--border:#1a1a1a;
-  --gold:#c8a84b;--gold-lt:#e2c97d;--gold-dim:#9a7a30;
-  --white:#ffffff;--ivory:#ede8de;--muted:#a8a8a0;--warn:#b84040;
+  --card:#101010;--border:#1a1a1a;--gold-dim:#9a7a30;
+  --white:#ffffff;--muted:#a8a8a0;--warn:#b84040;
   --space-xs:10px;--space-sm:14px;--space-md:18px;--space-lg:28px;--space-xl:72px;
 }
-html{scroll-behavior:smooth;font-size:18px}
-body{background:var(--bg);color:var(--ivory);font-family:'DM Sans',sans-serif;font-weight:300;overflow-x:hidden;line-height:1.85}
+body{overflow-x:hidden;line-height:1.85}
 body::after{
   content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
   background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
   opacity:.022;
 }
-
-/* ── Logo (color-locked — prevents :visited blue bleed) ── */
-.logo,.logo:visited,.logo:hover,.logo:active,.logo:focus{display:inline-flex;align-items:baseline;text-decoration:none;line-height:1;color:inherit;padding:8px 4px;margin:-8px -4px;position:relative;z-index:1}
-.logo-seo,.logo-seo:visited,.logo-seo:link{font-family:'DM Sans',sans-serif;font-weight:300;font-size:1.2rem;letter-spacing:.06em;color:#f5f0e8}
-.logo-ai,.logo-ai:visited,.logo-ai:link{
-  font-family:'Cormorant Garamond',serif;font-weight:600;font-size:1.42rem;
-  color:#c8a84b;letter-spacing:.02em;
-  display:inline-block;transform:skewX(-11deg) translateY(-1px);
-}
-.logo-co,.logo-co:visited,.logo-co:link{font-family:'DM Sans',sans-serif;font-weight:300;font-size:1.05rem;color:rgba(255,255,255,.45);letter-spacing:.04em}
-
-/* ── Nav ── */
-#nav{
-  position:fixed;top:0;left:0;right:0;z-index:200;
-  display:flex;align-items:center;justify-content:space-between;
-  padding:28px 64px;border-bottom:1px solid transparent;transition:all .4s;
-}
-#nav.stuck{background:rgba(8,8,8,.95);backdrop-filter:blur(16px);border-color:var(--border);padding:16px 64px}
-.nav-right{display:flex;align-items:center;gap:26px}
-.nav-link{font-size:.76rem;letter-spacing:.14em;text-transform:uppercase;color:rgba(168,168,160,.72);text-decoration:none;transition:color .3s;position:relative;padding-bottom:2px;font-weight:400}
-.nav-link::after{content:'';position:absolute;bottom:0;left:0;right:100%;height:1px;background:var(--gold);transition:right .3s cubic-bezier(.23,1,.32,1)}
-.nav-link:hover{color:var(--gold)}
-.nav-link:hover::after{right:0}
-.nav-btn{
-  font-size:.74rem;letter-spacing:.14em;text-transform:uppercase;
-  color:var(--bg);background:var(--gold);padding:11px 28px;text-decoration:none;
-  transition:background .3s cubic-bezier(.23,1,.32,1),box-shadow .3s cubic-bezier(.23,1,.32,1);
-  display:inline-flex;align-items:center;white-space:nowrap;font-weight:500;margin-left:6px;
-}
-.nav-btn:hover{background:var(--gold-lt);box-shadow:0 4px 16px rgba(200,168,75,.22)}
 .nav-account-short{display:none}
 
 /* ── Hero ── */
@@ -193,23 +165,6 @@ body::after{
 
 /* ── CTAs ── */
 .hero-actions{display:flex;gap:20px;align-items:center}
-.btn-primary{
-  background:var(--gold);color:var(--bg);font-size:.82rem;font-weight:500;letter-spacing:.14em;
-  text-transform:uppercase;padding:18px 48px;text-decoration:none;
-  transition:background .35s cubic-bezier(.23,1,.32,1),transform .28s cubic-bezier(.23,1,.32,1),box-shadow .35s cubic-bezier(.23,1,.32,1);
-  box-shadow:0 4px 18px rgba(200,168,75,.12);
-}
-.btn-primary:hover{background:var(--gold-lt);transform:translateY(-2px);box-shadow:0 8px 32px rgba(200,168,75,.28),0 2px 8px rgba(200,168,75,.14)}
-.btn-ghost{
-  font-size:.82rem;letter-spacing:.14em;text-transform:uppercase;color:rgba(168,168,160,.78);
-  text-decoration:none;padding-bottom:4px;position:relative;transition:color .32s cubic-bezier(.23,1,.32,1);
-}
-.btn-ghost::after{
-  content:'';position:absolute;bottom:0;left:0;right:100%;height:1px;
-  background:var(--gold-dim);transition:right .42s cubic-bezier(.23,1,.32,1),background .32s;
-}
-.btn-ghost:hover{color:var(--ivory)}
-.btn-ghost:hover::after{right:0;background:var(--gold)}
 
 /* ── Scroll cue ── */
 .hero-scroll{
@@ -508,301 +463,528 @@ body::after{
 .licence-stmt-principle{font-family:'Cormorant Garamond',serif;font-size:clamp(1.2rem,1.8vw,1.55rem);font-weight:400;font-style:italic;color:var(--ivory);letter-spacing:.01em;margin-bottom:16px}
 .licence-stmt-body{display:flex;flex-direction:column;gap:6px}
 .licence-stmt-body p{font-size:.9rem;color:var(--muted);letter-spacing:.04em;line-height:1.9}
-/* ── Pricing Buyer Guide ── */
-.offer-guide{padding:0 0 40px;text-align:center;position:relative;z-index:2}
-.offer-guide-line{font-size:.78rem;letter-spacing:.14em;text-transform:uppercase;color:var(--gold-dim)}
+/* ══════════════════════════════════════════════════════════
+   ASCENSION SYSTEM — Pricing Architecture  v2
+   ══════════════════════════════════════════════════════════ */
 
-/* ── Pricing / Offer ── */
-#offer{padding:48px 64px;max-width:1200px;margin:0 auto;position:relative;overflow:hidden}
-.offer-intro{display:grid;grid-template-columns:1fr 1fr;gap:56px;margin-bottom:40px;align-items:start;position:relative;z-index:2}
+/* ── Section container ── */
+#offer{
+  padding:44px 64px 64px;max-width:1280px;margin:0 auto;
+  position:relative;overflow:hidden;
+}
+/* Signal-field atmosphere behind entire section */
+#offer::before{
+  content:'';position:absolute;inset:0;
+  background:
+    radial-gradient(ellipse at 50% 18%,rgba(200,168,75,.035) 0%,transparent 55%),
+    radial-gradient(ellipse at 25% 70%,rgba(200,168,75,.015) 0%,transparent 45%),
+    radial-gradient(ellipse at 75% 65%,rgba(200,168,75,.015) 0%,transparent 45%);
+  pointer-events:none;z-index:0;
+}
+/* Faint grid texture overlay */
+#offer::after{
+  content:'';position:absolute;inset:0;
+  background-image:
+    linear-gradient(rgba(200,168,75,.018) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(200,168,75,.018) 1px,transparent 1px);
+  background-size:64px 64px;
+  mask-image:radial-gradient(ellipse at 50% 40%,black 20%,transparent 70%);
+  -webkit-mask-image:radial-gradient(ellipse at 50% 40%,black 20%,transparent 70%);
+  pointer-events:none;z-index:0;opacity:.6;
+}
+
+/* ── Section intro ── */
+.offer-intro{display:grid;grid-template-columns:1fr 1fr;gap:56px;margin-bottom:44px;align-items:start;position:relative;z-index:2}
 .offer-note{font-size:1rem;line-height:1.9;color:var(--muted)}
 .offer-note strong{color:var(--ivory);font-weight:400}
-/* ── Tier grid ─────────────────────────────────────────────── */
-.tier-grid-3{
-  display:grid;grid-template-columns:1fr 1fr 1fr;
-  gap:0;background:transparent;
-  align-items:start;
+.offer-hed-split{display:flex;flex-direction:column;gap:.06em}
+.offer-hed-mid{font-size:clamp(1.5rem,2.5vw,2.4rem);color:rgba(237,232,222,.64);font-style:normal;font-weight:300;line-height:1.1}
+.offer-panel{display:flex;flex-direction:column;gap:0}
+.offer-positioning{padding-top:24px}
+.offer-positioning-bottom{font-size:clamp(1rem,1.6vw,1.2rem);font-family:'Cormorant Garamond',serif;font-weight:300;font-style:italic;color:rgba(237,232,222,.72);line-height:1.5}
+
+/* ── Buyer guide ── */
+.offer-guide{padding:0 0 24px;text-align:center;position:relative;z-index:2}
+.offer-guide-line{font-size:.72rem;letter-spacing:.18em;text-transform:uppercase;color:var(--gold-dim)}
+.offer-guide-sub{font-size:.82rem;color:rgba(168,168,160,.44);text-align:center;margin-top:10px;letter-spacing:.02em}
+
+/* ════════════════════════════════════════════════════
+   ASCENSION RAIL — Stage progression indicator
+   ════════════════════════════════════════════════════ */
+.ascent-rail{
+  display:flex;align-items:center;justify-content:center;gap:0;
+  margin:0 auto 32px;padding:14px 28px;
   position:relative;z-index:2;
+  border:1px solid rgba(200,168,75,.06);
+  border-radius:40px;
+  background:rgba(10,9,7,.55);
+  backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);
+  max-width:720px;
 }
-/* ambient radial glow behind focal card */
-.tier-grid-3::before{
-  content:'';
-  position:absolute;top:-80px;left:33.33%;width:33.34%;height:calc(100% + 160px);
-  background:radial-gradient(ellipse at 50% 38%,rgba(200,168,75,.06) 0%,transparent 68%);
+/* Subtle inner glow */
+.ascent-rail::before{
+  content:'';position:absolute;inset:0;border-radius:40px;
+  background:radial-gradient(ellipse at 50% 50%,rgba(200,168,75,.025) 0%,transparent 60%);
+  pointer-events:none;
+}
+.ascent-node{
+  display:flex;flex-direction:column;align-items:center;gap:3px;
+  padding:4px 16px;position:relative;
+  transition:all .3s ease;
+}
+.ascent-num{
+  font-size:.5rem;letter-spacing:.22em;text-transform:uppercase;
+  color:rgba(200,168,75,.28);font-weight:600;
+  font-family:'DM Sans',sans-serif;
+  transition:color .3s ease;
+}
+.ascent-label{
+  font-size:.58rem;letter-spacing:.12em;text-transform:uppercase;
+  color:rgba(168,168,160,.32);
+  transition:color .3s ease;
+}
+.ascent-node.--active .ascent-num{color:rgba(200,168,75,.75)}
+.ascent-node.--active .ascent-label{color:rgba(200,168,75,.55)}
+.ascent-node.--active::after{
+  content:'';position:absolute;bottom:-2px;left:50%;width:16px;height:2px;
+  transform:translateX(-50%);border-radius:1px;
+  background:rgba(200,168,75,.4);
+}
+.ascent-line{
+  width:32px;height:1px;flex-shrink:0;position:relative;
+  background:linear-gradient(90deg,rgba(200,168,75,.06),rgba(200,168,75,.16),rgba(200,168,75,.06));
+}
+/* Subtle directional pulse on lines */
+.ascent-line::after{
+  content:'';position:absolute;top:0;left:0;width:8px;height:1px;
+  background:rgba(200,168,75,.3);border-radius:1px;
+  animation:ascent-pulse 3.5s ease-in-out infinite;
+}
+@keyframes ascent-pulse{
+  0%,100%{left:0;opacity:0}
+  15%{opacity:1}
+  85%{opacity:1}
+  100%{left:calc(100% - 8px);opacity:0}
+}
+
+/* ════════════════════════════════════════════════════
+   TIER GRID — 5-column ascension row
+   ════════════════════════════════════════════════════ */
+.tier-grid-5{
+  display:grid;grid-template-columns:repeat(5,1fr);
+  gap:1px;
+  background:rgba(200,168,75,.035);
+  position:relative;z-index:2;
+  border-radius:3px;
+  overflow:hidden;
+}
+/* System connector trace behind cards */
+.tier-grid-5::before{
+  content:'';position:absolute;top:50%;left:0;right:0;height:1px;
+  background:linear-gradient(90deg,
+    transparent 2%,
+    rgba(200,168,75,.04) 10%,
+    rgba(200,168,75,.08) 30%,
+    rgba(200,168,75,.12) 50%,
+    rgba(200,168,75,.08) 70%,
+    rgba(200,168,75,.04) 90%,
+    transparent 98%
+  );
+  pointer-events:none;z-index:0;
+}
+/* Ambient glow behind center focal card */
+.tier-grid-5::after{
+  content:'';position:absolute;top:-80px;left:25%;width:50%;height:calc(100% + 160px);
+  background:radial-gradient(ellipse at 50% 38%,rgba(200,168,75,.045) 0%,transparent 60%);
   pointer-events:none;z-index:0;
 }
 
-/* ── Base card ── */
+/* ── Node connector dots aligned with each card ── */
+.tier-grid-5 .tier::after{
+  content:'';position:absolute;bottom:-1px;left:50%;
+  width:3px;height:3px;border-radius:50%;
+  transform:translateX(-50%);
+  background:rgba(200,168,75,.15);
+  z-index:3;
+  transition:background .35s ease,box-shadow .35s ease;
+}
+.tier-grid-5 .tier:hover::after{
+  background:rgba(200,168,75,.4);
+  box-shadow:0 0 6px rgba(200,168,75,.2);
+}
+
+/* ── Base tier panel ── */
 .tier{
-  background:var(--deep);padding:44px 40px;
+  background:linear-gradient(180deg,rgba(14,13,10,.98) 0%,rgba(11,10,8,.98) 100%);
+  padding:32px 26px 26px;
   position:relative;overflow:hidden;z-index:1;
-  border:1px solid rgba(200,168,75,.08);
-  opacity:1;transform:none;
+  border:none;
   display:flex;flex-direction:column;
   min-height:100%;
   transition:
-    opacity .65s cubic-bezier(.23,1,.32,1),
-    transform .65s cubic-bezier(.23,1,.32,1),
-    border-color .3s,box-shadow .35s,background .3s;
+    background .4s ease,
+    box-shadow .4s ease,
+    opacity .35s ease,
+    filter .35s ease,
+    transform .4s cubic-bezier(.23,1,.32,1);
 }
-.tier.vis{opacity:1;transform:none}
-.tier-grid-3 .tier:nth-child(1){transition-delay:.07s}
-.tier-grid-3 .tier:nth-child(2){transition-delay:.17s}
-.tier-grid-3 .tier:nth-child(3){transition-delay:.27s}
-/* ── 4-tier grid ── */
-.tier-grid-4{
-  display:grid;grid-template-columns:1fr 1fr 1fr 1fr;
-  gap:0;background:transparent;
-  align-items:stretch;
-  position:relative;z-index:2;
+/* Glass edge highlight */
+.tier::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:1px;
+  background:linear-gradient(90deg,transparent,rgba(200,168,75,.1),transparent);
+  transition:background .35s ease;
 }
-.tier-grid-4::before{
-  content:'';
-  position:absolute;top:-80px;left:50%;width:25%;height:calc(100% + 160px);
-  background:radial-gradient(ellipse at 50% 38%,rgba(200,168,75,.06) 0%,transparent 68%);
-  pointer-events:none;z-index:0;
-}
-.tier-grid-4 .tier:nth-child(1){transition-delay:.05s}
-.tier-grid-4 .tier:nth-child(2){transition-delay:.12s}
-.tier-grid-4 .tier:nth-child(3){transition-delay:.19s}
-.tier-grid-4 .tier:nth-child(4){transition-delay:.26s}
-
-/* Intentional premium anchor row (tier 5) */
-.tier-anchor-row{
-  margin-top:44px;
-  padding-top:26px;
-  display:grid;
-  grid-template-columns:1fr minmax(340px,560px) 1fr;
-  align-items:start;
-  position:relative;
-  z-index:2;
-}
-.tier-anchor-row::before{
-  content:'';
-  position:absolute;
-  top:0;
-  left:50%;
-  width:320px;
-  height:2px;
-  transform:translateX(-50%);
-  background:linear-gradient(90deg,transparent,rgba(200,168,75,.10) 8%,rgba(200,168,75,.42) 50%,rgba(200,168,75,.10) 92%,transparent);
-}
-.tier-anchor-row::after{
-  content:'';
-  position:absolute;
-  top:14px;
-  left:50%;
-  width:min(620px,92%);
-  height:calc(100% + 18px);
-  transform:translateX(-50%);
-  border:1px solid rgba(200,168,75,.06);
-  background:linear-gradient(180deg,rgba(11,10,8,.62) 0%,rgba(10,9,8,.24) 68%,transparent 100%);
-  pointer-events:none;
-  z-index:0;
-}
-.tier-anchor-row .tier.prime{grid-column:2}
-/* ── Scan tier — lightest weight ── */
-.tier.scan-tier{
-  background:var(--deep);
-  padding:32px 28px;
-}
-.tier.scan-tier .tier-flag{color:rgba(200,168,75,.35);font-size:.62rem}
-.tier.scan-tier .tier-name{font-size:1.35rem;color:rgba(168,168,160,.78)}
-.tier.scan-tier .tier-price{font-size:2.2rem;color:rgba(200,168,75,.3)}
-.tier.scan-tier .tier-price sup{color:rgba(200,168,75,.3)}
-.tier.scan-tier .tier-cta{
-  color:rgba(200,168,75,.4);border:1px solid rgba(200,168,75,.14);font-size:.7rem;
-}
-.tier.scan-tier .tier-cta:hover{
-  background:rgba(200,168,75,.06);border-color:rgba(200,168,75,.28);color:var(--gold-dim);
-}
-/* ── Report tier ── */
-.tier.report-tier{
-  background:var(--deep);
-  padding:36px 32px;
-}
-.tier.report-tier .tier-flag{color:rgba(200,168,75,.45);font-size:.65rem}
-.tier.report-tier .tier-name{font-size:1.5rem;color:rgba(168,168,160,.86)}
-.tier.report-tier .tier-price{font-size:2.6rem;color:rgba(200,168,75,.45)}
-.tier.report-tier .tier-price sup{color:rgba(200,168,75,.45)}
-.tier.report-tier .tier-cta{
-  color:rgba(200,168,75,.5);border:1px solid rgba(200,168,75,.2);font-size:.72rem;
-}
-.tier.report-tier .tier-cta:hover{
-  background:rgba(200,168,75,.06);border-color:rgba(200,168,75,.35);color:var(--gold);
-}
-.tier:hover{
-  background:rgba(13,12,10,1);
-  transform:translateY(-4px);
-  border-color:rgba(200,168,75,.18);
-  box-shadow:0 20px 60px rgba(0,0,0,.6);
+.tier:hover::before{
+  background:linear-gradient(90deg,transparent,rgba(200,168,75,.38),transparent);
 }
 
-/* ── Entry Access — reduced visual weight ── */
-.tier.starter{
-  background:var(--deep);
-  padding:36px 32px;
+/* ── Hover psychology: sibling dimming ── */
+.tier-grid-5:hover .tier{
+  opacity:.72;filter:brightness(.92);
 }
-.tier.starter .tier-flag{color:rgba(200,168,75,.4);font-size:.65rem}
-.tier.starter .tier-name{font-size:1.5rem;color:rgba(168,168,160,.82)}
-.tier.starter .tier-price{font-size:2.4rem;color:rgba(200,168,75,.35)}
-.tier.starter .tier-price sup{color:rgba(200,168,75,.35)}
-.tier.starter .tier-commitment{color:rgba(168,168,160,.62)}
-.tier.starter .tier-cta{
-  color:rgba(200,168,75,.45);
-  border:1px solid rgba(200,168,75,.18);
-  font-size:.72rem;
-}
-.tier.starter .tier-cta:hover{
-  background:rgba(200,168,75,.06);
-  border-color:rgba(200,168,75,.3);
-  color:var(--gold-dim);
-}
-.tier.starter .tier-book{
-  border-color:rgba(255,255,255,.07);
-  color:rgba(168,168,160,.45);
-}
-.tier.starter .tier-book:hover{
-  border-color:rgba(200,168,75,.18);
-  color:rgba(200,168,75,.45);
-}
-
-/* ── 5K card — primary focal point ── */
-.tier.focal{
-  background:rgba(14,13,11,1);
-  padding:52px 44px;
-  transform:translateY(-2px);
-  z-index:2;
-  border-color:rgba(200,168,75,.16);
+.tier-grid-5:hover .tier:hover{
+  opacity:1;filter:brightness(1);
+  background:linear-gradient(180deg,rgba(18,16,12,.99) 0%,rgba(14,13,10,.99) 100%);
   box-shadow:
-    0 0 64px rgba(200,168,75,.04),
-    0 28px 72px rgba(0,0,0,.55);
+    0 0 52px rgba(200,168,75,.05),
+    0 16px 48px rgba(0,0,0,.35);
+  transform:translateY(-3px);
 }
-.tier.focal.vis{opacity:1;transform:translateY(-2px)}
-.tier.focal:hover{
-  transform:translateY(-6px);
-  border-color:rgba(200,168,75,.26);
-  box-shadow:
-    0 0 80px rgba(200,168,75,.07),
-    0 32px 80px rgba(0,0,0,.65);
-  background:rgba(16,15,12,1);
+/* Keep focal visible even when siblings are hovered */
+.tier-grid-5:hover .tier.focal{opacity:.82;filter:brightness(.96)}
+.tier-grid-5:hover .tier.focal:hover{opacity:1;filter:brightness(1)}
+
+/* ── Stagger reveal delays ── */
+.tier-grid-5 .tier:nth-child(1){transition-delay:.03s}
+.tier-grid-5 .tier:nth-child(2){transition-delay:.07s}
+.tier-grid-5 .tier:nth-child(3){transition-delay:.11s}
+.tier-grid-5 .tier:nth-child(4){transition-delay:.15s}
+.tier-grid-5 .tier:nth-child(5){transition-delay:.19s}
+
+/* ── Ordinal step indicator ── */
+.tier-step{
+  font-size:.5rem;letter-spacing:.3em;text-transform:uppercase;
+  color:rgba(200,168,75,.18);margin-bottom:12px;font-weight:600;
+  display:flex;align-items:center;gap:8px;
+  font-family:'DM Sans',sans-serif;
 }
-.tier.focal::before{
-  content:'';
-  position:absolute;top:0;left:0;right:0;height:1px;
-  background:linear-gradient(90deg,transparent,rgba(200,168,75,.5),transparent);
-}
-.tier.focal .tier-flag{color:var(--gold)}
-.tier.focal .tier-name{font-weight:400}
-.tier.focal .tier-cta{
-  background:var(--gold);
-  color:var(--bg);
-  border:1px solid var(--gold);
-}
-.tier.focal .tier-cta:hover{
-  background:var(--gold-lt);
-  border-color:var(--gold-lt);
-  box-shadow:0 8px 24px rgba(200,168,75,.18);
-  transform:translateY(-2px);
+.tier-step::after{
+  content:'';flex:1;height:1px;
+  background:linear-gradient(90deg,rgba(200,168,75,.08),transparent 80%);
 }
 
-/* ── 10K card ── */
-.tier.prime{background:rgba(12,11,9,1)}
-.tier.prime::before{
-  content:'';
-  position:absolute;top:0;left:0;right:0;height:1px;
-  background:linear-gradient(90deg,transparent,rgba(200,168,75,.25),transparent);
-}
-.tier-anchor-row .tier.prime{
-  background:linear-gradient(180deg,rgba(15,13,10,.98) 0%,rgba(11,10,8,.98) 100%);
-  border-color:rgba(200,168,75,.16);
-  box-shadow:0 0 0 1px rgba(200,168,75,.06),0 16px 46px rgba(0,0,0,.46);
-}
-.tier.prime .tier-cta{background:var(--gold);color:var(--bg);border:1px solid var(--gold)}
-.tier.prime .tier-cta:hover{
-  background:var(--gold-lt);border-color:var(--gold-lt);
-  box-shadow:0 8px 24px rgba(200,168,75,.18);
-  transform:translateY(-2px);
-}
-.tier.prime .tier-name{font-weight:400}
-.tier.prime .tier-price{margin-bottom:16px}
-.tier.prime .tier-position{margin-bottom:24px;line-height:1.72}
-.tier.prime .tier-features{gap:16px}
-.tier.prime .tier-actions{padding-top:22px}
-.tier.prime .tier-cta{
-  width:100%;
-  padding:18px 18px;
-  letter-spacing:.19em;
-  background:linear-gradient(180deg,#d8be72 0%,#c8a84b 100%);
-  border-color:rgba(226,201,125,.65);
+/* ── Stage flag ── */
+.tier-flag{
+  display:block;font-size:.6rem;letter-spacing:.22em;text-transform:uppercase;
+  color:rgba(200,168,75,.45);margin-bottom:6px;font-weight:400;
 }
 
-/* ── Shared type ── */
-.tier-flag{font-size:.65rem;letter-spacing:.22em;text-transform:uppercase;color:var(--gold-dim);margin-bottom:20px;display:block}
-.tier-name{font-family:'Cormorant Garamond',serif;font-size:2rem;font-weight:300;line-height:1.0;margin-bottom:8px;letter-spacing:-.02em;color:var(--ivory)}
-.tier-urls{font-size:.8rem;color:var(--muted);letter-spacing:.03em;margin-bottom:24px;padding-bottom:24px;border-bottom:1px solid rgba(200,168,75,.08)}
-.tier-price{font-family:'Cormorant Garamond',serif;font-size:4.6rem;font-weight:300;color:var(--gold);line-height:1;margin-bottom:10px}
-.tier-price sup{font-size:1.6rem;vertical-align:top;margin-top:16px;color:var(--gold-dim);opacity:.7}
-.tier-price sub{font-size:.82rem;color:rgba(168,168,160,.58);letter-spacing:.01em}
-.tier-commitment{font-size:.8rem;color:var(--muted);margin-bottom:28px;line-height:1.75}
+/* ── Title ── */
+.tier-name{
+  font-family:'Cormorant Garamond',serif;
+  font-size:1.28rem;font-weight:300;color:var(--ivory);
+  margin-bottom:14px;line-height:1.2;letter-spacing:.01em;
+}
 
-/* ── Feature rows with SVG icons ── */
-.tier-features{list-style:none;display:flex;flex-direction:column;gap:14px;margin-bottom:32px}
+/* ── Price ── */
+.tier-price{
+  font-family:'Cormorant Garamond',serif;
+  font-size:2.6rem;font-weight:300;color:var(--gold);
+  line-height:1;margin-bottom:6px;
+}
+.tier-price sup{font-size:.92rem;vertical-align:top;margin-top:6px;color:var(--gold-dim);opacity:.6}
+.tier-price sub{font-size:.68rem;color:rgba(168,168,160,.42);letter-spacing:.01em;font-family:'DM Sans',sans-serif}
+
+/* ── Position line ── */
+.tier-position{
+  font-size:.72rem;letter-spacing:.015em;color:rgba(168,168,160,.4);
+  line-height:1.62;font-style:italic;margin-bottom:16px;
+  border-left:2px solid rgba(200,168,75,.12);padding-left:11px;
+  max-width:240px;
+  min-height:3.8em;
+}
+
+/* ── Divider ── */
+.tier-divider{
+  width:100%;height:1px;margin:2px 0 16px;
+  background:linear-gradient(90deg,rgba(200,168,75,.1),transparent 75%);
+}
+
+/* ── Feature list ── */
+.tier-features{list-style:none;display:flex;flex-direction:column;gap:10px;margin-bottom:0}
 .tier-features li{
-  display:flex;align-items:flex-start;gap:11px;
-  font-size:.88rem;color:var(--muted);line-height:1.65;
+  display:flex;align-items:flex-start;gap:9px;
+  font-size:.74rem;color:rgba(168,168,160,.6);line-height:1.58;
 }
 .tier-features li svg{
-  flex-shrink:0;
-  margin-top:2px;
-  width:15px;height:15px;
-  color:var(--gold);
-  opacity:.8;
-  transition:opacity .22s ease,transform .22s ease,filter .22s ease;
+  flex-shrink:0;margin-top:2px;width:13px;height:13px;
+  color:var(--gold);opacity:.5;
+  transition:opacity .25s ease,transform .25s ease;
 }
-.tier:hover .tier-features li svg{opacity:.92;transform:translateX(1px)}
-.tier.focal .tier-features li svg{opacity:.9;color:var(--gold)}
-.tier-features li strong{color:var(--ivory);font-weight:400}
-.tier-features .soon{color:var(--gold-dim);font-style:normal;font-size:.8rem}
+.tier:hover .tier-features li svg{opacity:.82;transform:translateX(1px)}
+.tier-features li strong{color:rgba(237,232,222,.82);font-weight:400}
 
-/* ── CTAs ── */
-.tier-cta{
-  display:block;text-align:center;font-size:.76rem;letter-spacing:.16em;text-transform:uppercase;
-  padding:16px;text-decoration:none;transition:all .3s;
+/* ── Tier stack (flex-grow body) ── */
+.tier-stack{display:flex;flex-direction:column;flex:1}
+
+/* ── Actions footer ── */
+.tier-actions{
+  margin-top:auto;
+  display:flex;flex-direction:column;gap:8px;
+  padding-top:18px;
+  border-top:1px solid rgba(200,168,75,.05);
+  min-height:68px;
+  justify-content:flex-end;
 }
-.tier .tier-cta{color:var(--gold);border:1px solid var(--gold-dim)}
-.tier .tier-cta:hover{background:var(--gold-lt);color:var(--bg);border-color:var(--gold-lt)}
+
+/* ── CTA buttons ── */
+.tier-cta{
+  display:flex;align-items:center;justify-content:center;
+  width:100%;min-height:44px;padding:12px 14px;
+  text-align:center;font-size:.64rem;letter-spacing:.16em;text-transform:uppercase;
+  text-decoration:none;
+  background:transparent;color:var(--gold);
+  border:1px solid rgba(200,168,75,.16);
+  transition:all .32s cubic-bezier(.23,1,.32,1);
+  font-weight:500;font-family:'DM Sans',sans-serif;
+  position:relative;overflow:hidden;
+}
+/* CTA hover shimmer */
+.tier-cta::before{
+  content:'';position:absolute;top:0;left:-100%;width:100%;height:100%;
+  background:linear-gradient(90deg,transparent,rgba(200,168,75,.06),transparent);
+  transition:left .5s ease;pointer-events:none;
+}
+.tier-cta:hover::before{left:100%}
+.tier-cta:hover{
+  background:rgba(200,168,75,.05);
+  border-color:rgba(200,168,75,.32);
+  color:var(--gold-lt);
+  transform:translateY(-1px);
+  box-shadow:0 4px 18px rgba(200,168,75,.06);
+}
 .tier-book{
-  display:block;width:100%;margin-top:10px;padding:12px 16px;background:transparent;
-  border:1px solid rgba(200,168,75,.1);color:var(--muted);font-size:.72rem;font-weight:400;
+  display:block;width:100%;margin-top:6px;padding:10px 14px;background:transparent;
+  border:1px solid rgba(200,168,75,.07);color:var(--muted);font-size:.6rem;font-weight:400;
   letter-spacing:.12em;text-transform:uppercase;cursor:pointer;transition:all .3s;
   font-family:'DM Sans',sans-serif;
 }
 .tier-book:hover{border-color:var(--gold-dim);color:var(--gold)}
+.tier-commitment{font-size:.68rem;color:rgba(168,168,160,.38);margin-bottom:8px;line-height:1.6;letter-spacing:.02em}
 
-/* ── Gated note (Entry) ── */
+/* ── Gated tooltip ── */
 .tier-gated{
-  margin-top:16px;padding:14px 16px;border:1px solid rgba(200,168,75,.12);
-  font-size:.8rem;line-height:1.7;color:rgba(168,168,160,.72);
-  display:flex;align-items:flex-start;gap:10px;
+  margin-top:12px;padding:11px 13px;border:1px solid rgba(200,168,75,.07);
+  font-size:.7rem;line-height:1.62;color:rgba(168,168,160,.5);
+  display:flex;align-items:flex-start;gap:9px;
 }
-.tier-gated-icon{color:rgba(200,168,75,.4);flex-shrink:0;margin-top:1px;font-size:.8rem}
-.tier-gated strong{color:rgba(237,232,222,.7);font-weight:400}
+.tier-gated-icon{color:rgba(200,168,75,.28);flex-shrink:0;margin-top:1px;font-size:.7rem}
+.tier-gated strong{color:rgba(237,232,222,.55);font-weight:400}
 
-/* ── Tier position line ── */
-.tier-position{
-  font-size:.78rem;letter-spacing:.04em;color:rgba(168,168,160,.48);
-  line-height:1.6;font-style:italic;margin-bottom:20px;
-  border-left:2px solid rgba(200,168,75,.18);padding-left:12px;
+/* ═══════════════════════════════════════════
+   TIER VARIANTS — Progressive visual weight
+   ═══════════════════════════════════════════ */
+
+/* ── Scan tier (lightest, entry) ── */
+.tier.scan-tier{background:linear-gradient(180deg,rgba(12,11,9,.96) 0%,rgba(10,9,7,.96) 100%)}
+.tier.scan-tier .tier-flag{color:rgba(200,168,75,.28)}
+.tier.scan-tier .tier-name{font-size:1.18rem;color:rgba(168,168,160,.68)}
+.tier.scan-tier .tier-price{font-size:2.2rem;color:rgba(200,168,75,.32)}
+.tier.scan-tier .tier-price sup{color:rgba(200,168,75,.22)}
+.tier.scan-tier .tier-step{color:rgba(200,168,75,.14)}
+
+/* ── Report tier ── */
+.tier.report-tier{background:linear-gradient(180deg,rgba(13,12,10,.97) 0%,rgba(11,10,8,.97) 100%)}
+.tier.report-tier .tier-step{color:rgba(200,168,75,.16)}
+
+/* ── Focal tier (primary recommendation) ── */
+.tier.focal{
+  background:linear-gradient(180deg,rgba(16,14,11,.99) 0%,rgba(13,12,9,.99) 100%);
+  z-index:2;
+  box-shadow:
+    inset 0 1px 0 rgba(200,168,75,.18),
+    0 0 64px rgba(200,168,75,.04),
+    0 20px 56px rgba(0,0,0,.4);
+}
+.tier.focal::before{
+  background:linear-gradient(90deg,transparent,rgba(200,168,75,.45),transparent);
+}
+.tier-grid-5:hover .tier.focal:hover{
+  box-shadow:
+    inset 0 1px 0 rgba(200,168,75,.25),
+    0 0 80px rgba(200,168,75,.07),
+    0 24px 64px rgba(0,0,0,.5);
+  background:linear-gradient(180deg,rgba(19,17,13,1) 0%,rgba(15,14,11,1) 100%);
+  transform:translateY(-4px);
+}
+.tier.focal .tier-flag{color:var(--gold)}
+.tier.focal .tier-name{font-weight:400;font-size:1.34rem}
+.tier.focal .tier-step{color:rgba(200,168,75,.38)}
+.tier.focal .tier-cta{
+  background:var(--gold);color:var(--bg);border:1px solid var(--gold);
+  font-weight:600;
+}
+.tier.focal .tier-cta:hover{
+  background:var(--gold-lt);border-color:var(--gold-lt);
+  box-shadow:0 6px 22px rgba(200,168,75,.2);transform:translateY(-2px);
+}
+.tier.focal .tier-cta::before{
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,.12),transparent);
+}
+/* Focal node dot emphasized */
+.tier-grid-5 .tier.focal::after{
+  width:4px;height:4px;
+  background:rgba(200,168,75,.35);
+  box-shadow:0 0 8px rgba(200,168,75,.15);
 }
 
-/* Card composition discipline */
-.tier-stack{display:flex;flex-direction:column}
-.tier-grid-4 .tier{height:100%}
-.tier-grid-4 .tier-position{min-height:6.4em}
-.tier-features{list-style:none;display:flex;flex-direction:column;gap:14px;margin-bottom:0}
-.tier-actions{margin-top:auto;display:flex;flex-direction:column;gap:10px;padding-top:18px;border-top:1px solid rgba(200,168,75,.09)}
-.tier-grid-4 .tier-actions{min-height:74px}
+/* ═══════════════════════════════════════════
+   ANCHOR ROW — Market Control (apex)
+   ═══════════════════════════════════════════ */
+.tier-anchor-row{
+  margin-top:56px;padding-top:28px;
+  display:grid;grid-template-columns:1fr minmax(380px,700px) 1fr;
+  align-items:start;position:relative;z-index:2;
+}
+/* Vertical connector bridge from grid to apex */
+.tier-anchor-row::before{
+  content:'';position:absolute;top:-28px;left:50%;width:1px;height:56px;
+  transform:translateX(-50%);
+  background:linear-gradient(180deg,rgba(200,168,75,.08),rgba(200,168,75,.2) 50%,rgba(200,168,75,.08));
+}
+/* Ambient halo behind apex card */
+.tier-anchor-row::after{
+  content:'';position:absolute;top:0;left:50%;
+  width:min(720px,96%);height:calc(100% + 28px);
+  transform:translateX(-50%);
+  border:1px solid rgba(200,168,75,.05);
+  border-radius:6px;
+  background:
+    radial-gradient(ellipse at 50% 0%,rgba(200,168,75,.03) 0%,transparent 45%),
+    radial-gradient(ellipse at 50% 100%,rgba(200,168,75,.015) 0%,transparent 40%);
+  pointer-events:none;z-index:0;
+}
+.tier-anchor-row .tier.prime{grid-column:2}
+
+/* ── Prime / Apex card ── */
+.tier.prime{
+  background:linear-gradient(180deg,rgba(17,15,12,.99) 0%,rgba(12,11,8,.99) 100%);
+  border:1px solid rgba(200,168,75,.16);
+  border-radius:6px;
+  padding:48px 52px;
+}
+.tier.prime::before{
+  content:'';position:absolute;top:0;left:10%;width:80%;height:1px;
+  background:linear-gradient(90deg,transparent,rgba(200,168,75,.4),transparent);
+  border-radius:0;
+}
+/* Bottom edge glow for apex */
+.tier.prime .tier-stack::after{
+  content:'';position:absolute;bottom:0;left:10%;width:80%;height:1px;
+  background:linear-gradient(90deg,transparent,rgba(200,168,75,.08),transparent);
+}
+.tier-anchor-row .tier.prime{
+  box-shadow:
+    inset 0 1px 0 rgba(200,168,75,.12),
+    0 0 90px rgba(200,168,75,.05),
+    0 28px 72px rgba(0,0,0,.42);
+}
+.tier.prime:hover{
+  border-color:rgba(200,168,75,.28);
+  background:linear-gradient(180deg,rgba(19,17,13,1) 0%,rgba(14,12,9,1) 100%);
+  box-shadow:
+    inset 0 1px 0 rgba(200,168,75,.2),
+    0 0 110px rgba(200,168,75,.07),
+    0 32px 80px rgba(0,0,0,.5);
+  transform:translateY(-2px);
+}
+.tier.prime .tier-step{color:rgba(200,168,75,.3);font-size:.52rem;margin-bottom:14px}
+.tier.prime .tier-flag{color:rgba(200,168,75,.65);font-size:.62rem;margin-bottom:8px}
+.tier.prime .tier-name{font-size:1.6rem;font-weight:400;margin-bottom:20px;letter-spacing:.02em}
+.tier.prime .tier-price{font-size:3.4rem;margin-bottom:10px}
+.tier.prime .tier-position{max-width:440px;margin-bottom:24px;line-height:1.72;min-height:auto}
+.tier.prime .tier-divider{margin:4px 0 20px;background:linear-gradient(90deg,rgba(200,168,75,.15),transparent 70%)}
+.tier.prime .tier-features{gap:13px}
+.tier.prime .tier-features li{font-size:.8rem}
+.tier.prime .tier-features li svg{width:15px;height:15px;opacity:.65}
+.tier.prime .tier-actions{padding-top:24px;min-height:auto;border-top-color:rgba(200,168,75,.08)}
+.tier.prime .tier-cta{
+  min-height:58px;padding:18px 20px;
+  font-size:.72rem;letter-spacing:.2em;font-weight:600;
+  background:linear-gradient(180deg,#d8be72 0%,#c8a84b 100%);
+  color:var(--bg);border:1px solid rgba(226,201,125,.5);
+  box-shadow:0 4px 20px rgba(200,168,75,.1);
+}
+.tier.prime .tier-cta::before{
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,.15),transparent);
+}
+.tier.prime .tier-cta:hover{
+  background:linear-gradient(180deg,#e0c97e 0%,#d4b45a 100%);
+  border-color:rgba(226,201,125,.7);
+  box-shadow:0 8px 32px rgba(200,168,75,.22);
+  transform:translateY(-2px);
+}
+.tier.prime .tier-book{font-size:.62rem;padding:11px 16px;border-color:rgba(200,168,75,.1)}
+.tier.prime .tier-commitment{font-size:.7rem;color:rgba(168,168,160,.42);letter-spacing:.03em}
+
+/* ── Bottom progression text ── */
+.offer-bottom-line{
+  text-align:center;font-size:.76rem;color:rgba(168,168,160,.38);
+  letter-spacing:.03em;padding:18px 0 3px;
+  position:relative;z-index:2;font-style:italic;
+}
+.offer-bottom-sub{
+  text-align:center;font-size:.64rem;color:rgba(168,168,160,.22);
+  letter-spacing:.05em;padding:4px 0 18px;
+  position:relative;z-index:2;
+}
+
+/* ═══════════════════════════════════════════
+   OFFER TRUST / SCARCITY / VALUE BLOCKS
+   ═══════════════════════════════════════════ */
+.offer-trust-line{margin-top:28px;padding:18px 22px;border:1px solid rgba(200,168,75,.08);background:rgba(10,9,7,.6)}
+.offer-trust-main{font-size:.86rem;color:var(--ivory);line-height:1.75;opacity:.8}
+.offer-trust-sub{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:.94rem;color:rgba(168,168,160,.58);margin-top:6px;display:block}
+.offer-scarcity{padding-bottom:28px;border-bottom:1px solid rgba(200,168,75,.12)}
+.offer-scarcity-main{font-family:'Cormorant Garamond',serif;font-size:clamp(1.25rem,2.2vw,1.65rem);font-weight:300;line-height:1.25;color:rgba(237,232,222,.86);letter-spacing:-.01em;margin-bottom:8px}
+.offer-scarcity-sub{font-size:.85rem;color:rgba(168,168,160,.68);line-height:1.6}
+.offer-value{padding:20px 22px;margin:24px 0;background:rgba(9,8,6,.65);border:1px solid rgba(200,168,75,.15)}
+.offer-value-price{font-size:1.04rem;font-weight:400;color:rgba(237,232,222,.9);line-height:1.55;display:block;margin-bottom:10px}
+.offer-value-inline{font-size:.82rem;color:rgba(168,168,160,.72);line-height:1.6;display:block;margin-bottom:6px}
+.offer-value-media{font-size:.74rem;color:rgba(168,168,160,.55);line-height:1.5;letter-spacing:.02em}
+
+/* ═══════════════════════════════════════════
+   RESPONSIVE — Pricing
+   ═══════════════════════════════════════════ */
+@media(max-width:1100px){
+  .tier-grid-5{grid-template-columns:repeat(3,1fr)}
+  .ascent-rail{flex-wrap:wrap;gap:4px;max-width:480px;padding:12px 20px}
+  .ascent-line{width:16px}
+  .tier-position{min-height:auto}
+}
+@media(max-width:900px){
+  #offer{padding:40px 24px 48px}
+  .offer-intro{grid-template-columns:1fr;gap:28px}
+  .tier-grid-5{grid-template-columns:1fr 1fr}
+  .tier-anchor-row{grid-template-columns:1fr;margin-top:32px;padding-top:22px}
+  .tier-anchor-row .tier.prime{grid-column:auto}
+  .tier-anchor-row::before{height:32px;top:-16px}
+  .ascent-rail{display:none}
+  .tier-position{min-height:auto}
+  /* Disable sibling dimming on touch */
+  .tier-grid-5:hover .tier{opacity:1;filter:none}
+}
+@media(max-width:520px){
+  .tier-grid-5{grid-template-columns:1fr}
+  .tier-position{max-width:100%}
+  .tier.prime{padding:36px 28px}
+  .tier.prime .tier-position{max-width:100%}
+  .tier-name{font-size:1.3rem}
+  .tier-price{font-size:2.4rem}
+  .tier-price sup{font-size:.95rem}
+  .tier.prime .tier-name{font-size:1.5rem}
+  .tier.prime .tier-price{font-size:3rem}
+}
 
 /* ── Value anchor ── */
 .value-anchor{
@@ -943,11 +1125,11 @@ body::after{
 
 /* ── Pricing CTA ── */
 .pricing-cta{
-  padding:42px 64px 36px;max-width:1200px;margin:0 auto;text-align:center;
+  padding:32px 64px 28px;max-width:1200px;margin:0 auto;text-align:center;
   border-top:1px solid rgba(200,168,75,.08);
 }
 .pricing-cta-actions{display:flex;align-items:center;justify-content:center;gap:24px;margin-bottom:16px}
-.pricing-cta-meta{font-size:.68rem;letter-spacing:.14em;text-transform:uppercase;color:rgba(168,168,160,.30)}
+.pricing-cta-meta{font-size:.68rem;letter-spacing:.14em;text-transform:uppercase;color:rgba(168,168,160,.42)}
 
 /* ── Commitment note (after #how steps) ── */
 .commitment-note{
@@ -1055,7 +1237,7 @@ body::after{
 /* ── Final Closing CTA section ── */
 .fcc{
   position:relative;overflow:hidden;
-  padding:160px 64px;text-align:center;
+  padding:100px 64px;text-align:center;
   border-top:1px solid rgba(200,168,75,.14);
 }
 .fcc::before{
@@ -1171,7 +1353,7 @@ body::after{
 }
 
 /* ── How-this-works trust strip ── */
-.how-strip{padding:38px 64px 32px;max-width:1200px;margin:0 auto;border-top:1px solid rgba(200,168,75,.06);text-align:center}
+.how-strip{padding:32px 64px 28px;max-width:1200px;margin:0 auto;border-top:1px solid rgba(200,168,75,.10);text-align:center}
 .how-strip-hed{font-size:.68rem;letter-spacing:.28em;text-transform:uppercase;color:rgba(200,168,75,.55);margin-bottom:20px}
 .how-strip-bullets{display:flex;justify-content:center;align-items:center;gap:20px 32px;flex-wrap:wrap;margin-bottom:14px}
 .how-strip-item{display:flex;align-items:center;gap:8px}
@@ -1182,7 +1364,7 @@ body::after{
 .how-strip-item:nth-child(5) .how-strip-dot{animation-delay:1.6s}
 @keyframes pulseDot{0%,100%{opacity:.5;transform:scale(1)}50%{opacity:1;transform:scale(1.5)}}
 .how-strip-label{font-size:.82rem;color:rgba(168,168,160,.72);letter-spacing:.01em}
-.how-strip-sub{font-size:.72rem;color:rgba(168,168,160,.36);letter-spacing:.08em;text-transform:uppercase}
+.how-strip-sub{font-size:.72rem;color:rgba(168,168,160,.48);letter-spacing:.08em;text-transform:uppercase}
 
 /* ── Value anchor additions ── */
 .va-eye{font-size:.66rem;letter-spacing:.28em;text-transform:uppercase;color:rgba(200,168,75,.45);margin-bottom:16px}
@@ -1230,7 +1412,7 @@ body::after{
 /* ── Responsive pricing/services ── */
 @media(max-width:900px){
   .value-anchor,.exec-services,.access-position,.access-model,.decision-guide,.pricing-cta,.final-close{padding:48px 24px}
-  .fcc{padding:100px 32px}
+  .fcc{padding:80px 32px}
   .fcc-hed-1,.fcc-hed-2{font-size:clamp(1.9rem,5.2vw,2.8rem)}
   .commitment-note{padding:40px 28px 36px}
   .fit-screen{padding:40px 24px}
@@ -1239,7 +1421,7 @@ body::after{
 }
 @media(max-width:520px){
   .value-anchor,.exec-services,.access-position,.access-model,.decision-guide,.pricing-cta,.final-close{padding:36px 20px}
-  .fcc{padding:72px 20px}
+  .fcc{padding:60px 20px}
   .fcc-hed-1,.fcc-hed-2{white-space:normal}
   .fcc-hed-1{font-size:clamp(1.65rem,7.8vw,2.4rem)}
   .fcc-hed-2{font-size:clamp(1.45rem,6.8vw,2.1rem)}
@@ -1662,222 +1844,18 @@ footer{border-top:1px solid var(--border);padding:36px 64px;display:flex;flex-di
 .gate-skip:hover{color:var(--ivory)}
 .gate-badge{display:inline-block;font-size:.62rem;letter-spacing:.16em;text-transform:uppercase;color:var(--gold);border:1px solid var(--gold-dim);padding:4px 10px;margin-bottom:20px}
 
-/* ── Reveal animation ── */
-.r{opacity:0;transform:translateY(22px);transition:opacity .72s cubic-bezier(.22,.84,.36,1),transform .72s cubic-bezier(.22,.84,.36,1)}
-.r.on{opacity:1;transform:none}
+/* ── Reveal animation (progressive enhancement: visible by default) ── */
+.r{opacity:1;transform:none;transition:opacity .72s cubic-bezier(.22,.84,.36,1),transform .72s cubic-bezier(.22,.84,.36,1)}
+.js-enabled .r{opacity:0;transform:translateY(22px)}
+.js-enabled .r.on{opacity:1;transform:none}
 
-/* ── Large tablet / small desktop nav compact ── */
+/* ── 1200px: nav-account toggle ── */
 @media(max-width:1200px){
-  #nav{padding:20px 36px}
-  #nav.stuck{padding:14px 36px}
-  .nav-right{gap:20px}
-  .nav-link{font-size:.7rem;letter-spacing:.12em}
-  .nav-btn{font-size:.68rem;letter-spacing:.12em;padding:10px 22px;min-height:38px}
   .nav-account-full{display:none}
   .nav-account-short{display:inline}
 }
 
-/* ── Mobile hamburger ── */
-.nav-hamburger{
-  display:none;
-  flex-direction:column;justify-content:center;align-items:center;gap:6px;
-  width:48px;height:48px;
-  background:rgba(255,255,255,.04);
-  border:1px solid rgba(255,255,255,.07);
-  border-radius:8px;
-  cursor:pointer;
-  padding:0;z-index:9300;position:relative;flex-shrink:0;
-  touch-action:manipulation;
-  transition:background .2s,border-color .2s,transform .12s;
-  -webkit-tap-highlight-color:transparent;
-}
-.nav-hamburger:hover{background:rgba(255,255,255,.07);border-color:rgba(200,168,75,.18)}
-.nav-hamburger:active{transform:scale(.93)}
-.nav-hamburger:focus-visible{outline:2px solid rgba(200,168,75,.55);outline-offset:3px}
-.nav-hamburger span{
-  display:block;width:24px;height:2px;background:var(--ivory);
-  border-radius:2px;
-  transition:transform .28s ease,opacity .22s,width .22s,background .2s;
-  transform-origin:center;
-}
-.nav-hamburger.is-open{background:rgba(200,168,75,.08);border-color:rgba(200,168,75,.22)}
-.nav-hamburger.is-open span{background:var(--gold,#c8a84b)}
-.nav-hamburger.is-open span:nth-child(1){transform:translateY(8px) rotate(45deg)}
-.nav-hamburger.is-open span:nth-child(2){opacity:0;width:0}
-.nav-hamburger.is-open span:nth-child(3){transform:translateY(-8px) rotate(-45deg)}
-
-/* ── Panel backdrop ── */
-.nav-backdrop{
-  position:fixed;inset:0;
-  z-index:9100;
-  background:rgba(0,0,0,.62);
-  opacity:0;visibility:hidden;
-  transition:opacity .3s ease,visibility 0s .3s;
-}
-.nav-backdrop.is-open{
-  opacity:1;visibility:visible;
-  transition:opacity .3s ease,visibility 0s 0s;
-}
-
-/* ── Slide-in panel ── */
-.nav-menu{
-  position:fixed;
-  top:0;right:0;bottom:0;
-  width:320px;max-width:88vw;
-  z-index:9200;
-  background:linear-gradient(160deg,#0f0e09 0%,#0a0908 60%,#0d0b06 100%);
-  border-left:1px solid rgba(200,168,75,.14);
-  box-shadow:-16px 0 64px rgba(0,0,0,.72);
-  overflow-y:auto;
-  display:flex;flex-direction:column;
-  transform:translateX(100%);
-  visibility:hidden;
-  transition:transform .32s cubic-bezier(.23,1,.32,1),visibility 0s .32s;
-}
-.nav-menu::before{
-  content:'';
-  position:absolute;top:0;left:0;right:0;
-  height:320px;
-  background:radial-gradient(ellipse 260px 200px at 80% -10%,rgba(200,168,75,.055) 0%,transparent 70%);
-  pointer-events:none;
-}
-.nav-menu.is-open{
-  transform:translateX(0);
-  visibility:visible;
-  transition:transform .32s cubic-bezier(.23,1,.32,1),visibility 0s 0s;
-}
-.nav-menu-inner{
-  padding:72px 0 48px;
-  flex:1;display:flex;flex-direction:column;
-  position:relative;
-}
-
-/* Identity block ── */
-.nm-identity{
-  padding:0 28px 28px;
-  border-bottom:1px solid rgba(200,168,75,.09);
-  margin-bottom:8px;
-}
-.nm-identity-brand{
-  font-family:'Cormorant Garamond',serif;
-  font-size:1.45rem;font-weight:400;letter-spacing:.04em;
-  color:var(--ivory);
-  line-height:1.1;
-  margin-bottom:5px;
-}
-.nm-identity-brand em{
-  color:var(--gold);
-  font-style:normal;
-}
-.nm-identity-sub{
-  font-size:.68rem;letter-spacing:.2em;text-transform:uppercase;
-  color:rgba(200,168,75,.38);
-  font-family:'DM Sans',sans-serif;
-}
-
-/* Section group labels ── */
-.nm-group{
-  padding:20px 28px 6px;
-}
-.nm-group-label{
-  font-size:.6rem;letter-spacing:.26em;text-transform:uppercase;
-  color:rgba(200,168,75,.3);
-  font-family:'DM Sans',sans-serif;font-weight:500;
-}
-
-/* Panel menu links */
-.nm-link{
-  display:flex;align-items:center;justify-content:space-between;
-  padding:13px 28px;
-  font-family:'DM Sans',sans-serif;
-  font-size:.84rem;letter-spacing:.07em;
-  color:rgba(210,210,202,.78);text-decoration:none;
-  transition:color .18s ease,background .18s ease,transform .15s ease;
-  min-height:48px;
-  position:relative;
-}
-.nm-link::after{
-  content:'›';
-  color:rgba(200,168,75,.28);
-  font-size:1.05rem;
-  transition:color .18s ease,transform .18s ease;
-  flex-shrink:0;
-}
-.nm-link:hover,.nm-link:focus-visible{
-  color:var(--ivory);
-  background:rgba(200,168,75,.05);
-  transform:scale(1.018);
-}
-.nm-link:hover::after{color:var(--gold);transform:translateX(3px)}
-.nm-link:active{transform:scale(.97)}
-
-/* Primary featured link */
-.nm-link.nm-featured{
-  font-size:.9rem;
-  color:var(--gold);
-  font-weight:500;
-  letter-spacing:.1em;
-  padding-top:14px;padding-bottom:14px;
-}
-.nm-link.nm-featured::after{color:var(--gold);opacity:.7}
-.nm-link.nm-featured:hover{
-  color:#e2c96e;
-  background:rgba(200,168,75,.07);
-  box-shadow:inset 3px 0 0 rgba(200,168,75,.4);
-}
-.nm-link.nm-featured:hover::after{transform:translateX(4px)}
-
-/* Tertiary muted link */
-.nm-link.nm-muted{
-  font-size:.76rem;
-  color:rgba(168,168,160,.42);
-  letter-spacing:.09em;
-  padding-top:10px;padding-bottom:10px;
-  min-height:44px;
-}
-.nm-link.nm-muted::after{color:rgba(200,168,75,.18);font-size:.9rem}
-.nm-link.nm-muted:hover{color:rgba(168,168,160,.72);background:transparent}
-.nm-link.nm-muted:hover::after{color:rgba(200,168,75,.35)}
-
-/* Divider */
-.nm-divider{
-  height:1px;
-  background:rgba(200,168,75,.07);
-  margin:6px 0;
-}
-
-/* Portal row — keep for @@auth block */
-.nm-portal{
-  display:flex;align-items:center;justify-content:space-between;
-  padding:13px 28px;
-  color:var(--gold);font-family:'DM Sans',sans-serif;
-  font-size:.84rem;font-weight:500;letter-spacing:.1em;
-  text-decoration:none;
-  transition:color .18s ease,background .18s ease,transform .15s ease;
-  min-height:48px;
-}
-.nm-portal::after{
-  content:'›';
-  color:var(--gold);opacity:.7;
-  font-size:1.05rem;transition:color .18s ease,transform .18s ease;
-}
-.nm-portal:hover{color:#e2c96e;background:rgba(200,168,75,.06);transform:scale(1.018)}
-.nm-portal:hover::after{transform:translateX(3px)}
-.nm-portal:active{transform:scale(.97)}
-
-/* Sign In secondary row */
-.nm-signin{
-  display:flex;align-items:center;justify-content:space-between;
-  padding:10px 28px;
-  font-family:'DM Sans',sans-serif;
-  font-size:.74rem;letter-spacing:.1em;
-  color:rgba(168,168,160,.4);text-decoration:none;
-  transition:color .18s ease;
-  min-height:44px;
-}
-.nm-signin::after{content:'›';color:rgba(200,168,75,.18);font-size:.9rem;transition:color .18s ease,transform .18s ease}
-.nm-signin:hover{color:rgba(168,168,160,.75)}
-.nm-signin:hover::after{color:rgba(200,168,75,.45);transform:translateX(2px)}
+@include('partials.public-nav-mobile-css')
 
 /* ── Mobile ── */
 @media(max-width:900px){
@@ -1888,7 +1866,7 @@ footer{border-top:1px solid var(--border);padding:36px 64px;display:flex;flex-di
   .nav-btn.nav-book{display:inline-flex;font-size:.68rem;padding:9px 18px;letter-spacing:.1em}
   .nav-account{display:none}
   .nav-hamburger{display:flex}
-  #hero{padding:88px 24px 60px}
+  #hero{padding:88px 24px 32px;min-height:0}
   .hero-actions{flex-direction:column;gap:16px;width:100%}
   .btn-primary{width:100%;text-align:center;padding:16px 24px}
   .btn-ghost{text-align:center}
@@ -1898,6 +1876,8 @@ footer{border-top:1px solid var(--border);padding:36px 64px;display:flex;flex-di
   .amb-bloom{background:radial-gradient(ellipse at 42% 46%,rgba(200,168,75,.07) 0%,transparent 65%);opacity:1}
   .amb-shimmer{display:block}
   .hero-scroll{left:20px;bottom:32px}
+  .hero-transition{padding:16px 0 0}
+  .hero-scroll-arrow{margin:10px auto 0}
   .alloc-section{padding:64px 24px}
   .alloc-layout{grid-template-columns:1fr;gap:48px}
   .alloc-actions{flex-direction:column;gap:16px;width:100%;}
@@ -1912,9 +1892,7 @@ footer{border-top:1px solid var(--border);padding:36px 64px;display:flex;flex-di
   .url-item{font-size:.78rem;padding:10px 12px}
   .offer-intro{grid-template-columns:1fr;gap:28px}
   .contact-inner{grid-template-columns:1fr;gap:36px}
-  .audience-grid,.tier-grid-3,.tier-grid-4{grid-template-columns:1fr}
-  .tier-anchor-row{grid-template-columns:1fr;margin-top:26px;padding-top:20px}
-  .tier-anchor-row .tier.prime{grid-column:auto}
+  .audience-grid{grid-template-columns:1fr}
   .aud-card{padding:40px 24px}
   .aud-title{font-size:1.6rem}
   .wyl-grid{grid-template-columns:1fr 1fr;gap:14px}
@@ -1938,14 +1916,6 @@ footer{border-top:1px solid var(--border);padding:36px 64px;display:flex;flex-di
   .ul-note{padding:14px 16px}
   .access-grid{grid-template-columns:1fr}
   .ac-card{padding:40px 32px}
-  .tier{padding:40px 28px}
-  .tier-name{font-size:1.6rem}
-  .tier-price{font-size:3.2rem}
-  .tier-price sup{font-size:1.4rem}
-  .tier.focal{transform:none;border:1px solid rgba(200,168,75,.12)}
-  .tier.focal.vis{transform:none}
-  .tier.focal:hover{transform:translateY(-4px)}
-  .tier-grid-3::before{display:none}
   .frow{grid-template-columns:1fr}
   .fg input,.fg textarea,.fg select{font-size:16px;padding:14px 16px}
   .fsub{width:100%;text-align:center;padding:16px 24px}
@@ -1963,11 +1933,11 @@ footer{border-top:1px solid var(--border);padding:36px 64px;display:flex;flex-di
   .gate-title{font-size:1.5rem}
   .gate-desc{font-size:.88rem}
   /* Tighter reveal offset on mobile */
-  .r{transform:translateY(20px)}
+  .js-enabled .r{transform:translateY(20px)}
 }
 @media(max-width:520px){
   html{font-size:16px}
-  #hero{padding:80px 20px 48px}
+  #hero{padding:80px 20px 28px;min-height:0}
   .hero-scroll{display:none}
   .alloc-section{padding:48px 20px}
   .alloc-sub{max-width:100%}
@@ -2158,40 +2128,255 @@ body::before{
   50%{opacity:.54;transform:translateY(5px)}
 }
 
-/* ── System Structure section ── */
-.qs-mid{padding:56px 24px 52px;text-align:center;border-top:1px solid rgba(200,168,75,.08);border-bottom:1px solid rgba(200,168,75,.08);background:rgba(200,168,75,.025)}
-.qs-mid-eyebrow{font-size:.64rem;letter-spacing:.26em;text-transform:uppercase;color:rgba(200,168,75,.55);margin-bottom:14px}
-.qs-mid-hed{font-size:clamp(1.3rem,3vw,2rem);font-weight:300;color:var(--ivory);line-height:1.3;margin:0 auto 12px;max-width:560px;font-family:'Cormorant Garamond',Georgia,serif}
-.qs-mid-hed em{color:var(--gold);font-style:italic}
-.qs-mid-sub{font-size:.88rem;color:var(--muted);margin:0 auto 24px;max-width:420px;line-height:1.6}
-/* scan result preview mockup */
-.qs-preview{max-width:420px;margin:0 auto 28px;background:#0e0d09;border:1px solid rgba(200,168,75,.18);overflow:hidden;text-align:left}
-.qs-preview-header{background:#111009;border-bottom:1px solid rgba(200,168,75,.1);padding:10px 18px;display:flex;align-items:center;gap:10px}
-.qs-preview-dots{display:flex;gap:5px}
-.qs-preview-dot{width:8px;height:8px;border-radius:50%}
-.qs-preview-url{font-size:.66rem;color:rgba(168,168,160,.44);letter-spacing:.04em}
-.qs-preview-body{padding:16px 20px;display:flex;gap:18px;align-items:center}
-.qs-preview-score-wrap{flex-shrink:0;text-align:center;padding-right:16px;border-right:1px solid rgba(200,168,75,.1)}
-.qs-preview-score{font-size:2rem;font-weight:300;color:#6aaf90;line-height:1;margin-bottom:2px}
-.qs-preview-score-lbl{font-size:.6rem;letter-spacing:.1em;color:rgba(168,168,160,.5);text-transform:uppercase}
-.qs-preview-checks{flex:1;display:flex;flex-direction:column;gap:6px}
-.qs-preview-check{font-size:.74rem;color:rgba(168,168,160,.75);display:flex;align-items:center;gap:7px;line-height:1.3}
-.qs-preview-check.pass::before{content:'\2713';color:#6aaf90;font-size:.7rem;flex-shrink:0}
-.qs-preview-check.fail::before{content:'\2717';color:#c47878;font-size:.7rem;flex-shrink:0}
-.qs-preview-footer{font-size:.7rem;color:rgba(168,168,160,.45);padding:8px 20px 12px;border-top:1px solid rgba(200,168,75,.07);letter-spacing:.02em}
-.qs-checks-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:32px 52px;max-width:740px;margin:0 auto 22px;text-align:left}
-.qs-check-item{padding:0;max-width:320px}
-.qs-check-item::before{content:'';display:block;width:28px;height:1px;background:rgba(200,168,75,.5);margin-bottom:14px}
-.qs-check-item-title{font-family:'Cormorant Garamond',serif;font-size:1.08rem;color:var(--ivory);font-weight:600;margin-bottom:8px;letter-spacing:.01em;line-height:1.25}
-.qs-check-item-body{font-size:.76rem;color:rgba(178,178,170,.58);line-height:1.72;font-weight:300;max-width:290px}
-.qs-check-capstone-wrap{max-width:740px;margin:8px auto 32px;text-align:center}
-.qs-check-capstone{display:inline-block;max-width:340px}
-.qs-check-capstone::before{content:'';display:block;width:28px;height:1px;background:rgba(200,168,75,.5);margin:0 auto 14px}
-.qs-check-capstone .qs-check-item-title{font-size:1.12rem;color:var(--gold);font-weight:600;margin-bottom:8px}
-.qs-check-capstone .qs-check-item-body{color:rgba(178,178,170,.5);max-width:300px;margin:0 auto}
+/* ══════════════════════════════════════════════════════════
+   DIAGNOSTIC GATEWAY — AI Readiness Intelligence  v2
+   ══════════════════════════════════════════════════════════ */
+
+/* ── Section container ── */
+#proof{
+  padding:72px 64px 0;max-width:1280px;margin:0 auto;
+  position:relative;overflow:hidden;text-align:center;
+  border-top:none;border-bottom:none;background:transparent;
+  scroll-margin-top:64px;
+}
+/* Signal-field atmosphere */
+#proof::before{
+  content:'';position:absolute;inset:0;
+  background:
+    radial-gradient(ellipse 60% 50% at 50% 25%,rgba(200,168,75,.04) 0%,transparent 70%),
+    radial-gradient(ellipse 40% 60% at 18% 70%,rgba(200,168,75,.02) 0%,transparent 60%),
+    radial-gradient(ellipse 35% 45% at 82% 55%,rgba(200,168,75,.025) 0%,transparent 55%);
+  pointer-events:none;z-index:0;
+}
+/* Faint diagnostic grid texture */
+#proof::after{
+  content:'';position:absolute;inset:0;
+  background-image:
+    linear-gradient(rgba(200,168,75,.025) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(200,168,75,.025) 1px,transparent 1px);
+  background-size:52px 52px;
+  mask-image:radial-gradient(ellipse 65% 55% at 50% 35%,black 15%,transparent 75%);
+  -webkit-mask-image:radial-gradient(ellipse 65% 55% at 50% 35%,black 15%,transparent 75%);
+  pointer-events:none;z-index:0;
+}
+
+/* ── Typography ── */
+.diag-eyebrow{
+  font-size:.58rem;letter-spacing:.32em;text-transform:uppercase;
+  color:rgba(200,168,75,.48);margin-bottom:20px;
+  position:relative;z-index:1;
+}
+.diag-hed{
+  font-family:'Cormorant Garamond',Georgia,serif;
+  font-size:clamp(1.6rem,3.5vw,2.6rem);font-weight:300;
+  color:var(--ivory);line-height:1.18;
+  margin:0 auto 18px;max-width:640px;
+  position:relative;z-index:1;
+}
+.diag-hed em{color:var(--gold);font-style:italic}
+.diag-sub{
+  font-size:.88rem;color:rgba(178,176,168,.72);
+  margin:0 auto 48px;max-width:500px;line-height:1.76;
+  position:relative;z-index:1;
+}
+
+/* ── Score Panel — luxury AI diagnostic dashboard ── */
+.diag-panel{
+  max-width:620px;margin:0 auto 0;
+  background:rgba(14,13,9,.88);
+  border:1px solid rgba(200,168,75,.1);border-radius:4px;
+  overflow:hidden;text-align:left;
+  position:relative;z-index:1;
+  backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
+  box-shadow:
+    inset 0 1px 0 rgba(200,168,75,.06),
+    0 20px 72px rgba(0,0,0,.45),
+    0 2px 14px rgba(0,0,0,.3);
+}
+/* Soft ambient glow behind panel */
+.diag-panel::before{
+  content:'';position:absolute;inset:-48px;
+  background:radial-gradient(ellipse 55% 50% at 50% 50%,rgba(200,168,75,.04) 0%,transparent 70%);
+  pointer-events:none;z-index:-1;
+}
+.diag-panel-bar{
+  background:rgba(17,16,9,.92);
+  border-bottom:1px solid rgba(200,168,75,.07);
+  padding:12px 24px;display:flex;align-items:center;gap:12px;
+}
+.diag-panel-dots{display:flex;gap:6px}
+.diag-panel-dot{width:7px;height:7px;border-radius:50%}
+.diag-panel-label{
+  font-size:.58rem;letter-spacing:.14em;text-transform:uppercase;
+  color:rgba(168,168,160,.42);
+}
+.diag-panel-body{
+  padding:30px 30px 26px;display:flex;gap:28px;align-items:flex-start;
+}
+.diag-score-block{
+  flex-shrink:0;text-align:center;
+  padding:6px 26px 6px 6px;
+  border-right:1px solid rgba(200,168,75,.07);
+  min-width:115px;
+}
+.diag-score-num{
+  font-family:'Cormorant Garamond',serif;
+  font-size:3.8rem;font-weight:300;color:#6aaf90;
+  line-height:1;margin-bottom:4px;letter-spacing:-.02em;
+}
+.diag-score-denom{
+  font-size:.56rem;letter-spacing:.15em;text-transform:uppercase;
+  color:rgba(178,176,168,.48);margin-bottom:14px;
+}
+.diag-score-badge{
+  display:inline-block;font-size:.52rem;letter-spacing:.18em;text-transform:uppercase;
+  color:rgba(106,175,144,.72);border:1px solid rgba(106,175,144,.15);
+  padding:3px 10px;border-radius:2px;
+}
+.diag-results{flex:1;display:flex;flex-direction:column;gap:11px}
+.diag-result-row{
+  display:flex;align-items:center;gap:10px;
+  font-size:.78rem;color:rgba(195,193,186,.74);line-height:1.4;
+}
+.diag-result-indicator{width:6px;height:6px;border-radius:50%;flex-shrink:0}
+.diag-result-indicator.--pass{background:rgba(106,175,144,.68)}
+.diag-result-indicator.--fail{background:rgba(196,120,120,.62)}
+.diag-result-indicator.--warn{background:rgba(200,168,75,.58)}
+.diag-panel-footer{
+  border-top:1px solid rgba(200,168,75,.05);
+  padding:13px 30px;display:flex;justify-content:space-between;align-items:center;
+}
+.diag-panel-footer-left{font-size:.68rem;color:rgba(178,176,168,.48);letter-spacing:.02em}
+.diag-panel-footer-right{font-size:.58rem;letter-spacing:.12em;text-transform:uppercase;color:rgba(200,168,75,.44)}
+
+/* ── Connector trace — panel to modules ── */
+.diag-connector{
+  width:1px;height:48px;
+  background:linear-gradient(180deg,rgba(200,168,75,.22),rgba(200,168,75,.06));
+  margin:0 auto;position:relative;z-index:1;
+}
+.diag-connector::after{
+  content:'';position:absolute;bottom:-3px;left:-3px;
+  width:7px;height:7px;border-radius:50%;
+  background:rgba(200,168,75,.2);box-shadow:0 0 10px rgba(200,168,75,.06);
+}
+
+/* ── Modules label ── */
+.diag-modules-label{
+  font-size:.58rem;letter-spacing:.22em;text-transform:uppercase;
+  color:rgba(200,168,75,.42);margin:14px auto 18px;
+  position:relative;z-index:1;
+}
+
+/* ── 5 Signal Modules ── */
+.diag-modules{
+  display:grid;grid-template-columns:repeat(5,1fr);gap:1px;
+  max-width:980px;margin:0 auto 40px;
+  background:rgba(200,168,75,.04);
+  position:relative;z-index:1;
+}
+.diag-module{
+  background:rgba(8,8,8,.96);padding:26px 22px;text-align:left;
+  transition:background .3s,transform .3s;position:relative;
+}
+.diag-module:hover{background:rgba(14,13,9,.96);transform:translateY(-2px);box-shadow:0 8px 24px rgba(0,0,0,.3)}
+.diag-module:hover .diag-module-num{color:rgba(200,168,75,.5)}
+.diag-module-num{
+  font-size:.52rem;letter-spacing:.22em;text-transform:uppercase;
+  color:rgba(200,168,75,.48);margin-bottom:12px;
+}
+.diag-module-title{
+  font-family:'Cormorant Garamond',serif;
+  font-size:1.04rem;font-weight:600;
+  color:rgba(237,232,222,.94);margin-bottom:10px;
+  line-height:1.28;letter-spacing:.01em;
+}
+.diag-module-body{
+  font-size:.9rem;color:rgba(208,206,198,.76);
+  line-height:1.82;font-weight:300;
+}
+
+/* ── CTA wrap ── */
+.diag-cta-wrap{position:relative;z-index:1;padding:0}
+.diag-cta{
+  display:inline-block;
+  background:linear-gradient(180deg,#d8be72 0%,#c8a84b 100%);
+  color:var(--bg);font-size:.68rem;font-weight:600;
+  letter-spacing:.16em;text-transform:uppercase;text-decoration:none;
+  padding:17px 48px;border:1px solid rgba(226,201,125,.4);border-radius:2px;
+  position:relative;overflow:hidden;transition:all .3s;
+  box-shadow:0 4px 22px rgba(200,168,75,.08);
+}
+.diag-cta::before{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,.12),transparent);
+  transform:translateX(-100%);transition:transform .6s;
+}
+.diag-cta:hover{
+  background:linear-gradient(180deg,#e0c97e 0%,#d4b45a 100%);
+  border-color:rgba(226,201,125,.65);
+  box-shadow:0 8px 32px rgba(200,168,75,.18);transform:translateY(-1px);
+}
+.diag-cta:hover::before{transform:translateX(100%)}
+.diag-cta-meta{
+  font-size:.62rem;letter-spacing:.14em;text-transform:uppercase;
+  color:rgba(195,192,184,.52);margin-top:16px;
+  position:relative;z-index:1;
+}
+
+/* ── Section bridge — visual handoff into system below ── */
+.diag-bridge{
+  width:1px;height:56px;margin:32px auto 0;
+  background:linear-gradient(180deg,rgba(200,168,75,.18),rgba(200,168,75,.04),rgba(200,168,75,.02));
+  position:relative;z-index:1;
+}
+.diag-bridge::before{
+  content:'';position:absolute;top:-4px;left:-4px;
+  width:9px;height:9px;border-radius:50%;
+  background:rgba(200,168,75,.14);box-shadow:0 0 12px rgba(200,168,75,.06);
+}
+.diag-bridge::after{
+  content:'';position:absolute;bottom:-4px;left:-4px;
+  width:9px;height:9px;border-radius:50%;
+  background:rgba(200,168,75,.2);
+  box-shadow:0 0 18px rgba(200,168,75,.1);
+}
+
+/* ── Diagnostic responsive ── */
+@media(max-width:900px){
+  #proof{padding:40px 40px 0;scroll-margin-top:56px}
+  .diag-modules{grid-template-columns:repeat(2,1fr);gap:1px;margin-bottom:40px}
+  .diag-module:last-child{grid-column:1 / -1}
+  .diag-module{padding:24px 22px}
+  .diag-module-title{font-size:1.08rem}
+  .diag-module-body{font-size:.92rem;line-height:1.84}
+  .diag-cta-meta{font-size:.64rem;letter-spacing:.13em}
+  .diag-panel-body{gap:20px;padding:24px 24px 20px}
+  .diag-bridge{height:40px;margin-top:24px}
+}
+@media(max-width:600px){
+  #proof{padding:32px 24px 0;scroll-margin-top:48px}
+  .diag-modules{grid-template-columns:1fr 1fr;margin-bottom:36px}
+  .diag-module{padding:22px 20px}
+  .diag-module-title{font-size:1.1rem}
+  .diag-module-body{font-size:.94rem;line-height:1.86}
+  .diag-modules-label{font-size:.58rem;color:rgba(200,168,75,.42)}
+  .diag-panel{max-width:100%}
+  .diag-panel-body{flex-direction:column;text-align:center;gap:16px;padding:20px 20px 16px}
+  .diag-score-block{border-right:none;border-bottom:1px solid rgba(200,168,75,.07);padding:0 0 16px;min-width:auto}
+  .diag-results{align-items:center}
+  .diag-hed{max-width:100%}
+  .diag-panel-footer{flex-direction:column;gap:6px;text-align:center}
+  .diag-bridge{height:32px;margin-top:20px}
+}
+@media(max-width:400px){
+  .diag-modules{grid-template-columns:1fr}
+  .diag-module:last-child{grid-column:auto}
+  .diag-module-body{font-size:.96rem;line-height:1.88}
+}
 /* product feature grid */
-.feat-grid{padding:52px 24px;text-align:center;max-width:1100px;margin:0 auto}
-.feat-grid-eye{font-size:.64rem;letter-spacing:.26em;text-transform:uppercase;color:rgba(200,168,75,.55);margin-bottom:10px}
+.feat-grid{padding:40px 24px;text-align:center;max-width:1100px;margin:0 auto}
+.feat-grid-eye{font-size:.64rem;letter-spacing:.26em;text-transform:uppercase;color:rgba(200,168,75,.62);margin-bottom:10px}
 .feat-grid-hed{font-family:'Cormorant Garamond',serif;font-size:clamp(1.4rem,2.8vw,2rem);font-weight:300;color:var(--ivory);line-height:1.25;margin:0 auto 24px;max-width:560px}
 .feat-grid-hed em{font-style:italic;color:var(--gold)}
 .feat-cards{display:grid;grid-template-columns:repeat(2,1fr);gap:1px;background:rgba(200,168,75,.07);max-width:720px;margin:0 auto}
@@ -2200,7 +2385,7 @@ body::before{
 .feat-card:hover .feat-card-icon{opacity:1}
 .feat-card-icon{font-size:1.1rem;margin-bottom:12px;opacity:.7;transition:opacity .25s}
 .feat-card-title{font-size:.82rem;color:var(--ivory);font-weight:400;margin-bottom:8px;letter-spacing:.02em}
-.feat-card-body{font-size:.78rem;color:var(--muted);line-height:1.65}
+.feat-card-body{font-size:.78rem;color:rgba(178,176,168,.72);line-height:1.68}
 .feat-card-score{display:inline-block;font-size:.6rem;letter-spacing:.1em;text-transform:uppercase;color:rgba(200,168,75,.5);border:1px solid rgba(200,168,75,.15);padding:2px 8px;margin-top:10px}
 .sys-struct{padding:72px 64px;max-width:1200px;margin:0 auto;position:relative}
 .sys-struct-inner{display:grid;grid-template-columns:1fr 1.2fr;gap:68px;align-items:start}
@@ -2873,7 +3058,9 @@ body::before{
 
   /* Hero supporting copy */
   .hero-stage{font-size:clamp(2.8rem,7.5vw,4rem)} /* covers 520–768px gap */
-  .hero-gold-accent{margin-bottom:22px;line-height:1.3}
+  .hero-gold-accent{margin-bottom:18px;line-height:1.3}
+  .hero-transition{padding:12px 0 0}
+  .hero-scroll-arrow{margin:8px auto 0}
   .hero-note{font-size:clamp(1rem,4vw,1.2rem);margin-bottom:22px;padding-left:12px;max-width:100%}
   .hero-diff{font-size:.82rem;margin-bottom:20px}
   .hero-cities{font-size:.96rem;margin-bottom:24px;letter-spacing:.09em;padding-left:14px}
@@ -3084,7 +3271,7 @@ body::before{
   .hero-gold-accent{font-size:clamp(1rem,4.2vw,1.3rem);margin-bottom:12px}
 
   /* Hero section padding — recover vertical space gained */
-  #hero{padding:76px 20px 44px}
+  #hero{padding:76px 20px 24px;min-height:0}
 }
 /* ── AI Citation Engine section ── */
 .ace-section{padding:96px 64px;max-width:1200px;margin:0 auto}
@@ -3102,8 +3289,8 @@ body::before{
 .ace-cta{text-align:center;margin-top:8px}
 .ace-cta a{font-size:.82rem;color:rgba(200,168,75,.8);text-decoration:none;border-bottom:1px solid rgba(200,168,75,.25);padding-bottom:2px;letter-spacing:.04em;transition:color .2s,border-color .2s}
 .ace-cta a:hover{color:#e2c97d;border-color:rgba(226,201,125,.6)}
-@media(max-width:900px){.ace-section{padding:72px 40px}.ace-grid{grid-template-columns:repeat(3,1fr)}.tier-grid-4{grid-template-columns:1fr 1fr}}
-@media(max-width:600px){.ace-section{padding:56px 24px}.ace-grid{grid-template-columns:1fr 1fr}.feat-cards{grid-template-columns:1fr}.qs-preview-body{flex-direction:column;text-align:center}.qs-preview-score-wrap{border-right:none;border-bottom:1px solid rgba(200,168,75,.1);padding:0 0 14px;margin-bottom:0}.qs-preview-checks{align-items:center}.qs-checks-grid{grid-template-columns:1fr;gap:22px;text-align:center}.qs-check-item{max-width:none;margin:0 auto}.qs-check-item::before{margin:0 auto 10px}.qs-check-item-body{max-width:none}.qs-check-capstone .qs-check-item-body{max-width:none}}
+@media(max-width:900px){.ace-section{padding:72px 40px}.ace-grid{grid-template-columns:repeat(3,1fr)}}
+@media(max-width:600px){.ace-section{padding:56px 24px}.ace-grid{grid-template-columns:1fr 1fr}.feat-cards{grid-template-columns:1fr}}
 @media(max-width:400px){.ace-grid{grid-template-columns:1fr}}
 </style>
 @if(config('services.recaptcha.site_key'))
@@ -3275,7 +3462,7 @@ body::before{
   </div>
   <p class="hero-gold-accent">Instant AI citation readiness score in 60 seconds.</p>
   <div class="hero-actions">
-    <a href="{{ route('quick-scan.show') }}" class="btn-primary">See Where You Stand — $2</a>
+    <a href="{{ route('scan.start') }}" class="btn-primary">Start Your Scan — $2</a>
     <a href="#proof" class="btn-ghost">See an Example</a>
   </div>
 
@@ -3286,69 +3473,84 @@ body::before{
   <div class="hero-scroll-arrow"></div>
 </div>
 
-<!-- ════════════ PHASE 2 — IMMEDIATE VISUAL PROOF ════════════ -->
-<section id="proof" class="qs-mid r" aria-label="AI Citation Quick Scan">
-  <p class="qs-mid-eyebrow">Instant visibility score</p>
-  <h2 class="qs-mid-hed">See exactly where you stand&nbsp;&#8212; <em>in seconds</em></h2>
-  <p class="qs-mid-sub">Enter your URL. Get a 0–100 AI citation readiness score with your top structural gaps and fastest correction — all for $2.</p>
+<!-- ════════════ PHASE 2 — DIAGNOSTIC GATEWAY ════════════ -->
+<section id="proof" aria-label="AI Citation Diagnostic">
+  <p class="diag-eyebrow">Readiness Intelligence</p>
+  <h2 class="diag-hed">See exactly where you stand&nbsp;&mdash; <em>in seconds</em></h2>
+  <p class="diag-sub">Enter your URL. Receive a 0&ndash;100 AI citation readiness score, your top structural gaps, and the fastest correction path&nbsp;&mdash; for $2.</p>
 
-  <!-- Scan result preview mockup -->
-  <div class="qs-preview r">
-    <div class="qs-preview-header">
-      <div class="qs-preview-dots">
-        <div class="qs-preview-dot" style="background:#c47878;opacity:.55"></div>
-        <div class="qs-preview-dot" style="background:#c8a84b;opacity:.38"></div>
-        <div class="qs-preview-dot" style="background:#6aaf90;opacity:.48"></div>
+  <!-- Diagnostic score panel -->
+  <div class="diag-panel">
+    <div class="diag-panel-bar">
+      <div class="diag-panel-dots">
+        <div class="diag-panel-dot" style="background:#c47878;opacity:.45"></div>
+        <div class="diag-panel-dot" style="background:#c8a84b;opacity:.3"></div>
+        <div class="diag-panel-dot" style="background:#6aaf90;opacity:.38"></div>
       </div>
-      <span class="qs-preview-url">yourbusiness.com &nbsp;&middot;&nbsp; AI Citation Score</span>
+      <span class="diag-panel-label">yourbusiness.com &middot; AI Citation Analysis</span>
     </div>
-    <div class="qs-preview-body">
-      <div class="qs-preview-score-wrap">
-        <div class="qs-preview-score">72</div>
-        <div class="qs-preview-score-lbl">/ 100<br>citation<br>score</div>
+    <div class="diag-panel-body">
+      <div class="diag-score-block">
+        <div class="diag-score-num">72</div>
+        <div class="diag-score-denom">/ 100 Citation Score</div>
+        <div class="diag-score-badge">Above Baseline</div>
       </div>
-      <div class="qs-preview-checks">
-        <div class="qs-preview-check pass">Structured data signals detected</div>
-        <div class="qs-preview-check fail">Answerable content gaps found</div>
-        <div class="qs-preview-check pass">Entity authority present</div>
-        <div class="qs-preview-check fail">Content connectivity low</div>
-        <div class="qs-preview-check pass">Authority depth sufficient</div>
+      <div class="diag-results">
+        <div class="diag-result-row"><span class="diag-result-indicator --pass"></span> Structured data signals detected</div>
+        <div class="diag-result-row"><span class="diag-result-indicator --fail"></span> Answerable content gaps found</div>
+        <div class="diag-result-row"><span class="diag-result-indicator --pass"></span> Entity authority present</div>
+        <div class="diag-result-row"><span class="diag-result-indicator --warn"></span> Content connectivity below threshold</div>
+        <div class="diag-result-row"><span class="diag-result-indicator --pass"></span> Authority depth sufficient</div>
       </div>
     </div>
-    <p class="qs-preview-footer">Fastest correction identified &mdash; estimated +20 points</p>
-  </div>
-
-  <div class="qs-checks-grid">
-    <div class="qs-check-item">
-      <p class="qs-check-item-title">Machine-Readable Context</p>
-      <p class="qs-check-item-body">Are your structured data markers present and formatted so AI systems can parse them?</p>
-    </div>
-    <div class="qs-check-item">
-      <p class="qs-check-item-title">Direct Answer Signals</p>
-      <p class="qs-check-item-body">Can AI extract clear, citable answers directly from your pages?</p>
-    </div>
-    <div class="qs-check-item">
-      <p class="qs-check-item-title">Definitions &amp; Explanations</p>
-      <p class="qs-check-item-body">Does your site establish clear entity identity that AI systems can trust and reference?</p>
-    </div>
-    <div class="qs-check-item">
-      <p class="qs-check-item-title">Content Connectivity</p>
-      <p class="qs-check-item-body">Are your pages linked in ways that reinforce topical authority across your domain?</p>
-    </div>
-  </div>
-  <div class="qs-check-capstone-wrap">
-    <div class="qs-check-capstone">
-      <p class="qs-check-item-title">Authority Depth</p>
-      <p class="qs-check-item-body">Do your pages provide enough structured depth for AI systems to confidently cite you as the answer?</p>
+    <div class="diag-panel-footer">
+      <span class="diag-panel-footer-left">Fastest correction identified&nbsp;&mdash; estimated <strong style="color:rgba(106,175,144,.7)">+20 pts</strong></span>
+      <span class="diag-panel-footer-right">Full report &rarr;</span>
     </div>
   </div>
 
-  <a href="{{ route('quick-scan.show') }}" class="btn-cta r" style="display:inline-block;background:var(--gold);color:var(--bg);font-size:.72rem;font-weight:600;letter-spacing:.12em;text-transform:uppercase;text-decoration:none;padding:13px 38px">See Where You Stand — $2</a>
-  <p style="font-size:.64rem;letter-spacing:.1em;text-transform:uppercase;color:rgba(168,168,160,.3);margin-top:14px">Results in seconds &nbsp;&middot;&nbsp; Sent to your inbox &nbsp;&middot;&nbsp; No account required</p>
+  <div class="diag-connector" aria-hidden="true"></div>
+  <p class="diag-modules-label">Evaluation Dimensions</p>
+
+  <!-- 5 Signal Modules -->
+  <div class="diag-modules">
+    <div class="diag-module">
+      <p class="diag-module-num">01</p>
+      <p class="diag-module-title">Machine-Readable Context</p>
+      <p class="diag-module-body">Structured data markers and schema signals that let AI systems parse your business identity.</p>
+    </div>
+    <div class="diag-module">
+      <p class="diag-module-num">02</p>
+      <p class="diag-module-title">Direct Answer Signals</p>
+      <p class="diag-module-body">Citable, extractable answers positioned where AI retrieval systems look first.</p>
+    </div>
+    <div class="diag-module">
+      <p class="diag-module-num">03</p>
+      <p class="diag-module-title">Definitions &amp; Explanations</p>
+      <p class="diag-module-body">Clear entity identity and contextual definitions AI systems can trust and reference.</p>
+    </div>
+    <div class="diag-module">
+      <p class="diag-module-num">04</p>
+      <p class="diag-module-title">Content Connectivity</p>
+      <p class="diag-module-body">Internal linking architecture that reinforces topical authority across your domain.</p>
+    </div>
+    <div class="diag-module">
+      <p class="diag-module-num">05</p>
+      <p class="diag-module-title">Authority Depth</p>
+      <p class="diag-module-body">Structural depth sufficient for AI systems to confidently cite you as the definitive answer.</p>
+    </div>
+  </div>
+
+  <div class="diag-cta-wrap">
+    <a href="{{ route('scan.start') }}" class="diag-cta">Run Your Diagnostic&nbsp;&mdash; $2</a>
+    <p class="diag-cta-meta">Results in seconds &middot; Sent to your inbox &middot; No account required</p>
+  </div>
+
+  <div class="diag-bridge" aria-hidden="true"></div>
 </section>
 
 <!-- ════════════ PHASE 3 — DOCTRINE ════════════ -->
-<section class="how-strip r" aria-label="The shift">
+<section class="how-strip" aria-label="The shift">
   <p class="how-strip-hed">The Rules Have Changed</p>
   <div class="how-strip-bullets">
     <div class="how-strip-item">
@@ -3368,7 +3570,7 @@ body::before{
 </section>
 
 <!-- ════════════ PHASE 4 — SYSTEM ABSTRACTION ════════════ -->
-<section class="feat-grid r" aria-label="Four layers of AI visibility">
+<section class="feat-grid" aria-label="Four layers of AI visibility">
   <p class="feat-grid-eye">How the System Works</p>
   <h2 class="feat-grid-hed">Four layers. One compounding <em>advantage.</em></h2>
   <div class="feat-cards">
@@ -3396,15 +3598,15 @@ body::before{
 </section>
 
 <!-- ════════════ PHASE 5 — MID-PAGE CTA ════════════ -->
-<div class="pricing-cta r">
+<div class="pricing-cta">
   <div class="pricing-cta-actions">
-    <a href="{{ route('quick-scan.show') }}" class="btn-primary">Run Your Scan — $2</a>
+    <a href="{{ route('scan.start') }}" class="btn-primary">Start Your Scan — $2</a>
   </div>
   <p class="pricing-cta-meta">Instant score &nbsp;&middot;&nbsp; No account needed &nbsp;&middot;&nbsp; One URL, 60 seconds</p>
 </div>
 
 <!-- ════════════ PHASE 6 — TIER FRAMING ════════════ -->
-<section class="how-strip r" aria-label="Upgrade progression">
+<section class="how-strip" aria-label="Upgrade progression">
   <p class="how-strip-hed">One Scan. Multiple Levels of Control.</p>
   <div class="how-strip-bullets">
     <div class="how-strip-item">
@@ -3429,12 +3631,12 @@ body::before{
     <canvas class="ambient-canvas" id="offerCanvas"></canvas>
     <div class="ambient-overlay"></div>
   </div>
-  <div class="offer-intro r">
+  <div class="offer-intro">
     <div>
       <p class="s-eye">Pricing</p>
       <h2 class="s-h offer-hed-split">
         <span>One system.</span>
-        <em>Five levels of control.</em>
+        <em>Six levels of control.</em>
       </h2>
     </div>
     <div class="offer-panel">
@@ -3444,20 +3646,37 @@ body::before{
     </div>
   </div>
 
-  <div class="offer-guide r">
+  <div class="offer-guide">
     <p class="offer-guide-line">Choose where to start.</p>
-    <p style="font-size:.82rem;color:rgba(168,168,160,.52);text-align:center;margin-top:10px;letter-spacing:.02em">Each level builds on the last. Upgrade any time &mdash; your data carries forward.</p>
+    <p class="offer-guide-sub">Choose your entry point. The system builds forward from there.</p>
   </div>
 
-  <div class="tier-grid-4" id="tierGrid">
+  <!-- Ascension Rail -->
+  <div class="ascent-rail">
+    <div class="ascent-node"><span class="ascent-num">01</span><span class="ascent-label">Scan</span></div>
+    <div class="ascent-line"></div>
+    <div class="ascent-node"><span class="ascent-num">02</span><span class="ascent-label">Signal</span></div>
+    <div class="ascent-line"></div>
+    <div class="ascent-node --active"><span class="ascent-num">03</span><span class="ascent-label">Leverage</span></div>
+    <div class="ascent-line"></div>
+    <div class="ascent-node"><span class="ascent-num">04</span><span class="ascent-label">Activate</span></div>
+    <div class="ascent-line"></div>
+    <div class="ascent-node"><span class="ascent-num">05</span><span class="ascent-label">Expand</span></div>
+    <div class="ascent-line"></div>
+    <div class="ascent-node"><span class="ascent-num">06</span><span class="ascent-label">Control</span></div>
+  </div>
+
+  <div class="tier-grid-5" id="tierGrid">
 
     {{-- TIER 1 — Start: Citation Scan --}}
     <div class="tier scan-tier">
+      <span class="tier-step">Step 01</span>
       <span class="tier-flag">Start</span>
       <h3 class="tier-name">Citation Scan</h3>
       <div class="tier-stack">
         <div class="tier-price"><sup>$</sup>2</div>
-        <p class="tier-position">Discover where you stand. One scan reveals your citation readiness — how visible you are to the systems answering your customers' questions.</p>
+        <p class="tier-position">Reveals your citation readiness and AI visibility in seconds.</p>
+        <div class="tier-divider"></div>
         <ul class="tier-features">
           <li>
             <svg fill="none" stroke="currentColor" stroke-width="1.4" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 4h16v16H4zM4 10h16M10 4v16"/></svg>
@@ -3474,17 +3693,19 @@ body::before{
         </ul>
       </div>
       <div class="tier-actions">
-        <a href="{{ route('quick-scan.show') }}" class="tier-cta">See Where You Stand — $2</a>
+        <a href="{{ route('scan.start') }}" class="tier-cta">Start Scan&nbsp;&mdash; $2</a>
       </div>
     </div>
 
     {{-- TIER 2 — Grow: Signal Expansion --}}
     <div class="tier report-tier">
+      <span class="tier-step">Step 02</span>
       <span class="tier-flag">Grow</span>
       <h3 class="tier-name">Signal Expansion</h3>
       <div class="tier-stack">
         <div class="tier-price"><sup>$</sup>99</div>
-        <p class="tier-position">See the full picture. Complete signal mapping across your footprint — where you're visible, where you're invisible, and what's costing you citations.</p>
+        <p class="tier-position">Full signal mapping — every gap, every opportunity, ranked by impact.</p>
+        <div class="tier-divider"></div>
         <ul class="tier-features">
           <li>
             <svg fill="none" stroke="currentColor" stroke-width="1.4" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 4h16v16H4zM4 10h16M10 4v16"/></svg>
@@ -3501,17 +3722,19 @@ body::before{
         </ul>
       </div>
       <div class="tier-actions">
-        <a href="{{ route('quick-scan.show') }}" class="tier-cta">Start with $2 Scan</a>
+        <a href="{{ route('checkout.signal-expansion') }}" class="tier-cta">Map Your Signals&nbsp;&mdash; $99</a>
       </div>
     </div>
 
     {{-- TIER 3 — Scale: Structural Leverage (FOCAL / CORE) --}}
     <div class="tier focal">
-      <span class="tier-flag">Scale — Core</span>
+      <span class="tier-step">Step 03</span>
+      <span class="tier-flag">Scale &mdash; Core</span>
       <h3 class="tier-name">Structural Leverage</h3>
       <div class="tier-stack">
         <div class="tier-price"><sup>$</sup>249</div>
-        <p class="tier-position">Turn visibility into structure. Your complete action sequence — every correction prioritized, every opportunity sized, every gap closed systematically.</p>
+        <p class="tier-position">Every correction prioritized, every opportunity sized, every gap closed.</p>
+        <div class="tier-divider"></div>
         <ul class="tier-features">
           <li>
             <svg fill="none" stroke="currentColor" stroke-width="1.4" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 4h16v16H4zM4 10h16M10 4v16"/></svg>
@@ -3519,30 +3742,28 @@ body::before{
           </li>
           <li>
             <svg fill="none" stroke="currentColor" stroke-width="1.4" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 17l6-6 4 4 6-8M16 7h4v4"/></svg>
-            <strong>Priority correction sequence</strong> &mdash; ordered by impact
+            <strong>Priority correction sequence</strong>
           </li>
           <li>
             <svg fill="none" stroke="currentColor" stroke-width="1.4" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M10 14l4-4M8.5 9.5 6.7 11.3a3 3 0 1 0 4.2 4.2l1.8-1.8M15.5 14.5l1.8-1.8a3 3 0 1 0-4.2-4.2l-1.8 1.8"/></svg>
-            Structural guidance for every gap
-          </li>
-          <li>
-            <svg fill="none" stroke="currentColor" stroke-width="1.4" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 7h16M4 12h16M4 17h10"/></svg>
-            Opportunity sizing per correction
+            Structural guidance + opportunity sizing
           </li>
         </ul>
       </div>
       <div class="tier-actions">
-        <a href="{{ route('quick-scan.show') }}" class="tier-cta">Start with $2 Scan</a>
+        <a href="{{ route('checkout.structural-leverage') }}" class="tier-cta">Build Your Leverage&nbsp;&mdash; $249</a>
       </div>
     </div>
 
     {{-- TIER 4 — Implement: System Activation --}}
     <div class="tier">
+      <span class="tier-step">Step 04</span>
       <span class="tier-flag">Implement</span>
       <h3 class="tier-name">System Activation</h3>
       <div class="tier-stack">
-        <div class="tier-price"><sup>$</sup>489<sub>+</sub></div>
-        <p class="tier-position">Activate the full system. Competitive positioning, market mapping, and complete coverage architecture across 50+ pages — built for compounding authority.</p>
+        <div class="tier-price"><sup>$</sup>489</div>
+        <p class="tier-position">Competitive positioning, market mapping, and full coverage architecture.</p>
+        <div class="tier-divider"></div>
         <ul class="tier-features">
           <li>
             <svg fill="none" stroke="currentColor" stroke-width="1.4" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
@@ -3558,12 +3779,45 @@ body::before{
           </li>
           <li>
             <svg fill="none" stroke="currentColor" stroke-width="1.4" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
-            50+ pages with full structural architecture
+            50+ page structural architecture
           </li>
         </ul>
       </div>
       <div class="tier-actions">
-        <a href="{{ route('quick-scan.show') }}" class="tier-cta">Start with $2 Scan</a>
+        <a href="{{ route('checkout.system-activation') }}" class="tier-cta">Activate Your System&nbsp;&mdash; $489</a>
+      </div>
+    </div>
+
+    {{-- TIER 5 — Expand: Market Expansion --}}
+    <div class="tier">
+      <span class="tier-step">Step 05</span>
+      <span class="tier-flag">Expand</span>
+      <h3 class="tier-name">Market Expansion</h3>
+      <div class="tier-stack">
+        <div class="tier-price"><sup>$</sup>1,500<sub>&ndash;2,500</sub></div>
+        <p class="tier-position">Extend coverage, reinforce signals, and scale across new surfaces.</p>
+        <div class="tier-divider"></div>
+        <ul class="tier-features">
+          <li>
+            <svg fill="none" stroke="currentColor" stroke-width="1.4" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064"/></svg>
+            <strong>Service + location expansion</strong>
+          </li>
+          <li>
+            <svg fill="none" stroke="currentColor" stroke-width="1.4" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M10 14l4-4M8.5 9.5 6.7 11.3a3 3 0 1 0 4.2 4.2l1.8-1.8M15.5 14.5l1.8-1.8a3 3 0 1 0-4.2-4.2l-1.8 1.8"/></svg>
+            Entity + linking reinforcement
+          </li>
+          <li>
+            <svg fill="none" stroke="currentColor" stroke-width="1.4" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/></svg>
+            Citation signal layering
+          </li>
+          <li>
+            <svg fill="none" stroke="currentColor" stroke-width="1.4" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
+            Priority growth roadmap
+          </li>
+        </ul>
+      </div>
+      <div class="tier-actions">
+        <a href="{{ route('onboarding.start', ['tier' => 'expansion']) }}" class="tier-cta">Expand My Coverage</a>
       </div>
     </div>
 
@@ -3571,13 +3825,15 @@ body::before{
 
   <div class="tier-anchor-row">
 
-    {{-- TIER 5 — Dominate: Market Control --}}
+    {{-- TIER 6 — Dominate: Market Control --}}
     <div class="tier prime">
+      <span class="tier-step">Step 06</span>
       <span class="tier-flag">Dominate</span>
       <h3 class="tier-name">Market Control</h3>
       <div class="tier-stack">
         <div class="tier-price"><sup>$</sup>4,799<sub>+</sub></div>
-        <p class="tier-position">Total market delegation. Your entire citation infrastructure built, deployed, and actively maintained — full coverage across every surface that matters.</p>
+        <p class="tier-position">Your entire citation infrastructure — built, deployed, and actively maintained across every surface.</p>
+        <div class="tier-divider"></div>
         <ul class="tier-features">
           <li>
             <svg fill="none" stroke="currentColor" stroke-width="1.4" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4a8 8 0 1 1 0 16 8 8 0 0 1 0-16Zm0 4a4 4 0 1 0 0 8 4 4 0 0 0 0-8Z"/></svg>
@@ -3585,15 +3841,15 @@ body::before{
           </li>
           <li>
             <svg fill="none" stroke="currentColor" stroke-width="1.4" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 7h16M4 12h16M4 17h10"/></svg>
-            <strong>Complete system activation</strong> &mdash; built and deployed for you
+            <strong>Complete system activation</strong> — built for you
           </li>
           <li>
             <svg fill="none" stroke="currentColor" stroke-width="1.4" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M10 14l4-4M8.5 9.5 6.7 11.3a3 3 0 1 0 4.2 4.2l1.8-1.8M15.5 14.5l1.8-1.8a3 3 0 1 0-4.2-4.2l-1.8 1.8"/></svg>
-            Ongoing position maintenance and reinforcement
+            Ongoing maintenance + reinforcement
           </li>
           <li>
             <svg fill="none" stroke="currentColor" stroke-width="1.4" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4a8 8 0 1 1 0 16 8 8 0 0 1 0-16Zm0 4a4 4 0 1 0 0 8 4 4 0 0 0 0-8Z"/></svg>
-            Strategic oversight across your full coverage
+            Strategic oversight across full coverage
           </li>
         </ul>
       </div>
@@ -3606,13 +3862,13 @@ body::before{
 
   </div>
 
-  <p style="text-align:center;font-size:.82rem;color:rgba(168,168,160,.48);letter-spacing:.03em;padding:12px 0 2px;position:relative;z-index:2;font-style:italic">Most businesses start with the $2 scan. Expand when you&rsquo;re ready.</p>
-  <p style="text-align:center;font-size:.74rem;color:rgba(168,168,160,.28);letter-spacing:.04em;padding:4px 0 14px;position:relative;z-index:2">Your scan data carries forward through every level. No wasted steps.<br><em>$2 &rarr; $99 &rarr; $249 &rarr; $489+ &rarr; $4,799+</em></p>
+  <p class="offer-bottom-line">Most businesses begin with the $2 scan and expand as signal gaps are revealed.</p>
+  <p class="offer-bottom-sub">Your scan data carries forward through every level. No wasted steps. &mdash; $2 &rarr; $99 &rarr; $249 &rarr; $489 &rarr; $1,500+ &rarr; $4,799+</p>
 
 </section>
 
 <!-- ════════════ EXECUTION SERVICES ════════════ -->
-<section class="exec-services r">
+<section class="exec-services" aria-label="Build, Launch, and Scale">
   <p class="exec-eyebrow">Build, Launch, and Scale</p>
   <h2 class="exec-hed">Everything your expansion <em>requires.</em></h2>
   <p class="exec-intro">All services align with your market expansion — not disconnected marketing efforts.</p>
@@ -3645,10 +3901,10 @@ body::before{
 <section id="contact">
   <div class="contact-inner">
     <div>
-      <p class="s-eye r">Questions Before You Begin</p>
-      <h2 class="s-h r">Not ready yet?<br><em>Ask a question.</em></h2>
-      <p class="s-p r">If you have questions before starting onboarding, submit them here. We review every inquiry personally and respond directly.</p>
-      <div class="c-meta r">
+      <p class="s-eye">Questions Before You Begin</p>
+      <h2 class="s-h">Not ready yet?<br><em>Ask a question.</em></h2>
+      <p class="s-p">If you have questions before starting onboarding, submit them here. We review every inquiry personally and respond directly.</p>
+      <div class="c-meta">
         <div class="cm"><label>Licensing Model</label><span>Reviewed individually — not automated</span></div>
         <div class="cm"><label>Commitment</label><span>Structured 4-month deployment cycle</span></div>
         <div class="cm"><label>Legacy Builds</label><span>Re-entry at 10K tier required</span></div>
@@ -3735,7 +3991,7 @@ body::before{
 </section>
 
 <!-- ════════════ FINAL CLOSING CTA — DUAL SPLIT ════════════ -->
-<section class="fcc r" aria-label="Start your market expansion">
+<section class="fcc" aria-label="Start your market expansion">
   <canvas class="fcc-canvas" id="fccCanvas" aria-hidden="true"></canvas>
   <div class="fcc-inner">
     <p class="fcc-eye">Market Position</p>
@@ -3750,7 +4006,7 @@ body::before{
       <div style="flex:1;min-width:220px;max-width:340px;background:rgba(200,168,75,.06);border:1px solid rgba(200,168,75,.10);border-radius:10px;padding:28px 24px;text-align:center">
         <p style="font-size:.62rem;letter-spacing:.14em;text-transform:uppercase;color:rgba(168,168,160,.48);margin-bottom:6px">Start here</p>
         <p style="font-size:1.04rem;color:var(--ivory);font-family:var(--serif);margin-bottom:16px">See where you stand</p>
-        <a href="{{ route('quick-scan.show') }}" class="fcc-primary" onclick="if(typeof gtag==='function')gtag('event','cta_click',{cta_location:'final_close',cta_label:'run_scan'});">Run Your Scan — $2</a>
+        <a href="{{ route('scan.start') }}" class="fcc-primary" onclick="if(typeof gtag==='function')gtag('event','cta_click',{cta_location:'final_close',cta_label:'run_scan'});">Start Your Scan — $2</a>
         <p style="font-size:.64rem;letter-spacing:.08em;color:rgba(168,168,160,.3);margin-top:10px">Results in seconds &middot; No account needed</p>
       </div>
       <div style="flex:1;min-width:220px;max-width:340px;background:rgba(106,175,144,.04);border:1px solid rgba(106,175,144,.10);border-radius:10px;padding:28px 24px;text-align:center">
@@ -3767,7 +4023,7 @@ body::before{
 <!-- ════════════ STICKY MOBILE CTA (mobile only — hidden on desktop via CSS) ════════════ -->
 <div id="mobStickyCta" class="mob-sticky-cta" role="complementary" aria-label="Quick access — assess market availability">
   <div class="msc-inner">
-    <a href="{{ route('quick-scan.show') }}" class="msc-primary">See Where You Stand — $2</a>
+    <a href="{{ route('scan.start') }}" class="msc-primary">Start Your Scan — $2</a>
     <a href="#offer" class="msc-secondary">Pricing</a>
   </div>
 </div>
@@ -3787,20 +4043,28 @@ body::before{
     <div class="gate-tiers">
       <div class="gate-tier" data-tier="expansion">
         <div class="gate-tier-name">System Activation</div>
-        <div class="gate-tier-price">$2,995/mo</div>
+        <div class="gate-tier-price">$489+</div>
         <div class="gate-tier-urls">Foundation level</div>
+      </div>
+      <div class="gate-tier" data-tier="market-expansion">
+        <div class="gate-tier-name">Market Expansion</div>
+        <div class="gate-tier-price">$1,500&ndash;$2,500</div>
+        <div class="gate-tier-urls">Extended coverage</div>
       </div>
       <div class="gate-tier selected" data-tier="dominance">
         <div class="gate-tier-name">Market Control</div>
         <div class="gate-tier-price">$4,799/mo</div>
-        <div class="gate-tier-urls">Preferred · Priority access</div>
+        <div class="gate-tier-urls">Preferred &middot; Priority access</div>
       </div>
     </div>
-    <p class="gate-guidance">Most businesses start with System Activation, then scale into Market Control.</p>
+    <p class="gate-guidance">Most businesses start with System Activation, then expand into Market Control.</p>
     <a href="/onboarding/start?tier=dominance" class="gate-cta" id="gateCta">Activate My Market</a>
     <button class="gate-skip" id="gateSkip">Continue browsing</button>
   </div>
 </div>
+
+<!-- ════════════ GLOBAL CTA — funnel capture ════════════ -->
+@include('partials.global-cta')
 
 <!-- ════════════ FOOTER — privacy/terms at very bottom ════════════ -->
 <footer>
@@ -3830,13 +4094,13 @@ body::before{
   <nav class="footer-legal">
     <a href="{{ route('privacy') }}">Privacy</a>
     <a href="{{ route('terms') }}">Terms</a>
-    <a href="{{ route('quick-scan.show') }}">AI Citation Scan</a>
+    <a href="{{ route('scan.start') }}">AI Citation Scan</a>
   </nav>
 </footer>
 
 <script>
   const nav = document.getElementById('nav');
-  window.addEventListener('scroll', () => nav.classList.toggle('stuck', scrollY > 60));
+  if(nav) window.addEventListener('scroll', () => nav.classList.toggle('stuck', scrollY > 60));
   const items = document.querySelectorAll('.r');
   const io = new IntersectionObserver((entries) => {
     entries.forEach((e, i) => {
@@ -3868,8 +4132,10 @@ body::before{
 
   // ── Back to Top ──
   const btt = document.getElementById('btt');
-  window.addEventListener('scroll', () => btt.classList.toggle('show', scrollY > 600), {passive:true});
-  btt.addEventListener('click', () => window.scrollTo({top:0, behavior:'smooth'}));
+  if(btt){
+    window.addEventListener('scroll', () => btt.classList.toggle('show', scrollY > 600), {passive:true});
+    btt.addEventListener('click', () => window.scrollTo({top:0, behavior:'smooth'}));
+  }
 
   // ── Sticky mobile CTA ──
   (function(){
@@ -3925,6 +4191,10 @@ body::before{
     gateOverlay.classList.remove('active');
     document.body.style.overflow = '';
   }
+
+  // Clean up body lock on back-navigation
+  window.addEventListener('popstate', closeGate);
+  document.addEventListener('visibilitychange', function(){ if(document.hidden) closeGate(); });
 
   // Intent-based trigger — only open on explicit CTA click
   document.querySelectorAll('.js-open-gate').forEach(function(el) {
@@ -4398,52 +4668,6 @@ body::before{
       raf = requestAnimationFrame(frame);
     });
   })();
-  (function(){
-    var btn      = document.getElementById('navHamburger');
-    var menu     = document.getElementById('navMenu');
-    var backdrop = document.getElementById('navBackdrop');
-    if(!btn || !menu) return;
-
-    function openMenu(){
-      backdrop.classList.add('is-open');
-      menu.classList.add('is-open');
-      menu.removeAttribute('aria-hidden');
-      backdrop.removeAttribute('aria-hidden');
-      btn.classList.add('is-open');
-      btn.setAttribute('aria-expanded','true');
-      document.body.style.overflow = 'hidden';
-    }
-    function closeMenu(){
-      menu.classList.remove('is-open');
-      backdrop.classList.remove('is-open');
-      btn.classList.remove('is-open');
-      btn.setAttribute('aria-expanded','false');
-      menu.setAttribute('aria-hidden','true');
-      backdrop.setAttribute('aria-hidden','true');
-      document.body.style.overflow = '';
-    }
-    function toggleMenu(){
-      menu.classList.contains('is-open') ? closeMenu() : openMenu();
-    }
-
-    btn.addEventListener('click', function(e){
-      e.stopPropagation();
-      toggleMenu();
-    });
-
-    // Close on backdrop tap
-    backdrop.addEventListener('click', closeMenu);
-
-    // Close on Escape
-    document.addEventListener('keydown', function(e){
-      if(e.key === 'Escape') closeMenu();
-    });
-
-    // Close on panel link tap
-    menu.querySelectorAll('[data-menu-close]').forEach(function(el){
-      el.addEventListener('click', closeMenu);
-    });
-  })();
 
   /* ══════════════════════════════════════════════════════
      AMBIENT PARALLAX
@@ -4479,6 +4703,8 @@ body::before{
   })();
 </script>
 
+@include('partials.public-nav-js')
+
 @include('components.booking-modal')
 
 <script>
@@ -4486,7 +4712,7 @@ body::before{
 </script>
 <script>
 (function(){
-  document.querySelectorAll('a[href*="/quick-scan"]').forEach(function(el){
+  document.querySelectorAll('a[href*="/checkout/"]').forEach(function(el){
     el.addEventListener('click',function(){
       fetch('/api/v1/track',{method:'POST',headers:{'Content-Type':'application/json','Accept':'application/json'},body:JSON.stringify({event:'homepage_cta_click',metadata:{label:el.textContent.trim().substring(0,60),href:el.getAttribute('href')}})}).catch(function(){});
     });

@@ -71,6 +71,8 @@ class RunQuickScanJob implements ShouldQueue, ShouldBeUnique
                 'raw_checks' => $result['raw_checks'],
                 'broken_links' => $result['broken_links'],
                 'page_count' => $result['page_count'],
+                'dimensions' => $result['dimensions'] ?? null,
+                'intelligence' => $result['intelligence'] ?? null,
                 'status' => QuickScan::STATUS_SCANNED,
                 'scanned_at' => now(),
             ]);

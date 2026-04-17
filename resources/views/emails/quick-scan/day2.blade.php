@@ -12,14 +12,14 @@
 
   <!-- Body -->
   <div style="padding:32px 28px">
-    <h1 style="font-size:20px;font-weight:400;color:#111;margin:0 0 16px;line-height:1.3">You're closer than you think</h1>
+    <h1 style="font-size:20px;font-weight:400;color:#111;margin:0 0 16px;line-height:1.3">Your visibility is still <span style="color:#c8a84b;font-style:italic">incomplete</span></h1>
 
     <p style="font-size:14px;color:#555;margin:0 0 16px;line-height:1.65">
       Your scan of <strong style="color:#333">{{ $scan->url }}</strong> returned a score of <strong style="color:#c8a84b">{{ $scan->score ?? 0 }}/100</strong>.
     </p>
 
     <p style="font-size:14px;color:#555;margin:0 0 16px;line-height:1.65">
-      That might feel discouraging — but the gap between where you are and where AI systems start citing you is often smaller than most businesses expect.
+      That means AI systems can see your site &mdash; but they can&rsquo;t confidently cite it. The gaps between where you are and where AI starts recommending you are still open.
     </p>
 
     @if ($scan->fastest_fix)
@@ -34,7 +34,7 @@
     </p>
 
     <p style="font-size:14px;color:#555;margin:0 0 16px;line-height:1.65">
-      Our <strong style="color:#333">Citation Builder</strong> implements these structural signals — the exact systems your score measures — in one focused engagement.
+      Our <strong style="color:#333">Signal Expansion</strong> maps every gap ranked by revenue impact &mdash; so you know exactly what to fix, in what order, to get cited.
     </p>
 
     <!-- Comparison mini-table -->
@@ -58,7 +58,7 @@
     </table>
 
     <div style="text-align:center;margin:20px 0">
-      <a href="{{ url('/pricing') }}" style="display:inline-block;background:#c8a84b;color:#080808;font-size:12px;font-weight:600;text-decoration:none;padding:13px 36px;letter-spacing:.08em">See the fix</a>
+      <a href="{{ url('/checkout/signal-expansion') }}" style="display:inline-block;background:#c8a84b;color:#080808;font-size:12px;font-weight:600;text-decoration:none;padding:13px 36px;letter-spacing:.08em">Unlock Signal Expansion &mdash; $99</a>
     </div>
 
     <p style="font-size:12px;color:#bbb;text-align:center;margin:16px 0 0">
@@ -68,7 +68,8 @@
 
   <!-- Footer -->
   <div style="background:#f5f5f4;padding:16px 24px;text-align:center;border-top:1px solid #e8e8e8">
-    <p style="font-size:11px;color:#bbb;margin:0">SEO AI Co&#8482; &middot; <a href="{{ url('/') }}" style="color:#bbb">seoaico.com</a></p>
+    <p style="font-size:11px;color:#ccc;margin:0 0 6px">You&rsquo;re receiving this because you scanned {{ $scan->url }}</p>
+    <p style="font-size:11px;color:#bbb;margin:0">&copy; {{ date('Y') }} SEO AI Co&trade; &middot; <a href="{{ url('/unsubscribe/' . urlencode($scan->email)) }}" style="color:#bbb">Unsubscribe</a></p>
   </div>
 
 </div>

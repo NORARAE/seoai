@@ -43,7 +43,7 @@
     </p>
 
     <div style="text-align:center;margin:20px 0">
-      <a href="{{ url('/pricing') }}" style="display:inline-block;background:#c8a84b;color:#080808;font-size:12px;font-weight:600;text-decoration:none;padding:13px 36px;letter-spacing:.08em">See how we fix it</a>
+      <a href="{{ url('/checkout/signal-expansion') }}" style="display:inline-block;background:#c8a84b;color:#080808;font-size:12px;font-weight:600;text-decoration:none;padding:13px 36px;letter-spacing:.08em">Unlock Signal Expansion &mdash; $99</a>
     </div>
 
     <p style="font-size:12px;color:#bbb;text-align:center;margin:16px 0 0">
@@ -53,7 +53,8 @@
 
   <!-- Footer -->
   <div style="background:#f5f5f4;padding:16px 24px;text-align:center;border-top:1px solid #e8e8e8">
-    <p style="font-size:11px;color:#bbb;margin:0">SEO AI Co&#8482; &middot; <a href="{{ url('/') }}" style="color:#bbb">seoaico.com</a></p>
+    <p style="font-size:11px;color:#ccc;margin:0 0 6px">You&rsquo;re receiving this because you scanned {{ $scan->url }}</p>
+    <p style="font-size:11px;color:#bbb;margin:0">&copy; {{ date('Y') }} SEO AI Co&trade; &middot; <a href="{{ url('/unsubscribe/' . urlencode($scan->email)) }}" style="color:#bbb">Unsubscribe</a></p>
   </div>
 
 </div>

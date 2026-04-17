@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\SystemTier;
 use App\Models\UserProfile;
 use App\Notifications\AdminPasswordResetNotification;
 use App\Support\ActiveSiteContext;
@@ -70,6 +71,9 @@ class User extends Authenticatable implements FilamentUser, HasAppAuthentication
         'signup_source',
         'signup_timezone',
         'signup_utm',
+        'system_tier',
+        'system_tier_upgraded_at',
+        'stripe_checkout_session_id',
     ];
 
     /**
@@ -97,6 +101,8 @@ class User extends Authenticatable implements FilamentUser, HasAppAuthentication
             'onboarding_completed_at' => 'datetime',
             'is_active' => 'boolean',
             'approved' => 'boolean',
+            'system_tier' => SystemTier::class,
+            'system_tier_upgraded_at' => 'datetime',
         ];
     }
 
@@ -283,5 +289,31 @@ class User extends Authenticatable implements FilamentUser, HasAppAuthentication
     public function sendPasswordResetNotification($token): void
     {
         $this->notify(new AdminPasswordResetNotification($token));
+    }
+
+    /**
+     * Upgrade the user's system tier if the new tier is higher.
+     */
+    public function upgradeSystemTier(SystemTier $tier): bool
+    {
+        $currentRank = $this->system_tier?->rank() ?? 0;
+
+        if ($tier->rank() > $currentRank) {
+            $this->update([
+                'system_tier' => $tier,
+                'system_tier_upgraded_at' => now(),
+            ]);
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * Get the tier rank (0 = no tier, 1-4 = scan-basic through system-activation).
+     */
+    public function tierRank(): int
+    {
+        return $this->system_tier?->rank() ?? 0;
     }
 }

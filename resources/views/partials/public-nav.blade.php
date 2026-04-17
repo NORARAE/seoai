@@ -8,7 +8,7 @@
     <a href="/pricing" class="nav-link">Pricing</a>
     <a href="/book" class="nav-link">Book</a>
     <a href="/dashboard" class="nav-link">Portal</a>
-    <a href="/quick-scan" class="nav-btn">Get Started</a>
+    <a href="/scan/start" class="nav-btn">Start Scan — $2</a>
   </div>
   @if($showHamburger ?? false)
   <button class="nav-hamburger" id="navHamburger" aria-label="Open menu" aria-expanded="false" aria-controls="navMenu">
@@ -29,7 +29,7 @@
     </div>
 
     <div class="nm-group"><span class="nm-group-label">Get Started</span></div>
-    <a href="/quick-scan" class="nm-link nm-featured" data-menu-close>Run a $2 Scan &nbsp;&rarr;</a>
+    <a href="/scan/start" class="nm-link nm-featured" data-menu-close>Run a $2 Scan &nbsp;&rarr;</a>
 
     <div class="nm-divider"></div>
 

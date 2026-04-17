@@ -10,13 +10,13 @@
 <link rel="manifest" href="/site.webmanifest">
 <meta name="theme-color" content="#080808">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>AI Citation Infrastructure — Levels of Market Control | SEO AI Co™</title>
-<meta name="description" content="Five levels of market control. SEO AI Co™ structures your visibility so AI systems cite you as the answer — not just rank you in results.">
+<title>Growth Architecture — AI Citation Infrastructure | SEO AI Co™</title>
+<meta name="description" content="Six levels of market control plus supporting execution layers. SEO AI Co™ structures your visibility so AI systems cite you as the answer.">
 <link rel="canonical" href="{{ url('/pricing') }}">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="SEO AI Co™">
-<meta property="og:title" content="AI Citation Infrastructure — Levels of Market Control | SEO AI Co™">
-<meta property="og:description" content="Five levels of market control. From a $2 scan to full market dominance — structured for citation by AI systems.">
+<meta property="og:title" content="Growth Architecture — AI Citation Infrastructure | SEO AI Co™">
+<meta property="og:description" content="Six levels of market control plus supporting execution layers. From a $2 scan to full market dominance — structured for citation by AI systems.">
 <meta property="og:url" content="{{ url('/pricing') }}">
 <script type="application/ld+json">
 {!! json_encode([
@@ -72,9 +72,16 @@
                     'description'   => 'Competitive positioning, market mapping, and complete coverage architecture across 50+ pages.',
                 ],
                 [
+                    '@type'         => 'Offer',
+                    'name'          => 'Market Expansion',
+                    'price'         => '1500',
+                    'priceCurrency' => 'USD',
+                    'description'   => 'Service and location expansion, entity reinforcement, and linking architecture across your full coverage footprint.',
+                ],
+                [
                     '@type'       => 'Offer',
                     'name'        => 'Market Control',
-                    'description' => 'Complete infrastructure — your entire market structured, covered, and actively defended. Starting at $4,799.',
+                    'description' => 'Complete infrastructure — your entire market structured, covered, and actively defended. Starting at $4,799/mo.',
                 ],
             ],
         ],
@@ -122,170 +129,731 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-:root{
-  --bg:#080808;--deep:#0b0b0b;--card:#0e0d09;--border:rgba(200,168,75,.09);
-  --gold:#c8a84b;--gold-lt:#e2c97d;--gold-dim:rgba(200,168,75,.4);
-  --ivory:#ede8de;--muted:rgba(168,168,160,.72);--muted-lt:rgba(168,168,160,.50);
+@include('partials.design-system')
+@include('partials.public-nav-css')
+
+/* ══════════════════════════════════════════════════════════
+   HERO — Growth Architecture Opening
+   ══════════════════════════════════════════════════════════ */
+.p-hero{
+  padding:96px 0 88px;text-align:center;position:relative;overflow:hidden;
 }
-html{scroll-behavior:smooth;font-size:18px}
-body{background:var(--bg);color:var(--ivory);font-family:'DM Sans',sans-serif;font-weight:300;line-height:1.75;min-height:100vh}
+.p-hero::before{
+  content:'';position:absolute;inset:0;
+  background:
+    radial-gradient(ellipse 55% 50% at 50% 30%,rgba(200,168,75,.035) 0%,transparent 70%),
+    radial-gradient(ellipse 40% 55% at 20% 65%,rgba(200,168,75,.02) 0%,transparent 55%);
+  pointer-events:none;
+}
+.p-hero::after{
+  content:'';position:absolute;inset:0;
+  background-image:
+    linear-gradient(rgba(200,168,75,.018) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(200,168,75,.018) 1px,transparent 1px);
+  background-size:56px 56px;
+  mask-image:radial-gradient(ellipse 60% 50% at 50% 40%,black 10%,transparent 70%);
+  -webkit-mask-image:radial-gradient(ellipse 60% 50% at 50% 40%,black 10%,transparent 70%);
+  pointer-events:none;
+}
+.p-hero-eye{
+  font-size:.62rem;letter-spacing:.3em;text-transform:uppercase;
+  color:rgba(200,168,75,.58);margin-bottom:24px;position:relative;z-index:1;
+}
+.p-hero-hed{
+  font-family:'Cormorant Garamond',serif;
+  font-size:clamp(2.4rem,5vw,4.2rem);font-weight:300;line-height:1.08;
+  color:var(--ivory);margin-bottom:22px;position:relative;z-index:1;
+}
+.p-hero-hed em{font-style:italic;color:var(--gold-lt)}
+.p-hero-sub{
+  font-size:.92rem;color:rgba(168,168,160,.78);max-width:560px;
+  margin:0 auto 44px;line-height:1.82;position:relative;z-index:1;
+}
+.p-hero-actions{
+  display:flex;align-items:center;justify-content:center;gap:20px;
+  flex-wrap:wrap;position:relative;z-index:1;
+}
 
-/* ── Logo (color-locked — prevents :visited blue bleed) ── */
-.logo,.logo:visited,.logo:hover,.logo:active,.logo:focus{display:inline-flex;align-items:baseline;text-decoration:none;line-height:1;color:inherit;padding:8px 4px;margin:-8px -4px;position:relative;z-index:1}
-.logo-seo,.logo-seo:visited,.logo-seo:link{font-family:'DM Sans',sans-serif;font-weight:300;font-size:1.2rem;letter-spacing:.06em;color:#f5f0e8}
-.logo-ai,.logo-ai:visited,.logo-ai:link{font-family:'Cormorant Garamond',serif;font-weight:600;font-size:1.42rem;color:#c8a84b;letter-spacing:.02em;display:inline-block;transform:skewX(-11deg) translateY(-1px)}
-.logo-co,.logo-co:visited,.logo-co:link{font-family:'DM Sans',sans-serif;font-weight:300;font-size:1.05rem;color:rgba(255,255,255,.45);letter-spacing:.04em}
+/* ── Hero-to-system bridge ── */
+.p-bridge{
+  width:1px;height:48px;margin:0 auto;
+  background:linear-gradient(180deg,rgba(200,168,75,.14),rgba(200,168,75,.03));
+  position:relative;
+}
+.p-bridge::after{
+  content:'';position:absolute;bottom:-3px;left:-3px;
+  width:7px;height:7px;border-radius:50%;
+  background:rgba(200,168,75,.18);box-shadow:0 0 12px rgba(200,168,75,.06);
+}
 
-/* ── Nav ── */
-#nav{position:sticky;top:0;z-index:200;display:flex;align-items:center;justify-content:space-between;padding:22px 48px;border-bottom:1px solid rgba(200,168,75,.07);background:rgba(8,8,8,.97);backdrop-filter:blur(8px)}
-.nav-right{display:flex;align-items:center;gap:26px}
-.nav-link{font-size:.76rem;letter-spacing:.14em;text-transform:uppercase;color:rgba(168,168,160,.72);text-decoration:none;transition:color .3s;position:relative;padding-bottom:2px;font-weight:400}
-.nav-link::after{content:'';position:absolute;bottom:0;left:0;right:100%;height:1px;background:var(--gold);transition:right .3s cubic-bezier(.23,1,.32,1)}
-.nav-link:hover{color:var(--gold)}
-.nav-link:hover::after{right:0}
-.nav-btn{font-size:.74rem;letter-spacing:.14em;text-transform:uppercase;color:var(--bg);background:var(--gold);padding:11px 28px;text-decoration:none;transition:background .3s cubic-bezier(.23,1,.32,1),box-shadow .3s cubic-bezier(.23,1,.32,1);display:inline-flex;align-items:center;white-space:nowrap;font-weight:500;margin-left:6px}
-.nav-btn:hover{background:var(--gold-lt);box-shadow:0 4px 16px rgba(200,168,75,.22)}
+/* ══════════════════════════════════════════════════════════
+   ASCENSION SYSTEM — 6-Tier Core Pricing
+   ══════════════════════════════════════════════════════════ */
+#plans{
+  padding:64px 0 72px;position:relative;overflow:hidden;
+}
+#plans::before{
+  content:'';position:absolute;inset:0;
+  background:
+    radial-gradient(ellipse 50% 40% at 50% 20%,rgba(200,168,75,.03) 0%,transparent 65%),
+    radial-gradient(ellipse 35% 55% at 80% 60%,rgba(200,168,75,.02) 0%,transparent 55%);
+  pointer-events:none;
+}
+#plans::after{
+  content:'';position:absolute;inset:0;
+  background-image:
+    linear-gradient(rgba(200,168,75,.02) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(200,168,75,.02) 1px,transparent 1px);
+  background-size:52px 52px;
+  mask-image:radial-gradient(ellipse 60% 50% at 50% 35%,black 12%,transparent 70%);
+  -webkit-mask-image:radial-gradient(ellipse 60% 50% at 50% 35%,black 12%,transparent 70%);
+  pointer-events:none;
+}
+.plans-intro{
+  text-align:center;margin-bottom:44px;position:relative;z-index:1;
+}
 
-/* ── Layout wrap ── */
-.wrap{max-width:1160px;margin:0 auto;padding:0 40px}
+/* ── Ascension Rail ── */
+.ascent-rail{
+  display:flex;align-items:center;justify-content:center;gap:0;
+  max-width:780px;margin:0 auto 48px;padding:14px 28px;
+  background:rgba(14,13,9,.55);
+  border:1px solid rgba(200,168,75,.06);border-radius:40px;
+  backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);
+  position:relative;z-index:1;
+}
+.ascent-rail::before{
+  content:'';position:absolute;inset:-1px;border-radius:40px;
+  background:linear-gradient(180deg,rgba(200,168,75,.06),transparent 60%);
+  z-index:-1;pointer-events:none;
+}
+.ascent-node{
+  display:flex;flex-direction:column;align-items:center;gap:5px;
+  padding:4px 10px;position:relative;
+}
+.ascent-node-num{font-size:.48rem;letter-spacing:.16em;color:rgba(168,168,160,.38);text-transform:uppercase}
+.ascent-node-label{font-size:.58rem;letter-spacing:.08em;color:rgba(168,168,160,.56)}
+.ascent-node.--active .ascent-node-num{color:rgba(200,168,75,.7)}
+.ascent-node.--active .ascent-node-label{color:rgba(200,168,75,.72);font-weight:500}
+.ascent-node.--active::after{
+  content:'';position:absolute;bottom:-4px;left:50%;transform:translateX(-50%);
+  width:18px;height:2px;background:rgba(200,168,75,.3);border-radius:1px;
+}
+.ascent-line{
+  width:28px;height:1px;background:rgba(200,168,75,.08);position:relative;
+}
+@keyframes ascent-pulse{
+  0%{opacity:.15;transform:translateX(-100%)}
+  50%{opacity:.45}
+  100%{opacity:.15;transform:translateX(100%)}
+}
+.ascent-line::after{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(90deg,transparent,rgba(200,168,75,.35),transparent);
+  animation:ascent-pulse 3.5s ease-in-out infinite;
+}
 
-/* ── Hero ── */
-.pricing-hero{padding:96px 0 80px;text-align:center;border-bottom:1px solid var(--border)}
-.hero-eyebrow{font-size:.68rem;letter-spacing:.26em;text-transform:uppercase;color:var(--gold);opacity:.8;display:block;margin-bottom:28px}
-.hero-headline{font-family:'Cormorant Garamond',serif;font-size:clamp(3rem,6vw,5rem);font-weight:300;line-height:1.06;color:var(--ivory);margin-bottom:24px}
-.hero-headline em{font-style:italic;color:var(--gold-lt)}
-.hero-sub{font-size:1rem;color:var(--muted);max-width:600px;margin:0 auto 36px;line-height:1.82}
-.hero-cta-row{display:flex;align-items:center;justify-content:center;gap:20px;flex-wrap:wrap}
-.btn-primary{display:inline-block;padding:14px 34px;background:var(--gold);color:#080808;font-size:.8rem;font-weight:500;letter-spacing:.1em;text-transform:uppercase;text-decoration:none;border-radius:2px;transition:background .2s}
-.btn-primary:hover{background:var(--gold-lt)}
-.btn-ghost{display:inline-block;font-size:.8rem;color:var(--muted);text-decoration:none;letter-spacing:.06em;transition:color .2s}
-.btn-ghost:hover{color:var(--gold)}
+/* ── Tier grid — 5 top + 1 anchor ── */
+.tier-grid-5{
+  display:grid;grid-template-columns:repeat(5,1fr);gap:var(--grid-gap);
+  max-width:1180px;margin:0 auto;position:relative;z-index:1;
+}
+/* Horizontal signal trace behind top row */
+.tier-grid-5::before{
+  content:'';position:absolute;top:50%;left:3%;right:3%;height:1px;
+  background:linear-gradient(90deg,transparent,rgba(200,168,75,.04) 20%,rgba(200,168,75,.04) 80%,transparent);
+  z-index:-1;
+}
+/* Ambient center glow */
+.tier-grid-5::after{
+  content:'';position:absolute;top:40%;left:30%;right:30%;height:30%;
+  background:radial-gradient(ellipse at 50% 50%,rgba(200,168,75,.025),transparent 70%);
+  z-index:-1;pointer-events:none;
+}
+/* Sibling dimming on hover */
+.tier-grid-5:hover .tier{opacity:.72;filter:brightness(.92);transition:opacity var(--transition-base),filter var(--transition-base),transform var(--transition-base),box-shadow var(--transition-base)}
+.tier-grid-5:hover .tier:hover{opacity:1;filter:brightness(1);transform:translateY(-3px);box-shadow:0 16px 56px rgba(0,0,0,.45),0 4px 16px rgba(200,168,75,.06)}
+.tier-grid-5:hover .tier.focal{opacity:.82}
 
-/* ── Positioning ── */
-.positioning{padding:80px 0;border-bottom:1px solid var(--border)}
-.section-eyebrow{font-size:.65rem;letter-spacing:.24em;text-transform:uppercase;color:var(--gold-dim);display:block;margin-bottom:16px}
-.section-hed{font-family:'Cormorant Garamond',serif;font-size:clamp(1.8rem,3.5vw,2.8rem);font-weight:300;color:var(--ivory);margin-bottom:10px;line-height:1.15}
-.section-hed em{font-style:italic;color:var(--gold-lt)}
-.section-sub{font-size:.9rem;color:var(--muted);max-width:560px;line-height:1.8;margin-bottom:48px}
-.pos-grid{display:grid;grid-template-columns:1fr 1px 1fr;gap:0;align-items:start}
-.pos-col{padding:36px 40px}
-.pos-divider-line{background:rgba(200,168,75,.09);align-self:stretch}
-.pos-label{font-size:.62rem;letter-spacing:.22em;text-transform:uppercase;margin-bottom:22px;font-weight:400}
-.pos-old .pos-label{color:rgba(168,168,160,.45)}
-.pos-new .pos-label{color:var(--gold);opacity:.9}
-.pos-list{list-style:none;display:flex;flex-direction:column;gap:14px}
-.pos-list li{display:flex;align-items:baseline;gap:12px;font-size:.92rem;line-height:1.6}
-.pos-old .pos-list li{color:rgba(168,168,160,.55)}
-.pos-old .pos-list li::before{content:'—';color:rgba(168,168,160,.25);flex-shrink:0;font-size:.7rem}
-.pos-new .pos-list li{color:rgba(237,232,222,.88)}
-.pos-new .pos-list li::before{content:'◈';color:var(--gold-dim);flex-shrink:0;font-size:.6rem;padding-top:2px}
-.pos-new .pos-list li strong{color:var(--ivory);font-weight:400}
-.pos-old{background:transparent;border:1px solid rgba(200,168,75,.05)}
-.pos-new{background:rgba(200,168,75,.03);border:1px solid rgba(200,168,75,.1)}
-.pos-category-line{margin-top:40px;padding:18px 40px;background:rgba(200,168,75,.04);border-top:1px solid var(--border);border-bottom:1px solid var(--border);display:grid;grid-template-columns:1fr 1px 1fr;gap:0}
-.pos-category-line .cat-old{padding-right:40px;font-size:.76rem;color:rgba(168,168,160,.38);letter-spacing:.08em;text-align:center}
-.pos-category-line .cat-div{background:rgba(200,168,75,.09)}
-.pos-category-line .cat-new{padding-left:40px;font-size:.76rem;color:rgba(200,168,75,.55);letter-spacing:.08em;text-align:center}
-@media(max-width:700px){.pos-grid{grid-template-columns:1fr}.pos-divider-line{display:none;height:1px;width:100%}.pos-col{padding:28px 0}}
+.tier{
+  background:var(--card-bg);
+  border:1px solid var(--card-border);
+  padding:30px 24px;display:flex;flex-direction:column;
+  position:relative;transition:opacity var(--transition-base),filter var(--transition-base),transform var(--transition-base),box-shadow var(--transition-base);
+  backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px);
+}
+.tier:hover{border-color:var(--card-border-hover)}
+/* Node connector dots at bottom */
+.tier::after{
+  content:'';position:absolute;bottom:-4px;left:50%;transform:translateX(-50%);
+  width:3px;height:3px;border-radius:50%;
+  background:rgba(200,168,75,.12);
+}
+.tier-step{
+  font-size:.5rem;letter-spacing:.2em;text-transform:uppercase;
+  color:rgba(168,168,160,.32);margin-bottom:10px;
+}
+.tier-flag{
+  font-size:.56rem;letter-spacing:.16em;text-transform:uppercase;
+  color:rgba(200,168,75,.55);margin-bottom:6px;
+}
+.tier-name{
+  font-family:'Cormorant Garamond',serif;
+  font-size:1.3rem;font-weight:400;color:rgba(237,232,222,.88);
+  margin-bottom:10px;line-height:1.2;letter-spacing:.01em;
+}
+.tier-price{
+  font-family:'Cormorant Garamond',serif;
+  font-size:2.8rem;font-weight:300;color:var(--ivory);
+  margin-bottom:4px;line-height:1;
+}
+.tier-price sup{font-size:.92rem;vertical-align:top;margin-top:6px;color:var(--gold-dim);opacity:.7}
+.tier-price sub{font-size:.72rem;color:rgba(168,168,160,.56);letter-spacing:.01em;font-family:'DM Sans',sans-serif}
+.tier-position{
+  font-size:.76rem;color:rgba(168,168,160,.62);
+  line-height:1.72;margin-bottom:18px;min-height:56px;max-width:260px;
+}
+.tier-divider{height:1px;background:rgba(200,168,75,.06);margin:4px 0 16px}
+.tier-features{list-style:none;flex:1;display:flex;flex-direction:column;gap:10px;margin-bottom:0}
+.tier-features li{
+  display:flex;align-items:baseline;gap:9px;
+  font-size:.76rem;color:rgba(168,168,160,.68);line-height:1.6;
+}
+.tier-features li svg{width:13px;height:13px;flex-shrink:0;opacity:.52;color:var(--gold);margin-top:2px}
+.tier-actions{padding-top:18px;margin-top:auto;border-top:1px solid rgba(200,168,75,.05)}
+.tier-cta{
+  display:block;text-align:center;padding:13px 16px;
+  font-size:.64rem;letter-spacing:.16em;text-transform:uppercase;
+  text-decoration:none;color:rgba(200,168,75,.78);
+  border:1px solid rgba(200,168,75,.16);
+  transition:all .3s;position:relative;overflow:hidden;font-weight:500;
+}
+.tier-cta::before{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(90deg,transparent,rgba(200,168,75,.06),transparent);
+  transform:translateX(-100%);transition:transform .5s;
+}
+.tier-cta:hover{
+  border-color:rgba(200,168,75,.28);color:var(--gold);
+  background:rgba(200,168,75,.04);
+}
+.tier-cta:hover::before{transform:translateX(100%)}
 
-/* ── Pricing tiers ── */
-.pricing-section{padding:80px 0;border-bottom:1px solid var(--border)}
-.tiers-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:2px;margin-top:48px}
-.tier-card{background:var(--card);border:1px solid var(--border);padding:32px 22px;display:flex;flex-direction:column;position:relative;transition:border-color .25s}
-.tier-card:hover{border-color:rgba(200,168,75,.18)}
-.tier-card.is-focal{border-color:rgba(200,168,75,.28)}
-.tier-card.is-focal:hover{border-color:rgba(200,168,75,.42)}
-.tier-card.is-premium{border-color:rgba(237,232,222,.08)}
-.tier-badge{font-size:.55rem;letter-spacing:.2em;text-transform:uppercase;margin-bottom:14px;font-weight:400;display:block}
-.tier-card:not(.is-focal):not(.is-premium) .tier-badge{color:rgba(168,168,160,.4)}
-.tier-card.is-focal .tier-badge{color:var(--gold)}
-.tier-card.is-premium .tier-badge{color:var(--ivory);opacity:.5}
-.tier-popular{display:inline-block;font-size:.52rem;letter-spacing:.18em;text-transform:uppercase;background:var(--gold);color:#080808;padding:3px 8px;border-radius:2px;margin-bottom:10px;font-weight:500}
-.tier-name{font-family:'Cormorant Garamond',serif;font-size:1.55rem;font-weight:400;color:var(--ivory);margin-bottom:6px;line-height:1.15}
-.tier-desc{font-size:.8rem;color:var(--muted);line-height:1.65;margin-bottom:22px}
-.tier-price{margin-bottom:6px;display:flex;align-items:baseline;gap:3px}
-.tier-price-sup{font-family:'DM Sans',sans-serif;font-size:.82rem;color:var(--muted);align-self:flex-start;margin-top:8px}
-.tier-price-val{font-family:'Cormorant Garamond',serif;font-size:2.6rem;font-weight:300;color:var(--ivory);line-height:1}
-.tier-price-per{font-size:.76rem;color:var(--muted);letter-spacing:.04em;margin-left:2px}
-.tier-price-note{font-size:.72rem;color:rgba(168,168,160,.4);letter-spacing:.06em;margin-bottom:24px}
-.tier-features{list-style:none;flex:1;display:flex;flex-direction:column;gap:10px;margin-bottom:28px}
-.tier-features li{display:flex;align-items:baseline;gap:10px;font-size:.82rem;color:var(--muted);line-height:1.6}
-.tier-features li::before{content:'—';color:var(--gold-dim);flex-shrink:0;font-size:.68rem}
-.tier-features li strong{color:rgba(237,232,222,.85);font-weight:400}
-.tier-divider{height:1px;background:var(--border);margin-bottom:24px}
-.tier-cta{display:inline-block;padding:12px 22px;font-size:.74rem;font-weight:400;letter-spacing:.12em;text-transform:uppercase;text-decoration:none;border-radius:2px;transition:background .2s,color .2s,border-color .2s;text-align:center;border:1px solid rgba(200,168,75,.3);color:var(--gold)}
-.tier-cta:hover{background:rgba(200,168,75,.08)}
-.tier-card.is-focal .tier-cta{background:var(--gold);color:#080808;border-color:var(--gold)}
-.tier-card.is-focal .tier-cta:hover{background:var(--gold-lt);border-color:var(--gold-lt)}
-.tier-card.is-premium .tier-cta{background:transparent;border:1px solid rgba(237,232,222,.18);color:var(--ivory)}
-.tier-card.is-premium .tier-cta:hover{border-color:var(--gold);color:var(--gold)}
-@media(max-width:1100px){.tiers-grid{grid-template-columns:repeat(3,1fr)}}
-@media(max-width:760px){.tiers-grid{grid-template-columns:1fr 1fr}}
-@media(max-width:560px){.tiers-grid{grid-template-columns:1fr}.tier-card{padding:28px 22px}}
+/* Scan tier — muted entry */
+.tier.scan-tier{border-color:rgba(200,168,75,.04)}
+.tier.scan-tier .tier-name{color:rgba(237,232,222,.72)}
+.tier.scan-tier .tier-price{font-size:2.2rem;color:rgba(200,168,75,.58)}
+.tier.scan-tier .tier-price sup{color:rgba(200,168,75,.45)}
 
-/* ── Comparison ── */
-.comparison{padding:80px 0;border-bottom:1px solid var(--border)}
-.compare-wrap{max-width:800px;margin:48px auto 0}
-.compare-table{width:100%;border-collapse:collapse;font-size:.9rem}
-.compare-table thead tr{border-bottom:1px solid rgba(200,168,75,.15)}
-.compare-table thead th{padding:14px 20px;text-align:left;font-weight:400;letter-spacing:.04em;font-size:.8rem}
-.compare-table thead th:first-child{color:var(--muted);width:30%}
-.compare-table thead th:nth-child(2){color:rgba(168,168,160,.45)}
-.compare-table thead th:nth-child(3){color:var(--gold-lt)}
-.compare-table tbody td{padding:14px 20px;border-bottom:1px solid rgba(200,168,75,.05);vertical-align:top;line-height:1.6}
-.compare-table tbody td:first-child{color:rgba(168,168,160,.5);font-size:.8rem;letter-spacing:.04em}
-.compare-table tbody td:nth-child(2){color:rgba(168,168,160,.5)}
-.compare-table tbody td:nth-child(3){color:rgba(237,232,222,.88)}
-.compare-table tbody tr:last-child td{border-bottom:none}
-.compare-note{margin-top:24px;padding:18px 24px;border-left:2px solid rgba(200,168,75,.2);font-size:.82rem;color:rgba(168,168,160,.52);line-height:1.8}
-.compare-note strong{color:rgba(237,232,222,.6);font-weight:400}
+/* Focal tier highlight */
+.tier.focal{border-color:rgba(200,168,75,.18)}
+.tier.focal::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:2px;
+  background:linear-gradient(90deg,transparent,rgba(200,168,75,.3),transparent);
+}
+.tier.focal .tier-flag{color:rgba(200,168,75,.65)}
 
-/* ── FAQ ── */
-.faq-section{padding:80px 0;border-bottom:1px solid var(--border)}
-.faq-wrap{max-width:760px;margin:48px auto 0}
-.faq-item{border-bottom:1px solid var(--border);padding:28px 0}
+/* ── Anchor row — Market Control ── */
+.tier-anchor-row{
+  display:grid;grid-template-columns:1fr;
+  max-width:1180px;margin:24px auto 0;position:relative;z-index:1;
+}
+/* Vertical connector bridge */
+.tier-anchor-row::before{
+  content:'';position:absolute;top:-24px;left:50%;width:1px;height:48px;
+  background:linear-gradient(180deg,rgba(200,168,75,.1),rgba(200,168,75,.04));
+  transform:translateX(-50%);
+}
+.tier.prime{
+  padding:48px 52px;border-radius:6px;
+  background:rgba(12,11,8,.94);
+  border:1px solid rgba(200,168,75,.1);
+  backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);
+  box-shadow:
+    inset 0 1px 0 rgba(200,168,75,.06),
+    0 0 110px rgba(200,168,75,.04),
+    0 32px 80px rgba(0,0,0,.45);
+  display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:start;
+}
+.tier.prime:hover{
+  border-color:rgba(200,168,75,.2);
+  box-shadow:
+    inset 0 1px 0 rgba(200,168,75,.1),
+    0 0 110px rgba(200,168,75,.06),
+    0 32px 80px rgba(0,0,0,.5);
+  transform:translateY(-2px);
+}
+.prime-left{display:flex;flex-direction:column}
+.prime-right{display:flex;flex-direction:column}
+.tier.prime .tier-step{color:rgba(200,168,75,.35);font-size:.52rem;margin-bottom:14px}
+.tier.prime .tier-flag{color:rgba(200,168,75,.58);font-size:.58rem;margin-bottom:8px}
+.tier.prime .tier-name{font-size:1.6rem;font-weight:400;margin-bottom:16px;letter-spacing:.02em}
+.tier.prime .tier-price{font-size:3.4rem;margin-bottom:8px}
+.tier.prime .tier-position{max-width:420px;margin-bottom:20px;line-height:1.75;min-height:auto}
+.tier.prime .tier-divider{margin:4px 0 18px;background:linear-gradient(90deg,rgba(200,168,75,.12),transparent 70%)}
+.tier.prime .tier-features{gap:12px}
+.tier.prime .tier-features li{font-size:.8rem}
+.tier.prime .tier-features li svg{width:14px;height:14px;opacity:.6}
+.tier.prime .tier-cta{
+  min-height:56px;padding:17px 20px;
+  font-size:.66rem;letter-spacing:.2em;font-weight:600;
+  background:linear-gradient(180deg,#d8be72 0%,#c8a84b 100%);
+  color:var(--bg);border:1px solid rgba(226,201,125,.5);
+  box-shadow:0 4px 20px rgba(200,168,75,.08);
+}
+.tier.prime .tier-cta::before{background:linear-gradient(90deg,transparent,rgba(255,255,255,.15),transparent)}
+.tier.prime .tier-cta:hover{
+  background:linear-gradient(180deg,#e0c97e 0%,#d4b45a 100%);
+  border-color:rgba(226,201,125,.7);
+  box-shadow:0 8px 32px rgba(200,168,75,.2);transform:translateY(-2px);
+}
+.tier-book{
+  display:block;text-align:center;margin-top:10px;padding:10px 16px;
+  font-size:.6rem;letter-spacing:.12em;text-transform:uppercase;
+  color:rgba(168,168,160,.58);text-decoration:none;
+  border:1px solid rgba(200,168,75,.08);transition:all .3s;
+}
+.tier-book:hover{border-color:rgba(200,168,75,.2);color:var(--gold)}
+.tier-commitment{
+  font-size:.66rem;color:rgba(168,168,160,.55);text-align:center;
+  margin-top:10px;letter-spacing:.04em;font-style:italic;
+}
+
+/* ══════════════════════════════════════════════════════════
+   EXECUTION LAYERS — Secondary Service Offerings
+   ══════════════════════════════════════════════════════════ */
+#layers{padding:72px 0 80px;position:relative;overflow:hidden}
+/* Shared signal-field atmosphere — ties visually to core system */
+#layers::before{
+  content:'';position:absolute;inset:0;
+  background:
+    radial-gradient(ellipse 50% 45% at 50% 30%,rgba(200,168,75,.03) 0%,transparent 65%),
+    radial-gradient(ellipse 35% 50% at 80% 60%,rgba(200,168,75,.015) 0%,transparent 50%);
+  pointer-events:none;
+}
+/* Grid texture — same density as #plans for visual continuity */
+#layers::after{
+  content:'';position:absolute;inset:0;
+  background-image:
+    linear-gradient(rgba(200,168,75,.015) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(200,168,75,.015) 1px,transparent 1px);
+  background-size:52px 52px;
+  mask-image:radial-gradient(ellipse 55% 50% at 50% 40%,black 10%,transparent 70%);
+  -webkit-mask-image:radial-gradient(ellipse 55% 50% at 50% 40%,black 10%,transparent 70%);
+  pointer-events:none;
+}
+.layers-intro{text-align:center;margin-bottom:56px;position:relative;z-index:1}
+
+/* Faint upward signal flow animation */
+@keyframes layer-signal-rise{
+  0%{transform:translateY(8px);opacity:0}
+  30%{opacity:.35}
+  70%{opacity:.35}
+  100%{transform:translateY(-8px);opacity:0}
+}
+/* Icon glow pulse */
+@keyframes icon-glow-pulse{
+  0%,100%{opacity:.35;text-shadow:none}
+  50%{opacity:.55;text-shadow:0 0 14px rgba(200,168,75,.12)}
+}
+
+.layers-grid{
+  display:grid;grid-template-columns:repeat(4,1fr);gap:var(--grid-gap);
+  max-width:1180px;margin:0 auto;position:relative;z-index:1;
+  background:rgba(200,168,75,.03);
+}
+/* Horizontal signal trace — shared with tier grid for system feel */
+.layers-grid::before{
+  content:'';position:absolute;top:50%;left:3%;right:3%;height:1px;
+  background:linear-gradient(90deg,transparent,rgba(200,168,75,.035) 20%,rgba(200,168,75,.035) 80%,transparent);
+  z-index:-1;
+}
+/* Sibling dimming on hover — matches tier-grid behavior */
+.layers-grid:hover .layer-card{
+  opacity:.72;filter:brightness(.92);
+  transition:opacity var(--transition-smooth) ease,filter var(--transition-smooth) ease,transform var(--transition-smooth) var(--ease-out),box-shadow var(--transition-smooth) ease,background var(--transition-smooth) ease;
+}
+.layers-grid:hover .layer-card:hover{
+  opacity:1;filter:brightness(1);
+}
+
+.layer-card{
+  background:rgba(12,12,10,.92);padding:36px 28px;
+  display:flex;flex-direction:column;position:relative;
+  transition:opacity var(--transition-smooth) ease,filter var(--transition-smooth) ease,transform var(--transition-smooth) var(--ease-out),box-shadow var(--transition-smooth) ease,background var(--transition-smooth) ease;
+}
+/* Faint upward signal particle on each card */
+.layer-card::before{
+  content:'';position:absolute;bottom:40%;left:50%;
+  width:1px;height:16px;border-radius:1px;
+  background:linear-gradient(180deg,rgba(200,168,75,.12),transparent);
+  animation:layer-signal-rise 4.5s ease-in-out infinite;
+  opacity:0;pointer-events:none;
+}
+.layer-card:nth-child(2)::before{animation-delay:.8s}
+.layer-card:nth-child(3)::before{animation-delay:1.6s}
+.layer-card:nth-child(4)::before{animation-delay:2.4s}
+
+.layer-card:hover{
+  background:var(--card-bg-hover);transform:translateY(-3px);
+  box-shadow:0 16px 56px rgba(0,0,0,.4),0 4px 16px rgba(200,168,75,.06),0 0 24px rgba(200,168,75,.03);
+}
+.layer-card:hover::after{
+  content:'';position:absolute;inset:-1px;
+  background:linear-gradient(180deg,rgba(200,168,75,.06),transparent 40%);
+  pointer-events:none;border-radius:inherit;
+}
+.layer-num{
+  display:inline-flex;align-items:center;gap:8px;
+  font-size:.56rem;letter-spacing:.18em;text-transform:uppercase;font-weight:500;
+  color:rgba(200,168,75,.48);
+  margin-bottom:16px;
+  transition:color .4s ease;
+}
+.layer-num span{
+  display:inline-flex;align-items:center;justify-content:center;
+  width:22px;height:22px;border-radius:50%;
+  font-size:.52rem;letter-spacing:.08em;font-weight:500;
+  color:rgba(200,168,75,.52);
+  border:1px solid rgba(200,168,75,.12);
+  background:rgba(200,168,75,.03);
+  transition:color .4s ease,border-color .4s ease,background .4s ease;
+}
+.layer-card:hover .layer-num{color:rgba(200,168,75,.68)}
+.layer-card:hover .layer-num span{color:rgba(200,168,75,.72);border-color:rgba(200,168,75,.26);background:rgba(200,168,75,.06)}
+.layer-icon{
+  font-size:1.2rem;margin-bottom:16px;opacity:.48;
+  color:var(--gold);
+  transition:opacity .4s ease,text-shadow .4s ease;
+  animation:icon-glow-pulse 5s ease-in-out infinite;
+}
+.layer-card:nth-child(2) .layer-icon{animation-delay:1.2s}
+.layer-card:nth-child(3) .layer-icon{animation-delay:2.4s}
+.layer-card:nth-child(4) .layer-icon{animation-delay:3.6s}
+.layer-card:hover .layer-icon{
+  opacity:.7;text-shadow:0 0 18px rgba(200,168,75,.18);
+  animation:none;
+}
+.layer-name{
+  font-family:'Cormorant Garamond',serif;
+  font-size:1.2rem;font-weight:400;color:rgba(237,232,222,.88);
+  margin-bottom:12px;line-height:1.22;
+  transition:color .4s ease;
+}
+.layer-card:hover .layer-name{color:var(--ivory)}
+.layer-body{
+  font-size:.78rem;color:rgba(178,178,170,.78);line-height:1.78;font-weight:300;
+  flex:1;margin-bottom:22px;
+}
+.layer-items{list-style:none;display:flex;flex-direction:column;gap:8px;margin-bottom:22px}
+.layer-items li{
+  font-size:.74rem;color:rgba(168,168,160,.72);line-height:1.55;
+  display:flex;align-items:baseline;gap:8px;
+  transition:color .3s ease;
+}
+.layer-card:hover .layer-items li{color:rgba(168,168,160,.78)}
+.layer-items li::before{content:'—';color:rgba(200,168,75,.3);flex-shrink:0;font-size:.58rem;transition:color .3s ease}
+.layer-card:hover .layer-items li::before{color:rgba(200,168,75,.48)}
+.layer-cta{
+  display:block;text-align:center;padding:12px 16px;margin-top:auto;
+  font-size:.62rem;letter-spacing:.14em;text-transform:uppercase;
+  text-decoration:none;color:rgba(200,168,75,.62);
+  border:1px solid rgba(200,168,75,.14);
+  transition:all .4s ease;position:relative;overflow:hidden;
+}
+.layer-cta::before{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(90deg,transparent,rgba(200,168,75,.05),transparent);
+  transform:translateX(-100%);transition:transform .5s ease;
+}
+.layer-cta:hover{border-color:rgba(200,168,75,.28);color:var(--gold);background:rgba(200,168,75,.04)}
+.layer-cta:hover::before{transform:translateX(100%)}
+
+/* ── Layer stage tag ── */
+.layer-stage{
+  display:inline-block;font-size:.56rem;letter-spacing:.14em;text-transform:uppercase;
+  color:rgba(168,168,160,.46);margin-top:14px;font-style:italic;
+  transition:color .3s ease;
+}
+.layer-card:hover .layer-stage{color:rgba(168,168,160,.58)}
+
+/* ── Layer "when" guidance line ── */
+.layer-when{
+  font-size:.72rem;color:rgba(200,168,75,.52);font-style:italic;
+  margin-bottom:14px;line-height:1.5;
+  transition:color .3s ease;
+}
+.layer-card:hover .layer-when{color:rgba(200,168,75,.68)}
+
+/* ── Layer secondary scan link ── */
+.layer-scan-link{
+  display:block;text-align:center;margin-top:10px;
+  font-size:.58rem;letter-spacing:.08em;
+  color:rgba(168,168,160,.48);text-decoration:none;
+  transition:color .3s ease;
+}
+.layer-scan-link:hover{color:rgba(200,168,75,.68)}
+
+/* Strategy card premium hover glow */
+.layer-card.--strategy:hover{
+  box-shadow:0 16px 56px rgba(0,0,0,.45),0 4px 20px rgba(200,168,75,.1),0 0 32px rgba(200,168,75,.05);
+}
+
+/* ── Direct purchase row ── */
+.layers-direct{
+  text-align:center;margin-top:44px;position:relative;z-index:1;
+}
+.layers-direct-hed{
+  font-family:'Cormorant Garamond',serif;
+  font-size:1.3rem;font-weight:300;color:var(--ivory);
+  margin-bottom:20px;
+}
+.layers-direct-btns{
+  display:flex;align-items:center;justify-content:center;gap:12px;
+  flex-wrap:wrap;margin-bottom:16px;
+}
+.layers-direct-btns a{
+  padding:11px 22px;font-size:.6rem;letter-spacing:.14em;text-transform:uppercase;
+  text-decoration:none;color:rgba(200,168,75,.72);
+  border:1px solid rgba(200,168,75,.14);
+  transition:all .3s ease;font-weight:500;
+}
+.layers-direct-btns a:hover{
+  border-color:rgba(200,168,75,.3);color:var(--gold);
+  background:rgba(200,168,75,.04);
+}
+.layers-direct-micro{
+  font-size:.74rem;color:rgba(168,168,160,.56);font-style:italic;
+  max-width:440px;margin:0 auto;line-height:1.6;
+}
+
+/* ── Layers flow CTA ── */
+.layers-flow{
+  text-align:center;margin-top:52px;position:relative;z-index:1;
+}
+.layers-flow-note{
+  font-size:.78rem;color:rgba(168,168,160,.62);line-height:1.7;
+  max-width:480px;margin:0 auto 24px;
+}
+.layers-flow-note em{font-style:italic;color:rgba(200,168,75,.58)}
+
+/* ══════════════════════════════════════════════════════════
+   DECISION GUIDANCE — Decision Engine
+   ══════════════════════════════════════════════════════════ */
+#guide{padding:56px 0;position:relative;overflow:hidden}
+/* Subtle signal field — continues system atmosphere */
+#guide::before{
+  content:'';position:absolute;inset:0;
+  background:radial-gradient(ellipse 45% 45% at 50% 35%,rgba(200,168,75,.02) 0%,transparent 60%);
+  pointer-events:none;
+}
+.guide-intro{text-align:center;margin-bottom:40px;position:relative;z-index:1}
+.guide-grid{
+  display:grid;grid-template-columns:repeat(2,1fr);gap:1px;
+  max-width:880px;margin:0 auto;background:rgba(200,168,75,.04);
+  position:relative;z-index:1;
+}
+/* Sibling dimming — path selection feel */
+.guide-grid:hover .guide-item{
+  opacity:.68;filter:brightness(.9);
+  transition:opacity var(--transition-smooth) ease,filter var(--transition-smooth) ease,background var(--transition-smooth) ease,transform var(--transition-smooth) var(--ease-out),box-shadow var(--transition-smooth) ease;
+}
+.guide-grid:hover .guide-item:hover{
+  opacity:1;filter:brightness(1);
+}
+.guide-item{
+  background:rgba(8,8,8,.96);padding:24px 32px;
+  display:flex;align-items:flex-start;gap:16px;
+  transition:opacity var(--transition-smooth) ease,filter var(--transition-smooth) ease,background var(--transition-smooth) ease,transform var(--transition-smooth) var(--ease-out),box-shadow var(--transition-smooth) ease;
+  position:relative;
+}
+/* Left-edge active indicator */
+.guide-item::before{
+  content:'';position:absolute;left:0;top:20%;bottom:20%;
+  width:2px;background:rgba(200,168,75,.06);
+  transition:background .4s ease,box-shadow .4s ease;
+}
+.guide-item:hover{
+  background:var(--card-bg-hover);
+  transform:translateX(2px);
+  box-shadow:0 4px 24px rgba(0,0,0,.25);
+}
+.guide-item:hover::before{
+  background:rgba(200,168,75,.35);
+  box-shadow:0 0 8px rgba(200,168,75,.1);
+}
+.guide-marker{
+  font-family:'Cormorant Garamond',serif;font-size:1.3rem;
+  color:rgba(200,168,75,.32);font-weight:300;flex-shrink:0;
+  line-height:1;min-width:22px;padding-top:2px;
+  transition:color .4s ease,text-shadow .4s ease;
+}
+.guide-item:hover .guide-marker{
+  color:rgba(200,168,75,.65);
+  text-shadow:0 0 10px rgba(200,168,75,.12);
+}
+.guide-text{display:flex;flex-direction:column;gap:6px}
+.guide-cond{
+  font-size:.8rem;color:rgba(237,232,222,.68);font-weight:400;
+  line-height:1.48;letter-spacing:.01em;
+  transition:color .3s ease;
+}
+.guide-item:hover .guide-cond{color:rgba(237,232,222,.9)}
+.guide-action{
+  font-size:.7rem;color:rgba(200,168,75,.6);letter-spacing:.06em;
+  font-style:italic;transition:color .3s ease;
+}
+.guide-item:hover .guide-action{color:rgba(200,168,75,.78)}
+
+/* ══════════════════════════════════════════════════════════
+   FAQ
+   ══════════════════════════════════════════════════════════ */
+.faq-section{padding:56px 0;position:relative}
+.faq-intro{text-align:center;margin-bottom:36px}
+.faq-wrap{max-width:760px;margin:0 auto}
+.faq-item{border-bottom:1px solid var(--border);padding:24px 0}
 .faq-item:last-child{border-bottom:none}
-.faq-q{font-family:'Cormorant Garamond',serif;font-size:1.22rem;font-weight:400;color:var(--ivory);line-height:1.3;margin-bottom:14px}
-.faq-a{font-size:.9rem;color:var(--muted);line-height:1.85}
+.faq-q{font-family:'Cormorant Garamond',serif;font-size:1.18rem;font-weight:400;color:var(--ivory);line-height:1.3;margin-bottom:14px}
+.faq-a{font-size:.84rem;color:var(--muted);line-height:1.85}
 .faq-a strong{color:rgba(237,232,222,.78);font-weight:400}
 
-/* ── Final CTA ── */
-.final-cta{padding:96px 0}
-.final-cta-inner{max-width:680px;margin:0 auto;text-align:center;padding:0 40px}
-.final-cta-eye{font-size:.65rem;letter-spacing:.24em;text-transform:uppercase;color:var(--gold-dim);display:block;margin-bottom:22px}
-.final-cta-hed{font-family:'Cormorant Garamond',serif;font-size:clamp(2rem,4vw,3.2rem);font-weight:300;color:var(--ivory);line-height:1.12;margin-bottom:24px}
+/* ══════════════════════════════════════════════════════════
+   FINAL CTA
+   ══════════════════════════════════════════════════════════ */
+.final-cta{padding:64px 0;position:relative;text-align:center}
+.final-cta::before{
+  content:'';position:absolute;inset:0;
+  background:radial-gradient(ellipse 45% 50% at 50% 50%,rgba(200,168,75,.03),transparent 65%);
+  pointer-events:none;
+}
+.final-cta-eye{font-size:.62rem;letter-spacing:.26em;text-transform:uppercase;color:rgba(200,168,75,.52);margin-bottom:22px;position:relative;z-index:1}
+.final-cta-hed{
+  font-family:'Cormorant Garamond',serif;
+  font-size:clamp(1.8rem,3.5vw,2.8rem);font-weight:300;
+  color:var(--ivory);line-height:1.12;margin-bottom:20px;
+  position:relative;z-index:1;
+}
 .final-cta-hed em{font-style:italic;color:var(--gold-lt)}
-.final-cta-sub{font-size:.9rem;color:var(--muted);line-height:1.8;margin-bottom:36px}
-.final-cta-actions{display:flex;flex-direction:column;align-items:center;gap:14px}
+.final-cta-sub{
+  font-size:.84rem;color:var(--muted);line-height:1.8;
+  max-width:520px;margin:0 auto 36px;position:relative;z-index:1;
+}
+.final-cta-actions{display:flex;flex-direction:column;align-items:center;gap:14px;position:relative;z-index:1}
 
-/* ── Footer ── */
-footer{border-top:1px solid rgba(200,168,75,.07);padding:32px 48px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px}
-.footer-copy{font-size:.68rem;color:rgba(168,168,160,.28);letter-spacing:.06em}
-.footer-links{display:flex;gap:24px;list-style:none}
-.footer-links a{font-size:.72rem;letter-spacing:.08em;color:rgba(168,168,160,.38);text-decoration:none;transition:color .2s}
-.footer-links a:hover{color:var(--gold)}
-
-@media(max-width:700px){
-  #nav{padding:18px 24px}.nav-right{gap:22px}
-  .wrap{padding:0 24px}
-  .pricing-hero{padding:64px 0 56px}
-  .compare-table{font-size:.82rem}
-  .compare-table thead th,.compare-table tbody td{padding:12px 14px}
-  .final-cta-inner{padding:0 24px}
-  footer{padding:28px 24px;flex-direction:column;align-items:flex-start}
+/* ═══════════════════════════════════════════
+   RESPONSIVE
+   ═══════════════════════════════════════════ */
+@media(max-width:1100px){
+  .tier-grid-5{grid-template-columns:repeat(3,1fr)}
+  .ascent-rail{flex-wrap:wrap;gap:4px;max-width:480px;padding:12px 20px}
+  .ascent-line{width:16px}
+  .layers-grid{grid-template-columns:repeat(2,1fr)}
+  .layers-grid:hover .layer-card{opacity:1;filter:none}
+  .tier-position{min-height:auto}
+}
+@media(max-width:900px){
+  /* A. Above the fold — tighten hero */
+  .p-hero{padding:56px 0 48px}
+  .p-hero-sub{margin-bottom:32px}
+  .p-hero-actions{gap:14px}
+  .p-bridge{height:48px}
+  /* B. Card stacking — reduce internal padding + gaps */
+  .tier{padding:24px 20px}
+  .tier-features{gap:8px}
+  .tier-actions{padding-top:14px}
+  .tier-grid-5{grid-template-columns:1fr 1fr;gap:2px}
+  .tier-anchor-row{margin-top:16px}
+  .tier.prime{grid-template-columns:1fr;padding:32px 24px;gap:24px}
+  .tier-anchor-row::before{height:28px;top:-14px}
+  /* C. Ascension rail — hide at tablet */
+  .ascent-rail{display:none}
+  /* Disable hover dimming at touch sizes */
+  .tier-grid-5:hover .tier{opacity:1;filter:none}
+  .layers-grid:hover .layer-card{opacity:1;filter:none}
+  .guide-grid:hover .guide-item{opacity:1;filter:none}
+  .tier-position{min-height:auto}
+  /* D. Supporting layers */
+  .layer-card{padding:28px 22px}
+  .layer-items{gap:6px;margin-bottom:18px}
+  .layers-intro{margin-bottom:40px}
+  /* E. Decision section */
+  .guide-grid{grid-template-columns:1fr;gap:1px}
+  .guide-item{padding:20px 24px;gap:12px}
+  .guide-intro{margin-bottom:36px}
+  /* Spacing normalization */
+  #plans{padding:48px 0 56px}
+  #layers{padding:52px 0 60px}
+  #guide{padding:52px 0}
+  .plans-intro{margin-bottom:32px}
+  .section-divide{height:56px}
+  .faq-section{padding:48px 0}
+  .faq-intro{margin-bottom:32px}
+  .faq-item{padding:22px 0}
+  .final-cta{padding:56px 0}
+}
+@media(max-width:600px){
+  /* A. Above the fold — compact */
+  .p-hero{padding:44px 0 36px}
+  .p-hero-eye{margin-bottom:18px;font-size:.58rem}
+  .p-hero-hed{margin-bottom:16px}
+  .p-hero-sub{font-size:.86rem;margin-bottom:28px;max-width:420px}
+  .p-bridge{height:40px}
+  /* B. Cards — single column, tight */
+  .tier-grid-5{grid-template-columns:1fr;gap:2px}
+  .tier{padding:22px 18px}
+  .tier-name{font-size:1.18rem}
+  .tier-price{font-size:2.2rem}
+  .tier-position{font-size:.74rem;margin-bottom:14px}
+  .tier-features li{font-size:.74rem}
+  .tier-cta{padding:12px 14px;font-size:.62rem}
+  .tier-divider{margin:4px 0 12px}
+  /* Prime tier mobile */
+  .tier.prime .tier-name{font-size:1.36rem}
+  .tier.prime .tier-price{font-size:2.8rem}
+  .tier.prime .tier-cta{min-height:48px;padding:14px 18px;font-size:.62rem}
+  .tier-anchor-row{margin-top:12px}
+  .tier-anchor-row::before{height:24px;top:-12px}
+  /* D. Layers — single column */
+  .layers-grid{grid-template-columns:1fr;gap:2px}
+  .layer-card{padding:24px 18px}
+  .layer-body{font-size:.74rem;margin-bottom:16px}
+  .layer-items li{font-size:.7rem}
+  .layer-items{gap:6px;margin-bottom:16px}
+  .layer-cta{padding:10px 12px;font-size:.58rem}
+  /* E. Decision — compact rows */
+  .guide-item{padding:18px 20px;gap:10px}
+  .guide-cond{font-size:.76rem}
+  .guide-action{font-size:.66rem}
+  .guide-marker{font-size:1.1rem;min-width:18px}
+  /* Section spacing */
+  #plans{padding:40px 0 48px}
+  #layers{padding:44px 0 52px}
+  #guide{padding:40px 0}
+  .plans-intro{margin-bottom:28px}
+  .layers-intro{margin-bottom:32px}
+  .section-divide{height:44px}
+  .s-hed{margin-bottom:10px}
+  .s-clarify{font-size:.72rem;margin-top:6px}
+  .faq-section{padding:40px 0}
+  .faq-item{padding:20px 0}
+  .faq-q{font-size:1.08rem;margin-bottom:10px}
+  .faq-a{font-size:.8rem}
+  .final-cta{padding:48px 0}
+  .final-cta-eye{margin-bottom:16px}
+  .final-cta-hed{margin-bottom:14px}
+  .final-cta-sub{margin-bottom:28px;font-size:.8rem}
+  /* Nav */
+  #nav{padding:16px 20px}
+  .nav-right{gap:14px}
+  .nav-btn{padding:9px 22px;font-size:.68rem}
 }
 @media(max-width:560px){
-  #nav{flex-wrap:wrap;gap:10px;justify-content:center}
+  #nav{flex-wrap:wrap;gap:8px;justify-content:center}
   .nav-right{gap:10px;flex-wrap:wrap;justify-content:center}
-  .nav-link{font-size:.68rem;letter-spacing:.1em}
-  .nav-btn{font-size:.64rem;padding:8px 18px}
-  .hero-headline{font-size:clamp(2.4rem,8vw,3rem)}
-  .compare-table thead th,.compare-table tbody td{padding:10px 10px}
-  .compare-table thead th:first-child{width:auto}
-  .pos-category-line{grid-template-columns:1fr;gap:8px;text-align:center}
-  .pos-category-line .cat-old,.pos-category-line .cat-new{padding:0;text-align:center}
-  .pos-category-line .cat-div{display:none}
+  .nav-link{font-size:.66rem;letter-spacing:.1em}
+  .nav-btn{font-size:.62rem;padding:8px 18px}
+  .btn-primary{padding:13px 28px;font-size:.7rem}
+  .btn-ghost{font-size:.74rem}
 }
 </style>
 @include('partials.clarity')
@@ -296,287 +864,401 @@ footer{border-top:1px solid rgba(200,168,75,.07);padding:32px 48px;display:flex;
 
 
 {{-- ══════════════════════════════════════════
-     SECTION 1 — HERO
+     HERO — Growth Architecture
      ══════════════════════════════════════════ --}}
-<section class="pricing-hero" aria-labelledby="hero-headline">
+<section class="p-hero" aria-labelledby="hero-headline">
   <div class="wrap">
-    <span class="hero-eyebrow">AI Citation Infrastructure</span>
-    <h1 class="hero-headline" id="hero-headline">
-      Every level reveals what<br><em>your site is missing.</em>
+    <p class="p-hero-eye">Growth Architecture</p>
+    <h1 class="p-hero-hed" id="hero-headline">
+      One system.<br><em>Multiple growth paths.</em>
     </h1>
-    <p class="hero-sub">$2 shows where you stand. Each level expands what you can see — and what you can control.</p>
-    <div class="hero-cta-row">
-      <a href="{{ route('quick-scan.show') }}" class="btn-primary">See Where You Stand — $2</a>
-      <a href="#plans" class="btn-ghost">View all levels →</a>
+    <p class="p-hero-sub">Search visibility, market expansion, web presence, and demand capture&nbsp;&mdash; structured into one system. Start where you are. Build forward without losing momentum.</p>
+    <div class="p-hero-actions">
+      <a href="{{ route('scan.start') }}" class="btn-primary">Start Your Scan&nbsp;&mdash; $2</a>
+      <a href="#plans" class="btn-ghost">View the full architecture &rarr;</a>
     </div>
   </div>
 </section>
 
-
-{{-- ══════════════════════════════════════════
-     SECTION 2 — POSITIONING
-     ══════════════════════════════════════════ --}}
-<section class="positioning" aria-labelledby="positioning-hed">
-  <div class="wrap">
-    <span class="section-eyebrow">A new category</span>
-    <h2 class="section-hed" id="positioning-hed">Not rankings.<br><em>Citation.</em></h2>
-    <p class="section-sub">Traditional SEO earns you a position in a list. The AI Citation Engine™ earns you the answer — the specific passage AI systems select when a customer asks who to hire.</p>
-
-    <div class="pos-grid" role="region" aria-label="SEO vs AI Citation comparison">
-      <div class="pos-col pos-old">
-        <p class="pos-label">Traditional SEO</p>
-        <ul class="pos-list">
-          <li>Rankings — a position in a list</li>
-          <li>Traffic — clicks toward your site</li>
-          <li>Links — authority signals from other pages</li>
-          <li>Pages — content for search crawlers</li>
-          <li>Keyword density — relevance signals</li>
-          <li>Domain authority — trust accumulation</li>
-        </ul>
-      </div>
-      <div class="pos-divider-line" aria-hidden="true"></div>
-      <div class="pos-col pos-new">
-        <p class="pos-label">AI Citation Engine™</p>
-        <ul class="pos-list">
-          <li><strong>Citation</strong> — you are the answer AI returns</li>
-          <li><strong>Answer selection</strong> — chosen at the moment of query</li>
-          <li><strong>Entity relationships</strong> — knowledge-graph connections</li>
-          <li><strong>Structured knowledge system</strong> — built for extraction</li>
-          <li><strong>Sentence-level clarity</strong> — optimized for retrieval</li>
-          <li><strong>Schema infrastructure</strong> — machine-readable authority</li>
-        </ul>
-      </div>
-    </div>
-
-    <div class="pos-category-line" aria-hidden="true">
-      <span class="cat-old">Earns a ranking position</span>
-      <span class="cat-div"></span>
-      <span class="cat-new">Earns the citation — AI selects you as the answer</span>
-    </div>
-  </div>
-</section>
+<div class="p-bridge" aria-hidden="true"></div>
 
 
 {{-- ══════════════════════════════════════════
-     SECTION 3 — PRICING TIERS
+     ASCENSION SYSTEM — 6 Core Tiers
      ══════════════════════════════════════════ --}}
-<section class="pricing-section" id="plans" aria-labelledby="pricing-hed">
+<section id="plans" aria-labelledby="plans-hed">
   <div class="wrap">
-    <span class="section-eyebrow">Levels of market control</span>
-    <h2 class="section-hed" id="pricing-hed">One system.<br><em>Five levels of control.</em></h2>
-    <p class="section-sub">Each level compounds on the last — broader visibility, deeper infrastructure, stronger position. Enter at any point.</p>
+    <div class="plans-intro">
+      <p class="s-eye">Core System</p>
+      <h2 class="s-hed" id="plans-hed">Six levels of <em>market control.</em></h2>
+      <p class="s-sub">Each level compounds on the last&nbsp;&mdash; broader visibility, deeper infrastructure, stronger position. Your data carries forward. No wasted steps.</p>
+      <p class="s-clarify">Start where your business actually is. The system builds forward&nbsp;&mdash; you don't need to begin at Step&nbsp;01.</p>
+    </div>
 
-    <div class="tiers-grid" role="list" style="grid-template-columns:repeat(5,1fr)">
+    <!-- Ascension Rail -->
+    <div class="ascent-rail" aria-label="System progression" role="navigation">
+      <div class="ascent-node"><span class="ascent-node-num">01</span><span class="ascent-node-label">Scan</span></div>
+      <div class="ascent-line" aria-hidden="true"></div>
+      <div class="ascent-node"><span class="ascent-node-num">02</span><span class="ascent-node-label">Signal</span></div>
+      <div class="ascent-line" aria-hidden="true"></div>
+      <div class="ascent-node --active"><span class="ascent-node-num">03</span><span class="ascent-node-label">Leverage</span></div>
+      <div class="ascent-line" aria-hidden="true"></div>
+      <div class="ascent-node"><span class="ascent-node-num">04</span><span class="ascent-node-label">Activate</span></div>
+      <div class="ascent-line" aria-hidden="true"></div>
+      <div class="ascent-node"><span class="ascent-node-num">05</span><span class="ascent-node-label">Expand</span></div>
+      <div class="ascent-line" aria-hidden="true"></div>
+      <div class="ascent-node"><span class="ascent-node-num">06</span><span class="ascent-node-label">Control</span></div>
+    </div>
 
-      {{-- TIER 1 — Start: Awareness --}}
-      <div class="tier-card" role="listitem">
-        <span class="tier-badge">Start</span>
+    <!-- Top 5 tiers -->
+    <div class="tier-grid-5" role="list">
+
+      {{-- Tier 1 — Scan --}}
+      <div class="tier scan-tier" role="listitem">
+        <p class="tier-step">Step 01</p>
+        <p class="tier-flag">Entry</p>
         <h3 class="tier-name">Citation Scan</h3>
-        <p class="tier-desc">Discover where you stand. One scan reveals your citation readiness — how visible you are to the systems answering your customers' questions.</p>
-        <div class="tier-price">
-          <span class="tier-price-sup">$</span>
-          <span class="tier-price-val">2</span>
-        </div>
-        <p class="tier-price-note">One-time &middot; No account required</p>
+        <div class="tier-price"><sup>$</sup>2</div>
+        <p class="tier-position">Reveals your citation readiness and AI visibility in seconds.</p>
         <div class="tier-divider"></div>
         <ul class="tier-features">
-          <li>0&ndash;100 citation readiness score</li>
-          <li>Surface-level signal detection</li>
-          <li>Instant — results in seconds</li>
+          <li><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.2"><polyline points="3 8 7 12 13 4"/></svg> 0&ndash;100 AI citation readiness score</li>
+          <li><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.2"><polyline points="3 8 7 12 13 4"/></svg> Surface-level signal detection</li>
+          <li><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.2"><polyline points="3 8 7 12 13 4"/></svg> Instant&nbsp;&mdash; results in seconds</li>
         </ul>
-        <a href="{{ route('quick-scan.show') }}" class="tier-cta">See Where You Stand — $2</a>
-        <p style="font-size:.68rem;color:rgba(168,168,160,.4);margin-top:10px;line-height:1.5;font-style:italic">Most users stop here — and stay partially visible.</p>
+        <div class="tier-actions">
+          <a href="{{ route('scan.start') }}" class="tier-cta">Start Scan&nbsp;&mdash; $2</a>
+        </div>
       </div>
 
-      {{-- TIER 2 — Grow: Signal Expansion --}}
-      <div class="tier-card" role="listitem">
-        <span class="tier-badge">Grow</span>
+      {{-- Tier 2 — Signal --}}
+      <div class="tier" role="listitem">
+        <p class="tier-step">Step 02</p>
+        <p class="tier-flag">Intelligence</p>
         <h3 class="tier-name">Signal Expansion</h3>
-        <p class="tier-desc">See the full picture. Complete signal mapping across your footprint — where you're visible, where you're invisible, and what's costing you citations.</p>
-        <div class="tier-price">
-          <span class="tier-price-sup">$</span>
-          <span class="tier-price-val">99</span>
-        </div>
-        <p class="tier-price-note">One-time purchase</p>
+        <div class="tier-price"><sup>$</sup>99</div>
+        <p class="tier-position">Full signal mapping&nbsp;&mdash; every gap, every opportunity, ranked by impact.</p>
         <div class="tier-divider"></div>
         <ul class="tier-features">
-          <li><strong>Full visibility mapping</strong></li>
-          <li><strong>Every gap ranked by impact</strong></li>
-          <li>Exportable intelligence + dashboard</li>
+          <li><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.2"><polyline points="3 8 7 12 13 4"/></svg> Complete visibility mapping</li>
+          <li><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.2"><polyline points="3 8 7 12 13 4"/></svg> Every gap ranked by impact</li>
+          <li><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.2"><polyline points="3 8 7 12 13 4"/></svg> Exportable intelligence report</li>
         </ul>
-        <a href="{{ route('quick-scan.show') }}" class="tier-cta">Start with $2 Scan</a>
-        <p style="font-size:.68rem;color:rgba(168,168,160,.4);margin-top:10px;line-height:1.5;font-style:italic">Then upgrade to Signal Expansion from your results.</p>
+        <div class="tier-actions">
+          <a href="{{ route('checkout.signal-expansion') }}" class="tier-cta">Map Your Signals&nbsp;&mdash; $99</a>
+        </div>
       </div>
 
-      {{-- TIER 3 — Scale: Structural Leverage (FOCAL / CORE) --}}
-      <div class="tier-card is-focal" role="listitem">
-        <span class="tier-popular">Most popular</span>
-        <span class="tier-badge">Scale — Core</span>
+      {{-- Tier 3 — Leverage (focal) --}}
+      <div class="tier focal" role="listitem">
+        <p class="tier-step">Step 03</p>
+        <p class="tier-flag">Most Popular</p>
         <h3 class="tier-name">Structural Leverage</h3>
-        <p class="tier-desc">Turn visibility into structure. Your complete action sequence — every correction prioritized, every opportunity sized, every gap closed systematically.</p>
-        <div class="tier-price">
-          <span class="tier-price-sup">$</span>
-          <span class="tier-price-val">249</span>
-        </div>
-        <p class="tier-price-note">One-time purchase</p>
+        <div class="tier-price"><sup>$</sup>249</div>
+        <p class="tier-position">Priority correction sequence with structural guidance and opportunity sizing.</p>
         <div class="tier-divider"></div>
         <ul class="tier-features">
-          <li><strong>Everything in Signal Expansion</strong></li>
-          <li><strong>Priority correction sequence</strong> &mdash; ordered by impact</li>
-          <li>Structural guidance for every gap</li>
-          <li>Opportunity sizing per correction</li>
+          <li><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.2"><polyline points="3 8 7 12 13 4"/></svg> Priority correction sequence</li>
+          <li><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.2"><polyline points="3 8 7 12 13 4"/></svg> Structural guidance + opportunity sizing</li>
+          <li><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.2"><polyline points="3 8 7 12 13 4"/></svg> Full action sequence&nbsp;&mdash; ordered by ROI</li>
         </ul>
-        <a href="{{ route('quick-scan.show') }}" class="tier-cta">Start with $2 Scan</a>
-        <p style="font-size:.68rem;color:rgba(168,168,160,.4);margin-top:10px;line-height:1.5;font-style:italic">Then upgrade to Structural Leverage from your results.</p>
+        <div class="tier-actions">
+          <a href="{{ route('checkout.structural-leverage') }}" class="tier-cta">Build Your Leverage&nbsp;&mdash; $249</a>
+        </div>
       </div>
 
-      {{-- TIER 4 — Implement: System Activation --}}
-      <div class="tier-card" role="listitem">
-        <span class="tier-badge">Implement</span>
+      {{-- Tier 4 — Activate --}}
+      <div class="tier" role="listitem">
+        <p class="tier-step">Step 04</p>
+        <p class="tier-flag">Implementation</p>
         <h3 class="tier-name">System Activation</h3>
-        <p class="tier-desc">Activate the full system. Competitive positioning, market mapping, and complete coverage architecture across 50+ pages — built for compounding authority.</p>
-        <div class="tier-price">
-          <span class="tier-price-sup">$</span>
-          <span class="tier-price-val">489</span>
-          <span class="tier-price-per">+</span>
-        </div>
-        <p class="tier-price-note">One-time purchase</p>
+        <div class="tier-price"><sup>$</sup>489</div>
+        <p class="tier-position">Competitive positioning, market mapping, and 50+ page structural architecture.</p>
         <div class="tier-divider"></div>
         <ul class="tier-features">
-          <li><strong>Everything in Structural Leverage</strong></li>
-          <li><strong>Competitive positioning intelligence</strong></li>
-          <li>Market expansion map</li>
-          <li>50+ pages with full system architecture</li>
+          <li><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.2"><polyline points="3 8 7 12 13 4"/></svg> Competitive positioning intelligence</li>
+          <li><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.2"><polyline points="3 8 7 12 13 4"/></svg> Market expansion map</li>
+          <li><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.2"><polyline points="3 8 7 12 13 4"/></svg> 50+ page structural architecture</li>
+          <li><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.2"><polyline points="3 8 7 12 13 4"/></svg> Full system coverage plan</li>
         </ul>
-        <a href="{{ route('quick-scan.show') }}" class="tier-cta">Start with $2 Scan</a>
-        <p style="font-size:.68rem;color:rgba(168,168,160,.4);margin-top:10px;line-height:1.5;font-style:italic">Then upgrade to System Activation from your results.</p>
+        <div class="tier-actions">
+          <a href="{{ route('checkout.system-activation') }}" class="tier-cta">Activate Your System&nbsp;&mdash; $489</a>
+        </div>
       </div>
 
-      {{-- TIER 5 — Dominate: Market Control (PREMIUM) --}}
-      <div class="tier-card is-premium" role="listitem">
-        <span class="tier-badge">Dominate</span>
-        <h3 class="tier-name">Market Control</h3>
-        <p class="tier-desc">We build it. We deploy it. We maintain it. Your entire market — structured, covered, and actively defended.</p>
-        <div class="tier-price">
-          <span class="tier-price-sup">$</span>
-          <span class="tier-price-val">4,799</span>
-          <span class="tier-price-per">+</span>
-        </div>
-        <p class="tier-price-note">Reviewed individually per market</p>
+      {{-- Tier 5 — Expand --}}
+      <div class="tier" role="listitem">
+        <p class="tier-step">Step 05</p>
+        <p class="tier-flag">Expansion</p>
+        <h3 class="tier-name">Market Expansion</h3>
+        <div class="tier-price"><sup>$</sup>1,500<sub>&ndash;2,500</sub></div>
+        <p class="tier-position">Service and location expansion with entity reinforcement across your full footprint.</p>
         <div class="tier-divider"></div>
         <ul class="tier-features">
-          <li><strong>Full market infrastructure</strong></li>
-          <li><strong>Complete execution</strong> &mdash; built and deployed for you</li>
-          <li>Ongoing position defense</li>
-          <li>Strategic oversight across your full coverage</li>
+          <li><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.2"><polyline points="3 8 7 12 13 4"/></svg> Service + location expansion</li>
+          <li><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.2"><polyline points="3 8 7 12 13 4"/></svg> Entity + linking reinforcement</li>
+          <li><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.2"><polyline points="3 8 7 12 13 4"/></svg> Cross-market coverage architecture</li>
+          <li><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.2"><polyline points="3 8 7 12 13 4"/></svg> Compounding authority deployment</li>
         </ul>
-        <a href="{{ route('onboarding.start', ['tier' => 'dominance']) }}" class="tier-cta">Deploy Your System</a>
-        <p style="font-size:.66rem;color:rgba(200,168,75,.35);margin-top:8px;line-height:1.5">Best for businesses expanding across multiple cities and services.</p>
-        <p style="font-size:.64rem;color:rgba(168,168,160,.35);margin-top:4px;line-height:1.5;font-style:italic">We build the structure that makes AI return you as the answer. Limited capacity each month.</p>
+        <div class="tier-actions">
+          <a href="{{ route('onboarding.start', ['tier' => 'expansion']) }}" class="tier-cta">Expand My Coverage</a>
+        </div>
       </div>
 
     </div>
+
+    <!-- Anchor — Market Control -->
+    <div class="tier-anchor-row">
+      <div class="tier prime" role="listitem">
+        <div class="prime-left">
+          <p class="tier-step">Step 06</p>
+          <p class="tier-flag">Full Deployment</p>
+          <h3 class="tier-name">Market Control</h3>
+          <div class="tier-price"><sup>$</sup>4,799<sub>+ /mo</sub></div>
+          <p class="tier-position">Your entire citation infrastructure&nbsp;&mdash; built, deployed, and actively maintained across every surface.</p>
+          <div class="tier-divider"></div>
+          <ul class="tier-features">
+            <li><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.2"><polyline points="3 8 7 12 13 4"/></svg> Complete system activation&nbsp;&mdash; built for you</li>
+            <li><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.2"><polyline points="3 8 7 12 13 4"/></svg> Ongoing maintenance + reinforcement</li>
+            <li><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.2"><polyline points="3 8 7 12 13 4"/></svg> Strategic oversight across full coverage</li>
+            <li><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.2"><polyline points="3 8 7 12 13 4"/></svg> Position defense + competitive intelligence</li>
+          </ul>
+        </div>
+        <div class="prime-right">
+          <div class="tier-actions" style="border-top:none;padding-top:24px">
+            <a href="{{ route('onboarding.start', ['tier' => 'dominance']) }}" class="tier-cta">Dominate Your Market</a>
+            <a href="{{ route('onboarding.start', ['tier' => 'dominance']) }}" class="tier-book">Book a Strategy Call</a>
+            <p class="tier-commitment">Reviewed individually per market&nbsp;&middot;&nbsp; Limited capacity</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
   </div>
 </section>
 
+<div class="section-divide" aria-hidden="true"><span class="divide-pulse"></span></div>
+
 
 {{-- ══════════════════════════════════════════
-     SECTION 4 — COMPARISON TABLE
+     EXECUTION LAYERS — Supporting Infrastructure
      ══════════════════════════════════════════ --}}
-<section class="comparison" aria-labelledby="compare-hed">
+<section id="layers" aria-labelledby="layers-hed">
   <div class="wrap">
-    <span class="section-eyebrow">Why it's different</span>
-    <h2 class="section-hed" id="compare-hed">SEO vs<br><em>AI Citation Engine™</em></h2>
+    <div class="layers-intro">
+      <p class="s-eye">System Layers</p>
+      <h2 class="s-hed" id="layers-hed">Choose how deep <em>you want to go.</em></h2>
+      <p class="s-sub">Start simple or move fast. Every level connects into the same system.</p>
+    </div>
 
-    <div class="compare-wrap">
-      <table class="compare-table" aria-label="SEO vs AI Citation Engine comparison">
-        <thead>
-          <tr>
-            <th scope="col">Dimension</th>
-            <th scope="col">Traditional SEO</th>
-            <th scope="col">AI Citation Engine™</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>Primary output</td>
-            <td>Rankings in a results list</td>
-            <td>Citation in an AI-generated answer</td>
-          </tr>
-          <tr>
-            <td>Visibility unit</td>
-            <td>Traffic to your site</td>
-            <td>Answer selection — you are the source</td>
-          </tr>
-          <tr>
-            <td>Content structure</td>
-            <td>Pages optimized for crawlers</td>
-            <td>Structured knowledge system built for extraction</td>
-          </tr>
-          <tr>
-            <td>Customer moment</td>
-            <td>User clicks a result</td>
-            <td>AI names you as the answer before a click</td>
-          </tr>
-          <tr>
-            <td>Technical layer</td>
-            <td>On-page SEO + backlinks</td>
-            <td>Schema, entity graph, sentence-level optimization</td>
-          </tr>
-          <tr>
-            <td>Competitive moat</td>
-            <td>Ranking position (easily displaced)</td>
-            <td>Structural citation authority that compounds</td>
-          </tr>
-          <tr>
-            <td>AI search readiness</td>
-            <td>Incidental — not by design</td>
-            <td>Core requirement — built into every level</td>
-          </tr>
-        </tbody>
-      </table>
+    <div class="layers-grid">
 
-      <p class="compare-note"><strong>The shift is already happening.</strong> Google AI Overviews appear above organic results. ChatGPT answers questions directly. Perplexity synthesizes sources in real time. The businesses cited in those answers earn visibility that rankings no longer deliver alone.</p>
+      {{-- Layer 01 — Signal Layer --}}
+      <div class="layer-card">
+        <p class="layer-num"><span>01</span> Signal Layer</p>
+        <div class="layer-icon">&#x25A4;</div>
+        <h3 class="layer-name">Web Systems</h3>
+        <p class="layer-when">When your site isn&rsquo;t built for AI visibility</p>
+        <p class="layer-body">Your site is the surface the system builds on. This layer ensures it supports citation performance, conversion architecture, and structural clarity.</p>
+        <ul class="layer-items">
+          <li>Premium website design + rebuilds</li>
+          <li>Conversion architecture</li>
+          <li>Landing page systems</li>
+          <li>Platform cleanup + structural improvement</li>
+        </ul>
+        <a href="{{ route('onboarding.start') }}" class="layer-cta">Fix My Website Foundation</a>
+        <a href="{{ route('scan.start') }}" class="layer-scan-link">Or start with scan&nbsp;&mdash; $2</a>
+      </div>
+
+      {{-- Layer 02 — Demand Layer --}}
+      <div class="layer-card">
+        <p class="layer-num"><span>02</span> Demand Layer</p>
+        <div class="layer-icon">&#x2197;</div>
+        <h3 class="layer-name">Paid Search &amp; SEM</h3>
+        <p class="layer-when">When you need immediate demand</p>
+        <p class="layer-body">Add paid demand capture where immediate lead flow is needed. Conversion-focused campaigns that work alongside organic visibility the system creates.</p>
+        <ul class="layer-items">
+          <li>Google Ads management</li>
+          <li>Local search campaigns</li>
+          <li>Remarketing + demand capture</li>
+          <li>Campaign architecture + ongoing management</li>
+        </ul>
+        <a href="{{ route('onboarding.start') }}" class="layer-cta">Capture Demand Now</a>
+        <a href="{{ route('scan.start') }}" class="layer-scan-link">Or start with scan&nbsp;&mdash; $2</a>
+      </div>
+
+      {{-- Layer 03 — Conversion Layer --}}
+      <div class="layer-card">
+        <p class="layer-num"><span>03</span> Conversion Layer</p>
+        <div class="layer-icon">&#x25CE;</div>
+        <h3 class="layer-name">Design &amp; Brand</h3>
+        <p class="layer-when">When conversion is underperforming</p>
+        <p class="layer-body">Strengthen the system's performance through conversion design. Visual identity and trust-building creative aligned with your market position.</p>
+        <ul class="layer-items">
+          <li>Visual identity refinement</li>
+          <li>Landing page creative</li>
+          <li>Conversion graphics</li>
+          <li>Trust-building visual systems</li>
+        </ul>
+        <a href="{{ route('onboarding.start') }}" class="layer-cta">Improve Conversion</a>
+        <a href="{{ route('scan.start') }}" class="layer-scan-link">Or start with scan&nbsp;&mdash; $2</a>
+      </div>
+
+      {{-- Layer 04 — Strategy Layer --}}
+      <div class="layer-card --strategy">
+        <p class="layer-num"><span>04</span> Strategy Layer</p>
+        <div class="layer-icon">&#x7B;&#x7D;</div>
+        <h3 class="layer-name">Strategy &amp; Advisory</h3>
+        <p class="layer-when">When you need a custom plan</p>
+        <p class="layer-body">Custom growth path when your situation requires direct guidance. Implementation advisory, market planning, and agency licensing.</p>
+        <ul class="layer-items">
+          <li>Custom strategy engagements</li>
+          <li>Territory + market planning</li>
+          <li>Implementation advisory</li>
+          <li>Agency licensing</li>
+        </ul>
+        <a href="{{ route('onboarding.start') }}" class="layer-cta">Book Strategy Session</a>
+        <a href="{{ route('scan.start') }}" class="layer-scan-link">Or start with scan&nbsp;&mdash; $2</a>
+      </div>
+
+    </div>
+
+    <div class="layers-direct">
+      <h3 class="layers-direct-hed">Start anywhere.</h3>
+      <div class="layers-direct-btns">
+        <a href="{{ route('scan.start') }}">Start Scan&nbsp;&mdash; $2</a>
+        <a href="{{ route('checkout.signal-expansion') }}">Run Full Analysis&nbsp;&mdash; $99</a>
+        <a href="{{ route('checkout.structural-leverage') }}">Fix Structure&nbsp;&mdash; $249</a>
+        <a href="{{ route('checkout.system-activation') }}">Activate System&nbsp;&mdash; $489</a>
+      </div>
+      <p class="layers-direct-micro">Most businesses start with the $2 scan and expand as gaps are revealed.</p>
     </div>
   </div>
 </section>
 
+<div class="section-divide" aria-hidden="true"><span class="divide-pulse" style="animation-delay:.6s"></span></div>
+
 
 {{-- ══════════════════════════════════════════
-     SECTION 5 — FAQ
+     DECISION GUIDANCE — How to Choose
+     ══════════════════════════════════════════ --}}
+<section id="guide" aria-labelledby="guide-hed">
+  <div class="wrap">
+    <div class="guide-intro">
+      <p class="s-eye">Decision Architecture</p>
+      <h2 class="s-hed" id="guide-hed">Where to <em>start.</em></h2>
+      <p class="s-sub">Every path leads forward. Choose the entry point that matches where you are now.</p>
+      <p class="s-clarify">If you're unsure, start with the scan. The system will show you where to go next.</p>
+    </div>
+
+    <div class="guide-grid">
+      <div class="guide-item">
+        <span class="guide-marker">&rarr;</span>
+        <div class="guide-text">
+          <p class="guide-cond">You want fast clarity on your AI visibility</p>
+          <p class="guide-action"><a href="{{ route('scan.start') }}" style="color:var(--gold);text-decoration:underline;text-underline-offset:3px">Start with Citation Scan&nbsp;&mdash; $2</a></p>
+        </div>
+      </div>
+      <div class="guide-item">
+        <span class="guide-marker">&rarr;</span>
+        <div class="guide-text">
+          <p class="guide-cond">You need a full map of signals and gaps</p>
+          <p class="guide-action"><a href="{{ route('checkout.signal-expansion') }}" style="color:var(--gold);text-decoration:underline;text-underline-offset:3px">Start with Signal Expansion&nbsp;&mdash; $99</a></p>
+        </div>
+      </div>
+      <div class="guide-item">
+        <span class="guide-marker">&rarr;</span>
+        <div class="guide-text">
+          <p class="guide-cond">You know your site needs structural correction</p>
+          <p class="guide-action"><a href="{{ route('checkout.structural-leverage') }}" style="color:var(--gold);text-decoration:underline;text-underline-offset:3px">Start with Structural Leverage&nbsp;&mdash; $249</a></p>
+        </div>
+      </div>
+      <div class="guide-item">
+        <span class="guide-marker">&rarr;</span>
+        <div class="guide-text">
+          <p class="guide-cond">You&rsquo;re ready for full implementation</p>
+          <p class="guide-action"><a href="{{ route('checkout.system-activation') }}" style="color:var(--gold);text-decoration:underline;text-underline-offset:3px">Start with System Activation&nbsp;&mdash; $489</a></p>
+        </div>
+      </div>
+      <div class="guide-item">
+        <span class="guide-marker">&rarr;</span>
+        <div class="guide-text">
+          <p class="guide-cond">Your site no longer reflects the market you want to win</p>
+          <p class="guide-action"><a href="{{ route('onboarding.start') }}" style="color:var(--gold);text-decoration:underline;text-underline-offset:3px">Add Web Systems to any level</a></p>
+        </div>
+      </div>
+      <div class="guide-item">
+        <span class="guide-marker">&rarr;</span>
+        <div class="guide-text">
+          <p class="guide-cond">You need immediate search demand capture</p>
+          <p class="guide-action"><a href="{{ route('onboarding.start') }}" style="color:var(--gold);text-decoration:underline;text-underline-offset:3px">Add Paid Search alongside your system</a></p>
+        </div>
+      </div>
+      <div class="guide-item">
+        <span class="guide-marker">&rarr;</span>
+        <div class="guide-text">
+          <p class="guide-cond">You want full market dominance, built and managed</p>
+          <p class="guide-action"><a href="{{ route('onboarding.start', ['tier' => 'dominance']) }}" style="color:var(--gold);text-decoration:underline;text-underline-offset:3px">Start with Market Control</a></p>
+        </div>
+      </div>
+      <div class="guide-item">
+        <span class="guide-marker">&rarr;</span>
+        <div class="guide-text">
+          <p class="guide-cond">You need a custom plan for a complex situation</p>
+          <p class="guide-action"><a href="/book" style="color:var(--gold);text-decoration:underline;text-underline-offset:3px">Book a Strategy Call</a></p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="section-divide" aria-hidden="true"><span class="divide-pulse" style="animation-delay:1.2s"></span></div>
+
+
+{{-- ══════════════════════════════════════════
+     FAQ
      ══════════════════════════════════════════ --}}
 <section class="faq-section" id="faq" aria-labelledby="faq-hed">
   <div class="wrap">
-    <span class="section-eyebrow">Common questions</span>
-    <h2 class="section-hed" id="faq-hed">Questions about<br><em>AI citation.</em></h2>
+    <div class="faq-intro">
+      <p class="s-eye">Common Questions</p>
+      <h2 class="s-hed" id="faq-hed">Questions about <em>AI citation.</em></h2>
+    </div>
 
     <div class="faq-wrap">
 
       <div class="faq-item" itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
         <h3 class="faq-q" itemprop="name">What is AI citation?</h3>
         <div itemprop="acceptedAnswer" itemscope itemtype="https://schema.org/Answer">
-          <p class="faq-a" itemprop="text">AI citation is when an AI system — like Google AI Overviews, ChatGPT, or Perplexity — pulls content from your site and cites it as a source in a generated answer. Unlike a traditional ranking, <strong>citation means your content is the answer</strong>, not just a result near the answer. It's the highest-value visibility position in AI-assisted search.</p>
+          <p class="faq-a" itemprop="text">AI citation is when an AI system&nbsp;&mdash; like Google AI Overviews, ChatGPT, or Perplexity&nbsp;&mdash; pulls content from your site and cites it as a source in a generated answer. Unlike a traditional ranking, <strong>citation means your content is the answer</strong>, not just a result near the answer.</p>
         </div>
       </div>
 
       <div class="faq-item" itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
         <h3 class="faq-q" itemprop="name">How is this different from SEO?</h3>
         <div itemprop="acceptedAnswer" itemscope itemtype="https://schema.org/Answer">
-          <p class="faq-a" itemprop="text">Traditional SEO optimizes for ranking positions — getting your page to appear in a list of results. The AI Citation Engine™ structures your content so AI systems <strong>extract and cite it in generated answers</strong> — a different technical and strategic discipline. Citation captures query intent at the moment of answer selection, before a user ever sees a ranked result list.</p>
+          <p class="faq-a" itemprop="text">Traditional SEO optimizes for ranking positions in a results list. The AI Citation Engine™ structures your content so AI systems <strong>extract and cite it in generated answers</strong>&nbsp;&mdash; a different technical and strategic discipline. Citation captures query intent at the moment of answer selection, before a user ever sees a ranked result list.</p>
         </div>
       </div>
 
       <div class="faq-item" itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
-        <h3 class="faq-q" itemprop="name">How long does it take to start getting cited by AI?</h3>
+        <h3 class="faq-q" itemprop="name">How long does it take to start getting cited?</h3>
         <div itemprop="acceptedAnswer" itemscope itemtype="https://schema.org/Answer">
-          <p class="faq-a" itemprop="text">Signal Expansion and Structural Leverage levels deliver structured intelligence within two weeks of activation. System Activation and Market Control implementations follow a <strong>4-month structured deployment cycle</strong>, with citation improvements observable as coverage compounds across your service area and topic set.</p>
+          <p class="faq-a" itemprop="text">Signal Expansion and Structural Leverage levels deliver structured intelligence within two weeks. System Activation and Market Control implementations follow a <strong>4-month structured deployment cycle</strong>, with citation improvements observable as coverage compounds across your service area and topic set.</p>
         </div>
       </div>
 
       <div class="faq-item" itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
         <h3 class="faq-q" itemprop="name">Who is the AI Citation Engine™ for?</h3>
         <div itemprop="acceptedAnswer" itemscope itemtype="https://schema.org/Answer">
-          <p class="faq-a" itemprop="text">The AI Citation Engine™ is built for <strong>local service businesses, agencies, and multi-location brands</strong> that want to be the source AI systems recommend — not just a result that appears below an AI-generated answer. If your customers are asking ChatGPT or Google AI who to hire, you need to be the answer those systems return.</p>
+          <p class="faq-a" itemprop="text">The AI Citation Engine™ is built for <strong>local service businesses, agencies, and multi-location brands</strong> that want to be the source AI systems recommend. If your customers are asking ChatGPT or Google AI who to hire, you need to be the answer those systems return.</p>
+        </div>
+      </div>
+
+      <div class="faq-item" itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
+        <h3 class="faq-q" itemprop="name">Do results carry forward between levels?</h3>
+        <div itemprop="acceptedAnswer" itemscope itemtype="https://schema.org/Answer">
+          <p class="faq-a" itemprop="text">Yes. <strong>Every level builds on the last.</strong> Your scan data, signal maps, and structural intelligence all carry forward. When you upgrade, the system expands&nbsp;&mdash; it never restarts. No wasted work.</p>
         </div>
       </div>
 
@@ -586,37 +1268,32 @@ footer{border-top:1px solid rgba(200,168,75,.07);padding:32px 48px;display:flex;
 
 
 {{-- ══════════════════════════════════════════
-     SECTION 6 — FINAL CTA
+     FINAL CTA
      ══════════════════════════════════════════ --}}
 <section class="final-cta" aria-labelledby="cta-hed">
-  <div class="final-cta-inner">
-    <span class="final-cta-eye">Enter the system</span>
+  <div class="wrap">
+    <p class="final-cta-eye">Enter the System</p>
     <h2 class="final-cta-hed" id="cta-hed">$2 to see where you stand.<br><em>Expand when you&rsquo;re ready.</em></h2>
-    <p class="final-cta-sub">Your data carries forward through every level. No wasted steps, no repeated work. Each level compounds on the last.</p>
+    <p class="final-cta-sub">Your data carries forward through every level. Each level compounds on the last. No repeated work, no wasted steps.</p>
     <div class="final-cta-actions">
-      <a href="{{ route('quick-scan.show') }}" class="btn-primary">See Where You Stand — $2</a>
-      <a href="#plans" class="btn-ghost">Compare all levels →</a>
+      <a href="{{ route('scan.start') }}" class="btn-primary">Start Your Scan&nbsp;&mdash; $2</a>
+      <a href="#plans" class="btn-ghost">Compare all levels &rarr;</a>
     </div>
   </div>
 </section>
 
 
-<footer>
-  <a href="/" class="logo" style="opacity:.45">
-    <span class="logo-seo">SEO</span><span class="logo-ai">AI</span><span class="logo-co">co</span>
-  </a>
-  <span class="footer-copy">&copy; {{ date('Y') }} SEO AI Co™ &middot; AI Citation Infrastructure</span>
-  <ul class="footer-links">
-    <li><a href="{{ route('ai-citation-engine') }}">AI Citation Engine™</a></li>
-    <li><a href="{{ route('how-it-works') }}">How It Works</a></li>
-    <li><a href="{{ route('about') }}">About</a></li>
-    <li><a href="{{ route('privacy') }}">Privacy</a></li>
-  </ul>
-</footer>
+@include('partials.public-footer')
 
 @include('components.tm-style')
 <script>
 (function(){
+  // Nav scroll listener
+  var nav = document.getElementById('nav');
+  if(nav){
+    window.addEventListener('scroll', function(){ nav.classList.toggle('stuck', window.scrollY > 60); }, {passive:true});
+  }
+
   document.querySelectorAll('a[href*="onboarding/start"]').forEach(function(el){
     el.addEventListener('click',function(){
       fetch('/api/v1/track',{method:'POST',headers:{'Content-Type':'application/json','Accept':'application/json'},body:JSON.stringify({event:'deployment_cta_click',metadata:{label:el.textContent.trim().substring(0,60),page:'pricing'}})}).catch(function(){});

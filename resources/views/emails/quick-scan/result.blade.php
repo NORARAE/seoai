@@ -65,19 +65,20 @@
 
     <!-- CTA -->
     <div style="text-align:center;margin:28px 0 20px;padding:20px;background:#f9f8f5;border:1px solid #ede8de">
-      <p style="font-size:14px;font-weight:500;color:#222;margin:0 0 6px">Ready to close these gaps?</p>
-      <p style="font-size:12px;color:#888;margin:0 0 16px;line-height:1.5">We implement the structural changes so AI systems cite your business as the answer.</p>
-      <a href="{{ url('/pricing') }}" style="display:inline-block;background:#c8a84b;color:#080808;font-size:12px;font-weight:600;text-decoration:none;padding:12px 32px;letter-spacing:.08em">See Plans</a>
+      <p style="font-size:14px;font-weight:500;color:#222;margin:0 0 6px">You&rsquo;ve only unlocked the first layer.</p>
+      <p style="font-size:12px;color:#888;margin:0 0 16px;line-height:1.5">The next layer maps every gap ranked by revenue impact &mdash; so you know exactly what to fix first.</p>
+      <a href="{{ url('/checkout/signal-expansion') }}" style="display:inline-block;background:#c8a84b;color:#080808;font-size:12px;font-weight:600;text-decoration:none;padding:12px 32px;letter-spacing:.08em">Unlock Signal Expansion &mdash; $99</a>
     </div>
 
     <p style="font-size:12px;color:#bbb;text-align:center;margin:0">
-      <a href="{{ url('/quick-scan') }}" style="color:#c8a84b">Scan another URL</a> &nbsp;·&nbsp; <a href="{{ url('/book') }}" style="color:#c8a84b">Book a free strategy call</a>
+      <a href="{{ url('/quick-scan') }}" style="color:#c8a84b">Scan another URL</a> &nbsp;&middot;&nbsp; <a href="{{ url('/book') }}" style="color:#c8a84b">Book a free strategy call</a>
     </p>
   </div>
 
   <!-- Footer -->
   <div style="background:#f5f5f4;padding:16px 24px;text-align:center;border-top:1px solid #e8e8e8">
-    <p style="font-size:11px;color:#bbb;margin:0">SEO AI Co&#8482; &middot; <a href="{{ url('/') }}" style="color:#bbb">seoaico.com</a></p>
+    <p style="font-size:11px;color:#ccc;margin:0 0 6px">You&rsquo;re receiving this because you scanned {{ $scan->url }}</p>
+    <p style="font-size:11px;color:#bbb;margin:0">&copy; {{ date('Y') }} SEO AI Co&trade; &middot; <a href="{{ url('/unsubscribe/' . urlencode($scan->email)) }}" style="color:#bbb">Unsubscribe</a></p>
   </div>
 
 </div>

@@ -157,7 +157,7 @@ footer{border-top:1px solid var(--border);padding:28px 48px;display:flex;flex-di
 
 <script>
   const nav = document.getElementById('nav');
-  window.addEventListener('scroll', () => nav.classList.toggle('stuck', scrollY > 60));
+  if(nav) window.addEventListener('scroll', () => nav.classList.toggle('stuck', scrollY > 60));
 
   // Poll for scan completion every 3 seconds
   const scanId = @json($scan->id ?? null);

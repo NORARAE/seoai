@@ -20,7 +20,7 @@ class QuickScanDay2 extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'You\'re closer than you think',
+            subject: 'Your visibility is still incomplete',
         );
     }
 

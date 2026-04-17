@@ -283,6 +283,11 @@ class QuickScanController extends Controller
                 'stripe_session_id' => $sessionId,
                 'status' => QuickScan::STATUS_PAID,
             ]);
+
+            // Set system tier on the user if logged in
+            if ($user = Auth::user()) {
+                $user->upgradeSystemTier(\App\Enums\SystemTier::SCAN_BASIC);
+            }
         }
 
         Log::info('QuickScan: payment verified, starting scan', [
@@ -317,6 +322,8 @@ class QuickScanController extends Controller
                 'raw_checks' => $result['raw_checks'],
                 'broken_links' => $result['broken_links'],
                 'page_count' => $result['page_count'],
+                'dimensions' => $result['dimensions'] ?? null,
+                'intelligence' => $result['intelligence'] ?? null,
                 'status' => QuickScan::STATUS_SCANNED,
                 'scanned_at' => now(),
             ]);

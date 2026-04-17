@@ -209,7 +209,7 @@ footer{border-top:1px solid rgba(200,168,75,.07);padding:32px 40px;display:flex;
   <ul class="nav-links">
     <li><a href="{{ route('ai-search-optimization') }}">AI Search</a></li>
     <li><a href="{{ route('how-it-works') }}">How It Works</a></li>
-    <li><a href="{{ route('quick-scan.show') }}" class="nav-cta">Run Scan</a></li>
+    <li><a href="{{ route('scan.start') }}" class="nav-cta">Run Scan</a></li>
   </ul>
 </nav>
 
@@ -254,7 +254,7 @@ footer{border-top:1px solid rgba(200,168,75,.07);padding:32px 40px;display:flex;
   <div class="doctrine-bridge">
     <p class="doctrine-bridge-hed">You can <em>measure this</em> instantly.</p>
     <p class="doctrine-bridge-sub">The Citation Scan evaluates your site's structural readiness for AI retrieval — schema clarity, entity definition, extraction signals — in 60 seconds. $2. No subscription.</p>
-    <a href="{{ route('quick-scan.show') }}" class="doctrine-bridge-cta">See Where You Stand — $2</a>
+    <a href="{{ route('scan.start') }}" class="doctrine-bridge-cta">Start Your Scan — $2</a>
     <p class="doctrine-bridge-note">Instant score · See exactly what AI systems can and can't read</p>
   </div>
 
@@ -478,7 +478,7 @@ footer{border-top:1px solid rgba(200,168,75,.07);padding:32px 40px;display:flex;
     <span class="page-cta-eye">Make your site the answer</span>
     <h2>Get cited by AI — <em>not just ranked.</em></h2>
     <p>We deploy the AI Citation Engine™ into your existing site — structuring your service pages for extraction and citation across every AI search platform that matters.</p>
-    <a href="{{ route('quick-scan.show') }}" class="cta-btn">See Where You Stand — $2</a>
+    <a href="{{ route('scan.start') }}" class="cta-btn">Start Your Scan — $2</a>
     <a href="{{ route('how-it-works') }}" class="cta-ghost">See how it works →</a>
   </div>
 

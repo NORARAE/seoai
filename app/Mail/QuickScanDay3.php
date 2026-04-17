@@ -20,7 +20,7 @@ class QuickScanDay3 extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Want to fix this automatically?',
+            subject: 'Your competitors are already doing this',
         );
     }
 

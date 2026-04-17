@@ -31,25 +31,18 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
-:root{--bg:#080808;--deep:#0b0b0b;--gold:#c8a84b;--gold-lt:#e2c97d;--ivory:#ede8de;--muted:#a8a8a0;--border:#1a1a1a;--section-gap:80px}
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-html{font-size:18px;scroll-behavior:smooth}
-body{background:var(--bg);color:var(--ivory);font-family:'DM Sans',sans-serif;font-weight:300;line-height:1.85}
+@include('partials.design-system')
+@include('partials.public-nav-css')
 
-/* ── Nav ── */
-.bk-nav{display:flex;align-items:center;justify-content:space-between;padding:24px 40px;border-bottom:1px solid var(--border)}
-.bk-logo{text-decoration:none;display:inline-flex;align-items:baseline;gap:0}
-.bk-logo .l-seo{font-weight:300;font-size:1.1rem;letter-spacing:.06em;color:#fff}
-.bk-logo .l-ai{color:var(--gold);font-weight:500;font-size:1.25rem;letter-spacing:.02em}
-.bk-logo .l-co{font-weight:300;font-size:.95rem;letter-spacing:.04em;color:rgba(150,150,150,.5)}
-.bk-nav-back{font-size:.8rem;color:var(--muted);text-decoration:none;letter-spacing:.04em;transition:color .2s}
-.bk-nav-back:hover{color:var(--gold)}
+/* ── Book page token overrides ── */
+:root{--border:#1a1a1a;--muted:#a8a8a0;--section-gap:80px}
+body{line-height:1.85}
 
 /* ── Layout ── */
 .bk-wrap{max-width:760px;margin:0 auto;padding:0 32px}
 
 /* ── Hero ── */
-.bk-hero{padding:var(--section-gap) 0 44px;text-align:center;position:relative}
+.bk-hero{padding:clamp(110px,14vh,152px) 0 44px;text-align:center;position:relative}
 .bk-hero h1{font-family:'Cormorant Garamond',serif;font-size:clamp(2rem,5vw,3.2rem);font-weight:400;line-height:1.2;letter-spacing:-.01em;margin-bottom:16px}
 .bk-hero h1 em{font-style:italic;color:var(--gold)}
 .bk-hero .hero-sub{font-size:1rem;color:var(--muted);max-width:520px;margin:0 auto 40px;line-height:1.9}
@@ -90,11 +83,6 @@ body{background:var(--bg);color:var(--ivory);font-family:'DM Sans',sans-serif;fo
 .bk-authority .auth-sub{font-size:.52rem;letter-spacing:.18em;text-transform:uppercase;color:rgba(200,168,75,.12);margin-bottom:4px;font-weight:400;display:block}
 .bk-authority .auth-body{font-size:.9rem;color:var(--muted);max-width:460px;margin:0 auto;line-height:1.85}
 
-/* ── Footer ── */
-.bk-footer{padding:32px 40px;border-top:1px solid var(--border);text-align:center;font-size:.75rem;color:var(--muted);letter-spacing:.02em}
-.bk-footer a{color:var(--muted);text-decoration:none}
-.bk-footer a:hover{color:var(--gold)}
-
 /* ── Booking entry section ── */
 #book-now{background:var(--deep);border-top:1px solid var(--border);scroll-margin-top:80px}
 .bk-entry-intro{max-width:640px;margin:0 auto;padding:52px 32px 40px;text-align:center}
@@ -110,10 +98,17 @@ body{background:var(--bg);color:var(--ivory);font-family:'DM Sans',sans-serif;fo
 .bk-trust-caption{font-size:.74rem;color:rgba(168,168,160,.52);max-width:480px;margin:14px auto 0;line-height:1.7;letter-spacing:.01em}
 .bk-trust-item svg{filter:drop-shadow(0 0 5px rgba(200,168,75,.14))}
 
+@include('partials.public-nav-mobile-css')
+
+@media(max-width:900px){
+  #nav{padding:14px 20px}#nav.stuck{padding:10px 20px}.nav-link{display:none}
+  .nav-btn{display:none}
+  .nav-hamburger{display:flex}
+}
 @media(max-width:600px){
-  .bk-nav{padding:20px 24px}
   .bk-wrap{padding:0 24px}
   :root{--section-gap:52px}
+  .bk-hero{padding-top:88px}
   .bk-entry-intro{padding:40px 24px 28px}
   .bk-trust-row{opacity:.9;gap:10px 14px}
   .bk-cta-support{font-size:.86rem}
@@ -171,12 +166,7 @@ body{background:var(--bg);color:var(--ivory);font-family:'DM Sans',sans-serif;fo
 <body>
 
   {{-- Nav --}}
-  <nav class="bk-nav">
-    <a href="/" class="bk-logo">
-      <span class="l-seo">SEO</span><span class="l-ai">AI</span><span class="l-co">co</span>
-    </a>
-    <a href="/" class="bk-nav-back">← Back</a>
-  </nav>
+  @include('partials.public-nav', ['showHamburger' => true])
 
   <main>
     <div class="bk-wrap">
@@ -262,7 +252,7 @@ body{background:var(--bg);color:var(--ivory);font-family:'DM Sans',sans-serif;fo
 
         <button class="bk-cta-btn" onclick="openSession()">Start Activation</button>
         <p class="bk-cta-support">Full system deployment starting at $4,799+</p>
-        <p class="bk-cta-note">Or <a href="{{ route('quick-scan.show') }}" style="color:var(--gold);text-decoration:none;border-bottom:1px solid rgba(200,168,75,.3)">start with the $2 scan</a> — most clients continue through the system first.</p>
+        <p class="bk-cta-note">Or <a href="{{ route('scan.start') }}" style="color:var(--gold);text-decoration:none;border-bottom:1px solid rgba(200,168,75,.3)">start with the $2 scan</a> — most clients continue through the system first.</p>
         <span class="bk-active-indicator"><span class="bk-active-dot">&bull;</span> System active &mdash; deployment capacity limited</span>
         <span class="bk-trust-source">Structured deployment across your full market footprint</span>
         <div class="bk-trust-row" aria-label="Platform integrations">
@@ -321,20 +311,17 @@ body{background:var(--bg);color:var(--ivory);font-family:'DM Sans',sans-serif;fo
 
   </main>
 
-  <footer class="bk-footer">
-    <div style="margin-bottom:8px;font-size:.82rem"><strong style="color:var(--ivory)">SEO AI Co™</strong> &nbsp;&middot;&nbsp; Programmatic AI SEO Systems</div>
-    <div style="margin-bottom:8px"><a href="mailto:hello@seoaico.com">hello@seoaico.com</a></div>
-    <p style="font-size:.72rem;color:rgba(168,168,160,.72);max-width:440px;margin:0 auto 8px;line-height:1.5">SEO AI Co™ and associated systems, processes, and methodologies are proprietary and may not be reproduced without permission.</p>
-    <p style="font-size:.75rem;color:rgba(168,168,160,.70);max-width:440px;margin:0 auto 12px;line-height:1.5">Certain system builds may be eligible for independent research credit review.</p>
-    <div><a href="/">seoaico.com</a> &nbsp;&mdash;&nbsp; <a href="{{ route('privacy') }}">Privacy</a> &nbsp;&mdash;&nbsp; <a href="{{ route('terms') }}">Terms</a></div>
-  </footer>
+  @include('partials.public-footer')
 
   <script>
+  const nav = document.getElementById('nav');
+  if(nav) window.addEventListener('scroll', () => nav.classList.toggle('stuck', scrollY > 60));
   function openSession() {
     window.dispatchEvent(new CustomEvent('open-booking', {detail: null}));
     document.getElementById('book-now').scrollIntoView({ behavior: 'smooth', block: 'start' });
   }
   </script>
+  @include('partials.public-nav-js')
   <script>
   if(typeof gtag==='function'){gtag('event','view_book',{page_location:window.location.href});}
   </script>

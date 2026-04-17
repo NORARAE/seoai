@@ -131,6 +131,8 @@ class QuickScanService
             'broken_links' => $linkAudit['broken'],
             'page_count' => $linkAudit['total'],
             'error' => null,
+            'dimensions' => $this->buildDimensions($html, $url, $responseTime, $categories),
+            'intelligence' => $this->buildScanIntelligence($categories),
         ];
     }
 
@@ -729,6 +731,662 @@ class QuickScanService
         }
 
         return ['broken' => $broken, 'total' => $total];
+    }
+
+    // =========================================================================
+    // Expanded Scan Dimensions (Steps 3 + 4 + 5)
+    // =========================================================================
+
+    /**
+     * Build the 6 expanded scan dimensions from HTML analysis.
+     * Each dimension maps findings to fix tiers ($99/$249/$489).
+     */
+    private function buildDimensions(string $html, string $url, float $responseTime, array $categories): array
+    {
+        $lower = strtolower($html);
+        $text = strtolower(strip_tags($html));
+
+        return [
+            'citation_readiness' => $this->dimensionCitationReadiness($html, $categories),
+            'content_extraction' => $this->dimensionContentExtraction($html, $categories),
+            'service_location_coverage' => $this->dimensionServiceLocationCoverage($html, $text, $url),
+            'internal_linking' => $this->dimensionInternalLinking($html, $url, $categories),
+            'authority_signals' => $this->dimensionAuthoritySignals($html, $text, $lower),
+            'technical_signals' => $this->dimensionTechnicalSignals($html, $url, $responseTime, $categories),
+        ];
+    }
+
+    /**
+     * Citation Readiness — Can AI systems cite this business?
+     */
+    private function dimensionCitationReadiness(string $html, array $categories): array
+    {
+        $findings = [];
+        $score = 0;
+        $max = 0;
+
+        // Pull from existing schema + entity clarity checks
+        foreach (['schema', 'entity_clarity'] as $catKey) {
+            if (!isset($categories[$catKey]))
+                continue;
+            foreach ($categories[$catKey]['checks'] as $check) {
+                $max += $check['max'];
+                $score += $check['points'];
+                if (!$check['passed']) {
+                    $findings[] = [
+                        'what_missing' => $check['label'] . ' — ' . $check['fail'],
+                        'why_it_matters' => $this->citationContext($check['key']),
+                        'fix_tier' => 'signal-expansion',
+                        'fix_price' => '$99',
+                        'fix_route' => 'checkout.signal-expansion',
+                    ];
+                }
+            }
+        }
+
+        // Additional: Open Graph / social meta
+        $hasOg = (bool) preg_match('/<meta\s[^>]*property=["\']og:/i', $html);
+        $max += 5;
+        if ($hasOg) {
+            $score += 5;
+        } else {
+            $findings[] = [
+                'what_missing' => 'Social Citation Layer — No Open Graph metadata detected.',
+                'why_it_matters' => 'AI systems and social platforms use Open Graph to generate previews. Without it, your content appears generic when shared or cited.',
+                'fix_tier' => 'signal-expansion',
+                'fix_price' => '$99',
+                'fix_route' => 'checkout.signal-expansion',
+            ];
+        }
+
+        return [
+            'label' => 'Citation Readiness',
+            'score' => $score,
+            'max' => $max,
+            'pct' => $max > 0 ? round($score / $max * 100) : 0,
+            'findings' => $findings,
+        ];
+    }
+
+    /**
+     * Content Extraction Structure — Can AI extract useful content?
+     */
+    private function dimensionContentExtraction(string $html, array $categories): array
+    {
+        $findings = [];
+        $score = 0;
+        $max = 0;
+
+        foreach (['coverage', 'extractable_content'] as $catKey) {
+            if (!isset($categories[$catKey]))
+                continue;
+            foreach ($categories[$catKey]['checks'] as $check) {
+                $max += $check['max'];
+                $score += $check['points'];
+                if (!$check['passed']) {
+                    $tier = in_array($check['key'], ['faq', 'definitions', 'structured_lists'])
+                        ? 'structural-leverage'
+                        : 'signal-expansion';
+                    $findings[] = [
+                        'what_missing' => $check['label'] . ' — ' . $check['fail'],
+                        'why_it_matters' => $this->extractionContext($check['key']),
+                        'fix_tier' => $tier,
+                        'fix_price' => $tier === 'signal-expansion' ? '$99' : '$249',
+                        'fix_route' => $tier === 'signal-expansion' ? 'checkout.signal-expansion' : 'checkout.structural-leverage',
+                    ];
+                }
+            }
+        }
+
+        // Additional: table content
+        $hasTables = (bool) preg_match('/<table[\s>]/i', $html);
+        $max += 3;
+        if ($hasTables) {
+            $score += 3;
+        } else {
+            $findings[] = [
+                'what_missing' => 'Structured Data Tables — No tabular content detected.',
+                'why_it_matters' => 'AI systems extract comparison and specification data from tables. Without them, your structured information is harder to parse.',
+                'fix_tier' => 'structural-leverage',
+                'fix_price' => '$249',
+                'fix_route' => 'checkout.structural-leverage',
+            ];
+        }
+
+        return [
+            'label' => 'Content Extraction Structure',
+            'score' => $score,
+            'max' => $max,
+            'pct' => $max > 0 ? round($score / $max * 100) : 0,
+            'findings' => $findings,
+        ];
+    }
+
+    /**
+     * Service/Location Coverage — Is the business's coverage territory machine-readable?
+     */
+    private function dimensionServiceLocationCoverage(string $html, string $text, string $url): array
+    {
+        $findings = [];
+        $score = 0;
+        $max = 25;
+
+        // Service page links (5 pts)
+        $serviceLinks = 0;
+        $servicePagePatterns = ['/service', '/what-we-do', '/solutions', '/our-work'];
+        foreach ($servicePagePatterns as $pattern) {
+            if (str_contains(strtolower($html), $pattern)) {
+                $serviceLinks++;
+            }
+        }
+        if ($serviceLinks > 0) {
+            $score += 5;
+        } else {
+            $findings[] = [
+                'what_missing' => 'Service Page Architecture — No dedicated service page links detected.',
+                'why_it_matters' => 'AI systems map your business capabilities through service-specific pages. A single page limits what queries you can appear in.',
+                'fix_tier' => 'structural-leverage',
+                'fix_price' => '$249',
+                'fix_route' => 'checkout.structural-leverage',
+            ];
+        }
+
+        // Location/area served declarations (5 pts)
+        $hasAreaServed = str_contains($html, '"areaServed"') || str_contains($html, '"serviceArea"');
+        $hasLocationContent = (bool) preg_match('/\b(serving|located in|based in|service area)\b/i', $text);
+        if ($hasAreaServed || $hasLocationContent) {
+            $score += 5;
+        } else {
+            $findings[] = [
+                'what_missing' => 'Service Area Declaration — No service territory defined.',
+                'why_it_matters' => 'AI systems match businesses to locations. Without area declarations, you miss "near me" and location-qualified queries entirely.',
+                'fix_tier' => 'signal-expansion',
+                'fix_price' => '$99',
+                'fix_route' => 'checkout.signal-expansion',
+            ];
+        }
+
+        // Multiple location references (5 pts)
+        preg_match_all('/\b([A-Z][a-z]+(?:\s[A-Z][a-z]+)*),?\s*(?:AL|AK|AZ|AR|CA|CO|CT|DE|FL|GA|HI|ID|IL|IN|IA|KS|KY|LA|ME|MD|MA|MI|MN|MS|MO|MT|NE|NV|NH|NJ|NM|NY|NC|ND|OH|OK|OR|PA|RI|SC|SD|TN|TX|UT|VT|VA|WA|WV|WI|WY)\b/', $html, $locMatches);
+        $locationCount = count(array_unique($locMatches[0] ?? []));
+        if ($locationCount >= 3) {
+            $score += 5;
+        } elseif ($locationCount >= 1) {
+            $score += 2;
+            $findings[] = [
+                'what_missing' => 'Location Coverage Depth — Only ' . $locationCount . ' location(s) referenced.',
+                'why_it_matters' => 'Businesses with multi-location content capture more geographic queries. Limited location references restrict your geographic reach.',
+                'fix_tier' => 'structural-leverage',
+                'fix_price' => '$249',
+                'fix_route' => 'checkout.structural-leverage',
+            ];
+        } else {
+            $findings[] = [
+                'what_missing' => 'Location References — No specific locations mentioned.',
+                'why_it_matters' => 'Without named locations, AI cannot connect your business to geographic searches.',
+                'fix_tier' => 'signal-expansion',
+                'fix_price' => '$99',
+                'fix_route' => 'checkout.signal-expansion',
+            ];
+        }
+
+        // Structured address data (5 pts)
+        $hasAddress = str_contains($html, '"address"') || str_contains($html, '"PostalAddress"')
+            || (bool) preg_match('/<address[\s>]/i', $html);
+        if ($hasAddress) {
+            $score += 5;
+        } else {
+            $findings[] = [
+                'what_missing' => 'Structured Address — No machine-readable address found.',
+                'why_it_matters' => 'AI systems like Google and ChatGPT use structured address data to verify business legitimacy and relevant geography.',
+                'fix_tier' => 'signal-expansion',
+                'fix_price' => '$99',
+                'fix_route' => 'checkout.signal-expansion',
+            ];
+        }
+
+        // GeoCoordinates (5 pts)
+        $hasGeo = str_contains($html, '"GeoCoordinates"') || str_contains($html, '"geo"') || str_contains($html, '"latitude"');
+        if ($hasGeo) {
+            $score += 5;
+        } else {
+            $findings[] = [
+                'what_missing' => 'Geographic Coordinates — No GeoCoordinates data found.',
+                'why_it_matters' => 'Precise geolocation data helps AI connect you to proximity-based queries. Without it, your local relevance is weakened.',
+                'fix_tier' => 'system-activation',
+                'fix_price' => '$489',
+                'fix_route' => 'checkout.system-activation',
+            ];
+        }
+
+        return [
+            'label' => 'Service & Location Coverage',
+            'score' => $score,
+            'max' => $max,
+            'pct' => $max > 0 ? round($score / $max * 100) : 0,
+            'findings' => $findings,
+        ];
+    }
+
+    /**
+     * Internal Linking (expanded) — Site graph quality
+     */
+    private function dimensionInternalLinking(string $html, string $url, array $categories): array
+    {
+        $findings = [];
+        $score = 0;
+        $max = 25;
+
+        // Base internal linking from existing check
+        $linkScore = $categories['internal_linking']['score'] ?? 0;
+        $score += min(15, $linkScore);
+
+        if ($linkScore < 8) {
+            $findings[] = [
+                'what_missing' => 'Content Graph Density — Internal link network is thin.',
+                'why_it_matters' => 'AI systems discover pages through internal links. A weak link network means most of your content is invisible.',
+                'fix_tier' => 'structural-leverage',
+                'fix_price' => '$249',
+                'fix_route' => 'checkout.structural-leverage',
+            ];
+        }
+
+        // Navigation structure (5 pts)
+        $hasNav = (bool) preg_match('/<nav[\s>]/i', $html);
+        if ($hasNav) {
+            $score += 5;
+        } else {
+            $findings[] = [
+                'what_missing' => 'Navigation Architecture — No semantic navigation element detected.',
+                'why_it_matters' => 'Semantic navigation tells AI which pages are most important. Without it, crawlers cannot prioritize your content hierarchy.',
+                'fix_tier' => 'structural-leverage',
+                'fix_price' => '$249',
+                'fix_route' => 'checkout.structural-leverage',
+            ];
+        }
+
+        // Breadcrumbs (5 pts)
+        $hasBreadcrumbs = str_contains($html, 'BreadcrumbList')
+            || (bool) preg_match('/class=["\'][^"\']*breadcrumb/i', $html)
+            || str_contains($html, 'aria-label="breadcrumb"');
+        if ($hasBreadcrumbs) {
+            $score += 5;
+        } else {
+            $findings[] = [
+                'what_missing' => 'Breadcrumb Navigation — No breadcrumb trail detected.',
+                'why_it_matters' => 'Breadcrumbs establish content hierarchy for AI. They improve rich result eligibility and help AI understand page relationships.',
+                'fix_tier' => 'system-activation',
+                'fix_price' => '$489',
+                'fix_route' => 'checkout.system-activation',
+            ];
+        }
+
+        return [
+            'label' => 'Internal Linking & Navigation',
+            'score' => $score,
+            'max' => $max,
+            'pct' => $max > 0 ? round($score / $max * 100) : 0,
+            'findings' => $findings,
+        ];
+    }
+
+    /**
+     * Authority Signals — Does AI recognize this source as authoritative?
+     */
+    private function dimensionAuthoritySignals(string $html, string $text, string $lower): array
+    {
+        $findings = [];
+        $score = 0;
+        $max = 30;
+
+        // About page link (5 pts)
+        $hasAboutLink = (bool) preg_match('/href=["\'][^"\']*\/about/i', $html);
+        if ($hasAboutLink) {
+            $score += 5;
+        } else {
+            $findings[] = [
+                'what_missing' => 'About Page Reference — No link to an about/team page detected.',
+                'why_it_matters' => 'AI systems look for about pages to verify entity legitimacy. Without one, your business lacks a verifiable identity layer.',
+                'fix_tier' => 'structural-leverage',
+                'fix_price' => '$249',
+                'fix_route' => 'checkout.structural-leverage',
+            ];
+        }
+
+        // Testimonials / reviews (5 pts)
+        $reviewPatterns = ['testimonial', 'review', 'client says', 'customer feedback', '"Review"', 'aggregaterating', 'ratingvalue'];
+        $hasReviews = false;
+        foreach ($reviewPatterns as $p) {
+            if (str_contains($lower, strtolower($p))) {
+                $hasReviews = true;
+                break;
+            }
+        }
+        if ($hasReviews) {
+            $score += 5;
+        } else {
+            $findings[] = [
+                'what_missing' => 'Social Proof — No testimonials, reviews, or ratings detected.',
+                'why_it_matters' => 'AI systems weight social proof when recommending businesses. Reviews and testimonials signal reliability to AI.',
+                'fix_tier' => 'structural-leverage',
+                'fix_price' => '$249',
+                'fix_route' => 'checkout.structural-leverage',
+            ];
+        }
+
+        // Credential signals (5 pts)
+        $credPatterns = ['certif', 'licensed', 'accredited', 'member of', 'award', 'recognized', 'years of experience', 'founded in'];
+        $hasCreds = false;
+        foreach ($credPatterns as $p) {
+            if (str_contains($text, $p)) {
+                $hasCreds = true;
+                break;
+            }
+        }
+        if ($hasCreds) {
+            $score += 5;
+        } else {
+            $findings[] = [
+                'what_missing' => 'Credential Signals — No certifications, licensing, or experience markers found.',
+                'why_it_matters' => 'AI systems use credential signals to rank authority. Businesses without visible credentials appear less trustworthy to AI.',
+                'fix_tier' => 'signal-expansion',
+                'fix_price' => '$99',
+                'fix_route' => 'checkout.signal-expansion',
+            ];
+        }
+
+        // Author / team attribution (5 pts)
+        $hasAuthor = str_contains($html, '"author"')
+            || (bool) preg_match('/class=["\'][^"\']*author/i', $html)
+            || str_contains($lower, 'written by')
+            || str_contains($lower, 'our team');
+        if ($hasAuthor) {
+            $score += 5;
+        } else {
+            $findings[] = [
+                'what_missing' => 'Content Attribution — No author or team attribution found.',
+                'why_it_matters' => 'AI systems prefer content with clear attribution. Anonymous content scores lower in E-E-A-T evaluation.',
+                'fix_tier' => 'system-activation',
+                'fix_price' => '$489',
+                'fix_route' => 'checkout.system-activation',
+            ];
+        }
+
+        // External trust signals (5 pts)
+        $trustPatterns = ['bbb', 'better business', 'yelp', 'google.com/maps', 'trustpilot', 'angi', 'homeadvisor'];
+        $hasTrust = false;
+        foreach ($trustPatterns as $p) {
+            if (str_contains($lower, $p)) {
+                $hasTrust = true;
+                break;
+            }
+        }
+        if ($hasTrust) {
+            $score += 5;
+        } else {
+            $findings[] = [
+                'what_missing' => 'External Trust References — No third-party trust platform links detected.',
+                'why_it_matters' => 'AI cross-references businesses with third-party platforms. Links to review platforms and directories strengthen your authority.',
+                'fix_tier' => 'system-activation',
+                'fix_price' => '$489',
+                'fix_route' => 'checkout.system-activation',
+            ];
+        }
+
+        // Contact information richness (5 pts)
+        $hasPhone = (bool) preg_match('/href=["\']tel:/i', $html) || (bool) preg_match('/\(\d{3}\)\s?\d{3}[-.]?\d{4}/', $html);
+        $hasEmail = (bool) preg_match('/href=["\']mailto:/i', $html);
+        $contact = ($hasPhone ? 3 : 0) + ($hasEmail ? 2 : 0);
+        $score += $contact;
+        if ($contact < 3) {
+            $findings[] = [
+                'what_missing' => 'Contact Accessibility — ' . ($hasPhone ? 'Email' : ($hasEmail ? 'Phone' : 'Phone and email')) . ' contact not detected.',
+                'why_it_matters' => 'Complete contact information is a basic trust signal for AI. Missing contact methods reduce your perceived legitimacy.',
+                'fix_tier' => 'signal-expansion',
+                'fix_price' => '$99',
+                'fix_route' => 'checkout.signal-expansion',
+            ];
+        }
+
+        return [
+            'label' => 'Authority Signals',
+            'score' => $score,
+            'max' => $max,
+            'pct' => $max > 0 ? round($score / $max * 100) : 0,
+            'findings' => $findings,
+        ];
+    }
+
+    /**
+     * Technical Signals — Infrastructure quality for AI access
+     */
+    private function dimensionTechnicalSignals(string $html, string $url, float $responseTime, array $categories): array
+    {
+        $findings = [];
+        $score = 0;
+        $max = 25;
+
+        // Base crawlability from existing checks
+        $crawlScore = $categories['crawlability']['score'] ?? 0;
+        $score += min(10, $crawlScore);
+
+        foreach (($categories['crawlability']['checks'] ?? []) as $check) {
+            if (!$check['passed']) {
+                $findings[] = [
+                    'what_missing' => $check['label'] . ' — ' . $check['fail'],
+                    'why_it_matters' => $this->technicalContext($check['key']),
+                    'fix_tier' => 'signal-expansion',
+                    'fix_price' => '$99',
+                    'fix_route' => 'checkout.signal-expansion',
+                ];
+            }
+        }
+
+        // Mobile viewport (5 pts)
+        $hasViewport = (bool) preg_match('/<meta[^>]*name=["\']viewport["\']/i', $html);
+        if ($hasViewport) {
+            $score += 5;
+        } else {
+            $findings[] = [
+                'what_missing' => 'Mobile Viewport — No mobile viewport declaration detected.',
+                'why_it_matters' => 'The majority of AI search happens on mobile. Without a viewport declaration, your page renders poorly on mobile and AI systems note this.',
+                'fix_tier' => 'signal-expansion',
+                'fix_price' => '$99',
+                'fix_route' => 'checkout.signal-expansion',
+            ];
+        }
+
+        // Structured heading hierarchy (5 pts)
+        $headingOrder = [];
+        preg_match_all('/<h([1-6])[\s>]/i', $html, $hMatches);
+        foreach ($hMatches[1] ?? [] as $level) {
+            $headingOrder[] = (int) $level;
+        }
+        $hasGoodHierarchy = !empty($headingOrder) && $headingOrder[0] <= 2;
+        if ($hasGoodHierarchy) {
+            $score += 5;
+        } else {
+            $findings[] = [
+                'what_missing' => 'Heading Hierarchy — Page structure does not follow logical heading order.',
+                'why_it_matters' => 'AI systems use heading levels to understand content relationships. Poor heading structure makes your content harder to parse.',
+                'fix_tier' => 'structural-leverage',
+                'fix_price' => '$249',
+                'fix_route' => 'checkout.structural-leverage',
+            ];
+        }
+
+        // Hreflang / language (5 pts)
+        $hasLang = (bool) preg_match('/<html[^>]*lang=["\'][a-z]{2}/i', $html);
+        if ($hasLang) {
+            $score += 5;
+        } else {
+            $findings[] = [
+                'what_missing' => 'Language Declaration — No html lang attribute set.',
+                'why_it_matters' => 'AI systems use language declarations to serve content to the correct audience. Missing language signals can cause misclassification.',
+                'fix_tier' => 'signal-expansion',
+                'fix_price' => '$99',
+                'fix_route' => 'checkout.signal-expansion',
+            ];
+        }
+
+        return [
+            'label' => 'Technical Signals',
+            'score' => $score,
+            'max' => $max,
+            'pct' => $max > 0 ? round($score / $max * 100) : 0,
+            'findings' => $findings,
+        ];
+    }
+
+    /**
+     * Build per-issue intelligence: group all findings by fix tier
+     * and summarize what's missing, why it matters, and what level fixes it.
+     */
+    public function buildScanIntelligence(array $categories): array
+    {
+        $intelligence = [
+            'signal-expansion' => [
+                'tier' => 'signal-expansion',
+                'label' => 'Signal Expansion',
+                'price' => '$99',
+                'route' => 'checkout.signal-expansion',
+                'description' => 'Missing signals — your business data is not fully readable by AI systems.',
+                'issues' => [],
+            ],
+            'structural-leverage' => [
+                'tier' => 'structural-leverage',
+                'label' => 'Structural Leverage',
+                'price' => '$249',
+                'route' => 'checkout.structural-leverage',
+                'description' => 'Missing structure — your content architecture limits AI discoverability.',
+                'issues' => [],
+            ],
+            'system-activation' => [
+                'tier' => 'system-activation',
+                'label' => 'System Activation',
+                'price' => '$489',
+                'route' => 'checkout.system-activation',
+                'description' => 'Needs implementation — competitive positioning and full system deployment.',
+                'issues' => [],
+            ],
+        ];
+
+        // Map existing category checks to tiers
+        $tierMap = [
+            // Signal-level issues ($99): basic metadata, schema, entity signals
+            'title' => 'signal-expansion',
+            'meta_description' => 'signal-expansion',
+            'h1' => 'signal-expansion',
+            'json_ld' => 'signal-expansion',
+            'schema_type' => 'signal-expansion',
+            'entity_schema' => 'signal-expansion',
+            'business_name' => 'signal-expansion',
+            'services' => 'signal-expansion',
+            'location' => 'signal-expansion',
+            'https' => 'signal-expansion',
+            'indexable' => 'signal-expansion',
+
+            // Structure-level issues ($249): content depth, linking, organization
+            'h2_sections' => 'structural-leverage',
+            'word_count' => 'structural-leverage',
+            'link_count' => 'structural-leverage',
+            'faq' => 'structural-leverage',
+            'definitions' => 'structural-leverage',
+            'structured_lists' => 'structural-leverage',
+            'canonical' => 'structural-leverage',
+
+            // Implementation-level issues ($489): rich schema, speed, advanced
+            'rich_schema' => 'system-activation',
+            'response_time' => 'system-activation',
+        ];
+
+        foreach ($categories as $cat) {
+            foreach ($cat['checks'] ?? [] as $check) {
+                if ($check['passed'])
+                    continue;
+
+                $tier = $tierMap[$check['key']] ?? 'signal-expansion';
+                $intelligence[$tier]['issues'][] = [
+                    'key' => $check['key'],
+                    'what_missing' => $check['label'],
+                    'why_it_matters' => $this->aiContext($check['key']),
+                    'fix' => $check['fix'] ?? 'Address this gap to improve AI visibility.',
+                ];
+            }
+        }
+
+        // Remove empty tiers
+        return array_values(array_filter($intelligence, fn($t) => !empty($t['issues'])));
+    }
+
+    /**
+     * AI/search context for why each check matters — used by intelligence output.
+     */
+    private function aiContext(string $key): string
+    {
+        return match ($key) {
+            'title' => 'AI systems use the title to determine what a page covers. Without it, your page cannot be properly classified or recommended.',
+            'meta_description' => 'AI platforms read meta descriptions to build content summaries. This is often what appears when AI cites your page.',
+            'h1' => 'The primary heading anchors your content topic. AI uses this as the definitive statement of what the page is about.',
+            'h2_sections' => 'Sub-headings create content depth. AI maps these to determine the scope and completeness of your coverage.',
+            'word_count' => 'AI systems deprioritize thin content. More comprehensive pages are preferred as citation sources.',
+            'json_ld' => 'Structured data is the most direct way to communicate with AI. Without it, AI must guess your business information.',
+            'schema_type' => 'Entity classification tells AI your business type. This determines which query categories you appear in.',
+            'entity_schema' => 'Industry-specific schema helps AI match you to relevant queries. Generic classification limits your visibility.',
+            'rich_schema' => 'Multiple schema types create a rich knowledge graph entry. This is what separates cited businesses from ignored ones.',
+            'business_name' => 'AI needs to identify your business by name to cite it. Without clear name signals, you cannot be referenced.',
+            'services' => 'Service descriptions determine which queries AI considers you relevant for. Unclear offerings limit your query coverage.',
+            'location' => 'Geographic signals determine local visibility. Without location context, you miss all location-qualified queries.',
+            'link_count' => 'Internal links define your content graph. AI discovers pages through links — a weak graph means invisible content.',
+            'faq' => 'FAQ content provides direct answers AI can extract and cite. This is the most extractable content format for AI.',
+            'definitions' => 'Authoritative definitions position your site as a knowledge source. AI prefers citing sites that define their domain.',
+            'structured_lists' => 'Structured lists provide scannable data AI can extract efficiently. Unstructured content requires more processing effort.',
+            'https' => 'HTTPS is a baseline trust requirement. AI systems and search engines penalize insecure connections.',
+            'response_time' => 'Slow sites get less AI crawl budget. Speed directly affects how much of your content gets indexed.',
+            'indexable' => 'Blocked pages are completely invisible to AI. This is the most critical technical signal.',
+            'canonical' => 'Without canonical URLs, AI may split your authority across duplicate versions of the same page.',
+            default => 'This signal affects how AI systems discover, evaluate, and cite your content.',
+        };
+    }
+
+    private function citationContext(string $key): string
+    {
+        return match ($key) {
+            'json_ld' => 'Without structured data, AI must infer your business details from unstructured HTML — leading to inaccurate or missing citations.',
+            'schema_type' => 'Entity type classification is how AI categorizes businesses. Unclassified entities are excluded from category-specific queries.',
+            'entity_schema' => 'Industry classification connects you to the right query categories. Without it, AI cannot recommend you for industry-specific needs.',
+            'rich_schema' => 'Multi-layer schema creates a rich knowledge graph entry — the level of detail that triggers featured citations in AI responses.',
+            'business_name' => 'Your business name must be machine-readable for AI to cite you. Without clear name signals, AI cannot reference your business.',
+            'services' => 'AI determines your relevance from service descriptions. Vague or missing service language means missed query matches.',
+            'location' => 'Location signals connect your business to geographic queries. Without them, you are invisible for "near me" and local searches.',
+            default => 'This signal directly affects whether AI systems can cite your business accurately.',
+        };
+    }
+
+    private function extractionContext(string $key): string
+    {
+        return match ($key) {
+            'title' => 'The title tag is the first content signal AI processes. It determines whether your page gets evaluated at all.',
+            'meta_description' => 'Meta descriptions become AI summaries. When AI cites you, this is typically the text it uses.',
+            'h1' => 'H1 is the definitive content anchor. AI uses it as the authoritative statement of page topic.',
+            'h2_sections' => 'Sub-headings map content depth. AI checks H2s to determine whether your coverage is comprehensive enough to cite.',
+            'word_count' => 'Content substance determines citation eligibility. Thin pages are passed over — AI needs enough material to extract meaningful content.',
+            'faq' => 'FAQ content maps directly to AI question-answering. This is the single highest-impact extractable format.',
+            'definitions' => 'Definitions make your site a reference source. AI systems prefer citing sites that authoritatively define their domain.',
+            'structured_lists' => 'Lists and steps are the easiest content for AI to extract and reformat. They convert directly to AI-generated summaries.',
+            default => 'This affects how efficiently AI can extract and repurpose your content.',
+        };
+    }
+
+    private function technicalContext(string $key): string
+    {
+        return match ($key) {
+            'https' => 'HTTPS is a hard requirement for many AI systems. Insecure sites may be excluded from AI training data entirely.',
+            'response_time' => 'AI crawlers have time budgets. Slow pages consume more budget, reducing how much of your site gets processed.',
+            'indexable' => 'A noindex directive blocks all AI discovery. This is the most critical technical issue — it makes you completely invisible.',
+            'canonical' => 'Without canonical signals, AI may index the wrong version of your page or split authority across duplicates.',
+            default => 'This technical signal affects AI system access to your content.',
+        };
     }
 
     // =========================================================================
