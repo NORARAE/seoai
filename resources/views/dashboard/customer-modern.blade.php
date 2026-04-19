@@ -259,6 +259,21 @@
 <div class="min-h-screen bg-[#090805] text-[#ede8de]">
   <div class="mx-auto max-w-7xl px-6 py-8 lg:px-8">
 
+    @if(session('status'))
+    <div class="mb-4 rounded-xl border border-[rgba(200,168,75,0.25)] bg-[rgba(200,168,75,0.08)] px-4 py-3" role="status">
+      <p class="text-sm text-[#e9debe]">{{ session('status') }}</p>
+    </div>
+    @endif
+
+    @if(session('system_entry'))
+      @php
+        $entryLabel = ucwords(str_replace('-', ' ', (string) session('system_entry')));
+      @endphp
+    <div class="mb-4 rounded-xl border border-[rgba(106,175,144,0.30)] bg-[rgba(106,175,144,0.09)] px-4 py-3" role="status">
+      <p class="text-sm text-[#d9eee5]">Unlock confirmed: {{ $entryLabel }} is now active on your account.</p>
+    </div>
+    @endif
+
     @if(session('scan_saved'))
     <div class="mb-6 flex items-center gap-3 rounded-xl border border-[rgba(106,175,144,0.32)] bg-[rgba(106,175,144,0.08)] px-4 py-3" role="alert">
       <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M8 0C3.6 0 0 3.6 0 8s3.6 8 8 8 8-3.6 8-8-3.6-8-8-8zm-1.5 11.5-3-3L4.9 7l1.6 1.6 3.6-3.6 1.4 1.4-5 5z" fill="#6aaf90"/></svg>

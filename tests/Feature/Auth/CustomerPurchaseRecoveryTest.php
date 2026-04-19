@@ -6,6 +6,7 @@ use App\Models\QuickScan;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\RateLimiter;
 use Tests\TestCase;
 
 class CustomerPurchaseRecoveryTest extends TestCase
@@ -14,6 +15,9 @@ class CustomerPurchaseRecoveryTest extends TestCase
 
     public function test_guest_register_auto_attaches_paid_scan_and_redirects_to_dashboard(): void
     {
+        $testIp = '10.0.0.55';
+        RateLimiter::clear('register-ip:' . sha1($testIp));
+
         $scan = QuickScan::create([
             'email' => 'buyer@example.com',
             'url' => 'https://example.com',
@@ -22,7 +26,10 @@ class CustomerPurchaseRecoveryTest extends TestCase
             'status' => QuickScan::STATUS_PAID,
         ]);
 
-        $response = $this->post(route('register.store'), [
+        $this->get(route('register'));
+
+        $response = $this->withServerVariables(['REMOTE_ADDR' => $testIp])->post(route('register.store'), [
+            '_token' => csrf_token(),
             'name' => 'Buyer',
             'email' => 'buyer@example.com',
             'password' => 'StrongPassword123!',

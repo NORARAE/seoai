@@ -249,6 +249,8 @@ a{text-decoration:none;color:inherit}
 .mode-return:hover{border-color:rgba(214,181,95,.48);background:rgba(214,181,95,.16)}
 
 .saved-report-note{margin:-2px 0 10px;font-size:.68rem;letter-spacing:.08em;text-transform:uppercase;color:rgba(132,206,171,.78)}
+.state-notice{margin:0 0 10px;padding:9px 12px;border-radius:10px;border:1px solid rgba(214,181,95,.24);background:rgba(214,181,95,.07);font-size:.7rem;color:#eadfbf;line-height:1.4}
+.state-notice.is-success{border-color:rgba(106,175,144,.32);background:rgba(106,175,144,.1);color:#d9eee5}
 
 .live-feedback-strip{display:flex;align-items:center;gap:10px;padding:10px 12px;border:1px solid var(--line-soft);border-radius:10px;background:linear-gradient(150deg,rgba(19,16,11,.96),rgba(12,10,8,.98));margin-bottom:10px}
 .live-feedback-dot{width:8px;height:8px;border-radius:999px;background:#d6b55f;box-shadow:0 0 0 0 rgba(214,181,95,.3);animation:feedbackPulse 2.4s ease-in-out infinite}
@@ -541,6 +543,17 @@ a{text-decoration:none;color:inherit}
     </div>
     <a href="{{ $returnHref }}" class="mode-return">&larr; {{ $returnLabel }}</a>
   </div>
+
+  @if(session('status'))
+  <p class="state-notice">{{ session('status') }}</p>
+  @endif
+
+  @if(session('system_entry'))
+    @php
+      $entryLabel = ucwords(str_replace('-', ' ', (string) session('system_entry')));
+    @endphp
+  <p class="state-notice is-success">Unlock confirmed: {{ $entryLabel }} is now active for this report.</p>
+  @endif
 
   @auth
   <p class="saved-report-note">Saved to your account dashboard</p>

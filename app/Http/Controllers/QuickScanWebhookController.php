@@ -6,6 +6,7 @@ use App\Actions\NotifyOwnerOfPurchase;
 use App\Jobs\RunQuickScanJob;
 use App\Models\FunnelEvent;
 use App\Models\QuickScan;
+use App\Models\User;
 use App\Services\Entitlements\EntitlementService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -93,6 +94,15 @@ class QuickScanWebhookController extends Controller
             ]);
 
             return response()->json(['message' => 'Scan not found.']);
+        }
+
+        // Recovery safety net: if this scan is orphaned but a user exists by email, attach it.
+        if (is_null($scan->user_id) && filled($scan->email)) {
+            $matchedUser = User::whereRaw('LOWER(email) = ?', [strtolower((string) $scan->email)])->first();
+            if ($matchedUser) {
+                $scan->update(['user_id' => $matchedUser->id]);
+                $scan->refresh();
+            }
         }
 
         // ── Handle upgrade payments (idempotent) ─────────────────────────

@@ -380,6 +380,18 @@
     </div>
     @endif
 
+    @if(session('status'))
+    <div class="error-box" style="border-color:rgba(106,175,144,.34);background:rgba(106,175,144,.09)">
+        <p style="color:#d9eee5">{{ session('status') }}</p>
+    </div>
+    @endif
+
+    @if(!empty($checkoutNotice))
+    <div class="error-box" style="border-color:rgba(106,175,144,.34);background:rgba(106,175,144,.09)">
+        <p style="color:#d9eee5">{{ $checkoutNotice }}</p>
+    </div>
+    @endif
+
     @if($loginErrorType && $loginErrorMessage)
     <div class="error-box" id="login-state-message" data-login-error-type="{{ $loginErrorType }}">
         <p>{{ $loginErrorMessage }}</p>

@@ -156,7 +156,7 @@ class CheckoutController extends Controller
             return redirect('/pricing')->with('error', 'Invalid tier.');
         }
 
-        // Scan-basic guest flow: keep user as guest and route to secure report URL.
+        // Scan-basic guest flow: persist scan and require auth to view in dashboard.
         if ($tierSlug === 'scan-basic' && !Auth::check()) {
             $existingScan = QuickScan::where('stripe_session_id', $sessionId)->first();
 
@@ -213,10 +213,9 @@ class CheckoutController extends Controller
                 ]);
             }
 
-            return redirect()->route('report.show', [
-                'scan' => $scan->id,
-                'token' => QuickScanReportToken::generate($scan),
-            ])->with('system_entry', $systemTier->value);
+            return redirect()->route('login', [
+                'redirect' => route('dashboard.scans.show', ['scan' => $scan->publicScanId()], false),
+            ])->with('status', 'Sign in to view your results.');
         }
 
         // Prevent replay — check if this session was already processed

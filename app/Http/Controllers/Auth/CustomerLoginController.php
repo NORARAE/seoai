@@ -26,10 +26,14 @@ class CustomerLoginController extends Controller
             $request->session()->put('url.intended', $redirectTarget);
         }
 
+        $notice = $request->query('notice');
+        $checkoutNotice = $notice === 'scan-results' ? 'Sign in to view your results.' : null;
+
         return view('auth.login', [
             'googleEnabled' => (bool) config('services.google_login.enabled', false),
             'error' => session('google_error'),
             'errorType' => session('google_error_type'),
+            'checkoutNotice' => $checkoutNotice,
         ]);
     }
 

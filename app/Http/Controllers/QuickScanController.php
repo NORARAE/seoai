@@ -240,9 +240,9 @@ class QuickScanController extends Controller
         try {
             $successUrl = Auth::check()
                 ? route('dashboard.scans.show', ['scan' => $scan->publicScanId()])
-                : route('report.show', [
-                    'scan' => $scan->id,
-                    'token' => QuickScanReportToken::generate($scan),
+                : route('login', [
+                    'redirect' => route('dashboard.scans.show', ['scan' => $scan->publicScanId()], false),
+                    'notice' => 'scan-results',
                 ]);
             $cancelUrl = url('/quick-scan/cancelled') . '?scan_id=' . $scan->id;
 
@@ -766,13 +766,15 @@ class QuickScanController extends Controller
         [$productName, $unitAmount] = self::UPGRADE_PLANS[$plan];
 
         try {
-            $successBaseUrl = Auth::check()
-                ? route('dashboard.scans.show', ['scan' => $scan->publicScanId()])
-                : route('report.show', [
-                    'scan' => $scan->id,
-                    'token' => QuickScanReportToken::generate($scan),
+            if (Auth::check()) {
+                $successBaseUrl = route('dashboard.scans.show', ['scan' => $scan->publicScanId()]);
+                $successUrl = $successBaseUrl . (str_contains($successBaseUrl, '?') ? '&' : '?') . 'session_id={CHECKOUT_SESSION_ID}';
+            } else {
+                $successUrl = route('login', [
+                    'redirect' => route('dashboard.scans.show', ['scan' => $scan->publicScanId()], false),
+                    'notice' => 'scan-results',
                 ]);
-            $successUrl = $successBaseUrl . (str_contains($successBaseUrl, '?') ? '&' : '?') . 'session_id={CHECKOUT_SESSION_ID}';
+            }
             $cancelUrl = route('report.show', ['scan' => $scan->id]) . '?session_id=' . urlencode((string) ($scan->stripe_session_id ?? 'none'));
 
             $session = Cashier::stripe()->checkout->sessions->create([
