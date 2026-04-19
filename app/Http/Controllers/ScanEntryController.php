@@ -43,6 +43,20 @@ class ScanEntryController extends Controller
             'email' => ['required', 'email', 'max:255'],
         ]);
 
+        // Guard against near-simultaneous duplicate submits (auto-handoff + manual click)
+        // so we do not enqueue duplicate follow-up jobs for the same entry.
+        $existingEntry = Session::get('scan_entry');
+        if (is_array($existingEntry)) {
+            $sameUrl = (string) ($existingEntry['url'] ?? '') === $validated['url'];
+            $sameEmail = strtolower((string) ($existingEntry['email'] ?? '')) === strtolower($validated['email']);
+            $existingAt = strtotime((string) ($existingEntry['submitted_at'] ?? ''));
+            $withinGuardWindow = $existingAt !== false && (time() - $existingAt) <= 20;
+
+            if ($sameUrl && $sameEmail && $withinGuardWindow) {
+                return redirect()->route('scan.process');
+            }
+        }
+
         Session::put('scan_entry', [
             'url' => $validated['url'],
             'email' => $validated['email'],

@@ -90,6 +90,19 @@
 .se-btn:hover::before{transform:translateX(100%)}
 .se-btn:disabled{opacity:.5;cursor:not-allowed;transform:none}
 .se-btn:disabled::before{display:none}
+.se-btn.is-securing{
+  opacity:.9;
+  box-shadow:0 8px 30px rgba(200,168,75,.16);
+}
+.se-btn.is-securing::before{
+  display:block;
+  background:linear-gradient(90deg,rgba(255,255,255,0),rgba(255,245,210,.34),rgba(255,255,255,0));
+  animation:se-secure-sweep 1.05s ease-in-out infinite;
+}
+@keyframes se-secure-sweep{
+  0%{transform:translateX(-110%)}
+  100%{transform:translateX(120%)}
+}
 
 /* ── Analysis animation ── */
 .se-analysis{max-width:420px;margin:0 auto}
@@ -146,6 +159,87 @@
   margin-bottom:32px;
 }
 
+.se-live-state{
+  display:inline-flex;align-items:center;justify-content:center;gap:8px;
+  font-size:.62rem;letter-spacing:.2em;text-transform:uppercase;
+  color:var(--gold-secondary);margin-bottom:14px;
+}
+.se-live-dot{
+  width:9px;height:9px;border-radius:50%;
+  background:#d4af37;box-shadow:0 0 0 1px rgba(212,175,55,.25);
+  animation:se-live-pulse 1.6s ease-in-out infinite;
+}
+@keyframes se-live-pulse{
+  0%,100%{opacity:.4;box-shadow:0 0 8px rgba(212,175,55,.14)}
+  50%{opacity:1;box-shadow:0 0 16px rgba(212,175,55,.34)}
+}
+
+.se-header-shimmer{
+  width:100%;max-width:460px;height:2px;margin:0 auto 16px;
+  background:rgba(200,168,75,.07);border-radius:2px;overflow:hidden;
+}
+.se-header-shimmer-bar{
+  display:block;height:100%;width:38%;
+  background:linear-gradient(90deg,rgba(200,168,75,0),rgba(212,175,55,.55),rgba(200,168,75,0));
+  animation:se-shimmer 2.9s ease-in-out infinite;
+}
+@keyframes se-shimmer{
+  0%{transform:translateX(-120%)}
+  100%{transform:translateX(300%)}
+}
+
+.se-activity-line{
+  min-height:1.6em;
+  font-size:.78rem;
+  color:rgba(222,208,165,.84);
+  opacity:.95;
+  transition:opacity .35s ease;
+  margin:0 auto 14px;
+}
+.se-activity-line.is-fading{opacity:.35}
+.se-activity-line.is-transfer{opacity:.74}
+
+.se-transfer-wrap{min-height:2.8em;margin:0 0 14px}
+.se-transfer-detail{
+  display:inline-flex;align-items:center;justify-content:center;gap:8px;
+  font-size:.72rem;color:rgba(211,196,156,.78);line-height:1.45;
+}
+.se-transfer-fallback{
+  margin:6px 0 0;
+  font-size:.7rem;
+  color:rgba(199,187,156,.62);
+  line-height:1.45;
+}
+.se-lock-icon{
+  position:relative;
+  display:inline-block;
+  width:10px;
+  height:8px;
+  border:1px solid rgba(214,181,95,.72);
+  border-radius:2px;
+  box-sizing:border-box;
+}
+.se-lock-icon::before{
+  content:'';
+  position:absolute;
+  width:6px;
+  height:5px;
+  left:1px;
+  top:-6px;
+  border:1px solid rgba(214,181,95,.72);
+  border-bottom:none;
+  border-radius:8px 8px 0 0;
+  box-sizing:border-box;
+}
+
+.se-cta-reinforce{
+  margin-top:10px;
+  text-align:center;
+  font-size:.72rem;
+  color:rgba(201,188,151,.72);
+  letter-spacing:.02em;
+}
+
 /* ── Mobile ── */
 @media(max-width:600px){
   .scan-hero{padding:100px var(--wrap-pad) 60px}
@@ -176,6 +270,20 @@
          emailError: '{{ $errors->first('email') }}',
          analysisLine: '',
          analysisProgress: 0,
+         liveActivityLines: [
+           'Mapping domain structure\u2026',
+           'Evaluating AI extraction signals\u2026',
+           'Checking entity clarity\u2026',
+           'Detecting ranking constraints\u2026'
+         ],
+         liveActivityIndex: 0,
+         liveActivityFading: false,
+         liveActivityTimer: null,
+         autoAdvanceTimer: null,
+         hasAdvanced: false,
+         transferDelayTimer: null,
+         showTransferFallback: false,
+         autoAdvanceDelayMs: 1600,
          tier: new URLSearchParams(window.location.search).get('tier') || 'basic',
          tierLabels: {
            basic:      'Running initial AI citation scan',
@@ -187,6 +295,37 @@
            if (this.urlError || this.emailError) {
              this.step = this.emailError ? 2 : 0;
            }
+           this.startLiveActivity();
+           this.emitTrackingEvent('scan_start_viewed');
+           this.$watch('step', (val) => {
+             if (val === 3) {
+               this.scheduleAutoAdvance();
+               return;
+             }
+             this.clearAutoAdvance();
+             this.clearTransferFallback();
+           });
+           if (this.step === 3) this.scheduleAutoAdvance();
+         },
+         emitTrackingEvent(eventName, payload = {}) {
+           const data = { event: eventName, ...payload };
+
+           // Hook into whichever tracking layer already exists.
+           if (Array.isArray(window.dataLayer)) {
+             window.dataLayer.push(data);
+           }
+           if (typeof window.gtag === 'function') {
+             window.gtag('event', eventName, payload);
+           }
+         },
+         startLiveActivity() {
+           this.liveActivityTimer = window.setInterval(() => {
+             this.liveActivityFading = true;
+             window.setTimeout(() => {
+               this.liveActivityIndex = (this.liveActivityIndex + 1) % this.liveActivityLines.length;
+               this.liveActivityFading = false;
+             }, 180);
+           }, 1700);
          },
          normalizeUrl() {
            let v = this.url.trim();
@@ -236,8 +375,54 @@
            if (!this.validateEmail()) return;
            this.step = 3;
          },
+         scheduleAutoAdvance() {
+           this.clearAutoAdvance();
+           if (this.hasAdvanced) return;
+           this.autoAdvanceTimer = window.setTimeout(() => {
+             if (this.hasAdvanced) return;
+             this.emitTrackingEvent('scan_start_auto_advance');
+             this.startTransfer('auto');
+           }, this.autoAdvanceDelayMs);
+         },
+         clearAutoAdvance() {
+           if (this.autoAdvanceTimer) {
+             window.clearTimeout(this.autoAdvanceTimer);
+             this.autoAdvanceTimer = null;
+           }
+         },
+         clearTransferFallback() {
+           if (this.transferDelayTimer) {
+             window.clearTimeout(this.transferDelayTimer);
+             this.transferDelayTimer = null;
+           }
+           this.showTransferFallback = false;
+         },
+         startTransfer(mode) {
+           if (this.hasAdvanced) return;
+           this.hasAdvanced = true;
+           this.clearAutoAdvance();
+           this.clearTransferFallback();
+           this.liveActivityFading = true;
+           this.emitTrackingEvent('scan_start_transfer_started', { mode });
+
+           this.transferDelayTimer = window.setTimeout(() => {
+             this.showTransferFallback = true;
+           }, 1200);
+
+           window.setTimeout(() => {
+             try {
+               this.$refs.form.submit();
+             } catch (e) {
+               // Keep manual fallback usable if submit binding fails.
+               this.hasAdvanced = false;
+               this.clearTransferFallback();
+             }
+           }, 320);
+         },
          submitForm() {
-           this.$refs.form.submit();
+           if (this.hasAdvanced) return;
+           this.emitTrackingEvent('scan_start_manual_advance');
+           this.startTransfer('manual');
          }
        }"
   >
@@ -292,17 +477,28 @@
 
     {{-- ═══ STEP 3 — TIER CONFIRMATION + SUBMIT ═══ --}}
     <div class="se-step" x-show="step === 3" x-cloak x-transition:enter="se-step" x-transition:enter-start="opacity-0 translate-y-4" x-transition:enter-end="opacity-100 translate-y-0">
-      <p class="se-eye">System Ready</p>
+      <p class="se-live-state"><span class="se-live-dot" aria-hidden="true"></span>LIVE SCAN IN PROGRESS</p>
+      <div class="se-header-shimmer" aria-hidden="true"><span class="se-header-shimmer-bar"></span></div>
       <span class="se-tier-badge" x-text="tierLabels[tier] || tierLabels.basic"></span>
-      <p class="se-tier-desc">Your analysis is ready to launch.</p>
-      <p class="se-ready">Unlock your results to continue.</p>
+      <p class="se-tier-desc">Your system analysis is initialized.</p>
+      <p class="se-ready">Unlock your results to see where AI is failing to select your site.</p>
+      <p class="se-activity-line" :class="{ 'is-fading': liveActivityFading && !hasAdvanced, 'is-transfer': hasAdvanced }" x-text="hasAdvanced ? 'Transferring to secure checkout\u2026' : liveActivityLines[liveActivityIndex]"></p>
+      <div class="se-transfer-wrap" aria-live="polite">
+        <p class="se-note" style="margin-top:0;margin-bottom:0" x-show="!hasAdvanced" x-text="'Preparing secure checkout\u2026'"></p>
+        <p class="se-transfer-detail" x-show="hasAdvanced" x-cloak>
+          <span class="se-lock-icon" aria-hidden="true"></span>
+          <span>Your scan session is locked and moving into protected payment.</span>
+        </p>
+        <p class="se-transfer-fallback" x-show="hasAdvanced && showTransferFallback" x-cloak>Still connecting to secure checkout\u2026</p>
+      </div>
 
-      <form method="POST" action="{{ route('scan.submit') }}" x-ref="form">
+      <form method="POST" action="{{ route('scan.submit') }}" x-ref="form" @submit.prevent="submitForm()">
         @csrf
         <input type="hidden" name="url" :value="url">
         <input type="hidden" name="email" :value="email">
-        <button type="submit" class="se-btn" style="max-width:480px;margin:0 auto;display:block">Continue to Secure Checkout &rarr;</button>
+        <button type="submit" class="se-btn" :class="{ 'is-securing': hasAdvanced }" :disabled="hasAdvanced" style="max-width:480px;margin:0 auto;display:block" x-text="hasAdvanced ? 'Securing Checkout\u2026' : 'Unlock Full Scan \u2192'"></button>
       </form>
+      <p class="se-cta-reinforce">Includes: signal map, ranking gaps, and prioritized fixes</p>
       <p class="se-note">Your <strong style="color:var(--gold-secondary);font-weight:500">$2 diagnostic</strong> runs in seconds. Results carry forward through every level.</p>
     </div>
 

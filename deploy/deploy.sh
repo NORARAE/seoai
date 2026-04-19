@@ -87,4 +87,4 @@ echo ""
 echo "✓ Deploy complete!"
 REMOTE
 
-echo "═══ Done! Site live at http://${SERVER_IP} ═══"
+echo "═══ Done! Site live at https://seoaico.com ═══"

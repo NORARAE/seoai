@@ -357,6 +357,29 @@ class CheckoutController extends Controller
     {
         $tier = self::TIERS[$tierSlug];
 
+        $idempotencyKey = 'checkout_redirect.' . $tierSlug;
+        $requestFingerprint = sha1(json_encode([
+            'tier' => $tierSlug,
+            'user_id' => Auth::id(),
+            'customer_email' => (string) ($extra['customer_email'] ?? ''),
+            'scan_url' => (string) ($extra['metadata_extra']['scan_url'] ?? ''),
+            'scan_email' => (string) ($extra['metadata_extra']['scan_email'] ?? ''),
+        ]));
+
+        $existingRedirect = Session::get($idempotencyKey);
+        if (
+            is_array($existingRedirect)
+            && (string) ($existingRedirect['fingerprint'] ?? '') === $requestFingerprint
+            && !empty($existingRedirect['url'])
+            && !empty($existingRedirect['created_at'])
+        ) {
+            $existingAt = strtotime((string) $existingRedirect['created_at']);
+            $stillFresh = $existingAt !== false && (time() - $existingAt) <= 1200;
+            if ($stillFresh) {
+                return redirect((string) $existingRedirect['url']);
+            }
+        }
+
         FunnelEvent::fire(FunnelEvent::CHECKOUT_ENTRY, metadata: [
             'flow' => 'direct_checkout',
             'tier' => $tierSlug,
@@ -430,6 +453,13 @@ class CheckoutController extends Controller
 
         try {
             $session = Cashier::stripe()->checkout->sessions->create($sessionParams);
+
+            Session::put($idempotencyKey, [
+                'fingerprint' => $requestFingerprint,
+                'session_id' => (string) ($session->id ?? ''),
+                'url' => (string) ($session->url ?? ''),
+                'created_at' => now()->toIso8601String(),
+            ]);
 
             return redirect($session->url);
         } catch (\Throwable $e) {
