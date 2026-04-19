@@ -30,6 +30,11 @@ class GoogleAuthController extends Controller
             request()->session()->put('oauth_scan_id', $scanId);
         }
 
+        $returnTo = $this->sanitizeRedirectTarget(request()->query('redirect'));
+        if ($returnTo) {
+            request()->session()->put('oauth_return_to', $returnTo);
+        }
+
         return Socialite::driver('google')
             ->scopes(['openid', 'email', 'profile'])
             ->redirect();
@@ -176,20 +181,16 @@ class GoogleAuthController extends Controller
             'oauth_scan_id' => $oauthScanId ?: null,
         ]);
 
-        // ── Public scan flow: always return to the scan result page ──────
+        // ── Public scan flow: send user to dashboard so the report is immediately visible ──
         if ($oauthScanId) {
             $scan = QuickScan::find($oauthScanId);
             if ($scan && ($scan->user_id === $user->id || $scan->email === $user->email)) {
-                // Skip approval/onboarding gates — the user is saving their scan.
-                // They'll hit those gates when they navigate to /dashboard later.
                 request()->session()->pull('oauth_scan_id');
 
-                $resultUrl = url('/quick-scan/result')
-                    . '?session_id=' . ($scan->stripe_session_id ?? 'none')
-                    . '&scan_id=' . $scan->id;
+                $returnTo = $this->sanitizeRedirectTarget(request()->session()->pull('oauth_return_to'));
 
-                return redirect()->to($resultUrl)
-                    ->with('scan_saved', 'Your scan has been saved to your account.');
+                return redirect($returnTo ?: '/dashboard')
+                    ->with('scan_saved', 'Your report has been saved to your account.');
             }
         }
 
@@ -211,7 +212,13 @@ class GoogleAuthController extends Controller
         }
 
         // Regular approved + onboarded user → SaaS dashboard
-        return redirect()->intended('/dashboard');
+        $hasPaidScans = $user->quickScans()->where('paid', true)->exists();
+        $flash = $linked > 0
+            ? 'We found a previous purchase and added it to your dashboard.'
+            : ($hasPaidScans ? 'Your previous scans are ready — view them in your dashboard.' : null);
+
+        $redirect = redirect()->intended('/dashboard');
+        return $flash ? $redirect->with('scan_saved', $flash) : $redirect;
     }
 
     // ─── Private Helpers ────────────────────────────────────────────────────
@@ -267,5 +274,19 @@ class GoogleAuthController extends Controller
             return 'no-email';
         }
         return 'failed';
+    }
+
+    private function sanitizeRedirectTarget(mixed $target): ?string
+    {
+        if (!is_string($target)) {
+            return null;
+        }
+
+        $target = trim($target);
+        if ($target === '' || !str_starts_with($target, '/')) {
+            return null;
+        }
+
+        return str_starts_with($target, '//') ? null : $target;
     }
 }

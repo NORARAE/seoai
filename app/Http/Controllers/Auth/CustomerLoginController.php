@@ -21,6 +21,11 @@ class CustomerLoginController extends Controller
             return $this->authenticatedRedirect(Auth::user());
         }
 
+        $redirectTarget = $this->sanitizeRedirectTarget($request->query('redirect'));
+        if ($redirectTarget) {
+            $request->session()->put('url.intended', $redirectTarget);
+        }
+
         return view('auth.login', [
             'googleEnabled' => (bool) config('services.google_login.enabled', false),
             'error' => session('google_error'),
@@ -36,6 +41,8 @@ class CustomerLoginController extends Controller
         ]);
 
         $email = Str::lower($request->input('email'));
+        $password = (string) $request->input('password');
+        $remember = $request->boolean('remember');
         $key = 'login:' . $email . ':' . $request->ip();
 
         // Rate limit: 5 attempts per minute per email+IP
@@ -46,21 +53,38 @@ class CustomerLoginController extends Controller
                 ->withErrors(['email' => "Too many attempts. Please wait {$seconds} seconds."]);
         }
 
-        // Check for Google-only user before attempting auth
-        $user = User::where('email', $email)->first();
-        if ($user && $user->auth_provider === 'google' && !Hash::check($request->input('password'), $user->password)) {
+        $user = User::query()
+            ->whereRaw('LOWER(email) = ?', [$email])
+            ->first();
+
+        if (!$user) {
             RateLimiter::hit($key, 60);
+
             return back()
                 ->withInput($request->only('email'))
-                ->withErrors(['email' => 'This account uses Google sign-in. Use "Continue with Google" above, or click "Forgot password?" to set an email password.']);
+                ->with('login_error_type', 'no_account')
+                ->with('login_error_message', 'No account found for this email.');
         }
 
-        if (!Auth::attempt($request->only('email', 'password'), $request->boolean('remember'))) {
+        if ($user->isGoogleOnlyAccount()) {
             RateLimiter::hit($key, 60);
+
             return back()
                 ->withInput($request->only('email'))
-                ->withErrors(['email' => 'These credentials do not match our records.']);
+                ->with('login_error_type', 'google_account')
+                ->with('login_error_message', 'This account uses Google sign-in. Continue with Google to access your dashboard.');
         }
+
+        if (!Hash::check($password, (string) $user->password)) {
+            RateLimiter::hit($key, 60);
+
+            return back()
+                ->withInput($request->only('email'))
+                ->with('login_error_type', 'wrong_password')
+                ->with('login_error_message', 'Incorrect password. Try again or reset your password.');
+        }
+
+        Auth::login($user, $remember);
 
         RateLimiter::clear($key);
         $request->session()->regenerate();
@@ -68,7 +92,7 @@ class CustomerLoginController extends Controller
         $user = Auth::user();
 
         // Link any orphan scans (paid but no user_id) matching this user's email
-        QuickScan::where('email', $user->email)
+        $linked = QuickScan::where('email', $user->email)
             ->whereNull('user_id')
             ->update(['user_id' => $user->id]);
 
@@ -77,7 +101,15 @@ class CustomerLoginController extends Controller
             $user->update(['approved' => true]);
         }
 
-        return $this->authenticatedRedirect($user);
+        $redirect = $this->authenticatedRedirect($user);
+
+        if ($linked > 0) {
+            $redirect = $redirect->with('scan_saved', 'We found a previous purchase and added it to your dashboard.');
+        } elseif ($user->quickScans()->where('paid', true)->exists()) {
+            $redirect = $redirect->with('scan_saved', 'Your previous scans are ready — view them in your dashboard.');
+        }
+
+        return $redirect;
     }
 
     private function authenticatedRedirect($user): RedirectResponse
@@ -99,5 +131,19 @@ class CustomerLoginController extends Controller
 
         // Customer → dashboard
         return redirect()->intended('/dashboard');
+    }
+
+    private function sanitizeRedirectTarget(mixed $target): ?string
+    {
+        if (!is_string($target)) {
+            return null;
+        }
+
+        $target = trim($target);
+        if ($target === '' || !str_starts_with($target, '/')) {
+            return null;
+        }
+
+        return str_starts_with($target, '//') ? null : $target;
     }
 }

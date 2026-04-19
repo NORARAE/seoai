@@ -2302,6 +2302,9 @@ body::before{
 }
 .diag-panel-dots{display:flex;gap:6px}
 .diag-panel-dot{width:7px;height:7px;border-radius:50%}
+.diag-panel-dot.--issue{background:rgba(196,120,120,.62);box-shadow:0 0 6px rgba(196,120,120,.15)}
+.diag-panel-dot.--evaluating{background:rgba(168,168,160,.52);box-shadow:0 0 6px rgba(168,168,160,.12)}
+.diag-panel-dot.--confirmed{background:rgba(106,175,144,.74);box-shadow:0 0 6px rgba(106,175,144,.16)}
 .diag-panel-label{
   font-size:.58rem;letter-spacing:.14em;text-transform:uppercase;
   color:rgba(168,168,160,.7);
@@ -2326,7 +2329,18 @@ body::before{
   text-shadow:0 0 28px rgba(120,255,220,.18);
   animation:scoreFadeIn 1.2s ease-out;
 }
+.diag-score-proof{
+  font-size:.58rem;
+  color:rgba(176,189,180,.8);
+  letter-spacing:.08em;
+  text-transform:uppercase;
+  margin-bottom:10px;
+}
 @keyframes scoreFadeIn{from{opacity:0;transform:scale(.85)}to{opacity:1;transform:scale(1)}}
+.diag-score-state{
+  font-size:.54rem;letter-spacing:.12em;text-transform:uppercase;
+  color:rgba(200,168,75,.6);margin-bottom:8px;min-height:1.3em;
+}
 .diag-score-denom{
   font-size:.56rem;letter-spacing:.15em;text-transform:uppercase;
   color:rgba(168,168,160,.7);margin-bottom:14px;
@@ -2351,12 +2365,14 @@ body::before{
 .diag-result-row:nth-child(4){animation-delay:.27s}
 .diag-result-row:nth-child(5){animation-delay:.31s}
 @keyframes rowSlideIn{from{opacity:0;transform:translateX(-6px)}to{opacity:1;transform:translateX(0)}}
+.js-enabled .diag-result-row{opacity:0;transform:translateY(6px);animation:none}
+.js-enabled .diag-result-row.is-visible{opacity:1;transform:translateY(0);transition:opacity .44s ease,transform .44s ease}
 .diag-result-row:hover{border-left-color:rgba(200,168,75,.15)}
 .diag-result-row:last-child{border-bottom:none}
 .diag-result-indicator{width:7px;height:7px;border-radius:50%;flex-shrink:0}
-.diag-result-indicator.--pass{background:rgba(106,175,144,.82);box-shadow:0 0 6px rgba(106,175,144,.15)}
-.diag-result-indicator.--fail{background:rgba(196,120,120,.5);box-shadow:0 0 6px rgba(196,120,120,.1)}
-.diag-result-indicator.--warn{background:rgba(200,168,75,.72);box-shadow:0 0 6px rgba(200,168,75,.12)}
+.diag-result-indicator.--confirmed{background:rgba(106,175,144,.82);box-shadow:0 0 6px rgba(106,175,144,.15)}
+.diag-result-indicator.--issue{background:rgba(196,120,120,.54);box-shadow:0 0 6px rgba(196,120,120,.12)}
+.diag-result-indicator.--evaluating{background:rgba(176,176,168,.56);box-shadow:0 0 6px rgba(176,176,168,.12)}
 .diag-panel-footer{
   border-top:1px solid rgba(200,168,75,.06);
   margin-top:18px;
@@ -2372,6 +2388,40 @@ body::before{
   font-size:.82rem;color:rgba(120,255,220,.7);font-weight:600;
   text-shadow:0 0 8px rgba(120,255,220,.25);
 }
+.diag-opp-micro{
+  margin:4px 0 0;
+  font-size:.62rem;
+  color:rgba(185,182,172,.68);
+  line-height:1.55;
+  letter-spacing:.02em;
+}
+.diag-opp-micro span{display:block}
+
+.diag-activity-line{
+  margin:0 auto 16px;
+  min-height:1.5em;
+  max-width:560px;
+  text-align:center;
+  font-size:.72rem;
+  letter-spacing:.08em;
+  color:rgba(207,194,158,.7);
+  transition:opacity .35s ease;
+}
+.diag-activity-line.is-fading{opacity:.34}
+
+.diag-panel-body::after{
+  content:'';
+  position:absolute;
+  inset:50px 16px 16px;
+  pointer-events:none;
+  background:
+    linear-gradient(90deg,rgba(200,168,75,.03) 1px,transparent 1px),
+    linear-gradient(180deg,rgba(200,168,75,.02) 1px,transparent 1px);
+  background-size:20px 20px;
+  opacity:.18;
+  animation:diagGridPulse 5.5s ease-in-out infinite;
+}
+@keyframes diagGridPulse{0%,100%{opacity:.12}50%{opacity:.23}}
 
 /* ── Connector trace — panel to modules ── */
 .diag-connector{
@@ -2389,6 +2439,15 @@ body::before{
 .diag-modules-label{
   font-size:.58rem;letter-spacing:.22em;text-transform:uppercase;
   color:rgba(200,168,75,.42);margin:14px auto 18px;
+  position:relative;z-index:1;
+}
+.diag-modules-sub{
+  font-size:.82rem;
+  line-height:1.7;
+  color:rgba(168,168,160,.76);
+  margin:0 auto 20px;
+  max-width:640px;
+  text-align:center;
   position:relative;z-index:1;
 }
 
@@ -2477,6 +2536,124 @@ body::before{
   box-shadow:0 0 18px rgba(200,168,75,.1);
 }
 
+/* ── Proof of extraction block ── */
+.proof-section{
+  max-width:1200px;
+  margin:0 auto;
+  padding:36px 64px 72px;
+  position:relative;
+}
+.proof-eye{
+  font-size:.62rem;letter-spacing:.28em;text-transform:uppercase;
+  color:rgba(200,168,75,.68);margin-bottom:16px;text-align:center;
+}
+.proof-hed{
+  font-family:'Cormorant Garamond',serif;
+  font-size:clamp(1.7rem,3vw,2.6rem);
+  font-weight:300;line-height:1.15;
+  color:var(--ivory);margin:0 auto 14px;max-width:680px;text-align:center;
+}
+.proof-sub{
+  font-size:.88rem;line-height:1.78;color:rgba(168,168,160,.82);
+  max-width:760px;margin:0 auto 34px;text-align:center;
+}
+.proof-grid{
+  display:grid;grid-template-columns:1fr 1fr;gap:18px;
+  align-items:stretch;
+}
+.proof-panel{
+  position:relative;
+  background:linear-gradient(180deg,rgba(16,14,10,.96),rgba(9,8,6,.98));
+  border:1px solid rgba(200,168,75,.14);
+  border-radius:6px;
+  padding:26px 24px 22px;
+  overflow:hidden;
+  box-shadow:0 12px 34px rgba(0,0,0,.34), inset 0 1px 0 rgba(200,168,75,.05);
+}
+.proof-panel::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:1px;
+  background:linear-gradient(90deg,transparent,rgba(200,168,75,.24),transparent);
+  opacity:.72;
+}
+.js-enabled .proof-panel{opacity:0;transform:translateY(18px)}
+.js-enabled .proof-panel.is-visible{opacity:1;transform:translateY(0);transition:opacity .7s cubic-bezier(.22,.84,.36,1),transform .7s cubic-bezier(.22,.84,.36,1)}
+.proof-panel.--after{border-color:rgba(106,175,144,.18);box-shadow:0 14px 38px rgba(0,0,0,.36), inset 0 1px 0 rgba(200,168,75,.06)}
+.proof-panel.--after::after{
+  content:'';position:absolute;inset:0;pointer-events:none;
+  background:linear-gradient(105deg,transparent 34%,rgba(200,168,75,.08) 50%,transparent 66%);
+  transform:translateX(-120%);
+}
+.js-enabled .proof-panel.--after.is-visible::after{animation:proofSweep 1.4s ease-out .18s 1}
+@keyframes proofSweep{0%{transform:translateX(-120%)}100%{transform:translateX(120%)}}
+.proof-label{
+  display:inline-flex;align-items:center;gap:10px;
+  font-size:.58rem;letter-spacing:.22em;text-transform:uppercase;
+  color:rgba(200,168,75,.72);margin-bottom:18px;
+}
+.proof-label::before{content:'';width:18px;height:1px;background:rgba(200,168,75,.38)}
+.proof-example{
+  background:rgba(0,0,0,.28);
+  border:1px solid rgba(200,168,75,.08);
+  border-radius:4px;
+  padding:18px 18px 16px;
+  margin-bottom:18px;
+}
+.proof-example-line{
+  display:block;
+  font-size:.85rem;
+  line-height:1.74;
+  color:rgba(223,218,205,.86);
+  margin-bottom:8px;
+}
+.proof-example-line:last-child{margin-bottom:0}
+.proof-example-line.--muted{color:rgba(168,168,160,.54)}
+.proof-example-line.--strong{color:rgba(237,232,222,.94)}
+.proof-example-line mark{
+  background:rgba(200,168,75,.12);color:rgba(242,232,198,.94);
+  padding:0 .2em;border-radius:2px;
+}
+.proof-callouts{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:16px}
+.proof-chip{
+  display:inline-flex;align-items:center;gap:7px;
+  padding:6px 10px;border-radius:999px;
+  font-size:.58rem;letter-spacing:.12em;text-transform:uppercase;
+  border:1px solid rgba(200,168,75,.12);color:rgba(184,181,172,.72);
+}
+.proof-chip::before{content:'';width:6px;height:6px;border-radius:50%}
+.proof-chip.--weak{border-color:rgba(196,120,120,.12);color:rgba(196,170,170,.7)}
+.proof-chip.--weak::before{background:rgba(196,120,120,.58)}
+.proof-chip.--strong{border-color:rgba(106,175,144,.14);color:rgba(177,207,192,.76)}
+.proof-chip.--strong::before{background:rgba(106,175,144,.76)}
+.proof-bottom{
+  font-size:.72rem;letter-spacing:.18em;text-transform:uppercase;
+  color:rgba(200,168,75,.62);
+}
+.proof-bottom.--weak{color:rgba(196,150,150,.62)}
+.proof-bottom.--strong{color:rgba(132,206,171,.68)}
+.proof-note{
+  margin:24px auto 0;
+  max-width:760px;
+  text-align:center;
+  font-size:.86rem;
+  line-height:1.76;
+  color:rgba(191,187,177,.78);
+}
+.proof-cta-row{
+  margin-top:18px;
+  display:flex;justify-content:center;gap:12px;flex-wrap:wrap;
+}
+.proof-cta-secondary{
+  display:inline-block;
+  padding:18px 28px;
+  border:1px solid rgba(200,168,75,.18);
+  border-radius:3px;
+  color:rgba(232,220,190,.84);
+  text-decoration:none;
+  font-size:.74rem;font-weight:500;letter-spacing:.14em;text-transform:uppercase;
+  transition:border-color .28s ease,background .28s ease,transform .28s ease;
+}
+.proof-cta-secondary:hover{border-color:rgba(200,168,75,.42);background:rgba(200,168,75,.06);transform:translateY(-1px)}
+
 /* ── Diagnostic responsive ── */
 @media(max-width:900px){
   #proof{padding:40px 40px 0;scroll-margin-top:56px}
@@ -2488,6 +2665,8 @@ body::before{
   .diag-cta-meta{font-size:.64rem;letter-spacing:.13em}
   .diag-panel-body{gap:22px;padding:28px 28px 22px}
   .diag-bridge{height:40px;margin-top:24px}
+  .proof-section{padding:28px 40px 56px}
+  .proof-grid{grid-template-columns:1fr;gap:14px}
 }
 @media(max-width:600px){
   #proof{padding:32px 24px 0;scroll-margin-top:48px}
@@ -2538,6 +2717,12 @@ body::before{
   .diag-panel-footer-left{font-size:.68rem;line-height:1.5}
   .diag-panel-footer-left strong{font-size:.78rem}
   .diag-bridge{height:32px;margin-top:20px}
+  .proof-section{padding:24px 24px 48px}
+  .proof-sub{margin-bottom:26px}
+  .proof-panel{padding:22px 18px 18px}
+  .proof-example{padding:16px 14px 14px}
+  .proof-example-line{font-size:.82rem;line-height:1.68}
+  .proof-note{font-size:.82rem}
 }
 @media(max-width:430px){
   /* ── Score block proportion + hierarchy at 430px ── */
@@ -3782,76 +3967,125 @@ body::before{
   <p class="diag-eyebrow">Readiness Intelligence</p>
   <h2 class="diag-hed">See exactly where you stand&nbsp;&mdash; <em>in seconds</em></h2>
   <p class="diag-sub">Enter your URL. Receive a 0&ndash;100 AI citation readiness score, your top structural gaps, and the fastest correction path&nbsp;&mdash; for $2.</p>
+  <p class="diag-activity-line" id="diagActivityLine" aria-live="polite">Mapping domain structure&hellip;</p>
 
   <!-- Diagnostic score panel -->
   <div class="diag-panel">
     <div class="diag-panel-bar">
       <div class="diag-panel-dots">
-        <div class="diag-panel-dot" style="background:#c47878;opacity:.45"></div>
-        <div class="diag-panel-dot" style="background:#c8a84b;opacity:.3"></div>
-        <div class="diag-panel-dot" style="background:#6aaf90;opacity:.38"></div>
+        <div class="diag-panel-dot --issue" title="Issue"></div>
+        <div class="diag-panel-dot --evaluating" title="Evaluating"></div>
+        <div class="diag-panel-dot --confirmed" title="Confirmed"></div>
       </div>
       <span class="diag-panel-label">yourbusiness.com &middot; AI Citation Analysis</span>
     </div>
     <div class="diag-panel-body">
       <div class="diag-score-block">
         <div class="diag-score-label">AI Visibility Score</div>
-        <div class="diag-score-num">72</div>
+        <div class="diag-score-num" id="diagScoreNum" data-target="72">0</div>
+        <div class="diag-score-state" id="diagScoreState">Analyzing&hellip;</div>
         <div class="diag-score-denom">/ 100 Citation Score</div>
+        <div class="diag-score-proof">Based on real AI extraction signals</div>
         <div class="diag-score-badge">Above Baseline</div>
       </div>
       <div class="diag-results">
-        <div class="diag-result-row"><span class="diag-result-indicator --pass"></span> Structured data signals detected</div>
-        <div class="diag-result-row"><span class="diag-result-indicator --fail"></span> Answerable content gaps found</div>
-        <div class="diag-result-row"><span class="diag-result-indicator --pass"></span> Entity authority present</div>
-        <div class="diag-result-row"><span class="diag-result-indicator --warn"></span> Content connectivity below threshold</div>
-        <div class="diag-result-row"><span class="diag-result-indicator --pass"></span> Authority depth sufficient</div>
+        <div class="diag-result-row"><span class="diag-result-indicator --confirmed"></span> Structured data signals detected</div>
+        <div class="diag-result-row"><span class="diag-result-indicator --issue"></span> Answerable content gaps found</div>
+        <div class="diag-result-row"><span class="diag-result-indicator --confirmed"></span> Entity authority present</div>
+        <div class="diag-result-row"><span class="diag-result-indicator --evaluating"></span> Content connectivity below threshold</div>
+        <div class="diag-result-row"><span class="diag-result-indicator --confirmed"></span> Authority depth sufficient</div>
       </div>
     </div>
     <div class="diag-panel-footer">
-      <span class="diag-opp-label">Primary Opportunity</span>
+      <span class="diag-opp-label">Primary opportunity identified</span>
       <span class="diag-panel-footer-left">Fastest correction identified&nbsp;&mdash; estimated <strong>+20 pts</strong> visibility gain</span>
+      <p class="diag-opp-micro"><span>Prioritize answer block coverage on high-intent service pages.</span><span>Strengthen internal link paths between core service clusters.</span></p>
     </div>
   </div>
 
   <div class="diag-connector" aria-hidden="true"></div>
-  <p class="diag-modules-label">Evaluation Dimensions</p>
+  <p class="diag-modules-label">What the Scan Checks</p>
+  <p class="diag-modules-sub">In seconds, the system checks whether AI can understand, trust, and cite your site.</p>
 
   <!-- 5 Signal Modules -->
   <div class="diag-modules">
     <div class="diag-module">
       <p class="diag-module-num">01</p>
-      <p class="diag-module-title">Machine-Readable Context</p>
-      <p class="diag-module-body">Structured data markers and schema signals that let AI systems parse your business identity.</p>
+      <p class="diag-module-title">Can AI understand your business?</p>
+      <p class="diag-module-body">We check whether your site clearly tells AI what you do, where you work, and how your business is structured.</p>
     </div>
     <div class="diag-module">
       <p class="diag-module-num">02</p>
-      <p class="diag-module-title">Direct Answer Signals</p>
-      <p class="diag-module-body">Citable, extractable answers positioned where AI retrieval systems look first.</p>
+      <p class="diag-module-title">Can AI pull a direct answer?</p>
+      <p class="diag-module-body">We check whether your site gives clear answers AI can quote instead of skipping past you.</p>
     </div>
     <div class="diag-module">
       <p class="diag-module-num">03</p>
-      <p class="diag-module-title">Definitions &amp; Explanations</p>
-      <p class="diag-module-body">Clear entity identity and contextual definitions AI systems can trust and reference.</p>
+      <p class="diag-module-title">Can AI trust what you say?</p>
+      <p class="diag-module-body">We check whether your site defines services and topics clearly enough to be treated as a reliable source.</p>
     </div>
     <div class="diag-module">
       <p class="diag-module-num">04</p>
-      <p class="diag-module-title">Content Connectivity</p>
-      <p class="diag-module-body">Internal linking architecture that reinforces topical authority across your domain.</p>
+      <p class="diag-module-title">Do your pages support each other?</p>
+      <p class="diag-module-body">We check whether your pages work together to reinforce one clear topic instead of competing with each other.</p>
     </div>
     <div class="diag-module">
       <p class="diag-module-num">05</p>
-      <p class="diag-module-title">Authority Depth</p>
-      <p class="diag-module-body">Structural depth sufficient for AI systems to confidently cite you as the definitive answer.</p>
+      <p class="diag-module-title">Are you strong enough to be cited?</p>
+      <p class="diag-module-body">We check whether your site has enough depth and clarity to be chosen over weaker competitors.</p>
     </div>
   </div>
 
   <div class="diag-cta-wrap">
-    <a href="{{ route('scan.start') }}" class="diag-cta">Unlock Full Signal Map&nbsp;&rarr;</a>
+    <a href="{{ route('scan.start') }}" class="diag-cta">See My $2 AI Scan&nbsp;&rarr;</a>
     <p class="diag-cta-meta">$2 &middot; Results in seconds &middot; Sent to your inbox</p>
   </div>
 
   <div class="diag-bridge" aria-hidden="true"></div>
+</section>
+
+<section class="proof-section" aria-label="Proof of extraction">
+  <p class="proof-eye">Proof of Extraction</p>
+  <h2 class="proof-hed">What AI can use &mdash; and what it skips</h2>
+  <p class="proof-sub">AI systems do not cite pages because they exist. They cite pages that are clear, structured, and extractable.</p>
+
+  <div class="proof-grid">
+    <article class="proof-panel --before">
+      <p class="proof-label">Weak Surface</p>
+      <div class="proof-example">
+        <span class="proof-example-line --strong">We help businesses improve online visibility and connect with more customers.</span>
+        <span class="proof-example-line --muted">Our team works across many digital services and can support different industries with tailored solutions.</span>
+        <span class="proof-example-line --muted">Results vary depending on goals, market conditions, and the overall state of your website.</span>
+      </div>
+      <div class="proof-callouts">
+        <span class="proof-chip --weak">no direct answer</span>
+        <span class="proof-chip --weak">weak entity definition</span>
+        <span class="proof-chip --weak">low structural clarity</span>
+      </div>
+      <p class="proof-bottom --weak">Low extraction confidence</p>
+    </article>
+
+    <article class="proof-panel --after">
+      <p class="proof-label">Citation-Ready Surface</p>
+      <div class="proof-example">
+        <span class="proof-example-line --strong"><mark>AI citation optimization</mark> is the process of structuring a website so AI systems can extract, trust, and cite its content.</span>
+        <span class="proof-example-line">SEOAIco is a <mark>programmatic AI SEO infrastructure</mark> system for local service businesses that need clear entity, service, and location signals.</span>
+        <span class="proof-example-line">Structured answer blocks, schema-supported definitions, and connected service pages improve retrieval accuracy and citation likelihood.</span>
+      </div>
+      <div class="proof-callouts">
+        <span class="proof-chip --strong">direct answer present</span>
+        <span class="proof-chip --strong">entity clarity confirmed</span>
+        <span class="proof-chip --strong">structured signals detected</span>
+      </div>
+      <p class="proof-bottom --strong">Higher citation likelihood</p>
+    </article>
+  </div>
+
+  <p class="proof-note">SEOAIco identifies where extraction fails, then shows the fastest path to stronger citation readiness.</p>
+  <div class="proof-cta-row">
+    <a href="{{ route('how-it-works') }}" class="proof-cta-secondary">See How It Works</a>
+    <a href="{{ route('scan.start') }}" class="diag-cta">Start Scan &mdash; $2</a>
+  </div>
 </section>
 
 <!-- ════════════ PHASE 3 — DOCTRINE ════════════ -->
@@ -4996,6 +5230,136 @@ body::before{
       if(!ticking){requestAnimationFrame(update);ticking=true;}
     },{passive:true});
   })();
+</script>
+
+<script>
+(function(){
+  var section = document.getElementById('proof');
+  var panel = section ? section.querySelector('.diag-panel') : null;
+  var scoreEl = document.getElementById('diagScoreNum');
+  var scoreStateEl = document.getElementById('diagScoreState');
+  var activityEl = document.getElementById('diagActivityLine');
+  if(!section || !panel || !scoreEl || !scoreStateEl || !activityEl) return;
+
+  var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var rows = Array.prototype.slice.call(panel.querySelectorAll('.diag-result-row'));
+  var started = false;
+  var activityIdx = 0;
+  var activityTimer = null;
+  var activityFadeTimer = null;
+  var activityLines = [
+    'Mapping domain structure...',
+    'Evaluating AI extraction signals...',
+    'Detecting ranking constraints...'
+  ];
+
+  function startActivityLoop(){
+    activityEl.textContent = activityLines[0];
+    if(reduced) return;
+    activityTimer = window.setInterval(function(){
+      activityEl.classList.add('is-fading');
+      activityFadeTimer = window.setTimeout(function(){
+        activityIdx = (activityIdx + 1) % activityLines.length;
+        activityEl.textContent = activityLines[activityIdx];
+        activityEl.classList.remove('is-fading');
+      }, 180);
+    }, 1700);
+  }
+
+  function revealRows(){
+    if(reduced){
+      rows.forEach(function(row){ row.classList.add('is-visible'); });
+      return;
+    }
+    rows.forEach(function(row, i){
+      window.setTimeout(function(){
+        row.classList.add('is-visible');
+      }, 220 + (i * 240));
+    });
+  }
+
+  function animateScore(){
+    var target = parseInt(scoreEl.getAttribute('data-target') || '72', 10);
+    var duration = reduced ? 300 : 1400;
+    var start = performance.now();
+
+    function frame(now){
+      var t = Math.min(1, (now - start) / duration);
+      var eased = 1 - Math.pow(1 - t, 3);
+      var val = Math.round(target * eased);
+      scoreEl.textContent = String(val);
+
+      if(t < 0.35){
+        scoreStateEl.textContent = 'Analyzing...';
+      } else if(t < 0.82){
+        scoreStateEl.textContent = 'Calculating score...';
+      } else {
+        scoreStateEl.textContent = target + ' / 100 Citation Score';
+      }
+
+      if(t < 1){
+        requestAnimationFrame(frame);
+      }
+    }
+
+    requestAnimationFrame(frame);
+  }
+
+  function run(){
+    if(started) return;
+    started = true;
+    startActivityLoop();
+    animateScore();
+    revealRows();
+  }
+
+  if('IntersectionObserver' in window){
+    var io = new IntersectionObserver(function(entries){
+      if(entries[0] && entries[0].isIntersecting){
+        run();
+        io.disconnect();
+      }
+    }, { threshold: .35 });
+    io.observe(panel);
+  } else {
+    run();
+  }
+
+  window.addEventListener('beforeunload', function(){
+    if(activityTimer) window.clearInterval(activityTimer);
+    if(activityFadeTimer) window.clearTimeout(activityFadeTimer);
+  });
+})();
+
+(function(){
+  var panels = Array.prototype.slice.call(document.querySelectorAll('.proof-panel'));
+  if(!panels.length) return;
+
+  function reveal(){
+    panels.forEach(function(panel, index){
+      window.setTimeout(function(){
+        panel.classList.add('is-visible');
+      }, index * 140);
+    });
+  }
+
+  if(window.matchMedia('(prefers-reduced-motion: reduce)').matches){
+    reveal();
+    return;
+  }
+
+  if('IntersectionObserver' in window){
+    var io = new IntersectionObserver(function(entries){
+      if(entries[0] && entries[0].isIntersecting){
+        reveal();
+        io.disconnect();
+      }
+    }, { threshold: .18 });
+    io.observe(panels[0]);
+  } else {
+    reveal();
+  }
+})();
 </script>
 
 @include('partials.public-nav-js')

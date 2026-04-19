@@ -6,11 +6,13 @@ use App\Actions\NotifyOwnerOfPurchase;
 use App\Enums\SystemTier;
 use App\Jobs\SendUpgradeFunnelEmailsJob;
 use App\Jobs\RunQuickScanJob;
+use App\Mail\ScanBasicConfirmation;
 use App\Models\FunnelEvent;
 use App\Models\QuickScan;
 use App\Models\User;
 use App\Support\QuickScanReportToken;
 use App\Services\Entitlements\EntitlementService;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -201,6 +203,16 @@ class CheckoutController extends Controller
             }
             (new NotifyOwnerOfPurchase)->execute($scan, self::TIERS[$tierSlug]['name'], self::TIERS[$tierSlug]['amount']);
 
+            // Send purchase confirmation email to the guest buyer
+            try {
+                Mail::to($email)->queue(new ScanBasicConfirmation($scan->fresh()));
+            } catch (\Throwable $e) {
+                Log::warning('CheckoutController: confirmation email failed (guest)', [
+                    'scan_id' => $scan->id,
+                    'error' => $e->getMessage(),
+                ]);
+            }
+
             return redirect()->route('report.show', [
                 'scan' => $scan->id,
                 'token' => QuickScanReportToken::generate($scan),
@@ -340,6 +352,16 @@ class CheckoutController extends Controller
                 RunQuickScanJob::dispatchSync($scan->id);
             } else {
                 RunQuickScanJob::dispatch($scan->id);
+            }
+
+            // Send purchase confirmation email to the authenticated buyer
+            try {
+                Mail::to($user->email)->queue(new ScanBasicConfirmation($scan->fresh()));
+            } catch (\Throwable $e) {
+                Log::warning('CheckoutController: confirmation email failed (auth)', [
+                    'scan_id' => $scan->id,
+                    'error' => $e->getMessage(),
+                ]);
             }
 
             return redirect()->route('dashboard.scans.show', ['scan' => $scan->publicScanId()])

@@ -221,6 +221,18 @@ class User extends Authenticatable implements FilamentUser, HasAppAuthentication
     }
 
     /**
+     * True when the account should authenticate through Google OAuth.
+     */
+    public function isGoogleOnlyAccount(): bool
+    {
+        if ($this->auth_provider === 'google') {
+            return true;
+        }
+
+        return filled($this->google_id) && blank($this->password);
+    }
+
+    /**
      * @return Collection<int, Site>
      */
     public function accessibleSites(): Collection

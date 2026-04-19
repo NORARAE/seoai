@@ -119,6 +119,10 @@
             box-shadow: 0 4px 16px rgba(0,0,0,.22);
             transform: translateY(-1px);
         }
+        .google-btn.is-recommended {
+            border-color: rgba(200,168,75,.8);
+            box-shadow: 0 0 0 1px rgba(200,168,75,.28), 0 10px 24px rgba(0,0,0,.28);
+        }
         .google-recommend {
             text-align: center;
             margin-bottom: .75rem;
@@ -134,11 +138,20 @@
             color: rgba(168,120,40,.9);
             font-weight: 500;
         }
+        .google-recommend.is-active span {
+            color: #cfb167;
+            border-color: rgba(200,168,75,.32);
+            background: rgba(200,168,75,.08);
+        }
         .google-helper {
             text-align: center;
             font-size: .71rem;
             color: var(--muted);
             margin: .55rem 0 0;
+        }
+        .google-soft-state {
+            color: rgba(200,168,75,.88);
+            margin-top: .35rem;
         }
 
         /* Divider */
@@ -271,6 +284,22 @@
         .error-box .recovery-actions a:hover {
             background: rgba(200,168,75,.1);
         }
+        .error-box .recovery-actions a.action-pill-primary {
+            color: #17130a;
+            background: rgba(200,168,75,.92);
+            border-color: rgba(200,168,75,.92);
+        }
+        .error-box .recovery-actions a.action-pill-primary:hover {
+            background: rgba(200,168,75,.82);
+        }
+
+        .login-guidance {
+            margin: .25rem 0 .9rem;
+            text-align: center;
+            font-size: .73rem;
+            color: rgba(168,168,156,.72);
+            letter-spacing: .01em;
+        }
 
         .form-error {
             font-size: .75rem;
@@ -319,6 +348,13 @@
         <p>Your AI visibility intelligence platform</p>
     </div>
 
+    @php
+        $loginErrorType = session('login_error_type');
+        $loginErrorMessage = session('login_error_message');
+        $googleRecommendedEmail = $loginErrorType === 'google_account' ? strtolower((string) old('email')) : '';
+        $googleStateActive = $googleEnabled && $loginErrorType === 'google_account';
+    @endphp
+
     <!-- Google OAuth error with contextual recovery -->
     @if($error)
     <div class="error-box">
@@ -344,6 +380,30 @@
     </div>
     @endif
 
+    @if($loginErrorType && $loginErrorMessage)
+    <div class="error-box" id="login-state-message" data-login-error-type="{{ $loginErrorType }}">
+        <p>{{ $loginErrorMessage }}</p>
+        <div class="recovery-actions">
+            @if($loginErrorType === 'google_account')
+                @if($googleEnabled)
+                <a href="{{ route('auth.google.redirect') }}" class="action-pill-primary">Continue with Google</a>
+                @endif
+                <a href="/admin/password-reset/request">Set an email password</a>
+            @elseif($loginErrorType === 'wrong_password')
+                <a href="/admin/password-reset/request" class="action-pill-primary">Reset password</a>
+                @if($googleEnabled)
+                <a href="{{ route('auth.google.redirect') }}">Try Google instead</a>
+                @endif
+            @elseif($loginErrorType === 'no_account')
+                <a href="{{ route('register') }}" class="action-pill-primary">Create account</a>
+                @if($googleEnabled)
+                <a href="{{ route('auth.google.redirect') }}">Continue with Google</a>
+                @endif
+            @endif
+        </div>
+    </div>
+    @endif
+
     <!-- Validation errors -->
     @if($errors->any())
     <div class="error-box">
@@ -353,10 +413,10 @@
 
     <!-- Google Sign-In -->
     @if($googleEnabled)
-    <div class="google-recommend">
-        <span>&#10003;&nbsp;Recommended</span>
+    <div class="google-recommend {{ $googleStateActive ? 'is-active' : '' }}" id="google-recommend">
+        <span id="google-recommend-label">{{ $googleStateActive ? 'Recommended for this email' : 'Recommended' }}</span>
     </div>
-    <a href="{{ route('auth.google.redirect') }}" class="google-btn">
+    <a href="{{ route('auth.google.redirect') }}" class="google-btn {{ $googleStateActive ? 'is-recommended' : '' }}" id="google-login-button">
         <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 48 48">
             <path fill="#FFC107" d="M43.6 20H24v8h11.3c-1.6 4.7-6.1 8-11.3 8-6.6 0-12-5.4-12-12s5.4-12 12-12c3 0 5.8 1.2 8 3l5.7-5.7C34 6.1 29.3 4 24 4 13 4 4 13 4 24s9 20 20 20 20-9 20-20c0-1.3-.1-2.7-.4-4z"/>
             <path fill="#FF3D00" d="M6.3 14.7l6.6 4.8C14.6 15.1 19 12 24 12c3 0 5.8 1.2 8 3l5.7-5.7C34 6.1 29.3 4 24 4 16.3 4 9.7 8.3 6.3 14.7z"/>
@@ -365,7 +425,8 @@
         </svg>
         <span>Continue with Google</span>
     </a>
-    <p class="google-helper">Faster. Verified. Secure.</p>
+    <p class="google-helper google-soft-state" id="google-soft-suggestion" @if(!$googleStateActive) style="display:none;" @endif>This email is set up for Google sign-in.</p>
+    <p class="google-helper">Used by most customers &mdash; fastest access</p>
 
     <div class="divider"><span>or continue with email</span></div>
     @endif
@@ -373,6 +434,8 @@
     <!-- Email/Password Form -->
     <form method="POST" action="{{ route('login') }}">
         @csrf
+        <p class="login-guidance">Using Google? Just click Continue with Google above.</p>
+
         <div class="form-group">
             <label for="email">Email address</label>
             <input type="email" id="email" name="email" value="{{ old('email') }}" placeholder="you@company.com" required autocomplete="email" autofocus>
@@ -402,6 +465,51 @@
 <div class="site-footer">
     <p>&copy; {{ date('Y') }} SEOAIco &middot; <a href="{{ url('/') }}">seoaico.com</a></p>
 </div>
+
+@if($googleEnabled)
+<script>
+(() => {
+    const emailInput = document.getElementById('email');
+    const googleButton = document.getElementById('google-login-button');
+    const recommendWrap = document.getElementById('google-recommend');
+    const recommendLabel = document.getElementById('google-recommend-label');
+    const softSuggestion = document.getElementById('google-soft-suggestion');
+    const loginStateMessage = document.getElementById('login-state-message');
+    const recommendedEmail = @json($googleRecommendedEmail);
+
+    if (!emailInput || !googleButton || !recommendWrap || !recommendLabel || !softSuggestion) {
+        return;
+    }
+
+    const normalize = (value) => value.trim().toLowerCase();
+
+    const setRecommended = (enabled) => {
+        googleButton.classList.toggle('is-recommended', enabled);
+        recommendWrap.classList.toggle('is-active', enabled);
+        softSuggestion.style.display = enabled ? 'block' : 'none';
+        recommendLabel.textContent = enabled ? 'Recommended for this email' : 'Recommended';
+    };
+
+    const syncRecommendation = () => {
+        if (!recommendedEmail) {
+            setRecommended(false);
+            return;
+        }
+
+        setRecommended(normalize(emailInput.value) === recommendedEmail);
+    };
+
+    emailInput.addEventListener('input', syncRecommendation);
+    emailInput.addEventListener('blur', syncRecommendation);
+    syncRecommendation();
+
+    if (loginStateMessage && loginStateMessage.dataset.loginErrorType === 'google_account') {
+        googleButton.focus({ preventScroll: true });
+        googleButton.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+})();
+</script>
+@endif
 
 </body>
 </html>

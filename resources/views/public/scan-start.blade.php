@@ -498,6 +498,7 @@
         <input type="hidden" name="email" :value="email">
         <button type="submit" class="se-btn" :class="{ 'is-securing': hasAdvanced }" :disabled="hasAdvanced" style="max-width:480px;margin:0 auto;display:block" x-text="hasAdvanced ? 'Securing Checkout\u2026' : 'Unlock Full Scan \u2192'"></button>
       </form>
+      <p class="se-note" style="margin-top:10px">Secure checkout powered by Stripe &bull; Takes 10 seconds</p>
       <p class="se-cta-reinforce">Includes: signal map, ranking gaps, and prioritized fixes</p>
       <p class="se-note">Your <strong style="color:var(--gold-secondary);font-weight:500">$2 diagnostic</strong> runs in seconds. Results carry forward through every level.</p>
     </div>

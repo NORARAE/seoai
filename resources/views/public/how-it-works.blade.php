@@ -451,6 +451,7 @@ html:not(.js-enabled) .r{opacity:1;transform:none}
   .nav-btn{display:none}
   .nav-hamburger{display:flex}
 }
+
 </style>
 </head>
 <body>
@@ -619,7 +620,7 @@ html:not(.js-enabled) .r{opacity:1;transform:none}
         <div class="hiw-tier-price">$99</div>
         <div class="hiw-tier-name">Signal Expansion</div>
         <p class="hiw-tier-desc">Expand analysis depth across structure, schema, and competitive citation signals in active markets.</p>
-        <a href="{{ route('checkout.signal-expansion') }}" class="btn-ghost" style="margin-top:10px;font-size:.7rem">Learn More &rarr;</a>
+        <button type="button" class="btn-ghost js-info-modal-trigger" style="margin-top:10px;font-size:.7rem" data-info-modal="layer-2-answer-readiness" data-info-modal-href="{{ route('checkout.signal-expansion') }}" data-info-modal-cta="Unlock Answer Readiness">Learn More &rarr;</button>
       </div>
 
       <div class="hiw-tier r">
@@ -627,7 +628,7 @@ html:not(.js-enabled) .r{opacity:1;transform:none}
         <div class="hiw-tier-price">$249</div>
         <div class="hiw-tier-name">Structural Leverage</div>
         <p class="hiw-tier-desc">Map full service-by-location coverage and generate the structural system AI platforms can reliably interpret.</p>
-        <a href="{{ route('checkout.structural-leverage') }}" class="btn-ghost" style="margin-top:10px;font-size:.7rem">Learn More &rarr;</a>
+        <button type="button" class="btn-ghost js-info-modal-trigger" style="margin-top:10px;font-size:.7rem" data-info-modal="layer-3-structural-leverage" data-info-modal-href="{{ route('checkout.structural-leverage') }}" data-info-modal-cta="Unlock Priority System">Learn More &rarr;</button>
       </div>
 
       <div class="hiw-tier r">
@@ -635,7 +636,7 @@ html:not(.js-enabled) .r{opacity:1;transform:none}
         <div class="hiw-tier-price">$489</div>
         <div class="hiw-tier-name">System Activation</div>
         <p class="hiw-tier-desc">Deploy the full visibility layer: pages, schema, and architecture tuned for AI citation and recommendation scale.</p>
-        <a href="{{ route('checkout.system-activation') }}" class="btn-ghost" style="margin-top:10px;font-size:.7rem">Learn More &rarr;</a>
+        <button type="button" class="btn-ghost js-info-modal-trigger" style="margin-top:10px;font-size:.7rem" data-info-modal="layer-4-system-activation" data-info-modal-href="{{ route('checkout.system-activation') }}" data-info-modal-cta="Activate System">Learn More &rarr;</button>
       </div>
     </div>
 
@@ -670,6 +671,8 @@ html:not(.js-enabled) .r{opacity:1;transform:none}
     <p class="hiw-final-reassure r">Premium guided entry.&ensp;System-mapped rollout.&ensp;No wasted build.</p>
   </div>
 </section>
+
+@include('partials.info-cta-modal')
 
 @include('partials.back-to-top')
 

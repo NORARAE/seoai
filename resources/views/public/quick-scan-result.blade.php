@@ -248,6 +248,8 @@ a{text-decoration:none;color:inherit}
 .mode-return{display:inline-flex;align-items:center;justify-content:center;min-height:42px;padding:10px 14px;border-radius:10px;border:1px solid rgba(214,181,95,.3);background:rgba(214,181,95,.08);font-size:.6rem;letter-spacing:.14em;text-transform:uppercase;color:#eadfbe;align-self:center}
 .mode-return:hover{border-color:rgba(214,181,95,.48);background:rgba(214,181,95,.16)}
 
+.saved-report-note{margin:-2px 0 10px;font-size:.68rem;letter-spacing:.08em;text-transform:uppercase;color:rgba(132,206,171,.78)}
+
 .live-feedback-strip{display:flex;align-items:center;gap:10px;padding:10px 12px;border:1px solid var(--line-soft);border-radius:10px;background:linear-gradient(150deg,rgba(19,16,11,.96),rgba(12,10,8,.98));margin-bottom:10px}
 .live-feedback-dot{width:8px;height:8px;border-radius:999px;background:#d6b55f;box-shadow:0 0 0 0 rgba(214,181,95,.3);animation:feedbackPulse 2.4s ease-in-out infinite}
 .live-feedback-kicker{font-size:.52rem;letter-spacing:.18em;text-transform:uppercase;color:#d8c38d}
@@ -499,6 +501,33 @@ a{text-decoration:none;color:inherit}
 <body>
 @include('partials.public-nav', ['showHamburger' => true])
 
+@guest
+<div class="save-report-bar" id="saveReportBar">
+  <div class="save-report-inner">
+    <span class="save-report-text"><strong>This report isn't saved yet.</strong> Sign in to keep it on your account.</span>
+    <div class="save-report-actions">
+      <a href="{{ route('auth.google.redirect', ['scan_id' => $scan->id, 'redirect' => route('dashboard.scans.show', ['scan' => $scan->publicScanId()], false)]) }}" class="save-report-google">
+        <svg width="16" height="16" viewBox="0 0 18 18" fill="none" aria-hidden="true"><path d="M17.64 9.2c0-.637-.057-1.251-.164-1.84H9v3.481h4.844a4.14 4.14 0 01-1.796 2.716v2.259h2.908c1.702-1.567 2.684-3.875 2.684-6.615z" fill="#4285F4"/><path d="M9 18c2.43 0 4.467-.806 5.956-2.18l-2.908-2.259c-.806.54-1.837.86-3.048.86-2.344 0-4.328-1.584-5.036-3.711H.957v2.332A8.997 8.997 0 009 18z" fill="#34A853"/><path d="M3.964 10.71A5.41 5.41 0 013.682 9c0-.593.102-1.17.282-1.71V4.958H.957A8.996 8.996 0 000 9c0 1.452.348 2.827.957 4.042l3.007-2.332z" fill="#FBBC05"/><path d="M9 3.58c1.321 0 2.508.454 3.44 1.345l2.582-2.58C13.463.891 11.426 0 9 0A8.997 8.997 0 00.957 4.958L3.964 7.29C4.672 5.163 6.656 3.58 9 3.58z" fill="#EA4335"/></svg>
+        Continue with Google
+      </a>
+      <a href="{{ route('login', ['redirect' => route('dashboard.scans.show', ['scan' => $scan->publicScanId()], false)]) }}" class="save-report-login">Sign in</a>
+    </div>
+  </div>
+</div>
+<style>
+.save-report-bar{position:sticky;top:64px;z-index:80;background:linear-gradient(90deg,rgba(20,16,10,.97),rgba(14,11,8,.98));border-bottom:1px solid rgba(214,181,95,.28);padding:9px 20px;box-shadow:0 2px 12px rgba(0,0,0,.3)}
+.save-report-inner{max-width:1220px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.save-report-text{font-size:.72rem;color:#e0d5b8;line-height:1.35}
+.save-report-text strong{color:#f0e2be}
+.save-report-actions{display:flex;align-items:center;gap:8px;flex-shrink:0}
+.save-report-google{display:inline-flex;align-items:center;gap:7px;min-height:34px;padding:6px 12px;border-radius:8px;border:1px solid rgba(214,181,95,.4);background:rgba(214,181,95,.1);font-size:.6rem;letter-spacing:.12em;text-transform:uppercase;color:#f0e5c6;text-decoration:none;transition:all .16s ease}
+.save-report-google:hover{border-color:rgba(214,181,95,.6);background:rgba(214,181,95,.18)}
+.save-report-login{display:inline-flex;align-items:center;min-height:34px;padding:6px 10px;font-size:.6rem;letter-spacing:.1em;text-transform:uppercase;color:#c8b98a;text-decoration:none;border-bottom:1px solid rgba(214,181,95,.3);transition:color .16s}
+.save-report-login:hover{color:#e8d49a;border-color:rgba(214,181,95,.56)}
+@media(max-width:540px){.save-report-bar{top:56px}.save-report-inner{flex-direction:column;align-items:flex-start;gap:8px}}
+</style>
+@endguest
+
 <div class="shell">
   <div class="mode-bar">
     <div>
@@ -512,6 +541,10 @@ a{text-decoration:none;color:inherit}
     </div>
     <a href="{{ $returnHref }}" class="mode-return">&larr; {{ $returnLabel }}</a>
   </div>
+
+  @auth
+  <p class="saved-report-note">Saved to your account dashboard</p>
+  @endauth
 
   <div class="live-feedback-strip" id="liveFeedbackStrip" data-feedback-messages='@json($liveFeedbackMessages)'>
     <span class="live-feedback-dot" aria-hidden="true"></span>

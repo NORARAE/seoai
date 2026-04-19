@@ -259,6 +259,17 @@
 <div class="min-h-screen bg-[#090805] text-[#ede8de]">
   <div class="mx-auto max-w-7xl px-6 py-8 lg:px-8">
 
+    @if(session('scan_saved'))
+    <div class="mb-6 flex items-center gap-3 rounded-xl border border-[rgba(106,175,144,0.32)] bg-[rgba(106,175,144,0.08)] px-4 py-3" role="alert">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M8 0C3.6 0 0 3.6 0 8s3.6 8 8 8 8-3.6 8-8-3.6-8-8-8zm-1.5 11.5-3-3L4.9 7l1.6 1.6 3.6-3.6 1.4 1.4-5 5z" fill="#6aaf90"/></svg>
+      <p class="text-sm text-[#d9eee5]">{{ session('scan_saved') }}</p>
+    </div>
+    @endif
+
+    @if($hasSystem)
+    <p class="mb-5 text-xs uppercase tracking-[0.14em] text-[#c8a84b]/72">Your previous scans are ready.</p>
+    @endif
+
     <section class="system-section system-section-primary mb-10 dash-section-anchor" id="system-state">
       <div class="system-unified-module">
         <div class="flex flex-wrap items-start justify-between gap-3">
@@ -548,7 +559,7 @@
                       data-feedback-line="Signal reinforcement initiated"
                     >{{ $correctionLabel }}</button>
                   @endif
-                  <a href="{{ $inspectHref }}" class="system-grid-cta cta-view js-readout-link">Inspect Readout</a>
+                                  <a href="{{ $inspectHref }}" class="system-grid-cta cta-view js-readout-link">{{ $scan['is_renderable_report'] ? 'Open Report' : 'Inspect Readout' }}</a>
                 </div>
               </article>
             @endforeach

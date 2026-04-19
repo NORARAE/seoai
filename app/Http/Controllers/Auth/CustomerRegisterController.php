@@ -68,6 +68,21 @@ class CustomerRegisterController extends Controller
         Auth::login($user);
         $request->session()->regenerate();
 
+        // Link any orphan paid scans (purchased as guest) matching this email.
+        \App\Models\QuickScan::where('email', Str::lower($validated['email']))
+            ->whereNull('user_id')
+            ->update(['user_id' => $user->id]);
+
+        // Auto-approve paying customers who register after purchasing.
+        if (!$user->isApproved() && $user->quickScans()->where('paid', true)->exists()) {
+            $user->update([
+                'approved' => true,
+                'onboarding_completed_at' => $user->onboarding_completed_at ?? now(),
+            ]);
+            $user->refresh();
+            return redirect('/dashboard')->with('scan_saved', 'Your paid report is now linked to your account.');
+        }
+
         if (!$user->isApproved()) {
             return redirect()->route('pending-approval');
         }

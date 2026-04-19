@@ -6,18 +6,37 @@
 
   <div style="background:#080808;padding:28px 24px;text-align:center">
     <span style="font-size:17px;color:#ede8de;font-weight:300;letter-spacing:.04em">SEO<span style="color:#c8a84b;font-weight:500;font-size:19px;font-style:italic">AI</span> Co&#8482;</span>
-    <p style="font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:rgba(200,168,75,.5);margin:6px 0 0">AI Citation Scan</p>
+    <p style="font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:rgba(200,168,75,.5);margin:6px 0 0">AI Citation Scan — Purchase Confirmed</p>
   </div>
 
   <div style="padding:28px 24px">
     <h1 style="font-size:20px;font-weight:400;color:#111;margin:0 0 14px;line-height:1.3">Your scan is processing</h1>
-    <p style="font-size:13px;color:#555;line-height:1.7;margin:0 0 20px">Your $2 AI Citation Scan has been submitted. Results are typically ready in seconds &mdash; check your results page now.</p>
+    <p style="font-size:13px;color:#555;line-height:1.7;margin:0 0 16px">Your <strong style="color:#333">$2 AI Citation Scan</strong> has been confirmed. Results are typically ready within seconds.</p>
 
-    <div style="text-align:center;margin:24px 0">
-      <a href="{{ \App\Support\EmailUrl::tracked('/quick-scan', 'checkout-scan-basic') }}" style="display:inline-block;padding:14px 32px;background:#080808;color:#ede8de;font-size:13px;letter-spacing:.1em;text-decoration:none;text-transform:uppercase">View Your Results</a>
+    <div style="background:#fafaf8;border:1px solid rgba(200,168,75,.25);padding:16px 18px;margin-bottom:24px">
+      <p style="font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:#c8a84b;margin:0 0 6px">What you unlocked</p>
+      <p style="font-size:14px;color:#333;margin:0 0 6px;font-weight:500">AI Citation Quick Scan &mdash; Layer 1</p>
+      <ul style="margin:6px 0 0;padding-left:18px">
+        <li style="font-size:13px;color:#555;line-height:1.65;margin-bottom:3px">AI visibility score (0&ndash;100)</li>
+        <li style="font-size:13px;color:#555;line-height:1.65;margin-bottom:3px">Extraction signal breakdown</li>
+        <li style="font-size:13px;color:#555;line-height:1.65;margin-bottom:3px">Top constraint + fastest fix</li>
+        <li style="font-size:13px;color:#555;line-height:1.65">Saved to your account dashboard</li>
+      </ul>
     </div>
 
-    <p style="font-size:12px;color:#999;line-height:1.6;margin:20px 0 0">If your results aren&rsquo;t ready yet, refresh the page in a moment. We&rsquo;ll also send a follow-up email with insights from your scan.</p>
+    @if(isset($reportUrl) && $reportUrl)
+    <div style="text-align:center;margin:24px 0">
+      <a href="{{ $reportUrl }}" style="display:inline-block;padding:14px 32px;background:#080808;color:#ede8de;font-size:13px;letter-spacing:.1em;text-decoration:none;text-transform:uppercase">View My Report</a>
+    </div>
+    @endif
+
+    <div style="text-align:center;margin:16px 0">
+      <a href="{{ url('/dashboard') }}" style="display:inline-block;padding:12px 28px;background:transparent;color:#c8a84b;font-size:13px;letter-spacing:.08em;text-decoration:none;text-transform:uppercase;border:1px solid rgba(200,168,75,.5)">View My Dashboard</a>
+    </div>
+
+    <p style="font-size:12px;color:#888;line-height:1.7;margin:20px 0 0">If you don&rsquo;t see your report yet, it&rsquo;s still processing. Log in to your dashboard and it will appear automatically once complete.</p>
+
+    <p style="font-size:12px;color:#888;line-height:1.7;margin:16px 0 0">Questions? Reply to this email or contact us at <a href="mailto:hello@seoaico.com" style="color:#c8a84b;text-decoration:none">hello@seoaico.com</a></p>
   </div>
 
   <div style="padding:20px 24px;border-top:1px solid #e8e8e8;text-align:center">
