@@ -33,7 +33,7 @@
     <p style="font-size:13px;color:#555;line-height:1.7;margin:0 0 24px">Fixing these unlocks your next level of visibility.</p>
 
     <div style="text-align:center;margin:24px 0">
-      <a href="{{ route('quick-scan.upgrade') }}?plan=diagnostic&scan_id={{ $scan->id }}" style="display:inline-block;padding:14px 36px;background:#080808;color:#ede8de;font-size:13px;letter-spacing:.1em;text-decoration:none;text-transform:uppercase">Run Full Signal Analysis &mdash; $99</a>
+      <a href="{{ \App\Support\EmailUrl::tracked('/checkout/signal-expansion', 'scan-paid-nudge', $scan->user_id, $scan->id) }}" style="display:inline-block;padding:14px 36px;background:#080808;color:#ede8de;font-size:13px;letter-spacing:.1em;text-decoration:none;text-transform:uppercase">Run Full Signal Analysis &mdash; $99</a>
     </div>
 
     <p style="font-size:12px;color:#999;line-height:1.6;margin:20px 0 0;text-align:center">Every day without corrections, competitors lock in positions.</p>

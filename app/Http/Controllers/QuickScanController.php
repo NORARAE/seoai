@@ -6,6 +6,8 @@ use App\Actions\NotifyOwnerOfPurchase;
 use App\Jobs\RunQuickScanJob;
 use App\Models\FunnelEvent;
 use App\Models\QuickScan;
+use App\Support\QuickScanReportToken;
+use App\Services\Entitlements\EntitlementService;
 use App\Services\QuickScanService;
 use App\Services\UrlValidator;
 use Illuminate\Http\Request;
@@ -16,6 +18,107 @@ use Laravel\Cashier\Cashier;
 
 class QuickScanController extends Controller
 {
+    public function __construct(private readonly EntitlementService $entitlements)
+    {
+    }
+
+    /**
+     * GET /scan/public/{shareKey}
+     * Public, simplified share destination for social links.
+     */
+    public function publicShare(string $shareKey)
+    {
+        $scanId = QuickScan::idFromPublicShareKey($shareKey);
+
+        if (!$scanId) {
+            abort(404);
+        }
+
+        $scan = QuickScan::findOrFail($scanId);
+
+        if (!$scan->matchesPublicShareKey($shareKey)) {
+            abort(404);
+        }
+
+        if (!$scan->paid || $scan->status !== QuickScan::STATUS_SCANNED || $scan->score === null) {
+            abort(404);
+        }
+
+        $score = (int) $scan->score;
+        $statusStatement = match (true) {
+            $score < 40 => 'Critical signal gaps detected',
+            $score < 70 => 'AI citation visibility is limited',
+            default => 'Your site is not consistently surfaced in AI-driven results',
+        };
+
+        $findingCandidates = collect($scan->issues ?? [])->filter(function ($item) {
+            return is_string($item) && trim($item) !== '';
+        })->map(function ($item) {
+            return trim(strip_tags($item));
+        })->take(2)->values();
+
+        if ($findingCandidates->isEmpty()) {
+            $findingCandidates = collect([
+                'Entity and service signals are not clear enough for AI extraction.',
+                'Location and coverage structure needs stronger citation-ready formatting.',
+            ]);
+        }
+
+        $publicUrl = route('scan.public.share', ['shareKey' => $scan->publicShareKey()]);
+        $host = parse_url((string) $scan->url, PHP_URL_HOST) ?: 'this site';
+
+        $ogTitle = "AI Visibility Score: {$score}/100";
+        $ogDescription = "{$host}: {$statusStatement} Run your AI Visibility Scan for $2.";
+        $ogImage = url('/apple-touch-icon.png');
+
+        return view('public.quick-scan-share', [
+            'scan' => $scan,
+            'score' => $score,
+            'statusStatement' => $statusStatement,
+            'findings' => $findingCandidates,
+            'publicUrl' => $publicUrl,
+            'ogTitle' => $ogTitle,
+            'ogDescription' => $ogDescription,
+            'ogImage' => $ogImage,
+        ]);
+    }
+
+    /**
+     * GET /dashboard/scan/{scan}
+     * Authenticated detail route for a user's purchased scan report.
+     */
+    public function dashboardReport(Request $request, string $scan)
+    {
+        $scan = $this->resolveDashboardScan($scan);
+        $user = Auth::user();
+
+        if (!$scan || !$user) {
+            return $this->renderReadoutUnavailable();
+        }
+
+        if ($scan->user_id !== $user->id && $scan->email !== $user->email) {
+            return $this->renderReadoutUnavailable();
+        }
+
+        if (!$scan->paid || !$scan->stripe_session_id) {
+            return $this->renderReadoutUnavailable($scan);
+        }
+
+        if ($scan->status !== QuickScan::STATUS_SCANNED || $scan->score === null) {
+            return $this->renderReadoutUnavailable($scan);
+        }
+
+        $sessionId = (string) $request->query('session_id', '');
+        if ($sessionId !== '' && $scan->upgrade_status !== 'paid' && $scan->upgrade_stripe_session_id === $sessionId) {
+            $this->reconcileCheckoutAndKickoffScan($scan, $sessionId);
+            $scan->refresh();
+        }
+
+        $this->trackResultViews($scan, 'dashboard_scan_report');
+
+        return view('public.quick-scan-result', compact('scan'));
+    }
+
     /**
      * GET /quick-scan
      * Show the scan input form.
@@ -135,7 +238,12 @@ class QuickScanController extends Controller
         ]);
 
         try {
-            $successUrl = url('/quick-scan/result') . '?session_id={CHECKOUT_SESSION_ID}&scan_id=' . $scan->id;
+            $successUrl = Auth::check()
+                ? route('dashboard.scans.show', ['scan' => $scan->publicScanId()])
+                : route('report.show', [
+                    'scan' => $scan->id,
+                    'token' => QuickScanReportToken::generate($scan),
+                ]);
             $cancelUrl = url('/quick-scan/cancelled') . '?scan_id=' . $scan->id;
 
             $session = Cashier::stripe()->checkout->sessions->create([
@@ -186,208 +294,247 @@ class QuickScanController extends Controller
     }
 
     /**
-     * GET /quick-scan/result?session_id=cs_xxx&scan_id=yyy
-     * Verify payment, run scan, show results.
-     * Never throws 500 — falls back to processing view on any failure.
+     * Legacy compatibility endpoint.
+     * Redirects into the dedicated authenticated/guest report flows.
      */
-    public function result(Request $request, QuickScanService $scanner)
+    public function result(Request $request)
     {
-        $sessionId = $request->query('session_id');
-        $scanId = $request->query('scan_id');
+        $scanId = (int) $request->query('scan_id', 0);
+        $sessionId = (string) $request->query('session_id', '');
+        $token = (string) $request->query('token', '');
 
-        // ── Phase 7: validate query params ───────────────────────────────
-        if (!$sessionId || !$scanId) {
-            Log::warning('QuickScan: result page missing params', [
-                'session_id' => $sessionId,
-                'scan_id' => $scanId,
-            ]);
+        if (!$scanId) {
             return redirect()->route('quick-scan.show')
                 ->withErrors(['error' => 'Invalid result link.']);
         }
 
-        // ── Phase 1: safe retrieval ──────────────────────────────────────
-        $scan = QuickScan::find((int) $scanId);
+        $scan = QuickScan::find($scanId);
 
         if (!$scan) {
-            Log::warning('QuickScan: scan not found on result page', ['scan_id' => $scanId]);
             return redirect()->route('quick-scan.show')
                 ->withErrors(['error' => 'Scan record not found.']);
         }
 
-        // ── Phase 2: already complete — show results ─────────────────────
-        if ($scan->status === QuickScan::STATUS_SCANNED && $scan->score !== null) {
-            // Verify session ownership — prevent scan_id enumeration
-            $isSessionOwner = $scan->stripe_session_id === $sessionId
-                || $scan->upgrade_stripe_session_id === $sessionId;
-            $isAuthOwner = Auth::check()
-                && ($scan->user_id === Auth::id() || $scan->email === Auth::user()->email);
+        if (Auth::check()) {
+            if (Auth::user()?->isPrivilegedStaff() || Auth::user()?->isFrontendDev()) {
+                if ($scan->status !== QuickScan::STATUS_SCANNED || $scan->score === null) {
+                    return view('public.quick-scan-processing', [
+                        'scan' => $scan,
+                        'sessionId' => $scan->stripe_session_id,
+                        'resultUrl' => route('report.show', ['scan' => $scan->id]),
+                    ]);
+                }
 
-            if (!$isSessionOwner && !$isAuthOwner) {
-                Log::warning('QuickScan: unauthorized result access attempt', [
+                return view('public.quick-scan-result', compact('scan'));
+            }
+
+            $isOwner = $scan->user_id === Auth::id() || $scan->email === Auth::user()->email;
+
+            if ($isOwner) {
+                return redirect()->route('dashboard.scans.show', ['scan' => $scan->publicScanId()]);
+            }
+        }
+
+        $query = array_filter([
+            'session_id' => $sessionId,
+            'token' => $token,
+        ]);
+
+        $url = route('report.show', ['scan' => $scan->id]);
+
+        if (!empty($query)) {
+            $url .= '?' . http_build_query($query);
+        }
+
+        return redirect($url);
+    }
+
+    /**
+     * GET /report/{scan}?token=...&session_id=...
+     * Guest report access with secure token flow.
+     */
+    public function guestReport(Request $request, QuickScan $scan)
+    {
+        if (Auth::check()) {
+            if (Auth::user()?->isPrivilegedStaff() || Auth::user()?->isFrontendDev()) {
+                if ($scan->status !== QuickScan::STATUS_SCANNED || $scan->score === null) {
+                    return view('public.quick-scan-processing', [
+                        'scan' => $scan,
+                        'sessionId' => $scan->stripe_session_id,
+                        'resultUrl' => route('report.show', ['scan' => $scan->id]),
+                    ]);
+                }
+
+                return view('public.quick-scan-result', compact('scan'));
+            }
+
+            $isOwner = $scan->user_id === Auth::id() || $scan->email === Auth::user()->email;
+
+            if ($isOwner) {
+                return redirect()->route('dashboard.scans.show', ['scan' => $scan->publicScanId()]);
+            }
+        }
+
+        $sessionId = (string) $request->query('session_id', '');
+        $token = (string) $request->query('token', '');
+        $hasValidToken = $token !== '' && QuickScanReportToken::isValid($token, $scan);
+
+        if ($sessionId !== '' && $scan->upgrade_status !== 'paid' && $scan->upgrade_stripe_session_id === $sessionId) {
+            $this->reconcileCheckoutAndKickoffScan($scan, $sessionId);
+            $scan->refresh();
+        }
+
+        if (!$scan->paid) {
+            $hasValidSession = $sessionId !== ''
+                && $scan->stripe_session_id === $sessionId
+                && $this->isSessionLinkFresh($scan);
+
+            if (!$hasValidToken && !$hasValidSession) {
+                Log::warning('QuickScan: unpaid guest report access denied', [
                     'scan_id' => $scan->id,
                     'provided_session' => $sessionId,
                     'ip' => $request->ip(),
                 ]);
+
                 return redirect()->route('quick-scan.show')
                     ->withErrors(['error' => 'Invalid result link.']);
             }
 
-            // Check if returning from upgrade checkout
-            if ($sessionId && $scan->upgrade_stripe_session_id === $sessionId && $scan->upgrade_status !== 'paid') {
-                try {
-                    $upgradeSession = Cashier::stripe()->checkout->sessions->retrieve($sessionId);
-                    if (($upgradeSession->payment_status ?? null) === 'paid') {
-                        $scan->update([
-                            'upgrade_status' => 'paid',
-                            'upgraded_at' => now(),
-                        ]);
-                        $scan->refresh();
-                        Log::info('QuickScan: upgrade payment confirmed', [
-                            'scan_id' => $scan->id,
-                            'plan' => $scan->upgrade_plan,
-                            'session' => $sessionId,
-                        ]);
-
-                        FunnelEvent::fire(FunnelEvent::UPGRADE_PURCHASED, scanId: $scan->id, metadata: [
-                            'plan' => $scan->upgrade_plan,
-                        ]);
-
-                        // Notify owner of upgrade purchase
-                        $upgradeTiers = [
-                            'diagnostic' => ['name' => 'Signal Expansion — Full Analysis', 'amount' => 9900],
-                            'fix-strategy' => ['name' => 'Structural Leverage — Fix Strategy', 'amount' => 24900],
-                            'optimization' => ['name' => 'System Activation — Full Deployment', 'amount' => 48900],
-                        ];
-                        $ut = $upgradeTiers[$scan->upgrade_plan] ?? ['name' => $scan->upgrade_plan, 'amount' => 0];
-                        (new NotifyOwnerOfPurchase)->execute($scan, $ut['name'], $ut['amount']);
-                    }
-                } catch (\Throwable $e) {
-                    Log::error('QuickScan: upgrade session retrieval failed', [
-                        'session_id' => $sessionId,
-                        'scan_id' => $scan->id,
-                        'error' => $e->getMessage(),
-                    ]);
-                }
+            if ($hasValidSession) {
+                $this->reconcileCheckoutAndKickoffScan($scan, $sessionId);
+                $scan->refresh();
             }
-            Log::info('QuickScan: result page revisited', ['scan_id' => $scan->id]);
-            return view('public.quick-scan-result', compact('scan'));
-        }
 
-        // ── Phase 8: verify payment with Stripe ─────────────────────────
-        if (!$scan->paid) {
-            try {
-                $stripeSession = Cashier::stripe()->checkout->sessions->retrieve($sessionId);
-
-                if (($stripeSession->payment_status ?? null) !== 'paid') {
-                    Log::info('QuickScan: payment not yet confirmed', [
-                        'scan_id' => $scan->id,
-                        'session_id' => $sessionId,
-                        'payment_status' => $stripeSession->payment_status ?? 'unknown',
-                    ]);
-                    // Show processing view — webhook may complete payment later
-                    return view('public.quick-scan-processing', [
-                        'scan' => $scan,
-                        'sessionId' => $sessionId,
-                    ]);
+            if ($scan->paid && $scan->status === QuickScan::STATUS_SCANNED && $scan->score !== null) {
+                if ($hasValidToken) {
+                    $this->trackResultViews($scan, 'quick_scan_guest_report');
+                    return view('public.quick-scan-result', compact('scan'));
                 }
-            } catch (\Throwable $e) {
-                Log::error('QuickScan: Stripe session retrieval failed', [
-                    'session_id' => $sessionId,
-                    'scan_id' => $scan->id,
-                    'error' => $e->getMessage(),
-                ]);
-                // Don't crash — show processing view, webhook will handle it
-                return view('public.quick-scan-processing', [
-                    'scan' => $scan,
-                    'sessionId' => $sessionId,
+
+                return redirect()->route('report.show', [
+                    'scan' => $scan->id,
+                    'token' => QuickScanReportToken::generate($scan),
                 ]);
             }
 
-            // Mark paid
-            $scan->update([
-                'paid' => true,
-                'stripe_session_id' => $sessionId,
-                'status' => QuickScan::STATUS_PAID,
-            ]);
-
-            // Notify owner of $2 scan purchase
-            (new NotifyOwnerOfPurchase)->execute($scan, 'AI Citation Quick Scan', 200);
-
-            // Set system tier on the user if logged in
-            if ($user = Auth::user()) {
-                $user->upgradeSystemTier(\App\Enums\SystemTier::SCAN_BASIC);
-            }
-        }
-
-        Log::info('QuickScan: payment verified, starting scan', [
-            'scan_id' => $scan->id,
-            'url' => $scan->url,
-            'email' => $scan->email,
-            'ip' => $scan->ip_address,
-            'stripe_session' => $sessionId,
-        ]);
-
-        // ── Run scan synchronously — wrapped in try/catch ────────────────
-        try {
-            $result = $scanner->scan($scan->url);
-
-            // Scan memory: capture previous score for same domain
-            $previousScan = QuickScan::where('domain', $scan->domain)
-                ->where('status', QuickScan::STATUS_SCANNED)
-                ->where('id', '!=', $scan->id)
-                ->latest('scanned_at')
-                ->first();
-            $lastScore = $previousScan?->score;
-            $scoreChange = $lastScore !== null ? ($result['score'] - $lastScore) : null;
-
-            $scan->update([
-                'score' => $result['score'],
-                'last_score' => $lastScore,
-                'score_change' => $scoreChange,
-                'categories' => $result['categories'],
-                'issues' => $result['issues'],
-                'strengths' => $result['strengths'],
-                'fastest_fix' => $result['fastest_fix'],
-                'raw_checks' => $result['raw_checks'],
-                'broken_links' => $result['broken_links'],
-                'page_count' => $result['page_count'],
-                'dimensions' => $result['dimensions'] ?? null,
-                'intelligence' => $result['intelligence'] ?? null,
-                'status' => QuickScan::STATUS_SCANNED,
-                'scanned_at' => now(),
-            ]);
-            $scan->refresh();
-
-            Log::info('QuickScan: scan completed, result delivered', [
-                'scan_id' => $scan->id,
-                'score' => $scan->score,
-                'url' => $scan->url,
-                'email' => $scan->email,
-                'ip' => $scan->ip_address,
-            ]);
-
-            FunnelEvent::fire(FunnelEvent::SCAN_COMPLETED, scanId: $scan->id, metadata: [
-                'score' => $scan->score,
-                'url' => $scan->url,
-            ]);
-        } catch (\Throwable $e) {
-            Log::error('QuickScan: synchronous scan failed', [
-                'scan_id' => $scan->id,
-                'url' => $scan->url,
-                'error' => $e->getMessage(),
-            ]);
-            // Dispatch job as fallback — show processing view
-            RunQuickScanJob::dispatch($scan->id);
             return view('public.quick-scan-processing', [
                 'scan' => $scan,
                 'sessionId' => $sessionId,
+                'token' => $hasValidToken ? $token : '',
+                'resultUrl' => route('report.show', ['scan' => $scan->id]),
             ]);
         }
 
-        // Dispatch job for CRM upsert + email sequence (idempotent)
-        RunQuickScanJob::dispatch($scan->id);
+        if ($scan->status !== QuickScan::STATUS_SCANNED || $scan->score === null) {
+            $hasValidSession = $sessionId !== ''
+                && ($scan->stripe_session_id === $sessionId || $scan->upgrade_stripe_session_id === $sessionId)
+                && $this->isSessionLinkFresh($scan);
 
-        return view('public.quick-scan-result', compact('scan'));
+            if (!$hasValidToken && !$hasValidSession) {
+                return redirect()->route('quick-scan.show')
+                    ->withErrors(['error' => 'Invalid result link.']);
+            }
+
+            return view('public.quick-scan-processing', [
+                'scan' => $scan,
+                'sessionId' => $sessionId,
+                'token' => $hasValidToken ? $token : '',
+                'resultUrl' => route('report.show', ['scan' => $scan->id]),
+            ]);
+        }
+
+        if ($hasValidToken) {
+            $this->trackResultViews($scan, 'quick_scan_guest_report');
+            return view('public.quick-scan-result', compact('scan'));
+        }
+
+        $sessionMatches = $sessionId !== ''
+            && ($scan->stripe_session_id === $sessionId || $scan->upgrade_stripe_session_id === $sessionId);
+
+        if ($sessionMatches) {
+            if (!$this->isSessionLinkFresh($scan)) {
+                Log::warning('QuickScan: expired session link denied for guest report', [
+                    'scan_id' => $scan->id,
+                    'ip' => $request->ip(),
+                ]);
+
+                return redirect()->route('quick-scan.show')
+                    ->withErrors(['error' => 'Invalid or expired report link.']);
+            }
+
+            $secureToken = QuickScanReportToken::generate($scan);
+
+            return redirect()->route('report.show', ['scan' => $scan->id, 'token' => $secureToken]);
+        }
+
+        Log::warning('QuickScan: guest token/session verification failed', [
+            'scan_id' => $scan->id,
+            'ip' => $request->ip(),
+        ]);
+
+        return redirect()->route('quick-scan.show')
+            ->withErrors(['error' => 'Invalid or expired report link.']);
+    }
+
+    /**
+     * Ensure a Stripe Checkout session belongs to the exact scan being unlocked.
+     */
+    private function isCheckoutSessionValidForScan(object $stripeSession, QuickScan $scan, string $sessionId): bool
+    {
+        $scanEmail = strtolower((string) $scan->email);
+        $metadataScanId = (int) ($stripeSession->metadata->scan_id ?? 0);
+        $metadataEmail = strtolower((string) ($stripeSession->metadata->email ?? ''));
+        $customerEmail = strtolower((string) (($stripeSession->customer_details->email ?? null) ?: ($stripeSession->customer_email ?? '')));
+
+        if ($sessionId === '' || ($stripeSession->id ?? null) !== $sessionId) {
+            return false;
+        }
+
+        if ($metadataScanId > 0 && $metadataScanId !== (int) $scan->id) {
+            return false;
+        }
+
+        if ($metadataEmail !== '' && $metadataEmail !== $scanEmail) {
+            return false;
+        }
+
+        if ($customerEmail !== '' && $customerEmail !== $scanEmail) {
+            return false;
+        }
+
+        if ($scan->stripe_session_id && $scan->stripe_session_id !== $sessionId) {
+            $matchesUpgradeSession = $scan->upgrade_stripe_session_id && $scan->upgrade_stripe_session_id === $sessionId;
+            if ($matchesUpgradeSession) {
+                return true;
+            }
+
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
+     * Record result page observability events with score-band context.
+     */
+    private function trackResultViews(QuickScan $scan, string $sourcePage): void
+    {
+        $score = (int) ($scan->score ?? 0);
+        $scoreBand = $score >= 88 ? 'high' : ($score >= 60 ? 'mid' : 'low');
+
+        $baseMetadata = [
+            'score' => (string) $score,
+            'score_band' => $scoreBand,
+            'source_page' => $sourcePage,
+            'user_state' => Auth::check() ? 'logged_in' : 'guest',
+            'role' => Auth::check() ? ((Auth::user()?->isPrivilegedStaff() || Auth::user()?->isFrontendDev()) ? 'staff' : 'customer') : 'guest',
+        ];
+
+        FunnelEvent::fire(FunnelEvent::RESULT_PAGE_VIEWED, scanId: $scan->id, metadata: $baseMetadata);
+
+        if ($score >= 88) {
+            FunnelEvent::fire(FunnelEvent::HIGH_SCORE_RESULT_PAGE_VIEWED, scanId: $scan->id, metadata: $baseMetadata);
+        }
     }
 
     /**
@@ -397,9 +544,10 @@ class QuickScanController extends Controller
     public function status(Request $request)
     {
         $scanId = $request->query('scan_id');
-        $sessionId = $request->query('session_id');
+        $sessionId = (string) $request->query('session_id', '');
+        $token = (string) $request->query('token', '');
 
-        if (!$scanId || !$sessionId) {
+        if (!$scanId) {
             return response()->json(['ready' => false]);
         }
 
@@ -409,16 +557,121 @@ class QuickScanController extends Controller
             return response()->json(['ready' => false]);
         }
 
-        // Verify session ownership
-        if ($scan->stripe_session_id !== $sessionId && $scan->upgrade_stripe_session_id !== $sessionId) {
+        $isAuthOwner = Auth::check() && ($scan->user_id === Auth::id() || $scan->email === Auth::user()?->email);
+        $isSessionOwner = $sessionId !== ''
+            && ($scan->stripe_session_id === $sessionId || $scan->upgrade_stripe_session_id === $sessionId);
+        if ($isSessionOwner && !$this->isSessionLinkFresh($scan)) {
+            $isSessionOwner = false;
+        }
+        $isTokenOwner = $token !== '' && QuickScanReportToken::isValid($token, $scan);
+
+        if (!$isAuthOwner && !$isSessionOwner && !$isTokenOwner) {
             return response()->json(['ready' => false]);
         }
 
+        if ($isSessionOwner && !$scan->paid && $sessionId !== '') {
+            $this->reconcileCheckoutAndKickoffScan($scan, $sessionId);
+            $scan->refresh();
+        }
+
         if ($scan->status === QuickScan::STATUS_SCANNED && $scan->score !== null) {
-            return response()->json(['ready' => true, 'score' => $scan->score]);
+            $reportUrl = $isAuthOwner
+                ? route('dashboard.scans.show', ['scan' => $scan->publicScanId()])
+                : route('report.show', [
+                    'scan' => $scan->id,
+                    'token' => $isTokenOwner ? $token : QuickScanReportToken::generate($scan),
+                ]);
+
+            return response()->json([
+                'ready' => true,
+                'score' => $scan->score,
+                'report_url' => $reportUrl,
+            ]);
         }
 
         return response()->json(['ready' => false, 'status' => $scan->status]);
+    }
+
+    private function isSessionLinkFresh(QuickScan $scan): bool
+    {
+        return $scan->created_at !== null && $scan->created_at->gte(now()->subHours(24));
+    }
+
+    /**
+     * Local/dev and webhook-fallback completion path:
+     * verifies payment directly with Stripe, marks scan paid, and triggers scan job.
+     */
+    private function reconcileCheckoutAndKickoffScan(QuickScan $scan, string $sessionId): void
+    {
+        if ($sessionId === '') {
+            return;
+        }
+
+        try {
+            $stripeSession = Cashier::stripe()->checkout->sessions->retrieve($sessionId, []);
+
+            if (!$this->isCheckoutSessionValidForScan($stripeSession, $scan, $sessionId)) {
+                Log::warning('QuickScan: session verification failed during reconcile', [
+                    'scan_id' => $scan->id,
+                    'session_id' => $sessionId,
+                ]);
+                return;
+            }
+
+            $paymentStatus = (string) ($stripeSession->payment_status ?? '');
+            $checkoutStatus = (string) ($stripeSession->status ?? '');
+            $isPaid = in_array($paymentStatus, ['paid', 'no_payment_required'], true)
+                || $checkoutStatus === 'complete';
+
+            if (!$isPaid) {
+                Log::info('QuickScan: reconcile found unpaid checkout session', [
+                    'scan_id' => $scan->id,
+                    'session_id' => $sessionId,
+                    'payment_status' => $paymentStatus,
+                    'checkout_status' => $checkoutStatus,
+                ]);
+                return;
+            }
+
+            $upgradePlan = QuickScan::normalizeUpgradePlan((string) ($stripeSession->metadata->upgrade_plan ?? ''));
+            if ($upgradePlan !== null) {
+                $scan->update([
+                    'upgrade_plan' => $upgradePlan,
+                    'upgrade_status' => 'paid',
+                    'upgrade_stripe_session_id' => $sessionId,
+                    'upgraded_at' => now(),
+                ]);
+
+                $this->entitlements->issueForScan($scan->fresh());
+
+                return;
+            }
+
+            if (!$scan->paid) {
+                $scan->update([
+                    'paid' => true,
+                    'stripe_session_id' => $scan->stripe_session_id ?: $sessionId,
+                    'status' => $scan->status === QuickScan::STATUS_PENDING ? QuickScan::STATUS_PAID : $scan->status,
+                ]);
+                $scan->refresh();
+
+                $this->entitlements->issueForScan($scan);
+            }
+
+            if ($scan->status !== QuickScan::STATUS_SCANNED || $scan->score === null) {
+                if (app()->environment('local')) {
+                    RunQuickScanJob::dispatchSync($scan->id);
+                } else {
+                    RunQuickScanJob::dispatch($scan->id);
+                }
+            }
+        } catch (\Throwable $e) {
+            Log::error('QuickScan: reconcile failed', [
+                'scan_id' => $scan->id,
+                'session_id' => $sessionId,
+                'error' => $e->getMessage(),
+            ]);
+        }
     }
 
     /**
@@ -455,7 +708,7 @@ class QuickScanController extends Controller
     {
         $plan = $request->query('plan');
         $scanId = (int) $request->query('scan_id', 0);
-        $sid = $request->query('sid');
+        $sid = (string) $request->query('sid', '');
 
         if (!$plan || !isset(self::UPGRADE_PLANS[$plan]) || !$scanId) {
             return redirect()->route('quick-scan.show')
@@ -469,8 +722,39 @@ class QuickScanController extends Controller
                 ->withErrors(['error' => 'Scan not found or not yet complete.']);
         }
 
-        // Verify ownership — prevent unauthorized upgrade initiation
-        if (!$sid || $scan->stripe_session_id !== $sid) {
+        $isStaff = Auth::check() && (Auth::user()?->isPrivilegedStaff() || Auth::user()?->isFrontendDev());
+        $isOwner = Auth::check() && ($scan->user_id === Auth::id() || $scan->email === Auth::user()?->email);
+        $hasSessionOwnership = $sid !== ''
+            && ($scan->stripe_session_id === $sid || $scan->upgrade_stripe_session_id === $sid)
+            && $this->isSessionLinkFresh($scan);
+
+        // Verify ownership before any tokenized report redirects to prevent scan_id guessing bypasses.
+        if (!$isStaff && !$isOwner && !$hasSessionOwnership) {
+            Log::warning('QuickScan: upgrade access denied', [
+                'scan_id' => $scan->id,
+                'ip' => $request->ip(),
+            ]);
+
+            return redirect()->route('quick-scan.show')
+                ->withErrors(['error' => 'Invalid upgrade link.']);
+        }
+
+        $requestedRank = QuickScan::rankForUpgradePlan($plan);
+        $currentRank = $scan->upgradeTierRank();
+        if ($scan->upgrade_status === 'paid' && $requestedRank > 0 && $requestedRank <= $currentRank) {
+            if ($isOwner || $isStaff) {
+                return redirect()->route('dashboard.scans.show', ['scan' => $scan->publicScanId()])
+                    ->with('status', 'This layer is already unlocked for this scan.');
+            }
+
+            return redirect()->route('report.show', [
+                'scan' => $scan->id,
+                'token' => QuickScanReportToken::generate($scan),
+            ])->with('status', 'This layer is already unlocked for this scan.');
+        }
+
+        // Verify baseline session ownership for new checkout creation.
+        if ($sid === '' || $scan->stripe_session_id !== $sid || !$this->isSessionLinkFresh($scan)) {
             Log::warning('QuickScan: upgrade sid mismatch', [
                 'scan_id' => $scan->id,
                 'ip' => $request->ip(),
@@ -482,8 +766,14 @@ class QuickScanController extends Controller
         [$productName, $unitAmount] = self::UPGRADE_PLANS[$plan];
 
         try {
-            $successUrl = url('/quick-scan/result') . '?session_id={CHECKOUT_SESSION_ID}&scan_id=' . $scan->id;
-            $cancelUrl = url('/quick-scan/result') . '?session_id=' . ($scan->stripe_session_id ?? 'none') . '&scan_id=' . $scan->id;
+            $successBaseUrl = Auth::check()
+                ? route('dashboard.scans.show', ['scan' => $scan->publicScanId()])
+                : route('report.show', [
+                    'scan' => $scan->id,
+                    'token' => QuickScanReportToken::generate($scan),
+                ]);
+            $successUrl = $successBaseUrl . (str_contains($successBaseUrl, '?') ? '&' : '?') . 'session_id={CHECKOUT_SESSION_ID}';
+            $cancelUrl = route('report.show', ['scan' => $scan->id]) . '?session_id=' . urlencode((string) ($scan->stripe_session_id ?? 'none'));
 
             $session = Cashier::stripe()->checkout->sessions->create([
                 'mode' => 'payment',
@@ -512,14 +802,27 @@ class QuickScanController extends Controller
             ]);
 
             $scan->update([
-                'upgrade_plan' => $plan,
+                'upgrade_plan' => QuickScan::normalizeUpgradePlan($plan),
                 'upgrade_status' => 'pending',
                 'upgrade_stripe_session_id' => $session->id,
             ]);
 
             FunnelEvent::fire(FunnelEvent::UPGRADE_CLICK, scanId: $scan->id, metadata: [
                 'plan' => $plan,
-                'amount' => $unitAmount,
+                'amount' => (string) $unitAmount,
+                'score_band' => ((int) ($scan->score ?? 0)) >= 88 ? 'high' : (((int) ($scan->score ?? 0)) >= 60 ? 'mid' : 'low'),
+                'source_page' => 'quick_scan_result',
+                'user_state' => Auth::check() ? 'logged_in' : 'guest',
+                'role' => Auth::check() ? ((Auth::user()?->isPrivilegedStaff() || Auth::user()?->isFrontendDev()) ? 'staff' : 'customer') : 'guest',
+            ]);
+
+            FunnelEvent::fire(FunnelEvent::CHECKOUT_ENTRY, scanId: $scan->id, metadata: [
+                'flow' => 'quick_scan_upgrade',
+                'tier' => $plan,
+                'amount_cents' => (string) $unitAmount,
+                'source_page' => 'quick_scan_result',
+                'user_state' => Auth::check() ? 'logged_in' : 'guest',
+                'role' => Auth::check() ? ((Auth::user()?->isPrivilegedStaff() || Auth::user()?->isFrontendDev()) ? 'staff' : 'customer') : 'guest',
             ]);
 
             Log::info('QuickScan: upgrade checkout initiated', [
@@ -538,5 +841,45 @@ class QuickScanController extends Controller
             ]);
             return back()->withErrors(['error' => 'Upgrade payment could not be initiated. Please try again.']);
         }
+    }
+
+    private function resolveDashboardScan(string $scanRef): ?QuickScan
+    {
+        $scanRef = trim($scanRef);
+
+        if ($scanRef === '') {
+            return null;
+        }
+
+        $scanId = QuickScan::idFromPublicReference($scanRef);
+        if (!$scanId) {
+            return null;
+        }
+
+        return QuickScan::find($scanId);
+    }
+
+    private function renderReadoutUnavailable(?QuickScan $scan = null)
+    {
+        $latestScan = Auth::user()
+            ? QuickScan::query()
+                ->where(function ($query) {
+                    $query->where('user_id', Auth::id())
+                        ->orWhere('email', Auth::user()?->email);
+                })
+                ->where('status', QuickScan::STATUS_SCANNED)
+                ->whereNotNull('score')
+                ->latest('scanned_at')
+                ->latest('id')
+                ->first()
+            : null;
+
+        return response()->view('public.system-readout-unavailable', [
+            'scan' => $scan,
+            'latestScanUrl' => $latestScan
+                ? route('dashboard.scans.show', ['scan' => $latestScan->publicScanId()])
+                : route('quick-scan.show'),
+            'refreshUrl' => request()->fullUrl(),
+        ], 200);
     }
 }

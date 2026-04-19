@@ -66,7 +66,25 @@ class AdminPanelProvider extends PanelProvider
             ->renderHook(
                 PanelsRenderHook::HEAD_END,
                 fn(): HtmlString => new HtmlString(
-                    '<link rel="preconnect" href="https://fonts.googleapis.com">'
+                    '<!-- Favicon + identity -->'
+                    . '<link rel="icon" type="image/x-icon" href="/favicon.ico">'
+                    . '<link rel="icon" type="image/svg+xml" href="/favicon.svg">'
+                    . '<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">'
+                    . '<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">'
+                    . '<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">'
+                    . '<link rel="manifest" href="/site.webmanifest">'
+                    . '<meta name="theme-color" content="#080808">'
+                    . '<meta name="description" content="AI-powered search infrastructure for local businesses. Programmatic visibility systems built on citation, authority, and market intelligence.">'
+                    . '<meta property="og:type" content="website">'
+                    . '<meta property="og:site_name" content="SEOAIco">'
+                    . '<meta property="og:title" content="SEOAIco — AI Search Infrastructure">'
+                    . '<meta property="og:description" content="Programmatic visibility systems for local businesses. Licensed. Controlled. Exclusive.">'
+                    . '<meta property="og:url" content="' . url('/') . '">'
+                    . '<meta name="twitter:card" content="summary">'
+                    . '<meta name="twitter:title" content="SEOAIco — AI Search Infrastructure">'
+                    . '<meta name="twitter:description" content="Programmatic visibility systems for local businesses.">'
+                    . '<!-- Fonts -->'
+                    . '<link rel="preconnect" href="https://fonts.googleapis.com">'
                     . '<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>'
                     . '<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600&family=DM+Sans:wght@300;400&display=swap" rel="stylesheet">'
                     . '<script>'
@@ -199,9 +217,9 @@ class AdminPanelProvider extends PanelProvider
         $html .= '<p style="text-align:center;font-size:.71rem;color:rgba(168,168,156,.85);margin:.55rem 0 .85rem;font-family:\'DM Sans\',sans-serif;letter-spacing:.02em;">' . e($helperText) . '</p>';
 
         $html .= '<div style="display:flex;align-items:center;gap:.75rem;">';
-        $html .= '<div style="flex:1;height:1px;background:rgba(111,84,29,.25);"></div>';
-        $html .= '<span style="font-size:.7rem;color:rgba(178,138,60,.9);letter-spacing:.11em;text-transform:uppercase;white-space:nowrap;font-family:\'DM Sans\',sans-serif;">or continue with email</span>';
-        $html .= '<div style="flex:1;height:1px;background:rgba(111,84,29,.25);"></div>';
+        $html .= '<div style="flex:1;height:1px;background:rgba(200,168,75,.18);"></div>';
+        $html .= '<span style="font-size:.7rem;color:rgba(200,168,75,.58);letter-spacing:.11em;text-transform:uppercase;white-space:nowrap;font-family:\'DM Sans\',sans-serif;">or continue with email</span>';
+        $html .= '<div style="flex:1;height:1px;background:rgba(200,168,75,.18);"></div>';
         $html .= '</div>';
 
         $html .= '</div>';

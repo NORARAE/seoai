@@ -30,29 +30,12 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-:root{
-  --bg:#080808;--deep:#0b0b0b;--card:#0e0d09;--border:rgba(200,168,75,.09);
-  --gold:#c8a84b;--gold-lt:#d9bc6e;--gold-dim:rgba(200,168,75,.32);
-  --ivory:#ede8de;--muted:rgba(168,168,160,.78);--warn:#c84b4b;
-}
+@include('partials.design-system')
+@include('partials.public-nav-css')
+@include('partials.public-nav-mobile-css')
+
 html{font-size:18px;scroll-behavior:smooth}
 body{background:var(--bg);color:var(--ivory);font-family:'DM Sans',sans-serif;font-weight:300;line-height:1.6;-webkit-font-smoothing:antialiased;min-height:100vh;overflow-x:hidden}
-
-/* ── Nav ── */
-#nav{position:fixed;top:0;left:0;right:0;z-index:200;display:flex;align-items:center;justify-content:space-between;padding:28px 64px;border-bottom:1px solid transparent;transition:all .4s}
-#nav.stuck{background:rgba(8,8,8,.95);backdrop-filter:blur(16px);border-color:var(--border);padding:16px 64px}
-.logo,.logo:visited,.logo:hover,.logo:active,.logo:focus{display:inline-flex;align-items:baseline;text-decoration:none;line-height:1;color:inherit;padding:8px 4px;margin:-8px -4px;position:relative;z-index:1}
-.logo-seo,.logo-seo:visited,.logo-seo:link{font-family:'DM Sans',sans-serif;font-weight:300;font-size:1.2rem;letter-spacing:.06em;color:#f5f0e8}
-.logo-ai,.logo-ai:visited,.logo-ai:link{font-family:'Cormorant Garamond',serif;font-weight:600;font-size:1.42rem;color:#c8a84b;letter-spacing:.02em;display:inline-block;transform:skewX(-11deg) translateY(-1px)}
-.logo-co,.logo-co:visited,.logo-co:link{font-family:'DM Sans',sans-serif;font-weight:300;font-size:1.05rem;color:rgba(255,255,255,.45);letter-spacing:.04em}
-.nav-right{display:flex;align-items:center;gap:26px}
-.nav-link{font-size:.76rem;letter-spacing:.14em;text-transform:uppercase;color:rgba(168,168,160,.72);text-decoration:none;transition:color .3s;position:relative;padding-bottom:2px;font-weight:400}
-.nav-link::after{content:'';position:absolute;bottom:0;left:0;right:100%;height:1px;background:var(--gold);transition:right .3s cubic-bezier(.23,1,.32,1)}
-.nav-link:hover{color:var(--gold)}
-.nav-link:hover::after{right:0}
-.nav-btn{font-size:.74rem;letter-spacing:.14em;text-transform:uppercase;color:var(--bg);background:var(--gold);padding:11px 28px;text-decoration:none;transition:background .3s cubic-bezier(.23,1,.32,1),box-shadow .3s cubic-bezier(.23,1,.32,1);display:inline-flex;align-items:center;white-space:nowrap;font-weight:500;margin-left:6px}
-.nav-btn:hover{background:var(--gold-lt);box-shadow:0 4px 16px rgba(200,168,75,.22)}
 
 /* ── Hero ── */
 .qs-hero{
@@ -315,22 +298,16 @@ body{background:var(--bg);color:var(--ivory);font-family:'DM Sans',sans-serif;fo
 }
 
 
-/* ── Footer ── */
-footer{border-top:1px solid var(--border);padding:28px 48px;display:flex;flex-direction:column;align-items:center;gap:12px;text-align:center}
-.footer-copy{font-size:.66rem;letter-spacing:.08em;color:var(--muted)}
-.footer-legal{display:flex;gap:20px;padding-top:8px;border-top:1px solid var(--border);width:100%;justify-content:center}
-.footer-legal a{font-size:.64rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);text-decoration:none;transition:color .3s}
-.footer-legal a:hover{color:var(--gold)}
-
 /* ── Mobile ── */
-@media(max-width:768px){
-  #nav{padding:14px 20px}
-  #nav.stuck{padding:10px 20px}
+@media(max-width:900px){
+  #nav{padding:14px 20px}#nav.stuck{padding:10px 20px}
   .nav-link{display:none}
-  .nav-btn{padding:9px 20px;font-size:.66rem}
+  .nav-btn{display:none}
+  .nav-hamburger{display:flex}
+}
+@media(max-width:768px){
   .qs-hero{padding:100px 20px 60px}
   .qs-card{padding:32px 24px}
-  footer{padding:24px 20px}
 }
 @media(max-width:480px){
   .scan-cards-row{gap:14px}
@@ -341,7 +318,7 @@ footer{border-top:1px solid var(--border);padding:28px 48px;display:flex;flex-di
 <body>
 
 <!-- Nav -->
-@include('partials.public-nav')
+@include('partials.public-nav', ['showHamburger' => true])
 
 <!-- Hero -->
 <section class="qs-hero">
@@ -541,35 +518,25 @@ footer{border-top:1px solid var(--border);padding:28px 48px;display:flex;flex-di
   </div>
 </section>
 
-<!-- Footer -->
-<footer>
-  <a href="{{ url('/') }}" class="logo" style="opacity:.5">
-    <span class="logo-seo">SEO</span><span class="logo-ai">AI</span><span class="logo-co">co</span>
-  </a>
-  <span class="footer-copy">&copy; 2026 SEO AI Co™</span>
-  <nav class="footer-legal">
-    <a href="{{ route('privacy') }}">Privacy</a>
-    <a href="{{ route('terms') }}">Terms</a>
-    <a href="/pricing">Pricing</a>
-  </nav>
-</footer>
+@include('partials.public-footer')
 
 <script>
-  const nav = document.getElementById('nav');
-  if(nav) window.addEventListener('scroll', () => nav.classList.toggle('stuck', scrollY > 60));
+  var nav = document.getElementById('nav');
+  if(nav) window.addEventListener('scroll', function(){ nav.classList.toggle('stuck', scrollY > 60); }, {passive:true});
 
   // Set timing check value on page load
   document.getElementById('_loadedAt').value = (Date.now() / 1000).toFixed(3);
 
   document.getElementById('scanForm').addEventListener('submit', function() {
-    const btn = document.getElementById('submitBtn');
-    const txt = document.getElementById('btnText');
-    const spin = document.getElementById('btnSpinner');
+    var btn = document.getElementById('submitBtn');
+    var txt = document.getElementById('btnText');
+    var spin = document.getElementById('btnSpinner');
     btn.disabled = true;
     txt.style.display = 'none';
     spin.style.display = 'inline';
   });
 </script>
+@include('partials.public-nav-js')
 @include('components.tm-style')
 </body>
 </html>

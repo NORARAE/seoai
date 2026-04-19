@@ -4,6 +4,7 @@ namespace App\Filament\Pages;
 
 use App\Filament\Concerns\FrontendDevRestricted;
 use App\Filament\Widgets\FunnelConversionWidget;
+use App\Filament\Widgets\FunnelVisibilityWidget;
 use BackedEnum;
 use Filament\Pages\Dashboard;
 
@@ -40,6 +41,7 @@ class FunnelDashboard extends Dashboard
     {
         return [
             FunnelConversionWidget::class,
+            FunnelVisibilityWidget::class,
         ];
     }
 }

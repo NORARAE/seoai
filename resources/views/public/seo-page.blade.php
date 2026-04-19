@@ -170,11 +170,6 @@ footer{border-top:1px solid var(--border);padding:36px 64px;display:flex;flex-di
 .footer-legal a{font-size:.66rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);text-decoration:none;transition:color .3s}
 .footer-legal a:hover{color:var(--gold)}
 
-/* ── Back to Top ── */
-.btt{position:fixed;bottom:36px;right:36px;z-index:300;width:48px;height:48px;background:var(--gold);color:var(--bg);border:none;cursor:pointer;font-size:1.1rem;display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .35s,transform .35s,background .3s;transform:translateY(12px)}
-.btt.show{opacity:1;pointer-events:auto;transform:none}
-.btt:hover{background:var(--gold-lt);transform:translateY(-2px)}
-
 /* ── Reveal animation (progressive enhancement: visible by default) ── */
 .r{opacity:1;transform:none;transition:opacity .85s cubic-bezier(.23,1,.32,1),transform .85s cubic-bezier(.23,1,.32,1)}
 .js-enabled .r{opacity:0;transform:translateY(32px)}
@@ -529,9 +524,7 @@ footer{border-top:1px solid var(--border);padding:36px 64px;display:flex;flex-di
   </nav>
 </footer>
 
-<button class="btt" id="btt" aria-label="Back to top">
-  <svg viewBox="0 0 24 24"><path d="M12 4l-8 8h5v8h6v-8h5z"/></svg>
-</button>
+@include('partials.back-to-top')
 
 <script>
   // Nav scroll
@@ -549,13 +542,6 @@ footer{border-top:1px solid var(--border);padding:36px 64px;display:flex;flex-di
     });
   }, {threshold: .1});
   items.forEach(el => io.observe(el));
-
-  // Back to top
-  const btt = document.getElementById('btt');
-  if(btt){
-    window.addEventListener('scroll', () => btt.classList.toggle('show', scrollY > 600), {passive:true});
-    btt.addEventListener('click', () => window.scrollTo({top: 0, behavior: 'smooth'}));
-  }
 </script>
 
 @include('components.tm-style')

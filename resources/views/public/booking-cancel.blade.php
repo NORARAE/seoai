@@ -31,15 +31,15 @@ p{color:#a8a8a0;font-size:.92rem;line-height:1.7;margin-bottom:16px}
 <body>
 <div class="box">
   @if($booking->isCancelled())
-    <h1>Booking Already Cancelled</h1>
-    <p>This booking was cancelled on {{ $booking->cancelled_at->format('F j, Y') }}.</p>
+    <h1>Entry Session Already Cancelled</h1>
+    <p>This entry session was cancelled on {{ $booking->cancelled_at->format('F j, Y') }}.</p>
   @else
-    <h1>Cancel Your Booking?</h1>
+    <h1>Cancel Entry Session?</h1>
     <p>{{ $booking->consultType->name }} on {{ $booking->preferred_date->format('l, F j, Y') }} at {{ \Carbon\Carbon::parse($booking->preferred_time)->format('g:i A') }} PT</p>
     <div class="detail"><strong>Name:</strong> {{ $booking->name }}</div>
     <div class="detail"><strong>Email:</strong> {{ $booking->email }}</div>
     <div class="msg" id="msg"></div>
-    <button class="cancel-btn" id="cancelBtn" onclick="cancelBooking()">Confirm Cancellation</button>
+    <button class="cancel-btn" id="cancelBtn" onclick="cancelBooking()">Confirm Session Cancellation</button>
     <script>
     async function cancelBooking() {
       const btn = document.getElementById('cancelBtn');
@@ -52,9 +52,9 @@ p{color:#a8a8a0;font-size:.92rem;line-height:1.7;margin-bottom:16px}
         const data = await resp.json();
         const msg = document.getElementById('msg');
         msg.style.display = 'block';
-        msg.textContent = data.message || 'Booking cancelled.';
+        msg.textContent = data.message || 'Entry session cancelled.';
         btn.style.display = 'none';
-      } catch(e) { btn.disabled = false; btn.textContent = 'Confirm Cancellation'; }
+      } catch(e) { btn.disabled = false; btn.textContent = 'Confirm Session Cancellation'; }
     }
     </script>
   @endif

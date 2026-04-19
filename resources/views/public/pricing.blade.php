@@ -131,6 +131,7 @@
 <style>
 @include('partials.design-system')
 @include('partials.public-nav-css')
+@include('partials.public-nav-mobile-css')
 
 /* ══════════════════════════════════════════════════════════
    HERO — Growth Architecture Opening
@@ -221,6 +222,7 @@
   border:1px solid rgba(200,168,75,.06);border-radius:40px;
   backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);
   position:relative;z-index:1;
+  --marker-x:50%;
 }
 .ascent-rail::before{
   content:'';position:absolute;inset:-1px;border-radius:40px;
@@ -230,6 +232,7 @@
 .ascent-node{
   display:flex;flex-direction:column;align-items:center;gap:5px;
   padding:4px 10px;position:relative;
+  transition:opacity .26s ease,transform .26s ease;
 }
 .ascent-node-num{font-size:.48rem;letter-spacing:.16em;color:rgba(168,168,160,.38);text-transform:uppercase}
 .ascent-node-label{font-size:.58rem;letter-spacing:.08em;color:rgba(168,168,160,.56)}
@@ -239,8 +242,17 @@
   content:'';position:absolute;bottom:-4px;left:50%;transform:translateX(-50%);
   width:18px;height:2px;background:rgba(200,168,75,.3);border-radius:1px;
 }
+.ascent-node.is-linked{transform:translateY(-1px)}
+.ascent-node.is-linked .ascent-node-num{color:rgba(200,168,75,.78)}
+.ascent-node.is-linked .ascent-node-label{color:rgba(226,201,125,.82);font-weight:500}
+.ascent-node.is-linked::after{
+  content:'';position:absolute;bottom:-4px;left:50%;transform:translateX(-50%);
+  width:22px;height:2px;background:rgba(226,201,125,.55);border-radius:1px;
+  box-shadow:0 0 12px rgba(200,168,75,.16);
+}
 .ascent-line{
   width:28px;height:1px;background:rgba(200,168,75,.08);position:relative;
+  transition:background-color .26s ease,opacity .26s ease;
 }
 @keyframes ascent-pulse{
   0%{opacity:.15;transform:translateX(-100%)}
@@ -251,6 +263,24 @@
   content:'';position:absolute;inset:0;
   background:linear-gradient(90deg,transparent,rgba(200,168,75,.35),transparent);
   animation:ascent-pulse 3.5s ease-in-out infinite;
+}
+.ascent-line.is-linked{background:rgba(226,201,125,.22)}
+
+@keyframes marker-breathe{
+  0%,100%{opacity:.6;transform:translate(-50%,0) scale(1)}
+  50%{opacity:.95;transform:translate(-50%,-1px) scale(1.06)}
+}
+@keyframes marker-drift{
+  0%,100%{box-shadow:0 0 0 rgba(200,168,75,0),0 0 14px rgba(200,168,75,.15)}
+  50%{box-shadow:0 0 0 rgba(200,168,75,0),0 0 22px rgba(200,168,75,.28)}
+}
+.ascent-rail::after{
+  content:'';position:absolute;top:-11px;left:var(--marker-x);
+  width:10px;height:10px;border-radius:999px;
+  background:radial-gradient(circle at 35% 30%,rgba(255,246,214,.8),rgba(200,168,75,.65) 45%,rgba(200,168,75,.15) 100%);
+  border:1px solid rgba(226,201,125,.38);
+  transform:translateX(-50%);
+  animation:marker-breathe 3.2s ease-in-out infinite,marker-drift 4.6s ease-in-out infinite;
 }
 
 /* ── Tier grid — 5 top + 1 anchor ── */
@@ -283,6 +313,29 @@
   backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px);
 }
 .tier:hover{border-color:var(--card-border-hover)}
+.tier.is-active{
+  border-color:rgba(226,201,125,.26);
+  box-shadow:0 14px 48px rgba(0,0,0,.42),0 0 0 1px rgba(226,201,125,.05) inset;
+}
+.tier.is-active .tier-step{color:rgba(200,168,75,.56)}
+.tier.is-active .tier-name{color:rgba(237,232,222,.95)}
+.tier.is-active .tier-price{color:rgba(245,240,232,.98)}
+
+.tier-grid-5:hover .tier,
+.tier-grid-5:focus-within .tier,
+.tier-anchor-row:hover .tier.prime,
+.tier-anchor-row:focus-within .tier.prime{
+  opacity:.76;
+  filter:brightness(.94);
+}
+.tier-grid-5:hover .tier.is-active,
+.tier-grid-5:focus-within .tier.is-active,
+.tier-anchor-row:hover .tier.prime.is-active,
+.tier-anchor-row:focus-within .tier.prime.is-active{
+  opacity:1;
+  filter:brightness(1);
+  transform:translateY(-3px);
+}
 /* Node connector dots at bottom */
 .tier::after{
   content:'';position:absolute;bottom:-4px;left:50%;transform:translateX(-50%);
@@ -745,8 +798,10 @@
    ═══════════════════════════════════════════ */
 @media(max-width:1100px){
   .tier-grid-5{grid-template-columns:repeat(3,1fr)}
-  .ascent-rail{flex-wrap:wrap;gap:4px;max-width:480px;padding:12px 20px}
+  .ascent-rail{flex-wrap:wrap;gap:4px;max-width:620px;padding:12px 20px;margin-bottom:36px}
   .ascent-line{width:16px}
+  .ascent-node{padding:4px 8px}
+  .ascent-node-label{font-size:.56rem}
   .layers-grid{grid-template-columns:repeat(2,1fr)}
   .layers-grid:hover .layer-card{opacity:1;filter:none}
   .tier-position{min-height:auto}
@@ -765,8 +820,22 @@
   .tier-anchor-row{margin-top:16px}
   .tier.prime{grid-template-columns:1fr;padding:32px 24px;gap:24px}
   .tier-anchor-row::before{height:28px;top:-14px}
-  /* C. Ascension rail — hide at tablet */
-  .ascent-rail{display:none}
+  /* C. Ascension rail — intentional compact composition */
+  .ascent-rail{
+    display:grid;
+    grid-template-columns:repeat(3,minmax(0,1fr));
+    gap:8px 10px;
+    max-width:560px;
+    border-radius:20px;
+    padding:12px 14px;
+    margin:0 auto 26px;
+  }
+  .ascent-line{display:none}
+  .ascent-node{padding:6px 8px;border:1px solid rgba(200,168,75,.08);border-radius:10px;background:rgba(12,11,8,.35)}
+  .ascent-node-num{font-size:.5rem}
+  .ascent-node-label{font-size:.6rem;letter-spacing:.06em}
+  .ascent-node.--active::after,.ascent-node.is-linked::after{bottom:2px;width:16px}
+  .ascent-rail::after{top:-9px;width:9px;height:9px}
   /* Disable hover dimming at touch sizes */
   .tier-grid-5:hover .tier{opacity:1;filter:none}
   .layers-grid:hover .layer-card{opacity:1;filter:none}
@@ -813,6 +882,10 @@
   .tier.prime .tier-cta{min-height:52px;padding:16px 22px;font-size:.78rem}
   .tier-anchor-row{margin-top:12px}
   .tier-anchor-row::before{height:24px;top:-12px}
+  .ascent-rail{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin-bottom:20px;padding:10px 10px}
+  .ascent-node{padding:6px 6px}
+  .ascent-node-label{font-size:.56rem}
+  .ascent-rail::after{top:-8px;width:8px;height:8px}
   /* D. Layers — single column, readable */
   .layers-grid{grid-template-columns:1fr;gap:2px}
   .layer-card{padding:26px 22px}
@@ -956,6 +1029,9 @@
   .faq-a{font-size:.82rem}
   .btn-primary{font-size:.80rem;min-height:50px}
   .nav-btn{font-size:.70rem}
+  .ascent-rail{margin-bottom:16px;gap:7px;padding:9px 8px}
+  .ascent-node-num{font-size:.48rem}
+  .ascent-node-label{font-size:.54rem;letter-spacing:.05em}
 }
 @media(max-width:390px){
   .p-hero-hed{font-size:clamp(1.6rem,8vw,2.1rem)}
@@ -973,13 +1049,23 @@
   .faq-q{font-size:1rem}
   .faq-a{font-size:.80rem}
   .final-cta-sub{font-size:.82rem}
+  .ascent-rail{gap:6px;padding:8px 7px}
+  .ascent-node{padding:5px 4px}
+}
+
+/* ── Nav mobile breakpoint ── */
+@media(max-width:900px){
+  #nav{padding:14px 20px}#nav.stuck{padding:10px 20px}
+  .nav-link{display:none}
+  .nav-btn{display:none}
+  .nav-hamburger{display:flex}
 }
 </style>
 @include('partials.clarity')
 </head>
 <body>
 
-@include('partials.public-nav')
+@include('partials.public-nav', ['showHamburger' => true, 'isPricingPage' => true])
 
 
 {{-- ══════════════════════════════════════════
@@ -991,9 +1077,9 @@
     <h1 class="p-hero-hed" id="hero-headline">
       One system.<br><em>Multiple growth paths.</em>
     </h1>
-    <p class="p-hero-sub">Search visibility, market expansion, web presence, and demand capture&nbsp;&mdash; structured into one system. Start where you are. Build forward without losing momentum.</p>
+    <p class="p-hero-sub">Six levels of visibility infrastructure &mdash; from initial signal detection to full market control. Each level compounds on the last. Enter at any point. The system builds forward.</p>
     <div class="p-hero-actions">
-      <a href="{{ route('scan.start') }}" class="btn-primary">Start Your Scan&nbsp;&mdash; $2</a>
+      <a href="{{ route('scan.start') }}" class="btn-primary">Enter the System</a>
       <a href="#plans" class="btn-ghost">View the full architecture &rarr;</a>
     </div>
   </div>
@@ -1016,42 +1102,42 @@
 
     <!-- Ascension Rail -->
     <div class="ascent-rail" aria-label="System progression" role="navigation">
-      <div class="ascent-node"><span class="ascent-node-num">01</span><span class="ascent-node-label">Scan</span></div>
+      <div class="ascent-node" data-step="1"><span class="ascent-node-num">01</span><span class="ascent-node-label">Scan</span></div>
       <div class="ascent-line" aria-hidden="true"></div>
-      <div class="ascent-node"><span class="ascent-node-num">02</span><span class="ascent-node-label">Signal</span></div>
+      <div class="ascent-node" data-step="2"><span class="ascent-node-num">02</span><span class="ascent-node-label">Signal</span></div>
       <div class="ascent-line" aria-hidden="true"></div>
-      <div class="ascent-node --active"><span class="ascent-node-num">03</span><span class="ascent-node-label">Leverage</span></div>
+      <div class="ascent-node --active" data-step="3"><span class="ascent-node-num">03</span><span class="ascent-node-label">Leverage</span></div>
       <div class="ascent-line" aria-hidden="true"></div>
-      <div class="ascent-node"><span class="ascent-node-num">04</span><span class="ascent-node-label">Activate</span></div>
+      <div class="ascent-node" data-step="4"><span class="ascent-node-num">04</span><span class="ascent-node-label">Activate</span></div>
       <div class="ascent-line" aria-hidden="true"></div>
-      <div class="ascent-node"><span class="ascent-node-num">05</span><span class="ascent-node-label">Expand</span></div>
+      <div class="ascent-node" data-step="5"><span class="ascent-node-num">05</span><span class="ascent-node-label">Expand</span></div>
       <div class="ascent-line" aria-hidden="true"></div>
-      <div class="ascent-node"><span class="ascent-node-num">06</span><span class="ascent-node-label">Control</span></div>
+      <div class="ascent-node" data-step="6"><span class="ascent-node-num">06</span><span class="ascent-node-label">Control</span></div>
     </div>
 
     <!-- Top 5 tiers -->
     <div class="tier-grid-5" role="list">
 
       {{-- Tier 1 — Scan --}}
-      <div class="tier scan-tier" role="listitem">
+      <div class="tier scan-tier" role="listitem" data-step="1">
         <p class="tier-step">Step 01</p>
-        <p class="tier-flag">Entry</p>
+        <p class="tier-flag">System Entry</p>
         <h3 class="tier-name">Citation Scan</h3>
         <div class="tier-price"><sup>$</sup>2</div>
-        <p class="tier-position">Reveals your citation readiness and AI visibility in seconds.</p>
+        <p class="tier-position">The system begins here. Detect your current signal layer and identify where AI visibility breaks down.</p>
         <div class="tier-divider"></div>
         <ul class="tier-features">
           <li><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.2"><polyline points="3 8 7 12 13 4"/></svg> 0&ndash;100 AI citation readiness score</li>
-          <li><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.2"><polyline points="3 8 7 12 13 4"/></svg> Surface-level signal detection</li>
-          <li><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.2"><polyline points="3 8 7 12 13 4"/></svg> Instant&nbsp;&mdash; results in seconds</li>
+          <li><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.2"><polyline points="3 8 7 12 13 4"/></svg> Signal detection across your domain</li>
+          <li><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.2"><polyline points="3 8 7 12 13 4"/></svg> Instant results &mdash; data carries forward</li>
         </ul>
         <div class="tier-actions">
-          <a href="{{ route('scan.start') }}" class="tier-cta">Start Scan&nbsp;&mdash; $2</a>
+          <a href="{{ route('scan.start') }}" class="tier-cta">Begin Signal Detection&nbsp;&mdash; $2</a>
         </div>
       </div>
 
       {{-- Tier 2 — Signal --}}
-      <div class="tier" role="listitem">
+      <div class="tier" role="listitem" data-step="2">
         <p class="tier-step">Step 02</p>
         <p class="tier-flag">Intelligence</p>
         <h3 class="tier-name">Signal Expansion</h3>
@@ -1069,7 +1155,7 @@
       </div>
 
       {{-- Tier 3 — Leverage (focal) --}}
-      <div class="tier focal" role="listitem">
+      <div class="tier focal" role="listitem" data-step="3">
         <p class="tier-step">Step 03</p>
         <p class="tier-flag">Most Popular</p>
         <h3 class="tier-name">Structural Leverage</h3>
@@ -1087,7 +1173,7 @@
       </div>
 
       {{-- Tier 4 — Activate --}}
-      <div class="tier" role="listitem">
+      <div class="tier" role="listitem" data-step="4">
         <p class="tier-step">Step 04</p>
         <p class="tier-flag">Implementation</p>
         <h3 class="tier-name">System Activation</h3>
@@ -1106,7 +1192,7 @@
       </div>
 
       {{-- Tier 5 — Expand --}}
-      <div class="tier" role="listitem">
+      <div class="tier" role="listitem" data-step="5">
         <p class="tier-step">Step 05</p>
         <p class="tier-flag">Expansion</p>
         <h3 class="tier-name">Market Expansion</h3>
@@ -1128,7 +1214,7 @@
 
     <!-- Anchor — Market Control -->
     <div class="tier-anchor-row">
-      <div class="tier prime" role="listitem">
+      <div class="tier prime" role="listitem" data-step="6">
         <div class="prime-left">
           <p class="tier-step">Step 06</p>
           <p class="tier-flag">Full Deployment</p>
@@ -1146,7 +1232,7 @@
         <div class="prime-right">
           <div class="tier-actions" style="border-top:none;padding-top:24px">
             <a href="{{ route('onboarding.start', ['tier' => 'dominance']) }}" class="tier-cta">Dominate Your Market</a>
-            <a href="{{ route('onboarding.start', ['tier' => 'dominance']) }}" class="tier-book">Book a Strategy Call</a>
+            <a href="{{ url('/book?entry=consultation') }}" class="tier-book">Book Consultation</a>
             <p class="tier-commitment">Reviewed individually per market&nbsp;&middot;&nbsp; Limited capacity</p>
           </div>
         </div>
@@ -1236,7 +1322,7 @@
           <li>Implementation advisory</li>
           <li>Agency licensing</li>
         </ul>
-        <a href="{{ route('onboarding.start') }}" class="layer-cta">Book Strategy Session</a>
+        <a href="{{ url('/book?entry=consultation') }}" class="layer-cta">Book Consultation</a>
         <a href="{{ route('scan.start') }}" class="layer-scan-link">Or start with scan&nbsp;&mdash; $2</a>
       </div>
 
@@ -1250,7 +1336,7 @@
         <a href="{{ route('checkout.structural-leverage') }}">Fix Structure&nbsp;&mdash; $249</a>
         <a href="{{ route('checkout.system-activation') }}">Activate System&nbsp;&mdash; $489</a>
       </div>
-      <p class="layers-direct-micro">Most businesses start with the $2 scan and expand as gaps are revealed.</p>
+      <p class="layers-direct-micro">The scan is the system's first layer. Most businesses begin there and expand as the intelligence compounds.</p>
     </div>
   </div>
 </section>
@@ -1324,7 +1410,7 @@
         <span class="guide-marker">&rarr;</span>
         <div class="guide-text">
           <p class="guide-cond">You need a custom plan for a complex situation</p>
-          <p class="guide-action"><a href="/book" style="color:var(--gold);text-decoration:underline;text-underline-offset:3px">Book a Strategy Call</a></p>
+          <p class="guide-action"><a href="/book?entry=consultation" style="color:var(--gold);text-decoration:underline;text-underline-offset:3px">Book Consultation</a></p>
         </div>
       </div>
     </div>
@@ -1392,10 +1478,10 @@
 <section class="final-cta" aria-labelledby="cta-hed">
   <div class="wrap">
     <p class="final-cta-eye">Enter the System</p>
-    <h2 class="final-cta-hed" id="cta-hed">$2 to see where you stand.<br><em>Expand when you&rsquo;re ready.</em></h2>
-    <p class="final-cta-sub">Your data carries forward through every level. Each level compounds on the last. No repeated work, no wasted steps.</p>
+    <h2 class="final-cta-hed" id="cta-hed">One entry point.<br><em>The system builds from there.</em></h2>
+    <p class="final-cta-sub">Every level compounds on the last. Your data carries forward through the entire architecture. No repeated work.</p>
     <div class="final-cta-actions">
-      <a href="{{ route('scan.start') }}" class="btn-primary">Start Your Scan&nbsp;&mdash; $2</a>
+      <a href="{{ route('scan.start') }}" class="btn-primary">Begin Signal Detection&nbsp;&mdash; $2</a>
       <a href="#plans" class="btn-ghost">Compare all levels &rarr;</a>
     </div>
   </div>
@@ -1403,6 +1489,8 @@
 
 
 @include('partials.public-footer')
+
+@include('partials.back-to-top')
 
 @include('components.tm-style')
 <script>
@@ -1418,7 +1506,67 @@
       fetch('/api/v1/track',{method:'POST',headers:{'Content-Type':'application/json','Accept':'application/json'},body:JSON.stringify({event:'deployment_cta_click',metadata:{label:el.textContent.trim().substring(0,60),page:'pricing'}})}).catch(function(){});
     });
   });
+
+  // Pricing system linkage: card hover/focus drives rail state + marker position.
+  var plans = document.getElementById('plans');
+  if(plans){
+    var rail = plans.querySelector('.ascent-rail');
+    var nodes = rail ? Array.prototype.slice.call(rail.querySelectorAll('.ascent-node[data-step]')) : [];
+    var lines = rail ? Array.prototype.slice.call(rail.querySelectorAll('.ascent-line')) : [];
+    var tiers = Array.prototype.slice.call(plans.querySelectorAll('.tier[data-step]'));
+    var defaultStep = '3';
+
+    var moveMarker = function(node){
+      if(!rail || !node){ return; }
+      var railRect = rail.getBoundingClientRect();
+      var nodeRect = node.getBoundingClientRect();
+      var x = (nodeRect.left - railRect.left) + (nodeRect.width / 2);
+      rail.style.setProperty('--marker-x', x + 'px');
+    };
+
+    var setStep = function(step){
+      if(!rail){ return; }
+      var activeNode = null;
+
+      nodes.forEach(function(node){
+        var isMatch = node.getAttribute('data-step') === String(step);
+        node.classList.toggle('is-linked', isMatch);
+        if(isMatch){ activeNode = node; }
+      });
+
+      lines.forEach(function(line, idx){
+        line.classList.toggle('is-linked', idx < (Number(step) - 1));
+      });
+
+      tiers.forEach(function(tier){
+        tier.classList.toggle('is-active', tier.getAttribute('data-step') === String(step));
+      });
+
+      moveMarker(activeNode || rail.querySelector('.ascent-node.--active'));
+    };
+
+    var resetStep = function(){ setStep(defaultStep); };
+
+    tiers.forEach(function(tier){
+      var step = tier.getAttribute('data-step');
+      tier.addEventListener('mouseenter', function(){ setStep(step); });
+      tier.addEventListener('focusin', function(){ setStep(step); });
+      tier.addEventListener('mouseleave', resetStep);
+      tier.addEventListener('focusout', function(){
+        setTimeout(function(){
+          if(!plans.contains(document.activeElement)){
+            resetStep();
+          }
+        }, 0);
+      });
+      tier.addEventListener('touchstart', function(){ setStep(step); }, {passive:true});
+    });
+
+    resetStep();
+    window.addEventListener('resize', resetStep, {passive:true});
+  }
 })();
 </script>
+@include('partials.public-nav-js')
 </body>
 </html>

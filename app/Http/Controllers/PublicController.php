@@ -29,7 +29,19 @@ class PublicController extends Controller
         $consultTypes = \App\Models\ConsultType::active()->get()->keyBy('slug');
         $types = $consultTypes->values();
         $availableDays = \App\Models\BookingAvailability::active()->pluck('day_of_week')->toArray();
-        $highTicketTypes = \App\Models\ConsultType::whereIn('slug', ['strategy-session', 'market-expansion'])->get()->keyBy('slug');
+        $paidTypes = $types->where('is_free', false)->values();
+        $highTicketTypes = collect([
+            'consultation' => $paidTypes->firstWhere('slug', 'ai-visibility-consultation')
+                ?? $paidTypes->firstWhere('slug', 'consultation')
+                ?? $paidTypes->firstWhere('slug', 'audit')
+                ?? $paidTypes->firstWhere('slug', 'strategy-session')
+                ?? $paidTypes->firstWhere('slug', 'strategy')
+                ?? $paidTypes->sortBy('price')->first(),
+            'activation' => $paidTypes->firstWhere('slug', 'full-system-activation')
+                ?? $paidTypes->firstWhere('slug', 'activation')
+                ?? $paidTypes->firstWhere('slug', 'market-expansion')
+                ?? $paidTypes->sortByDesc('price')->first(),
+        ]);
         return view('public.landing', compact('consultTypes', 'types', 'availableDays', 'highTicketTypes'));
     }
 
@@ -338,6 +350,26 @@ class PublicController extends Controller
     public function searchPresenceEngine(): View
     {
         return view('public.search-presence-engine');
+    }
+
+    public function generativeEngineOptimization(): View
+    {
+        return view('public.generative-engine-optimization');
+    }
+
+    public function entitySeoForAiSearch(): View
+    {
+        return view('public.entity-seo-for-ai-search');
+    }
+
+    public function aeoVsSeoVsGeo(): View
+    {
+        return view('public.aeo-vs-seo-vs-geo');
+    }
+
+    public function aiSeoForLocalBusinesses(): View
+    {
+        return view('public.ai-seo-for-local-businesses');
     }
 
     public function pricing(): View

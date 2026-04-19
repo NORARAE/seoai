@@ -102,6 +102,55 @@ nav.stuck{background:rgba(8,8,8,.95);backdrop-filter:blur(16px);border-color:var
 .proc-status a{color:var(--gold);text-decoration:none;border-bottom:1px solid rgba(200,168,75,.3)}
 .proc-status a:hover{color:var(--gold-lt)}
 
+.proc-fallback{
+  display:none;
+  max-width:620px;
+  margin:26px auto 0;
+  padding:18px 18px 16px;
+  border:1px solid rgba(200,168,75,.2);
+  background:rgba(200,168,75,.03);
+  border-radius:10px;
+}
+.proc-fallback.on{display:block}
+.proc-fallback-title{
+  font-family:'Cormorant Garamond',serif;
+  font-size:1.1rem;
+  color:var(--ivory);
+  margin-bottom:8px;
+}
+.proc-fallback-text{
+  font-size:.86rem;
+  color:rgba(168,168,160,.9);
+  line-height:1.7;
+  margin-bottom:14px;
+}
+.proc-fallback-actions{
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  flex-wrap:wrap;
+  gap:10px;
+}
+.proc-fallback-btn{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  font-size:.72rem;
+  letter-spacing:.11em;
+  text-transform:uppercase;
+  text-decoration:none;
+  padding:10px 16px;
+  border:1px solid rgba(200,168,75,.26);
+  color:var(--gold-lt);
+  background:rgba(200,168,75,.04);
+  transition:background .2s, color .2s, border-color .2s;
+}
+.proc-fallback-btn:hover{
+  background:rgba(200,168,75,.1);
+  border-color:rgba(200,168,75,.45);
+  color:#f2e8cd;
+}
+
 /* ── Footer ── */
 footer{border-top:1px solid var(--border);padding:28px 48px;display:flex;flex-direction:column;align-items:center;gap:12px;text-align:center}
 .footer-copy{font-size:.66rem;letter-spacing:.08em;color:var(--muted)}
@@ -140,6 +189,13 @@ footer{border-top:1px solid var(--border);padding:28px 48px;display:flex;flex-di
   <p class="proc-sub">This usually takes just a few seconds. Your results will appear automatically.</p>
   <p class="proc-url">{{ $scan->url ?? '' }}</p>
   <p class="proc-status" id="statusText">Running checks…</p>
+  <div class="proc-fallback" id="processingFallback" role="status" aria-live="polite">
+    <p class="proc-fallback-title">This is taking a bit longer than expected.</p>
+    <p class="proc-fallback-text">You can continue in your dashboard — results will appear automatically.</p>
+    <div class="proc-fallback-actions">
+      <a class="proc-fallback-btn" href="{{ url('/dashboard#ai-scans') }}">Go to Dashboard →</a>
+    </div>
+  </div>
 </section>
 
 <!-- Footer -->
@@ -161,39 +217,89 @@ footer{border-top:1px solid var(--border);padding:28px 48px;display:flex;flex-di
 
   // Poll for scan completion every 3 seconds
   const scanId = @json($scan->id ?? null);
-  const resultUrl = @json(url('/quick-scan/result'));
+  const resultUrl = @json($resultUrl ?? url('/quick-scan/result'));
   const sessionId = @json($sessionId ?? '');
+  const token = @json($token ?? '');
   const statusEl = document.getElementById('statusText');
+  const fallbackEl = document.getElementById('processingFallback');
+  const spinnerEl = document.getElementById('spinner');
   let attempts = 0;
-  const maxAttempts = 40; // ~2 minutes
+  const maxAttempts = 15; // ~45 seconds
+
+  function buildFallbackUrl() {
+    if (resultUrl.indexOf('/quick-scan/result') !== -1) {
+      let url = resultUrl + '?scan_id=' + scanId;
+      if (token) {
+        url += '&token=' + encodeURIComponent(token);
+      }
+      if (sessionId) {
+        url += '&session_id=' + encodeURIComponent(sessionId);
+      }
+      return url;
+    }
+
+    if (resultUrl.indexOf('?') === -1) {
+      if (token) {
+        return resultUrl + '?token=' + encodeURIComponent(token);
+      }
+      return resultUrl + '?session_id=' + encodeURIComponent(sessionId);
+    }
+
+    if (token) {
+      return resultUrl + '&token=' + encodeURIComponent(token);
+    }
+
+    return resultUrl + '&session_id=' + encodeURIComponent(sessionId);
+  }
 
   function pollStatus() {
     if (!scanId) return;
     attempts++;
 
-    fetch('/quick-scan/status?scan_id=' + scanId + '&session_id=' + encodeURIComponent(sessionId))
+    let statusUrl = '/quick-scan/status?scan_id=' + scanId;
+    if (sessionId) {
+      statusUrl += '&session_id=' + encodeURIComponent(sessionId);
+    }
+    if (token) {
+      statusUrl += '&token=' + encodeURIComponent(token);
+    }
+
+    fetch(statusUrl)
       .then(r => r.json())
       .then(data => {
         if (data.ready) {
           statusEl.textContent = 'Score ready — loading results…';
-          window.location.href = resultUrl + '?session_id=' + encodeURIComponent(sessionId) + '&scan_id=' + scanId;
+          if (data.report_url) {
+            window.location.href = data.report_url;
+          } else {
+            window.location.href = buildFallbackUrl();
+          }
           return;
         }
         if (data.status === 'error') {
-          statusEl.innerHTML = 'Something went wrong with your scan. <a href="' + resultUrl + '?session_id=' + encodeURIComponent(sessionId) + '&scan_id=' + scanId + '">Try loading results</a> or contact <a href="mailto:hello@seoaico.com">hello@seoaico.com</a>.';
+          statusEl.innerHTML = 'Something went wrong with your scan. <a href="' + buildFallbackUrl() + '">Try loading results</a> or contact <a href="mailto:hello@seoaico.com">hello@seoaico.com</a>.';
           statusEl.classList.add('error');
-          document.getElementById('spinner').style.display = 'none';
+          if (spinnerEl) spinnerEl.style.display = 'none';
+          if (fallbackEl) fallbackEl.classList.add('on');
           return;
         }
         if (attempts >= maxAttempts) {
-          statusEl.innerHTML = 'Taking longer than expected. <a href="' + resultUrl + '?session_id=' + encodeURIComponent(sessionId) + '&scan_id=' + scanId + '">Refresh manually</a> or contact <a href="mailto:hello@seoaico.com">hello@seoaico.com</a>.';
+          statusEl.innerHTML = 'Taking longer than expected. <a href="' + buildFallbackUrl() + '">Check this report link</a> or contact <a href="mailto:hello@seoaico.com">hello@seoaico.com</a>.';
           statusEl.classList.add('error');
-          document.getElementById('spinner').style.display = 'none';
+          if (spinnerEl) spinnerEl.style.display = 'none';
+          if (fallbackEl) fallbackEl.classList.add('on');
           return;
         }
         setTimeout(pollStatus, 3000);
       })
       .catch(() => {
+        if (attempts >= maxAttempts) {
+          statusEl.innerHTML = 'We are still processing your scan. <a href="' + buildFallbackUrl() + '">Open report link</a> or contact <a href="mailto:hello@seoaico.com">hello@seoaico.com</a>.';
+          statusEl.classList.add('error');
+          if (spinnerEl) spinnerEl.style.display = 'none';
+          if (fallbackEl) fallbackEl.classList.add('on');
+          return;
+        }
         setTimeout(pollStatus, 5000);
       });
   }

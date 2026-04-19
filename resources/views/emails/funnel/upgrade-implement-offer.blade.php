@@ -25,7 +25,7 @@
     <p style="font-size:13px;color:#555;line-height:1.7;margin:0 0 24px">Without corrections, the gaps you&rsquo;ve identified stay open &mdash; and competitors who fix theirs lock in an advantage you can&rsquo;t reclaim.</p>
 
     <div style="text-align:center;margin:24px 0">
-      <a href="{{ url('/checkout/structural-leverage') }}" style="display:inline-block;padding:14px 36px;background:#080808;color:#ede8de;font-size:13px;letter-spacing:.1em;text-decoration:none;text-transform:uppercase">Resolve Structural Gaps &mdash; $249</a>
+      <a href="{{ \App\Support\EmailUrl::tracked('/checkout/structural-leverage', 'upgrade-implement-offer', $scan->user_id, $scan->id) }}" style="display:inline-block;padding:14px 36px;background:#080808;color:#ede8de;font-size:13px;letter-spacing:.1em;text-decoration:none;text-transform:uppercase">Resolve Structural Gaps &mdash; $249</a>
     </div>
     @else
     <p style="font-size:13px;color:#555;line-height:1.7;margin:0 0 6px">With System Activation, we:</p>
@@ -38,14 +38,14 @@
     <p style="font-size:13px;color:#555;line-height:1.7;margin:0 0 24px">Most sites stop at insight. The ones that move forward lock in positions that competitors can&rsquo;t reclaim.</p>
 
     <div style="text-align:center;margin:24px 0">
-      <a href="{{ route('quick-scan.upgrade') }}?plan=optimization&scan_id={{ $scan->id }}" style="display:inline-block;padding:14px 36px;background:#080808;color:#ede8de;font-size:13px;letter-spacing:.1em;text-decoration:none;text-transform:uppercase">Activate Full System &mdash; $489</a>
+      <a href="{{ \App\Support\EmailUrl::tracked('/checkout/system-activation', 'upgrade-implement-offer', $scan->user_id, $scan->id) }}" style="display:inline-block;padding:14px 36px;background:#080808;color:#ede8de;font-size:13px;letter-spacing:.1em;text-decoration:none;text-transform:uppercase">Activate Full System &mdash; $489</a>
     </div>
     @endif
 
     <p style="font-size:12px;color:#999;line-height:1.6;margin:20px 0 0;text-align:center">Or if you&rsquo;d prefer guidance first:</p>
 
     <div style="text-align:center;margin:12px 0 0">
-      <a href="{{ url('/booking') }}" style="font-size:12px;color:#c8a84b;text-decoration:none;letter-spacing:.06em">Book a Strategy Session &rarr;</a>
+      <a href="{{ \App\Support\EmailUrl::tracked('/booking', 'upgrade-implement-offer', $scan->user_id, $scan->id) }}" style="font-size:12px;color:#c8a84b;text-decoration:none;letter-spacing:.06em">Book a Strategy Session &rarr;</a>
     </div>
   </div>
 

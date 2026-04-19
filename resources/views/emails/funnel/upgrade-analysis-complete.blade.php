@@ -29,7 +29,7 @@
     </ul>
 
     <div style="text-align:center;margin:24px 0">
-      <a href="{{ url('/dashboard') }}" style="display:inline-block;padding:14px 36px;background:#080808;color:#ede8de;font-size:13px;letter-spacing:.1em;text-decoration:none;text-transform:uppercase">View Results</a>
+      <a href="{{ \App\Support\EmailUrl::tracked('/dashboard', 'upgrade-analysis-complete', $scan->user_id, $scan->id) }}" style="display:inline-block;padding:14px 36px;background:#080808;color:#ede8de;font-size:13px;letter-spacing:.1em;text-decoration:none;text-transform:uppercase">View Results</a>
     </div>
   </div>
 

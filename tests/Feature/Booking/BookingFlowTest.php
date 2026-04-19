@@ -8,6 +8,7 @@ use App\Models\Booking;
 use App\Models\BookingAvailability;
 use App\Models\ConsultType;
 use App\Models\Lead;
+use App\Models\QuickScan;
 use Carbon\Carbon;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Mail;
@@ -18,7 +19,8 @@ class BookingFlowTest extends TestCase
     use RefreshDatabase;
 
     private ConsultType $freeType;
-    private ConsultType $paidType;
+    private ConsultType $consultationType;
+    private ConsultType $activationType;
 
     protected function setUp(): void
     {
@@ -35,15 +37,26 @@ class BookingFlowTest extends TestCase
             'sort_order' => 1,
         ]);
 
-        $this->paidType = ConsultType::create([
-            'name' => 'Paid Strategy Consult',
-            'slug' => 'paid-strategy-consult',
-            'description' => 'A 60-minute paid strategy session.',
+        $this->consultationType = ConsultType::create([
+            'name' => 'AI Visibility Consultation',
+            'slug' => 'ai-visibility-consultation',
+            'description' => 'A paid consultation for qualification and strategic direction.',
             'duration_minutes' => 60,
             'price' => 250,
             'is_free' => false,
             'is_active' => true,
             'sort_order' => 2,
+        ]);
+
+        $this->activationType = ConsultType::create([
+            'name' => 'Full System Activation',
+            'slug' => 'full-system-activation',
+            'description' => 'A paid activation engagement for full system deployment.',
+            'duration_minutes' => 60,
+            'price' => 5000,
+            'is_free' => false,
+            'is_active' => true,
+            'sort_order' => 3,
         ]);
 
         foreach ([1, 2, 3, 4, 5] as $dow) {
@@ -66,8 +79,42 @@ class BookingFlowTest extends TestCase
     {
         $response = $this->get('/book');
         $response->assertOk();
-        $response->assertSee('Free Discovery Call');
-        $response->assertSee('Paid Strategy Consult');
+        $response->assertSee('AI Visibility Consultation');
+        $response->assertSee('Full System Activation');
+    }
+
+    public function test_book_page_resolves_high_ticket_buttons_with_legacy_slugs(): void
+    {
+        // Keep only legacy slugs to verify fallback mapping used by the modal CTA buttons.
+        ConsultType::query()->delete();
+
+        $consultation = ConsultType::create([
+            'name' => 'Legacy Consultation',
+            'slug' => 'strategy-session',
+            'description' => 'Legacy consultation option',
+            'duration_minutes' => 90,
+            'price' => 500,
+            'is_free' => false,
+            'is_active' => true,
+            'sort_order' => 1,
+        ]);
+
+        $activation = ConsultType::create([
+            'name' => 'Legacy Expansion Activation',
+            'slug' => 'market-expansion',
+            'description' => 'Legacy activation option',
+            'duration_minutes' => 60,
+            'price' => 5000,
+            'is_free' => false,
+            'is_active' => true,
+            'sort_order' => 2,
+        ]);
+
+        $response = $this->get('/book');
+
+        $response->assertOk();
+        $response->assertSee("_bkOpenHT({$consultation->id}, 90, 'AI Visibility Consultation', 'full_prepay')", false);
+        $response->assertSee("_bkOpenHT({$activation->id}, 60, 'Full System Activation', '50_50_split')", false);
     }
 
     // -------------------------------------------------------------------------
@@ -114,6 +161,7 @@ class BookingFlowTest extends TestCase
     public function test_free_booking_stores_record_and_returns_success(): void
     {
         $date = $this->nextWeekday(Carbon::MONDAY);
+        $this->createCompletedScan('alice@example.com');
 
         $response = $this->postJson('/book', [
             'consult_type_id' => $this->freeType->id,
@@ -139,6 +187,7 @@ class BookingFlowTest extends TestCase
     public function test_free_booking_syncs_lead_record(): void
     {
         $date = $this->nextWeekday(Carbon::MONDAY);
+        $this->createCompletedScan('bob@example.com');
 
         $this->postJson('/book', [
             'consult_type_id' => $this->freeType->id,
@@ -158,6 +207,7 @@ class BookingFlowTest extends TestCase
     public function test_free_booking_queues_confirmation_and_alert_emails(): void
     {
         $date = $this->nextWeekday(Carbon::TUESDAY);
+        $this->createCompletedScan('carol@example.com');
 
         $this->postJson('/book', [
             'consult_type_id' => $this->freeType->id,
@@ -178,6 +228,8 @@ class BookingFlowTest extends TestCase
     public function test_duplicate_slot_is_blocked(): void
     {
         $date = $this->nextWeekday(Carbon::WEDNESDAY);
+        $this->createCompletedScan('dave@example.com');
+        $this->createCompletedScan('eve@example.com');
 
         $payload = [
             'consult_type_id' => $this->freeType->id,
@@ -341,7 +393,20 @@ class BookingFlowTest extends TestCase
         while ($date->dayOfWeek !== $dayOfWeek) {
             $date->addDay();
         }
+
         return $date->toDateString();
+    }
+
+    private function createCompletedScan(string $email): QuickScan
+    {
+        return QuickScan::create([
+            'email' => $email,
+            'url' => 'https://example.com',
+            'status' => QuickScan::STATUS_SCANNED,
+            'paid' => true,
+            'score' => 72,
+            'scanned_at' => now(),
+        ]);
     }
 
     // -------------------------------------------------------------------------
@@ -357,7 +422,7 @@ class BookingFlowTest extends TestCase
 
         // Validation still runs before Stripe is touched, so a missing field = 422
         $this->postJson('/book/checkout', [
-            'consult_type_id' => $this->paidType->id,
+            'consult_type_id' => $this->consultationType->id,
             // missing required fields
         ])->assertUnprocessable()
             ->assertJsonValidationErrors(['name', 'email', 'preferred_date', 'preferred_time']);
@@ -383,7 +448,7 @@ class BookingFlowTest extends TestCase
 
         // Seed an awaiting_payment booking for the same slot
         Booking::create([
-            'consult_type_id' => $this->paidType->id,
+            'consult_type_id' => $this->consultationType->id,
             'name' => 'Existing Payer',
             'email' => 'existing@example.com',
             'preferred_date' => $date,
@@ -393,7 +458,7 @@ class BookingFlowTest extends TestCase
 
         // A NEW checkout should be rejected because the slot is reserved
         $this->postJson('/book/checkout', [
-            'consult_type_id' => $this->paidType->id,
+            'consult_type_id' => $this->consultationType->id,
             'name' => 'New Person',
             'email' => 'new@example.com',
             'preferred_date' => $date,
@@ -408,7 +473,7 @@ class BookingFlowTest extends TestCase
 
         // Seed an awaiting_payment booking
         Booking::create([
-            'consult_type_id' => $this->paidType->id,
+            'consult_type_id' => $this->consultationType->id,
             'name' => 'Paying Person',
             'email' => 'pay@example.com',
             'preferred_date' => $date,
@@ -418,7 +483,7 @@ class BookingFlowTest extends TestCase
 
         $response = $this->getJson('/book/slots?' . http_build_query([
             'date' => $date,
-            'consult_type_id' => $this->paidType->id,
+            'consult_type_id' => $this->consultationType->id,
         ]));
 
         $response->assertOk();
@@ -428,7 +493,7 @@ class BookingFlowTest extends TestCase
     public function test_confirmed_page_renders_for_awaiting_payment_booking(): void
     {
         $booking = Booking::create([
-            'consult_type_id' => $this->paidType->id,
+            'consult_type_id' => $this->consultationType->id,
             'name' => 'Pay Wait',
             'email' => 'paywait@example.com',
             'preferred_date' => $this->nextWeekday(Carbon::THURSDAY),
@@ -438,6 +503,6 @@ class BookingFlowTest extends TestCase
 
         $this->get('/book/confirmed?booking=' . $booking->id)
             ->assertOk()
-            ->assertSee('Paid Strategy Consult');
+            ->assertSee('AI Visibility Consultation');
     }
 }

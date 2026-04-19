@@ -4,6 +4,8 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Analyzing Your Site — SEO AI Co</title>
+<link rel="canonical" href="{{ url('/scan/process') }}">
+<meta name="robots" content="noindex, nofollow">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
@@ -90,7 +92,7 @@
   </div>
 
   <p class="proc-note">Your results will be ready in moments.</p>
-  <p style="text-align:center;margin-top:24px"><a href="{{ route('scan.preview') }}" style="font-size:.72rem;color:var(--muted);text-decoration:underline;text-underline-offset:3px;opacity:.5;transition:opacity .3s" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='.5'">Taking too long? View results &rarr;</a></p>
+  <p style="text-align:center;margin-top:24px"><a href="{{ $nextRoute }}" style="font-size:.72rem;color:var(--muted);text-decoration:underline;text-underline-offset:3px;opacity:.5;transition:opacity .3s" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='.5'">Taking too long? Continue &rarr;</a></p>
 </div>
 
 <script>
@@ -111,10 +113,10 @@
       current++;
       setTimeout(advance, 900 + Math.random()*400);
     } else {
-      // All stages done — redirect to preview intelligence
+      // All stages done — continue to next stateful step
       bar.style.width = '100%';
       setTimeout(function(){
-        window.location.href = "{{ route('scan.preview') }}";
+        window.location.href = "{{ $nextRoute }}";
       }, 600);
     }
   }

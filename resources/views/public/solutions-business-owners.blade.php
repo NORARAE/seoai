@@ -105,7 +105,18 @@ footer{border-top:1px solid var(--border);padding:32px 64px;display:flex;align-i
   .top-bar{padding:20px 24px}
   .page{padding:48px 24px 72px}
   .proof-stats{grid-template-columns:1fr}
+  .page-cta{padding:32px 24px}
+  .page-cta h2{font-size:1.6rem}
   footer{padding:24px;flex-direction:column;gap:16px;text-align:center}
+}
+@media(max-width:430px){
+  .page-title{font-size:clamp(1.8rem,8vw,2.4rem)}
+  .page-intro{font-size:.88rem}
+  .stat-num{font-size:2.2rem}
+  .benefit-title{font-size:.86rem}
+  .benefit-body{font-size:.8rem}
+  .page-cta h2{font-size:1.4rem}
+  .cta-btn{padding:14px 28px;font-size:.74rem}
 }
 </style>
 @include('partials.clarity')
@@ -140,28 +151,24 @@ footer{border-top:1px solid var(--border);padding:32px 64px;display:flex;align-i
 
   <ul class="benefit-list">
     <li>
-      <span></span>
       <div>
         <span class="benefit-title">Your territory — no one else's</span>
         <span class="benefit-body">Once your market is activated, we cannot serve a competing business in the same category and geography. Your position is exclusive by contract.</span>
       </div>
     </li>
     <li>
-      <span></span>
       <div>
         <span class="benefit-title">Coverage across every neighbourhood you serve</span>
         <span class="benefit-body">Programmatic pages are built for every city, suburb, and service area within your territory — so you show up where your customers search, not just where you rank today.</span>
       </div>
     </li>
     <li>
-      <span></span>
       <div>
         <span class="benefit-title">Structural advantage — not a campaign</span>
         <span class="benefit-body">The system operates in structured 4-month cycles — build, stabilization, expansion, and growth. The infrastructure compounds. The longer it runs, the harder it is for anyone to displace you — even if they try.</span>
       </div>
     </li>
     <li>
-      <span></span>
       <div>
         <span class="benefit-title">Built for businesses with the capacity to handle growth</span>
         <span class="benefit-body">We're selective. We want operators who can handle the volume this generates. Access is reviewed and approved individually.</span>

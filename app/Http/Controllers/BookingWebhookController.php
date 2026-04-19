@@ -145,7 +145,7 @@ class BookingWebhookController extends Controller
         }
 
         $deploymentFields = [];
-        if (!$booking->activation_date) {
+        if ($booking->isActivationEngagement() && !$booking->activation_date) {
             $deploymentFields = [
                 'activation_date' => now(),
                 'cycle_end_date' => now()->addMonths(4),
@@ -194,7 +194,9 @@ class BookingWebhookController extends Controller
             return response()->json(['message' => 'No booking found for subscription.']);
         }
 
-        $booking->update(['deployment_status' => 'payment_failed']);
+        if ($booking->isActivationEngagement()) {
+            $booking->update(['deployment_status' => 'payment_failed']);
+        }
 
         Log::channel('booking')->warning('Booking subscription payment failed', [
             'booking_id' => $booking->id,

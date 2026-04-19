@@ -131,7 +131,11 @@ class InternalQaScan extends Page
 
         if ($runAsync) {
             // Dispatch to queue — mirrors webhook path
-            RunQuickScanJob::dispatch($scan->id);
+            if (app()->environment('local')) {
+                RunQuickScanJob::dispatchSync($scan->id);
+            } else {
+                RunQuickScanJob::dispatch($scan->id);
+            }
 
             $this->lastScanId = $scan->id;
             $this->lastStatus = 'queued';
@@ -162,7 +166,11 @@ class InternalQaScan extends Page
                 ]);
 
                 // Dispatch job for CRM + optional emails (idempotent)
-                RunQuickScanJob::dispatch($scan->id);
+                if (app()->environment('local')) {
+                    RunQuickScanJob::dispatchSync($scan->id);
+                } else {
+                    RunQuickScanJob::dispatch($scan->id);
+                }
 
                 $this->lastScanId = $scan->id;
                 $this->lastScore = $result['score'];

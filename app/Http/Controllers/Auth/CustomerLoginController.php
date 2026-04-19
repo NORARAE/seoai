@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Models\QuickScan;
 use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -64,7 +65,19 @@ class CustomerLoginController extends Controller
         RateLimiter::clear($key);
         $request->session()->regenerate();
 
-        return $this->authenticatedRedirect(Auth::user());
+        $user = Auth::user();
+
+        // Link any orphan scans (paid but no user_id) matching this user's email
+        QuickScan::where('email', $user->email)
+            ->whereNull('user_id')
+            ->update(['user_id' => $user->id]);
+
+        // Auto-approve if user has paid scans but isn't approved yet
+        if (!$user->isApproved() && $user->quickScans()->where('paid', true)->exists()) {
+            $user->update(['approved' => true]);
+        }
+
+        return $this->authenticatedRedirect($user);
     }
 
     private function authenticatedRedirect($user): RedirectResponse

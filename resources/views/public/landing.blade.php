@@ -1885,11 +1885,12 @@ body::after{
 
 /* ── Footer ── */
 footer{border-top:1px solid var(--border);padding:36px 64px;display:flex;flex-direction:column;align-items:center;gap:16px}
-.footer-main{display:flex;align-items:center;justify-content:space-between;width:100%}
-.footer-copy{font-size:.7rem;letter-spacing:.1em;color:var(--muted)}
-.footer-legal{position:static;display:flex;gap:24px;padding:12px 0 0;border-top:1px solid var(--border);border-bottom:none;width:100%;justify-content:center;z-index:auto}
-.footer-legal a{font-size:.66rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);text-decoration:none;transition:color .3s}
-.footer-legal a:hover{color:var(--gold)}
+.footer-main{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px 18px;width:100%;line-height:1.65}
+.footer-main .logo{display:inline-flex;align-items:baseline;opacity:.78}
+.footer-copy{font-size:.7rem;letter-spacing:.1em;line-height:1.65;color:rgba(168,168,160,.7)}
+.footer-legal{position:static;display:flex;flex-wrap:wrap;gap:12px 24px;padding:14px 0 0;border-top:1px solid var(--border);border-bottom:none;width:100%;justify-content:center;z-index:auto;line-height:1.65}
+.footer-legal a{font-size:.66rem;letter-spacing:.14em;text-transform:uppercase;color:rgba(168,168,160,.6);text-decoration:none;transition:color .3s}
+.footer-legal a:hover{color:rgba(168,168,160,.78)}
 
 /* ── Form feedback ── */
 .form-success{background:#142a14;border:1px solid #1e3a1e;color:#8fcf8f;padding:18px 24px;font-size:.9rem;line-height:1.7;margin-bottom:12px}
@@ -2256,7 +2257,7 @@ body::before{
 }
 .diag-hed em{color:var(--gold);font-style:italic}
 .diag-sub{
-  font-size:.88rem;color:rgba(178,176,168,.72);
+  font-size:.88rem;color:rgba(168,168,160,.82);
   margin:0 auto 48px;max-width:500px;line-height:1.76;
   position:relative;z-index:1;
 }
@@ -2264,21 +2265,35 @@ body::before{
 /* ── Score Panel — luxury AI diagnostic dashboard ── */
 .diag-panel{
   max-width:620px;margin:0 auto 0;
-  background:rgba(14,13,9,.88);
-  border:1px solid rgba(200,168,75,.1);border-radius:4px;
+  background:linear-gradient(to bottom,rgba(20,18,12,.92),rgba(12,10,8,.96));
+  border:1px solid rgba(200,168,75,.22);border-radius:6px;
   overflow:hidden;text-align:left;
   position:relative;z-index:1;
   backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
   box-shadow:
-    inset 0 1px 0 rgba(200,168,75,.06),
-    0 20px 72px rgba(0,0,0,.45),
-    0 2px 14px rgba(0,0,0,.3);
+    0 0 0 1px rgba(200,168,75,.12),
+    0 12px 40px rgba(0,0,0,.55),
+    inset 0 1px 0 rgba(200,168,75,.08),
+    inset 0 0 36px rgba(200,168,75,.03);
+  animation:diagAmbient 6s ease-in-out infinite;
+}
+@keyframes diagAmbient{
+  0%,100%{box-shadow:0 0 0 1px rgba(200,168,75,.12),0 12px 40px rgba(0,0,0,.55),inset 0 1px 0 rgba(200,168,75,.08),inset 0 0 36px rgba(200,168,75,.03)}
+  50%{box-shadow:0 0 0 1px rgba(200,168,75,.16),0 14px 46px rgba(0,0,0,.58),inset 0 1px 0 rgba(200,168,75,.1),inset 0 0 48px rgba(200,168,75,.05)}
 }
 /* Soft ambient glow behind panel */
 .diag-panel::before{
   content:'';position:absolute;inset:-48px;
-  background:radial-gradient(ellipse 55% 50% at 50% 50%,rgba(200,168,75,.04) 0%,transparent 70%);
+  background:radial-gradient(ellipse 60% 55% at 50% 50%,rgba(200,168,75,.06) 0%,transparent 70%);
   pointer-events:none;z-index:-1;
+  animation:diagGlow 8s ease-in-out infinite;
+}
+@keyframes diagGlow{0%,100%{opacity:.7}50%{opacity:1}}
+/* Depth overlay — subtle bottom fade */
+.diag-panel::after{
+  content:'';position:absolute;bottom:0;left:0;right:0;height:72px;
+  background:linear-gradient(transparent,rgba(0,0,0,.25));
+  pointer-events:none;z-index:2;border-radius:0 0 6px 6px;
 }
 .diag-panel-bar{
   background:rgba(17,16,9,.92);
@@ -2289,46 +2304,74 @@ body::before{
 .diag-panel-dot{width:7px;height:7px;border-radius:50%}
 .diag-panel-label{
   font-size:.58rem;letter-spacing:.14em;text-transform:uppercase;
-  color:rgba(168,168,160,.42);
+  color:rgba(168,168,160,.7);
 }
 .diag-panel-body{
-  padding:30px 30px 26px;display:flex;gap:28px;align-items:flex-start;
+  padding:36px 36px 30px;display:flex;gap:28px;align-items:flex-start;
 }
 .diag-score-block{
   flex-shrink:0;text-align:center;
   padding:6px 26px 6px 6px;
   border-right:1px solid rgba(200,168,75,.07);
-  min-width:115px;
+  min-width:120px;
+}
+.diag-score-label{
+  font-size:.48rem;letter-spacing:.28em;text-transform:uppercase;
+  color:rgba(200,168,75,.44);margin-bottom:6px;
 }
 .diag-score-num{
   font-family:'Cormorant Garamond',serif;
-  font-size:3.8rem;font-weight:300;color:#6aaf90;
+  font-size:clamp(3.2rem,6vw,4.2rem);font-weight:300;color:#6aaf90;
   line-height:1;margin-bottom:4px;letter-spacing:-.02em;
+  text-shadow:0 0 28px rgba(120,255,220,.18);
+  animation:scoreFadeIn 1.2s ease-out;
 }
+@keyframes scoreFadeIn{from{opacity:0;transform:scale(.85)}to{opacity:1;transform:scale(1)}}
 .diag-score-denom{
   font-size:.56rem;letter-spacing:.15em;text-transform:uppercase;
-  color:rgba(178,176,168,.48);margin-bottom:14px;
+  color:rgba(168,168,160,.7);margin-bottom:14px;
 }
 .diag-score-badge{
   display:inline-block;font-size:.52rem;letter-spacing:.18em;text-transform:uppercase;
   color:rgba(106,175,144,.72);border:1px solid rgba(106,175,144,.15);
   padding:3px 10px;border-radius:2px;
 }
-.diag-results{flex:1;display:flex;flex-direction:column;gap:11px}
+.diag-results{flex:1;display:flex;flex-direction:column;gap:14px}
 .diag-result-row{
-  display:flex;align-items:center;gap:10px;
-  font-size:.78rem;color:rgba(195,193,186,.74);line-height:1.4;
+  display:flex;align-items:center;gap:12px;
+  font-size:.78rem;color:rgba(168,168,160,.82);line-height:1.4;
+  padding:10px 0;border-bottom:1px solid rgba(200,168,75,.06);
+  padding-left:2px;border-left:2px solid transparent;
+  transition:border-color .3s;
+  animation:rowSlideIn .5s ease-out both;
 }
-.diag-result-indicator{width:6px;height:6px;border-radius:50%;flex-shrink:0}
-.diag-result-indicator.--pass{background:rgba(106,175,144,.68)}
-.diag-result-indicator.--fail{background:rgba(196,120,120,.62)}
-.diag-result-indicator.--warn{background:rgba(200,168,75,.58)}
+.diag-result-row:nth-child(1){animation-delay:.15s}
+.diag-result-row:nth-child(2){animation-delay:.19s}
+.diag-result-row:nth-child(3){animation-delay:.23s}
+.diag-result-row:nth-child(4){animation-delay:.27s}
+.diag-result-row:nth-child(5){animation-delay:.31s}
+@keyframes rowSlideIn{from{opacity:0;transform:translateX(-6px)}to{opacity:1;transform:translateX(0)}}
+.diag-result-row:hover{border-left-color:rgba(200,168,75,.15)}
+.diag-result-row:last-child{border-bottom:none}
+.diag-result-indicator{width:7px;height:7px;border-radius:50%;flex-shrink:0}
+.diag-result-indicator.--pass{background:rgba(106,175,144,.82);box-shadow:0 0 6px rgba(106,175,144,.15)}
+.diag-result-indicator.--fail{background:rgba(196,120,120,.5);box-shadow:0 0 6px rgba(196,120,120,.1)}
+.diag-result-indicator.--warn{background:rgba(200,168,75,.72);box-shadow:0 0 6px rgba(200,168,75,.12)}
 .diag-panel-footer{
-  border-top:1px solid rgba(200,168,75,.05);
-  padding:13px 30px;display:flex;justify-content:space-between;align-items:center;
+  border-top:1px solid rgba(200,168,75,.06);
+  margin-top:18px;
+  padding:16px 36px;display:flex;flex-direction:column;gap:6px;
+  position:relative;z-index:3;
 }
-.diag-panel-footer-left{font-size:.68rem;color:rgba(178,176,168,.48);letter-spacing:.02em}
-.diag-panel-footer-right{font-size:.58rem;letter-spacing:.12em;text-transform:uppercase;color:rgba(200,168,75,.44)}
+.diag-opp-label{
+  font-size:.46rem;letter-spacing:.26em;text-transform:uppercase;
+  color:rgba(200,168,75,.7);
+}
+.diag-panel-footer-left{font-size:.72rem;color:rgba(168,168,160,.82);letter-spacing:.02em}
+.diag-panel-footer-left strong{
+  font-size:.82rem;color:rgba(120,255,220,.7);font-weight:600;
+  text-shadow:0 0 8px rgba(120,255,220,.25);
+}
 
 /* ── Connector trace — panel to modules ── */
 .diag-connector{
@@ -2382,23 +2425,34 @@ body::before{
 .diag-cta{
   display:inline-block;
   background:linear-gradient(180deg,#d8be72 0%,#c8a84b 100%);
-  color:var(--bg);font-size:.68rem;font-weight:600;
+  color:var(--bg);font-size:.78rem;font-weight:600;
   letter-spacing:.16em;text-transform:uppercase;text-decoration:none;
-  padding:17px 48px;border:1px solid rgba(226,201,125,.4);border-radius:2px;
+  padding:20px 56px;border:1px solid rgba(226,201,125,.4);border-radius:3px;
   position:relative;overflow:hidden;transition:all .3s;
-  box-shadow:0 4px 22px rgba(200,168,75,.08);
+  box-shadow:0 4px 22px rgba(200,168,75,.1);
+  animation:diagCtaPulse 3.5s ease-in-out infinite;
+}
+@keyframes diagCtaPulse{
+  0%,100%{box-shadow:0 4px 22px rgba(200,168,75,.1)}
+  50%{box-shadow:0 6px 36px rgba(200,168,75,.22)}
 }
 .diag-cta::before{
   content:'';position:absolute;inset:0;
   background:linear-gradient(90deg,transparent,rgba(255,255,255,.12),transparent);
   transform:translateX(-100%);transition:transform .6s;
 }
+.diag-cta::after{
+  content:'';position:absolute;bottom:0;left:50%;transform:translateX(-50%);
+  width:0;height:1px;background:rgba(200,168,75,.5);
+  transition:width .4s ease;
+}
 .diag-cta:hover{
   background:linear-gradient(180deg,#e0c97e 0%,#d4b45a 100%);
   border-color:rgba(226,201,125,.65);
-  box-shadow:0 8px 32px rgba(200,168,75,.18);transform:translateY(-1px);
+  box-shadow:0 8px 36px rgba(200,168,75,.24);transform:translateY(-1px);
 }
 .diag-cta:hover::before{transform:translateX(100%)}
+.diag-cta:hover::after{width:60%}
 .diag-cta-meta{
   font-size:.62rem;letter-spacing:.14em;text-transform:uppercase;
   color:rgba(195,192,184,.52);margin-top:16px;
@@ -2432,7 +2486,7 @@ body::before{
   .diag-module-title{font-size:1.08rem}
   .diag-module-body{font-size:.92rem;line-height:1.84}
   .diag-cta-meta{font-size:.64rem;letter-spacing:.13em}
-  .diag-panel-body{gap:20px;padding:24px 24px 20px}
+  .diag-panel-body{gap:22px;padding:28px 28px 22px}
   .diag-bridge{height:40px;margin-top:24px}
 }
 @media(max-width:600px){
@@ -2442,18 +2496,124 @@ body::before{
   .diag-module-title{font-size:1.1rem}
   .diag-module-body{font-size:.94rem;line-height:1.86}
   .diag-modules-label{font-size:.58rem;color:rgba(200,168,75,.42)}
-  .diag-panel{max-width:100%}
-  .diag-panel-body{flex-direction:column;text-align:center;gap:16px;padding:20px 20px 16px}
-  .diag-score-block{border-right:none;border-bottom:1px solid rgba(200,168,75,.07);padding:0 0 16px;min-width:auto}
-  .diag-results{align-items:center}
+  .diag-panel{max-width:420px;margin-left:auto;margin-right:auto}
+  .diag-panel-body{flex-direction:column;text-align:center;gap:0;padding:24px 20px 20px}
+  .diag-score-block{
+    border-right:none;
+    border-bottom:none;
+    padding:0 0 18px;
+    min-width:auto;
+    position:relative;
+  }
+  .diag-score-block::after{
+    content:'';
+    position:absolute;bottom:0;left:12%;right:12%;height:1px;
+    background:linear-gradient(90deg,transparent,rgba(200,168,75,.12),transparent);
+  }
+  .diag-score-label{font-size:.52rem;letter-spacing:.22em;margin-bottom:8px}
+  .diag-score-num{font-size:clamp(2.8rem,9vw,3.4rem);margin-bottom:2px}
+  .diag-score-denom{font-size:.52rem;margin-bottom:10px}
+  .diag-score-badge{font-size:.5rem;padding:3px 12px}
+  .diag-results{
+    align-items:flex-start;
+    text-align:left;
+    padding:16px 0 0;
+    gap:11px;
+  }
+  .diag-result-row{
+    font-size:.76rem;
+    gap:10px;
+    padding:3px 0 3px 4px;
+    line-height:1.45;
+    border-left-width:1.5px;
+  }
+  .diag-result-indicator{width:6px;height:6px;margin-top:1px}
   .diag-hed{max-width:100%}
-  .diag-panel-footer{flex-direction:column;gap:6px;text-align:center}
+  .diag-panel-footer{
+    text-align:center;
+    padding:14px 20px;
+    border-top:1px solid rgba(200,168,75,.05);
+  }
+  .diag-opp-label{font-size:.44rem;letter-spacing:.24em;margin-bottom:2px}
+  .diag-panel-footer-left{font-size:.68rem;line-height:1.5}
+  .diag-panel-footer-left strong{font-size:.78rem}
   .diag-bridge{height:32px;margin-top:20px}
+}
+@media(max-width:430px){
+  /* ── Score block proportion + hierarchy at 430px ── */
+  .diag-panel{max-width:400px}
+  .diag-panel-body{padding:22px 18px 18px}
+  .diag-score-block{padding:0 0 16px}
+  .diag-score-label{font-size:.5rem;letter-spacing:.24em;margin-bottom:6px}
+  .diag-score-num{font-size:clamp(2.6rem,8.5vw,3.2rem);margin-bottom:1px}
+  .diag-score-denom{font-size:.5rem;letter-spacing:.14em;margin-bottom:9px}
+  .diag-score-badge{font-size:.48rem;padding:3px 10px;letter-spacing:.16em}
+  .diag-score-block::after{left:15%;right:15%}
+
+  /* ── Results list — clean signal rows ── */
+  .diag-results{padding:14px 0 0;gap:10px}
+  .diag-result-row{
+    font-size:.75rem;gap:10px;
+    padding:3px 0 3px 3px;
+    line-height:1.48;
+    border-left-width:1.5px;
+  }
+  .diag-result-indicator{width:6px;height:6px;margin-top:1px}
+
+  /* ── Footer — resolved bottom layer ── */
+  .diag-panel-footer{
+    padding:13px 18px;
+    border-top:1px solid rgba(200,168,75,.05);
+  }
+  .diag-opp-label{font-size:.44rem;letter-spacing:.24em;margin-bottom:2px}
+  .diag-panel-footer-left{font-size:.67rem;line-height:1.5}
+  .diag-panel-footer-left strong{font-size:.76rem}
 }
 @media(max-width:400px){
   .diag-modules{grid-template-columns:1fr}
   .diag-module:last-child{grid-column:auto}
   .diag-module-body{font-size:.96rem;line-height:1.88}
+
+  /* ── Panel outer balance at 375–400px ── */
+  .diag-panel{max-width:calc(100vw - 40px);margin-left:auto;margin-right:auto}
+  .diag-panel-body{padding:20px 16px 16px}
+  .diag-score-block{padding:0 0 14px}
+  .diag-score-label{font-size:.48rem;letter-spacing:.22em;margin-bottom:5px}
+  .diag-score-num{font-size:2.5rem;margin-bottom:0}
+  .diag-score-denom{font-size:.48rem;margin-bottom:8px}
+  .diag-score-badge{font-size:.46rem;padding:2.5px 9px}
+  .diag-score-block::after{left:18%;right:18%}
+
+  /* ── Results — tighter rhythm for 375/390 ── */
+  .diag-results{padding:12px 0 0;gap:8px}
+  .diag-result-row{
+    font-size:.73rem;gap:9px;
+    padding:2px 0 2px 2px;
+    line-height:1.5;
+  }
+  .diag-result-indicator{width:5.5px;height:5.5px}
+
+  /* ── Footer — clean last layer ── */
+  .diag-panel-footer{padding:11px 16px}
+  .diag-opp-label{font-size:.42rem;letter-spacing:.22em}
+  .diag-panel-footer-left{font-size:.65rem;line-height:1.5}
+  .diag-panel-footer-left strong{font-size:.74rem}
+}
+@media(max-width:370px){
+  /* ── Tightest — 360px devices ── */
+  .diag-panel-body{padding:18px 14px 14px}
+  .diag-score-block{padding:0 0 12px}
+  .diag-score-num{font-size:2.3rem}
+  .diag-score-denom{font-size:.46rem;margin-bottom:7px}
+  .diag-score-badge{font-size:.44rem;padding:2px 8px}
+  .diag-score-block::after{left:20%;right:20%}
+  .diag-results{padding:10px 0 0;gap:7px}
+  .diag-result-row{font-size:.71rem;gap:8px;padding:2px 0 2px 2px;line-height:1.48}
+  .diag-result-indicator{width:5px;height:5px}
+  .diag-panel-footer{padding:10px 14px}
+  .diag-opp-label{font-size:.4rem}
+  .diag-panel-footer-left{font-size:.63rem}
+  .diag-panel-footer-left strong{font-size:.72rem}
 }
 /* product feature grid */
 .feat-grid{padding:40px 24px;text-align:center;max-width:1100px;margin:0 auto}
@@ -3358,7 +3518,7 @@ body::before{
   .diag-hed{font-size:clamp(1.6rem,5vw,2.2rem)}
   .diag-sub{font-size:.95rem;line-height:1.78}
   .diag-eyebrow{font-size:.68rem;letter-spacing:.2em;margin-bottom:16px}
-  .diag-score-num{font-size:2.8rem}
+  .diag-score-num{font-size:clamp(3rem,10vw,3.6rem);text-shadow:0 0 32px rgba(120,255,220,.2)}
   .diag-score-denom{font-size:.82rem}
   .diag-result-row{font-size:.9rem;line-height:1.72;padding:6px 0}
   .diag-panel-footer{font-size:.82rem}
@@ -3490,8 +3650,8 @@ body::before{
           },
           {
             "@type": "Offer",
-            "name": "Market Expansion Blueprint",
-            "description": "75-minute session mapping full-market visibility expansion across every service and city.",
+            "name": "AI Visibility Consultation",
+            "description": "Interpret your AI visibility, qualify the opportunity, and map your expansion path.",
             "price": "500",
             "priceCurrency": "USD",
             "url": "https://seoaico.com/book"
@@ -3635,6 +3795,7 @@ body::before{
     </div>
     <div class="diag-panel-body">
       <div class="diag-score-block">
+        <div class="diag-score-label">AI Visibility Score</div>
         <div class="diag-score-num">72</div>
         <div class="diag-score-denom">/ 100 Citation Score</div>
         <div class="diag-score-badge">Above Baseline</div>
@@ -3648,8 +3809,8 @@ body::before{
       </div>
     </div>
     <div class="diag-panel-footer">
-      <span class="diag-panel-footer-left">Fastest correction identified&nbsp;&mdash; estimated <strong style="color:rgba(106,175,144,.7)">+20 pts</strong></span>
-      <span class="diag-panel-footer-right">Full report &rarr;</span>
+      <span class="diag-opp-label">Primary Opportunity</span>
+      <span class="diag-panel-footer-left">Fastest correction identified&nbsp;&mdash; estimated <strong>+20 pts</strong> visibility gain</span>
     </div>
   </div>
 
@@ -3686,8 +3847,8 @@ body::before{
   </div>
 
   <div class="diag-cta-wrap">
-    <a href="{{ route('scan.start') }}" class="diag-cta">Run Your Diagnostic&nbsp;&mdash; $2</a>
-    <p class="diag-cta-meta">Results in seconds &middot; Sent to your inbox &middot; No account required</p>
+    <a href="{{ route('scan.start') }}" class="diag-cta">Unlock Full Signal Map&nbsp;&rarr;</a>
+    <p class="diag-cta-meta">$2 &middot; Results in seconds &middot; Sent to your inbox</p>
   </div>
 
   <div class="diag-bridge" aria-hidden="true"></div>
@@ -3791,8 +3952,8 @@ body::before{
   </div>
 
   <div class="offer-guide">
-    <p class="offer-guide-line">Choose where to start.</p>
-    <p class="offer-guide-sub">Choose your entry point. The system builds forward from there.</p>
+    <p class="offer-guide-line">Start with the $2 scan.</p>
+    <p class="offer-guide-sub">For first-time users, the scan is the primary entry path. All other tiers are best used after your baseline is established.</p>
   </div>
 
   <!-- Ascension Rail -->
@@ -3866,7 +4027,7 @@ body::before{
         </ul>
       </div>
       <div class="tier-actions">
-        <a href="{{ route('checkout.signal-expansion') }}" class="tier-cta">Map Your Signals&nbsp;&mdash; $99</a>
+        <a href="{{ route('checkout.signal-expansion') }}" class="tier-cta">After Scan: Map Your Signals&nbsp;&mdash; $99</a>
       </div>
     </div>
 
@@ -3895,7 +4056,7 @@ body::before{
         </ul>
       </div>
       <div class="tier-actions">
-        <a href="{{ route('checkout.structural-leverage') }}" class="tier-cta">Build Your Leverage&nbsp;&mdash; $249</a>
+        <a href="{{ route('checkout.structural-leverage') }}" class="tier-cta">After Scan: Build Your Leverage&nbsp;&mdash; $249</a>
       </div>
     </div>
 
@@ -3928,7 +4089,7 @@ body::before{
         </ul>
       </div>
       <div class="tier-actions">
-        <a href="{{ route('checkout.system-activation') }}" class="tier-cta">Activate Your System&nbsp;&mdash; $489</a>
+        <a href="{{ route('checkout.system-activation') }}" class="tier-cta">After Scan: Activate Your System&nbsp;&mdash; $489</a>
       </div>
     </div>
 
@@ -3961,7 +4122,7 @@ body::before{
         </ul>
       </div>
       <div class="tier-actions">
-        <a href="{{ route('onboarding.start', ['tier' => 'expansion']) }}" class="tier-cta">Expand My Coverage</a>
+        <a href="{{ route('onboarding.start', ['tier' => 'expansion']) }}" class="tier-cta">Returning Users: Expand My Coverage</a>
       </div>
     </div>
 
@@ -3999,14 +4160,14 @@ body::before{
       </div>
       <div class="tier-actions">
         <div class="tier-commitment">Structured 4-month build. Active coverage maintained thereafter.</div>
-        <a href="{{ route('onboarding.start', ['tier' => 'dominance']) }}" class="tier-cta">Dominate Your Market</a>
-        <button class="tier-book" onclick="window._bkPending={id:{{ $consultTypes->get('strategy')?->id ?? 2 }},duration:{{ $consultTypes->get('strategy')?->duration_minutes ?? 30 }},name:{{ json_encode($consultTypes->get('strategy')?->name ?? 'Strategy Call') }},isFree:{{ ($consultTypes->get('strategy')?->is_free ?? false) ? 'true' : 'false' }}};window.dispatchEvent(new CustomEvent('open-booking',{detail:window._bkPending}));if(typeof gtag==='function')gtag('event','cta_click',{cta_location:'pricing_section',cta_label:'book_strategy_call'});">Book a Strategy Call</button>
+        <a href="{{ route('onboarding.start', ['tier' => 'dominance']) }}" class="tier-cta">Returning Users: Dominate Your Market</a>
+        <a href="{{ route('book.index', ['entry' => 'consultation']) }}" class="tier-book" onclick="window._bkPending={id:{{ ($highTicketTypes ?? collect())->get('consultation')?->id ?? 0 }},duration:{{ ($highTicketTypes ?? collect())->get('consultation')?->duration_minutes ?? 60 }},name:'AI Visibility Consultation',isFree:false,paymentStructure:'full_prepay'};window.dispatchEvent(new CustomEvent('open-booking',{detail:window._bkPending}));if(typeof gtag==='function')gtag('event','cta_click',{cta_location:'pricing_section',cta_label:'book_consultation'});return false;">Book Consultation</a>
       </div>
     </div>
 
   </div>
 
-  <p class="offer-bottom-line">Most businesses begin with the $2 scan and expand as signal gaps are revealed.</p>
+  <p class="offer-bottom-line">Primary path: begin with the $2 scan, then expand based on observed results.</p>
   <p class="offer-bottom-sub">Your scan data carries forward through every level. No wasted steps. &mdash; $2 &rarr; $99 &rarr; $249 &rarr; $489 &rarr; $1,500+ &rarr; $4,799+</p>
 
 </section>
@@ -4143,7 +4304,7 @@ body::before{
       <span class="fcc-hed-1">The territory will be owned.</span>
       <span class="fcc-hed-2">The only question is by whom.</span>
     </h2>
-    <p class="fcc-sub">Start with a scan. Or skip ahead and deploy the full system.</p>
+    <p class="fcc-sub">Start with a scan first. Returning users can continue directly into deployment.</p>
     <span class="fcc-gold">First to structure. First to scale. First to be cited.</span>
     <span class="fcc-rule" aria-hidden="true"></span>
     <div class="fcc-actions">
@@ -4154,10 +4315,10 @@ body::before{
         <p class="fcc-card-note">Results in seconds &middot; No account needed</p>
       </div>
       <div class="fcc-card fcc-card--system">
-        <p class="fcc-card-label">Skip ahead</p>
-        <p class="fcc-card-title">Deploy the full system</p>
-        <a href="{{ route('onboarding.start', ['tier' => 'dominance']) }}" class="fcc-secondary" onclick="if(typeof gtag==='function')gtag('event','cta_click',{cta_location:'final_close',cta_label:'deploy_system'});">Start Market Control</a>
-        <p class="fcc-card-note">Guided onboarding &middot; Strategy call included</p>
+        <p class="fcc-card-label">Returning users</p>
+        <p class="fcc-card-title">Continue full-system deployment</p>
+        <a href="{{ route('onboarding.start', ['tier' => 'dominance']) }}" class="fcc-secondary" onclick="if(typeof gtag==='function')gtag('event','cta_click',{cta_location:'final_close',cta_label:'deploy_system'});">Continue Market Control</a>
+        <p class="fcc-card-note">Use after baseline scan or prior strategy alignment</p>
       </div>
     </div>
     <p class="fcc-reassure">Guided entry.&ensp;Structured rollout.&ensp;Full support.</p>
@@ -4168,14 +4329,11 @@ body::before{
 <div id="mobStickyCta" class="mob-sticky-cta" role="complementary" aria-label="Quick access — assess market availability">
   <div class="msc-inner">
     <a href="{{ route('scan.start') }}" class="msc-primary">Start Your Scan — $2</a>
-    <a href="#offer" class="msc-secondary">Pricing</a>
+    <a href="#offer" class="msc-secondary">Pricing (After Scan)</a>
   </div>
 </div>
 
-<!-- ════════════ BACK TO TOP ════════════ -->
-<button class="btt" id="btt" aria-label="Back to top">
-  <svg viewBox="0 0 24 24"><path d="M12 4l-8 8h5v8h6v-8h5z"/></svg>
-</button>
+@include('partials.back-to-top')
 
 <!-- ════════════ PAYWALL GATE (placeholder — Stripe checkout ready) ════════════ -->
 <div class="gate-overlay" id="gateOverlay">
@@ -4219,11 +4377,11 @@ body::before{
     </a>
     <span class="footer-copy">&copy; 2026 SEO AI Co™ &middot; Programmatic AI SEO Systems</span>
   </div>
-  <p style="text-align:center;font-size:.72rem;color:var(--muted);margin:6px 0 4px">
+  <p style="text-align:center;font-size:.72rem;color:rgba(168,168,160,.70);margin:10px 0 6px;line-height:1.65">
     <a href="mailto:hello@seoaico.com" style="color:var(--muted);text-decoration:none">hello@seoaico.com</a>
   </p>
-  <p style="text-align:center;font-size:.6rem;color:rgba(168,168,160,.28);max-width:540px;margin:0 auto 8px;line-height:1.65">SEO AI Co™ operates the AI Citation Engine™ — structuring content for extraction and citation by AI systems across Google AI Overviews, ChatGPT, and Perplexity. Built for local service businesses competing in active markets.</p>
-  <div style="display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:6px 14px;opacity:.22;margin-bottom:10px" aria-label="Platform integrations">
+  <p style="text-align:center;font-size:.6rem;color:rgba(168,168,160,.60);max-width:540px;margin:0 auto 12px;line-height:1.68">SEO AI Co™ operates the AI Citation Engine™ — structuring content for extraction and citation by AI systems across Google AI Overviews, ChatGPT, and Perplexity. Built for local service businesses competing in active markets.</p>
+  <div style="display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:8px 14px;opacity:.30;margin-bottom:14px" aria-label="Platform integrations">
     <span style="font-size:.52rem;letter-spacing:.12em;text-transform:uppercase;color:#c8a84b">Google Analytics</span>
     <span style="color:#c8a84b;font-size:.5rem">&middot;</span>
     <span style="font-size:.52rem;letter-spacing:.12em;text-transform:uppercase;color:#c8a84b">Search Console</span>
@@ -4232,7 +4390,7 @@ body::before{
     <span style="color:#c8a84b;font-size:.5rem">&middot;</span>
     <span style="font-size:.52rem;letter-spacing:.12em;text-transform:uppercase;color:#c8a84b">Microsoft Bing Ads</span>
   </div>
-  <p style="text-align:center;font-size:.62rem;color:rgba(168,168,160,.35);max-width:520px;margin:0 auto 12px;line-height:1.5">
+  <p style="text-align:center;font-size:.62rem;color:rgba(168,168,160,.60);max-width:520px;margin:0 auto 14px;line-height:1.66">
     SEO AI Co™ and associated systems, processes, and methodologies are proprietary and may not be reproduced without permission.
   </p>
   <nav class="footer-legal">
@@ -4273,13 +4431,6 @@ body::before{
     });
     @endif
   });
-
-  // ── Back to Top ──
-  const btt = document.getElementById('btt');
-  if(btt){
-    window.addEventListener('scroll', () => btt.classList.toggle('show', scrollY > 600), {passive:true});
-    btt.addEventListener('click', () => window.scrollTo({top:0, behavior:'smooth'}));
-  }
 
   // ── Sticky mobile CTA ──
   (function(){
@@ -4856,9 +5007,18 @@ body::before{
 </script>
 <script>
 (function(){
+  var userState = {{ auth()->check() ? "'logged_in'" : "'guest'" }};
+  var role = {{ auth()->check() ? "'" . ((auth()->user()?->isPrivilegedStaff() || auth()->user()?->isFrontendDev()) ? 'staff' : 'customer') . "'" : "'guest'" }};
+
+  document.querySelectorAll('a[href*="/scan/start"]').forEach(function(el){
+    el.addEventListener('click',function(){
+      fetch('/api/v1/track',{method:'POST',headers:{'Content-Type':'application/json','Accept':'application/json'},body:JSON.stringify({event:'homepage_cta_click',metadata:{label:(el.textContent||'').trim().substring(0,60),href:el.getAttribute('href')||'',cta_type:'scan_start',source_page:'landing',user_state:userState,role:role}})}).catch(function(){});
+    });
+  });
+
   document.querySelectorAll('a[href*="/checkout/"]').forEach(function(el){
     el.addEventListener('click',function(){
-      fetch('/api/v1/track',{method:'POST',headers:{'Content-Type':'application/json','Accept':'application/json'},body:JSON.stringify({event:'homepage_cta_click',metadata:{label:el.textContent.trim().substring(0,60),href:el.getAttribute('href')}})}).catch(function(){});
+      fetch('/api/v1/track',{method:'POST',headers:{'Content-Type':'application/json','Accept':'application/json'},body:JSON.stringify({event:'homepage_cta_click',metadata:{label:(el.textContent||'').trim().substring(0,60),href:el.getAttribute('href')||'',cta_type:'checkout_entry',source_page:'landing',user_state:userState,role:role}})}).catch(function(){});
     });
   });
 })();

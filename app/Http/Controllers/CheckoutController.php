@@ -5,9 +5,12 @@ namespace App\Http\Controllers;
 use App\Actions\NotifyOwnerOfPurchase;
 use App\Enums\SystemTier;
 use App\Jobs\SendUpgradeFunnelEmailsJob;
+use App\Jobs\RunQuickScanJob;
 use App\Models\FunnelEvent;
 use App\Models\QuickScan;
 use App\Models\User;
+use App\Support\QuickScanReportToken;
+use App\Services\Entitlements\EntitlementService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -18,31 +21,56 @@ use Laravel\Cashier\Cashier;
 
 class CheckoutController extends Controller
 {
+    public function __construct(private readonly EntitlementService $entitlements)
+    {
+    }
+
     /**
-     * Tier definitions: slug → [name, amount in cents, system_tier].
+     * Legacy checkout route definitions.
+     *
+     * Model decision (A): keep historical route slugs and pricing internally,
+     * while mapping everything above scan-basic into the single Activation path.
      */
     private const TIERS = [
         'scan-basic' => [
             'name' => 'AI Citation Quick Scan',
             'amount' => 200,
             'system_tier' => 'scan-basic',
+            'product_path' => 'consultation',
+            'upgrade_plan' => null,
         ],
         'signal-expansion' => [
-            'name' => 'Signal Expansion — Full Analysis',
+            'name' => 'Full System Activation',
             'amount' => 9900,
             'system_tier' => 'signal-expansion',
+            'product_path' => 'activation',
+            'upgrade_plan' => 'diagnostic',
         ],
         'structural-leverage' => [
-            'name' => 'Structural Leverage — Fix Strategy',
+            'name' => 'Full System Activation',
             'amount' => 24900,
             'system_tier' => 'structural-leverage',
+            'product_path' => 'activation',
+            'upgrade_plan' => 'fix-strategy',
         ],
         'system-activation' => [
-            'name' => 'System Activation — Full Deployment',
+            'name' => 'Full System Activation',
             'amount' => 48900,
             'system_tier' => 'system-activation',
+            'product_path' => 'activation',
+            'upgrade_plan' => 'optimization',
         ],
     ];
+
+    private function mapCheckoutTierToScanUpgradePlan(string $tierSlug): ?string
+    {
+        return self::TIERS[$tierSlug]['upgrade_plan'] ?? null;
+    }
+
+    private function productPathForTier(string $tierSlug): string
+    {
+        return self::TIERS[$tierSlug]['product_path'] ?? 'activation';
+    }
 
     public function scanBasic(Request $request)
     {
@@ -126,6 +154,59 @@ class CheckoutController extends Controller
             return redirect('/pricing')->with('error', 'Invalid tier.');
         }
 
+        // Scan-basic guest flow: keep user as guest and route to secure report URL.
+        if ($tierSlug === 'scan-basic' && !Auth::check()) {
+            $existingScan = QuickScan::where('stripe_session_id', $sessionId)->first();
+
+            if ($existingScan) {
+                $scan = $existingScan;
+            } else {
+                $scanUrl = $scanUrl ?: ('https://' . Str::after($email, '@'));
+                $domain = parse_url($scanUrl, PHP_URL_HOST);
+
+                $scan = QuickScan::create([
+                    'email' => $email,
+                    'url' => $scanUrl,
+                    'domain' => $domain,
+                    'stripe_session_id' => $sessionId,
+                    'paid' => true,
+                    'status' => QuickScan::STATUS_PAID,
+                    'source' => 'checkout_' . $tierSlug,
+                ]);
+            }
+
+            if (!$scan->paid) {
+                $scan->update([
+                    'paid' => true,
+                    'status' => QuickScan::STATUS_PAID,
+                    'stripe_session_id' => $sessionId,
+                ]);
+            }
+
+            $this->entitlements->issueForScan($scan->fresh());
+
+            FunnelEvent::fire(FunnelEvent::PAYMENT_SUCCESS, scanId: $scan->id, metadata: [
+                'flow' => 'direct_checkout',
+                'tier' => $tierSlug,
+                'amount_cents' => (string) self::TIERS[$tierSlug]['amount'],
+                'source_page' => 'checkout_complete',
+                'user_state' => 'guest',
+                'role' => 'guest',
+            ]);
+
+            if (app()->environment('local')) {
+                RunQuickScanJob::dispatchSync($scan->id);
+            } else {
+                RunQuickScanJob::dispatch($scan->id);
+            }
+            (new NotifyOwnerOfPurchase)->execute($scan, self::TIERS[$tierSlug]['name'], self::TIERS[$tierSlug]['amount']);
+
+            return redirect()->route('report.show', [
+                'scan' => $scan->id,
+                'token' => QuickScanReportToken::generate($scan),
+            ])->with('system_entry', $systemTier->value);
+        }
+
         // Prevent replay — check if this session was already processed
         $existingUser = User::where('stripe_checkout_session_id', $sessionId)->first();
         if ($existingUser) {
@@ -168,25 +249,57 @@ class CheckoutController extends Controller
             ]);
         }
 
-        // Determine URL and domain from scan entry flow or metadata
-        $domain = $scanUrl ? parse_url($scanUrl, PHP_URL_HOST) : null;
+        // For upgrade tiers, try to upgrade the user's existing scan instead of creating a duplicate
+        $existingScan = $tierSlug !== 'scan-basic'
+            ? QuickScan::where('user_id', $user->id)->latest()->first()
+            : null;
 
-        // Create scan session record
-        $scan = QuickScan::create([
-            'email' => $email,
-            'url' => $scanUrl,
-            'domain' => $domain,
-            'user_id' => $user->id,
-            'stripe_session_id' => $sessionId,
-            'paid' => true,
-            'status' => $tierSlug === 'scan-basic' ? QuickScan::STATUS_PAID : QuickScan::STATUS_SCANNED,
-            'source' => 'checkout_' . $tierSlug,
-            'upgrade_plan' => $tierSlug === 'scan-basic' ? null : $tierSlug,
-            'upgrade_status' => $tierSlug === 'scan-basic' ? null : 'paid',
-            'upgraded_at' => $tierSlug === 'scan-basic' ? null : now(),
-        ]);
+        $requestedUpgradePlan = $this->mapCheckoutTierToScanUpgradePlan($tierSlug);
+        $requestedUpgradeRank = QuickScan::rankForUpgradePlan($requestedUpgradePlan);
+
+        if ($existingScan && $tierSlug !== 'scan-basic') {
+            $currentRank = $existingScan->upgradeTierRank();
+            $planToPersist = $requestedUpgradeRank >= $currentRank
+                ? $requestedUpgradePlan
+                : $existingScan->normalizedUpgradePlan();
+
+            $existingScan->update([
+                'stripe_session_id' => $sessionId,
+                'paid' => true,
+                'source' => 'checkout_' . $tierSlug,
+                'upgrade_plan' => $planToPersist,
+                'upgrade_status' => 'paid',
+                'upgraded_at' => now(),
+            ]);
+            $scan = $existingScan;
+        } else {
+            // Fallback: resolve URL from scan entry session or user's latest scan
+            if (!$scanUrl) {
+                $scanUrl = QuickScan::where('user_id', $user->id)->latest()->value('url');
+            }
+            $scanUrl = $scanUrl ?: ('https://' . Str::after($email, '@'));
+
+            $domain = parse_url($scanUrl, PHP_URL_HOST);
+
+            $scan = QuickScan::create([
+                'email' => $email,
+                'url' => $scanUrl,
+                'domain' => $domain,
+                'user_id' => $user->id,
+                'stripe_session_id' => $sessionId,
+                'paid' => true,
+                'status' => $tierSlug === 'scan-basic' ? QuickScan::STATUS_PAID : QuickScan::STATUS_SCANNED,
+                'source' => 'checkout_' . $tierSlug,
+                'upgrade_plan' => $requestedUpgradePlan,
+                'upgrade_status' => $tierSlug === 'scan-basic' ? null : 'paid',
+                'upgraded_at' => $tierSlug === 'scan-basic' ? null : now(),
+            ]);
+        }
 
         Auth::login($user, true);
+
+        $this->entitlements->issueForUserTier($user);
+        $this->entitlements->issueForScan($scan->fresh());
 
         // Clear scan entry session data
         Session::forget('scan_entry');
@@ -198,6 +311,15 @@ class CheckoutController extends Controller
             'amount_cents' => self::TIERS[$tierSlug]['amount'],
             'is_new_user' => $isNew,
             'stripe_session_id' => $sessionId,
+        ]);
+
+        FunnelEvent::fire(FunnelEvent::PAYMENT_SUCCESS, userId: $user->id, scanId: $scan->id, metadata: [
+            'flow' => 'direct_checkout',
+            'tier' => $tierSlug,
+            'amount_cents' => (string) self::TIERS[$tierSlug]['amount'],
+            'source_page' => 'checkout_complete',
+            'user_state' => 'logged_in',
+            'role' => ($user->isPrivilegedStaff() || $user->isFrontendDev()) ? 'staff' : 'customer',
         ]);
 
         // Dispatch tier-specific funnel email sequence
@@ -213,6 +335,17 @@ class CheckoutController extends Controller
             'scan_id' => $scan->id,
         ]);
 
+        if ($tierSlug === 'scan-basic') {
+            if (app()->environment('local')) {
+                RunQuickScanJob::dispatchSync($scan->id);
+            } else {
+                RunQuickScanJob::dispatch($scan->id);
+            }
+
+            return redirect()->route('dashboard.scans.show', ['scan' => $scan->publicScanId()])
+                ->with('system_entry', $systemTier->value);
+        }
+
         return redirect('/dashboard')->with('system_entry', $systemTier->value);
     }
 
@@ -224,11 +357,38 @@ class CheckoutController extends Controller
     {
         $tier = self::TIERS[$tierSlug];
 
+        FunnelEvent::fire(FunnelEvent::CHECKOUT_ENTRY, metadata: [
+            'flow' => 'direct_checkout',
+            'tier' => $tierSlug,
+            'product_path' => $this->productPathForTier($tierSlug),
+            'amount_cents' => (string) $tier['amount'],
+            'source_page' => (string) ($request->headers->get('referer') ?: 'direct'),
+            'user_state' => Auth::check() ? 'logged_in' : 'guest',
+            'role' => Auth::check() ? ((Auth::user()?->isPrivilegedStaff() || Auth::user()?->isFrontendDev()) ? 'staff' : 'customer') : 'guest',
+        ]);
+
         $metadata = [
             'tier' => $tierSlug,
+            'product_path' => $this->productPathForTier($tierSlug),
             'ip' => $request->ip(),
             'ref' => $request->query('ref', 'direct'),
         ];
+
+        // For direct checkout upgrades (signal/structural/system), attach scan + upgrade metadata
+        // so the Quick Scan webhook can reconcile payment even when return redirect is missed.
+        if ($tierSlug !== 'scan-basic') {
+            $upgradePlan = $this->mapCheckoutTierToScanUpgradePlan($tierSlug);
+            if ($upgradePlan) {
+                $metadata['upgrade_plan'] = $upgradePlan;
+            }
+
+            if (Auth::check()) {
+                $latestScan = QuickScan::where('user_id', Auth::id())->latest()->first();
+                if ($latestScan) {
+                    $metadata['scan_id'] = (string) $latestScan->id;
+                }
+            }
+        }
 
         // Merge scan entry data into metadata if provided
         if (!empty($extra['metadata_extra'])) {
@@ -256,6 +416,9 @@ class CheckoutController extends Controller
             'payment_intent_data' => [
                 'metadata' => [
                     'tier' => $tierSlug,
+                    'product_path' => $this->productPathForTier($tierSlug),
+                    'upgrade_plan' => (string) ($metadata['upgrade_plan'] ?? ''),
+                    'scan_id' => (string) ($metadata['scan_id'] ?? ''),
                 ],
             ],
         ];

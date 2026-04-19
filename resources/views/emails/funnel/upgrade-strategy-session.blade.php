@@ -22,7 +22,7 @@
     </ul>
 
     <div style="text-align:center;margin:24px 0">
-      <a href="{{ url('/booking') }}" style="display:inline-block;padding:14px 36px;background:#080808;color:#ede8de;font-size:13px;letter-spacing:.1em;text-decoration:none;text-transform:uppercase">Book Strategy Session</a>
+      <a href="{{ \App\Support\EmailUrl::tracked('/booking', 'upgrade-strategy-session', $scan->user_id, $scan->id) }}" style="display:inline-block;padding:14px 36px;background:#080808;color:#ede8de;font-size:13px;letter-spacing:.1em;text-decoration:none;text-transform:uppercase">Book Strategy Session</a>
     </div>
 
     <p style="font-size:12px;color:#999;line-height:1.6;margin:20px 0 0;text-align:center">No obligation. We&rsquo;ll review your data before the call.</p>

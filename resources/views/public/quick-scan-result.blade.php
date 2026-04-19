@@ -10,1675 +10,1127 @@
 <link rel="manifest" href="/site.webmanifest">
 <meta name="theme-color" content="#080808">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Your AI Citation Score: {{ $scan->score ?? 0 }}/100 — SEO AI Co™</title>
-<meta name="description" content="Your AI citation readiness score is {{ $scan->score ?? 0 }}/100. See your gaps, strengths, and fastest correction.">
+<title>System Readout Layer: {{ $scan->score ?? 0 }}/100 — SEOAIco™</title>
+<meta name="description" content="System readout score {{ $scan->score ?? 0 }}/100 with active signals, constraints, and state.">
 <meta name="robots" content="noindex">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 @php
   $score = (int) ($scan->score ?? 0);
-  $categories = $scan->categories ?? [];
-  $upgradePlan = $scan->upgrade_plan;
-  $isUpgraded = $scan->upgrade_status === 'paid';
-  // Determine unlock level: 1=base scan, 2=diagnostic/$99, 3=fix-strategy/$249, 4=optimization/$489
-  $unlockLevel = 1;
-  if ($isUpgraded) {
-      $unlockLevel = match($upgradePlan) {
-          'optimization' => 4,
-          'fix-strategy' => 3,
-          'diagnostic' => 2,
-          default => 1,
-      };
+  $categories = is_array($scan->categories ?? null) ? $scan->categories : [];
+  $unlockLevel = max(1, (int) $scan->upgradeTierRank());
+  $nextPurchasableRank = $unlockLevel < 4 ? $unlockLevel + 1 : null;
+  $isUpgraded = $scan->upgrade_status === 'paid' && $scan->normalizedUpgradePlan() !== null;
+
+  $tierDefs = [
+    2 => ['name' => 'Signal Expansion', 'plan' => 'diagnostic', 'price' => '$99', 'value' => 'Reveal the full signal architecture behind your score.'],
+    3 => ['name' => 'Structural Leverage', 'plan' => 'fix-strategy', 'price' => '$249', 'value' => 'This unlocks smarter prioritization so you fix what matters first.'],
+    4 => ['name' => 'System Activation', 'plan' => 'optimization', 'price' => '$489', 'value' => 'Expose competitive position and expansion intelligence.'],
+  ];
+
+  $currentTierKey = $unlockLevel >= 4 ? 4 : ($unlockLevel >= 3 ? 3 : ($unlockLevel >= 2 ? 2 : null));
+  $remainingTiers = [];
+  if ($currentTierKey) {
+      foreach ([2, 3, 4] as $k) {
+          if ($k > $currentTierKey) {
+              $remainingTiers[] = $tierDefs[$k];
+          }
+      }
   }
-  // Signal-based escalation: detect high-intent users
-  $userScanCount = 0;
-  $highIntent = false;
-  if (auth()->check()) {
-      $userScanCount = \App\Models\QuickScan::where('user_id', auth()->id())->count();
-      $highIntent = $userScanCount >= 2 || $unlockLevel >= 3;
+  $nextTier = !empty($remainingTiers) ? $remainingTiers[0] : null;
+  $singleNextStep = $nextTier ? [
+      'title' => 'Next move: ' . $nextTier['name'],
+      'copy' => $nextTier['value'],
+      'cta' => 'Unlock ' . $nextTier['name'] . ' — ' . $nextTier['price'],
+      'href' => route('quick-scan.upgrade') . '?plan=' . $nextTier['plan'] . '&scan_id=' . $scan->id . '&sid=' . $scan->stripe_session_id,
+  ] : null;
+
+  $rawBottleneck = trim((string) ($scan->fastest_fix ?? ($scan->issues[0] ?? '')));
+  $topBottleneck = $rawBottleneck !== '' ? $rawBottleneck : 'Data depth insufficient for consistent AI extraction.';
+
+  $readoutState = match (true) {
+      $score >= 85 => 'Stable',
+      $score >= 60 => 'Expanding',
+      default => 'At Risk',
+  };
+    $readoutStateKey = match (true) {
+      $score >= 85 => 'stable',
+      $score >= 60 => 'expanding',
+      default => 'risk',
+    };
+  $interpretation = match (true) {
+      $score >= 85 => 'AI can find your surface signals, but competitors still hold stronger extraction depth.',
+      $score >= 60 => 'AI can partially parse your site. Selection pressure remains active.',
+      default => 'AI cannot reliably extract selection-grade meaning from key pages yet.',
+  };
+    $scoreSelectionInterpretation = match (true) {
+      $score >= 85 => 'Strong selection readiness',
+      $score >= 60 => 'Selectable but incomplete',
+      default => 'Low extraction clarity',
+    };
+
+  $lastEvaluatedAt = $scan->scanned_at ?? $scan->updated_at ?? $scan->created_at;
+  $lastEvaluatedLabel = $lastEvaluatedAt ? $lastEvaluatedAt->diffForHumans() : 'Unavailable';
+  $returnTo = request()->query('return_to') === 'systems' ? '#systems' : '';
+  $returnHref = route('app.dashboard') . $returnTo;
+  $returnLabel = 'Return to Control Surface';
+
+  $sysActions = [];
+  foreach ($categories as $cat) {
+      foreach (($cat['checks'] ?? []) as $check) {
+          if (!($check['passed'] ?? false)) {
+              $sysActions[] = [
+                  'label' => $check['label'] ?? 'Signal gap',
+                  'why' => $check['fail'] ?? 'AI extraction confidence is reduced.',
+                  'fix' => $check['fix'] ?? 'Expand data layer coverage.',
+                  'max' => (int) ($check['max'] ?? 0),
+                  'category' => $cat['label'] ?? 'System',
+                  'impact' => ((int) ($check['max'] ?? 0) >= 10) ? 'high' : (((int) ($check['max'] ?? 0) >= 5) ? 'medium' : 'low'),
+              ];
+          }
+      }
   }
+  usort($sysActions, fn($a, $b) => $b['max'] <=> $a['max']);
+  $sysActionsLimit = $isUpgraded ? count($sysActions) : min(3, count($sysActions));
+
+  $totalChecks = 0;
+  $totalPassed = 0;
+  foreach ($categories as $cat) {
+      foreach (($cat['checks'] ?? []) as $check) {
+          $totalChecks++;
+          if ($check['passed'] ?? false) $totalPassed++;
+      }
+  }
+  $totalFailed = max(0, $totalChecks - $totalPassed);
+  $selectionReadiness = $totalChecks > 0 ? round(($totalPassed / $totalChecks) * 100) : 0;
+
+  $resolveCategoryPct = function (array $needles, int $fallback) use ($categories) {
+      $collection = collect($categories);
+      $match = $collection->first(function ($cat) use ($needles) {
+          $label = strtolower((string) ($cat['label'] ?? ''));
+          foreach ($needles as $needle) {
+              if ($needle !== '' && str_contains($label, strtolower($needle))) return true;
+          }
+          return false;
+      });
+      $selected = $match ?: ($collection->values()->get($fallback) ?: ['score' => 0, 'max' => 0]);
+      $max = (int) ($selected['max'] ?? 0);
+      $scoreLocal = (int) ($selected['score'] ?? 0);
+      return $max > 0 ? round(($scoreLocal / $max) * 100) : 0;
+  };
+
+  $coveragePct = $resolveCategoryPct(['coverage', 'location', 'service'], 0);
+  $authorityPct = $resolveCategoryPct(['authority', 'trust', 'entity', 'reputation'], 1);
+  $structurePct = $resolveCategoryPct(['structure', 'schema', 'technical', 'content'], 2);
+    $extractionCompletenessPct = (int) round(($coveragePct + $structurePct) / 2);
+    $selectionPressurePct = max(0, min(100, 100 - $selectionReadiness));
+
+    $selectionPressureLabel = $selectionPressurePct >= 55 ? 'High Pressure' : ($selectionPressurePct >= 30 ? 'Moderate Pressure' : 'Low Pressure');
+    $extractionCompletenessLabel = $extractionCompletenessPct >= 70 ? 'Extraction Stable' : ($extractionCompletenessPct >= 45 ? 'Extraction Partial' : 'Extraction Suppressed');
+    $authorityConfidenceLabel = $authorityPct >= 70 ? 'Authority Trusted' : ($authorityPct >= 45 ? 'Authority Contested' : 'Authority Untrusted');
+
+    $signalsMeaningLabel = 'Machine-readable evidence detected';
+    $blockersMeaningLabel = 'Active suppression factors';
+    $constraintMeaningLabel = 'Primary bottleneck limiting selection';
+
+    $currentStateSummary = match ($unlockLevel) {
+      1 => 'Layer 1 active - visibility baseline only',
+      2 => 'Layer 2 active - signal map partially available',
+      3 => 'Layer 3 active - ranked fix sequencing available',
+      default => 'Layer 4 active - full system activation available',
+    };
+    $nextUnlockName = $nextTier['name'] ?? 'System Activation';
+    $nextUnlockBullets = match ($nextUnlockName) {
+        'Signal Expansion' => ['full signal architecture', 'deeper failure mapping', 'ranked correction visibility'],
+        'Structural Leverage' => ['ranked correction sequencing', 'constraint-to-impact mapping', 'execution priority visibility'],
+        'System Activation' => ['competitive intelligence layer', 'expansion opportunity map', 'deployment-grade direction'],
+        default => ['signal architecture expansion', 'failure visibility increase', 'selection readiness growth'],
+    };
+
+    $nextUnlockWhyMatters = match ($nextUnlockName) {
+      'Signal Expansion' => 'This reveals exactly where AI cannot extract or trust your site signals.',
+      'Structural Leverage' => 'This exposes highest-impact fixes first so lower-value work does not delay outcomes.',
+      'System Activation' => 'This exposes competitive displacement risk and strategic control opportunities.',
+      default => 'This unlock clarifies where trust and extraction are currently limited.',
+    };
+
+    $nextUnlockWhyShort = match ($nextUnlockName) {
+      'Signal Expansion' => 'Reveals where extraction and trust fail.',
+      'Structural Leverage' => 'Reorders fixes by impact for faster gains.',
+      'System Activation' => 'Reveals where market control is won or lost.',
+      default => 'Clarifies where trust and extraction remain limited.',
+    };
+
+    $nextUnlockImproves = match ($nextUnlockName) {
+      'Signal Expansion' => ['clearer extraction insight', 'higher signal trust', 'better fix focus'],
+      'Structural Leverage' => ['faster high-impact execution', 'cleaner fix order', 'stronger readiness lift'],
+      'System Activation' => ['market control visibility', 'expansion precision', 'stronger synthesis readiness'],
+      default => ['clearer prioritization', 'higher insight quality', 'stronger readiness confidence'],
+    };
+
+    $layerProgressModel = [
+      ['rank' => 1, 'label' => 'Current visibility confirmed'],
+      ['rank' => 2, 'label' => 'Signal map opened'],
+      ['rank' => 3, 'label' => 'Correction sequence unlocked'],
+      ['rank' => 4, 'label' => 'System activation / market control'],
+    ];
+
+      $liveFeedbackMessages = [
+        'Extraction incomplete -> selection limited.',
+        'Constraint pressure active -> resolution required.',
+        'Authority confidence reduced -> competitor weighting increased.',
+        'Structure unstable -> answer extraction degraded.',
+        'Primary bottleneck active -> fix required to advance.',
+      ];
+
+    $layerCards = [
+          ['rank' => 1, 'name' => 'Base Scan', 'status' => 'Included', 'enabled' => true, 'value' => 'Current visibility is confirmed, but deeper trust signals are still limited.', 'cta' => '#priority-actions', 'cta_label' => 'View Fix Sequence', 'cta_note' => 'Opens ranked constraint fixes for this layer.'],
+          ['rank' => 2, 'name' => 'Signal Expansion', 'status' => $unlockLevel >= 2 ? 'Included' : 'Locked', 'enabled' => $unlockLevel >= 2, 'value' => 'This layer opens full signal mapping where extraction currently stops.', 'cta' => $unlockLevel >= 2 ? '#priority-actions' : ($singleNextStep['href'] ?? route('checkout.signal-expansion')), 'cta_label' => $unlockLevel >= 2 ? 'View Fix Sequence' : 'Unlock Signal Expansion', 'cta_note' => $unlockLevel >= 2 ? 'Opens signal-map-guided fixes.' : 'Reveals full signal architecture.'],
+          ['rank' => 3, 'name' => 'Structural Leverage', 'status' => $unlockLevel >= 3 ? 'Included' : 'Locked', 'enabled' => $unlockLevel >= 3, 'value' => 'This layer ranks corrections by impact so execution follows leverage.', 'cta' => $unlockLevel >= 3 ? '#priority-actions' : ($singleNextStep['href'] ?? route('quick-scan.upgrade')), 'cta_label' => $unlockLevel >= 3 ? 'View Fix Sequence' : 'Unlock Structural Leverage', 'cta_note' => $unlockLevel >= 3 ? 'Opens impact-ranked correction order.' : 'Unlocks ranked fixes by impact.'],
+          ['rank' => 4, 'name' => 'System Activation', 'status' => $unlockLevel >= 4 ? 'Included' : 'Locked', 'enabled' => $unlockLevel >= 4, 'value' => 'This layer unlocks competitive control insights and market-level direction.', 'cta' => $unlockLevel >= 4 ? '#priority-actions' : ($singleNextStep['href'] ?? route('quick-scan.upgrade')), 'cta_label' => $unlockLevel >= 4 ? 'View Fix Sequence' : 'Unlock System Activation', 'cta_note' => $unlockLevel >= 4 ? 'Opens competitive signal controls.' : 'Reveals competitive gaps and expansion map.'],
+    ];
+
+  $findings = [
+      ['title' => 'Coverage', 'state' => $coveragePct >= 70 ? 'Selection Lifted' : ($coveragePct >= 45 ? 'Selection Diluted' : 'Selection Suppressed'), 'copy' => 'Low coverage → AI excludes your domain from final answers.', 'pct' => $coveragePct],
+      ['title' => 'Authority', 'state' => $authorityPct >= 70 ? 'Trust Weighting Active' : ($authorityPct >= 45 ? 'Trust Weighting Reduced' : 'Trust Weighting Lost'), 'copy' => 'Weak authority → AI routes to stronger competitor signals instead.', 'pct' => $authorityPct],
+      ['title' => 'Structure', 'state' => $structurePct >= 70 ? 'Extraction Reliable' : ($structurePct >= 45 ? 'Extraction Unstable' : 'Extraction Failing'), 'copy' => 'Unstable structure → AI skips your pages when extracting answers.', 'pct' => $structurePct],
+      ['title' => 'Selection Readiness', 'state' => $selectionReadiness >= 70 ? 'Selection Probability Rising' : ($selectionReadiness >= 45 ? 'Selection Probability Contested' : 'Selection Probability Collapsing'), 'copy' => 'Readiness score directly controls AI domain selection vs competitors.', 'pct' => $selectionReadiness],
+  ];
+
+  $lockedLayerModules = [
+      ['rank' => 2, 'title' => 'Signal Expansion', 'statement' => 'Full signal architecture, extraction failure tree, and suppressed answer opportunities.', 'reveals' => 'While suppressed, AI cannot map complete service depth. Selection bias toward competitors with fuller signal graphs persists.', 'improvement' => ['Selection pressure reduced', 'Signal coverage depth increased', 'Extraction failure visibility restored'], 'cta' => 'Unlock Signal Expansion', 'href' => $singleNextStep['href'] ?? route('checkout.signal-expansion')],
+      ['rank' => 3, 'title' => 'Structural Leverage', 'statement' => 'Ranked remediation path, constraint-to-impact map, and fix priority sequence.', 'reveals' => 'Without ranked correction order, fixes compound inefficiency. Highest-ROI constraints remain buried below lower-value work.', 'improvement' => ['Correction sequencing clarified', 'Fix efficiency increased', 'Constraint compounding halted'], 'cta' => 'Unlock Structural Leverage', 'href' => $singleNextStep['href'] ?? route('quick-scan.upgrade')],
+      ['rank' => 4, 'title' => 'System Activation', 'statement' => 'Competitive intelligence layer, market displacement signals, and activation-grade expansion map.', 'reveals' => 'Without activation, competitive entities dominate synthesis-level recommendation slots. AI preference shifts toward fuller-signal domains.', 'improvement' => ['Competitive position exposed', 'Expansion opportunity map unlocked', 'Displacement risk quantified'], 'cta' => 'Unlock System Activation', 'href' => $singleNextStep['href'] ?? route('quick-scan.upgrade')],
+  ];
+
+  $humanTranslation = match (true) {
+      $score >= 85 => 'AI can see you clearly, but stronger competitors still provide more complete extraction signals.',
+      $score >= 60 => 'Your site is visible, but not yet structurally strong enough to control answer selection.',
+      default => 'You are detectable, but AI still lacks enough trusted structure to confidently select your site.',
+  };
 @endphp
 <style>
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+@include('partials.design-system')
+@include('partials.public-nav-css')
+@include('partials.public-nav-mobile-css')
+
 :root{
-  --bg:#080808;--deep:#0b0b0b;--card:#0e0d09;--border:rgba(200,168,75,.09);
-  --gold:#c8a84b;--gold-lt:#d9bc6e;--gold-dim:rgba(200,168,75,.32);
-  --gold-glow:rgba(200,168,75,.12);--gold-glow-strong:rgba(200,168,75,.22);
-  --ivory:#f0ece3;--ivory-soft:#ede8de;--muted:rgba(178,178,170,.82);
-  --green:#6aaf90;--red:#c47878;
-}
-html{font-size:18px;scroll-behavior:smooth}
-body{background:var(--bg);color:var(--ivory);font-family:'DM Sans',sans-serif;font-weight:300;line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden}
-
-/* ── Nav ── */
-#nav{position:fixed;top:0;left:0;right:0;z-index:200;display:flex;align-items:center;justify-content:space-between;padding:28px 64px;border-bottom:1px solid transparent;transition:all .4s}
-#nav.stuck{background:rgba(8,8,8,.95);backdrop-filter:blur(16px);border-color:var(--border);padding:16px 64px}
-.logo,.logo:visited,.logo:hover,.logo:active,.logo:focus{display:inline-flex;align-items:baseline;text-decoration:none;line-height:1;color:inherit;padding:8px 4px;margin:-8px -4px;position:relative;z-index:1}
-.logo-seo,.logo-seo:visited,.logo-seo:link{font-family:'DM Sans',sans-serif;font-weight:300;font-size:1.2rem;letter-spacing:.06em;color:#f5f0e8}
-.logo-ai,.logo-ai:visited,.logo-ai:link{font-family:'Cormorant Garamond',serif;font-weight:600;font-size:1.42rem;color:#c8a84b;letter-spacing:.02em;display:inline-block;transform:skewX(-11deg) translateY(-1px)}
-.logo-co,.logo-co:visited,.logo-co:link{font-family:'DM Sans',sans-serif;font-weight:300;font-size:1.05rem;color:rgba(255,255,255,.45);letter-spacing:.04em}
-.nav-right{display:flex;align-items:center;gap:26px}
-.nav-link{font-size:.76rem;letter-spacing:.14em;text-transform:uppercase;color:rgba(168,168,160,.72);text-decoration:none;transition:color .3s;position:relative;padding-bottom:2px;font-weight:400}
-.nav-link::after{content:'';position:absolute;bottom:0;left:0;right:100%;height:1px;background:var(--gold);transition:right .3s cubic-bezier(.23,1,.32,1)}
-.nav-link:hover{color:var(--gold)}
-.nav-link:hover::after{right:0}
-.nav-btn{font-size:.74rem;letter-spacing:.14em;text-transform:uppercase;color:var(--bg);background:var(--gold);padding:11px 28px;text-decoration:none;transition:background .3s cubic-bezier(.23,1,.32,1),box-shadow .3s cubic-bezier(.23,1,.32,1);display:inline-flex;align-items:center;white-space:nowrap;font-weight:500;margin-left:6px}
-.nav-btn:hover{background:var(--gold-lt);box-shadow:0 4px 16px rgba(200,168,75,.22)}
-
-/* ── Hero band ── */
-.result-hero{padding:140px 64px 72px;text-align:center;position:relative;overflow:hidden}
-.result-hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 70% 55% at 50% 50%,rgba(200,168,75,.07) 0%,transparent 68%);pointer-events:none}
-.result-hero::after{content:'';position:absolute;bottom:0;left:10%;right:10%;height:1px;background:linear-gradient(90deg,transparent,rgba(200,168,75,.08),transparent);pointer-events:none}
-.result-eyebrow{font-size:.62rem;letter-spacing:.34em;text-transform:uppercase;color:rgba(200,168,75,.55);margin-bottom:28px}
-.result-url{font-size:.78rem;color:rgba(168,168,160,.4);font-weight:300;letter-spacing:.05em;margin-bottom:36px;max-width:560px;margin-left:auto;margin-right:auto;overflow-wrap:break-word;font-family:'DM Sans',monospace}
-
-/* ── Score ring ── */
-.score-ring-wrap{display:inline-flex;flex-direction:column;align-items:center;gap:22px;margin-bottom:32px}
-.score-ring-svg{width:180px;height:180px;filter:drop-shadow(0 0 28px var(--gold-glow))}
-.score-ring-bg{fill:none;stroke:rgba(200,168,75,.06);stroke-width:7}
-.score-ring-fill{fill:none;stroke-width:7;stroke-linecap:round;stroke-dasharray:440;stroke-dashoffset:440;transform:rotate(-90deg);transform-origin:50% 50%;transition:stroke-dashoffset 1.4s cubic-bezier(.23,1,.32,1)}
-.score-ring-fill.animate{stroke-dashoffset:calc(440 - (440 * {{ $score }} / 100))}
-.score-number{font-family:'Cormorant Garamond',serif;font-size:4rem;font-weight:300;line-height:1;color:@if($score >= 70) var(--green) @elseif($score >= 40) var(--gold) @else var(--red) @endif;text-shadow:0 0 24px var(--gold-glow)}
-.score-label{font-size:.6rem;letter-spacing:.18em;text-transform:uppercase;color:rgba(200,168,75,.5);margin-top:2px}
-.score-verdict{font-family:'Cormorant Garamond',serif;font-size:clamp(1.4rem,3vw,2.1rem);font-weight:300;line-height:1.35;color:@if($score >= 90) var(--green) @elseif($score >= 70) var(--gold-lt) @elseif($score >= 40) var(--gold) @else var(--red) @endif;max-width:620px;margin:0 auto;padding-top:4px}
-.score-subline{font-size:.74rem;color:var(--muted);letter-spacing:.03em;margin-top:16px;opacity:.55}
-.score-ring-fill{stroke:@if($score >= 70) var(--green) @elseif($score >= 40) var(--gold) @else var(--red) @endif}
-
-/* ── Stats row ── */
-.stats-row{display:flex;justify-content:center;gap:36px;margin-top:28px;padding:20px 32px;background:rgba(200,168,75,.02);border:1px solid rgba(200,168,75,.06);border-radius:2px;flex-wrap:wrap;max-width:480px;margin-left:auto;margin-right:auto}
-.stat-item{text-align:center;min-width:68px}
-.stat-value{font-family:'Cormorant Garamond',serif;font-size:1.6rem;font-weight:300;color:var(--gold);line-height:1.1}
-.stat-label{font-size:.56rem;letter-spacing:.22em;text-transform:uppercase;color:rgba(200,168,75,.45);margin-top:6px}
-
-/* ── Category grid ── */
-.result-body{max-width:1060px;margin:0 auto;padding:0 24px 56px}
-.cat-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-bottom:40px}
-.cat-card{background:rgba(14,13,9,.95);border:1px solid rgba(200,168,75,.07);padding:28px 26px 30px;position:relative;transition:all .35s ease;display:flex;flex-direction:column;min-height:290px}
-.cat-card::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(200,168,75,.06),transparent);pointer-events:none}
-.cat-card:hover{border-color:rgba(200,168,75,.18);box-shadow:0 8px 32px rgba(0,0,0,.45),0 0 1px rgba(200,168,75,.12);transform:translateY(-2px)}
-.cat-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;gap:10px}
-.cat-name{font-size:.68rem;letter-spacing:.18em;text-transform:uppercase;color:rgba(200,168,75,.65);font-weight:400}
-.cat-score{font-family:'Cormorant Garamond',serif;font-size:1.35rem;font-weight:300;color:var(--ivory);flex-shrink:0}
-.cat-bar{height:3px;background:rgba(200,168,75,.05);margin-bottom:20px;overflow:hidden;border-radius:2px}
-.cat-bar-fill{height:100%;transition:width 1s cubic-bezier(.23,1,.32,1);border-radius:2px}
-.cat-bar-fill.high{background:linear-gradient(90deg,var(--green),rgba(106,175,144,.6))}
-.cat-bar-fill.mid{background:linear-gradient(90deg,var(--gold),var(--gold-dim))}
-.cat-bar-fill.low{background:linear-gradient(90deg,var(--red),rgba(196,120,120,.5))}
-
-/* ── Check items ── */
-.check-list{display:flex;flex-direction:column;gap:8px;flex:1;min-height:160px}
-.check-item{display:flex;align-items:flex-start;gap:10px;font-size:.8rem;line-height:1.5;color:var(--muted);padding:4px 0}
-.check-icon{flex-shrink:0;margin-top:2px;font-size:.76rem;width:16px;text-align:center}
-.check-item.passed .check-icon{color:var(--green)}
-.check-item.failed .check-icon{color:var(--red)}
-.check-pts{font-size:.66rem;color:rgba(168,168,160,.3);margin-left:auto;flex-shrink:0}
-
-/* ── Locked / blurred sections ── */
-.locked-zone{position:relative;overflow:hidden}
-.locked-zone .check-text{filter:blur(5px);-webkit-filter:blur(5px);user-select:none;pointer-events:none}
-.locked-overlay{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;background:rgba(6,6,6,.84);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);z-index:10;gap:16px;padding:32px 28px;border:1px solid rgba(200,168,75,.14);box-shadow:inset 0 0 60px rgba(0,0,0,.4)}
-.locked-overlay .lock-icon{font-size:1.2rem;color:var(--gold);filter:drop-shadow(0 0 12px var(--gold-glow-strong));line-height:1;margin-bottom:2px}
-.locked-overlay .lock-text{font-size:.68rem;letter-spacing:.15em;text-transform:uppercase;color:rgba(200,168,75,.9);text-align:center;line-height:1.7;max-width:240px}
-.locked-overlay .lock-cta{font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;color:var(--bg);background:linear-gradient(135deg,var(--gold),var(--gold-lt));padding:14px 32px;text-decoration:none;transition:all .3s;display:inline-flex;align-items:center;box-shadow:0 4px 18px var(--gold-glow);margin-top:6px}
-.locked-overlay .lock-cta:hover{background:linear-gradient(135deg,var(--gold-lt),var(--gold));box-shadow:0 6px 28px var(--gold-glow-strong);transform:translateY(-2px)}
-.fix-locked{position:relative;overflow:hidden}
-.fix-locked .fix-text{filter:blur(6px);-webkit-filter:blur(6px);user-select:none;pointer-events:none}
-
-/* ── Broken links ── */
-.broken-section{background:rgba(200,68,68,.04);border:1px solid rgba(200,68,68,.15);padding:22px;margin-bottom:36px}
-.broken-title{font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:var(--red);margin-bottom:14px;display:flex;align-items:center;gap:8px}
-.broken-item{font-size:.82rem;color:var(--muted);padding:8px 0;border-bottom:1px solid rgba(200,68,68,.08);display:flex;justify-content:space-between;overflow-wrap:break-word;word-break:break-all}
-.broken-item:last-child{border-bottom:none}
-.broken-status{color:var(--red);font-size:.72rem;flex-shrink:0;margin-left:12px}
-
-/* ── Fastest fix ── */
-.fastest-fix{background:rgba(14,13,9,.95);border:1px solid rgba(200,168,75,.18);padding:32px;margin-bottom:32px;position:relative}
-.fastest-fix::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,rgba(200,168,75,.5),transparent)}
-.fix-label{font-size:.64rem;letter-spacing:.24em;text-transform:uppercase;color:var(--gold);margin-bottom:12px;display:block}
-.fix-text{font-size:.96rem;line-height:1.55;color:rgba(237,232,222,.9)}
-
-/* ── Untapped Market Coverage / Visibility Gap ── */
-.market-coverage{background:rgba(14,13,9,.92);border:1px solid rgba(200,168,75,.15);margin-bottom:28px;overflow:hidden}
-.market-header{display:flex;justify-content:space-between;align-items:center;padding:18px 22px;border-bottom:1px solid rgba(200,168,75,.08)}
-.market-eyebrow{font-size:.66rem;letter-spacing:.24em;text-transform:uppercase;color:rgba(200,168,75,.65);font-weight:400}
-.market-gap-badge{font-size:.68rem;letter-spacing:.1em;text-transform:uppercase;color:var(--red);background:rgba(196,120,120,.08);padding:5px 14px;border:1px solid rgba(196,120,120,.15)}
-.market-body{padding:22px}
-.market-bar-wrap{margin-bottom:22px}
-.market-bar-track{height:7px;background:rgba(200,168,75,.05);overflow:hidden;margin-bottom:8px;border-radius:4px}
-.market-bar-fill{height:100%;background:linear-gradient(90deg,var(--gold),var(--gold-dim));transition:width 1.2s cubic-bezier(.23,1,.32,1);border-radius:4px}
-.market-bar-labels{display:flex;justify-content:space-between;font-size:.68rem;color:var(--muted)}
-.market-stats{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;margin-bottom:20px}
-.market-stat{text-align:center;padding:14px 10px;background:rgba(200,168,75,.03);border:1px solid rgba(200,168,75,.06);transition:border-color .2s}
-.market-stat:hover{border-color:rgba(200,168,75,.14)}
-.market-stat-val{display:block;font-family:'Cormorant Garamond',serif;font-size:1.5rem;font-weight:300;color:var(--gold);line-height:1.2}
-.market-stat-lbl{font-size:.62rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-top:5px;display:block}
-.market-insight{font-size:.84rem;color:var(--muted);line-height:1.6;margin-bottom:18px}
-.market-cta{display:block;text-align:center;font-size:.78rem;letter-spacing:.1em;text-transform:uppercase;color:var(--bg);background:linear-gradient(135deg,var(--gold),var(--gold-lt));padding:14px 28px;text-decoration:none;transition:all .3s;box-shadow:0 2px 12px var(--gold-glow)}
-.market-cta:hover{box-shadow:0 4px 24px var(--gold-glow-strong);transform:translateY(-1px)}
-.vgap-compare{display:grid;grid-template-columns:1fr 1fr;gap:0;margin-bottom:22px;border:1px solid rgba(200,168,75,.08);overflow:hidden}
-.vgap-you,.vgap-them{padding:18px;text-align:center}
-.vgap-you{background:rgba(196,120,120,.04);border-right:1px solid rgba(200,168,75,.08)}
-.vgap-them{background:rgba(106,175,144,.04)}
-.vgap-label{font-size:.6rem;letter-spacing:.18em;text-transform:uppercase;margin-bottom:8px;display:block}
-.vgap-you .vgap-label{color:var(--red)}
-.vgap-them .vgap-label{color:var(--green)}
-.vgap-val{font-family:'Cormorant Garamond',serif;font-size:2.1rem;font-weight:300;line-height:1}
-.vgap-you .vgap-val{color:var(--red)}
-.vgap-them .vgap-val{color:var(--green)}
-.vgap-sub{font-size:.68rem;color:var(--muted);margin-top:6px;display:block}
-
-/* ── Urgency Pressure Banner ── */
-.urgency-banner{background:rgba(196,120,120,.06);border:1px solid rgba(196,120,120,.18);padding:18px 22px;margin-bottom:36px;display:flex;align-items:flex-start;gap:14px}
-.urgency-icon{font-size:1.2rem;flex-shrink:0;margin-top:2px}
-.urgency-body{flex:1}
-.urgency-hed{font-size:.86rem;font-weight:500;color:var(--red);margin-bottom:6px}
-.urgency-sub{font-size:.8rem;color:var(--muted);line-height:1.55}
-
-/* ── Competitive Pressure ── */
-.comp-section{background:rgba(14,13,9,.92);border:1px solid rgba(196,120,120,.1);margin-bottom:36px;overflow:hidden}
-.comp-header{padding:20px 24px;border-bottom:1px solid rgba(196,120,120,.07)}
-.comp-eyebrow{font-size:.62rem;letter-spacing:.26em;text-transform:uppercase;color:var(--red);font-weight:400}
-.comp-body{padding:24px}
-.comp-intro{font-size:.82rem;color:var(--muted);line-height:1.65;margin-bottom:18px}
-.comp-grid{display:flex;flex-direction:column;gap:10px;margin-bottom:18px}
-.comp-item{display:flex;align-items:flex-start;gap:10px;font-size:.8rem;line-height:1.5;padding:14px 18px;background:rgba(106,175,144,.04);border:1px solid rgba(106,175,144,.08);transition:border-color .2s}
-.comp-item:hover{border-color:rgba(106,175,144,.18)}
-.comp-icon{color:var(--green);flex-shrink:0;font-size:.62rem;margin-top:3px}
-.comp-text{color:rgba(178,178,170,.85)}
-.comp-bottom{font-size:.78rem;color:var(--red);font-style:italic;line-height:1.55}
-
-/* ── CTA section ── */
-.cta-section{border-top:1px solid rgba(200,168,75,.12);padding:48px 0 0;text-align:center;position:relative}
-.cta-section::before{content:'';position:absolute;top:0;left:50%;transform:translateX(-50%);width:60%;height:120px;background:radial-gradient(ellipse at 50% 0%,rgba(200,168,75,.06),transparent 70%);pointer-events:none}
-.cta-eyebrow{font-size:.66rem;letter-spacing:.3em;text-transform:uppercase;color:rgba(200,168,75,.65);margin-bottom:18px}
-.cta-hed{font-family:'Cormorant Garamond',serif;font-size:clamp(1.8rem,4vw,2.8rem);font-weight:300;line-height:1.15;color:var(--ivory);margin-bottom:14px}
-.cta-hed em{font-style:italic;color:var(--gold)}
-.cta-sub{font-size:.92rem;color:rgba(178,178,170,.72);max-width:560px;margin:0 auto 40px;line-height:1.55}
-.cta-grid{display:grid;grid-template-columns:1fr 1fr;gap:22px;max-width:740px;margin:0 auto 36px}
-.cta-card{background:rgba(18,16,14,.95);border:1px solid rgba(200,168,75,.08);padding:32px 28px;text-align:left;position:relative;transition:all .3s ease;text-decoration:none;display:flex;flex-direction:column}
-.cta-card:hover{border-color:rgba(200,168,75,.25);box-shadow:0 8px 32px rgba(0,0,0,.5),0 0 1px rgba(200,168,75,.2);transform:translateY(-4px)}
-.cta-card::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(200,168,75,.2),transparent)}
-.cta-card.featured{border-color:rgba(200,168,75,.22);box-shadow:0 0 24px var(--gold-glow)}
-.cta-card.featured::before{background:linear-gradient(90deg,transparent,rgba(200,168,75,.5),transparent)}
-.cta-card.featured:hover{box-shadow:0 8px 32px rgba(0,0,0,.5),0 0 32px var(--gold-glow)}
-.cta-tier{font-size:.62rem;letter-spacing:.22em;text-transform:uppercase;color:rgba(200,168,75,.6);margin-bottom:12px;display:block}
-.cta-name{font-family:'Cormorant Garamond',serif;font-size:1.5rem;font-weight:300;color:var(--ivory);margin-bottom:8px}
-.cta-price{font-family:'Cormorant Garamond',serif;font-size:2.2rem;font-weight:300;color:var(--gold);margin-bottom:14px;line-height:1}
-.cta-price sup{font-size:.9rem;vertical-align:top;margin-top:4px;color:rgba(200,168,75,.6)}
-.cta-desc{font-size:.84rem;color:var(--muted);line-height:1.55;margin-bottom:20px;flex:1}
-.cta-button{display:block;text-align:center;font-size:.82rem;letter-spacing:.08em;padding:15px 24px;text-decoration:none;transition:all .3s;border-radius:6px;margin-top:auto}
-.cta-card .cta-button{border:1px solid rgba(200,168,75,.22);color:var(--gold)}
-.cta-card .cta-button:hover{background:rgba(200,168,75,.08);border-color:rgba(200,168,75,.4)}
-.cta-card.featured .cta-button{background:linear-gradient(135deg,var(--gold),var(--gold-lt));color:#080808;border-color:var(--gold);box-shadow:0 4px 16px var(--gold-glow)}
-.cta-card.featured .cta-button:hover{box-shadow:0 6px 24px var(--gold-glow-strong);transform:translateY(-2px)}
-.cta-book{font-size:.8rem;color:rgba(168,168,160,.45);line-height:1.7;margin-top:10px}
-.cta-book a{color:rgba(200,168,75,.6);text-decoration:none;border-bottom:1px solid rgba(200,168,75,.2)}
-.cta-book a:hover{color:var(--gold)}
-
-/* ── Unlock block ── */
-.unlock-block{background:rgba(12,11,8,.96);border:1px solid rgba(200,168,75,.18);padding:36px 36px;margin-bottom:36px;text-align:center;position:relative;overflow:hidden}
-.unlock-block::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--gold),transparent)}
-.unlock-block::after{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 60% 80% at 50% 20%,rgba(200,168,75,.04),transparent 60%);pointer-events:none}
-.unlock-eyebrow{font-size:.62rem;letter-spacing:.3em;text-transform:uppercase;color:rgba(200,168,75,.55);margin-bottom:14px;position:relative;z-index:1}
-.unlock-title{font-family:'Cormorant Garamond',serif;font-size:clamp(1.5rem,3vw,2.2rem);font-weight:300;color:var(--ivory);line-height:1.2;margin-bottom:12px;position:relative;z-index:1}
-.unlock-sub{font-size:.88rem;color:var(--muted);line-height:1.55;max-width:520px;margin:0 auto 24px;position:relative;z-index:1}
-.unlock-benefits{list-style:none;display:flex;flex-direction:column;gap:10px;max-width:400px;margin:0 auto 28px;text-align:left;position:relative;z-index:1}
-.unlock-benefit{display:flex;align-items:flex-start;gap:10px;font-size:.84rem;line-height:1.45;color:rgba(200,168,75,.8)}
-.unlock-benefit-icon{color:var(--gold);flex-shrink:0;font-size:.7rem;margin-top:4px}
-.unlock-cta{display:inline-flex;align-items:center;gap:8px;font-size:.82rem;letter-spacing:.1em;text-transform:uppercase;color:#080808;background:linear-gradient(135deg,var(--gold),var(--gold-lt));padding:16px 42px;text-decoration:none;transition:all .3s;border-radius:6px;box-shadow:0 4px 20px var(--gold-glow);position:relative;z-index:1}
-.unlock-cta:hover{box-shadow:0 8px 36px var(--gold-glow-strong);transform:translateY(-2px)}
-
-/* ── Unlocked content styles ── */
-.unlocked-layer-body{padding:24px 28px;border:1px solid rgba(200,168,75,.12);border-top:none;background:rgba(14,13,9,.5)}
-.signal-category{margin-bottom:16px}
-.signal-category:last-child{margin-bottom:0}
-.signal-cat-header{display:flex;justify-content:space-between;align-items:center;padding:10px 16px;background:rgba(200,168,75,.04);border:1px solid rgba(200,168,75,.08);margin-bottom:8px}
-.signal-cat-name{font-size:.68rem;letter-spacing:.18em;text-transform:uppercase;color:rgba(200,168,75,.7);font-weight:400}
-.signal-cat-score{font-family:'Cormorant Garamond',serif;font-size:1.1rem;color:var(--ivory);font-weight:300}
-.signal-check{display:flex;align-items:flex-start;gap:10px;padding:10px 16px;border-bottom:1px solid rgba(200,168,75,.04)}
-.signal-check:last-child{border-bottom:none}
-.signal-check .signal-icon{flex-shrink:0;width:16px;text-align:center;font-size:.78rem;margin-top:2px}
-.signal-check.signal-pass .signal-icon{color:var(--green)}
-.signal-check.signal-fail .signal-icon{color:var(--red)}
-.signal-detail{flex:1;min-width:0}
-.signal-label{font-size:.8rem;color:var(--ivory);display:block;margin-bottom:3px;font-weight:400}
-.signal-msg{font-size:.74rem;color:var(--muted);line-height:1.5;display:block}
-.signal-fix{font-size:.72rem;color:rgba(200,168,75,.7);line-height:1.5;display:block;margin-top:4px;padding-left:12px;border-left:2px solid rgba(200,168,75,.15)}
-.signal-pts{font-size:.66rem;color:rgba(168,168,160,.4);flex-shrink:0;margin-left:8px;margin-top:3px}
-.issue-row{display:flex;align-items:flex-start;gap:12px;padding:14px 18px;border:1px solid rgba(200,168,75,.06);background:rgba(14,13,9,.6);margin-bottom:6px}
-.issue-row:last-child{margin-bottom:0}
-.issue-rank{flex-shrink:0;width:28px;height:28px;display:flex;align-items:center;justify-content:center;font-family:'Cormorant Garamond',serif;font-size:1rem;color:var(--gold);border:1px solid rgba(200,168,75,.15);background:rgba(200,168,75,.04)}
-.issue-content{flex:1;min-width:0}
-.issue-text{font-size:.82rem;color:var(--ivory);line-height:1.5;display:block;margin-bottom:4px}
-.issue-meta{font-size:.68rem;color:var(--muted);display:flex;gap:12px;flex-wrap:wrap}
-.issue-meta-tag{display:inline-flex;align-items:center;gap:4px}
-.issue-meta-tag.high{color:var(--red)}
-.issue-meta-tag.medium{color:var(--gold)}
-.issue-meta-tag.low{color:var(--muted)}
-.issue-fix-row{font-size:.74rem;color:rgba(200,168,75,.65);line-height:1.5;margin-top:6px;padding:8px 12px;background:rgba(200,168,75,.03);border-left:2px solid rgba(200,168,75,.18)}
-.coverage-cat-row{display:grid;grid-template-columns:1fr 80px 80px 80px;gap:0;align-items:center;padding:12px 18px;border-bottom:1px solid rgba(200,168,75,.05)}
-.coverage-cat-row:last-child{border-bottom:none}
-.coverage-cat-row.coverage-header{background:rgba(200,168,75,.04);font-size:.62rem;letter-spacing:.16em;text-transform:uppercase;color:rgba(200,168,75,.55);padding:10px 18px}
-.coverage-cat-name{font-size:.78rem;color:var(--ivory)}
-.coverage-cat-val{font-family:'Cormorant Garamond',serif;font-size:1rem;text-align:center}
-.coverage-cat-val.yours{color:var(--ivory)}
-.coverage-cat-val.theirs{color:var(--green)}
-.coverage-cat-val.gap-val{color:var(--red)}
-.coverage-bar-mini{height:4px;background:rgba(200,168,75,.06);overflow:hidden;margin-top:6px;width:100%}
-.coverage-bar-mini-fill{height:100%;transition:width .8s ease}
-/* Unlocked layer visual differentiation */
-.unlocked-layer-body{position:relative;background:rgba(14,13,9,.75);border-color:rgba(200,168,75,.18)}
-.unlocked-layer-body::before{content:'';position:absolute;top:0;left:0;width:3px;height:100%;background:linear-gradient(to bottom,var(--gold),rgba(200,168,75,.2))}
-.unlocked-layer-body::after{content:'';position:absolute;top:0;left:0;right:0;height:100px;background:linear-gradient(to bottom,rgba(200,168,75,.05),transparent);pointer-events:none;z-index:0}
-.report-layer:has(.unlocked-layer-body){border-color:rgba(200,168,75,.2);box-shadow:0 0 48px rgba(200,168,75,.05),0 2px 24px rgba(0,0,0,.35)}
-.report-layer:has(.unlocked-layer-body) .layer-header{border-color:rgba(200,168,75,.2);background:rgba(14,13,9,.85)}
-.report-layer:has(.unlocked-layer-body) .layer-status.unlocked{text-shadow:0 0 14px rgba(106,175,144,.55);font-weight:400}
-
-/* ── Activation banner ── */
-.activation-banner{position:relative;margin-bottom:28px;overflow:hidden}
-.activation-glow{position:absolute;inset:0;background:radial-gradient(ellipse 80% 100% at 50% 0%,rgba(200,168,75,.1),transparent 70%);pointer-events:none;z-index:0}
-.activation-inner{position:relative;z-index:1;border:1px solid rgba(200,168,75,.22);background:rgba(12,11,8,.95);padding:28px 32px;text-align:center}
-.activation-state-line{position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent 5%,var(--gold) 30%,var(--gold-lt) 50%,var(--gold) 70%,transparent 95%);animation:activationPulse 3s ease-in-out infinite}
-@keyframes activationPulse{0%,100%{opacity:.6}50%{opacity:1}}
-@keyframes activationShimmer{0%{transform:translateX(-100%)}100%{transform:translateX(200%)}}
-.activation-state-line::after{content:'';position:absolute;top:0;left:0;width:40%;height:100%;background:linear-gradient(90deg,transparent,rgba(255,255,255,.18),transparent);animation:activationShimmer 4s ease-in-out infinite 1s}
-.activation-content{position:relative}
-.activation-eyebrow{font-size:.58rem;letter-spacing:.34em;text-transform:uppercase;color:rgba(200,168,75,.55);display:block;margin-bottom:10px}
-.activation-title{font-family:'Cormorant Garamond',serif;font-size:clamp(1.4rem,2.5vw,1.9rem);font-weight:300;color:var(--ivory);line-height:1.2;margin-bottom:8px}
-.activation-sub{font-size:.78rem;color:var(--muted);line-height:1.6;margin-bottom:16px}
-.activation-indicators{display:flex;justify-content:center;gap:8px}
-.activation-dot{width:8px;height:8px;border-radius:50%;background:rgba(200,168,75,.12);border:1px solid rgba(200,168,75,.2);transition:all .4s}
-.activation-dot.active{background:var(--gold);border-color:var(--gold);box-shadow:0 0 10px rgba(200,168,75,.5)}
-
-/* ── Level intent headers ── */
-.level-intent-header{margin-bottom:22px;padding-bottom:18px;border-bottom:1px solid rgba(200,168,75,.12);position:relative;z-index:1}
-.level-intent-header::after{content:'';position:absolute;bottom:-1px;left:0;width:80px;height:1px;background:linear-gradient(90deg,var(--gold),transparent)}
-.level-intent-tag{font-size:.56rem;letter-spacing:.3em;text-transform:uppercase;color:rgba(200,168,75,.5);display:block;margin-bottom:8px}
-.level-intent-title{font-family:'Cormorant Garamond',serif;font-size:clamp(1.2rem,2.2vw,1.65rem);font-weight:300;color:var(--ivory);line-height:1.25;margin-bottom:8px}
-.level-intent-sub{font-size:.82rem;color:var(--muted);line-height:1.6}
-
-/* ── Content blocks ── */
-.content-block{margin-bottom:18px;position:relative;z-index:1}
-.content-block:last-child{margin-bottom:0}
-.content-block-label{font-size:.58rem;letter-spacing:.24em;text-transform:uppercase;color:rgba(200,168,75,.5);display:flex;align-items:center;gap:8px;margin-bottom:12px;padding-bottom:6px;border-bottom:1px solid rgba(200,168,75,.06)}
-.content-block-label::before{content:'';width:4px;height:4px;background:var(--gold);opacity:.4;flex-shrink:0}
-
-/* ── Save / actions ── */
-.save-section{text-align:center;padding:32px 0 0;border-top:1px solid rgba(200,168,75,.12);margin-top:36px;position:relative}
-.save-section::before{content:'';position:absolute;top:-1px;left:50%;transform:translateX(-50%);width:40%;height:1px;background:linear-gradient(90deg,transparent,rgba(200,168,75,.3),transparent)}
-.save-btn{display:inline-flex;align-items:center;gap:10px;padding:14px 32px;background:var(--gold);color:#080808;font-size:.78rem;letter-spacing:.12em;text-transform:uppercase;text-decoration:none;transition:all .3s;border-radius:6px}
-.save-btn:hover{background:var(--gold-lt);box-shadow:0 2px 12px var(--gold-glow)}
-.save-note{font-size:.78rem;color:rgba(168,168,160,.6);margin-top:14px}
-.result-actions{text-align:center;padding:32px 0 48px;border-top:1px solid rgba(200,168,75,.06);margin-top:36px}
-.scan-again{font-size:.76rem;letter-spacing:.14em;text-transform:uppercase;color:rgba(168,168,160,.45);text-decoration:none;border-bottom:1px solid rgba(168,168,160,.14);transition:color .2s,border-color .2s}
-.scan-again:hover{color:var(--muted);border-color:rgba(168,168,160,.3)}
-
-/* ── Footer ── */
-footer{border-top:1px solid var(--border);padding:32px 48px;display:flex;flex-direction:column;align-items:center;gap:12px;text-align:center}
-.footer-copy{font-size:.66rem;letter-spacing:.08em;color:var(--muted)}
-.footer-legal{display:flex;gap:20px;padding-top:8px;border-top:1px solid var(--border);width:100%;justify-content:center}
-.footer-legal a{font-size:.64rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);text-decoration:none;transition:color .3s}
-.footer-legal a:hover{color:var(--gold)}
-
-/* ── Depth progress ── */
-.depth-progress{display:flex;align-items:center;gap:14px;padding:14px 22px;background:rgba(200,168,75,.02);border:1px solid rgba(200,168,75,.06);margin:18px 0 6px;border-radius:2px}
-.depth-progress-label{font-size:.62rem;letter-spacing:.2em;text-transform:uppercase;color:rgba(200,168,75,.55);white-space:nowrap}
-.depth-progress-bar{flex:1;height:5px;background:rgba(200,168,75,.06);border-radius:3px;overflow:hidden;position:relative}
-.depth-progress-fill{height:100%;background:linear-gradient(90deg,var(--gold),var(--gold-lt));border-radius:3px;transition:width 1.4s cubic-bezier(.23,1,.32,1)}
-.depth-progress-pct{font-family:'Cormorant Garamond',serif;font-size:1.1rem;color:var(--gold);min-width:38px;text-align:right}
-
-/* ── Report layers ── */
-.report-layer{margin-bottom:0;position:relative}
-.report-layer + .report-layer{margin-top:0}
-.layer-connector{height:22px;display:flex;flex-direction:column;justify-content:center;align-items:center;position:relative}
-.layer-connector::before{content:'';width:2px;height:100%;background:linear-gradient(to bottom,rgba(200,168,75,.22),rgba(200,168,75,.08));position:absolute}
-.layer-connector::after{content:'▾';color:rgba(200,168,75,.4);font-size:.8rem;position:relative;z-index:1;background:var(--bg);padding:2px 8px}
-.layer-step{font-size:.56rem;letter-spacing:.22em;text-transform:uppercase;color:rgba(200,168,75,.3);margin-top:4px;position:relative;z-index:1;background:var(--bg);padding:0 8px}
-.layer-header{display:flex;justify-content:space-between;align-items:center;padding:16px 28px;border:1px solid rgba(200,168,75,.08);background:rgba(14,13,9,.6)}
-.layer-label{font-size:.62rem;letter-spacing:.28em;text-transform:uppercase;color:rgba(200,168,75,.65);font-weight:400}
-.layer-status{font-size:.56rem;letter-spacing:.18em;text-transform:uppercase;display:flex;align-items:center;gap:6px}
-.layer-status.unlocked{color:var(--green);text-shadow:0 0 8px rgba(106,175,144,.3)}
-.layer-status.locked{color:rgba(200,168,75,.45);opacity:.8}
-.layer-body{border:1px solid rgba(200,168,75,.06);border-top:none}
-.layer-body.is-locked{max-height:240px;overflow:hidden;position:relative}
-.layer-body.is-locked::after{content:'';position:absolute;bottom:0;left:0;right:0;height:180px;background:linear-gradient(to bottom,transparent,rgba(8,8,8,.98));pointer-events:none;z-index:5}
-.layer-preview{padding:24px 28px;opacity:.55;user-select:none;pointer-events:none}
-.layer-preview-list{display:flex;flex-direction:column;gap:10px;list-style:none;padding:0;margin:0}
-.layer-preview-item{font-size:.78rem;color:var(--muted);line-height:1.5;padding:12px 18px;border:1px solid rgba(200,168,75,.05);background:rgba(14,13,9,.4);display:flex;align-items:flex-start;gap:10px}
-.layer-preview-item::before{content:'◇';color:rgba(200,168,75,.3);font-size:.6rem;margin-top:2px;flex-shrink:0}
-.layer-unlock{padding:28px 28px;text-align:center;border:1px solid rgba(200,168,75,.1);border-top:none;background:rgba(10,10,8,.98);position:relative;z-index:10}
-.layer-unlock-text{font-size:.84rem;color:rgba(220,216,208,.82);margin-bottom:18px;line-height:1.6;max-width:520px;margin-left:auto;margin-right:auto}
-.layer-unlock-cta{display:inline-flex;align-items:center;gap:8px;font-size:.78rem;letter-spacing:.1em;text-transform:uppercase;padding:16px 40px;text-decoration:none;transition:all .3s}
-.layer-unlock-cta.primary{color:var(--bg);background:linear-gradient(135deg,var(--gold),var(--gold-lt));box-shadow:0 4px 18px var(--gold-glow)}
-.layer-unlock-cta.primary:hover{box-shadow:0 8px 28px var(--gold-glow-strong);transform:translateY(-2px)}
-.layer-unlock-cta.dominant{color:var(--bg);background:linear-gradient(135deg,var(--gold),var(--gold-lt));padding:20px 52px;font-size:.84rem;box-shadow:0 8px 32px var(--gold-glow-strong),0 0 48px rgba(200,168,75,.12);border:2px solid var(--gold)}
-.layer-unlock-cta.dominant:hover{box-shadow:0 12px 44px rgba(200,168,75,.4),0 0 64px rgba(200,168,75,.15);transform:translateY(-3px)}
-.layer-unlock-cta.premium{color:var(--gold);background:transparent;border:1px solid rgba(200,168,75,.22);box-shadow:none;padding:15px 38px}
-.layer-unlock-cta.premium:hover{background:rgba(200,168,75,.06);border-color:rgba(200,168,75,.4)}
-/* Execution layer dominant section */
-.report-layer.execution-layer{margin-top:0;transform:scale(1.02);box-shadow:0 0 40px rgba(200,168,75,.06),0 0 2px rgba(200,168,75,.12)}
-.report-layer.execution-layer .layer-header{border-color:rgba(200,168,75,.22);background:rgba(14,13,9,.85);padding:20px 28px;position:relative}
-.report-layer.execution-layer .layer-header::after{content:'';position:absolute;bottom:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent 10%,rgba(200,168,75,.25) 50%,transparent 90%)}
-.report-layer.execution-layer .layer-body{border-color:rgba(200,168,75,.12)}
-.layer-unlock.dominant-unlock{background:rgba(12,11,8,.98);border-color:rgba(200,168,75,.22);padding:40px 32px;position:relative}
-.layer-unlock.dominant-unlock::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--gold),transparent)}
-.layer-unlock.dominant-unlock::after{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 80% 60% at 50% 0%,rgba(200,168,75,.04),transparent 60%);pointer-events:none}
-.layer-unlock.dominant-unlock .layer-unlock-text{font-size:.92rem;color:var(--ivory-soft);max-width:520px;margin:0 auto 20px;position:relative;z-index:1}
-.popular-badge{display:inline-block;font-size:.54rem;letter-spacing:.24em;text-transform:uppercase;color:var(--bg);background:var(--gold);padding:4px 14px;margin-left:12px;vertical-align:middle}
-.layer-bullet-list{list-style:none;display:flex;flex-direction:column;gap:8px;padding:0;max-width:440px;margin:0 auto 20px;text-align:left}
-.layer-bullet{font-size:.78rem;color:rgba(210,206,198,.78);line-height:1.5;display:flex;align-items:flex-start;gap:8px}
-.layer-bullet::before{content:'◆';color:rgba(200,168,75,.5);font-size:.52rem;margin-top:4px;flex-shrink:0}
-.layer-bullet em{font-style:normal;color:var(--gold);font-weight:400}
-.depth-signal{font-size:.74rem;color:var(--muted);text-align:center;padding:20px 24px;background:rgba(200,168,75,.02);border:1px solid rgba(200,168,75,.05);margin:28px 0;letter-spacing:.04em;line-height:1.6}
-.depth-signal strong{color:var(--gold);font-weight:400}
-.tier-ladder{border-top:1px solid rgba(200,168,75,.1);padding:36px 0 0;text-align:center}
-.tier-ladder-hed{font-family:'Cormorant Garamond',serif;font-size:clamp(1.3rem,3vw,1.8rem);font-weight:300;color:var(--ivory);margin-bottom:28px}
-.tier-ladder-hed em{font-style:italic;color:var(--gold)}
-.tier-ladder-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;max-width:760px;margin:0 auto 32px}
-.tier-ladder-item{padding:20px 14px;border:1px solid rgba(200,168,75,.08);text-align:center;text-decoration:none;transition:all .3s;display:flex;flex-direction:column;gap:6px}
-.tier-ladder-item:hover{border-color:rgba(200,168,75,.22);transform:translateY(-2px)}
-.tier-ladder-item.tl-dominant{border-color:rgba(200,168,75,.35);box-shadow:0 0 28px var(--gold-glow-strong),0 0 8px var(--gold-glow);transform:scale(1.04)}
-.tl-name{font-size:.64rem;letter-spacing:.16em;text-transform:uppercase;color:rgba(200,168,75,.55)}
-.tl-price{font-family:'Cormorant Garamond',serif;font-size:1.6rem;font-weight:300;color:var(--gold);line-height:1}
-.tl-desc{font-size:.72rem;color:var(--muted);line-height:1.4}
-
-/* ── Legacy fallback sections ── */
-.r-section{margin-bottom:40px}
-.r-section-label{font-size:.66rem;letter-spacing:.24em;text-transform:uppercase;color:rgba(200,168,75,.6);margin-bottom:18px;display:flex;align-items:center;gap:12px}
-.r-section-label::before{content:'';width:20px;height:1px;background:rgba(200,168,75,.35)}
-.r-list{list-style:none;display:flex;flex-direction:column;gap:12px}
-.r-list-item{display:flex;align-items:flex-start;gap:14px;padding:12px 14px;border:1px solid rgba(200,168,75,.07);font-size:.92rem;line-height:1.45}
-.r-list-item.issue{border-color:rgba(200,68,68,.18);background:rgba(200,68,68,.04)}
-.r-list-item.strength{border-color:rgba(74,140,110,.18);background:rgba(74,140,110,.04)}
-.r-list-icon{flex-shrink:0;margin-top:2px;font-size:.9rem}
-.r-list-item.issue .r-list-icon{color:var(--red)}
-.r-list-item.strength .r-list-icon{color:var(--green)}
-.r-list-text{color:var(--muted)}
-
-/* ── Animations & depth ── */
-@keyframes ctaShimmer{0%{transform:translateX(-100%)}100%{transform:translateX(100%)}}
-.report-layer .layer-bullet,.report-layer .layer-preview-item{opacity:0;transform:translateY(14px);transition:opacity .5s ease-out,transform .5s ease-out}
-.report-layer.in-view .layer-bullet,.report-layer.in-view .layer-preview-item{opacity:1;transform:translateY(0)}
-.report-layer.in-view .layer-bullet:nth-child(1),.report-layer.in-view .layer-preview-item:nth-child(1){transition-delay:.1s}
-.report-layer.in-view .layer-bullet:nth-child(2),.report-layer.in-view .layer-preview-item:nth-child(2){transition-delay:.2s}
-.report-layer.in-view .layer-bullet:nth-child(3),.report-layer.in-view .layer-preview-item:nth-child(3){transition-delay:.3s}
-.report-layer.in-view .layer-bullet:nth-child(4),.report-layer.in-view .layer-preview-item:nth-child(4){transition-delay:.4s}
-.report-layer.in-view .layer-bullet:nth-child(5),.report-layer.in-view .layer-preview-item:nth-child(5){transition-delay:.5s}
-.layer-unlock-cta.primary,.layer-unlock-cta.dominant{position:relative;overflow:hidden}
-.layer-unlock-cta.primary::after,.layer-unlock-cta.dominant::after{content:'';position:absolute;top:0;left:0;width:100%;height:100%;background:linear-gradient(105deg,transparent 40%,rgba(255,255,255,.1) 50%,transparent 60%);animation:ctaShimmer 4s ease-in-out infinite;pointer-events:none}
-.report-layer .layer-body{position:relative}
-.report-layer .layer-body::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 80% 60% at 50% 0%,rgba(200,168,75,.03),transparent 70%);pointer-events:none;z-index:0}
-
-/* ── Mobile Refinement Pass ── */
-@media(max-width:768px){
-  /* 1. Nav */
-  #nav{padding:12px 16px}
-  .nav-link{display:none}
-  .nav-btn{padding:10px 20px;font-size:.68rem;min-height:44px}
-
-  /* 2. Hero + score ring */
-  .result-hero{padding:100px 20px 56px}
-  .result-eyebrow{font-size:.68rem;letter-spacing:.28em;margin-bottom:22px}
-  .result-url{font-size:.82rem;margin-bottom:28px}
-  .score-ring-svg{width:150px;height:150px}
-  .score-number{font-size:3.4rem}
-  .score-label{font-size:.64rem}
-  .score-verdict{font-size:clamp(1.35rem,4vw,1.9rem);max-width:90%}
-  .score-subline{font-size:.8rem;opacity:.62}
-  .res-progression{gap:4px;max-width:360px}
-  .res-prog-label{font-size:.62rem}
-
-  /* 3. Stats row */
-  .stats-row{gap:20px;padding:16px 20px;max-width:100%}
-  .stat-value{font-size:1.5rem}
-  .stat-label{font-size:.6rem;letter-spacing:.18em}
-
-  /* 4. Category grid */
-  .result-body{padding:0 16px 48px}
-  .cat-grid{grid-template-columns:1fr;gap:14px}
-  .cat-card{min-height:auto;padding:26px 22px 28px}
-  .cat-name{font-size:.72rem;letter-spacing:.16em}
-  .cat-score{font-size:1.4rem}
-  .cat-status{font-size:.56rem}
-  .check-item{font-size:.84rem;line-height:1.55}
-  .check-icon{font-size:.8rem}
-  .check-pts{font-size:.7rem}
-
-  /* 5. Fastest fix + broken links */
-  .fastest-fix{padding:26px 22px}
-  .fix-label{font-size:.68rem}
-  .fix-text{font-size:1rem;line-height:1.6}
-  .broken-title{font-size:.76rem}
-  .broken-item{font-size:.86rem}
-  .broken-status{font-size:.76rem}
-
-  /* 6. Market coverage */
-  .market-eyebrow{font-size:.7rem}
-  .market-bar-labels{font-size:.72rem}
-  .market-stats{grid-template-columns:1fr 1fr 1fr;gap:10px}
-  .market-stat-val{font-size:1.4rem}
-  .market-stat-lbl{font-size:.66rem}
-  .market-insight{font-size:.88rem;line-height:1.65}
-  .market-cta{font-size:.82rem;padding:16px 28px;min-height:48px}
-  .vgap-label{font-size:.64rem}
-  .vgap-val{font-size:1.9rem}
-  .vgap-sub{font-size:.72rem}
-
-  /* 7. Urgency + competitive */
-  .urgency-hed{font-size:.9rem}
-  .urgency-sub{font-size:.84rem;line-height:1.6}
-  .comp-eyebrow{font-size:.66rem}
-  .comp-intro{font-size:.86rem}
-  .comp-item{font-size:.84rem}
-  .comp-bottom{font-size:.82rem}
-
-  /* 8. Report layers + tier ladder */
-  .tier-ladder-grid{grid-template-columns:1fr}
-  .tier-ladder-hed{font-size:clamp(1.25rem,4vw,1.7rem);margin-bottom:22px}
-  .tl-name{font-size:.68rem}
-  .tl-price{font-size:1.5rem}
-  .tl-desc{font-size:.76rem}
-  .layer-header{padding:14px 18px}
-  .layer-label{font-size:.66rem;letter-spacing:.22em}
-  .layer-status{font-size:.6rem}
-  .layer-unlock{padding:28px 20px}
-  .layer-unlock-text{font-size:.88rem;line-height:1.65}
-  .layer-unlock-cta{min-height:48px;padding:16px 36px;font-size:.8rem}
-  .layer-unlock-cta.dominant{padding:18px 44px;font-size:.84rem;min-height:52px}
-  .layer-bullet{font-size:.82rem}
-  .layer-preview{padding:18px}
-  .layer-preview-item{font-size:.82rem}
-  .depth-progress{padding:12px 16px;gap:10px}
-  .depth-progress-label{font-size:.66rem}
-  .depth-progress-pct{font-size:1.15rem}
-  .layer-connector{height:28px}
-  .depth-signal{font-size:.78rem}
-
-  /* 9. Locked overlays + unlock blocks */
-  .locked-overlay{padding:28px 22px;gap:14px}
-  .locked-overlay .lock-text{max-width:220px;font-size:.72rem;line-height:1.75}
-  .locked-overlay .lock-cta{padding:14px 28px;font-size:.74rem;min-height:46px}
-  .unlock-block{padding:32px 22px}
-  .unlock-eyebrow{font-size:.66rem}
-  .unlock-title{font-size:clamp(1.4rem,4vw,2rem)}
-  .unlock-sub{font-size:.92rem;line-height:1.6}
-  .unlock-benefit{font-size:.88rem}
-  .unlock-cta{padding:16px 38px;font-size:.84rem;min-height:50px}
-  .unlock-benefits{max-width:100%}
-
-  /* 10. CTA section */
-  .cta-section{padding:44px 0 0}
-  .cta-eyebrow{font-size:.7rem}
-  .cta-hed{font-size:clamp(1.6rem,5vw,2.4rem)}
-  .cta-sub{font-size:.96rem;line-height:1.6}
-  .cta-grid{grid-template-columns:1fr}
-  .cta-card{padding:26px 22px}
-  .cta-tier{font-size:.66rem}
-  .cta-name{font-size:1.4rem}
-  .cta-price{font-size:2rem}
-  .cta-desc{font-size:.88rem;line-height:1.6}
-  .cta-button{font-size:.84rem;padding:16px 24px;min-height:48px;display:flex;align-items:center;justify-content:center}
-  .cta-book{font-size:.84rem}
-
-  /* 11. Activation + biggest issue + not-done */
-  .activation-inner{padding:24px 22px}
-  .activation-eyebrow{font-size:.62rem}
-  .activation-title{font-size:clamp(1.3rem,4vw,1.8rem)}
-  .activation-sub{font-size:.82rem;line-height:1.65}
-  .biggest-issue{padding:28px 22px 24px;margin:28px auto 16px}
-  .biggest-issue .bi-eye{font-size:.62rem}
-  .biggest-issue .bi-title{font-size:clamp(1.05rem,3vw,1.25rem)}
-  .biggest-issue .bi-loss{font-size:.86rem}
-  .biggest-issue .bi-why{font-size:.82rem;line-height:1.7}
-  .not-done-block{padding:32px 22px;margin:32px auto 32px}
-  .not-done-title{font-size:clamp(1.15rem,3.5vw,1.5rem)}
-  .not-done-sub{font-size:.86rem;line-height:1.72}
-  .not-done-consequence{font-size:.86rem;line-height:1.6}
-
-  /* 12. Locked intel panel */
-  .locked-intel{padding:36px 22px;margin:28px 0 28px}
-  .locked-intel-badge{font-size:.62rem;padding:10px 20px}
-  .locked-intel-text{font-size:.78rem;line-height:1.65}
-  .locked-intel-label{font-size:.84rem}
-
-  /* 13. Footer */
-  footer{padding:22px 16px}
-  .footer-copy{font-size:.7rem}
-  .footer-legal a{font-size:.68rem}
-}
-@media(max-width:480px){
-  .result-hero{padding:88px 16px 44px}
-  .score-ring-svg{width:136px;height:136px}
-  .score-number{font-size:2.8rem}
-  .score-verdict{font-size:clamp(1.1rem,4.5vw,1.35rem)}
-  .score-subline{font-size:.76rem}
-  .stats-row{gap:16px;padding:12px 16px;flex-direction:row}
-  .stat-item{min-width:56px}
-  .stat-value{font-size:1.3rem}
-  .stat-label{font-size:.56rem}
-  .cat-card{min-height:auto;padding:22px 18px 24px}
-  .cat-name{font-size:.68rem}
-  .check-item{font-size:.82rem}
-  .locked-overlay .lock-cta{padding:12px 22px;font-size:.7rem;min-height:44px}
-  .unlock-block{padding:28px 18px}
-  .unlock-title{font-size:clamp(1.25rem,5vw,1.7rem)}
-  .unlock-sub{font-size:.88rem}
-  .cta-card{padding:22px 18px}
-  .cta-button{min-height:46px}
-  .layer-unlock-cta{min-height:46px;padding:14px 30px}
-  .biggest-issue{padding:24px 18px 20px}
-  .not-done-block{padding:28px 18px}
-  .not-done-title{font-size:clamp(1.1rem,4vw,1.35rem)}
-  .locked-intel{padding:32px 18px}
-}
-@media(max-width:390px){
-  .result-hero{padding:82px 14px 38px}
-  .result-eyebrow{font-size:.64rem}
-  .score-ring-svg{width:122px;height:122px}
-  .score-number{font-size:2.5rem}
-  .score-verdict{font-size:clamp(1rem,5vw,1.2rem)}
-  .cat-card{padding:20px 16px 22px}
-  .check-item{font-size:.8rem}
-  .cta-hed{font-size:clamp(1.3rem,6vw,1.8rem)}
-  .cta-sub{font-size:.9rem}
-  .unlock-title{font-size:clamp(1.15rem,5.5vw,1.5rem)}
-  .biggest-issue{padding:22px 16px 18px}
-  .not-done-block{padding:24px 16px}
-  footer{padding:18px 14px}
+  --bg:#080807;
+  --panel:#12100c;
+  --panel-soft:#17140f;
+  --line:rgba(200,168,75,.18);
+  --line-soft:rgba(200,168,75,.1);
+  --gold:#d6b55f;
+  --gold-soft:#efe0b2;
+  --text:#efe8d6;
+  --muted:#b9b09a;
+  --green:#6aaf90;
+  --red:#c47878;
 }
 
-/* ── Progression Pipeline ── */
-.res-progression{display:flex;align-items:center;justify-content:center;gap:6px;margin:18px auto 0;max-width:420px}
-.res-prog-step{display:flex;flex-direction:column;align-items:center;gap:4px;flex:1}
-.res-prog-dot{width:10px;height:10px;border-radius:50%;border:1.5px solid rgba(168,168,160,.25);background:transparent;transition:.4s}
-.res-prog-dot.completed{background:var(--green);border-color:var(--green);box-shadow:0 0 8px rgba(106,175,144,.25)}
-.res-prog-dot.current{background:var(--gold);border-color:var(--gold);box-shadow:0 0 12px rgba(200,168,75,.3);animation:resPulse 2s ease-in-out infinite}
-.res-prog-label{font-size:.58rem;letter-spacing:.16em;text-transform:uppercase;color:rgba(168,168,160,.35)}
-.res-prog-label.completed{color:var(--green)}
-.res-prog-label.current{color:var(--gold)}
-.res-prog-line{width:20px;height:1px;background:rgba(168,168,160,.12);margin-bottom:18px}
-.res-prog-line.active{background:var(--green)}
-@keyframes resPulse{0%,100%{box-shadow:0 0 6px rgba(200,168,75,.2)}50%{box-shadow:0 0 16px rgba(200,168,75,.45)}}
+*{box-sizing:border-box}
+html{font-size:17px;scroll-behavior:smooth}
+body{margin:0;background:radial-gradient(circle at 20% -20%,rgba(214,181,95,.08),transparent 40%),var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;line-height:1.5;overflow-x:hidden}
+a,button{font-family:inherit}
+a{text-decoration:none;color:inherit}
 
-/* ── Biggest Issue Banner ── */
-.biggest-issue{max-width:720px;margin:36px auto 20px;padding:34px 32px 30px;background:rgba(196,120,120,.05);border:1px solid rgba(196,120,120,.18);position:relative;overflow:hidden;box-shadow:0 6px 32px rgba(196,120,120,.05)}
-.biggest-issue::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,rgba(196,120,120,.45),transparent)}
-.biggest-issue::after{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 80% 60% at 50% 0%,rgba(196,120,120,.03),transparent 60%);pointer-events:none}
-.biggest-issue .bi-eye{font-size:.58rem;letter-spacing:.3em;text-transform:uppercase;color:var(--red);margin-bottom:14px;display:block;position:relative;z-index:1}
-.biggest-issue .bi-title{font-family:'Cormorant Garamond',serif;font-size:clamp(1.05rem,2vw,1.2rem);color:var(--ivory);font-weight:300;line-height:1.4;margin-bottom:14px;position:relative;z-index:1}
-.biggest-issue .bi-loss{font-size:.82rem;color:var(--red);line-height:1.55;margin-bottom:10px;font-weight:400;position:relative;z-index:1}
-.biggest-issue .bi-why{font-size:.78rem;color:var(--muted);line-height:1.65;position:relative;z-index:1}
+.shell{max-width:1220px;margin:0 auto;padding:86px 20px 56px}
 
-/* ── "Not Done" interstitial ── */
-.not-done-block{max-width:660px;margin:44px auto 40px;padding:44px 36px;text-align:center;border:1px solid rgba(200,168,75,.14);background:rgba(12,11,8,.96);position:relative;overflow:hidden}
-.not-done-block::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,rgba(200,168,75,.35),transparent)}
-.not-done-block::after{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 70% 70% at 50% 20%,rgba(200,168,75,.04),transparent 60%);pointer-events:none}
-.not-done-title{font-family:'Cormorant Garamond',serif;font-size:clamp(1.2rem,2.4vw,1.6rem);font-weight:300;color:var(--ivory);line-height:1.3;margin-bottom:14px;position:relative;z-index:1}
-.not-done-sub{font-size:.82rem;color:var(--muted);line-height:1.7;margin-bottom:12px;max-width:480px;margin-left:auto;margin-right:auto;position:relative;z-index:1}
-.not-done-consequence{font-size:.82rem;color:var(--red);line-height:1.55;margin-bottom:28px;font-weight:400;position:relative;z-index:1}
+.mode-bar{display:grid;grid-template-columns:1fr auto;gap:14px;align-items:stretch;padding:14px 16px;border:1px solid rgba(214,181,95,.24);border-radius:14px;background:linear-gradient(160deg,rgba(26,21,14,.95),rgba(11,9,7,.99));box-shadow:0 8px 24px rgba(0,0,0,.28),0 0 0 1px rgba(214,181,95,.05) inset;margin-bottom:14px}
+.mode-kicker{font-size:.52rem;letter-spacing:.24em;text-transform:uppercase;color:rgba(214,181,95,.84);margin:0 0 8px}
+.mode-meta{display:flex;flex-wrap:wrap;gap:8px}
+.mode-chip{display:inline-flex;align-items:center;gap:6px;min-height:28px;padding:5px 10px;border-radius:999px;border:1px solid rgba(214,181,95,.22);background:rgba(214,181,95,.07);font-size:.58rem;letter-spacing:.09em;text-transform:uppercase;color:#e6ddc7}
+.mode-chip strong{font-weight:600;color:#f0e5c7}
+.mode-chip.state-stable{border-color:rgba(106,175,144,.3);background:rgba(106,175,144,.09);color:#d9eee5}
+.mode-chip.state-expanding{border-color:rgba(214,181,95,.38);background:rgba(214,181,95,.12);color:#f0e2be}
+.mode-chip.state-risk{border-color:rgba(196,120,120,.34);background:rgba(196,120,120,.1);color:#f0d7cf}
+.mode-return{display:inline-flex;align-items:center;justify-content:center;min-height:42px;padding:10px 14px;border-radius:10px;border:1px solid rgba(214,181,95,.3);background:rgba(214,181,95,.08);font-size:.6rem;letter-spacing:.14em;text-transform:uppercase;color:#eadfbe;align-self:center}
+.mode-return:hover{border-color:rgba(214,181,95,.48);background:rgba(214,181,95,.16)}
 
-/* ── Enhanced locked teaser ── */
-.locked-teaser-items{display:flex;flex-direction:column;gap:6px;margin-bottom:14px}
-.locked-teaser-item{font-size:.74rem;color:rgba(200,168,75,.55);display:flex;align-items:center;gap:8px;justify-content:center}
-.locked-teaser-item::before{content:'◇';font-size:.5rem;flex-shrink:0}
+.live-feedback-strip{display:flex;align-items:center;gap:10px;padding:10px 12px;border:1px solid var(--line-soft);border-radius:10px;background:linear-gradient(150deg,rgba(19,16,11,.96),rgba(12,10,8,.98));margin-bottom:10px}
+.live-feedback-dot{width:8px;height:8px;border-radius:999px;background:#d6b55f;box-shadow:0 0 0 0 rgba(214,181,95,.3);animation:feedbackPulse 2.4s ease-in-out infinite}
+.live-feedback-kicker{font-size:.52rem;letter-spacing:.18em;text-transform:uppercase;color:#d8c38d}
+.live-feedback-text{font-size:.72rem;color:#e7dcc2;transition:opacity .22s ease,transform .22s ease}
+.live-feedback-text.is-swapping{opacity:.25;transform:translateY(1px)}
 
-/* ── CTA pulse animation ── */
-@keyframes ctaPulse{0%,100%{box-shadow:0 4px 18px var(--gold-glow)}50%{box-shadow:0 8px 36px var(--gold-glow-strong)}}
-.cta-pulse-anim{animation:ctaPulse 2.5s ease-in-out infinite}
+.global-state-strip{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin-bottom:14px}
+.global-state-chip{padding:9px 10px;border-radius:10px;border:1px solid var(--line-soft);background:rgba(214,181,95,.04)}
+.global-state-chip strong{display:block;font-size:.5rem;letter-spacing:.15em;text-transform:uppercase;color:#d4bf88;margin-bottom:3px}
+.global-state-chip span{display:block;font-size:.66rem;letter-spacing:.08em;text-transform:uppercase;color:#eee3c8}
 
-/* ── Category status badge ── */
-.cat-status{font-size:.52rem;letter-spacing:.14em;text-transform:uppercase;font-weight:500;padding:4px 12px;border-radius:1px;flex-shrink:0}
-.cat-status.good{color:var(--green);background:rgba(106,175,144,.06);border:1px solid rgba(106,175,144,.1)}
-.cat-status.weak{color:var(--gold);background:rgba(200,168,75,.06);border:1px solid rgba(200,168,75,.1)}
-.cat-status.missing{color:var(--red);background:rgba(196,120,120,.06);border:1px solid rgba(196,120,120,.1)}
+.progression-strip{display:grid;grid-template-columns:1fr 1fr 1.1fr;gap:8px;margin-bottom:14px}
+.progression-cell{padding:10px;border-radius:10px;border:1px solid var(--line-soft);background:rgba(214,181,95,.04)}
+.progression-cell strong{display:block;font-size:.5rem;letter-spacing:.15em;text-transform:uppercase;color:#d4bf88;margin-bottom:4px}
+.progression-cell p{margin:0;font-size:.72rem;color:#eee3c8;line-height:1.35}
+.progression-cell.is-current-stage{border-color:rgba(214,181,95,.36);background:linear-gradient(150deg,rgba(214,181,95,.13),rgba(214,181,95,.04));box-shadow:0 0 0 1px rgba(214,181,95,.08) inset}
+.progression-cell.is-next-unlock{border-color:rgba(214,181,95,.42);background:linear-gradient(150deg,rgba(214,181,95,.16),rgba(214,181,95,.05));box-shadow:0 0 0 1px rgba(214,181,95,.1) inset}
+.progression-cell.is-current-stage strong{color:#eddcaf}
+.progression-cell.is-current-stage p:first-of-type{font-size:.8rem;font-weight:600;color:#f0e2bd;letter-spacing:.03em}
+.next-unlock-name{font-size:.86rem!important;letter-spacing:.05em;text-transform:uppercase;color:#f1e3be;font-weight:600}
+.progression-list{margin:0;padding-left:15px}
+.progression-list li{font-size:.67rem;color:#e6dbc0;line-height:1.32;margin:2px 0}
+.progression-sub{margin:6px 0 0;font-size:.64rem;color:#d9ceb0;line-height:1.35}
+.progression-mini{margin:6px 0 0;padding-left:14px}
+.progression-mini li{font-size:.62rem;color:#e6dbc0;line-height:1.28;margin:1px 0}
+.progression-model{margin:0;padding-left:15px}
+.progression-model li{font-size:.64rem;color:#e8dcc0;line-height:1.3;margin:2px 0;opacity:.72}
+.progression-model li.is-current{color:#f0e2bd;font-weight:600;opacity:1;border-left:2px solid rgba(214,181,95,.44);padding-left:6px}
 
-/* ── Locked intelligence panel (base scan) ── */
-.locked-intel{position:relative;background:rgba(10,9,7,.92);border:1px solid rgba(200,168,75,.1);padding:48px 32px;margin:36px 0 36px;overflow:hidden;box-shadow:0 4px 40px rgba(0,0,0,.25)}
-.locked-intel::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 50% 30%,rgba(200,168,75,.04) 0%,transparent 55%);pointer-events:none}
-.locked-intel::after{content:'';position:absolute;inset:0;background-image:linear-gradient(rgba(200,168,75,.02) 1px,transparent 1px),linear-gradient(90deg,rgba(200,168,75,.02) 1px,transparent 1px);background-size:48px 48px;pointer-events:none;opacity:.5}
-.locked-intel-overlay{position:absolute;inset:0;backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);background:rgba(8,8,8,.5);z-index:2;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;padding:32px}
-.locked-intel-badge{display:flex;align-items:center;gap:8px;padding:11px 24px;background:rgba(200,168,75,.05);border:1px solid rgba(200,168,75,.12);font-size:.58rem;letter-spacing:.18em;text-transform:uppercase;color:var(--gold);font-weight:500}
-.locked-intel-badge svg{width:14px;height:14px;opacity:.55}
-.locked-intel-text{font-size:.74rem;color:rgba(168,168,160,.4);text-align:center;line-height:1.6;max-width:300px}
-.locked-intel-content{opacity:.12;pointer-events:none;user-select:none}
-.locked-intel-row{display:flex;align-items:center;gap:14px;padding:15px 0;border-bottom:1px solid rgba(200,168,75,.035)}
-.locked-intel-row:last-child{border-bottom:none}
-.locked-intel-dot{width:7px;height:7px;border-radius:50%;background:rgba(200,168,75,.18);flex-shrink:0}
-.locked-intel-label{font-size:.8rem;color:var(--ivory);flex:1;letter-spacing:.01em}
-.locked-intel-bar{height:4px;border-radius:3px;background:rgba(200,168,75,.07);max-width:110px;width:100%}
-.locked-intel-bar.long{max-width:140px}
+.layout{display:grid;grid-template-columns:minmax(0,1fr) 320px;gap:14px;align-items:start}
+.main{display:flex;flex-direction:column;gap:14px}
+
+.card{border:1px solid var(--line);border-radius:14px;background:linear-gradient(155deg,rgba(23,19,13,.95),rgba(12,10,8,.98));box-shadow:0 10px 26px rgba(0,0,0,.35),0 0 0 1px rgba(200,168,75,.04) inset}
+
+.hero{padding:18px 18px 16px;border-color:rgba(214,181,95,.24);box-shadow:0 14px 30px rgba(0,0,0,.34),0 0 0 1px rgba(214,181,95,.05) inset}
+.hero-top{display:flex;flex-wrap:wrap;align-items:flex-start;justify-content:space-between;gap:14px;margin-bottom:12px}
+.hero-domain{font-size:.58rem;letter-spacing:.2em;text-transform:uppercase;color:#d6bf88;margin:0 0 6px}
+.hero-title{font-family:'Cormorant Garamond',serif;font-size:2rem;line-height:1.04;margin:0 0 8px;color:var(--text)}
+.hero-state{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:8px}
+.score-meaning{margin:0;font-size:.62rem;letter-spacing:.12em;text-transform:uppercase;color:#dfd2ae}
+.pill{display:inline-flex;align-items:center;justify-content:center;min-height:25px;padding:4px 10px;border-radius:999px;font-size:.5rem;letter-spacing:.14em;text-transform:uppercase;border:1px solid var(--line-soft);background:rgba(214,181,95,.08);color:#ebddb4}
+.pill-score{border-color:rgba(214,181,95,.35);background:rgba(214,181,95,.14);color:#f0e1bc}
+.pill-state-stable{border-color:rgba(106,175,144,.34);background:rgba(106,175,144,.1);color:#d9eee5}
+.pill-state-expanding{border-color:rgba(214,181,95,.4);background:rgba(214,181,95,.14);color:#f0e2be}
+.pill-state-risk{border-color:rgba(196,120,120,.38);background:rgba(196,120,120,.1);color:#f1d7cf}
+.pill-layer{border-color:rgba(179,153,83,.32);background:rgba(179,153,83,.12);color:#e8d9b0}
+.hero-bottleneck{padding:12px 13px;border:1px solid rgba(214,181,95,.28);border-radius:11px;background:linear-gradient(150deg,rgba(214,181,95,.08),rgba(12,10,8,.3));margin-bottom:11px;box-shadow:0 0 0 1px rgba(214,181,95,.05) inset}
+.hero-bottleneck strong{display:block;font-size:.54rem;letter-spacing:.2em;text-transform:uppercase;color:#dcc995;margin-bottom:6px}
+.hero-bottleneck p{margin:0;font-size:.82rem;color:#efe4cc;line-height:1.45}
+.hero-copy{margin:0 0 12px;font-size:.74rem;color:#c8bea7;line-height:1.45}
+.hero-actions{display:flex;gap:8px;flex-wrap:nowrap;align-items:center}
+.hero-actions .btn{min-width:164px}
+.hero-translation{margin:8px 0 0;font-size:.74rem;line-height:1.45;color:#d6cbaa;border-top:1px solid rgba(214,181,95,.12);padding-top:8px}
+.btn{display:inline-flex;align-items:center;justify-content:center;min-height:40px;padding:9px 14px;border-radius:10px;font-size:.62rem;letter-spacing:.12em;text-transform:uppercase;border:1px solid transparent;cursor:pointer;text-decoration:none;transition:all .22s ease}
+.btn-primary{background:linear-gradient(180deg,#efd79f,#d8b965 52%,#c9a952);border-color:rgba(214,181,95,.82);color:#090806;font-weight:700;box-shadow:0 2px 8px rgba(214,181,95,.14);transition:all .16s ease}
+.btn-primary:hover{filter:brightness(1.04);box-shadow:0 2px 12px rgba(214,181,95,.22)}
+.btn-secondary{background:linear-gradient(180deg,rgba(214,181,95,.28),rgba(193,154,66,.18));border-color:rgba(214,181,95,.44);color:#f1e5c8;transition:all .16s ease}
+.btn-secondary:hover{border-color:rgba(214,181,95,.58);background:linear-gradient(180deg,rgba(214,181,95,.32),rgba(193,154,66,.22))}
+
+.lock-glyph{position:relative;display:inline-block;width:12px;height:12px;opacity:.7}
+.lock-glyph::before{content:'';position:absolute;left:2px;top:1px;width:8px;height:5px;border:1px solid rgba(214,181,95,.78);border-bottom:none;border-radius:5px 5px 0 0}
+.lock-glyph::after{content:'';position:absolute;left:1px;top:5px;width:10px;height:7px;border:1px solid rgba(214,181,95,.78);border-radius:2px;background:rgba(214,181,95,.06)}
+
+.sticky{position:sticky;top:96px;padding:14px}
+.sticky-kicker{font-size:.56rem;letter-spacing:.2em;text-transform:uppercase;color:#d7c186;margin-bottom:7px}
+.sticky-title{font-family:'Cormorant Garamond',serif;font-size:1.35rem;line-height:1.2;margin:0 0 6px;color:var(--text)}
+.sticky-copy{font-size:.74rem;color:var(--muted);margin:0 0 10px}
+.sticky-unlock{font-size:.68rem;line-height:1.45;color:#ddd1b4;margin:0 0 10px}
+.sticky-link{display:inline-flex;align-items:center;font-size:.6rem;letter-spacing:.12em;text-transform:uppercase;color:#d7bf85;border-bottom:1px solid rgba(214,181,95,.38);padding-bottom:2px;text-decoration:none;transition:color .18s ease,border-color .18s ease}
+.sticky-link:hover{color:#efd99e;border-color:rgba(214,181,95,.62)}
+
+.grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
+.finding{padding:11px;border-radius:12px;border:1px solid var(--line-soft);background:rgba(214,181,95,.04)}
+.finding-top{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:5px}
+.finding h3{margin:0;font-size:.75rem;color:var(--text);font-weight:600}
+.finding .state{font-size:.5rem;letter-spacing:.14em;text-transform:uppercase;color:#d5c08a}
+.finding p{margin:0 0 9px;font-size:.67rem;color:rgba(198,189,168,.86);font-weight:300;min-height:2.4em;line-height:1.5}
+.meter{height:6px;border-radius:999px;background:linear-gradient(180deg,rgba(214,181,95,.13),rgba(214,181,95,.05));overflow:hidden;box-shadow:inset 0 0 0 1px rgba(214,181,95,.08)}
+.meter>span{display:block;height:100%;background:linear-gradient(90deg,rgba(198,155,60,.75),rgba(229,191,103,.95));transform-origin:left center;transform:scaleX(0);animation:meterGrow .95s ease forwards}
+
+.layer-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
+.layer{padding:11px;border-radius:12px;border:1px solid var(--line-soft);background:rgba(214,181,95,.03);transition:all .18s ease;border-left:2px solid transparent}
+.layer:hover{transform:translateY(-2px);box-shadow:0 2px 12px rgba(214,181,95,.08)}
+.layer.is-locked-card{border-left-color:rgba(214,181,95,.4);box-shadow:0 0 16px rgba(214,181,95,.08)}
+.layer-head{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:7px}
+.layer-name{font-size:.62rem;letter-spacing:.14em;text-transform:uppercase;color:#e2d5af}
+.layer-status{font-size:.48rem;letter-spacing:.14em;text-transform:uppercase;padding:3px 6px;border-radius:999px;border:1px solid var(--line-soft);color:#cabd9a;display:inline-flex;align-items:center;gap:5px}
+.layer-strip{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:5px;margin-bottom:8px}
+.layer-sig{font-size:.46rem;letter-spacing:.12em;text-transform:uppercase;color:#bfb395}
+.layer-sig .meter{margin-top:3px;height:3px}
+.layer-main{font-size:.74rem;color:#ece2cb;margin-bottom:6px}
+.layer-micro{display:flex;gap:8px;flex-wrap:wrap;font-size:.5rem;letter-spacing:.12em;text-transform:uppercase;color:#c9bd9d;margin-bottom:8px}
+.layer-micro span{display:flex;flex-direction:column;gap:2px;min-width:108px}
+.layer-micro span em{font-style:normal;font-size:.45rem;letter-spacing:.14em;text-transform:uppercase;color:#a99463}
+.layer .btn{min-height:34px;font-size:.54rem;padding:7px 10px}
+.layer-cta-note{margin:4px 0 0;font-size:.52rem;letter-spacing:.05em;color:#c5b992;line-height:1.25}
+
+.section-head{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:10px 12px;border-bottom:1px solid var(--line-soft)}
+.section-head h2{margin:0;font-family:'Cormorant Garamond',serif;font-size:1.25rem;font-weight:400}
+.state-rail{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.state-chip{padding:8px;border:1px solid var(--line-soft);border-radius:10px;background:rgba(214,181,95,.04)}
+.state-chip strong{display:block;font-size:.48rem;letter-spacing:.16em;text-transform:uppercase;color:#d4bf89;margin-bottom:3px}
+.state-chip span{display:block;font-size:.66rem;letter-spacing:.08em;text-transform:uppercase;color:#eee3c8}
+
+.actions{padding:12px 12px 13px}
+.action-stack{display:grid;grid-template-columns:1.18fr .82fr .82fr;gap:12px;position:relative}
+.action-stack::before{content:'';position:absolute;top:24px;left:23%;right:12%;height:1px;background:linear-gradient(90deg,rgba(214,181,95,.28),rgba(214,181,95,.06));pointer-events:none}
+.action{padding:14px 13px;border-radius:12px;border:1px solid var(--line-soft);background:rgba(214,181,95,.03);display:flex;flex-direction:column;gap:11px;min-height:210px;position:relative;transition:all .18s ease;border-left:2px solid transparent}
+.action:hover{transform:translateY(-2px);box-shadow:0 2px 10px rgba(214,181,95,.07)}
+.action.is-locked-card{border-left-color:rgba(214,181,95,.4);box-shadow:0 0 16px rgba(214,181,95,.08)}
+.cta-consequence{margin:5px 0 0;font-size:.52rem;letter-spacing:.08em;color:#c8bb94;opacity:.82;line-height:1.35}
+
+.layer.is-included{border-left-color:rgba(106,175,144,.3)}
+
+.finding.is-constraint{border-color:rgba(196,120,120,.28);background:rgba(196,120,120,.04)}
+.finding.is-constraint .state{color:#d4906a}
+.finding.is-constraint .meter>span{background:linear-gradient(90deg,rgba(196,120,120,.65),rgba(210,140,90,.85))}
+.finding.is-stable{border-color:rgba(106,175,144,.22);background:rgba(106,175,144,.04)}
+.finding.is-stable .state{color:#7abb9e}
+.finding.is-stable .meter>span{background:linear-gradient(90deg,rgba(80,160,130,.6),rgba(106,175,144,.85))}
+
+.action.lead{min-height:292px;border-color:rgba(214,181,95,.72);border-left:3px solid rgba(214,181,95,.8);background:linear-gradient(150deg,rgba(36,26,17,.98),rgba(13,10,8,.99));box-shadow:0 4px 18px rgba(214,181,95,.16),0 9px 22px rgba(0,0,0,.3);transform:scale(1.01)}
+.action.lead::after{content:'';position:absolute;left:12px;right:12px;top:0;height:2px;border-radius:0 0 2px 2px;background:linear-gradient(90deg,rgba(214,181,95,.74),rgba(214,181,95,.22));opacity:.9}
+.action.lead:hover{transform:translateY(-2px) scale(1.01)}
+.action.secondary{opacity:.82}
+.action-top{display:flex;align-items:center;gap:7px}
+.start-cue{margin:0;font-size:.5rem;letter-spacing:.16em;text-transform:uppercase;color:#f1e0b8;padding:2px 8px;border-radius:999px;border:1px solid rgba(214,181,95,.4);background:rgba(214,181,95,.16);width:max-content}
+.rank{display:inline-flex;align-items:center;justify-content:center;min-width:30px;height:30px;padding:0 8px;border-radius:999px;border:1px solid var(--line);background:rgba(214,181,95,.08);font-family:'Cormorant Garamond',serif;font-size:1rem;color:#e5d5a7}
+.badge{display:inline-flex;align-items:center;justify-content:center;min-height:22px;padding:3px 8px;border-radius:999px;font-size:.48rem;letter-spacing:.14em;text-transform:uppercase;border:1px solid var(--line-soft);color:#d8c28d}
+.action h3{margin:0;font-size:.8rem;line-height:1.35;color:var(--text)}
+.inline{display:flex;align-items:center;justify-content:space-between;gap:8px;font-size:.56rem;letter-spacing:.12em;text-transform:uppercase;color:#cfbf93;margin:3px 0 5px}
+.inline .muted{color:#d8ceb4}
+.action p{margin:0;font-size:.69rem;color:#d8cdb4;font-weight:300;line-height:1.5}
+.action .meter{height:4px}
+.action-foot{display:flex;align-items:center;justify-content:space-between;gap:8px;font-size:.53rem;letter-spacing:.12em;text-transform:uppercase;color:#c8bc9d}
+.action-outcome{border:1px solid var(--line-soft);border-radius:9px;background:rgba(214,181,95,.05);padding:8px 9px}
+.action-outcome strong{display:block;font-size:.48rem;letter-spacing:.16em;text-transform:uppercase;color:#dcc78f;margin-bottom:3px}
+.action-outcome ul{margin:0;padding-left:14px}
+.action-outcome li{font-size:.64rem;color:#eadfbe;line-height:1.32;margin:1px 0}
+.gain-pill{display:inline-flex;align-items:center;justify-content:center;min-height:22px;padding:3px 8px;border-radius:999px;border:1px solid rgba(214,181,95,.32);background:rgba(214,181,95,.12);font-size:.5rem;letter-spacing:.03em;text-transform:none;color:#f0e1bc;line-height:1.2}
+.action-actions{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-top:auto}
+.action-actions .cta-consequence{grid-column:1/-1;margin-top:2px}
+.action .btn-primary{min-height:38px;font-size:.57rem;padding:8px 12px;font-weight:700;box-shadow:0 2px 12px rgba(214,181,95,.2)}
+.action .btn-primary:hover{box-shadow:0 3px 14px rgba(214,181,95,.24)}
+.action .btn-secondary{min-height:34px;font-size:.52rem;padding:7px 10px;border-color:rgba(214,181,95,.26);background:transparent;color:#cfbf9e;box-shadow:none;opacity:.9}
+.action .btn-secondary:hover{border-color:rgba(214,181,95,.52);background:rgba(214,181,95,.07);box-shadow:none}
+.action.secondary .action-actions{grid-template-columns:1fr}
+.action.secondary .btn-primary{min-height:34px;font-size:.54rem;padding:7px 10px;opacity:.94}
+.action.secondary .btn-secondary{min-height:32px;padding:6px 9px;font-size:.5rem;justify-content:center}
+.action.is-locked-card{background:linear-gradient(150deg,rgba(25,20,14,.96),rgba(13,10,8,.99));border-color:rgba(214,181,95,.44)}
+.action.is-locked-card .btn-primary{background:linear-gradient(180deg,rgba(214,181,95,.3),rgba(193,154,66,.22));border-color:rgba(214,181,95,.42);color:#f3e7c6;box-shadow:none}
+.action.is-locked-card .btn-primary:hover{opacity:.93;box-shadow:none;filter:none}
+.action-memory{font-size:.51rem;letter-spacing:.11em;text-transform:uppercase;color:#bdb29a;margin-top:2px}
+.action.is-executing{box-shadow:0 0 0 1px rgba(214,181,95,.34) inset,0 0 20px rgba(214,181,95,.16)}
+.action.is-resolved{box-shadow:0 0 0 1px rgba(214,181,95,.3) inset,0 0 20px rgba(214,181,95,.12)}
+
+.btn.is-disabled{opacity:.62;pointer-events:none}
+.btn.is-executing{box-shadow:0 0 16px rgba(214,181,95,.26)}
+.btn.is-resolved{box-shadow:0 0 16px rgba(214,181,95,.22)}
+
+.modules{padding:12px}
+.accordion{display:flex;flex-direction:column;gap:8px}
+.module{border:1px solid var(--line-soft);border-radius:12px;background:rgba(214,181,95,.03);overflow:hidden;transition:all .18s ease;border-left:2px solid transparent}
+.module:hover{transform:translateY(-2px);box-shadow:0 2px 12px rgba(214,181,95,.08)}
+.module.locked{border-left-color:rgba(214,181,95,.4)}
+.module summary{list-style:none;cursor:pointer;padding:11px 12px;display:flex;align-items:center;justify-content:space-between;gap:8px}
+.module summary::-webkit-details-marker{display:none}
+.module-title{font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:#e2d4ab}
+.module-tag{font-size:.48rem;letter-spacing:.14em;text-transform:uppercase;padding:3px 6px;border-radius:999px;border:1px solid var(--line-soft);color:#cfbf91}
+.module-body{padding:0 12px 12px;border-top:1px solid var(--line-soft)}
+.module-body p{margin:10px 0 0;font-size:.72rem;color:#ddd1b4;line-height:1.45}
+.module-cta{margin-top:10px}
+.module.locked{position:relative;border-color:rgba(200,168,75,.2);border-left:2px solid rgba(214,181,95,.4);background:linear-gradient(150deg,rgba(214,181,95,.06),rgba(16,13,9,.97));overflow:hidden;box-shadow:0 0 16px rgba(214,181,95,.08);transition:all .18s ease}
+.module.locked:hover{transform:translateY(-2px);box-shadow:0 0 20px rgba(214,181,95,.12)}
+.module.locked .module-body{position:relative;background:rgba(0,0,0,.12)}
+.module.locked .module-body p{filter:blur(.6px);opacity:.9}
+.module.locked .module-cta{filter:drop-shadow(0 0 12px rgba(214,181,95,.2))}
+.locked-logic{margin-top:9px;display:grid;gap:7px}
+.locked-logic-item{border:1px solid var(--line-soft);border-radius:8px;background:rgba(214,181,95,.06);padding:7px 8px}
+.locked-logic-item strong{display:block;font-size:.5rem;letter-spacing:.16em;text-transform:uppercase;color:#ddc88e;margin-bottom:3px}
+.locked-logic-item p{margin:0;font-size:.67rem;line-height:1.35;color:#efe2c6}
+.locked-logic-item ul{margin:0;padding-left:14px}
+.locked-logic-item li{font-size:.64rem;line-height:1.3;color:#efe2c6}
+
+.footer{margin:20px auto 0;padding:12px 20px 6px;max-width:1220px;border-top:1px solid rgba(214,181,95,.14);color:#c9be99;font-size:.64rem;letter-spacing:.09em;line-height:1.6}
+.footer-brand{margin-bottom:6px}
+.footer-brand strong{display:block;font-size:.70rem;letter-spacing:.12em;text-transform:uppercase;color:#e0d9b8;font-weight:600;margin-bottom:2px}
+.footer-tagline{font-size:.54rem;letter-spacing:.08em;text-transform:uppercase;color:#9a9479;display:block}
+.footer-meta{font-size:.62rem;letter-spacing:.08em;color:#a89d84}
+.footer-copyright{margin:4px 0 2px}
+.footer-links{margin:0;letter-spacing:.08em}
+.footer a{color:#d4bf89;text-decoration:none;border-bottom:1px solid rgba(214,181,95,.32);padding-bottom:1px;transition:all .16s ease}
+.footer a:hover{color:#e8d9a3;border-color:rgba(214,181,95,.62)}
+
+.fix-detail-mask{position:fixed;inset:0;z-index:150;background:linear-gradient(120deg,rgba(6,5,3,.5),rgba(6,5,3,.82));backdrop-filter:blur(4px);display:none}
+.fix-detail-mask[data-open='true']{display:block}
+.fix-detail-panel{position:absolute;top:0;right:0;height:100%;width:min(620px,100%);border-left:1px solid var(--line);background:linear-gradient(160deg,#16120b,#0c0a07 72%);box-shadow:-24px 0 50px rgba(0,0,0,.52);transform:translateX(100%);transition:transform .34s ease}
+.fix-detail-mask[data-open='true'] .fix-detail-panel{transform:translateX(0)}
+.fix-detail-inner{height:100%;overflow:auto;padding:18px 16px 20px}
+.fix-detail-head{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:10px}
+.fix-detail-kicker{font-size:.54rem;letter-spacing:.24em;text-transform:uppercase;color:rgba(200,168,75,.72)}
+.fix-detail-close{display:inline-flex;align-items:center;justify-content:center;min-height:32px;padding:7px 9px;border-radius:8px;border:1px solid var(--line);background:rgba(200,168,75,.09);font-size:.58rem;letter-spacing:.12em;text-transform:uppercase;color:#ddd1b8}
+.fix-detail-close:hover{border-color:rgba(200,168,75,.42);background:rgba(200,168,75,.16)}
+.fix-detail-module{border:1px solid var(--line);background:rgba(200,168,75,.04);border-radius:10px;padding:10px 11px;margin-bottom:10px}
+.fix-detail-title{font-size:.84rem;line-height:1.35;color:var(--text);margin:0}
+.fix-detail-meta{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.fix-detail-pill{display:inline-flex;align-items:center;justify-content:center;min-height:22px;padding:3px 7px;border-radius:999px;font-size:.5rem;letter-spacing:.14em;text-transform:uppercase;border:1px solid var(--line-soft);color:#d9c692}
+.fix-detail-points{margin-left:auto;font-size:.56rem;letter-spacing:.12em;text-transform:uppercase;color:rgba(200,168,75,.72)}
+.fix-detail-grid{display:grid;grid-template-columns:1fr;gap:8px}
+.fix-detail-block{border:1px solid var(--line-soft);border-radius:9px;background:rgba(0,0,0,.2);padding:9px 10px}
+.fix-detail-block p:first-child{font-size:.52rem;letter-spacing:.18em;text-transform:uppercase;color:#ddc88e;opacity:.9}
+.fix-detail-block p:last-child{margin-top:5px;font-size:.72rem;line-height:1.5;color:#f0e5c8}
+.fix-detail-actions{margin-top:12px;display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.fix-detail-progression{margin-top:10px;display:grid;grid-template-columns:1fr;gap:7px}
+
+
+@media (max-width:1080px){
+  .layout{grid-template-columns:1fr}
+  .sticky{position:static}
+}
+@media (max-width:900px){
+  .grid,.layer-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .action-stack{grid-template-columns:1fr}
+  .action-stack::before{display:none}
+  .state-rail{grid-template-columns:1fr}
+  .global-state-strip{grid-template-columns:1fr}
+  .progression-strip{grid-template-columns:1fr}
+}
+@media (max-width:640px){
+  .mode-bar{grid-template-columns:1fr}
+  .mode-return{width:100%}
+  .grid,.layer-grid{grid-template-columns:1fr}
+  .hero-actions{flex-wrap:wrap}
+  .hero-actions .btn{min-width:unset;width:100%}
+  .action-actions,.fix-detail-actions{grid-template-columns:1fr}
+}
+
+@keyframes feedbackPulse {
+  0%,100%{box-shadow:0 0 0 0 rgba(214,181,95,.5)}
+  50%{box-shadow:0 0 0 8px rgba(214,181,95,0)}
+}
+@keyframes meterGrow {
+  0%{transform:scaleX(0)}
+  100%{transform:scaleX(1)}
+}
 </style>
 @include('partials.clarity')
 </head>
 <body>
+@include('partials.public-nav', ['showHamburger' => true])
 
-<!-- Nav -->
-@include('partials.public-nav')
-
-<!-- Hero -->
-<section class="result-hero">
-  <p class="result-eyebrow">AI Visibility Score</p>
-  <p class="result-url">{{ $scan->url ?? '' }}</p>
-
-  <div class="score-ring-wrap">
-    <div style="position:relative;display:inline-flex;align-items:center;justify-content:center">
-      <svg class="score-ring-svg" viewBox="0 0 160 160" aria-hidden="true">
-        <circle class="score-ring-bg" cx="80" cy="80" r="70"/>
-        <circle class="score-ring-fill" id="scoreRing" cx="80" cy="80" r="70"/>
-      </svg>
-      <div style="position:absolute;text-align:center">
-        <div class="score-number" aria-label="Score: {{ $score }} out of 100">{{ $score }}</div>
-        <div class="score-label">/ 100</div>
+<div class="shell">
+  <div class="mode-bar">
+    <div>
+      <p class="mode-kicker">System Analysis Mode</p>
+      <div class="mode-meta">
+        <span class="mode-chip"><strong>Domain</strong> {{ $scan->domain() }}</span>
+        <span class="mode-chip"><strong>Score</strong> {{ $score }}</span>
+        <span class="mode-chip state-{{ $readoutStateKey }}"><strong>State</strong> {{ $readoutState }}</span>
+        <span class="mode-chip"><strong>Last Eval</strong> {{ $lastEvaluatedLabel }}</span>
       </div>
     </div>
-
-    @if($score === 100)
-      <p class="score-verdict">Strong structural readiness — but this scan evaluates the discovered footprint, not full market coverage. Gaps may exist beyond what's visible.</p>
-    @elseif($score >= 90)
-      <p class="score-verdict">Solid foundation — but deeper coverage remains unmeasured. Competitors at this level are already expanding.</p>
-    @elseif($score >= 70)
-      <p class="score-verdict">Good signals, but critical gaps remain. AI systems are citing competitors who've closed these gaps.</p>
-    @elseif($score >= 40)
-      <p class="score-verdict">Partial readiness — AI systems need stronger signals to cite you. Every gap is a lost answer.</p>
-    @else
-      <p class="score-verdict">AI systems cannot reliably interpret your site. You are being skipped in favor of better-structured competitors.</p>
-    @endif
-    <p class="score-subline">This score measures how effectively AI systems can extract, interpret, and cite your business.</p>
-
-    {{-- One-layer framing --}}
-    @if($unlockLevel <= 1)
-    <p style="font-family:'Cormorant Garamond',serif;font-size:clamp(1.1rem,2.4vw,1.5rem);font-weight:300;color:var(--ivory);margin-top:22px;line-height:1.3;letter-spacing:.01em">This is <em style="font-style:italic;color:var(--gold)">one layer.</em></p>
-    <p style="font-size:.78rem;color:rgba(168,168,160,.55);margin-top:8px;line-height:1.6;max-width:400px;margin-left:auto;margin-right:auto">Your Citation Scan reads what's visible. The system goes five levels deep — each one reveals what the last one can't see.</p>
-    <p style="font-size:.74rem;color:rgba(196,120,120,.7);margin-top:10px;letter-spacing:.03em">Most sites stall here. Competitors who go deeper don&rsquo;t come back.</p>
-    @else
-    <p style="font-family:'Cormorant Garamond',serif;font-size:clamp(1.1rem,2.4vw,1.5rem);font-weight:300;color:var(--ivory);margin-top:22px;line-height:1.3;letter-spacing:.01em">System active — <em style="font-style:italic;color:var(--gold)">{{ $unlockLevel }} {{ $unlockLevel == 1 ? 'level' : 'levels' }} deep.</em></p>
-    <p style="font-size:.78rem;color:rgba(168,168,160,.55);margin-top:8px;line-height:1.6;max-width:400px;margin-left:auto;margin-right:auto">Your expanded analysis is below. Scroll down to see your unlocked intelligence.</p>
-    @endif
-
-    {{-- Progression indicator --}}
-    @php $scanDepth = match($unlockLevel) { 4 => 95, 3 => 72, 2 => 50, default => rand(25, 30) }; @endphp
-    <div class="depth-progress" style="max-width:400px;margin:18px auto 0">
-      <span class="depth-progress-label">Scan Depth</span>
-      <div class="depth-progress-bar">
-        <div class="depth-progress-fill" data-width="{{ $scanDepth }}" style="width:0%"></div>
-      </div>
-      <span class="depth-progress-pct">{{ $scanDepth }}%</span>
-    </div>
-
-    {{-- Competitive comparison --}}
-    @php $marketAvg = min(95, max($score + 18, 72)); @endphp
-    <div class="vgap-compare" style="max-width:380px;margin:22px auto 0">
-      <div class="vgap-you">
-        <span class="vgap-label">Your Position</span>
-        <span class="vgap-val">{{ $score }}%</span>
-        <span class="vgap-sub">current readiness</span>
-      </div>
-      <div class="vgap-them">
-        <span class="vgap-label">Market Leaders</span>
-        <span class="vgap-val">{{ $marketAvg }}%</span>
-        <span class="vgap-sub">average coverage</span>
-      </div>
-    </div>
-    <p style="font-size:.76rem;color:var(--red);margin-top:10px;letter-spacing:.03em;text-align:center">This is the gap competitors are filling right now.</p>
-
-    {{-- Progression Pipeline --}}
-    @php
-      $progSteps = [
-        ['label' => 'Scan', 'level' => 1],
-        ['label' => 'Signals', 'level' => 2],
-        ['label' => 'Structure', 'level' => 3],
-        ['label' => 'Activation', 'level' => 4],
-      ];
-    @endphp
-    <div class="res-progression">
-      @foreach($progSteps as $i => $step)
-        @if($i > 0)
-          <div class="res-prog-line {{ $unlockLevel >= $step['level'] ? 'active' : '' }}"></div>
-        @endif
-        <div class="res-prog-step">
-          <span class="res-prog-dot {{ $unlockLevel >= $step['level'] ? 'completed' : ($unlockLevel + 1 === $step['level'] ? 'current' : '') }}"></span>
-          <span class="res-prog-label {{ $unlockLevel >= $step['level'] ? 'completed' : ($unlockLevel + 1 === $step['level'] ? 'current' : '') }}">{{ $step['label'] }}</span>
-        </div>
-      @endforeach
-    </div>
-    <p style="font-size:.66rem;color:rgba(168,168,160,.4);margin-top:8px;text-align:center;letter-spacing:.06em">
-      @if($unlockLevel >= 4)
-        All layers active — full system intelligence online.
-      @elseif($unlockLevel >= 2)
-        {{ $unlockLevel }} of 4 layers active — deeper intelligence unlocked below.
-      @else
-        Layer 1 of 4 complete — your visibility is {{ $score }}% resolved. The remaining layers contain what competitors are already using.
-      @endif
-    </p>
-
-    @if($scan->score_change !== null)
-    <p style="font-size:.78rem;letter-spacing:.06em;margin-top:12px;color:{{ $scan->score_change > 0 ? 'var(--green)' : ($scan->score_change < 0 ? 'var(--red)' : 'var(--muted)') }}">
-      @if($scan->score_change > 0)
-        ↑ +{{ $scan->score_change }} points since your last scan — progress detected, but gaps remain.
-      @elseif($scan->score_change < 0)
-        ↓ {{ $scan->score_change }} points since your last scan — your position is weakening.
-      @else
-        No change since your last scan — your competitors are still gaining ground.
-      @endif
-    </p>
-    @endif
-
-    @if($scan->is_repeat_scan && $scan->score_change === null)
-    <p style="font-size:.78rem;letter-spacing:.06em;margin-top:12px;color:var(--muted)">
-      Repeat scan detected — tracking changes across scans reveals whether your market position is improving.
-    </p>
-    @endif
+    <a href="{{ $returnHref }}" class="mode-return">&larr; {{ $returnLabel }}</a>
   </div>
 
-  @if(!empty($categories))
-  <div class="stats-row">
-    <div class="stat-item">
-      <div class="stat-value">{{ count($scan->issues ?? []) }}</div>
-      <div class="stat-label">Issues</div>
-    </div>
-    <div class="stat-item">
-      <div class="stat-value">{{ count($scan->strengths ?? []) }}</div>
-      <div class="stat-label">Passing</div>
-    </div>
-    @if($scan->page_count)
-    <div class="stat-item">
-      <div class="stat-value">{{ $scan->page_count }}</div>
-      <div class="stat-label">Pages Found</div>
-    </div>
-    @endif
-    @if(!empty($scan->broken_links))
-    <div class="stat-item">
-      <div class="stat-value" style="color:var(--red)">{{ count($scan->broken_links) }}</div>
-      <div class="stat-label">Broken Links</div>
-    </div>
-    @endif
+  <div class="live-feedback-strip" id="liveFeedbackStrip" data-feedback-messages='@json($liveFeedbackMessages)'>
+    <span class="live-feedback-dot" aria-hidden="true"></span>
+    <p class="live-feedback-kicker">Live System Feedback</p>
+    <p class="live-feedback-text" id="liveFeedbackText">{{ $liveFeedbackMessages[0] ?? 'Interpreting current system state.' }}</p>
   </div>
-  @endif
-</section>
 
-<!-- Report body -->
-<div class="result-body">
-
-  {{-- ── Biggest Issue Banner (base scan only) ── --}}
-  @if($unlockLevel <= 1 && !empty($scan->issues) && is_array($scan->issues) && count($scan->issues) > 0)
-  @php
-    $biggestIssue = $scan->issues[0];
-    $issueCount = count($scan->issues);
-  @endphp
-  <div class="biggest-issue">
-    <span class="bi-eye">Your Primary Bottleneck</span>
-    <p class="bi-title">{{ $biggestIssue }}</p>
-    <p class="bi-loss">This is the #1 gap preventing AI systems from citing your business.</p>
-    @if($issueCount > 1)
-    <p class="bi-why">{{ $issueCount - 1 }} additional {{ $issueCount > 2 ? 'gaps' : 'gap' }} detected. Each one is a lost citation opportunity — the full breakdown and fix sequence unlock at the next layer.</p>
-    @else
-    <p class="bi-why">Resolving this single gap has the highest leverage on your visibility score. The full analysis and correction path unlock at the next layer.</p>
-    @endif
+  <div class="global-state-strip">
+    <div class="global-state-chip"><strong>Selection Pressure</strong><span>{{ $selectionPressureLabel }}</span></div>
+    <div class="global-state-chip"><strong>Extraction Completeness</strong><span>{{ $extractionCompletenessLabel }}</span></div>
+    <div class="global-state-chip"><strong>Authority Confidence</strong><span>{{ $authorityConfidenceLabel }}</span></div>
   </div>
-  @endif
-  @if($isUpgraded)
-  <div class="activation-banner">
-    <div class="activation-glow"></div>
-    <div class="activation-inner">
-      <div class="activation-state-line"></div>
-      <div class="activation-content">
-        <span class="activation-eyebrow">System State Change</span>
-        <p class="activation-title">{{ match($upgradePlan) { 'diagnostic' => 'Signal Expansion', 'fix-strategy' => 'Structural Leverage', 'optimization' => 'System Activation', default => 'Upgrade' } }} — Active</p>
-        <p class="activation-sub">Layer {{ $unlockLevel }} is now online. Your scan has been elevated beyond surface-level analysis.</p>
-        <div class="activation-indicators">
-          @for($i = 1; $i <= 4; $i++)
-          <span class="activation-dot {{ $i <= $unlockLevel ? 'active' : '' }}"></span>
-          @endfor
-        </div>
-      </div>
-    </div>
-  </div>
-  @endif
 
-  {{-- Report identity --}}
-  @if($unlockLevel >= 4)
-  <p style="font-size:.68rem;letter-spacing:.22em;text-transform:uppercase;color:rgba(106,175,144,.6);text-align:center;margin-bottom:22px">Full System Intelligence — All levels active</p>
-  @elseif($unlockLevel >= 3)
-  <p style="font-size:.68rem;letter-spacing:.22em;text-transform:uppercase;color:rgba(200,168,75,.55);text-align:center;margin-bottom:22px">Structural Intelligence — Levels 1–3 active</p>
-  @elseif($unlockLevel >= 2)
-  <p style="font-size:.68rem;letter-spacing:.22em;text-transform:uppercase;color:rgba(200,168,75,.45);text-align:center;margin-bottom:22px">Expanded Intelligence — Levels 1–2 active</p>
-  @else
-  <p style="font-size:.68rem;letter-spacing:.22em;text-transform:uppercase;color:rgba(200,168,75,.4);text-align:center;margin-bottom:22px">This is your baseline. Each level reveals what this one can't.</p>
-  @endif
-
-  {{-- ═══ BASE SCAN LAYER — UNLOCKED ($2) ═══ --}}
-  @if(!empty($categories) && is_array($categories))
-  <div class="report-layer">
-    <div class="layer-header">
-      <span class="layer-label">Level 1 — Your Current Position</span>
-      <span class="layer-status unlocked">✓ Unlocked</span>
+  <div class="progression-strip">
+    <div class="progression-cell is-current-stage">
+      <strong>Current State</strong>
+      <p>You are here: {{ $currentStateSummary }}</p>
+      <p class="progression-sub">{{ $scoreSelectionInterpretation }}. Next: {{ $nextUnlockName }}.</p>
     </div>
-    <div class="layer-body" style="padding:18px 0 0">
-  <div class="cat-grid">
-    @foreach($categories as $key => $cat)
-    @php
-      $catPct = $cat['max'] > 0 ? round(($cat['score'] / $cat['max']) * 100) : 0;
-      $catLevel = $catPct >= 70 ? 'high' : ($catPct >= 40 ? 'mid' : 'low');
-    @endphp
-    <div class="cat-card">
-      <div class="cat-header">
-        <span class="cat-name">{{ $cat['label'] }}</span>
-        <span class="cat-status {{ $catPct >= 70 ? 'good' : ($catPct >= 40 ? 'weak' : 'missing') }}">{{ $catPct >= 70 ? 'Good' : ($catPct >= 40 ? 'Weak' : 'Missing') }}</span>
-        <span class="cat-score">{{ $cat['score'] }}<span style="font-size:.7em;color:rgba(168,168,160,.4)">/{{ $cat['max'] }}</span></span>
-      </div>
-      <div class="cat-bar">
-        <div class="cat-bar-fill {{ $catLevel }}" data-width="{{ $catPct }}" style="width:0%"></div>
-      </div>
-      <div class="check-list {{ $unlockLevel >= 2 ? '' : 'locked-zone' }}">
-        @foreach($cat['checks'] as $cIdx => $check)
-        <div class="check-item {{ $check['passed'] ? 'passed' : 'failed' }}">
-          <span class="check-icon">{{ $check['passed'] ? '✓' : '✕' }}</span>
-          <span class="check-text">{{ $check['label'] }}</span>
-          <span class="check-pts">{{ $check['points'] }}/{{ $check['max'] }}</span>
-        </div>
+    <div class="progression-cell is-next-unlock">
+      <strong>Next Unlock</strong>
+      <p class="next-unlock-name">{{ $nextUnlockName }}</p>
+      <p class="progression-sub">Why it matters: {{ $nextUnlockWhyShort }}</p>
+      <ul class="progression-mini">
+        @foreach($nextUnlockImproves as $improvement)
+        <li>{{ $improvement }}</li>
         @endforeach
-        @if($unlockLevel < 2 && collect($cat['checks'])->contains('passed', false))
-        <div class="locked-overlay">
-          <span class="lock-icon">🔒</span>
-          <span class="lock-text">Unlock the next layer to see this</span>
-          <div class="locked-teaser-items">
-            <span class="locked-teaser-item">Full AI Visibility Score</span>
-            <span class="locked-teaser-item">Complete Signal Map</span>
-            <span class="locked-teaser-item">Priority Gap Analysis</span>
-          </div>
-          <a href="{{ route('quick-scan.upgrade') }}?plan=diagnostic&scan_id={{ $scan->id }}&sid={{ $scan->stripe_session_id }}" class="lock-cta">Unlock Signal Expansion — $99</a>
-        </div>
-        @endif
-      </div>
-    </div>
-    @endforeach
-  </div>
-
-  {{-- ── Broken links section ── --}}
-  @if(!empty($scan->broken_links) && is_array($scan->broken_links))
-  <div class="broken-section">
-    <p class="broken-title">
-      <span style="font-size:1rem">⚠</span>
-      Broken Pathways Detected ({{ count($scan->broken_links) }})
-    </p>
-    @foreach($scan->broken_links as $bl)
-    <div class="broken-item">
-      <span>{{ $bl['url'] ?? '' }}</span>
-      <span class="broken-status">Unreachable</span>
-    </div>
-    @endforeach
-  </div>
-  @endif
-
-    </div>
-  </div>
-
-  {{-- ── Depth Signal (base scan only — irrelevant once expanded) ── --}}
-  @if($unlockLevel <= 1)
-  <div class="depth-signal">
-    <strong>{{ $scan->page_count ?? 1 }} {{ ($scan->page_count ?? 1) == 1 ? 'page' : 'pages' }}</strong> analyzed. Full coverage evaluates <strong>50+ pages</strong> — these gaps reduce your chances of being cited until deeper layers are unlocked.
-  </div>
-  @endif
-
-  {{-- ── Locked Intelligence Panel (base scan only) ── --}}
-  @if($unlockLevel <= 1)
-  <div class="locked-intel">
-    <div class="locked-intel-overlay">
-      <span class="locked-intel-badge">
-        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="7" width="10" height="8" rx="1.5"/><path d="M5 7V5a3 3 0 0 1 6 0v2"/></svg>
-        Signal Expansion Required
-      </span>
-      <p class="locked-intel-text">Unlock Signal Expansion to view full analysis</p>
-    </div>
-    <div class="locked-intel-content" aria-hidden="true">
-      <div class="locked-intel-row">
-        <span class="locked-intel-dot"></span>
-        <span class="locked-intel-label">Full Signal Map</span>
-        <span class="locked-intel-bar long"></span>
-      </div>
-      <div class="locked-intel-row">
-        <span class="locked-intel-dot"></span>
-        <span class="locked-intel-label">Priority Issue Ranking</span>
-        <span class="locked-intel-bar"></span>
-      </div>
-      <div class="locked-intel-row">
-        <span class="locked-intel-dot"></span>
-        <span class="locked-intel-label">Deeper Structural Issues</span>
-        <span class="locked-intel-bar long"></span>
-      </div>
-      <div class="locked-intel-row">
-        <span class="locked-intel-dot"></span>
-        <span class="locked-intel-label">Category-Level Fix Sequence</span>
-        <span class="locked-intel-bar"></span>
-      </div>
-      <div class="locked-intel-row">
-        <span class="locked-intel-dot"></span>
-        <span class="locked-intel-label">Competitive Gap Intelligence</span>
-        <span class="locked-intel-bar long"></span>
-      </div>
-    </div>
-  </div>
-
-  {{-- ── Stall warning (only for base scan) ── --}}
-  <div style="text-align:center;padding:18px 24px;background:rgba(196,120,120,.03);border:1px solid rgba(196,120,120,.08);margin:28px 0 24px">
-    <p style="font-size:.8rem;color:var(--red);font-weight:400;margin-bottom:8px">This is where most sites stall. Their competitors don&rsquo;t.</p>
-    <p style="font-size:.76rem;color:var(--muted);line-height:1.65;max-width:420px;margin:0 auto">Every day without corrections, competitors lock in positions that don&rsquo;t come back.</p>
-  </div>
-
-  {{-- ── Competitive gap (base scan only) ── --}}
-  @php
-    $baseCompetitorPct = min(95, max($score + 18, 72));
-    $baseGapPct = $baseCompetitorPct - $score;
-  @endphp
-  <div class="comp-section" style="margin-bottom:36px">
-    <div class="comp-header">
-      <span class="comp-eyebrow">What's Holding You Back</span>
-    </div>
-    <div class="comp-body" style="padding:20px 24px">
-      <p class="comp-intro" style="margin-bottom:14px">Your site covers <strong style="color:var(--ivory);font-weight:400">{{ $score }}%</strong> of AI citation signals. Market leaders in your category operate at <strong style="color:var(--green);font-weight:400">{{ $baseCompetitorPct }}%</strong>. That <strong style="color:var(--red);font-weight:400">{{ $baseGapPct }}% gap</strong> is where you're invisible.</p>
-      <div class="comp-grid" style="margin-bottom:14px">
-        <div class="comp-item" style="background:rgba(196,120,120,.04);border-color:rgba(196,120,120,.1)">
-          <span class="comp-icon" style="color:var(--red)">✕</span>
-          <span class="comp-text">{{ count($scan->issues ?? []) }} structural gaps detected — each one is a missed citation opportunity</span>
-        </div>
-        <div class="comp-item" style="background:rgba(196,120,120,.04);border-color:rgba(196,120,120,.1)">
-          <span class="comp-icon" style="color:var(--red)">✕</span>
-          <span class="comp-text">AI systems are answering queries in your market — without citing you</span>
-        </div>
-        <div class="comp-item">
-          <span class="comp-icon">✓</span>
-          <span class="comp-text">Every gap has a specific correction — the next level shows you exactly what to fix</span>
-        </div>
-      </div>
-      <p class="comp-bottom" style="font-size:.76rem;color:rgba(168,168,160,.5);font-style:normal;text-align:center;margin-top:4px">Every day these gaps stay open, competitors lock in positions you can&rsquo;t reclaim.</p>
-    </div>
-  </div>
-  @endif
-
-  {{-- ── "Not Done" interstitial (base scan only) ── --}}
-  @if($unlockLevel <= 1)
-  <div class="not-done-block">
-    <p class="not-done-title">Layer 1 of 4 complete.</p>
-    <p class="not-done-sub">Your visibility score and primary bottleneck are identified &mdash; but the full signal map, priority ranking, and fix sequence remain locked.</p>
-    <p class="not-done-consequence">What you can&rsquo;t see is what competitors are already acting on.</p>
-    <a href="{{ route('quick-scan.upgrade') }}?plan=diagnostic&scan_id={{ $scan->id }}&sid={{ $scan->stripe_session_id }}" class="layer-unlock-cta primary cta-pulse-anim">Unlock Full Signal Map &mdash; $99</a>
-  </div>
-  @endif
-
-  {{-- ═══ DIAGNOSTIC EXPANSION — $99 ═══ --}}
-  <div class="layer-connector"><span class="layer-step">Level 2</span></div>
-  <div class="report-layer">
-    <div class="layer-header">
-      <span class="layer-label">Signal Expansion</span>
-      @if($unlockLevel >= 2)
-      <span class="layer-status unlocked">✓ Unlocked</span>
-      @else
-      <span class="layer-status locked">🔒 Locked</span>
-      @endif
-    </div>
-    @if($unlockLevel >= 2)
-    <div class="unlocked-layer-body">
-      <div class="level-intent-header">
-        <span class="level-intent-tag">Level 2 — Signal Expansion</span>
-        <h3 class="level-intent-title">This is how AI systems evaluate your site.</h3>
-        <p class="level-intent-sub">Full signal breakdown across <strong style="color:var(--gold);font-weight:400">{{ count($categories) }} categories</strong> and <strong style="color:var(--gold);font-weight:400">{{ $scan->page_count ?? 1 }} discovered {{ ($scan->page_count ?? 1) == 1 ? 'page' : 'pages' }}</strong>.</p>
-      </div>
-
-      @php
-        $totalChecks = 0;
-        $failedChecks = 0;
-        foreach ($categories as $cat) {
-            foreach ($cat['checks'] as $check) {
-                $totalChecks++;
-                if (!$check['passed']) $failedChecks++;
-            }
-        }
-      @endphp
-
-      {{-- Block: Current State --}}
-      <div class="content-block">
-        <span class="content-block-label">Current State</span>
-        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px">
-          <div style="text-align:center;padding:12px;background:rgba(200,168,75,.03);border:1px solid rgba(200,168,75,.06)">
-            <span style="font-family:'Cormorant Garamond',serif;font-size:1.4rem;color:var(--gold);display:block">{{ $totalChecks }}</span>
-            <span style="font-size:.6rem;letter-spacing:.18em;text-transform:uppercase;color:var(--muted)">Signals Tested</span>
-          </div>
-          <div style="text-align:center;padding:12px;background:rgba(106,175,144,.03);border:1px solid rgba(106,175,144,.08)">
-            <span style="font-family:'Cormorant Garamond',serif;font-size:1.4rem;color:var(--green);display:block">{{ $totalChecks - $failedChecks }}</span>
-            <span style="font-size:.6rem;letter-spacing:.18em;text-transform:uppercase;color:var(--muted)">Passing</span>
-          </div>
-          <div style="text-align:center;padding:12px;background:rgba(196,120,120,.03);border:1px solid rgba(196,120,120,.08)">
-            <span style="font-family:'Cormorant Garamond',serif;font-size:1.4rem;color:var(--red);display:block">{{ $failedChecks }}</span>
-            <span style="font-size:.6rem;letter-spacing:.18em;text-transform:uppercase;color:var(--muted)">Failing</span>
-          </div>
-        </div>
-      </div>
-
-      {{-- Block: Signal Analysis --}}
-      <div class="content-block">
-        <span class="content-block-label">Signal Analysis</span>
-        @foreach($categories as $catKey => $cat)
-        @php $catPct = $cat['max'] > 0 ? round(($cat['score'] / $cat['max']) * 100) : 0; @endphp
-        <div class="signal-category">
-          <div class="signal-cat-header">
-            <span class="signal-cat-name">{{ $cat['label'] }} — {{ $catPct }}%</span>
-            <span class="signal-cat-score">{{ $cat['score'] }}<span style="font-size:.7em;color:rgba(168,168,160,.4)">/{{ $cat['max'] }}</span></span>
-          </div>
-          @foreach($cat['checks'] as $check)
-          <div class="signal-check {{ $check['passed'] ? 'signal-pass' : 'signal-fail' }}">
-            <span class="signal-icon">{{ $check['passed'] ? '✓' : '✕' }}</span>
-            <div class="signal-detail">
-              <span class="signal-label">{{ $check['label'] }}</span>
-              <span class="signal-msg">{{ $check['passed'] ? $check['pass'] : $check['fail'] }}</span>
-              @if(!$check['passed'] && !empty($check['fix']))
-              <span class="signal-fix">{{ $check['fix'] }}</span>
-              @endif
-            </div>
-            <span class="signal-pts">{{ $check['points'] }}/{{ $check['max'] }}</span>
-          </div>
-          @endforeach
-        </div>
-        @endforeach
-      </div>
-
-      {{-- Block: Strengths --}}
-      @if(!empty($scan->strengths))
-      <div class="content-block">
-        <span class="content-block-label">What's Working</span>
-        <div style="padding:16px 18px;background:rgba(106,175,144,.03);border:1px solid rgba(106,175,144,.08)">
-          @foreach($scan->strengths as $strength)
-          <p style="font-size:.78rem;color:var(--muted);line-height:1.5;padding:4px 0;display:flex;align-items:flex-start;gap:8px"><span style="color:var(--green);flex-shrink:0">✓</span> {{ $strength }}</p>
-          @endforeach
-        </div>
-      </div>
-      @endif
-    </div>
-    @else
-    <div class="layer-body is-locked">
-      <div class="layer-preview">
-        <ul class="layer-preview-list">
-          @foreach(array_slice(array_values($categories), 0, 4) as $dCat)
-          <li class="layer-preview-item">{{ $dCat['label'] }} — {{ count($dCat['checks']) }} signals measured, full breakdown locked</li>
-          @endforeach
-        </ul>
-      </div>
-    </div>
-    <div class="layer-unlock">
-      <p style="font-size:.82rem;color:rgba(168,168,160,.6);line-height:1.65;margin-bottom:16px;max-width:440px;margin-left:auto;margin-right:auto">You see the score. You don't yet see <em style="color:var(--ivory)">why</em>.<br>This limits your chances of being cited. The next layer shows exactly where your signals break down.</p>
-      <p class="layer-unlock-text">Your site is not being surfaced correctly. This level reveals every gap — ranked by the damage it causes.</p>
-      <ul class="layer-bullet-list">
-        <li class="layer-bullet"><strong style="color:var(--ivory);font-weight:400">What you see:</strong> Complete signal-by-signal analysis across <em>{{ $scan->page_count ?? 1 }}+ discovered pages</em></li>
-        <li class="layer-bullet"><strong style="color:var(--ivory);font-weight:400">What you gain:</strong> Every gap ranked by <em>business impact</em> — see what matters most</li>
-        <li class="layer-bullet"><strong style="color:var(--ivory);font-weight:400">What changes:</strong> Category-level intelligence showing <em>where you're weakest</em></li>
-        <li class="layer-bullet">Downloadable intelligence + <em>dashboard access</em> for ongoing tracking</li>
       </ul>
-      <a href="{{ route('quick-scan.upgrade') }}?plan=diagnostic&scan_id={{ $scan->id }}&sid={{ $scan->stripe_session_id }}" class="layer-unlock-cta primary">Unlock Signal Expansion — $99 →</a>
     </div>
-    @endif
-  </div>
-
-  {{-- ── Urgency Pressure ── --}}
-  @if($scan->is_repeat_scan && ($scan->score_change === 0 || $scan->score_change === null))
-  <div class="urgency-banner">
-    <span class="urgency-icon">⚡</span>
-    <div class="urgency-body">
-      <p class="urgency-hed">Your market position hasn't changed.</p>
-      <p class="urgency-sub">
-        @if($scan->score_change === 0)
-          Same structural signals as last time. Competitors acting on their gaps are building permanent advantages.
-        @else
-          No measurable progress since your last analysis. Businesses that don't evolve their coverage lose ground permanently.
-        @endif
-      </p>
+    <div class="progression-cell">
+      <strong>Layer Progression</strong>
+      <ul class="progression-model">
+        @foreach($layerProgressModel as $stage)
+        <li class="{{ $stage['rank'] === $unlockLevel ? 'is-current' : '' }}">Layer {{ $stage['rank'] }}: {{ $stage['label'] }}</li>
+        @endforeach
+      </ul>
     </div>
   </div>
-  @elseif($scan->is_repeat_scan && $scan->score_change !== null && $scan->score_change < 0)
-  <div class="urgency-banner">
-    <span class="urgency-icon">⚠</span>
-    <div class="urgency-body">
-      <p class="urgency-hed">Your position is actively weakening.</p>
-      <p class="urgency-sub">Down {{ abs($scan->score_change) }} points since last scan. Without systematic coverage, this trend accelerates as competitors expand.</p>
-    </div>
-  </div>
-  @endif
 
-  {{-- ═══ EXECUTION LAYER — $249 (DOMINANT) ═══ --}}
-  <div class="layer-connector" style="height:24px"><span class="layer-step">Level 3</span></div>
-  <p style="font-size:.66rem;color:var(--gold);text-align:center;margin:-4px 0 8px;letter-spacing:.18em;text-transform:uppercase;font-weight:400">This is where insights become corrections</p>
-  <div class="report-layer execution-layer">
-    <div class="layer-header">
-      <span class="layer-label">Structural Leverage<span class="popular-badge">Most Popular</span></span>
-      @if($unlockLevel >= 3)
-      <span class="layer-status unlocked">✓ Unlocked</span>
-      @else
-      <span class="layer-status locked">🔒 Locked</span>
-      @endif
-    </div>
-    @if($unlockLevel >= 3)
-    <div class="unlocked-layer-body">
-      @php
-        // Build prioritized issue list from category checks, sorted by impact (max points desc)
-        $prioritizedIssues = [];
-        foreach ($categories as $catKey => $cat) {
-            foreach ($cat['checks'] as $check) {
-                if (!$check['passed']) {
-                    $prioritizedIssues[] = [
-                        'label'    => $check['label'],
-                        'fail'     => $check['fail'],
-                        'fix'      => $check['fix'] ?? '',
-                        'max'      => $check['max'],
-                        'category' => $cat['label'],
-                        'impact'   => $check['max'] >= 10 ? 'high' : ($check['max'] >= 5 ? 'medium' : 'low'),
-                    ];
-                }
-            }
-        }
-        usort($prioritizedIssues, fn($a, $b) => $b['max'] <=> $a['max']);
-      @endphp
-
-      <div class="level-intent-header">
-        <span class="level-intent-tag">Level 3 — Structural Leverage</span>
-        <h3 class="level-intent-title">This is your correction sequence.</h3>
-        <p class="level-intent-sub"><strong style="color:var(--gold);font-weight:400">{{ count($prioritizedIssues) }} issues</strong> ranked by business impact. Address from top to bottom.</p>
-      </div>
-
-      {{-- Block: Start Here --}}
-      @if(!empty($scan->fastest_fix))
-      <div class="content-block">
-        <span class="content-block-label">Your Fastest Fix — Start Here</span>
-        <div style="background:rgba(200,168,75,.06);border:1px solid rgba(200,168,75,.18);padding:18px 22px;position:relative">
-          <div style="position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--gold),transparent)"></div>
-          <span style="font-size:.6rem;letter-spacing:.24em;text-transform:uppercase;color:var(--gold);display:block;margin-bottom:8px">⚡ Fastest Fix</span>
-          <p style="font-size:.88rem;color:var(--ivory);line-height:1.55">{{ $scan->fastest_fix }}</p>
-        </div>
-      </div>
-      @endif
-
-      {{-- Block: Priority Corrections --}}
-      <div class="content-block">
-        <span class="content-block-label">Priority Corrections</span>
-        @foreach($prioritizedIssues as $idx => $pIssue)
-        <div class="issue-row">
-          <span class="issue-rank">{{ $idx + 1 }}</span>
-          <div class="issue-content">
-            <span class="issue-text">{{ $pIssue['label'] }}</span>
-            <div class="issue-meta">
-              <span class="issue-meta-tag {{ $pIssue['impact'] }}">● {{ ucfirst($pIssue['impact']) }} impact</span>
-              <span class="issue-meta-tag" style="color:rgba(200,168,75,.55)">{{ $pIssue['category'] }}</span>
-              <span class="issue-meta-tag" style="color:rgba(168,168,160,.4)">{{ $pIssue['max'] }} pts at stake</span>
+  <div class="layout">
+    <main class="main">
+      <section class="card hero" id="sys-overview">
+        <div class="hero-top">
+          <div>
+            <p class="hero-domain">{{ $scan->domain() }}</p>
+            <h1 class="hero-title">System Readout Active</h1>
+            <div class="hero-state">
+              <span class="pill pill-score">Score {{ $score }}</span>
+              <span class="pill pill-state-{{ $readoutStateKey }}">{{ $readoutState }}</span>
+              <span class="pill pill-layer">Layer {{ $unlockLevel }}</span>
             </div>
-            <p style="font-size:.76rem;color:var(--muted);line-height:1.5;margin-top:5px">{{ $pIssue['fail'] }}</p>
-            @if(!empty($pIssue['fix']))
-            <div class="issue-fix-row">→ {{ $pIssue['fix'] }}</div>
+            <p class="score-meaning">{{ $scoreSelectionInterpretation }}</p>
+          </div>
+        </div>
+        <div class="hero-bottleneck">
+          <strong>Primary Bottleneck</strong>
+          <p>{{ $topBottleneck }}</p>
+        </div>
+        <p class="hero-copy">{{ $interpretation }}</p>
+        <div class="hero-actions">
+          @if($singleNextStep)
+          <a href="{{ $singleNextStep['href'] }}" class="btn btn-primary">Progress System</a>
+          @else
+          <a href="#priority-actions" class="btn btn-primary">Deploy Fix</a>
+          @endif
+          <a href="#priority-actions" class="btn btn-secondary">Inspect Signal</a>
+        </div>
+        <p class="cta-consequence">{{ $singleNextStep ? 'Advances system state → unlocks next signal layer' : 'Removes constraint → improves AI selection likelihood' }}</p>
+        <p class="hero-translation">{{ $humanTranslation }}</p>
+      </section>
+
+      <section class="card" id="findings">
+        <div class="section-head">
+          <h2>Key Findings</h2>
+          <p style="margin:0;font-size:.55rem;letter-spacing:.12em;text-transform:uppercase;color:#c0b38c">State per signal domain</p>
+        </div>
+        <div class="grid" style="padding:12px">
+          @foreach($findings as $finding)
+          @php
+            $findingClass = str_contains($finding['state'], 'Lifted') || str_contains($finding['state'], 'Active') || str_contains($finding['state'], 'Rising') || str_contains($finding['state'], 'Reliable') ? 'is-stable' : 'is-constraint';
+          @endphp
+          <article class="finding {{ $findingClass }}">
+            <div class="finding-top">
+              <h3>{{ $finding['title'] }}</h3>
+              <span class="state">{{ $finding['state'] }}</span>
+            </div>
+            <p>{{ $finding['copy'] }}</p>
+            <div class="meter"><span style="width:{{ $finding['pct'] }}%"></span></div>
+          </article>
+          @endforeach
+        </div>
+      </section>
+
+      <section class="card" id="layers">
+        <div class="section-head">
+          <h2>Layer Control Grid</h2>
+          <p style="margin:0;font-size:.55rem;letter-spacing:.12em;text-transform:uppercase;color:#c0b38c">Active layer state</p>
+        </div>
+        <div class="layer-grid" style="padding:12px">
+          @foreach($layerCards as $layer)
+          <article class="layer {{ $layer['status'] === 'Locked' ? 'is-locked-card' : 'is-included' }}">
+            <div class="layer-head">
+              <span class="layer-name">Layer {{ $layer['rank'] }} · {{ $layer['name'] }}</span>
+              <span class="layer-status">@if($layer['status'] === 'Locked')<span class="lock-glyph" aria-hidden="true"></span>@endif {{ $layer['status'] }}</span>
+            </div>
+            <div class="layer-strip">
+              <div class="layer-sig">Coverage<div class="meter"><span style="width:{{ $coveragePct }}%"></span></div></div>
+              <div class="layer-sig">Authority<div class="meter"><span style="width:{{ $authorityPct }}%"></span></div></div>
+              <div class="layer-sig">Structure<div class="meter"><span style="width:{{ $structurePct }}%"></span></div></div>
+            </div>
+            <div class="layer-main">{{ $layer['value'] }}</div>
+            <div class="layer-micro">
+              <span>+{{ $totalPassed }} signals <em>{{ $signalsMeaningLabel }}</em></span>
+              <span>{{ $totalFailed }} blockers <em>{{ $blockersMeaningLabel }}</em></span>
+              <span>{{ max(1, $sysActionsLimit) }} constraints <em>{{ $constraintMeaningLabel }}</em></span>
+            </div>
+            <a href="{{ $layer['cta'] }}" class="btn btn-secondary">{{ $layer['cta_label'] }}</a>
+            <p class="layer-cta-note">{{ $layer['cta_note'] }}</p>
+          </article>
+          @endforeach
+        </div>
+      </section>
+
+      <section class="card" id="priority-actions">
+        <div class="section-head">
+          <h2>Fix Sequence</h2>
+          <div class="state-rail">
+            <div class="state-chip"><strong>System State</strong><span>{{ $readoutState }}</span></div>
+            <div class="state-chip"><strong>Pressure</strong><span>{{ $totalFailed > 0 ? 'Active' : 'Contained' }}</span></div>
+            <div class="state-chip"><strong>Primary Constraint</strong><span>{{ count($sysActions) > 0 ? 'Detected' : 'Clear' }}</span></div>
+          </div>
+        </div>
+        <p style="margin:8px 12px 0;font-size:.72rem;color:#d9ceb0">You&rsquo;re close. Fix these to increase AI selection likelihood.</p>
+        <div class="actions">
+          <div class="action-stack">
+            @for($i = 0; $i < $sysActionsLimit; $i++)
+            @php
+              $action = $sysActions[$i];
+              $strength = $action['max'] >= 10 ? 'Weak' : ($action['max'] >= 5 ? 'Partial' : 'Stable');
+              $isLead = $i === 0;
+              $gainSignalsLow = max(4, (int) ceil($action['max'] * 1.6));
+              $gainSignalsHigh = $gainSignalsLow + max(4, (int) ceil($action['max'] * .9));
+              $reducibleBlockers = max(1, min(5, (int) ceil($action['max'] / 3)));
+              $clarityLift = max(8, min(28, (int) ceil($action['max'] * 1.8)));
+            @endphp
+            <article class="action {{ $isLead ? 'lead' : 'secondary' }}" data-action-key="{{ md5(($action['label'] ?? '') . '|' . ($action['category'] ?? '') . '|' . ($i + 1)) }}">
+              <div class="action-top">
+                <span class="rank">#{{ $i + 1 }}</span>
+                <span class="badge">{{ strtoupper($action['impact']) }} PRIORITY</span>
+              </div>
+              @if($isLead)
+              <p class="start-cue">Start Here</p>
+              @endif
+              <h3>{{ $action['label'] }}</h3>
+              <div class="inline">
+                <span class="muted">AI cannot fully use this yet</span>
+                <span>{{ $action['category'] }}</span>
+              </div>
+              @if($isLead)
+              <div class="action-foot">
+                <span>+{{ $action['max'] }} pts at stake</span>
+                <span>Fix #{{ $i + 1 }}</span>
+              </div>
+              @endif
+              <div class="action-outcome">
+                <strong>Why It Matters</strong>
+                <ul>
+                  <li>AI confidence is reduced, so your content is less likely to surface first.</li>
+                </ul>
+              </div>
+              <div class="action-outcome">
+                <strong>What Improves</strong>
+                <ul>
+                  <li>+ clearer extraction confidence</li>
+                  <li>+ stronger answer visibility</li>
+                  <li>+ better category control potential</li>
+                </ul>
+                <p style="margin:6px 0 0;font-size:.62rem;color:#e7dcc0">This improves your probability of appearing in high-intent answer results.</p>
+              </div>
+              <div class="meter"><span style="width:{{ min(100, max(18, (int) $action['max'] * 10)) }}%" aria-label="{{ min(100, max(18, (int) $action['max'] * 10)) }} percent"></span></div>
+              <div style="display:flex;flex-wrap:wrap;gap:6px">
+                <span class="gain-pill">+{{ $gainSignalsLow }}-{{ $gainSignalsHigh }} trusted signals unlocked</span>
+                <span class="gain-pill">up to {{ $reducibleBlockers }} blockers removed</span>
+                <span class="gain-pill">+{{ $clarityLift }} confidence lift</span>
+              </div>
+              <div class="action-actions">
+                <button
+                  type="button"
+                  class="btn btn-primary js-open-fix-detail"
+                  data-exec-init="Deploying fix..."
+                  data-exec-process="Applying constraint fix..."
+                  data-exec-resolved="Fix deployed"
+                  data-issue-name="{{ $action['label'] }}"
+                  data-failure-state="{{ $action['why'] }}"
+                  data-required-correction="{{ $action['fix'] }}"
+                  data-impact-label="{{ ucfirst($action['impact']) }} impact"
+                  data-impact-points="{{ $action['max'] }}"
+                  data-state-label="{{ strtoupper($action['impact']) }} PRIORITY"
+                  data-category-label="{{ $action['category'] }}"
+                  data-next-path="Open Structural Layer Sequence"
+                  data-why-matters="Selection pressure remains active while this constraint persists."
+                  data-unlocks="Expand data layer coverage, introduce direct-answer nodes, establish authoritative definitions."
+                >Deploy Fix</button>
+                <p class="cta-consequence">Removes constraint → improves AI selection likelihood</p>
+                <button
+                  type="button"
+                  class="btn btn-secondary js-open-fix-detail"
+                  data-exec-init="Loading signal detail..."
+                  data-exec-process="Pulling signal context..."
+                  data-exec-resolved="Signal context loaded"
+                  data-issue-name="{{ $action['label'] }}"
+                  data-failure-state="{{ $action['why'] }}"
+                  data-required-correction="{{ $action['fix'] }}"
+                  data-impact-label="{{ ucfirst($action['impact']) }} impact"
+                  data-impact-points="{{ $action['max'] }}"
+                  data-state-label="{{ strtoupper($action['impact']) }} PRIORITY"
+                  data-category-label="{{ $action['category'] }}"
+                  data-next-path="Open Structural Layer Sequence"
+                  data-why-matters="Selection pressure remains active while this constraint persists."
+                  data-unlocks="Expand data layer coverage, introduce direct-answer nodes, establish authoritative definitions."
+                >Inspect Signal</button>
+              </div>
+              <p class="action-memory">No action taken yet</p>
+            </article>
+            @endfor
+
+            @if(!$isUpgraded && count($sysActions) > 3)
+            <article class="action secondary is-locked-card" data-action-key="locked-sequence-upgrade">
+              <div class="action-top">
+                <span class="rank"><span class="lock-glyph" aria-hidden="true"></span></span>
+                <span class="badge"><span class="lock-glyph" aria-hidden="true"></span> RESTRICTED</span>
+              </div>
+              <h3>{{ count($sysActions) - 3 }} advanced fixes available</h3>
+              <div class="inline">
+                <span class="muted">State: restricted access</span>
+                <span>Progress to unlock precision</span>
+              </div>
+              <div class="action-outcome">
+                <strong>Contains</strong>
+                <ul>
+                  <li>Ranked constraint sequence</li>
+                  <li>Full extraction failure map</li>
+                  <li>Hidden answer opportunities</li>
+                </ul>
+              </div>
+              <div class="action-outcome">
+                <strong>Why It Matters</strong>
+                <ul>
+                  <li>This layer reveals the highest-leverage fixes before lower-impact work.</li>
+                </ul>
+              </div>
+              <div class="action-outcome">
+                <strong>What Improves</strong>
+                <ul>
+                  <li>+ priority clarity improves</li>
+                  <li>+ faster high-impact execution</li>
+                  <li>+ broader signal confidence</li>
+                </ul>
+              </div>
+              <div class="action-actions">
+                @if($singleNextStep)
+                <a href="{{ $singleNextStep['href'] }}" class="btn btn-primary js-unlock-signal-expansion" data-exec-init="Opening layer access..." data-exec-process="Preparing layer access..." data-exec-resolved="Layer access initiated">Unlock {{ $nextUnlockName }}</a>
+                @else
+                <a href="{{ route('checkout.signal-expansion') }}" class="btn btn-primary js-unlock-signal-expansion" data-exec-init="Opening layer access..." data-exec-process="Preparing layer access..." data-exec-resolved="Layer access initiated">Unlock Signal Expansion</a>
+                @endif
+                <button type="button" class="btn btn-secondary" disabled><span class="lock-glyph" aria-hidden="true"></span> Preview Restricted Layer</button>
+              </div>
+              <p class="action-memory">No action taken yet</p>
+            </article>
             @endif
           </div>
         </div>
-        @endforeach
-      </div>
+      </section>
 
-      {{-- Block: Impact Summary --}}
-      @php
-        $totalPossible = collect($categories)->sum('max');
-        $totalLost = $totalPossible - collect($categories)->sum('score');
-        $highCount = collect($prioritizedIssues)->where('impact', 'high')->count();
-        $medCount = collect($prioritizedIssues)->where('impact', 'medium')->count();
-      @endphp
-      <div class="content-block">
-        <span class="content-block-label">Impact Summary</span>
-        <div style="padding:16px 18px;background:rgba(200,168,75,.03);border:1px solid rgba(200,168,75,.08)">
-          <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px">
-            <div style="text-align:center">
-              <span style="font-family:'Cormorant Garamond',serif;font-size:1.3rem;color:var(--red);display:block">{{ $totalLost }}</span>
-              <span style="font-size:.58rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)">Points Lost</span>
-            </div>
-            <div style="text-align:center">
-              <span style="font-family:'Cormorant Garamond',serif;font-size:1.3rem;color:var(--red);display:block">{{ $highCount }}</span>
-              <span style="font-size:.58rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)">High Impact</span>
-            </div>
-            <div style="text-align:center">
-              <span style="font-family:'Cormorant Garamond',serif;font-size:1.3rem;color:var(--gold);display:block">{{ $medCount }}</span>
-              <span style="font-size:.58rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)">Medium Impact</span>
-            </div>
-          </div>
+      <section class="card modules" id="deeper-layers">
+        <div class="section-head">
+          <h2>Restricted Intelligence Layers</h2>
         </div>
-      </div>
-    </div>
-    @else
-    <div class="layer-body is-locked">
-      <div class="layer-preview">
-        <ul class="layer-preview-list">
-          @if(!empty($scan->fastest_fix))
-          <li class="layer-preview-item" style="border-color:rgba(200,168,75,.12)"><span style="color:var(--gold);font-size:.64rem;margin-top:1px;flex-shrink:0">1.</span> {{ $scan->fastest_fix }}</li>
-          @endif
-          <li class="layer-preview-item"><span style="color:var(--gold);font-size:.64rem;margin-top:1px;flex-shrink:0">2.</span> Structural correction — highest impact signal gap identified</li>
-          <li class="layer-preview-item"><span style="color:var(--gold);font-size:.64rem;margin-top:1px;flex-shrink:0">3.</span> Coverage expansion — areas where AI systems can't find you</li>
-          <li class="layer-preview-item" style="opacity:.55"><span style="color:var(--gold);font-size:.64rem;margin-top:1px;flex-shrink:0">4.</span> + {{ max(1, count($scan->issues ?? []) - 3) }} more prioritized actions...</li>
-        </ul>
-      </div>
-    </div>
-    <div class="layer-unlock dominant-unlock">
-      <p style="font-size:.84rem;color:var(--red);font-weight:400;margin-bottom:10px;position:relative;z-index:1">Most sites stop at insight. This is where control begins.</p>
-      <p class="layer-unlock-text" style="position:relative;z-index:1">This is your correction sequence — every gap prioritized, every action structured for maximum impact.</p>
-      <ul class="layer-bullet-list" style="position:relative;z-index:1">
-        <li class="layer-bullet"><em>Everything in Signal Expansion</em> — full signal breakdown included</li>
-        <li class="layer-bullet">Complete priority correction sequence — <em>ordered by business impact</em></li>
-        <li class="layer-bullet">Structural guidance for every gap — <em>know exactly what to fix and why</em></li>
-        <li class="layer-bullet">Opportunity sizing — <em>estimated point gain per correction</em></li>
-        <li class="layer-bullet">30+ pages analyzed across your <em>full site footprint</em></li>
-      </ul>
-      <a href="{{ route('quick-scan.upgrade') }}?plan=fix-strategy&scan_id={{ $scan->id }}&sid={{ $scan->stripe_session_id }}" class="layer-unlock-cta dominant" style="position:relative;z-index:1">Resolve Structural Gaps — $249 →</a>
-      <p style="font-size:.72rem;color:rgba(200,168,75,.55);margin-top:12px;font-style:italic;position:relative;z-index:1">Stop guessing. Start fixing. This is where control begins.</p>
-    </div>
-    @endif
-  </div>
-
-  {{-- ═══ FULL SYSTEM STRATEGY — $489+ (PREMIUM) ═══ --}}
-  <div class="layer-connector"><span class="layer-step">Level 4</span></div>
-  @php
-    $totalMax = collect($categories)->sum('max');
-    $totalScore = collect($categories)->sum('score');
-    $coveragePct = $totalMax > 0 ? round(($totalScore / $totalMax) * 100) : 0;
-    $competitorCoverage = min(95, $coveragePct + (($scan->id ?? 1) % 21) + 25);
-  @endphp
-  <div class="report-layer">
-    <div class="layer-header">
-      <span class="layer-label">System Activation</span>
-      @if($unlockLevel >= 4)
-      <span class="layer-status unlocked">✓ Unlocked</span>
-      @else
-      <span class="layer-status locked">🔒 Locked</span>
-      @endif
-    </div>
-    @if($unlockLevel >= 4)
-    <div class="unlocked-layer-body">
-      <div class="level-intent-header">
-        <span class="level-intent-tag">Level 4 — System Activation</span>
-        <h3 class="level-intent-title">This is your competitive position.</h3>
-        <p class="level-intent-sub">Benchmarks, market mapping, and full coverage architecture across <strong style="color:var(--gold);font-weight:400">{{ count($categories) }} system categories</strong>.</p>
-      </div>
-
-      {{-- Block: Market Position --}}
-      <div class="content-block">
-        <span class="content-block-label">Market Position</span>
-        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px">
-          <div style="text-align:center;padding:18px 14px;background:rgba(200,168,75,.04);border:1px solid rgba(200,168,75,.1)">
-            <span style="font-family:'Cormorant Garamond',serif;font-size:2rem;color:var(--ivory);display:block;line-height:1.1">{{ $coveragePct }}%</span>
-            <span style="font-size:.58rem;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);margin-top:6px;display:block">Your Coverage</span>
-          </div>
-          <div style="text-align:center;padding:18px 14px;background:rgba(106,175,144,.04);border:1px solid rgba(106,175,144,.1)">
-            <span style="font-family:'Cormorant Garamond',serif;font-size:2rem;color:var(--green);display:block;line-height:1.1">{{ $competitorCoverage }}%</span>
-            <span style="font-size:.58rem;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);margin-top:6px;display:block">Market Leaders</span>
-          </div>
-          <div style="text-align:center;padding:18px 14px;background:rgba(196,120,120,.04);border:1px solid rgba(196,120,120,.1)">
-            <span style="font-family:'Cormorant Garamond',serif;font-size:2rem;color:var(--red);display:block;line-height:1.1">{{ $competitorCoverage - $coveragePct }}%</span>
-            <span style="font-size:.58rem;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);margin-top:6px;display:block">Coverage Gap</span>
-          </div>
-        </div>
-      </div>
-
-      {{-- Block: Category Intelligence --}}
-      <div class="content-block">
-        <span class="content-block-label">Category Intelligence</span>
-        <div style="border:1px solid rgba(200,168,75,.08)">
-          <div class="coverage-cat-row coverage-header">
-            <span>Category</span>
-            <span style="text-align:center">You</span>
-            <span style="text-align:center">Leaders</span>
-            <span style="text-align:center">Gap</span>
-          </div>
-          @foreach($categories as $catKey => $cat)
-          @php
-            $yourPct = $cat['max'] > 0 ? round(($cat['score'] / $cat['max']) * 100) : 0;
-            $leaderPct = min(95, $yourPct + rand(15, 35));
-            $catGap = $leaderPct - $yourPct;
-          @endphp
-          <div class="coverage-cat-row">
-            <div>
-              <span class="coverage-cat-name">{{ $cat['label'] }}</span>
-              <div class="coverage-bar-mini">
-                <div class="coverage-bar-mini-fill" style="width:{{ $yourPct }}%;background:{{ $yourPct >= 70 ? 'var(--green)' : ($yourPct >= 40 ? 'var(--gold)' : 'var(--red)') }}"></div>
+        <div class="accordion">
+          @foreach($lockedLayerModules as $module)
+          @if($module['rank'] > $unlockLevel)
+          <details class="module locked">
+            <summary>
+              <span class="module-title">Layer {{ $module['rank'] }} · {{ $module['title'] }}</span>
+              <span class="module-tag"><span class="lock-glyph" aria-hidden="true"></span> Restricted</span>
+            </summary>
+            <div class="module-body">
+              <div class="locked-logic">
+                <div class="locked-logic-item">
+                  <strong>Contains</strong>
+                  <p>{{ $module['statement'] }}</p>
+                </div>
+                <div class="locked-logic-item">
+                  <strong>Why It Matters</strong>
+                  <p>{{ $module['reveals'] }}</p>
+                </div>
+                <div class="locked-logic-item">
+                  <strong>What Improves</strong>
+                  <ul>
+                    @foreach($module['improvement'] as $item)
+                    <li>{{ $item }}</li>
+                    @endforeach
+                  </ul>
+                </div>
+              </div>
+              <div class="module-cta" style="margin-top:10px">
+                <a href="{{ $module['href'] }}" class="btn btn-primary">{{ $module['cta'] }}</a>
+                <p class="cta-consequence">
+                  @if($module['rank'] === 2)Reveals extraction failure tree → removes signal suppression
+                  @elseif($module['rank'] === 3)Unlocks impact-ranked fix order → highest-leverage first
+                  @else Exposes competitive gaps → activates expansion intelligence
+                  @endif
+                </p>
               </div>
             </div>
-            <span class="coverage-cat-val yours">{{ $yourPct }}%</span>
-            <span class="coverage-cat-val theirs">{{ $leaderPct }}%</span>
-            <span class="coverage-cat-val gap-val">-{{ $catGap }}%</span>
-          </div>
+          </details>
+          @endif
           @endforeach
         </div>
+      </section>
+
+    </main>
+
+    <aside class="card sticky" id="next-move">
+      <p class="sticky-kicker">Next Step</p>
+      <h2 class="sticky-title">{{ $singleNextStep['title'] ?? 'Deploy your lead fix' }}</h2>
+      <p class="sticky-copy">{{ $singleNextStep['copy'] ?? 'Resolve the lead constraint to reduce selection pressure.' }}</p>
+      <p class="sticky-unlock">Unlocks next: full signal clarity, ranked correction order, and stronger readiness progression.</p>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:4px">
+        @if($singleNextStep)
+        <a href="{{ $singleNextStep['href'] }}" class="btn btn-primary">Progress System</a>
+        @else
+        <a href="#priority-actions" class="btn btn-primary">Deploy Fix</a>
+        @endif
       </div>
-
-      {{-- Block: Full Signal Matrix --}}
-      <div class="content-block">
-        <span class="content-block-label">Full Signal Matrix — {{ $scan->page_count ?? 1 }}+ Pages</span>
-        @foreach($categories as $catKey => $cat)
-        <div style="margin-bottom:14px">
-          <p style="font-size:.72rem;color:rgba(200,168,75,.6);margin-bottom:6px;letter-spacing:.12em;text-transform:uppercase">{{ $cat['label'] }} — {{ $cat['score'] }}/{{ $cat['max'] }}</p>
-          @foreach($cat['checks'] as $check)
-          <div style="display:flex;align-items:flex-start;gap:8px;padding:7px 12px;{{ !$check['passed'] ? 'background:rgba(196,120,120,.04);border-left:2px solid rgba(196,120,120,.12);' : '' }}">
-            <span style="flex-shrink:0;font-size:.72rem;margin-top:1px;color:{{ $check['passed'] ? 'var(--green)' : 'var(--red)' }}">{{ $check['passed'] ? '✓' : '✕' }}</span>
-            <span style="font-size:.76rem;color:var(--ivory);flex:1">{{ $check['label'] }}</span>
-            <span style="font-size:.66rem;color:rgba(168,168,160,.35);flex-shrink:0">{{ $check['points'] }}/{{ $check['max'] }}</span>
-          </div>
-          @endforeach
-        </div>
-        @endforeach
-      </div>
-
-      {{-- Block: Strategic Opportunity --}}
-      <div class="content-block">
-        <span class="content-block-label">Strategic Opportunity</span>
-        <div style="background:rgba(200,168,75,.04);border:1px solid rgba(200,168,75,.12);padding:20px 22px">
-          <p style="font-size:.84rem;color:var(--ivory);line-height:1.6;margin-bottom:12px">
-            You capture <strong style="color:var(--gold);font-weight:400">{{ $coveragePct }}%</strong> of AI visibility signals. Market leaders operate at <strong style="color:var(--green);font-weight:400">{{ $competitorCoverage }}%</strong>. The <strong style="color:var(--red);font-weight:400">{{ $competitorCoverage - $coveragePct }}% gap</strong> is uncaptured market coverage.
-          </p>
-          @php
-            $weakestCat = collect($categories)->sortBy(fn($c) => $c['max'] > 0 ? ($c['score'] / $c['max']) : 1)->first();
-            $strongestCat = collect($categories)->sortByDesc(fn($c) => $c['max'] > 0 ? ($c['score'] / $c['max']) : 0)->first();
-          @endphp
-          <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:14px">
-            <div style="padding:14px;border:1px solid rgba(196,120,120,.12);background:rgba(196,120,120,.03)">
-              <span style="font-size:.6rem;letter-spacing:.18em;text-transform:uppercase;color:var(--red);display:block;margin-bottom:6px">Weakest Category</span>
-              <span style="font-size:.84rem;color:var(--ivory);display:block">{{ $weakestCat['label'] ?? 'N/A' }}</span>
-              <span style="font-size:.72rem;color:var(--muted)">{{ $weakestCat['score'] ?? 0 }}/{{ $weakestCat['max'] ?? 0 }} — Highest leverage for improvement</span>
-            </div>
-            <div style="padding:14px;border:1px solid rgba(106,175,144,.12);background:rgba(106,175,144,.03)">
-              <span style="font-size:.6rem;letter-spacing:.18em;text-transform:uppercase;color:var(--green);display:block;margin-bottom:6px">Strongest Category</span>
-              <span style="font-size:.84rem;color:var(--ivory);display:block">{{ $strongestCat['label'] ?? 'N/A' }}</span>
-              <span style="font-size:.72rem;color:var(--muted)">{{ $strongestCat['score'] ?? 0 }}/{{ $strongestCat['max'] ?? 0 }} — Protect and expand this advantage</span>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {{-- Broken links (if available) --}}
-      @if(!empty($scan->broken_links) && is_array($scan->broken_links))
-      <div class="content-block">
-        <span class="content-block-label">Broken Pathways</span>
-        <div style="background:rgba(196,120,120,.03);border:1px solid rgba(196,120,120,.1);padding:16px 18px">
-          @foreach($scan->broken_links as $bl)
-          <div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid rgba(196,120,120,.06);font-size:.76rem">
-            <span style="color:var(--muted);word-break:break-all">{{ $bl['url'] ?? '' }}</span>
-            <span style="color:var(--red);flex-shrink:0;margin-left:12px">{{ $bl['status'] ?? 'Unreachable' }}</span>
-          </div>
-          @endforeach
-        </div>
-      </div>
-      @endif
-
-      <p style="font-size:.72rem;color:var(--muted);line-height:1.6;font-style:italic;text-align:center;margin-top:16px">
-        Ready to skip ahead? <a href="{{ route('onboarding.start', ['tier' => 'expansion', 'scan_id' => $scan->id, 'plan' => 'authority-engine']) }}" style="color:rgba(200,168,75,.55);text-decoration:none;border-bottom:1px solid rgba(200,168,75,.15)">Deploy your full system — starts at $4,799+</a>
-      </p>
-    </div>
-    @else
-    <div class="layer-body is-locked">
-      <div class="layer-preview">
-        <ul class="layer-preview-list">
-          <li class="layer-preview-item">Your coverage: {{ $coveragePct }}% — Market leaders in your category: {{ $competitorCoverage }}%</li>
-          <li class="layer-preview-item">Complete competitive gap analysis across 50+ pages</li>
-          <li class="layer-preview-item">Full implementation plan — structured deployment strategy</li>
-          <li class="layer-preview-item">Coverage expansion map — uncaptured market intelligence</li>
-        </ul>
-      </div>
-    </div>
-    <div class="layer-unlock">
-      <p class="layer-unlock-text">Your competitors are already acting on this intelligence. This is your competitive position mapped — benchmarks, market gaps, and full implementation plan.</p>
-      <ul class="layer-bullet-list">
-        <li class="layer-bullet"><strong style="color:var(--ivory);font-weight:400">What you see:</strong> <em>Everything in Structural Leverage</em> — diagnostics + correction sequence included</li>
-        <li class="layer-bullet"><strong style="color:var(--ivory);font-weight:400">What you gain:</strong> Competitive intelligence — <em>how market leaders outperform you, category by category</em></li>
-        <li class="layer-bullet"><strong style="color:var(--ivory);font-weight:400">What changes:</strong> Coverage expansion map — <em>where your market is uncaptured</em></li>
-        <li class="layer-bullet">50+ pages analyzed with <em>full structural architecture</em></li>
-      </ul>
-      <a href="{{ route('quick-scan.upgrade') }}?plan=optimization&scan_id={{ $scan->id }}&sid={{ $scan->stripe_session_id }}" class="layer-unlock-cta premium">Activate Full System — $489+ →</a>
-      <p style="font-size:.68rem;color:rgba(168,168,160,.4);margin-top:14px">Ready to skip ahead? <a href="{{ route('onboarding.start', ['tier' => 'expansion', 'scan_id' => $scan->id, 'plan' => 'authority-engine']) }}" style="color:rgba(200,168,75,.5);text-decoration:none;border-bottom:1px solid rgba(200,168,75,.15)">Deploy your full system — starts at $4,799+</a></p>
-    </div>
-    @endif
+      <p class="cta-consequence" style="margin:0 0 8px">{{ $singleNextStep ? 'Advances to ' . $nextUnlockName . ' → unlocks ranked priorities and signal depth' : 'Removes constraint → improves AI selection likelihood' }}</p>
+      <a href="#deeper-layers" class="sticky-link">Preview Restricted Layers</a>
+    </aside>
   </div>
-
-  @else
-  {{-- ── Legacy fallback for old scans without categories ── --}}
-  @if(!empty($scan->issues) && is_array($scan->issues))
-  <div class="r-section">
-    <p class="r-section-label">Issues Found ({{ count($scan->issues) }})</p>
-    <ul class="r-list">
-      @foreach($scan->issues as $issue)
-        <li class="r-list-item issue">
-          <span class="r-list-icon">✕</span>
-          <span class="r-list-text">{{ $issue }}</span>
-        </li>
-      @endforeach
-    </ul>
-  </div>
-  @endif
-
-  @if(!empty($scan->strengths) && is_array($scan->strengths))
-  <div class="r-section">
-    <p class="r-section-label">What's Working ({{ count($scan->strengths) }})</p>
-    <ul class="r-list">
-      @foreach($scan->strengths as $strength)
-        <li class="r-list-item strength">
-          <span class="r-list-icon">✓</span>
-          <span class="r-list-text">{{ $strength }}</span>
-        </li>
-      @endforeach
-    </ul>
-  </div>
-  @endif
-  @endif
-
-  {{-- ── Tier Ladder ── --}}
-  <div class="tier-ladder">
-    @if($unlockLevel >= 4)
-    <h2 class="tier-ladder-hed">Your system is <em>fully active.</em></h2>
-    @elseif($unlockLevel >= 2)
-    <h2 class="tier-ladder-hed">Your data is ready. <em>Go deeper.</em></h2>
-    @else
-    <h2 class="tier-ladder-hed">This is your starting point. <em>Don&rsquo;t stop here.</em></h2>
-    @endif
-    <div class="tier-ladder-grid">
-      @if($unlockLevel >= 2)
-      <div class="tier-ladder-item" style="border-color:rgba(106,175,144,.25);opacity:.7">
-        <span class="tl-name">Signal Expansion</span>
-        <span style="font-size:.68rem;color:var(--green)">✓ Active</span>
-      </div>
-      @else
-      <a href="{{ route('quick-scan.upgrade') }}?plan=diagnostic&scan_id={{ $scan->id }}&sid={{ $scan->stripe_session_id }}" class="tier-ladder-item">
-        <span class="tl-name">Signal Expansion</span>
-        <span class="tl-price"><sup style="font-size:.7rem;color:rgba(200,168,75,.5)">$</sup>99</span>
-        <span class="tl-desc">Full signal mapping + priority gaps + exportable intelligence</span>
-      </a>
-      @endif
-      @if($unlockLevel >= 3)
-      <div class="tier-ladder-item" style="border-color:rgba(106,175,144,.25);opacity:.7">
-        <span class="tl-name">Structural Leverage</span>
-        <span style="font-size:.68rem;color:var(--green)">✓ Active</span>
-      </div>
-      @else
-      <a href="{{ route('quick-scan.upgrade') }}?plan=fix-strategy&scan_id={{ $scan->id }}&sid={{ $scan->stripe_session_id }}" class="tier-ladder-item tl-dominant">
-        <span class="tl-name">Structural Leverage</span>
-        <span class="tl-price"><sup style="font-size:.7rem;color:rgba(200,168,75,.5)">$</sup>249</span>
-        <span class="tl-desc">Priority correction sequence + structural guidance</span>
-        <span style="font-size:.68rem;color:rgba(200,168,75,.55);margin-top:2px;font-style:italic">Where the system becomes real.</span>
-      </a>
-      @endif
-      @if($unlockLevel >= 4)
-      <div class="tier-ladder-item" style="border-color:rgba(106,175,144,.25);opacity:.7">
-        <span class="tl-name">System Activation</span>
-        <span style="font-size:.68rem;color:var(--green)">✓ Active</span>
-      </div>
-      @else
-      <a href="{{ route('quick-scan.upgrade') }}?plan=optimization&scan_id={{ $scan->id }}&sid={{ $scan->stripe_session_id }}" class="tier-ladder-item">
-        <span class="tl-name">System Activation</span>
-        <span class="tl-price"><sup style="font-size:.7rem;color:rgba(200,168,75,.5)">$</sup>489<sup style="font-size:.6rem;color:rgba(200,168,75,.4)">+</sup></span>
-        <span class="tl-desc">Competitive positioning + coverage architecture</span>
-      </a>
-      @endif
-    </div>
-    @if($unlockLevel < 4)
-    <p class="cta-book">
-      Not sure which level?&nbsp;
-      <a href="/pricing">See all levels</a> — find the right depth for your site.
-    </p>
-    @endif
-
-    {{-- High-ticket escalation — visible to users at $249+ or $489 --}}
-    @if($unlockLevel >= 3)
-    <div style="text-align:center;margin-top:28px;padding:{{ $highIntent ? '36px 28px' : '28px 24px' }};border:1px solid rgba(200,168,75,{{ $highIntent ? '.22' : '.14' }});background:rgba(200,168,75,{{ $highIntent ? '.04' : '.02' }});position:relative;overflow:hidden">
-      <div style="position:absolute;top:0;left:0;right:0;height:{{ $highIntent ? '2px' : '1px' }};background:linear-gradient(90deg,transparent,rgba(200,168,75,{{ $highIntent ? '.3' : '.18' }}),transparent)"></div>
-      <p style="font-size:.58rem;letter-spacing:.3em;text-transform:uppercase;color:rgba(200,168,75,.45);margin-bottom:8px">Full Market Deployment</p>
-      <p style="font-family:'Cormorant Garamond',serif;font-size:{{ $highIntent ? '1.35rem' : '1.2rem' }};font-weight:300;color:var(--ivory);line-height:1.3;margin-bottom:6px">Ready to stop managing and start <em style="color:var(--gold);font-style:italic">owning?</em></p>
-      <p style="font-size:.78rem;color:var(--muted);line-height:1.55;max-width:420px;margin:0 auto 10px">We build the structure that makes AI systems return you as the answer. Entity architecture, content infrastructure, coverage defense — deployed and maintained.</p>
-      <p style="font-size:.68rem;color:rgba(200,168,75,.38);margin-bottom:16px;font-style:italic">Best for businesses ready to expand across multiple cities and services.</p>
-      @if($highIntent)
-      <a href="{{ route('onboarding.start', ['tier' => 'expansion', 'scan_id' => $scan->id, 'plan' => 'authority-engine']) }}" style="display:inline-flex;align-items:center;gap:8px;font-size:.78rem;letter-spacing:.12em;text-transform:uppercase;padding:16px 38px;text-decoration:none;background:linear-gradient(135deg,var(--gold),var(--gold-lt));color:#080808;box-shadow:0 4px 18px var(--gold-glow);transition:all .3s">Start System Deployment →</a>
-      @else
-      <a href="{{ route('onboarding.start', ['tier' => 'expansion', 'scan_id' => $scan->id, 'plan' => 'authority-engine']) }}" style="display:inline-flex;align-items:center;gap:8px;font-size:.74rem;letter-spacing:.12em;text-transform:uppercase;padding:14px 32px;text-decoration:none;border:1px solid rgba(200,168,75,.3);color:var(--gold);transition:all .3s">Start System Deployment →</a>
-      @endif
-      <p style="font-size:.62rem;color:rgba(168,168,160,.35);margin-top:12px">Starts at $4,799+ — reviewed individually per market. Limited deployment capacity each month.</p>
-    </div>
-    @elseif($highIntent && $unlockLevel < 3)
-    {{-- Signal-based escalation: returning users with multiple scans see deployment hint early --}}
-    <div style="text-align:center;margin-top:22px;padding:20px 20px;border:1px solid rgba(200,168,75,.08);background:rgba(200,168,75,.01);position:relative;overflow:hidden">
-      <p style="font-size:.72rem;color:var(--muted);line-height:1.5;margin-bottom:8px">Looking for more than insights? <span style="color:var(--gold)">We also build full systems</span> — entity architecture, content infrastructure, and coverage defense deployed for you.</p>
-      <a href="{{ route('onboarding.start', ['tier' => 'expansion', 'scan_id' => $scan->id, 'plan' => 'authority-engine']) }}" style="font-size:.68rem;letter-spacing:.1em;text-transform:uppercase;color:rgba(200,168,75,.6);text-decoration:none;transition:color .3s">Learn about Full Market Deployment →</a>
-    </div>
-    @endif
-  </div>
-
-  {{-- ═══ FINAL PUSH CTA ═══ --}}
-  @if($unlockLevel < 4)
-  <div style="text-align:center;padding:36px 28px;margin-top:28px;border:1px solid rgba(200,168,75,.18);background:rgba(12,11,8,.96);position:relative;overflow:hidden">
-    <div style="position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--gold),transparent)"></div>
-    <div style="position:absolute;inset:0;background:radial-gradient(ellipse 70% 80% at 50% 20%,rgba(200,168,75,.04),transparent 60%);pointer-events:none"></div>
-    <p style="font-size:.6rem;letter-spacing:.3em;text-transform:uppercase;color:rgba(200,168,75,.5);margin-bottom:12px;position:relative;z-index:1">Your Next Move</p>
-    @if($unlockLevel <= 1)
-    <p style="font-family:'Cormorant Garamond',serif;font-size:clamp(1.3rem,2.8vw,1.9rem);font-weight:300;color:var(--ivory);line-height:1.25;margin-bottom:8px;position:relative;z-index:1">You've seen the score. Now see <em style="color:var(--gold);font-style:italic">what's behind it.</em></p>
-    <p style="font-size:.84rem;color:var(--muted);margin-bottom:22px;line-height:1.55;max-width:460px;margin-left:auto;margin-right:auto;position:relative;z-index:1">Your scan identified {{ count($scan->issues ?? []) }} structural gaps. The next level reveals exactly what they are, ranked by the impact on your visibility.</p>
-    <div style="display:flex;gap:14px;justify-content:center;flex-wrap:wrap;position:relative;z-index:1">
-      <a href="{{ route('quick-scan.upgrade') }}?plan=diagnostic&scan_id={{ $scan->id }}&sid={{ $scan->stripe_session_id }}" class="cta-pulse-anim" style="display:inline-flex;align-items:center;gap:8px;font-size:.78rem;letter-spacing:.1em;text-transform:uppercase;padding:16px 38px;text-decoration:none;background:linear-gradient(135deg,var(--gold),var(--gold-lt));color:#080808;box-shadow:0 4px 18px var(--gold-glow);transition:all .3s">Unlock Signal Expansion — $99</a>
-      <a href="{{ route('quick-scan.upgrade') }}?plan=fix-strategy&scan_id={{ $scan->id }}&sid={{ $scan->stripe_session_id }}" style="display:inline-flex;align-items:center;gap:8px;font-size:.78rem;letter-spacing:.1em;text-transform:uppercase;padding:16px 38px;text-decoration:none;border:2px solid var(--gold);color:var(--gold);box-shadow:0 8px 32px var(--gold-glow-strong);transition:all .3s">Resolve Structural Gaps — $249</a>
-    </div>
-    <p style="font-size:.72rem;color:rgba(200,168,75,.45);margin-top:14px;font-style:italic;position:relative;z-index:1">The $249 level is where you stop guessing and start fixing.</p>
-    @elseif($unlockLevel == 2)
-    <p style="font-family:'Cormorant Garamond',serif;font-size:clamp(1.3rem,2.8vw,1.9rem);font-weight:300;color:var(--ivory);line-height:1.25;margin-bottom:8px;position:relative;z-index:1">You see the signals. Now get <em style="color:var(--gold);font-style:italic">the correction sequence.</em></p>
-    <p style="font-size:.84rem;color:var(--muted);margin-bottom:22px;line-height:1.55;max-width:460px;margin-left:auto;margin-right:auto;position:relative;z-index:1">You know where you're weak. Structural Leverage tells you exactly what to fix, in what order, for maximum impact.</p>
-    <a href="{{ route('quick-scan.upgrade') }}?plan=fix-strategy&scan_id={{ $scan->id }}&sid={{ $scan->stripe_session_id }}" style="display:inline-flex;align-items:center;gap:8px;font-size:.82rem;letter-spacing:.1em;text-transform:uppercase;padding:18px 48px;text-decoration:none;background:linear-gradient(135deg,var(--gold),var(--gold-lt));color:#080808;box-shadow:0 8px 32px var(--gold-glow-strong);border:2px solid var(--gold);transition:all .3s;position:relative;z-index:1">Resolve Structural Gaps — $249 →</a>
-    <p style="font-size:.72rem;color:rgba(200,168,75,.45);margin-top:14px;font-style:italic;position:relative;z-index:1">Stop analyzing. Start fixing. This is where control begins.</p>
-    @else
-    <p style="font-family:'Cormorant Garamond',serif;font-size:clamp(1.3rem,2.8vw,1.9rem);font-weight:300;color:var(--ivory);line-height:1.25;margin-bottom:8px;position:relative;z-index:1">You have the blueprint. <em style="color:var(--gold);font-style:italic">We can build it for you.</em></p>
-    <p style="font-size:.84rem;color:var(--muted);margin-bottom:22px;line-height:1.55;max-width:460px;margin-left:auto;margin-right:auto;position:relative;z-index:1">We build the structure that makes AI systems return you as the answer — or start with System Activation to map the competitive picture first.</p>
-    <div style="display:flex;gap:14px;justify-content:center;flex-wrap:wrap;position:relative;z-index:1">
-      <a href="{{ route('quick-scan.upgrade') }}?plan=optimization&scan_id={{ $scan->id }}&sid={{ $scan->stripe_session_id }}" style="display:inline-flex;align-items:center;gap:8px;font-size:.78rem;letter-spacing:.1em;text-transform:uppercase;padding:16px 38px;text-decoration:none;background:linear-gradient(135deg,var(--gold),var(--gold-lt));color:#080808;box-shadow:0 4px 18px var(--gold-glow);transition:all .3s;position:relative;z-index:1">Activate Full System — $489+</a>
-      <a href="{{ route('onboarding.start', ['tier' => 'expansion', 'scan_id' => $scan->id, 'plan' => 'authority-engine']) }}" style="display:inline-flex;align-items:center;gap:8px;font-size:.78rem;letter-spacing:.1em;text-transform:uppercase;padding:16px 38px;text-decoration:none;border:1px solid rgba(200,168,75,.25);color:var(--gold);transition:all .3s;position:relative;z-index:1">Deploy Full System →</a>
-    </div>
-    <p style="font-size:.66rem;color:rgba(200,168,75,.35);margin-top:10px;position:relative;z-index:1">Best for businesses expanding across multiple cities and services.</p>
-    <p style="font-size:.64rem;color:rgba(168,168,160,.35);margin-top:4px;font-style:italic;position:relative;z-index:1">Full Market Control starts at $4,799+ — limited deployment capacity each month.</p>
-    @endif
-  </div>
-  @else
-  {{-- All levels active — push to system deployment --}}
-  <div style="text-align:center;padding:36px 28px;margin-top:24px;border:1px solid rgba(200,168,75,.18);background:rgba(12,11,8,.96);position:relative;overflow:hidden">
-    <div style="position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--gold),transparent)"></div>
-    <div style="position:absolute;inset:0;background:radial-gradient(ellipse 70% 80% at 50% 20%,rgba(200,168,75,.06),transparent 60%);pointer-events:none"></div>
-    <p style="font-size:.6rem;letter-spacing:.3em;text-transform:uppercase;color:rgba(200,168,75,.5);margin-bottom:10px;position:relative;z-index:1">System Complete</p>
-    <p style="font-family:'Cormorant Garamond',serif;font-size:clamp(1.3rem,2.8vw,1.9rem);font-weight:300;color:var(--ivory);line-height:1.25;margin-bottom:8px;position:relative;z-index:1">You've seen the full picture. <em style="color:var(--gold);font-style:italic">Now deploy it.</em></p>
-    <p style="font-size:.84rem;color:var(--muted);margin-bottom:14px;line-height:1.55;max-width:480px;margin-left:auto;margin-right:auto;position:relative;z-index:1">We build the structure that makes AI systems return you as the answer — entity architecture, content infrastructure, coverage defense — deployed and defended.</p>
-    <p style="font-size:.7rem;color:rgba(200,168,75,.4);margin-bottom:20px;position:relative;z-index:1">Best for businesses ready to expand across multiple cities and services.</p>
-    <div style="display:flex;gap:14px;justify-content:center;flex-wrap:wrap;position:relative;z-index:1">
-      <a href="{{ route('onboarding.start', ['tier' => 'expansion', 'scan_id' => $scan->id, 'plan' => 'authority-engine']) }}" style="display:inline-flex;align-items:center;gap:8px;font-size:.78rem;letter-spacing:.1em;text-transform:uppercase;padding:16px 38px;text-decoration:none;background:linear-gradient(135deg,var(--gold),var(--gold-lt));color:#080808;box-shadow:0 4px 18px var(--gold-glow);transition:all .3s">Start System Deployment</a>
-      <a href="/dashboard#ai-scans" style="display:inline-flex;align-items:center;gap:8px;font-size:.78rem;letter-spacing:.1em;text-transform:uppercase;padding:16px 38px;text-decoration:none;border:1px solid rgba(200,168,75,.25);color:var(--gold);transition:all .3s">View Dashboard</a>
-    </div>
-    <p style="font-size:.64rem;color:rgba(168,168,160,.35);margin-top:14px;position:relative;z-index:1">Starts at $4,799+ — reviewed individually per market. Limited deployment capacity each month.</p>
-  </div>
-  @endif
-
-  <!-- Save to Dashboard -->
-  @auth
-  <div class="save-section">
-    <span style="font-size:.56rem;letter-spacing:.3em;text-transform:uppercase;color:rgba(200,168,75,.45);display:block;margin-bottom:10px">System Baseline</span>
-    @if($isUpgraded)
-    <p style="font-family:'Cormorant Garamond',serif;font-size:1.15rem;color:var(--ivory);font-weight:300;margin-bottom:6px">This is your active baseline.</p>
-    <p style="font-size:.74rem;color:var(--muted);line-height:1.5;margin-bottom:16px;max-width:380px;margin-left:auto;margin-right:auto">Saved to your account. Future scans will measure against this point.</p>
-    @else
-    <p style="font-family:'Cormorant Garamond',serif;font-size:1.15rem;color:var(--ivory);font-weight:300;margin-bottom:6px">Lock this as your system baseline.</p>
-    <p style="font-size:.74rem;color:var(--muted);line-height:1.5;margin-bottom:16px;max-width:380px;margin-left:auto;margin-right:auto">Track changes over time. Every future scan measures against this point.</p>
-    @endif
-    <a href="/dashboard#ai-scans" class="save-btn">
-      <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"/></svg>
-      View in Dashboard
-    </a>
-  </div>
-  @else
-  <div class="save-section">
-    <span style="font-size:.56rem;letter-spacing:.3em;text-transform:uppercase;color:rgba(200,168,75,.45);display:block;margin-bottom:10px">System Baseline</span>
-    @if($isUpgraded)
-    <p style="font-family:'Cormorant Garamond',serif;font-size:1.15rem;color:var(--ivory);font-weight:300;margin-bottom:6px">Lock this as yours.</p>
-    <p style="font-size:.74rem;color:var(--muted);line-height:1.5;margin-bottom:16px;max-width:380px;margin-left:auto;margin-right:auto">Your expanded intelligence is ready. Save it to track changes over time.</p>
-    @else
-    <p style="font-family:'Cormorant Garamond',serif;font-size:1.15rem;color:var(--ivory);font-weight:300;margin-bottom:6px">Make this your baseline.</p>
-    <p style="font-size:.74rem;color:var(--muted);line-height:1.5;margin-bottom:16px;max-width:380px;margin-left:auto;margin-right:auto">Save your score, track changes, and access recommendations.</p>
-    @endif
-    <a href="{{ route('auth.google.redirect', ['scan_id' => $scan->id]) }}" class="save-btn" style="background:var(--gold);border-radius:6px">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 01-2.2 3.32v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.1z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18A10.96 10.96 0 001 12c0 1.77.42 3.45 1.18 4.93l3.66-2.84z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg>
-      Save to Dashboard with Google
-    </a>
-  </div>
-  @endauth
-
-  <!-- Actions -->
-  <div class="result-actions">
-    <a href="{{ route('quick-scan.show') }}" class="scan-again">Scan a different URL</a>
-  </div>
-
 </div>
 
-<!-- Footer -->
-<footer>
-  <a href="{{ url('/') }}" class="logo" style="opacity:.5">
-    <span class="logo-seo">SEO</span><span class="logo-ai">AI</span><span class="logo-co">co</span>
-  </a>
-  <span class="footer-copy">&copy; 2026 SEO AI Co™</span>
-  <nav class="footer-legal">
-    <a href="{{ route('privacy') }}">Privacy</a>
-    <a href="{{ route('terms') }}">Terms</a>
-    <a href="/pricing">Pricing</a>
-  </nav>
-</footer>
+  <footer class="footer">
+    <div class="footer-brand">
+      <strong>SEOAIco™</strong>
+      <span class="footer-tagline">Programmatic AI SEO Infrastructure</span>
+    </div>
+    <div class="footer-meta">
+      <p class="footer-copyright">&copy; 2026 — All systems active</p>
+      <p class="footer-links">
+        <a href="{{ route('privacy') }}">Privacy</a> ·
+        <a href="{{ route('terms') }}">Terms</a> ·
+        <a href="/pricing">AI Citation Scan</a>
+      </p>
+    </div>
+  </footer>
+
+<div class="fix-detail-mask" id="fixDetailMask" data-open="false" role="dialog" aria-modal="true" aria-labelledby="fixDetailTitle">
+  <aside class="fix-detail-panel">
+    <div class="fix-detail-inner">
+      <div class="fix-detail-head">
+        <p class="fix-detail-kicker">Constraint Intelligence Panel</p>
+        <button type="button" class="fix-detail-close" id="fixDetailCloseTop">Close Panel</button>
+      </div>
+
+      <div class="fix-detail-module">
+        <h3 class="fix-detail-title" id="fixDetailTitle">Issue Detail</h3>
+        <div class="fix-detail-meta">
+          <span class="fix-detail-pill" id="fixDetailState">Constraint Active</span>
+          <span class="fix-detail-pill" id="fixDetailImpact">High impact</span>
+          <span class="fix-detail-points" id="fixDetailPoints">0 pts at stake</span>
+        </div>
+      </div>
+
+      <div class="fix-detail-progression">
+        <div class="progression-cell">
+          <strong>Current State</strong>
+          <p>{{ $currentStateSummary }}</p>
+        </div>
+        <div class="progression-cell">
+          <strong>Next Unlock</strong>
+          <p>{{ $nextUnlockName }}</p>
+        </div>
+        <div class="progression-cell">
+          <strong>Unlocks</strong>
+          <ul class="progression-list">
+            @foreach($nextUnlockBullets as $bullet)
+            <li>{{ $bullet }}</li>
+            @endforeach
+          </ul>
+        </div>
+      </div>
+
+        <div class="fix-detail-grid">
+        <div class="fix-detail-block"><p>State</p><p id="fixDetailFailure">Unavailable</p></div>
+        <div class="fix-detail-block"><p>Effect</p><p id="fixDetailWhy">Unavailable</p></div>
+        <div class="fix-detail-block"><p>Fix Path</p><p id="fixDetailCorrection">Unavailable</p></div>
+        <div class="fix-detail-block"><p>Outcome If Resolved</p><p id="fixDetailUnlocks">Unavailable</p></div>
+        <div class="fix-detail-block"><p>Active Consequence</p><p id="fixDetailConsequence">Unavailable</p></div>
+        <div class="fix-detail-block"><p>Signal Domain</p><p id="fixDetailCategory">Unavailable</p></div>
+      </div>
+
+      <div class="fix-detail-actions">
+        <a href="#priority-actions" class="btn btn-primary" id="fixDetailNext">Deploy Fix</a>
+        <button type="button" class="btn btn-secondary" id="fixDetailClose">Close Panel</button>
+      </div>
+    </div>
+  </aside>
+</div>
 
 <script>
-  const nav = document.getElementById('nav');
-  if(nav) window.addEventListener('scroll', () => nav.classList.toggle('stuck', scrollY > 60));
+(function () {
+  var nav = document.getElementById('nav');
+  if (nav) {
+    window.addEventListener('scroll', function () {
+      nav.classList.toggle('stuck', scrollY > 60);
+    }, { passive: true });
+  }
 
-  window.addEventListener('load', function() {
-    // Animate score ring
-    setTimeout(function() {
-      const ring = document.getElementById('scoreRing');
-      if (ring) ring.classList.add('animate');
-    }, 300);
+  var fixDetailMask = document.getElementById('fixDetailMask');
+  var fixDetailClose = document.getElementById('fixDetailClose');
+  var fixDetailCloseTop = document.getElementById('fixDetailCloseTop');
+  var fixDetailTitle = document.getElementById('fixDetailTitle');
+  var fixDetailState = document.getElementById('fixDetailState');
+  var fixDetailImpact = document.getElementById('fixDetailImpact');
+  var fixDetailPoints = document.getElementById('fixDetailPoints');
+  var fixDetailFailure = document.getElementById('fixDetailFailure');
+  var fixDetailWhy = document.getElementById('fixDetailWhy');
+  var fixDetailCorrection = document.getElementById('fixDetailCorrection');
+  var fixDetailUnlocks = document.getElementById('fixDetailUnlocks');
+  var fixDetailConsequence = document.getElementById('fixDetailConsequence');
+  var fixDetailCategory = document.getElementById('fixDetailCategory');
+  var liveFeedbackStrip = document.getElementById('liveFeedbackStrip');
+  var liveFeedbackText = document.getElementById('liveFeedbackText');
 
-    // Animate category bars + depth progress
-    setTimeout(function() {
-      document.querySelectorAll('.cat-bar-fill, .market-bar-fill, .depth-progress-fill').forEach(function(bar) {
-        bar.style.width = bar.dataset.width + '%';
+  function rotateFeedback() {
+    if (!liveFeedbackStrip || !liveFeedbackText) return;
+    var raw = liveFeedbackStrip.dataset.feedbackMessages || '[]';
+    var messages;
+    try {
+      messages = JSON.parse(raw);
+    } catch (err) {
+      messages = [];
+    }
+    if (!Array.isArray(messages) || messages.length < 2) return;
+
+    var idx = 0;
+    window.setInterval(function () {
+      idx = (idx + 1) % messages.length;
+      liveFeedbackText.classList.add('is-swapping');
+      window.setTimeout(function () {
+        liveFeedbackText.textContent = messages[idx];
+        liveFeedbackText.classList.remove('is-swapping');
+      }, 230);
+    }, 3400);
+  }
+
+  var ACTION_MEMORY_PREFIX = 'seoai.fix.action.';
+
+  function setActionMemory(card, text) {
+    if (!card) return;
+    var line = card.querySelector('.action-memory');
+    if (!line) return;
+    line.textContent = text;
+  }
+
+  function restoreActionMemory() {
+    document.querySelectorAll('.action[data-action-key]').forEach(function (card) {
+      var key = card.dataset.actionKey || '';
+      if (!key) return;
+      var raw = sessionStorage.getItem(ACTION_MEMORY_PREFIX + key);
+      if (!raw) return;
+      try {
+        var parsed = JSON.parse(raw);
+        var at = Number(parsed.at || 0);
+        if (!Number.isFinite(at) || at <= 0) return;
+        var elapsedMs = Date.now() - at;
+        var outcome = typeof parsed.outcome === 'string' && parsed.outcome !== ''
+          ? parsed.outcome
+          : 'Constraint resolved -> selection pressure reduced -> signal clarity increased';
+        var label = elapsedMs < 90000
+          ? 'Fix deployed. Outcome pending verification.'
+          : 'Fix deployed ' + Math.max(1, Math.floor(elapsedMs / 60000)) + ' min ago. Re-evaluation pending.';
+        setActionMemory(card, label);
+      } catch (err) {
+        sessionStorage.removeItem(ACTION_MEMORY_PREFIX + key);
+      }
+    });
+  }
+
+  function openFixDetail(trigger) {
+    if (!fixDetailMask || !trigger) return;
+
+    var issueName = trigger.dataset.issueName || 'Issue Detail';
+    var stateLabel = trigger.dataset.stateLabel || 'Constraint Active';
+    var impactLabel = trigger.dataset.impactLabel || 'High impact';
+    var impactPoints = trigger.dataset.impactPoints || '0';
+    var failureState = trigger.dataset.failureState || 'Unavailable';
+    var whyMatters = trigger.dataset.whyMatters || failureState;
+    var requiredCorrection = trigger.dataset.requiredCorrection || 'Expand data layer coverage.';
+    var unlocks = trigger.dataset.unlocks || 'Introduces direct-answer nodes and stronger authority definitions.';
+    var category = trigger.dataset.categoryLabel || 'System';
+
+    fixDetailTitle.textContent = issueName;
+    fixDetailState.textContent = stateLabel;
+    fixDetailImpact.textContent = impactLabel;
+    fixDetailPoints.textContent = impactPoints + ' pts at stake';
+    fixDetailFailure.textContent = failureState;
+    fixDetailWhy.textContent = whyMatters;
+    fixDetailCorrection.textContent = requiredCorrection;
+    fixDetailUnlocks.textContent = unlocks;
+    fixDetailConsequence.textContent = 'Selection pressure remains active while this constraint persists.';
+    fixDetailCategory.textContent = category;
+
+    fixDetailMask.dataset.open = 'true';
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeFixDetail() {
+    if (!fixDetailMask) return;
+    fixDetailMask.dataset.open = 'false';
+    document.body.style.overflow = '';
+  }
+
+  function runActionExecution(trigger, onComplete) {
+    var card = trigger ? trigger.closest('.action') : null;
+    if (!card || card.dataset.execBusy === 'true') return;
+
+    var nodes = card.querySelectorAll('.btn');
+    var initLabel = trigger.dataset.execInit || 'Deploying fix...';
+    var processLabel = trigger.dataset.execProcess || 'Processing selection model...';
+    var resolvedLabel = trigger.dataset.execResolved || 'Fix deployed';
+
+    card.dataset.execBusy = 'true';
+    card.classList.add('is-executing');
+    trigger.classList.add('is-executing');
+    nodes.forEach(function (node) {
+      if (!node.dataset.originalLabel) node.dataset.originalLabel = (node.textContent || '').trim();
+      node.classList.add('is-disabled');
+      node.setAttribute('aria-disabled', 'true');
+      if (node.tagName === 'BUTTON') node.disabled = true;
+    });
+
+    trigger.textContent = initLabel;
+
+    var phaseDelay = 190 + Math.floor(Math.random() * 140);
+    window.setTimeout(function () {
+      trigger.textContent = processLabel;
+    }, phaseDelay);
+
+    var delayMs = 520 + Math.floor(Math.random() * 520);
+    window.setTimeout(function () {
+      var actionKey = card.dataset.actionKey || '';
+      var outcomeLine = 'Constraint resolved -> selection pressure reduced -> signal clarity increased';
+      if (actionKey) {
+        sessionStorage.setItem(ACTION_MEMORY_PREFIX + actionKey, JSON.stringify({ at: Date.now(), outcome: outcomeLine }));
+      }
+      setActionMemory(card, 'Fix deployed. Outcome pending verification.');
+      trigger.textContent = resolvedLabel;
+      card.classList.remove('is-executing');
+      card.classList.add('is-resolved');
+      trigger.classList.remove('is-executing');
+      trigger.classList.add('is-resolved');
+
+      nodes.forEach(function (node) {
+        node.classList.remove('is-disabled');
+        node.removeAttribute('aria-disabled');
+        if (node.tagName === 'BUTTON') node.disabled = false;
       });
-    }, 600);
 
-    // Staggered reveal on scroll
-    var io = new IntersectionObserver(function(entries) {
-      entries.forEach(function(e) { if (e.isIntersecting) { e.target.classList.add('in-view'); io.unobserve(e.target); } });
-    }, { threshold: 0.15 });
-    document.querySelectorAll('.report-layer').forEach(function(el) { io.observe(el); });
-  });
-</script>
-<script>
-(function(){
-  document.querySelectorAll('a[href*="onboarding/start"]').forEach(function(el){
-    el.addEventListener('click',function(){
-      fetch('/api/v1/track',{method:'POST',headers:{'Content-Type':'application/json','Accept':'application/json'},body:JSON.stringify({event:'deployment_cta_click',metadata:{label:el.textContent.trim().substring(0,60),page:'scan_result'}})}).catch(function(){});
+      window.setTimeout(function () {
+        nodes.forEach(function (node) {
+          if (node.dataset.originalLabel) node.textContent = node.dataset.originalLabel;
+          node.classList.remove('is-resolved');
+        });
+        card.classList.remove('is-resolved');
+        trigger.classList.remove('is-resolved');
+      }, 520);
+
+      card.dataset.execBusy = 'false';
+      if (typeof onComplete === 'function') onComplete();
+    }, delayMs);
+  }
+
+  document.querySelectorAll('.js-open-fix-detail').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      runActionExecution(btn, function () {
+        openFixDetail(btn);
+      });
     });
   });
+
+  document.querySelectorAll('.js-unlock-signal-expansion').forEach(function (link) {
+    link.addEventListener('click', function (evt) {
+      evt.preventDefault();
+      var href = link.getAttribute('href');
+      if (!href) return;
+      runActionExecution(link, function () {
+        window.location.href = href;
+      });
+    });
+  });
+
+  if (fixDetailClose) fixDetailClose.addEventListener('click', closeFixDetail);
+  if (fixDetailCloseTop) fixDetailCloseTop.addEventListener('click', closeFixDetail);
+  if (fixDetailMask) {
+    fixDetailMask.addEventListener('click', function (evt) {
+      if (evt.target === fixDetailMask) closeFixDetail();
+    });
+  }
+  document.addEventListener('keydown', function (evt) {
+    if (evt.key === 'Escape' && fixDetailMask && fixDetailMask.dataset.open === 'true') closeFixDetail();
+  });
+
+  rotateFeedback();
+  restoreActionMemory();
 })();
 </script>
+@include('partials.back-to-top')
 @include('components.tm-style')
+@include('partials.public-nav-js')
 </body>
 </html>

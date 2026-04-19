@@ -13,6 +13,7 @@ use App\Models\ConsultType;
 use App\Models\EmailLog;
 use App\Models\FunnelEvent;
 use App\Models\Lead;
+use App\Models\QuickScan;
 use App\Services\GoogleCalendarService;
 use Carbon\Carbon;
 use Illuminate\Http\JsonResponse;
@@ -29,7 +30,7 @@ class BookingController extends Controller
     {
         $types = ConsultType::active()->get();
         $availableDays = BookingAvailability::active()->pluck('day_of_week')->toArray();
-        $highTicketTypes = ConsultType::whereIn('slug', ['strategy-session', 'market-expansion'])->get()->keyBy('slug');
+        $highTicketTypes = $this->resolveEntryTypes($types);
 
         FunnelEvent::fire(FunnelEvent::BOOKING_VIEWED);
 
@@ -111,6 +112,32 @@ class BookingController extends Controller
         ]);
 
         $type = ConsultType::findOrFail($validated['consult_type_id']);
+
+        // ── Free booking access control ──────────────────────────────────────
+        // Free sessions require a completed scan and are limited to one per email.
+        if ($type->is_free) {
+            $hasScan = QuickScan::where('email', $validated['email'])
+                ->where('status', QuickScan::STATUS_SCANNED)
+                ->exists();
+
+            if (!$hasScan) {
+                return response()->json([
+                    'message' => 'A completed scan is required before booking a free session. Start with a citation scan first.',
+                ], 422);
+            }
+
+            $existingFreeBooking = Booking::where('email', $validated['email'])
+                ->whereHas('consultType', fn($q) => $q->where('is_free', true))
+                ->whereNotIn('status', ['cancelled'])
+                ->exists();
+
+            if ($existingFreeBooking) {
+                return response()->json([
+                    'message' => 'You already have a free session booked. To continue exploring, consider our paid advisory or activation options.',
+                ], 422);
+            }
+        }
+
         $date = Carbon::parse($validated['preferred_date']);
 
         // 24-hour advance booking rule
@@ -538,13 +565,10 @@ class BookingController extends Controller
                 ? ($session->subscription ?? null)
                 : ($session->payment_intent ?? null);
 
-            $booking->update([
+            $booking->update(array_merge([
                 'stripe_payment_intent_id' => $reference,
                 'payment_secured' => true,
-                'activation_date' => now(),
-                'cycle_end_date' => now()->addMonths(4),
-                'deployment_status' => 'active_deployment',
-            ]);
+            ], $this->deploymentFieldsFor($booking)));
         } catch (\Exception $e) {
             Log::channel('booking')->error('Stripe session retrieval failed on payment return', [
                 'booking_id' => $booking->id,
@@ -659,9 +683,9 @@ class BookingController extends Controller
             ]);
         }
 
-        // ── Audit-specific email sequence ────────────────────────────────────
-        // "What to Prepare" email sent 48 h before session (falls back to 24 h)
-        if ($booking->booking_type === 'audit') {
+        // ── Consultation prep email sequence ────────────────────────────────
+        // "What to Prepare" email sent 48 h before consultation (falls back to 24 h)
+        if ($booking->isConsultationEngagement()) {
             try {
                 $sessionDateTime = Carbon::parse(
                     $booking->preferred_date->toDateString() . ' ' . $booking->preferred_time
@@ -682,7 +706,7 @@ class BookingController extends Controller
                     ]);
                 }
             } catch (\Exception $e) {
-                Log::channel('booking')->warning('Audit prep email scheduling failed', [
+                Log::channel('booking')->warning('Consultation prep email scheduling failed', [
                     'booking_id' => $booking->id,
                     'error' => $e->getMessage(),
                 ]);
@@ -692,7 +716,11 @@ class BookingController extends Controller
         // Funnel tracking
         FunnelEvent::fire(FunnelEvent::BOOKING_PAID, $booking->id);
 
-        return redirect()->route('onboarding.start', ['booking' => $booking->id]);
+        if ($booking->isActivationEngagement()) {
+            return redirect()->route('onboarding.start', ['booking' => $booking->id]);
+        }
+
+        return redirect()->route('book.confirmed', ['booking' => $booking->id]);
     }
 
     /**
@@ -751,12 +779,47 @@ class BookingController extends Controller
     {
         return match ($slug) {
             'discovery' => 'discovery',
-            'audit' => 'audit',
+            'audit', 'consultation', 'ai-visibility-consultation',
             'strategy', 'agency-review', 'strategy-session',
-            'seo-audit', 'project-scoping' => 'strategy',
-            'build', 'market-expansion' => 'build',
+            'seo-audit', 'project-scoping' => 'consultation',
+            'activation', 'build', 'market-expansion', 'full-system-activation' => 'activation',
             default => 'discovery',
         };
+    }
+
+    private function resolveEntryTypes($types)
+    {
+        $paidTypes = $types->where('is_free', false)->values();
+
+        $consultationType = $paidTypes->firstWhere('slug', 'ai-visibility-consultation')
+            ?? $paidTypes->firstWhere('slug', 'consultation')
+            ?? $paidTypes->firstWhere('slug', 'audit')
+            ?? $paidTypes->firstWhere('slug', 'strategy-session')
+            ?? $paidTypes->firstWhere('slug', 'strategy')
+            ?? $paidTypes->sortBy('price')->first();
+
+        $activationType = $paidTypes->firstWhere('slug', 'full-system-activation')
+            ?? $paidTypes->firstWhere('slug', 'activation')
+            ?? $paidTypes->firstWhere('slug', 'market-expansion')
+            ?? $paidTypes->sortByDesc('price')->first();
+
+        return collect([
+            'consultation' => $consultationType,
+            'activation' => $activationType,
+        ]);
+    }
+
+    private function deploymentFieldsFor(Booking $booking): array
+    {
+        if (!$booking->isActivationEngagement()) {
+            return [];
+        }
+
+        return [
+            'activation_date' => now(),
+            'cycle_end_date' => now()->addMonths(4),
+            'deployment_status' => 'active_deployment',
+        ];
     }
 
     /**

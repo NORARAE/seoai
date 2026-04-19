@@ -58,11 +58,11 @@
     </table>
 
     <div style="text-align:center;margin:20px 0">
-      <a href="{{ url('/checkout/signal-expansion') }}" style="display:inline-block;background:#c8a84b;color:#080808;font-size:12px;font-weight:600;text-decoration:none;padding:13px 36px;letter-spacing:.08em">Unlock Signal Expansion &mdash; $99</a>
+      <a href="{{ \App\Support\EmailUrl::tracked('/checkout/signal-expansion', 'quick-scan-day2', $scan->user_id, $scan->id) }}" style="display:inline-block;background:#c8a84b;color:#080808;font-size:12px;font-weight:600;text-decoration:none;padding:13px 36px;letter-spacing:.08em">Unlock Signal Expansion &mdash; $99</a>
     </div>
 
     <p style="font-size:12px;color:#bbb;text-align:center;margin:16px 0 0">
-      Or <a href="{{ url('/book') }}" style="color:#c8a84b;text-decoration:none">book a free strategy call</a> to talk through your score.
+      Or <a href="{{ \App\Support\EmailUrl::tracked('/book', 'quick-scan-day2', $scan->user_id, $scan->id) }}" style="color:#c8a84b;text-decoration:none">book a free strategy call</a> to talk through your score.
     </p>
   </div>
 

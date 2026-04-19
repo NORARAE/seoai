@@ -10,7 +10,7 @@
 <link rel="manifest" href="/site.webmanifest">
 <meta name="theme-color" content="#080808">
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    <title>Checkout Cancelled — Start Over Anytime | SEO AI Co™</title>
+    <title>Checkout Cancelled — Start Over Anytime | SEOAIco</title>
     <meta name="robots" content="noindex,nofollow">
     <style>
         *{margin:0;padding:0;box-sizing:border-box}
@@ -31,6 +31,15 @@
             Questions? <a href="mailto:hello@seoaico.com">hello@seoaico.com</a>
         </p>
     </div>
+<script>
+(function(){
+    fetch('/api/v1/track',{
+        method:'POST',
+        headers:{'Content-Type':'application/json','Accept':'application/json'},
+        body:JSON.stringify({event:'checkout_cancelled',metadata:{flow:'direct_checkout',source_page:'checkout_cancelled'}})
+    }).catch(function(){});
+})();
+</script>
 @include('components.tm-style')
 </body>
 </html>

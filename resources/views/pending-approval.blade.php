@@ -3,23 +3,25 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Account Under Review — SEO AI Co™</title>
+<title>Account Under Review — SEOAIco</title>
+<link rel="canonical" href="{{ url('/pending-approval') }}">
+<meta name="robots" content="noindex, nofollow">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
-  --bg:#0c0c0c;
-  --card-bg:linear-gradient(160deg,#1f1f1f 0%,#161616 100%);
-  --border:rgba(111,84,29,.3);
-  --gold:#6f541d;--gold-lt:#a87828;--gold-dim:#5b4416;
-  --ivory:#f1f5f9;--muted:#94a3b8;
+  --bg:#080808;
+  --card-bg:linear-gradient(160deg,rgba(14,13,9,.92) 0%,rgba(10,9,7,.95) 100%);
+  --border:rgba(200,168,75,.12);
+  --gold:#c8a84b;--gold-lt:#e2c97d;--gold-dim:rgba(200,168,75,.4);
+  --ivory:#ede8de;--muted:rgba(168,168,160,.72);
 }
 html{font-size:18px}
 body{
   background:var(--bg);
-  background-image:radial-gradient(ellipse 70% 50% at 50% -5%,rgba(111,84,29,.07),transparent);
+  background-image:radial-gradient(ellipse 70% 50% at 50% -5%,rgba(200,168,75,.06),transparent);
   color:var(--ivory);
   font-family:'DM Sans',sans-serif;font-weight:300;
   min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;
@@ -31,18 +33,18 @@ body{
 .logo{
   display:inline-flex;align-items:baseline;text-decoration:none;line-height:1;margin-bottom:48px;
 }
-.logo-seo{font-family:'DM Sans',sans-serif;font-weight:300;font-size:1.2rem;letter-spacing:.06em;color:#fff}
+.logo-seo{font-family:'DM Sans',sans-serif;font-weight:300;font-size:1.2rem;letter-spacing:.06em;color:#f5f0e8}
 .logo-ai{
   font-family:'Cormorant Garamond',serif;font-weight:600;font-size:1.42rem;
   color:var(--gold);letter-spacing:.02em;
   display:inline-block;transform:skewX(-11deg) translateY(-1px);
 }
 .logo-co{font-family:'DM Sans',sans-serif;font-weight:300;font-size:1.05rem;color:rgba(255,255,255,.45);letter-spacing:.04em}
-.logo-ai{color:var(--gold-lt) !important}
+.logo-ai{color:var(--gold) !important}
 
 .card{
   background:var(--card-bg);border:1px solid var(--border);border-radius:14px;
-  box-shadow:0 24px 64px rgba(0,0,0,.65),0 0 0 1px rgba(111,84,29,.1),inset 0 1px 0 rgba(255,255,255,.04);
+  box-shadow:0 24px 64px rgba(0,0,0,.65),0 0 0 1px rgba(200,168,75,.06),inset 0 1px 0 rgba(255,255,255,.04);
   padding:48px 40px;
 }
 .status-icon{
@@ -65,7 +67,7 @@ body{
   font-size:1rem;color:var(--muted);line-height:1.8;margin-bottom:28px;
 }
 .card-body strong{color:var(--ivory);font-weight:400}
-.divider{width:40px;height:1px;background:rgba(111,84,29,.3);margin:28px auto}
+.divider{width:40px;height:1px;background:rgba(200,168,75,.15);margin:28px auto}
 .support-line{
   font-size:.78rem;color:var(--muted);line-height:1.7;
 }
@@ -95,6 +97,18 @@ body{
     <p class="card-body">
       Your account has been <strong>created successfully</strong>, but dashboard access is not yet active.<br><br>
       An administrator must approve your account before you can continue. This typically happens after your <strong>Discovery Call</strong> or initial onboarding review.
+    </p>
+
+    <div class="divider"></div>
+
+    <p class="support-line" style="margin-bottom:20px">
+      <strong style="color:var(--ivory);font-weight:400">Already ran a $2 scan?</strong><br>
+      <a href="/login" style="letter-spacing:.06em">Sign in again</a> to auto-verify your account.
+    </p>
+
+    <p class="support-line" style="margin-bottom:0">
+      Haven't scanned yet?&nbsp;
+      <a href="/scan/start" style="letter-spacing:.06em">Complete a scan</a> to activate your account.
     </p>
 
     <div class="divider"></div>

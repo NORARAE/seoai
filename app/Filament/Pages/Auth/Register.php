@@ -14,19 +14,31 @@ use Filament\Schemas\Schema;
 use Illuminate\Contracts\Support\Htmlable;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\RateLimiter;
+use Illuminate\Support\HtmlString;
 
 class Register extends BaseRegister
 {
+    public function mount(): void
+    {
+        $this->redirect(route('register'), navigate: false);
+    }
+
+    // ─── Valid intent values (shared with scan/booking system) ─────────────────
+
+    private const VALID_INTENTS = ['foundation', 'demand', 'conversion', 'strategy'];
+
     // ─── Heading ──────────────────────────────────────────────────────────────
 
     public function getHeading(): string|Htmlable|null
     {
-        return 'Apply for early access';
+        return 'Request Access to the System';
     }
 
     public function getSubheading(): string|Htmlable|null
     {
-        return 'Operator positions are limited and reviewed individually. Early applicants receive priority.';
+        return new HtmlString(
+            'This is not open enrollment. Access is reviewed and granted based on fit, market, and intent.'
+        );
     }
 
     // ─── Form components (autocomplete + conversational copy) ─────────────────
@@ -65,6 +77,15 @@ class Register extends BaseRegister
 
     public function form(Schema $schema): Schema
     {
+        // Resolve intent from query string for pre-selection bias
+        $intent = request()->query('intent', '');
+        $defaultUseCase = match ($intent) {
+            'foundation', 'conversion' => 'Build visibility',
+            'demand' => 'Build visibility',
+            'strategy' => 'Evaluate',
+            default => null,
+        };
+
         return $schema->components([
             $this->getNameFormComponent(),
             $this->getEmailFormComponent(),
@@ -72,20 +93,22 @@ class Register extends BaseRegister
             $this->getPasswordConfirmationFormComponent(),
 
             Select::make('use_case')
-                ->label("I'm joining as a...")
+                ->label('Primary Objective')
                 ->options([
-                    'Agency'         => 'Agency owner or team',
-                    'Local Business' => 'Local business owner',
-                    'Enterprise'     => 'Enterprise / in-house team',
-                    'Other'          => 'Something else',
+                    'Build visibility' => 'Build my own market visibility',
+                    'Agency' => 'Manage multiple clients / agency',
+                    'Evaluate' => 'Evaluate system capabilities',
+                    'Other' => 'Other',
                 ])
                 ->native(false)
-                ->placeholder('Choose your path')
+                ->placeholder('Select your objective')
+                ->default($defaultUseCase)
                 ->required(),
 
             TextInput::make('access_code')
-                ->label('Invite code')
-                ->placeholder('Have one? Paste it here to skip the queue.')
+                ->label('Priority Access Code')
+                ->placeholder('Optional')
+                ->helperText('If provided, your application may be fast-tracked.')
                 ->password()
                 ->revealable()
                 ->maxLength(128)
@@ -97,7 +120,7 @@ class Register extends BaseRegister
 
     public function getRegisterFormAction(): Action
     {
-        return parent::getRegisterFormAction()->label('Request Access');
+        return parent::getRegisterFormAction()->label('Submit for Review');
     }
 
     // ─── Registration handler (rate limit + pending redirect) ─────────────────
@@ -124,9 +147,10 @@ class Register extends BaseRegister
         $user = Filament::auth()->user();
 
         Log::info('registration', [
-            'email'    => $user?->email,
-            'ip'       => request()->ip(),
+            'email' => $user?->email,
+            'ip' => request()->ip(),
             'approved' => (bool) $user?->approved,
+            'intent' => request()->query('intent'),
         ]);
 
         if (is_null($response)) {
@@ -134,7 +158,7 @@ class Register extends BaseRegister
             return null;
         }
 
-        if ($user && ! $user->approved) {
+        if ($user && !$user->approved) {
             Filament::auth()->logout();
             session()->regenerateToken();
             $this->redirect(route('pending-approval'), navigate: false);
@@ -151,7 +175,7 @@ class Register extends BaseRegister
     protected function mutateFormDataBeforeRegister(array $data): array
     {
         $accessCode = trim($data['access_code'] ?? '');
-        $validCode  = config('services.registration.access_code');
+        $validCode = config('services.registration.access_code');
 
         // Only grant approval if a non-empty valid code is supplied and matches
         $approved = $validCode !== null
@@ -159,12 +183,16 @@ class Register extends BaseRegister
             && $accessCode !== ''
             && hash_equals((string) $validCode, $accessCode);
 
-        $data['approved']          = $approved;
-        $data['role']              = 'buyer';
-        $data['signup_ip']         = request()->ip();
+        $data['approved'] = $approved;
+        $data['role'] = 'buyer';
+        $data['signup_ip'] = request()->ip();
         $data['signup_user_agent'] = substr((string) request()->userAgent(), 0, 512);
-        $data['signup_referrer']   = substr((string) request()->headers->get('referer', ''), 0, 512) ?: null;
-        $data['signup_source']     = 'web-register';
+        $data['signup_referrer'] = substr((string) request()->headers->get('referer', ''), 0, 512) ?: null;
+        $data['signup_source'] = 'web-register';
+
+        // Capture intent context (safe — context only, no privilege escalation)
+        $rawIntent = (string) request()->query('intent', '');
+        $data['signup_intent'] = in_array($rawIntent, self::VALID_INTENTS, true) ? $rawIntent : null;
 
         // Timezone — set by JS cookie on first page load
         $rawTz = request()->cookie('tz', '');
@@ -174,7 +202,7 @@ class Register extends BaseRegister
 
         // UTM parameters — stored in session by CaptureUtmParameters middleware
         $utms = session('utm', []);
-        $data['signup_utm'] = ! empty($utms) ? json_encode($utms) : null;
+        $data['signup_utm'] = !empty($utms) ? json_encode($utms) : null;
 
         // Strip — never persisted to the database
         unset($data['access_code']);

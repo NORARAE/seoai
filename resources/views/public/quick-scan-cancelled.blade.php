@@ -38,6 +38,15 @@ p{font-size:.96rem;color:var(--muted);max-width:440px;margin:0 auto 32px;line-he
   <p>No charge was made. Head back and try again whenever you're ready — it only takes 60 seconds.</p>
   <a href="{{ route('quick-scan.show') }}{{ $scan ? '?url=' . urlencode($scan->url_input ?? $scan->url) . '&email=' . urlencode($scan->email) : '' }}" class="btn">Try Again</a>
   <a href="/" class="btn-ghost">Return Home</a>
+<script>
+(function(){
+  fetch('/api/v1/track',{
+    method:'POST',
+    headers:{'Content-Type':'application/json','Accept':'application/json'},
+    body:JSON.stringify({event:'checkout_cancelled',metadata:{flow:'quick_scan',source_page:'quick_scan_cancelled',scan_id:'{{ $scan?->id ?? '' }}'}})
+  }).catch(function(){});
+})();
+</script>
 @include('components.tm-style')
 </body>
 </html>

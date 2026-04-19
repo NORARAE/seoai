@@ -195,18 +195,18 @@ class GoogleAuthController extends Controller
 
         // ── Non-scan flows below ────────────────────────────────────────
 
-        // Approval check: unapproved non-staff users go to pending page.
-        if (!$user->isPrivilegedStaff() && !$user->isApproved()) {
+        // Approval check: unapproved customers go to pending page.
+        if (!$user->isPrivilegedStaff() && !$user->isFrontendDev() && !$user->isApproved()) {
             return redirect()->route('pending-approval');
         }
 
         // Approved but onboarding not yet complete
-        if (!$user->isPrivilegedStaff() && $user->isApproved() && is_null($user->onboarding_completed_at)) {
+        if (!$user->isPrivilegedStaff() && !$user->isFrontendDev() && $user->isApproved() && is_null($user->onboarding_completed_at)) {
             return redirect()->route('user.onboarding');
         }
 
         // Privileged staff → Filament panel
-        if ($user->isPrivilegedStaff()) {
+        if ($user->isPrivilegedStaff() || $user->isFrontendDev()) {
             return redirect()->intended('/admin');
         }
 

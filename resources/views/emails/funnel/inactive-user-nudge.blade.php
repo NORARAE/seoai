@@ -33,7 +33,7 @@
     <p style="font-size:13px;color:#555;line-height:1.7;margin:0 0 24px">While these remain unaddressed, competitors who fix theirs are pulling ahead. Every week without corrections makes the gap harder to close.</p>
 
     <div style="text-align:center;margin:24px 0">
-      <a href="{{ url('/dashboard') }}" style="display:inline-block;padding:14px 36px;background:#080808;color:#ede8de;font-size:13px;letter-spacing:.1em;text-decoration:none;text-transform:uppercase">View Your Dashboard</a>
+      <a href="{{ \App\Support\EmailUrl::tracked('/dashboard', 'inactive-user-nudge', $scan->user_id, $scan->id) }}" style="display:inline-block;padding:14px 36px;background:#080808;color:#ede8de;font-size:13px;letter-spacing:.1em;text-decoration:none;text-transform:uppercase">View Your Dashboard</a>
     </div>
 
     <p style="font-size:12px;color:#999;line-height:1.6;margin:20px 0 0;text-align:center">Your results are still available. Take the next step when you&rsquo;re ready.</p>

@@ -95,4 +95,15 @@ class Booking extends Model
     {
         return $this->status === 'cancelled';
     }
+
+    public function isActivationEngagement(): bool
+    {
+        return $this->booking_type === 'activation'
+            || in_array($this->consultType?->slug, ['activation', 'build', 'market-expansion', 'full-system-activation'], true);
+    }
+
+    public function isConsultationEngagement(): bool
+    {
+        return !$this->consultType?->is_free && !$this->isActivationEngagement();
+    }
 }

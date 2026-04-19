@@ -18,7 +18,7 @@
 <link rel="manifest" href="/site.webmanifest">
 <meta name="theme-color" content="#080808">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Start Your System Deployment | SEO AI Co™</title>
+<title>Start Your System Deployment | SEOAIco</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
@@ -1809,7 +1809,7 @@ body {
           <div class="ob-detail-price-badge">$150 one-time</div>
           <div class="ob-detail-section">
             <span class="ob-detail-section-label">What this does</span>
-            <p class="ob-detail-body">Before your strategy session, we do a hands-on review of your website and your current marketing setup — what's working, what's missing, and what to fix first. So when we talk, we can act on real findings immediately.</p>
+            <p class="ob-detail-body">Before your consultation, we do a hands-on review of your website and your current marketing setup — what's working, what's missing, and what to fix first. So when we talk, we can act on real findings immediately.</p>
           </div>
           <hr class="ob-detail-divider">
           <div class="ob-detail-section">
@@ -2009,7 +2009,7 @@ body {
               <li>Where competitors are winning — visibility, content, and search presence breakdown</li>
               <li>What to build first — a prioritized action map for your deployment</li>
               <li>Where revenue opportunities exist — high-intent search areas with low competition</li>
-              <li>Written report delivered before your strategy session</li>
+              <li>Written report delivered before your consultation</li>
             </ul>
           </div>
           <hr class="ob-detail-divider">

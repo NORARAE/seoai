@@ -63,15 +63,13 @@ class BookingResource extends Resource
                     ->badge()
                     ->sortable()
                     ->color(fn(?string $state): string => match ($state) {
-                        'audit' => 'warning',
-                        'strategy' => 'info',
-                        'build' => 'success',
+                        'consultation' => 'warning',
+                        'activation' => 'success',
                         default => 'gray',
                     })
                     ->formatStateUsing(fn(?string $state): string => match ($state) {
-                        'audit' => 'Audit $500',
-                        'strategy' => 'Strategy',
-                        'build' => 'Build',
+                        'consultation' => 'Consultation',
+                        'activation' => 'Full Activation',
                         default => 'Discovery',
                     }),
 
@@ -151,9 +149,8 @@ class BookingResource extends Resource
                     ->label('Booking Type')
                     ->options([
                         'discovery' => 'Discovery (Free)',
-                        'audit' => 'Audit ($500)',
-                        'strategy' => 'Strategy',
-                        'build' => 'Build',
+                        'consultation' => 'Consultation',
+                        'activation' => 'Full Activation',
                     ]),
 
                 SelectFilter::make('status')

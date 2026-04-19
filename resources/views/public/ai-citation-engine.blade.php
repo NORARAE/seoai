@@ -456,6 +456,10 @@ footer{border-top:1px solid rgba(200,168,75,.07);padding:32px 40px;display:flex;
       <span class="related-label">Category Overview</span>
       <span class="related-title">AI Search Optimization</span>
     </a>
+    <a href="{{ route('entity-seo-for-ai-search') }}" class="related-item">
+      <span class="related-label">Entity Layer</span>
+      <span class="related-title">Entity SEO for AI Search</span>
+    </a>
     <a href="{{ route('programmatic-seo-platform') }}" class="related-item">
       <span class="related-label">Infrastructure</span>
       <span class="related-title">Programmatic SEO Platform</span>
@@ -467,6 +471,10 @@ footer{border-top:1px solid rgba(200,168,75,.07);padding:32px 40px;display:flex;
     <a href="{{ route('local-ai-search') }}" class="related-item">
       <span class="related-label">Local Discovery</span>
       <span class="related-title">Local AI Search</span>
+    </a>
+    <a href="{{ route('ai-seo-for-local-businesses') }}" class="related-item">
+      <span class="related-label">Local GEO</span>
+      <span class="related-title">AI SEO for Local Businesses</span>
     </a>
     <a href="{{ route('search-presence-engine') }}" class="related-item">
       <span class="related-label">Platform</span>

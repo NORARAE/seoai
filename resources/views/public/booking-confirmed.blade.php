@@ -18,7 +18,7 @@
 <link rel="manifest" href="/site.webmanifest">
 <meta name="theme-color" content="#080808">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Session Confirmed — You’re on the Calendar | SEO AI Co™</title>
+<title>Entry Confirmed — Intake Reserved | SEO AI Co™</title>
 <meta name="robots" content="noindex,nofollow">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -243,16 +243,16 @@ body {
 <body>
 <div class="conf-wrap">
 
-  <span class="conf-eye">Session Confirmed</span>
+  <span class="conf-eye">{{ $booking->isActivationEngagement() ? 'Activation Confirmed' : 'Entry Reserved' }}</span>
 
   <div class="conf-mark">&#10003;</div>
 
-  <h1 class="conf-hed">Your session<br><em>is confirmed.</em></h1>
-  <p class="conf-sub">Next step: complete your onboarding so we can prepare properly for your call.</p>
+  <h1 class="conf-hed">Your {{ $booking->isActivationEngagement() ? 'activation' : 'entry session' }}<br><em>is confirmed.</em></h1>
+  <p class="conf-sub">{{ $booking->isActivationEngagement() ? 'Next step: complete your onboarding intake so kickoff can begin.' : 'System Intake Scheduled. Confirm your calendar placement and prepare your structural inputs.' }}</p>
 
   <div class="conf-details">
     <div class="conf-detail-row">
-      <span class="conf-detail-label">Session</span>
+      <span class="conf-detail-label">Entry</span>
       <span class="conf-detail-value">{{ $booking->consultType->name }}</span>
     </div>
     <div class="conf-detail-row">
@@ -292,13 +292,25 @@ body {
         . '&details=' . urlencode('Booked via seoaico.com');
     @endphp
 
-    {{-- Primary CTA: onboarding --}}
+    @if($booking->isActivationEngagement())
     <a href="{{ route('onboarding.start', ['booking' => $booking->id]) }}" class="conf-cta-primary">
       Continue to Onboarding &rarr;
     </a>
-    <p style="font-size:.78rem;color:#666;margin-top:-8px;letter-spacing:.01em;">This helps us prepare your session.</p>
-
+    <p style="font-size:.78rem;color:#666;margin-top:-8px;letter-spacing:.01em;">Kickoff begins after your intake is submitted.</p>
     <a href="{{ $gcalUrl }}" target="_blank" rel="noopener" class="conf-cta-secondary">
+      <span>+</span> Add to Google Calendar
+    </a>
+    @else
+    <a href="{{ $gcalUrl }}" target="_blank" rel="noopener" class="conf-cta-primary">
+      Reserve on Google Calendar
+    </a>
+    <p style="font-size:.78rem;color:#666;margin-top:-8px;letter-spacing:.01em;">Keep your entry session on calendar. Intake preparation guidance will be sent automatically.</p>
+    <a href="{{ route('book.confirm', ['booking' => $booking->id]) }}" class="conf-cta-secondary">
+      <span>&#8594;</span> Review Entry Details
+    </a>
+    @endif
+
+    <a href="{{ $gcalUrl }}" target="_blank" rel="noopener" class="conf-cta-secondary" @if(!$booking->isActivationEngagement()) style="display:none" @endif>
       <span>+</span> Add to Google Calendar
     </a>
     <a href="{{ url('/') }}#contact" class="conf-cta-secondary">
@@ -306,15 +318,15 @@ body {
     </a>
   </div>
 
-  @if(!$booking->consultType->is_free)
+  @if(!$booking->consultType->is_free && !$booking->isActivationEngagement())
   <div class="conf-upsell">
-    <p class="conf-upsell-eyebrow">Strengthen your session</p>
-    <h2 class="conf-upsell-title">Prepare your market before we meet</h2>
+    <p class="conf-upsell-eyebrow">Strengthen your entry layer</p>
+    <h2 class="conf-upsell-title">Prepare market inputs before intake</h2>
     <p class="conf-upsell-body">
-      Add a visibility snapshot, competitive gap analysis, or priority action brief before your session.
-      We'll have everything structured and ready before we meet.
+      Add a visibility snapshot, competitive gap analysis, or priority action brief before your entry session.
+      Structural inputs will be staged and ready before intake begins.
     </p>
-    <a href="{{ url('/book') }}?upgrade={{ $booking->id }}" class="conf-upsell-link">Add session preparation &rarr;</a>
+    <a href="{{ url('/book') }}?upgrade={{ $booking->id }}" class="conf-upsell-link">Add intake preparation &rarr;</a>
   </div>
   @endif
 

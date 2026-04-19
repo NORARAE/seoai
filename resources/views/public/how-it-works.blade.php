@@ -59,6 +59,16 @@ html:not(.js-enabled) .r{opacity:1;transform:none}
 .hiw-hero{
   position:relative;padding:clamp(100px,13vh,148px) 0 56px;text-align:center;
 }
+.hiw-hero::before{
+  content:'';position:absolute;inset:8% 12% auto 12%;height:220px;pointer-events:none;
+  background:
+    radial-gradient(circle at 50% 50%,rgba(200,168,75,.08),transparent 62%),
+    linear-gradient(to right,rgba(200,168,75,.08) 1px,transparent 1px),
+    linear-gradient(to bottom,rgba(200,168,75,.07) 1px,transparent 1px);
+  background-size:auto,28px 28px,28px 28px;
+  opacity:.5;
+  mask-image:linear-gradient(to bottom,rgba(0,0,0,.85),transparent 90%);
+}
 .hiw-hero-eye{
   font-size:.6rem;letter-spacing:.26em;text-transform:uppercase;
   color:rgba(200,168,75,.52);margin-bottom:18px;
@@ -73,7 +83,19 @@ html:not(.js-enabled) .r{opacity:1;transform:none}
   font-size:clamp(.88rem,1.2vw,1.02rem);color:var(--muted);
   max-width:560px;margin:0 auto 36px;line-height:1.8;
 }
+.hiw-hero-promise{
+  font-size:.72rem;letter-spacing:.11em;text-transform:uppercase;
+  color:rgba(200,168,75,.58);margin:14px auto 0;max-width:640px;
+}
 .hiw-hero-cta{display:inline-flex;gap:16px;flex-wrap:wrap;justify-content:center}
+.hiw-system-meta{
+  margin:0 auto 26px;display:flex;gap:10px;justify-content:center;flex-wrap:wrap;
+}
+.hiw-system-meta span{
+  font-size:.56rem;letter-spacing:.15em;text-transform:uppercase;
+  border:1px solid rgba(200,168,75,.22);color:rgba(200,168,75,.72);
+  padding:6px 10px;border-radius:999px;background:rgba(200,168,75,.03);
+}
 
 /* ── Section pattern ── */
 .hiw-section{padding:clamp(48px,6vw,80px) 0}
@@ -112,28 +134,64 @@ html:not(.js-enabled) .r{opacity:1;transform:none}
 }
 .hiw-card-text{font-size:.82rem;color:var(--muted);line-height:1.75}
 
-/* ── CTA blocks ── */
-.hiw-cta-block{
-  text-align:center;padding:48px 0 56px;
-}
-.hiw-cta-block p{
-  font-size:.84rem;color:var(--muted);line-height:1.8;
-  max-width:480px;margin:0 auto 28px;
-}
+/* ── CTA actions ── */
 .hiw-cta-actions{display:flex;align-items:center;justify-content:center;gap:16px;flex-wrap:wrap}
+
+/* ── Transition block ── */
+.hiw-transition{
+  text-align:center;padding:clamp(56px,8vw,96px) 0 clamp(52px,7vw,84px);
+  max-width:520px;margin:0 auto;position:relative;
+}
+.hiw-transition::before{
+  content:'';position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
+  width:320px;height:180px;border-radius:50%;
+  background:radial-gradient(ellipse,rgba(200,168,75,.06) 0%,transparent 70%);
+  pointer-events:none;
+}
+.hiw-transition-calm{
+  font-size:.78rem;color:var(--muted);letter-spacing:.03em;
+  line-height:1.7;margin-bottom:26px;transition-delay:.05s;
+}
+.hiw-transition-action{
+  font-family:'Cormorant Garamond',serif;font-weight:300;
+  font-size:clamp(1.6rem,3.4vw,2.4rem);color:#f0ece3;
+  line-height:1.2;margin-bottom:30px;transition-delay:.2s;
+}
+.hiw-transition-signal{
+  font-size:.7rem;letter-spacing:.12em;text-transform:uppercase;
+  color:rgba(200,168,75,.48);margin-bottom:36px;transition-delay:.35s;
+}
+.hiw-transition-lead{
+  font-size:.72rem;color:var(--muted);letter-spacing:.04em;
+  opacity:.55;padding-bottom:8px;transition-delay:.48s;
+}
 
 /* ── System visual (pipeline) ── */
 .hiw-pipeline{
   display:flex;align-items:stretch;gap:0;max-width:960px;margin:0 auto 40px;
   position:relative;
 }
+.hiw-pipeline::before{
+  content:'';position:absolute;inset:-12px;pointer-events:none;border-radius:14px;
+  background:
+    linear-gradient(to right,rgba(200,168,75,.06) 1px,transparent 1px),
+    linear-gradient(to bottom,rgba(200,168,75,.05) 1px,transparent 1px);
+  background-size:24px 24px;
+  opacity:.28;
+}
 .hiw-pipe-step{
   flex:1;text-align:center;padding:24px 12px 20px;position:relative;
   border:1px solid var(--card-border);background:var(--card-bg);
   transition:border-color .3s,background .3s;
 }
+.hiw-pipe-step::after{
+  content:'';position:absolute;top:14px;right:12px;width:8px;height:8px;border-radius:50%;
+  background:rgba(200,168,75,.36);box-shadow:0 0 0 0 rgba(200,168,75,.35);
+  animation:nodePulse 2.8s ease-out infinite;
+}
 .hiw-pipe-step:first-child{border-radius:10px 0 0 10px}
 .hiw-pipe-step:last-child{border-radius:0 10px 10px 0}
+.hiw-pipe-step:last-child::after{display:none}
 .hiw-pipe-step.active{
   border-color:rgba(200,168,75,.28);
   background:rgba(200,168,75,.04);
@@ -234,6 +292,16 @@ html:not(.js-enabled) .r{opacity:1;transform:none}
 }
 .hiw-happens-text{font-size:.82rem;color:var(--muted);line-height:1.75}
 
+.hiw-process-meta{
+  display:flex;justify-content:center;gap:10px;flex-wrap:wrap;
+  margin:-8px auto 26px;
+}
+.hiw-process-meta span{
+  font-size:.52rem;letter-spacing:.16em;text-transform:uppercase;
+  border:1px solid rgba(200,168,75,.2);border-radius:999px;
+  color:rgba(200,168,75,.68);padding:6px 10px;background:rgba(200,168,75,.03);
+}
+
 /* ── Level highlight ── */
 .hiw-tier.hiw-tier-entry{
   border-color:rgba(200,168,75,.22);
@@ -269,6 +337,16 @@ html:not(.js-enabled) .r{opacity:1;transform:none}
 .hiw-momentum-sub{
   font-size:.88rem;color:var(--muted);line-height:1.8;
   max-width:440px;margin:0 auto 32px;
+}
+
+@keyframes nodePulse{
+  0%{box-shadow:0 0 0 0 rgba(200,168,75,.28)}
+  70%{box-shadow:0 0 0 8px rgba(200,168,75,0)}
+  100%{box-shadow:0 0 0 0 rgba(200,168,75,0)}
+}
+
+@media (prefers-reduced-motion:reduce){
+  .hiw-pipe-step::after{animation:none}
 }
 
 @media(max-width:768px){
@@ -326,12 +404,18 @@ html:not(.js-enabled) .r{opacity:1;transform:none}
   .hiw-tier-badge{font-size:.54rem;margin-bottom:10px}
   .hiw-progression-note{font-size:.9rem;line-height:1.78;margin-top:24px}
 
-  /* CTA blocks — bigger buttons + text */
-  .hiw-cta-block{padding:44px 0 48px}
-  .hiw-cta-block p{font-size:.9rem;line-height:1.8;margin-bottom:24px}
+  /* CTA — mobile button sizing */
   .btn-primary{min-height:52px;padding:16px 28px;font-size:.8rem;display:flex;align-items:center;justify-content:center}
   .btn-ghost{font-size:.78rem;padding-bottom:4px}
   .hiw-hero-cta .btn-primary{width:100%;text-align:center;justify-content:center}
+
+  /* Transition block */
+  .hiw-transition{padding:48px 0 44px}
+  .hiw-transition::before{width:260px;height:140px}
+  .hiw-transition-calm{font-size:.84rem;line-height:1.8;margin-bottom:20px}
+  .hiw-transition-action{font-size:clamp(1.4rem,5vw,1.9rem);line-height:1.28;margin-bottom:22px}
+  .hiw-transition-signal{font-size:.74rem;letter-spacing:.1em;margin-bottom:26px}
+  .hiw-transition-lead{font-size:.76rem;padding-bottom:4px}
 
   /* Momentum section */
   .hiw-momentum-hed{font-size:clamp(1.4rem,4.5vw,1.9rem);margin-bottom:14px}
@@ -354,7 +438,6 @@ html:not(.js-enabled) .r{opacity:1;transform:none}
   .hiw-section-hed{font-size:clamp(1.35rem,5.5vw,1.8rem)}
   .hiw-happens-title{font-size:1.1rem}
   .hiw-card-title{font-size:1.12rem}
-  .hiw-cta-block p{font-size:.86rem}
   .hiw-tier-price{font-size:1.4rem}
   .wrap{padding:0 20px}
 }
@@ -377,18 +460,24 @@ html:not(.js-enabled) .r{opacity:1;transform:none}
 <!-- ════════════ SECTION 1 — HERO ════════════ -->
 <section class="hiw-hero">
   <div class="wrap">
-    <p class="hiw-hero-eye r">How It Works</p>
+    <p class="hiw-hero-eye r">The Evolution Layer</p>
     <h1 class="hiw-hero-hed r">
-      Search has changed.<br><em>Your visibility hasn't.</em>
+      Search has evolved.<br><em>Most websites haven't.</em>
     </h1>
     <p class="hiw-hero-sub r">
-      AI systems now choose who gets seen.
-      Your site either feeds them &mdash; or gets ignored.
+      AI systems now decide what gets seen, cited, and surfaced.
+      SEOAIco scans how your site is interpreted, then maps what those systems actually need.
     </p>
-    <div class="hiw-hero-cta r">
-      <a href="{{ route('scan.start') }}" class="btn-primary" onclick="if(typeof gtag==='function')gtag('event','cta_click',{cta_location:'hero',cta_label:'start_scan'});">Start AI Citation Scan &mdash; $2</a>
-      <a href="#system-flow" class="btn-ghost">Or see how the system works &darr;</a>
+    <div class="hiw-system-meta r" aria-label="System status labels">
+      <span>SYSTEM STATUS: READY</span>
+      <span>INPUT: DOMAIN</span>
+      <span>OUTPUT: VISIBILITY INTELLIGENCE</span>
     </div>
+    <div class="hiw-hero-cta r">
+      <a href="{{ route('scan.start') }}" class="btn-primary" onclick="if(typeof gtag==='function')gtag('event','cta_click',{cta_location:'hero',cta_label:'start_scan'});">Run AI Visibility Scan &mdash; $2</a>
+      <a href="#system-flow" class="btn-ghost">See system activation flow &darr;</a>
+    </div>
+    <p class="hiw-hero-promise r">Test your site for AI visibility in seconds, and see whether AI systems are likely to surface you or skip you.</p>
   </div>
 </section>
 
@@ -397,52 +486,52 @@ html:not(.js-enabled) .r{opacity:1;transform:none}
 <!-- ════════════ SECTION 2 — SYSTEM FLOW STRIP ════════════ -->
 <section class="hiw-section" id="system-flow">
   <div class="wrap">
-    <p class="hiw-section-eye r">The System</p>
-    <h2 class="hiw-section-hed r">We structure your domain so AI<br><em style="font-style:italic;color:var(--gold-lt)">has to cite you.</em></h2>
+    <p class="hiw-section-eye r">AI Visibility System</p>
+    <h2 class="hiw-section-hed r">Built for the AI discovery system,<br><em style="font-style:italic;color:var(--gold-lt)">not legacy SEO checklists.</em></h2>
     <p class="hiw-section-sub r">
-      The AI Citation Engine&trade; builds machine-readable structure across your entire service area &mdash;
-      giving AI systems the signals they need to reference, recommend, and cite your business.
+      This is not a rank tracker. It is an AI visibility scan and build path.
+      The system reveals how your domain is interpreted, where citation signals break, and what to deploy next.
     </p>
 
     <!-- System Visual: Pipeline -->
     <div class="hiw-pipeline r">
       <div class="hiw-pipe-step active">
-        <span class="hiw-pipe-you">You enter here</span>
-        <div class="hiw-pipe-num">Layer 1</div>
-        <div class="hiw-pipe-label">Scan</div>
-        <p class="hiw-pipe-desc">See how AI sees your business right now.</p>
+        <span class="hiw-pipe-you">Input: domain</span>
+        <div class="hiw-pipe-num">Phase 1</div>
+        <div class="hiw-pipe-label">Signal Scan Initiated</div>
+        <p class="hiw-pipe-desc">Your domain enters the engine for AI visibility extraction.</p>
         <svg class="hiw-pipe-arrow" viewBox="0 0 14 14" fill="none" aria-hidden="true">
           <path d="M5 2l5 5-5 5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
         </svg>
       </div>
       <div class="hiw-pipe-step">
-        <div class="hiw-pipe-num">Layer 2</div>
-        <div class="hiw-pipe-label">Signals</div>
-        <p class="hiw-pipe-desc">Map every gap ranked by revenue impact.</p>
+        <div class="hiw-pipe-num">Phase 2</div>
+        <div class="hiw-pipe-label">Visibility Score Generated</div>
+        <p class="hiw-pipe-desc">You get a live 0&ndash;100 readout of AI citation strength.</p>
         <svg class="hiw-pipe-arrow" viewBox="0 0 14 14" fill="none" aria-hidden="true">
           <path d="M5 2l5 5-5 5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
         </svg>
       </div>
       <div class="hiw-pipe-step">
-        <div class="hiw-pipe-num">Layer 3</div>
-        <div class="hiw-pipe-label">Structure</div>
-        <p class="hiw-pipe-desc">Build the correction sequence in priority order.</p>
+        <div class="hiw-pipe-num">Phase 3</div>
+        <div class="hiw-pipe-label">Gaps + Opportunities Mapped</div>
+        <p class="hiw-pipe-desc">Critical misses, ignored signals, and leverage points are surfaced.</p>
         <svg class="hiw-pipe-arrow" viewBox="0 0 14 14" fill="none" aria-hidden="true">
           <path d="M5 2l5 5-5 5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
         </svg>
       </div>
       <div class="hiw-pipe-step">
-        <div class="hiw-pipe-num">Layer 4</div>
-        <div class="hiw-pipe-label">Activation</div>
-        <p class="hiw-pipe-desc">Full deployment &mdash; pages, schema, architecture.</p>
+        <div class="hiw-pipe-num">Phase 4</div>
+        <div class="hiw-pipe-label">System Build Path Created</div>
+        <p class="hiw-pipe-desc">A prioritized rollout is generated for the next revenue move.</p>
         <svg class="hiw-pipe-arrow" viewBox="0 0 14 14" fill="none" aria-hidden="true">
           <path d="M5 2l5 5-5 5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
         </svg>
       </div>
       <div class="hiw-pipe-step">
-        <div class="hiw-pipe-num">Growth</div>
-        <div class="hiw-pipe-label">Expansion</div>
-        <p class="hiw-pipe-desc">System grows as AI citations compound.</p>
+        <div class="hiw-pipe-num">Phase 5</div>
+        <div class="hiw-pipe-label">Compounding Visibility</div>
+        <p class="hiw-pipe-desc">As structure deploys, AI recommendation coverage expands.</p>
       </div>
     </div>
   </div>
@@ -453,33 +542,40 @@ html:not(.js-enabled) .r{opacity:1;transform:none}
 <!-- ════════════ SECTION 3 — WHAT ACTUALLY HAPPENS ════════════ -->
 <section class="hiw-section">
   <div class="wrap">
-    <p class="hiw-section-eye r">What Actually Happens</p>
-    <h2 class="hiw-section-hed r">What happens when you start</h2>
+    <p class="hiw-section-eye r">System Activation</p>
+    <h2 class="hiw-section-hed r">When your site enters the system</h2>
     <p class="hiw-section-sub r">
-      Three moves. That's all it takes to enter the system.
+      You submit one domain. The system reveals how AI search interprets your business, where visibility breaks, and what to build first.
     </p>
+    <div class="hiw-process-meta r" aria-label="Process labels">
+      <span>SCAN TYPE: AI VISIBILITY</span>
+      <span>OUTPUT: ACTIONABLE INTELLIGENCE</span>
+      <span>TIME TO RESULT: SECONDS</span>
+    </div>
 
     <div class="hiw-happens">
       <div class="hiw-happens-block r">
         <div class="hiw-happens-num">01</div>
-        <div class="hiw-happens-title">You enter your website</div>
+        <div class="hiw-happens-title">Signal Scan Initiated</div>
         <p class="hiw-happens-text">
-          We immediately analyze structure, signals, and AI visibility gaps.
-          You see results in seconds &mdash; not days.
+          The engine ingests your domain and tests structured signals, topical clarity,
+          and citation readiness across AI discovery patterns.
         </p>
       </div>
       <div class="hiw-happens-block r">
         <div class="hiw-happens-num">02</div>
-        <div class="hiw-happens-title">Your scored report arrives</div>
+        <div class="hiw-happens-title">Visibility Score Generated</div>
         <p class="hiw-happens-text">
-          A 0&ndash;100 citation score with your top gaps and the fastest correction path &mdash; delivered in seconds.
+          You receive a 0&ndash;100 AI visibility score with the exact gaps that cause systems to
+          surface competitors instead of your site.
         </p>
       </div>
       <div class="hiw-happens-block r">
         <div class="hiw-happens-num">03</div>
-        <div class="hiw-happens-title">You decide what to build</div>
+        <div class="hiw-happens-title">System Build Path Created</div>
         <p class="hiw-happens-text">
-          Each level reveals what competitors already have &mdash; and builds the structure to close the gap.
+          A clear deployment path is mapped by impact, so each next layer increases the
+          probability your business is seen, cited, and recommended.
         </p>
       </div>
     </div>
@@ -488,13 +584,12 @@ html:not(.js-enabled) .r{opacity:1;transform:none}
 
 <div class="gold-rule"></div>
 
-<!-- ════════════ CTA BLOCK 1 ════════════ -->
-<div class="hiw-cta-block">
-  <p class="r">You've seen the system. Now see where your site stands.</p>
-  <div class="hiw-cta-actions r">
-    <a href="{{ route('scan.start') }}" class="btn-primary" onclick="if(typeof gtag==='function')gtag('event','cta_click',{cta_location:'cta_block_1',cta_label:'start_scan'});">See Where You Stand &mdash; $2</a>
-    <a href="/book" class="btn-ghost">Book a Strategy Call &rarr;</a>
-  </div>
+<!-- ════════════ TRANSITION — SYSTEM PROGRESSION ════════════ -->
+<div class="hiw-transition">
+  <p class="hiw-transition-calm r">Search evolved. The operating model did too.</p>
+  <p class="hiw-transition-action r">Start with one scan.<br>Scale only what the system proves.</p>
+  <p class="hiw-transition-signal r">One intelligence layer&ensp;&middot;&ensp;compounding deployment path</p>
+  <p class="hiw-transition-lead r">System layers below&ensp;<span style="display:inline-block;opacity:.55;font-size:.58rem;vertical-align:middle;transform:translateY(1px);transition:opacity .3s">&#9662;</span></p>
 </div>
 
 <div class="gold-rule"></div>
@@ -502,11 +597,11 @@ html:not(.js-enabled) .r{opacity:1;transform:none}
 <!-- ════════════ SECTION 4 — PROGRESSION (LEVELS) ════════════ -->
 <section class="hiw-section">
   <div class="wrap">
-    <p class="hiw-section-eye r">The Progression</p>
-    <h2 class="hiw-section-hed r">Four levels. Each one builds on the last.</h2>
+    <p class="hiw-section-eye r">Deployment Progression</p>
+    <h2 class="hiw-section-hed r">Four layers. One AI visibility system.</h2>
     <p class="hiw-section-sub r">
-      These aren't options. They're layers.
-      Your $2 scan feeds into every tier. Data compounds. Nothing is repeated.
+      Your $2 scan is the entry layer. Every expansion reuses the same intelligence model,
+      so nothing is rebuilt and every step compounds visibility.
     </p>
 
     <div class="hiw-tiers">
@@ -514,8 +609,8 @@ html:not(.js-enabled) .r{opacity:1;transform:none}
         <span class="hiw-tier-badge">Most common entry point</span>
         <div class="hiw-tier-level">Level 1</div>
         <div class="hiw-tier-price">$2</div>
-        <div class="hiw-tier-name">Citation Scan</div>
-        <p class="hiw-tier-desc">See if AI is citing your site. Get a scored report with your biggest visibility gaps.</p>
+        <div class="hiw-tier-name">AI Visibility Scan</div>
+        <p class="hiw-tier-desc">Test whether AI systems are likely to surface or ignore your site, then see the highest-impact fixes.</p>
         <a href="{{ route('scan.start') }}" class="btn-primary" style="margin-top:14px;font-size:.7rem;padding:12px 28px" onclick="if(typeof gtag==='function')gtag('event','cta_click',{cta_location:'tier_1',cta_label:'start_scan'});">Start Scan &mdash; $2</a>
       </div>
 
@@ -523,7 +618,7 @@ html:not(.js-enabled) .r{opacity:1;transform:none}
         <div class="hiw-tier-level">Level 2</div>
         <div class="hiw-tier-price">$99</div>
         <div class="hiw-tier-name">Signal Expansion</div>
-        <p class="hiw-tier-desc">Full analysis of structure, schema, and competitive positioning across AI platforms.</p>
+        <p class="hiw-tier-desc">Expand analysis depth across structure, schema, and competitive citation signals in active markets.</p>
         <a href="{{ route('checkout.signal-expansion') }}" class="btn-ghost" style="margin-top:10px;font-size:.7rem">Learn More &rarr;</a>
       </div>
 
@@ -531,7 +626,7 @@ html:not(.js-enabled) .r{opacity:1;transform:none}
         <div class="hiw-tier-level">Level 3</div>
         <div class="hiw-tier-price">$249</div>
         <div class="hiw-tier-name">Structural Leverage</div>
-        <p class="hiw-tier-desc">Deep market mapping with service &times; city coverage strategy and implementation blueprint.</p>
+        <p class="hiw-tier-desc">Map full service-by-location coverage and generate the structural system AI platforms can reliably interpret.</p>
         <a href="{{ route('checkout.structural-leverage') }}" class="btn-ghost" style="margin-top:10px;font-size:.7rem">Learn More &rarr;</a>
       </div>
 
@@ -539,62 +634,44 @@ html:not(.js-enabled) .r{opacity:1;transform:none}
         <div class="hiw-tier-level">Level 4</div>
         <div class="hiw-tier-price">$489</div>
         <div class="hiw-tier-name">System Activation</div>
-        <p class="hiw-tier-desc">Full deployment. Pages built, schema installed, domain structured for AI citation at scale.</p>
+        <p class="hiw-tier-desc">Deploy the full visibility layer: pages, schema, and architecture tuned for AI citation and recommendation scale.</p>
         <a href="{{ route('checkout.system-activation') }}" class="btn-ghost" style="margin-top:10px;font-size:.7rem">Learn More &rarr;</a>
       </div>
     </div>
 
     <p class="hiw-progression-note r">
-      Start at $2. Expand when the next move is clear.
+      Start with the scan. Expand only when the system shows the next best move.
     </p>
   </div>
 </section>
 
 <div class="gold-rule"></div>
 
-<!-- ════════════ SECTION 5 — MOMENTUM BLOCK ════════════ -->
-<section class="hiw-momentum">
-  <div class="wrap">
-    <h2 class="hiw-momentum-hed r">
-      You don't need to decide everything now.
-    </h2>
-    <p class="hiw-momentum-sub r">
-      The first scan shows you exactly what to do next &mdash; and every step after.
-    </p>
-    <div class="hiw-cta-actions r">
-      <a href="{{ route('scan.start') }}" class="btn-primary" onclick="if(typeof gtag==='function')gtag('event','cta_click',{cta_location:'momentum',cta_label:'start_scan'});">Enter the System &mdash; $2</a>
-    </div>
-  </div>
-</section>
-
-<div class="gold-rule"></div>
-
-<!-- ════════════ SECTION 6 — FINAL CTA ════════════ -->
+<!-- ════════════ FINAL — SINGLE DECISION POINT ════════════ -->
 <section class="hiw-final">
   <div class="wrap">
-    <p class="hiw-section-eye r">Your Move</p>
+    <p class="hiw-momentum-hed r">
+      You don't need a full rebuild to start.
+    </p>
+    <p class="hiw-momentum-sub r">
+      One $2 scan reveals how AI search systems read your site and where visibility is being lost right now.
+    </p>
+
     <h2 class="hiw-final-hed r">
-      AI is already deciding<br><em>who to recommend.</em>
+      AI systems are already deciding<br><em>who gets surfaced first.</em>
     </h2>
     <p class="hiw-final-sub r">
-      The only question is whether your business is included.
+      Run the visibility scan and see whether your business is being interpreted for citation &mdash; or filtered out.
     </p>
+
     <div class="hiw-cta-actions r">
-      <a href="{{ route('scan.start') }}" class="btn-primary" onclick="if(typeof gtag==='function')gtag('event','cta_click',{cta_location:'final_cta',cta_label:'start_scan'});">Start Your Scan &mdash; $2</a>
-      <a href="/book" class="btn-ghost">Book a Strategy Call &rarr;</a>
+      <a href="{{ route('scan.start') }}" class="btn-primary" onclick="if(typeof gtag==='function')gtag('event','cta_click',{cta_location:'final_cta',cta_label:'start_scan'});">Run AI Visibility Scan &mdash; $2</a>
     </div>
-    <p class="hiw-final-reassure r">Guided entry.&ensp;Structured rollout.&ensp;Full support.</p>
+    <p class="hiw-final-reassure r">Premium guided entry.&ensp;System-mapped rollout.&ensp;No wasted build.</p>
   </div>
 </section>
 
-<!-- ════════════ GLOBAL CTA — funnel capture ════════════ -->
-@include('partials.global-cta')
-
-<!-- ════════════ BACK TO TOP ════════════ -->
-<button class="btt" id="btt" aria-label="Back to top" style="position:fixed;bottom:24px;right:24px;width:40px;height:40px;border-radius:50%;background:var(--card-bg);border:1px solid var(--card-border);color:var(--gold);cursor:pointer;opacity:0;transform:translateY(10px);transition:opacity .3s,transform .3s;z-index:90;display:flex;align-items:center;justify-content:center">
-  <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M12 4l-8 8h5v8h6v-8h5z"/></svg>
-</button>
-<style>.btt.show{opacity:1;transform:none}</style>
+@include('partials.back-to-top')
 
 <!-- ════════════ FOOTER ════════════ -->
 <footer>
@@ -629,13 +706,6 @@ html:not(.js-enabled) .r{opacity:1;transform:none}
     });
   }, {threshold:.1});
   items.forEach(el => io.observe(el));
-
-  /* ── Back to top ── */
-  const btt = document.getElementById('btt');
-  if(btt){
-    window.addEventListener('scroll', () => btt.classList.toggle('show', scrollY > 600), {passive:true});
-    btt.addEventListener('click', () => window.scrollTo({top:0, behavior:'smooth'}));
-  }
 
   /* ── GA page view ── */
   if(typeof gtag==='function'){gtag('event','view_how_it_works',{page_location:window.location.href});}

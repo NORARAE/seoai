@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Setup Your Workspace — SEO AI Co™</title>
+<title>Setup Your Workspace — SEOAIco</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
@@ -281,7 +281,7 @@ textarea { resize: vertical; min-height: 110px; line-height: 1.6; }
       <div class="step-heading">
         <div class="step-eyebrow">Step 1 of 3</div>
         <h2>Your Business</h2>
-        <p>Tell us about the company you're building with SEO AI Co™.</p>
+        <p>Tell us about the company you're building with SEOAIco.</p>
       </div>
 
       <div class="field">
@@ -466,7 +466,7 @@ textarea { resize: vertical; min-height: 110px; line-height: 1.6; }
   </form>
 
   <p class="completion-note">
-    Your information is kept private and used only to personalise your SEO AI Co™ experience.
+    Your information is kept private and used only to personalise your SEOAIco experience.
   </p>
 </div>
 

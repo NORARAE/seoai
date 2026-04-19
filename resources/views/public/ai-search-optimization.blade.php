@@ -403,9 +403,17 @@ footer{border-top:1px solid var(--border);padding:32px 64px;display:flex;align-i
       <span class="related-label">Definition</span>
       <span class="related-title">What Is AI Search Optimization?</span>
     </a>
+    <a href="{{ route('generative-engine-optimization') }}" class="related-item">
+      <span class="related-label">GEO</span>
+      <span class="related-title">Generative Engine Optimization</span>
+    </a>
     <a href="{{ route('programmatic-seo-platform') }}" class="related-item">
       <span class="related-label">Infrastructure</span>
       <span class="related-title">Programmatic SEO Platform</span>
+    </a>
+    <a href="{{ route('aeo-vs-seo-vs-geo') }}" class="related-item">
+      <span class="related-label">Comparison</span>
+      <span class="related-title">AEO vs SEO vs GEO</span>
     </a>
     <a href="{{ route('chatgpt-seo') }}" class="related-item">
       <span class="related-label">LLM Visibility</span>

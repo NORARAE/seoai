@@ -18,7 +18,7 @@
 <link rel="manifest" href="/site.webmanifest">
 <meta name="theme-color" content="#080808">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Prepare for Your Market Strategy Session | SEO AI Co™</title>
+<title>Prepare for Your Strategic Intake | SEO AI Co™</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
@@ -50,7 +50,7 @@ body{background:var(--bg);color:var(--ivory);font-family:'DM Sans',sans-serif;fo
 .upg-title em{font-style:italic;color:var(--gold-lt)}
 .upg-sub{font-size:.88rem;color:var(--muted);line-height:1.7;margin-bottom:32px}
 
-/* ── Booking summary ── */
+/* ── Entry summary ── */
 .upg-booking{
   background:var(--card);border:1px solid var(--border);
   padding:20px 24px;margin-bottom:40px;
@@ -93,9 +93,9 @@ body{background:var(--bg);color:var(--ivory);font-family:'DM Sans',sans-serif;fo
     </svg>
   </div>
 
-  <span class="upg-eye">Booking Received</span>
-  <h1 class="upg-title">Your session<br>is <em>scheduled.</em></h1>
-  <p class="upg-sub">Here's what to bring and how to prepare — so we make the most of your time together.</p>
+  <span class="upg-eye">Entry Reserved</span>
+  <h1 class="upg-title">Your entry session<br>is <em>confirmed.</em></h1>
+  <p class="upg-sub">Prepare strategic intake inputs so structural validation and activation sequencing can begin at session start.</p>
 
   @if($booking)
   <div class="upg-booking">
@@ -114,12 +114,12 @@ body{background:var(--bg);color:var(--ivory);font-family:'DM Sans',sans-serif;fo
   </div>
   @endif
 
-  <p class="prep-heading">Before your session</p>
+  <p class="prep-heading">Before intake begins</p>
   <ul class="prep-list">
     <li><span></span><div><strong>Know your current traffic baseline.</strong> Even rough numbers — how many monthly visitors, where they come from, what's converting.</div></li>
     <li><span></span><div><strong>Identify your primary service areas.</strong> The cities, regions, or neighbourhoods you want to be found in.</div></li>
     <li><span></span><div><strong>Know who your top 3 competitors are.</strong> We'll analyse their coverage and show you where you can displace them.</div></li>
-    <li><span></span><div><strong>Decide what outcome matters most right now.</strong> More calls? More form fills? Specific markets? The more precise, the better the session.</div></li>
+    <li><span></span><div><strong>Define the primary outcome for this activation cycle.</strong> More calls, more form fills, or specific market capture priorities.</div></li>
   </ul>
 
   <a href="/book/confirmed{{ $booking ? '?booking=' . $booking->id : '' }}" class="upg-cta" onclick="if(typeof gtag==='function'){gtag('event','upsell_accept',{booking_id:'{{ $booking->id ?? '' }}'});}">View Full Confirmation</a>

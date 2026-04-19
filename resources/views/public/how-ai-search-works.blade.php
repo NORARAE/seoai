@@ -255,10 +255,20 @@ footer{border-top:1px solid rgba(200,168,75,.07);padding:32px 40px;display:flex;
       <span class="related-card-title">What Is AI Search Optimization?</span>
       <span class="related-card-text">The complete definition and framework for optimizing content for AI search citation.</span>
     </a>
+    <a href="{{ route('generative-engine-optimization') }}" class="related-card">
+      <span class="related-card-label">GEO Layer</span>
+      <span class="related-card-title">Generative Engine Optimization</span>
+      <span class="related-card-text">How content moves from retrievable pages to generated answer inclusion.</span>
+    </a>
     <a href="{{ route('how-ai-retrieves-content') }}" class="related-card">
       <span class="related-card-label">Deep Dive</span>
       <span class="related-card-title">How AI Retrieves Content</span>
       <span class="related-card-text">The technical mechanics of how AI systems discover and fetch web content before synthesis.</span>
+    </a>
+    <a href="{{ route('aeo-vs-seo-vs-geo') }}" class="related-card">
+      <span class="related-card-label">Framework</span>
+      <span class="related-card-title">AEO vs SEO vs GEO</span>
+      <span class="related-card-text">A practical comparison of ranking, answer clarity, and generation selection models.</span>
     </a>
     <a href="{{ route('how-chatgpt-chooses-sources') }}" class="related-card">
       <span class="related-card-label">Citation Selection</span>

@@ -4,6 +4,7 @@ use App\Http\Controllers\AdminBookingController;
 use App\Http\Controllers\BookingController;
 use App\Http\Controllers\BookingManageController;
 use App\Http\Controllers\CheckoutController;
+use App\Http\Controllers\DashboardBillingController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\LocationPagePreviewController;
 use App\Http\Controllers\MarketingPageController;
@@ -15,6 +16,7 @@ use App\Http\Controllers\UserOnboardingController;
 use App\Http\Middleware\EnsureOnboardingComplete;
 use App\Http\Controllers\PublicSitemapController;
 use App\Http\Controllers\Auth\CustomerLoginController;
+use App\Http\Controllers\Auth\CustomerRegisterController;
 use App\Http\Controllers\Auth\GoogleAuthController;
 use App\Http\Controllers\ScanEntryController;
 use App\Http\Controllers\UnsubscribeController;
@@ -42,7 +44,8 @@ Route::get('/', [PublicController::class, 'landing'])->name('home');
 // Customer-facing login — standalone branded page (no /admin in URL).
 Route::get('/login', [CustomerLoginController::class, 'show'])->name('login');
 Route::post('/login', [CustomerLoginController::class, 'authenticate']);
-Route::get('/register', fn() => redirect('/admin/register'))->name('register');
+Route::get('/register', [CustomerRegisterController::class, 'show'])->name('register');
+Route::post('/register', [CustomerRegisterController::class, 'store'])->name('register.store');
 
 // Google OAuth sign-in — routes registered regardless of enabled flag;
 // the controller itself returns 404 when GOOGLE_LOGIN_ENABLED=false.
@@ -63,6 +66,9 @@ Route::get('/scan/start', [ScanEntryController::class, 'start'])->name('scan.sta
 Route::post('/scan/submit', [ScanEntryController::class, 'submit'])->middleware('throttle:10,1')->name('scan.submit');
 Route::get('/scan/process', [ScanEntryController::class, 'process'])->name('scan.process');
 Route::get('/scan/preview', [ScanEntryController::class, 'preview'])->name('scan.preview');
+Route::get('/scan/public/{shareKey}', [\App\Http\Controllers\QuickScanController::class, 'publicShare'])
+    ->where('shareKey', '[A-Za-z0-9\-]+')
+    ->name('scan.public.share');
 
 // ── Direct-purchase checkout routes (Path B — skip scan) ──
 Route::get('/checkout/complete', [CheckoutController::class, 'complete'])->name('checkout.complete');
@@ -75,6 +81,11 @@ Route::get('/checkout/system-activation', [CheckoutController::class, 'systemAct
 Route::middleware('auth')->group(function () {
     Route::get('/results/expanded', fn() => view('public.results.expanded'))->name('results.expanded');
     Route::get('/results/structural', fn() => view('public.results.structural'))->name('results.structural');
+    Route::get('/dashboard/scan/{scan}', [\App\Http\Controllers\QuickScanController::class, 'dashboardReport'])
+        ->name('dashboard.scans.show');
+    Route::get('/dashboard/scans/{scan}', function ($scan) {
+        return redirect()->route('dashboard.scans.show', ['scan' => $scan]);
+    });
 });
 
 Route::get('/rd-tax-credit', fn() => view('public.rd-tax-credit'))->name('rd-tax-credit');
@@ -84,6 +95,7 @@ Route::get('/how-it-works', [PublicController::class, 'howItWorks'])->name('how-
 Route::get('/solutions', [PublicController::class, 'solutions'])->name('solutions');
 Route::get('/solutions/agencies', [PublicController::class, 'solutionsAgencies'])->name('solutions.agencies');
 Route::get('/solutions/business-owners', [PublicController::class, 'solutionsBusinessOwners'])->name('solutions.business-owners');
+Route::view('/for-agencies', 'public.for-agencies')->name('for-agencies');
 Route::get('/access', fn() => redirect('/onboarding/start'))->name('access');
 
 // ── Execution service pages ──
@@ -111,11 +123,16 @@ Route::get('/programmatic-seo-platform', [PublicController::class, 'programmatic
 Route::get('/chatgpt-seo', [PublicController::class, 'chatgptSeo'])->name('chatgpt-seo');
 Route::get('/local-ai-search', [PublicController::class, 'localAiSearch'])->name('local-ai-search');
 Route::get('/search-presence-engine', [PublicController::class, 'searchPresenceEngine'])->name('search-presence-engine');
+Route::get('/generative-engine-optimization', [PublicController::class, 'generativeEngineOptimization'])->name('generative-engine-optimization');
+Route::get('/entity-seo-for-ai-search', [PublicController::class, 'entitySeoForAiSearch'])->name('entity-seo-for-ai-search');
+Route::get('/aeo-vs-seo-vs-geo', [PublicController::class, 'aeoVsSeoVsGeo'])->name('aeo-vs-seo-vs-geo');
+Route::get('/ai-seo-for-local-businesses', [PublicController::class, 'aiSeoForLocalBusinesses'])->name('ai-seo-for-local-businesses');
 
 // ── $2 AI Citation Quick Scan ──
 Route::get('/quick-scan', [\App\Http\Controllers\QuickScanController::class, 'show'])->name('quick-scan.show');
 Route::post('/quick-scan/checkout', [\App\Http\Controllers\QuickScanController::class, 'checkout'])->middleware('throttle:10,1')->name('quick-scan.checkout');
 Route::get('/quick-scan/result', [\App\Http\Controllers\QuickScanController::class, 'result'])->name('quick-scan.result');
+Route::get('/report/{scan}', [\App\Http\Controllers\QuickScanController::class, 'guestReport'])->name('report.show');
 Route::get('/quick-scan/status', [\App\Http\Controllers\QuickScanController::class, 'status'])->name('quick-scan.status');
 Route::get('/quick-scan/cancelled', [\App\Http\Controllers\QuickScanController::class, 'cancelled'])->name('quick-scan.cancelled');
 Route::get('/quick-scan/upgrade', [\App\Http\Controllers\QuickScanController::class, 'upgradeCheckout'])->name('quick-scan.upgrade');
@@ -146,6 +163,11 @@ Route::post('/onboarding/submit', [OnboardingController::class, 'submit'])->midd
 Route::get('/onboarding/done', [OnboardingController::class, 'done'])->name('onboarding.done');
 // Admin-only secure license file download (auth required — never served publicly)
 Route::middleware(['auth'])->get('/onboarding/license/{submission}', [OnboardingController::class, 'downloadLicense'])->name('onboarding.license.download');
+
+// ── Email click tracking ──
+Route::get('/email/click', \App\Http\Controllers\EmailClickController::class)
+    ->middleware('throttle:60,1')
+    ->name('email.click');
 
 // ── Email unsubscribe ──
 Route::get('/unsubscribe/{token}', [UnsubscribeController::class, 'unsubscribe'])
@@ -178,6 +200,7 @@ Route::middleware(['auth', EnsureUserIsApproved::class, EnsureOnboardingComplete
 
     // Dashboard / Home
     Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
+    Route::get('/billing', [DashboardBillingController::class, 'index'])->name('billing');
 
     // Sites Management (future)
     // Route::get('/sites', [SiteController::class, 'index'])->name('sites.index');

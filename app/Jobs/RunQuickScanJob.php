@@ -17,6 +17,7 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
+use Throwable;
 
 class RunQuickScanJob implements ShouldQueue, ShouldBeUnique
 {
@@ -49,34 +50,47 @@ class RunQuickScanJob implements ShouldQueue, ShouldBeUnique
         // CRM + emails always run — Mail::later() is fire-and-forget and
         // duplicate dispatch is acceptable (same content, same recipient).
         if ($scan->status !== QuickScan::STATUS_SCANNED || $scan->score === null) {
-            $result = $scanner->scan($scan->url);
+            try {
+                $result = $scanner->scan($scan->url);
 
-            // Scan memory: capture previous score for same domain
-            $previousScan = QuickScan::where('domain', $scan->domain)
-                ->where('status', QuickScan::STATUS_SCANNED)
-                ->where('id', '!=', $scan->id)
-                ->latest('scanned_at')
-                ->first();
-            $lastScore = $previousScan?->score;
-            $scoreChange = $lastScore !== null ? ($result['score'] - $lastScore) : null;
+                // Scan memory: capture previous score for same domain
+                $previousScan = QuickScan::where('domain', $scan->domain)
+                    ->where('status', QuickScan::STATUS_SCANNED)
+                    ->where('id', '!=', $scan->id)
+                    ->latest('scanned_at')
+                    ->first();
+                $lastScore = $previousScan?->score;
+                $scoreChange = $lastScore !== null ? ($result['score'] - $lastScore) : null;
 
-            $scan->update([
-                'score' => $result['score'],
-                'last_score' => $lastScore,
-                'score_change' => $scoreChange,
-                'categories' => $result['categories'],
-                'issues' => $result['issues'],
-                'strengths' => $result['strengths'],
-                'fastest_fix' => $result['fastest_fix'],
-                'raw_checks' => $result['raw_checks'],
-                'broken_links' => $result['broken_links'],
-                'page_count' => $result['page_count'],
-                'dimensions' => $result['dimensions'] ?? null,
-                'intelligence' => $result['intelligence'] ?? null,
-                'status' => QuickScan::STATUS_SCANNED,
-                'scanned_at' => now(),
-            ]);
-            $scan->refresh();
+                $scan->update([
+                    'score' => $result['score'],
+                    'last_score' => $lastScore,
+                    'score_change' => $scoreChange,
+                    'categories' => $result['categories'],
+                    'issues' => $result['issues'],
+                    'strengths' => $result['strengths'],
+                    'fastest_fix' => $result['fastest_fix'],
+                    'raw_checks' => $result['raw_checks'],
+                    'broken_links' => $result['broken_links'],
+                    'page_count' => $result['page_count'],
+                    'dimensions' => $result['dimensions'] ?? null,
+                    'intelligence' => $result['intelligence'] ?? null,
+                    'status' => QuickScan::STATUS_SCANNED,
+                    'scanned_at' => now(),
+                ]);
+                $scan->refresh();
+            } catch (Throwable $e) {
+                $scan->update(['status' => QuickScan::STATUS_ERROR]);
+
+                Log::error('RunQuickScanJob: scan execution failed', [
+                    'scan_id' => $scan->id,
+                    'url' => $scan->url,
+                    'error' => $e->getMessage(),
+                    'trace' => $e->getTraceAsString(),
+                ]);
+
+                throw $e;
+            }
         }
 
         // Upsert CRM lead (idempotent — updateOrCreate)
@@ -124,7 +138,11 @@ class RunQuickScanJob implements ShouldQueue, ShouldBeUnique
 
         // Email 1: Immediate result
         try {
-            Mail::to($scan->email)->queue(new QuickScanResult($scan));
+            if (app()->environment('local')) {
+                Mail::to($scan->email)->send(new QuickScanResult($scan));
+            } else {
+                Mail::to($scan->email)->queue(new QuickScanResult($scan));
+            }
         } catch (\Throwable $e) {
             Log::warning('RunQuickScanJob: Email 1 failed', ['scan_id' => $scan->id, 'error' => $e->getMessage()]);
         }
@@ -153,5 +171,18 @@ class RunQuickScanJob implements ShouldQueue, ShouldBeUnique
         $scan->update(['emails_sent' => true]);
 
         Log::info('RunQuickScanJob: completed', ['scan_id' => $scan->id, 'score' => $scan->score]);
+    }
+
+    public function failed(Throwable $e): void
+    {
+        $scan = QuickScan::find($this->scanId);
+        if ($scan && $scan->status !== QuickScan::STATUS_SCANNED) {
+            $scan->update(['status' => QuickScan::STATUS_ERROR]);
+        }
+
+        Log::error('RunQuickScanJob: failed callback invoked', [
+            'scan_id' => $this->scanId,
+            'error' => $e->getMessage(),
+        ]);
     }
 }

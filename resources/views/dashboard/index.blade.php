@@ -312,7 +312,7 @@
                 </div>
                 <div>
                     <p class="text-sm font-semibold text-green-800">All analysis layers active.</p>
-                    <p class="text-xs text-green-600 mt-0.5">Your system is fully deployed. <a href="{{ url('/book') }}" class="underline hover:text-green-700">Book a strategy session</a> to expand further.</p>
+                    <p class="text-xs text-green-600 mt-0.5">Your system is fully deployed. <a href="{{ url('/book?entry=consultation') }}" class="underline hover:text-green-700">Book a consultation</a> to map the next expansion move.</p>
                 </div>
             </div>
             @endif
@@ -589,8 +589,8 @@
                         @endif
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M13 7l5 5m0 0l-5 5m5-5H6"/></svg>
                     </a>
-                    <a href="{{ url('/book') }}" class="inline-flex items-center gap-2 px-5 py-3 text-gray-400 hover:text-white border border-gray-700 hover:border-gray-500 rounded-xl text-sm font-medium transition-all">
-                        Book Strategy Session
+                    <a href="{{ url('/book?entry=consultation') }}" class="inline-flex items-center gap-2 px-5 py-3 text-gray-400 hover:text-white border border-gray-700 hover:border-gray-500 rounded-xl text-sm font-medium transition-all">
+                        Book Consultation
                     </a>
                 </div>
 
@@ -614,8 +614,8 @@
                 </div>
                 <p class="text-sm text-gray-600 mb-6 max-w-lg">Your analysis layers are complete. The next step is implementation — we build the structure that makes AI systems cite your business as the answer.</p>
                 <div class="flex flex-wrap gap-3">
-                    <a href="{{ url('/book') }}" class="cta-glow inline-flex items-center gap-2 px-6 py-3 bg-green-600 hover:bg-green-700 text-white rounded-xl text-sm font-bold transition-all shadow-md">
-                        Book Strategy Session →
+                    <a href="{{ url('/book?entry=consultation') }}" class="cta-glow inline-flex items-center gap-2 px-6 py-3 bg-green-600 hover:bg-green-700 text-white rounded-xl text-sm font-bold transition-all shadow-md">
+                        Book Consultation →
                     </a>
                     <a href="{{ route('quick-scan.show') }}" class="inline-flex items-center gap-2 px-5 py-3 text-gray-700 bg-white border border-gray-200 hover:border-green-300 rounded-xl text-sm font-medium transition-all">
                         Re-check Your Position
@@ -757,7 +757,7 @@
                 <div class="mt-6 pt-5 border-t border-gray-100">
                     @if(auth()->user()?->isPrivilegedStaff() || auth()->user()?->isFrontendDev())
                     <a href="/admin/location-pages" class="block w-full text-center px-4 py-2.5 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-medium transition-colors">
-                        View All Pages in Admin
+                        View All Pages
                     </a>
                     @endif
                 </div>
@@ -998,8 +998,8 @@
                 </div>
                 <p class="text-sm text-gray-600 mb-4">All analysis layers are complete. The next step is implementation — we build the coverage infrastructure that makes AI systems return your business as the answer.</p>
                 <div class="flex flex-wrap gap-3">
-                    <a href="{{ url('/book') }}" class="inline-flex items-center gap-2 px-5 py-2.5 bg-green-600 hover:bg-green-700 text-white rounded-lg text-sm font-semibold transition-colors shadow-sm">
-                        Book Strategy Session
+                    <a href="{{ url('/book?entry=consultation') }}" class="inline-flex items-center gap-2 px-5 py-2.5 bg-green-600 hover:bg-green-700 text-white rounded-lg text-sm font-semibold transition-colors shadow-sm">
+                        Book Consultation
                     </a>
                     <a href="{{ route('quick-scan.show') }}" class="inline-flex items-center gap-2 px-4 py-2 bg-white border border-gray-200 hover:border-green-300 text-gray-700 rounded-lg text-sm font-medium transition-colors">
                         Re-check Your Position
@@ -1017,8 +1017,8 @@
                     <a href="{{ route('checkout.system-activation') }}" class="cta-glow inline-flex items-center gap-2 px-5 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg text-sm font-bold transition-all shadow-sm">
                         Activate Full System — $489 →
                     </a>
-                    <a href="{{ url('/book') }}" class="inline-flex items-center gap-2 px-4 py-2 bg-white border border-gray-200 hover:border-indigo-300 text-gray-700 rounded-lg text-sm font-medium transition-colors">
-                        Book Strategy Session
+                    <a href="{{ url('/book?entry=consultation') }}" class="inline-flex items-center gap-2 px-4 py-2 bg-white border border-gray-200 hover:border-indigo-300 text-gray-700 rounded-lg text-sm font-medium transition-colors">
+                        Book Consultation
                     </a>
                 </div>
             </div>
@@ -1102,22 +1102,22 @@
                     <p class="text-xs text-gray-600">Check unreviewed content</p>
                 </a>
 
-                <button onclick="alert('Command: php artisan seo:render-location-pages --force')" class="block p-4 bg-white rounded-lg border border-gray-200 hover:border-blue-300 hover:shadow-md transition-all group text-left">
-                    <div class="text-2xl mb-2">🔄</div>
-                    <h4 class="font-semibold text-gray-900 mb-1 group-hover:text-blue-600">Rebuild Cache</h4>
-                    <p class="text-xs text-gray-600">Regenerate all renders</p>
-                </button>
-
                 <a href="/admin/location-pages?tableFilters[score][value][max]=70" class="block p-4 bg-white rounded-lg border border-gray-200 hover:border-blue-300 hover:shadow-md transition-all group">
                     <div class="text-2xl mb-2">📉</div>
                     <h4 class="font-semibold text-gray-900 mb-1 group-hover:text-blue-600">Fix Low Scores</h4>
                     <p class="text-xs text-gray-600">Improve pages below 70</p>
                 </a>
 
-                <a href="/preview/biohazard-cleanup-seattle-wa" target="_blank" class="block p-4 bg-white rounded-lg border border-gray-200 hover:border-blue-300 hover:shadow-md transition-all group">
-                    <div class="text-2xl mb-2">👁️</div>
-                    <h4 class="font-semibold text-gray-900 mb-1 group-hover:text-blue-600">Preview Sample</h4>
-                    <p class="text-xs text-gray-600">View Seattle page</p>
+                <a href="/admin/funnel-dashboard" class="block p-4 bg-white rounded-lg border border-gray-200 hover:border-blue-300 hover:shadow-md transition-all group">
+                    <div class="text-2xl mb-2">📊</div>
+                    <h4 class="font-semibold text-gray-900 mb-1 group-hover:text-blue-600">Review Funnel</h4>
+                    <p class="text-xs text-gray-600">Inspect conversion and drop-off</p>
+                </a>
+
+                <a href="/admin" class="block p-4 bg-white rounded-lg border border-gray-200 hover:border-blue-300 hover:shadow-md transition-all group">
+                    <div class="text-2xl mb-2">⚙️</div>
+                    <h4 class="font-semibold text-gray-900 mb-1 group-hover:text-blue-600">Open Admin Tools</h4>
+                    <p class="text-xs text-gray-600">Use internal controls in admin only</p>
                 </a>
                 @else
                 {{-- Customer actions: re-engagement and upgrade focused --}}
@@ -1146,10 +1146,10 @@
                     <p class="text-xs text-gray-600">We build it. AI returns you as the answer.</p>
                 </a>
                 @else
-                <a href="{{ url('/book') }}" class="block p-4 bg-white rounded-lg border border-gray-200 hover:border-blue-300 hover:shadow-lg hover:-translate-y-0.5 transition-all group">
+                <a href="{{ url('/book?entry=consultation') }}" class="block p-4 bg-white rounded-lg border border-gray-200 hover:border-blue-300 hover:shadow-lg hover:-translate-y-0.5 transition-all group">
                     <div class="text-2xl mb-2">📞</div>
-                    <h4 class="font-semibold text-gray-900 mb-1 group-hover:text-blue-600">Strategy Call</h4>
-                    <p class="text-xs text-gray-600">Book a free consultation</p>
+                    <h4 class="font-semibold text-gray-900 mb-1 group-hover:text-blue-600">Book Consultation</h4>
+                    <p class="text-xs text-gray-600">We interpret your AI visibility and map your expansion path.</p>
                 </a>
                 @endif
                 @endif

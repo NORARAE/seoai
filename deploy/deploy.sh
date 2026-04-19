@@ -14,6 +14,10 @@ REPO_DIR="$(cd "$(dirname "$0")/.." && pwd)"
 
 echo "═══ SEOAIco Deploy → ${SERVER_IP} ═══"
 
+# ── 0. Indexing preflight checks ──
+echo "→ Running indexing preflight checks..."
+INDEX_BASE_URL="${INDEX_BASE_URL:-https://seoaico.com}" bash "${REPO_DIR}/scripts/indexing-preflight.sh"
+
 # ── 0. Build frontend assets locally ──
 echo "→ Building frontend assets..."
 cd "${REPO_DIR}"

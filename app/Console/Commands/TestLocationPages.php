@@ -84,9 +84,9 @@ class TestLocationPages extends Command
             $seattlePages = LocationPage::whereHas('city', function ($query) {
                 $query->where('name', 'Seattle');
             })
-            ->where('type', 'service_city')
-            ->with(['city', 'service'])
-            ->get();
+                ->where('type', 'service_city')
+                ->with(['city', 'service'])
+                ->get();
 
             $count = $seattlePages->count();
             $this->line("Seattle service_city pages found: <fg=cyan>{$count}</>");
@@ -160,8 +160,8 @@ class TestLocationPages extends Command
         $seattlePages = LocationPage::whereHas('city', function ($query) {
             $query->where('name', 'Seattle');
         })
-        ->where('type', 'service_city')
-        ->get(['slug', 'status']);
+            ->where('type', 'service_city')
+            ->get(['slug', 'status']);
 
         if ($seattlePages->isEmpty()) {
             $this->recordError('No Seattle pages found for preview testing');
@@ -170,8 +170,8 @@ class TestLocationPages extends Command
         }
 
         // Check if server is running
-        $baseUrl = 'http://localhost:8000';
-        
+        $baseUrl = config('app.url');
+
         try {
             $testResponse = Http::timeout(2)->get($baseUrl);
             $serverRunning = true;
@@ -229,8 +229,8 @@ class TestLocationPages extends Command
         $seattlePages = LocationPage::whereHas('city', function ($query) {
             $query->where('name', 'Seattle');
         })
-        ->where('type', 'service_city')
-        ->get();
+            ->where('type', 'service_city')
+            ->get();
 
         if ($seattlePages->isEmpty()) {
             $this->recordError('No Seattle pages found for body content testing');
@@ -279,8 +279,8 @@ class TestLocationPages extends Command
         $seattlePages = LocationPage::whereHas('city', function ($query) {
             $query->where('name', 'Seattle');
         })
-        ->where('type', 'service_city')
-        ->get();
+            ->where('type', 'service_city')
+            ->get();
 
         if ($seattlePages->isEmpty()) {
             $this->recordError('No Seattle pages found for internal links testing');
@@ -374,8 +374,13 @@ class TestLocationPages extends Command
 
             $firstPage = $json['pages'][0];
             $requiredPageKeys = [
-                'slug', 'meta_title', 'meta_description', 'h1', 
-                'canonical_url', 'body_sections', 'internal_links'
+                'slug',
+                'meta_title',
+                'meta_description',
+                'h1',
+                'canonical_url',
+                'body_sections',
+                'internal_links'
             ];
             $missingPageKeys = array_diff($requiredPageKeys, array_keys($firstPage));
 
@@ -409,9 +414,9 @@ class TestLocationPages extends Command
             $beforeSlugs = LocationPage::whereHas('city', function ($query) {
                 $query->where('name', 'Seattle');
             })
-            ->where('type', 'service_city')
-            ->pluck('slug')
-            ->toArray();
+                ->where('type', 'service_city')
+                ->pluck('slug')
+                ->toArray();
 
             $beforeCount = count($beforeSlugs);
             $this->line("  Seattle pages before generation: <fg=cyan>{$beforeCount}</>");
@@ -430,9 +435,9 @@ class TestLocationPages extends Command
             $afterSlugs = LocationPage::whereHas('city', function ($query) {
                 $query->where('name', 'Seattle');
             })
-            ->where('type', 'service_city')
-            ->pluck('slug')
-            ->toArray();
+                ->where('type', 'service_city')
+                ->pluck('slug')
+                ->toArray();
 
             $afterCount = count($afterSlugs);
             $this->line("  Seattle pages after generation: <fg=cyan>{$afterCount}</>");
@@ -502,7 +507,7 @@ class TestLocationPages extends Command
 
             foreach ($countyHubs as $hub) {
                 $countyHubsChecked++;
-                
+
                 // Correct format: {county-name}-wa (e.g., king-county-wa)
                 // Incorrect format: {county-name}-county-wa (e.g., king-county-county-wa)
                 if (preg_match('/^[a-z0-9\-]+-wa$/', $hub->slug) && !str_contains($hub->slug, 'county-county')) {
@@ -512,7 +517,7 @@ class TestLocationPages extends Command
 
             if (empty($foundIssues)) {
                 $this->line("  ✓ <fg=green>No awkward patterns detected</>");
-                
+
                 if ($countyHubsChecked > 0) {
                     if ($countyHubsCorrect === $countyHubsChecked) {
                         $this->line("  ✓ <fg=green>All {$countyHubsChecked} county hub slugs follow correct format</>");
@@ -530,7 +535,7 @@ class TestLocationPages extends Command
                 $this->line("  <fg=yellow>⚠</> Found {$issueCount} slug quality warnings:");
                 foreach ($foundIssues as $issue) {
                     $this->line("    - {$issue['slug']} ({$issue['issue']}, type: {$issue['type']})");
-                    
+
                     // County-county pattern is considered an error that needs repair
                     if ($issue['issue'] === 'duplicated county suffix') {
                         $this->recordWarning("Slug quality: {$issue['slug']} has {$issue['issue']} - run seo:repair-county-hub-slugs");
@@ -570,13 +575,13 @@ class TestLocationPages extends Command
             foreach ($seattlePages as $page) {
                 if ($page->rendered_html_cache) {
                     $cachedCount++;
-                    
+
                     // Check if cache is stale (content updated after last render)
                     if ($page->rendered_at && $page->updated_at && $page->updated_at > $page->rendered_at) {
                         $staleCacheCount++;
                     }
                 }
-                
+
                 if ($page->needs_render) {
                     $needsRenderCount++;
                 }
@@ -585,7 +590,7 @@ class TestLocationPages extends Command
             $this->line("  <fg=blue>Info:</> {$seattlePages->count()} Seattle page(s) checked");
             $this->line("  <fg=blue>Info:</> {$cachedCount} have cached HTML");
             $this->line("  <fg=blue>Info:</> {$needsRenderCount} flagged as needs_render");
-            
+
             if ($staleCacheCount > 0) {
                 $this->line("  <fg=yellow>⚠</> {$staleCacheCount} have stale cache (updated after rendering)");
                 $this->recordWarning("{$staleCacheCount} pages have stale cache");
@@ -637,32 +642,32 @@ class TestLocationPages extends Command
 
             foreach ($seattlePages as $page) {
                 $hasAnySchema = false;
-                
+
                 if ($page->service_schema_json && is_array($page->service_schema_json)) {
                     $serviceSchemaCount++;
                     $hasAnySchema = true;
-                    
+
                     // Validate structure
                     if (!isset($page->service_schema_json['@type']) || $page->service_schema_json['@type'] !== 'Service') {
                         $this->recordWarning("Page {$page->slug} has invalid service schema structure");
                     }
                 }
-                
+
                 if ($page->local_business_schema_json && is_array($page->local_business_schema_json)) {
                     $localBusinessSchemaCount++;
                     $hasAnySchema = true;
-                    
+
                     // Validate structure
                     if (!isset($page->local_business_schema_json['@type']) || $page->local_business_schema_json['@type'] !== 'LocalBusiness') {
                         $this->recordWarning("Page {$page->slug} has invalid local business schema structure");
                     }
                 }
-                
+
                 if ($page->faq_schema_json && is_array($page->faq_schema_json)) {
                     $faqSchemaCount++;
                     $hasAnySchema = true;
                 }
-                
+
                 if ($hasAnySchema) {
                     $anySchemaCount++;
                 }

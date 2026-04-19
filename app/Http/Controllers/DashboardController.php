@@ -2,140 +2,205 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\FunnelEvent;
 use App\Models\LocationPage;
 use App\Models\QuickScan;
+use App\Models\User;
+use App\Services\Entitlements\EntitlementService;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class DashboardController extends Controller
 {
+    public function __construct(private readonly EntitlementService $entitlements)
+    {
+    }
+
     public function index()
     {
-        // Summary statistics
-        $stats = [
-            'total_pages' => LocationPage::count(),
-            'draft_pages' => LocationPage::where('status', 'draft')->count(),
-            'ready_for_review' => LocationPage::where('content_quality_status', 'approved')
-                ->where('status', 'draft')
-                ->count(),
-            'published_pages' => LocationPage::where('status', 'published')->count(),
-            'average_score' => round(LocationPage::whereNotNull('score')->avg('score') ?? 0, 1),
-        ];
-
-        // System health metrics
-        $health = $this->calculateSystemHealth();
-
-        // Action queue - things that need attention
-        $actionQueue = [
-            'missing_meta' => LocationPage::where(function ($query) {
-                $query->whereNull('meta_title')
-                    ->orWhereNull('meta_description')
-                    ->orWhere('meta_title', '')
-                    ->orWhere('meta_description', '');
-            })->count(),
-            'missing_internal_links' => LocationPage::whereNull('internal_links_json')->count(),
-            'needs_render' => LocationPage::whereNull('rendered_html')->count(),
-            'below_threshold' => LocationPage::where('score', '<', 70)->whereNotNull('score')->count(),
-            'unreviewed' => LocationPage::where('content_quality_status', 'unreviewed')->count(),
-        ];
-
-        // Recent pages
-        $recentPages = LocationPage::with(['state', 'county', 'city'])
-            ->orderBy('updated_at', 'desc')
-            ->take(10)
-            ->get()
-            ->map(function ($page) {
-                // Format location inline instead of calling method
-                $locationParts = [];
-                if ($page->city)
-                    $locationParts[] = $page->city->name;
-                if ($page->county)
-                    $locationParts[] = $page->county->name;
-                if ($page->state)
-                    $locationParts[] = $page->state->code;
-
-                return [
-                    'id' => $page->id,
-                    'title' => $page->title,
-                    'type' => str_replace('_', ' ', $page->type),
-                    'location' => implode(', ', $locationParts),
-                    'status' => $page->status,
-                    'score' => $page->score,
-                    'updated_at' => $page->updated_at,
-                    'slug' => $page->slug,
-                ];
-            });
-
-        // Score distribution for chart/visualization
-        $scoreDistribution = [
-            'excellent' => LocationPage::where('score', '>=', 90)->count(),
-            'good' => LocationPage::whereBetween('score', [80, 89])->count(),
-            'fair' => LocationPage::whereBetween('score', [70, 79])->count(),
-            'poor' => LocationPage::where('score', '<', 70)->whereNotNull('score')->count(),
-            'unscored' => LocationPage::whereNull('score')->count(),
-        ];
-
-        // Status breakdown
-        $statusBreakdown = LocationPage::select('status', DB::raw('count(*) as count'))
-            ->groupBy('status')
-            ->pluck('count', 'status')
-            ->toArray();
-
-        // Content quality breakdown
-        $contentQualityBreakdown = LocationPage::select('content_quality_status', DB::raw('count(*) as count'))
-            ->groupBy('content_quality_status')
-            ->pluck('count', 'content_quality_status')
-            ->toArray();
-
-        // Quick Scan data for the logged-in user — treat as projects
         $user = Auth::user();
+
+        $scanData = $this->buildUserScanData($user);
+        $latestScan = $scanData['scanProjects']->first();
+        $score = (int) ($latestScan?->score ?? 0);
+        $scoreBand = $score >= 88 ? 'high' : ($score >= 60 ? 'mid' : 'low');
+
+        FunnelEvent::fire(FunnelEvent::DASHBOARD_VISITED, userId: $user->id, scanId: $latestScan?->id, metadata: [
+            'source_page' => 'dashboard',
+            'user_state' => 'logged_in',
+            'role' => ($user->isPrivilegedStaff() || $user->isFrontendDev()) ? 'staff' : 'customer',
+            'score_band' => $scoreBand,
+        ]);
+
+        if ($user->isPrivilegedStaff() || $user->isFrontendDev()) {
+            return view('dashboard.staff', array_merge($this->buildStaffDashboardData(), $scanData));
+        }
+
+        return view('dashboard.customer-modern', $scanData);
+    }
+
+    /**
+     * Customer-safe dashboard data (user-scoped only).
+     */
+    protected function buildUserScanData(User $user): array
+    {
+        // Safety net: link any orphan scans matching this user's email.
+        QuickScan::where('email', $user->email)
+            ->whereNull('user_id')
+            ->update(['user_id' => $user->id]);
+
         $scanProjects = $user->quickScans()
             ->whereIn('status', [QuickScan::STATUS_SCANNED, QuickScan::STATUS_PAID])
             ->latest()
             ->get();
+
+        $latestScanned = $scanProjects->first();
+        $highestRankedScan = $scanProjects->sortByDesc(fn(QuickScan $scan) => $scan->upgradeTierRank())->first();
+
         $totalScans = $user->quickScans()->count();
 
-        // System tier state
         $systemTier = $user->system_tier;
-        $completedLayers = $systemTier?->completedLayers() ?? [];
-        $nextStep = $systemTier?->nextStep();
-        $nextRoute = $systemTier?->nextRoute();
-        $tierRank = $user->tierRank();
 
-        // Build analysis layer completion map
+        $this->entitlements->issueForUserTier($user);
+        if ($highestRankedScan) {
+            $this->entitlements->issueForScan($highestRankedScan);
+        }
+
+        $accessMap = $this->entitlements->accessMap($user, $highestRankedScan);
+        $tierRank = (int) ($accessMap['rank'] ?? 0);
+
+        $completedLayers = array_values(array_filter([
+            $tierRank >= 1 ? 'scan-basic' : null,
+            $tierRank >= 2 ? 'signal-expansion' : null,
+            $tierRank >= 3 ? 'structural-leverage' : null,
+            $tierRank >= 4 ? 'system-activation' : null,
+        ]));
+
+        $nextStep = match (true) {
+            $tierRank <= 1 => 'Unlock Signal Expansion',
+            $tierRank === 2 => 'Unlock Structural Leverage',
+            $tierRank === 3 => 'Activate Full System',
+            default => null,
+        };
+
+        $nextRoute = match (true) {
+            $tierRank <= 1 => 'checkout.signal-expansion',
+            $tierRank === 2 => 'checkout.structural-leverage',
+            $tierRank === 3 => 'checkout.system-activation',
+            default => null,
+        };
+
         $analysisLayers = [
-            ['key' => 'scan-basic', 'label' => 'Base Scan', 'price' => '$2', 'complete' => $tierRank >= 1],
-            ['key' => 'signal-expansion', 'label' => 'Signal Expansion', 'price' => '$99', 'complete' => $tierRank >= 2],
-            ['key' => 'structural-leverage', 'label' => 'Structural Leverage', 'price' => '$249', 'complete' => $tierRank >= 3],
-            ['key' => 'system-activation', 'label' => 'System Activation', 'price' => '$489', 'complete' => $tierRank >= 4],
+            ['key' => 'scan-basic', 'label' => 'Base Scan', 'price' => '$2', 'complete' => (bool) ($accessMap['scan'] ?? false)],
+            ['key' => 'signal-expansion', 'label' => 'Signal Expansion', 'price' => '$99', 'complete' => (bool) ($accessMap['signal'] ?? false)],
+            ['key' => 'structural-leverage', 'label' => 'Structural Leverage', 'price' => '$249', 'complete' => (bool) ($accessMap['leverage'] ?? false)],
+            ['key' => 'system-activation', 'label' => 'System Activation', 'price' => '$489', 'complete' => (bool) ($accessMap['activation'] ?? false)],
         ];
 
-        // Pull scan intelligence from the latest scanned record (for findings + upgrade triggers)
-        $latestScanned = $scanProjects->first();
-        $scanIntelligence = $latestScanned?->intelligence ?? [];
-        $scanDimensions = $latestScanned?->dimensions ?? [];
+        $scanHistory = $scanProjects
+            ->take(12)
+            ->map(function (QuickScan $scan) {
+                $score = (int) ($scan->score ?? 0);
+                $issuesCount = is_array($scan->issues) ? count($scan->issues) : 0;
 
-        // Build top findings from intelligence tiers — up to 5 most important issues
+                $quickInsight = match (true) {
+                    $score >= 88 => 'Strong visibility. Maintain coverage expansion.',
+                    $score >= 60 => 'Position building. Structural gaps still limit reach.',
+                    $issuesCount > 0 => 'Core issues detected. Priority fixes are available.',
+                    default => 'Baseline captured. Continue tracking progression.',
+                };
+
+                return [
+                    'scan_id' => $scan->id,
+                    'public_scan_id' => $scan->publicScanId(),
+                    'ai_scan_id' => $scan->aiScanId(),
+                    'system_scan_id' => $scan->systemScanId(),
+                    'scan_route_key' => $scan->publicScanId(),
+                    'stripe_session_id' => $scan->stripe_session_id,
+                    'status' => $scan->status,
+                    'tier_rank' => $scan->upgradeTierRank(),
+                    'is_renderable_report' => $scan->status === QuickScan::STATUS_SCANNED && $scan->score !== null,
+                    'score' => $scan->score,
+                    'score_change' => $scan->score_change,
+                    'scanned_at' => $scan->scanned_at,
+                    'created_at' => $scan->created_at,
+                    'domain' => $scan->domain(),
+                    'issues_count' => $issuesCount,
+                    'pages_scanned' => (int) ($scan->page_count ?? 0),
+                    'quick_insight' => $quickInsight,
+                    'fastest_fix' => $scan->fastest_fix,
+                    // Future-ready dashboard fields for client naming/tagging/filtering.
+                    'scan_name' => $scan->domain(),
+                    'scan_tags' => [],
+                    'scan_filter_bucket' => $score >= 88 ? 'high' : ($score >= 60 ? 'mid' : 'low'),
+                ];
+            })
+            ->values();
+
+        $agencyModeActive = $scanProjects->count() >= 3;
+
+        $additionalCapabilities = [
+            'AI Content Deployment',
+            'Ad Amplification',
+            'Market Systems',
+            'Web Architecture',
+        ];
+
+        $scanIntelligence = $latestScanned?->intelligence ?? [];
+
         $topFindings = [];
+        $nextBestAction = null;
+
         foreach ($scanIntelligence as $tierBlock) {
+            // Determine tier rank for this block
+            $blockTier = $tierBlock['tier'] ?? null;
+            $blockRank = match ($blockTier) {
+                'scan-basic' => 1,
+                'signal-expansion' => 2,
+                'structural-leverage' => 3,
+                'system-activation' => 4,
+                default => 0,
+            };
+
+            // Check if this tier is already unlocked by comparing user's tierRank
+            $isUnlocked = $blockRank > 0 && $tierRank >= $blockRank;
+
             foreach ($tierBlock['issues'] ?? [] as $issue) {
-                $topFindings[] = [
+                // For unlocked issues, use a view CTA; for locked, use checkout
+                $ctaRoute = $isUnlocked ? 'dashboard.scans.show' : ($tierBlock['route'] ?? null);
+
+                // Parse action items from fix description
+                $actionItems = $this->parseActionItems($issue['fix'] ?? '');
+
+                $finding = [
                     'what_missing' => $issue['what_missing'] ?? $issue['key'] ?? 'Unknown',
                     'why_it_matters' => $issue['why_it_matters'] ?? '',
                     'fix' => $issue['fix'] ?? '',
+                    'action_items' => $actionItems,
                     'fix_tier' => $tierBlock['label'] ?? '',
-                    'fix_price' => $tierBlock['price'] ?? '',
-                    'fix_route' => $tierBlock['route'] ?? '',
+                    'fix_tier_key' => $blockTier,
+                    'fix_price' => $isUnlocked ? '' : ($tierBlock['price'] ?? ''),
+                    'fix_route' => $ctaRoute,
+                    'is_unlocked' => $isUnlocked,
+                    'status' => 'Needs Action',
+                    'impact_score' => $blockRank, // Higher = more impactful
                 ];
-                if (count($topFindings) >= 5)
+
+                $topFindings[] = $finding;
+
+                // Capture first unlocked issue for "Your Next Move" panel
+                if ($isUnlocked && $nextBestAction === null) {
+                    $nextBestAction = $finding;
+                }
+
+                if (count($topFindings) >= 5) {
                     break 2;
+                }
             }
         }
 
-        // Determine the next best upgrade action based on intelligence
         $nextUpgrade = null;
         if ($tierRank < 4 && !empty($scanIntelligence)) {
-            // Find the first tier with issues that the user hasn't unlocked yet
             foreach ($scanIntelligence as $tierBlock) {
                 $blockTier = $tierBlock['tier'] ?? null;
                 $blockRank = match ($blockTier) {
@@ -144,6 +209,7 @@ class DashboardController extends Controller
                     'system-activation' => 4,
                     default => 0,
                 };
+
                 if ($blockRank > $tierRank && !empty($tierBlock['issues'])) {
                     $nextUpgrade = [
                         'label' => $tierBlock['label'],
@@ -157,26 +223,137 @@ class DashboardController extends Controller
             }
         }
 
-        return view('dashboard.index', compact(
-            'stats',
-            'health',
-            'actionQueue',
-            'recentPages',
-            'scoreDistribution',
-            'statusBreakdown',
-            'contentQualityBreakdown',
-            'scanProjects',
-            'totalScans',
-            'systemTier',
-            'completedLayers',
-            'nextStep',
-            'nextRoute',
-            'tierRank',
-            'analysisLayers',
-            'topFindings',
-            'nextUpgrade',
-            'scanIntelligence'
-        ));
+        return [
+            'scanProjects' => $scanProjects,
+            'totalScans' => $totalScans,
+            'systemTier' => $systemTier,
+            'completedLayers' => $completedLayers,
+            'nextStep' => $nextStep,
+            'nextRoute' => $nextRoute,
+            'tierRank' => $tierRank,
+            'analysisLayers' => $analysisLayers,
+            'topFindings' => $topFindings,
+            'nextBestAction' => $nextBestAction,
+            'nextUpgrade' => $nextUpgrade,
+            'scanIntelligence' => $scanIntelligence,
+            'entitlements' => $accessMap,
+            'scanHistory' => $scanHistory,
+            'additionalCapabilities' => $additionalCapabilities,
+            'agencyModeActive' => $agencyModeActive,
+        ];
+    }
+
+    /**
+     * Parse action items from fix description text.
+     * Splits on bullets, or breaks long text into actionable items.
+     */
+    private function parseActionItems(string $text): array
+    {
+        if (empty(trim($text))) {
+            return [];
+        }
+
+        $items = [];
+
+        // Try to split on line breaks or bullet points
+        $lines = preg_split('/[\n•\-\*]/', $text);
+
+        foreach ($lines as $line) {
+            $trimmed = trim($line);
+            if (!empty($trimmed)) {
+                $items[] = $trimmed;
+            }
+        }
+
+        // If we got multiple items, return up to 3
+        return array_slice($items, 0, 3);
+    }
+
+    /**
+     * Staff-only global dashboard data.
+     */
+    protected function buildStaffDashboardData(): array
+    {
+        $stats = [
+            'total_pages' => LocationPage::count(),
+            'draft_pages' => LocationPage::where('status', 'draft')->count(),
+            'ready_for_review' => LocationPage::where('content_quality_status', 'approved')
+                ->where('status', 'draft')
+                ->count(),
+            'published_pages' => LocationPage::where('status', 'published')->count(),
+            'average_score' => round(LocationPage::whereNotNull('score')->avg('score') ?? 0, 1),
+        ];
+
+        $health = $this->calculateSystemHealth();
+
+        $actionQueue = [
+            'missing_meta' => LocationPage::where(function ($query) {
+                $query->whereNull('meta_title')
+                    ->orWhereNull('meta_description')
+                    ->orWhere('meta_title', '')
+                    ->orWhere('meta_description', '');
+            })->count(),
+            'missing_internal_links' => LocationPage::whereNull('internal_links_json')->count(),
+            'needs_render' => LocationPage::whereNull('rendered_html')->count(),
+            'below_threshold' => LocationPage::where('score', '<', 70)->whereNotNull('score')->count(),
+            'unreviewed' => LocationPage::where('content_quality_status', 'unreviewed')->count(),
+        ];
+
+        $recentPages = LocationPage::with(['state', 'county', 'city'])
+            ->orderBy('updated_at', 'desc')
+            ->take(10)
+            ->get()
+            ->map(function ($page) {
+                $locationParts = [];
+                if ($page->city) {
+                    $locationParts[] = $page->city->name;
+                }
+                if ($page->county) {
+                    $locationParts[] = $page->county->name;
+                }
+                if ($page->state) {
+                    $locationParts[] = $page->state->code;
+                }
+
+                return [
+                    'id' => $page->id,
+                    'title' => $page->title,
+                    'type' => str_replace('_', ' ', $page->type),
+                    'location' => implode(', ', $locationParts),
+                    'status' => $page->status,
+                    'score' => $page->score,
+                    'updated_at' => $page->updated_at,
+                    'slug' => $page->slug,
+                ];
+            });
+
+        $scoreDistribution = [
+            'excellent' => LocationPage::where('score', '>=', 90)->count(),
+            'good' => LocationPage::whereBetween('score', [80, 89])->count(),
+            'fair' => LocationPage::whereBetween('score', [70, 79])->count(),
+            'poor' => LocationPage::where('score', '<', 70)->whereNotNull('score')->count(),
+            'unscored' => LocationPage::whereNull('score')->count(),
+        ];
+
+        $statusBreakdown = LocationPage::select('status', DB::raw('count(*) as count'))
+            ->groupBy('status')
+            ->pluck('count', 'status')
+            ->toArray();
+
+        $contentQualityBreakdown = LocationPage::select('content_quality_status', DB::raw('count(*) as count'))
+            ->groupBy('content_quality_status')
+            ->pluck('count', 'content_quality_status')
+            ->toArray();
+
+        return [
+            'stats' => $stats,
+            'health' => $health,
+            'actionQueue' => $actionQueue,
+            'recentPages' => $recentPages,
+            'scoreDistribution' => $scoreDistribution,
+            'statusBreakdown' => $statusBreakdown,
+            'contentQualityBreakdown' => $contentQualityBreakdown,
+        ];
     }
 
     /**

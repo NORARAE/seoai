@@ -14,7 +14,7 @@
     <p style="font-size:13px;color:#555;line-height:1.7;margin:0 0 20px">Your $2 AI Citation Scan has been submitted. Results are typically ready in seconds &mdash; check your results page now.</p>
 
     <div style="text-align:center;margin:24px 0">
-      <a href="{{ url('/quick-scan/result?session_id=' . $sessionId) }}" style="display:inline-block;padding:14px 32px;background:#080808;color:#ede8de;font-size:13px;letter-spacing:.1em;text-decoration:none;text-transform:uppercase">View Your Results</a>
+      <a href="{{ \App\Support\EmailUrl::tracked('/quick-scan', 'checkout-scan-basic') }}" style="display:inline-block;padding:14px 32px;background:#080808;color:#ede8de;font-size:13px;letter-spacing:.1em;text-decoration:none;text-transform:uppercase">View Your Results</a>
     </div>
 
     <p style="font-size:12px;color:#999;line-height:1.6;margin:20px 0 0">If your results aren&rsquo;t ready yet, refresh the page in a moment. We&rsquo;ll also send a follow-up email with insights from your scan.</p>

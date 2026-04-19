@@ -148,15 +148,13 @@ class ViewBooking extends ViewRecord
                     ->label('Booking Type')
                     ->badge()
                     ->color(fn(?string $state): string => match ($state) {
-                        'audit' => 'warning',
-                        'strategy' => 'info',
-                        'build' => 'success',
+                        'consultation' => 'warning',
+                        'activation' => 'success',
                         default => 'gray',
                     })
                     ->formatStateUsing(fn(?string $state): string => match ($state) {
-                        'audit' => 'Market Opportunity Audit — $500',
-                        'strategy' => 'Strategy Session',
-                        'build' => 'Full System Build',
+                        'consultation' => 'AI Visibility Consultation',
+                        'activation' => 'Full System Activation',
                         default => 'Free Discovery Call',
                     }),
                 TextEntry::make('status')

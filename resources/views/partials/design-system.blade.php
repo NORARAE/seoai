@@ -119,14 +119,25 @@ body{
 
 /* ── Footer ── */
 .site-footer{
-  border-top:1px solid var(--border);padding:32px var(--wrap-pad);
-  display:flex;align-items:center;justify-content:space-between;
-  flex-wrap:wrap;gap:16px;
+  border-top:none;
+  padding:0 0 24px;
+  display:flex;flex-direction:column;align-items:center;gap:0;
 }
-.footer-copy{font-size:.72rem;color:rgba(168,168,160,.42);letter-spacing:.06em}
-.footer-links{display:flex;gap:24px;list-style:none}
-.footer-links a{font-size:.74rem;letter-spacing:.08em;color:rgba(168,168,160,.55);text-decoration:none;transition:color .2s}
-.footer-links a:hover{color:var(--gold)}
+.footer-main{
+  text-align:center;padding:20px var(--wrap-pad) 10px;line-height:1.65;
+}
+.footer-main .logo{display:inline-flex;text-decoration:none;margin-bottom:10px;opacity:.78}
+.footer-copy{display:block;font-size:.68rem;color:rgba(168,168,160,.70);letter-spacing:.06em;line-height:1.65}
+.footer-email{text-align:center;margin:4px 0 10px}
+.footer-email a{font-size:.72rem;color:rgba(168,168,160,.60);text-decoration:none;letter-spacing:.04em;transition:color .2s}
+.footer-email a:hover{color:rgba(168,168,160,.78)}
+.footer-links{display:flex;flex-wrap:wrap;gap:12px 24px;list-style:none;justify-content:center;line-height:1.65}
+.footer-links a{font-size:.72rem;letter-spacing:.08em;color:rgba(168,168,160,.60);text-decoration:none;transition:color .2s}
+.footer-links a:hover{color:rgba(168,168,160,.78)}
+
+/* ── AI Glow Utility ── */
+.ai-glow{box-shadow:0 0 18px rgba(200,168,75,.12),0 0 48px rgba(200,168,75,.06);transition:box-shadow .4s ease}
+.ai-glow:hover{box-shadow:0 0 24px rgba(200,168,75,.22),0 0 64px rgba(200,168,75,.10)}
 
 /* ── Shared Responsive ── */
 @media(max-width:1100px){
@@ -137,6 +148,8 @@ body{
 }
 @media(max-width:600px){
   :root{--wrap-pad:20px}
-  .site-footer{padding:24px var(--wrap-pad);flex-direction:column;align-items:flex-start;gap:12px}
+  .site-footer{padding:0 0 20px}
+  .footer-main{padding:16px var(--wrap-pad) 8px}
+  .footer-links{flex-wrap:wrap;gap:16px;justify-content:center}
   .s-clarify{font-size:.72rem;margin-top:6px}
 }

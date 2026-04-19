@@ -402,9 +402,17 @@ footer{border-top:1px solid var(--border);padding:32px 64px;display:flex;align-i
       <span class="related-label">Category Overview</span>
       <span class="related-title">AI Search Optimization</span>
     </a>
+    <a href="{{ route('entity-seo-for-ai-search') }}" class="related-item">
+      <span class="related-label">Entity Layer</span>
+      <span class="related-title">Entity SEO for AI Search</span>
+    </a>
     <a href="{{ route('programmatic-seo-platform') }}" class="related-item">
       <span class="related-label">Infrastructure</span>
       <span class="related-title">Programmatic SEO Platform</span>
+    </a>
+    <a href="{{ route('ai-seo-for-local-businesses') }}" class="related-item">
+      <span class="related-label">Local Layer</span>
+      <span class="related-title">AI SEO for Local Businesses</span>
     </a>
     <a href="{{ route('chatgpt-seo') }}" class="related-item">
       <span class="related-label">LLM Discoverability</span>

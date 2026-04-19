@@ -30,7 +30,7 @@
           <li style="font-size:12px;color:#aaa;margin-bottom:0;line-height:1.55">Exportable intelligence report</li>
         </ul>
         <div style="margin-top:14px">
-          <a href="{{ url('/checkout/signal-expansion') }}" style="display:inline-block;border:1px solid #c8a84b;color:#c8a84b;font-size:11px;font-weight:600;text-decoration:none;padding:9px 24px;letter-spacing:.08em">Unlock Signal Expansion &rarr;</a>
+          <a href="{{ \App\Support\EmailUrl::tracked('/checkout/signal-expansion', 'quick-scan-day3', $scan->user_id, $scan->id) }}" style="display:inline-block;border:1px solid #c8a84b;color:#c8a84b;font-size:11px;font-weight:600;text-decoration:none;padding:9px 24px;letter-spacing:.08em">Unlock Signal Expansion &rarr;</a>
         </div>
       </div>
 
@@ -45,7 +45,7 @@
           <li style="font-size:12px;color:#c9c09a;margin-bottom:0;line-height:1.55">Full action sequence with implementation notes</li>
         </ul>
         <div style="margin-top:14px">
-          <a href="{{ url('/checkout/structural-leverage') }}" style="display:inline-block;background:#c8a84b;color:#080808;font-size:11px;font-weight:600;text-decoration:none;padding:10px 28px;letter-spacing:.08em">Resolve Structural Gaps &rarr;</a>
+          <a href="{{ \App\Support\EmailUrl::tracked('/checkout/structural-leverage', 'quick-scan-day3', $scan->user_id, $scan->id) }}" style="display:inline-block;background:#c8a84b;color:#080808;font-size:11px;font-weight:600;text-decoration:none;padding:10px 28px;letter-spacing:.08em">Resolve Structural Gaps &rarr;</a>
         </div>
       </div>
 
@@ -60,7 +60,7 @@
           <li style="font-size:12px;color:#aaa;margin-bottom:0;line-height:1.55">50+ page structural architecture deployed</li>
         </ul>
         <div style="margin-top:14px">
-          <a href="{{ url('/checkout/system-activation') }}" style="display:inline-block;border:1px solid rgba(200,168,75,.4);color:rgba(200,168,75,.7);font-size:11px;font-weight:600;text-decoration:none;padding:9px 24px;letter-spacing:.08em">Activate Full System &rarr;</a>
+          <a href="{{ \App\Support\EmailUrl::tracked('/checkout/system-activation', 'quick-scan-day3', $scan->user_id, $scan->id) }}" style="display:inline-block;border:1px solid rgba(200,168,75,.4);color:rgba(200,168,75,.7);font-size:11px;font-weight:600;text-decoration:none;padding:9px 24px;letter-spacing:.08em">Activate Full System &rarr;</a>
         </div>
       </div>
     </div>
@@ -72,11 +72,11 @@
     </div>
 
     <div style="text-align:center;margin:20px 0">
-      <a href="{{ url('/checkout/signal-expansion') }}" style="display:inline-block;background:#c8a84b;color:#080808;font-size:12px;font-weight:600;text-decoration:none;padding:13px 36px;letter-spacing:.08em">Start with Signal Expansion &mdash; $99</a>
+      <a href="{{ \App\Support\EmailUrl::tracked('/checkout/signal-expansion', 'quick-scan-day3', $scan->user_id, $scan->id) }}" style="display:inline-block;background:#c8a84b;color:#080808;font-size:12px;font-weight:600;text-decoration:none;padding:13px 36px;letter-spacing:.08em">Start with Signal Expansion &mdash; $99</a>
     </div>
 
     <p style="font-size:12px;color:#bbb;text-align:center;margin:16px 0 0">
-      Questions? <a href="{{ url('/book') }}" style="color:#c8a84b;text-decoration:none">Book a free 15-min call</a>
+      Questions? <a href="{{ \App\Support\EmailUrl::tracked('/book', 'quick-scan-day3', $scan->user_id, $scan->id) }}" style="color:#c8a84b;text-decoration:none">Book a free 15-min call</a>
     </p>
   </div>
 

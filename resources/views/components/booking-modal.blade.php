@@ -7,9 +7,18 @@
 
 <style>
 [x-cloak]{display:none!important}
-.bk-overlay{position:fixed;inset:0;z-index:9000;background:rgba(0,0,0,.75);backdrop-filter:blur(6px);display:flex;align-items:center;justify-content:center;padding:16px;opacity:0;pointer-events:none;transition:opacity .35s}
+:root{
+  --sys-space-section:32px;
+  --sys-space-panel:24px;
+  --sys-panel-radius:12px;
+  --sys-panel-border:rgba(200,168,75,.14);
+  --sys-text-soft:rgba(168,168,160,.72);
+  --sys-cta-size:.72rem;
+  --sys-cta-track:.12em;
+}
+.bk-overlay{position:fixed;inset:0;z-index:9000;background:rgba(0,0,0,.82);backdrop-filter:blur(7px);display:flex;align-items:center;justify-content:center;padding:16px;opacity:0;pointer-events:none;transition:opacity .35s}
 .bk-overlay.open{opacity:1;pointer-events:auto}
-.bk-box{background:#111;border:1px solid #222;border-radius:16px;width:100%;max-width:640px;max-height:92vh;overflow-y:auto;padding:40px 36px;position:relative;transform:translateY(20px);transition:transform .35s}
+.bk-box{background:linear-gradient(180deg,#11100d 0%,#0d0c09 100%);border:1px solid rgba(200,168,75,.20);border-top:2px solid rgba(200,168,75,.34);border-radius:var(--sys-panel-radius);width:100%;max-width:660px;max-height:92vh;overflow-y:auto;padding:52px 46px;position:relative;transform:translateY(20px);transition:transform .35s;box-shadow:0 22px 64px rgba(0,0,0,.46),0 0 48px rgba(200,168,75,.04)}
 .bk-overlay.open .bk-box{transform:none}
 .bk-close{position:absolute;top:14px;right:14px;background:rgba(255,255,255,.04);border:1px solid #222;border-radius:50%;width:36px;height:36px;color:#8a8a8a;font-size:1.2rem;cursor:pointer;line-height:1;padding:0;display:flex;align-items:center;justify-content:center;transition:color .2s,background .2s}
 .bk-close:hover{color:#ede8de;background:rgba(255,255,255,.08)}
@@ -17,14 +26,16 @@
 .bk-dot{width:100%;height:3px;border-radius:2px;background:#222;transition:background .3s}
 .bk-dot.active{background:var(--gold,#c8a84b)}
 .bk-dot.done{background:var(--gold-dim,#9a7a30)}
-.bk-title{font-family:'Cormorant Garamond',serif;font-size:1.7rem;font-weight:400;color:#ede8de;margin-bottom:6px;line-height:1.15}
-.bk-sub{font-size:.9rem;color:#a8a8a0;margin-bottom:24px;line-height:1.75}
+.bk-title{font-family:'Cormorant Garamond',serif;font-size:1.85rem;font-weight:400;letter-spacing:.02em;color:#ede8de;margin-bottom:6px;line-height:1.15}
+.bk-sub{font-size:.88rem;color:var(--sys-text-soft);margin-bottom:24px;line-height:1.75}
+.bk-step1-signal{font-size:.62rem;letter-spacing:.2em;text-transform:uppercase;color:rgba(168,168,160,.48);margin:0 0 14px}
+.bk-step-kicker{font-size:.64rem;letter-spacing:.18em;text-transform:uppercase;color:rgba(200,168,75,.72);margin:0 0 10px}
 .bk-back{background:none;border:none;color:#a8a8a0;font-size:.76rem;letter-spacing:.14em;text-transform:uppercase;cursor:pointer;margin-bottom:18px;transition:color .2s;padding:6px 0;min-height:36px}
 .bk-back:hover{color:#ede8de}
 
 /* Step 1 — Consult type cards */
 .bk-types{display:grid;gap:12px}
-.bk-type{background:#0b0b0b;border:1px solid #1a1a1a;border-radius:8px;padding:18px 20px;cursor:pointer;transition:border-color .25s,background .25s,transform .2s,box-shadow .2s;display:flex;justify-content:space-between;align-items:flex-start;position:relative}
+.bk-type{background:#0b0b0b;border:1px solid #1a1a1a;border-radius:10px;padding:18px 20px;cursor:pointer;transition:border-color .25s,background .25s,transform .2s,box-shadow .2s;display:flex;justify-content:space-between;align-items:flex-start;position:relative}
 .bk-type:hover{border-color:#2a2a2a;background:#0e0e0e;transform:translateY(-1px);box-shadow:0 4px 14px rgba(0,0,0,.2)}
 .bk-type.selected{border-color:var(--gold,#c8a84b);background:rgba(200,168,75,.04)}
 /* Secondary (free) — first-step card, readable but de-prioritised vs paid */
@@ -49,7 +60,7 @@
 .bk-type-qualify{font-size:.76rem;color:#9a9a92;margin-top:5px;letter-spacing:.01em;line-height:1.45}
 .bk-avail-note{font-size:.72rem;color:#6a6a60;text-align:center;margin:18px 0 0;letter-spacing:.08em;text-transform:uppercase}
 /* R&D value block */
-.bk-rd-block{background:rgba(200,168,75,.02);border:1px solid rgba(200,168,75,.12);border-radius:8px;padding:16px 18px;margin-top:20px}
+.bk-rd-block{background:rgba(200,168,75,.02);border:1px solid rgba(200,168,75,.12);border-radius:10px;padding:16px 18px;margin-top:20px}
 .bk-rd-block-hed{font-size:.76rem;letter-spacing:.08em;text-transform:uppercase;color:rgba(200,168,75,.78);margin-bottom:6px;font-weight:500}
 .bk-rd-block-sub{font-size:.82rem;color:rgba(168,168,160,.78);margin-bottom:10px;line-height:1.6}
 .bk-rd-block-list{list-style:none;margin:0 0 8px;padding:0;display:flex;flex-direction:column;gap:5px}
@@ -64,7 +75,7 @@
 /* Anchor pricing tiers (non-bookable — visual / price anchoring only) */
 .bk-anchor-label{font-size:.70rem;letter-spacing:.14em;text-transform:uppercase;color:#7a7272;margin:20px 0 8px}
 .bk-anchor-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
-.bk-anchor-card{background:#080808;border:1px solid #161616;border-radius:8px;padding:15px 16px;position:relative;overflow:hidden;cursor:default}
+.bk-anchor-card{background:#080808;border:1px solid #161616;border-radius:10px;padding:15px 16px;position:relative;overflow:hidden;cursor:default}
 .bk-anchor-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,rgba(200,168,75,.2),rgba(200,168,75,.06))}
 .bk-anchor-name{font-size:.80rem;color:#7a7a72;display:block;margin-bottom:3px}
 .bk-anchor-price{font-size:.92rem;color:#7a6030;font-weight:500}
@@ -73,51 +84,52 @@
 @media(max-width:480px){.bk-anchor-grid{grid-template-columns:1fr}}
 
 /* Full-service engagement cards (top tier) */
-.bk-fullsvc-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:0}
-.bk-fullsvc-card{background:#090909;border:1px solid rgba(200,168,75,.22);border-top:2px solid rgba(200,168,75,.38);border-radius:10px;padding:20px 20px 18px;position:relative}
-.bk-fullsvc-badge{display:inline-flex;align-items:center;gap:5px;background:rgba(200,168,75,.12);color:rgba(200,168,75,.88);font-size:.70rem;font-weight:600;letter-spacing:.10em;text-transform:uppercase;padding:3px 8px;border-radius:20px;margin-bottom:8px;border:1px solid rgba(200,168,75,.24)}
-.bk-fullsvc-name{font-size:.90rem;color:#ede8de;font-weight:400;margin-bottom:4px;line-height:1.3}
-.bk-fullsvc-price{font-size:.84rem;color:rgba(200,168,75,.85);margin-bottom:6px;font-weight:500}
-.bk-fullsvc-note{font-size:.74rem;color:#9a9a92;line-height:1.55;margin-bottom:14px}
-.bk-fullsvc-cta-primary{display:block;width:100%;text-align:center;background:rgba(200,168,75,.10);border:1px solid rgba(200,168,75,.32);border-radius:6px;color:rgba(200,168,75,.90);font-size:.72rem;font-weight:500;letter-spacing:.10em;text-transform:uppercase;padding:9px 10px;text-decoration:none;transition:background .25s,border-color .25s,color .25s;margin-bottom:7px;cursor:pointer;font-family:inherit;box-sizing:border-box}
-.bk-fullsvc-cta-primary:hover{background:rgba(200,168,75,.18);border-color:rgba(200,168,75,.52);color:var(--gold,#c8a84b)}
-.bk-fullsvc-cta-secondary{display:block;text-align:center;background:none;border:none;color:rgba(168,168,160,.52);font-size:.68rem;letter-spacing:.08em;text-transform:uppercase;text-decoration:none;padding:4px 0;transition:color .2s;cursor:pointer}
-.bk-fullsvc-cta-secondary:hover{color:rgba(168,168,160,.82)}
-.bk-fullsvc-access{font-size:.72rem;color:rgba(168,168,160,.48);letter-spacing:.03em;margin:14px 0 0;line-height:1.55;text-align:center;font-style:italic}
-.bk-priority-note{font-size:.74rem;color:rgba(200,168,75,.62);letter-spacing:.03em;margin:10px 0 0;padding:8px 12px;border-left:2px solid rgba(200,168,75,.25);background:rgba(200,168,75,.025);border-radius:0 4px 4px 0;line-height:1.55}
-.bk-lower-label{margin:28px 0 10px!important;border-top:1px solid #161616;padding-top:22px;color:#565650!important}
-/* Confidence / what-happens-next block inside full-service cards */
-.bk-whats-next{margin:12px 0 14px;padding-top:11px;border-top:1px solid rgba(200,168,75,.12)}
-.bk-whats-next-label{font-size:.68rem;letter-spacing:.12em;text-transform:uppercase;color:rgba(200,168,75,.55);margin-bottom:7px;display:block}
-.bk-whats-next-list{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:5px}
-.bk-whats-next-list li{font-size:.74rem;color:rgba(168,168,160,.72);padding-left:13px;position:relative;line-height:1.5}
-.bk-whats-next-list li::before{content:'→';color:rgba(200,168,75,.40);position:absolute;left:0;font-size:.68rem;top:.05em}
-.bk-lower-section .bk-type{opacity:.78}
-.bk-lower-section .bk-type.featured{opacity:.84}
-.bk-lower-section .bk-type:hover{opacity:1}
-@media(max-width:480px){.bk-fullsvc-grid{grid-template-columns:1fr}}
+.bk-fullsvc-grid{display:grid;grid-template-columns:1fr 1.1fr;gap:22px;margin-bottom:0;align-items:stretch}
+.bk-fullsvc-card{background:radial-gradient(120% 100% at 50% 0%,rgba(255,255,255,.04),rgba(255,255,255,.01));border:1px solid rgba(200,168,75,.14);border-radius:var(--sys-panel-radius);padding:26px;position:relative;display:flex;flex-direction:column;min-height:352px;box-shadow:inset 0 1px 0 rgba(255,255,255,.02);transition:transform .14s ease,box-shadow .14s ease,border-color .14s ease}
+.bk-fullsvc-card.secondary{background:radial-gradient(120% 100% at 50% 0%,rgba(255,255,255,.03),rgba(255,255,255,.008));border-color:rgba(255,255,255,.05)}
+.bk-fullsvc-card.secondary:hover{transform:translateY(-2px);box-shadow:inset 0 1px 0 rgba(255,255,255,.03),0 10px 26px rgba(0,0,0,.26)}
+.bk-fullsvc-card.primary{border-color:rgba(200,168,75,.22);box-shadow:inset 0 1px 0 rgba(255,255,255,.04),0 18px 46px rgba(0,0,0,.44),0 0 26px rgba(200,168,75,.08);padding:32px;transform:scale(1.06) translateY(-4px)}
+.bk-fullsvc-card.primary:hover{transform:scale(1.06) translateY(-7px);box-shadow:inset 0 1px 0 rgba(255,255,255,.05),0 22px 54px rgba(0,0,0,.48),0 0 34px rgba(200,168,75,.14)}
+.bk-fullsvc-badge{display:inline-flex;align-items:center;background:rgba(200,168,75,.14);color:rgba(200,168,75,.92);font-size:.64rem;font-weight:600;letter-spacing:.14em;text-transform:uppercase;padding:5px 10px;border-radius:999px;margin-bottom:14px;border:1px solid rgba(200,168,75,.32);width:max-content}
+.bk-fullsvc-label{font-size:.64rem;letter-spacing:.16em;text-transform:uppercase;color:rgba(168,168,160,.56);margin-bottom:12px}
+.bk-fullsvc-name{font-family:'Cormorant Garamond',serif;font-size:1.78rem;font-weight:300;letter-spacing:.015em;color:#ede8de;line-height:1.14;margin-bottom:22px}
+.bk-fullsvc-price{font-family:'Cormorant Garamond',serif;font-size:2.2rem;font-weight:300;color:rgba(238,231,219,.9);line-height:1;margin-bottom:20px}
+.bk-fullsvc-note{font-size:.80rem;color:rgba(168,168,160,.63);line-height:1.45;margin-bottom:30px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.bk-fullsvc-subtext{font-size:.70rem;color:rgba(168,168,160,.52);line-height:1.45;margin-top:10px;text-align:center}
+.bk-fullsvc-cta-primary{display:block;width:100%;text-align:center;border-radius:10px;font-size:var(--sys-cta-size);font-weight:700;letter-spacing:var(--sys-cta-track);text-transform:uppercase;padding:0 14px;height:54px;text-decoration:none;transition:background .14s ease,border-color .14s ease,color .14s ease,transform .14s ease;cursor:pointer;font-family:inherit;box-sizing:border-box;margin-top:auto}
+.bk-fullsvc-card.secondary .bk-fullsvc-cta-primary{background:transparent;border:1px solid rgba(168,168,160,.26);color:rgba(237,232,222,.84)}
+.bk-fullsvc-card.secondary .bk-fullsvc-cta-primary:hover{background:rgba(255,255,255,.03);border-color:rgba(168,168,160,.40);transform:translateY(-1px)}
+.bk-fullsvc-card.primary .bk-fullsvc-cta-primary{background:linear-gradient(135deg,var(--gold,#c8a84b),var(--gold-lt,#e2c97d));border:1px solid rgba(200,168,75,.55);color:#080808}
+.bk-fullsvc-card.primary .bk-fullsvc-cta-primary:hover{background:linear-gradient(135deg,var(--gold-lt,#e2c97d),var(--gold,#c8a84b));border-color:rgba(200,168,75,.72);transform:translateY(-1px)}
+.bk-fullsvc-commit{font-size:.68rem;color:rgba(168,168,160,.5);line-height:1.45;margin-top:8px;text-align:center}
+@media(max-width:600px){
+  .bk-fullsvc-grid{grid-template-columns:1fr;gap:14px}
+  .bk-fullsvc-card{min-height:auto}
+  .bk-fullsvc-card.primary{transform:none;padding:28px}
+  .bk-fullsvc-card.primary:hover{transform:translateY(-3px)}
+}
 
 /* Step 2 — Date & Time */
 .bk-datepicker{margin-bottom:20px}
-.bk-datepicker input{width:100%;background:#0b0b0b;border:1px solid #1a1a1a;border-radius:6px;color:#ede8de;font-size:.92rem;padding:14px 16px;font-family:'DM Sans',sans-serif}
+.bk-datepicker input{width:100%;background:#0b0b0b;border:1px solid rgba(200,168,75,.20);border-radius:10px;color:#ede8de;font-size:.92rem;padding:14px 16px;font-family:'DM Sans',sans-serif}
 .bk-tz{font-size:.76rem;color:#8a8a82;margin-top:4px;margin-bottom:16px}
 .bk-slots{display:grid;grid-template-columns:repeat(auto-fill,minmax(90px,1fr));gap:8px}
-.bk-slot{background:#0b0b0b;border:1px solid #1a1a1a;border-radius:8px;padding:13px 6px;min-height:44px;text-align:center;font-size:.84rem;color:#a8a8a0;cursor:pointer;transition:all .2s;display:flex;align-items:center;justify-content:center}
-.bk-slot:hover{border-color:#333;color:#ede8de}
+.bk-slot{background:#0b0b0b;border:1px solid rgba(200,168,75,.18);border-radius:10px;padding:13px 6px;min-height:44px;text-align:center;font-size:.84rem;color:#a8a8a0;cursor:pointer;transition:all .2s;display:flex;align-items:center;justify-content:center}
+.bk-slot:hover{border-color:rgba(200,168,75,.40);color:#ede8de}
 .bk-slot.picked{border-color:var(--gold,#c8a84b);color:var(--gold,#c8a84b);background:rgba(200,168,75,.04)}
 .bk-no-slots{font-size:.88rem;color:#8a8a82;text-align:center;padding:24px 0}
 
 /* Step 3 — Details form */
-.bk-summary{background:#0b0b0b;border:1px solid #1a1a1a;border-radius:8px;padding:14px 18px;margin-bottom:20px;display:flex;gap:20px;flex-wrap:wrap}
+.bk-summary{background:#0b0b0b;border:1px solid rgba(200,168,75,.20);border-radius:10px;padding:14px 18px;margin-bottom:20px;display:flex;gap:20px;flex-wrap:wrap}
 .bk-sum-item{font-size:.82rem;color:#a8a8a0}
 .bk-sum-item strong{color:#ede8de;font-weight:400}
 .bk-field{margin-bottom:18px}
 .bk-field label{display:block;font-size:.76rem;letter-spacing:.12em;text-transform:uppercase;color:#a8a8a0;margin-bottom:7px}
-.bk-field input,.bk-field textarea{width:100%;background:#0b0b0b;border:1px solid #1a1a1a;border-radius:8px;color:#ede8de;font-size:.95rem;padding:14px 16px;min-height:50px;font-family:'DM Sans',sans-serif;transition:border-color .2s,box-shadow .2s}
+.bk-field input,.bk-field textarea{width:100%;background:#0b0b0b;border:1px solid rgba(200,168,75,.18);border-radius:10px;color:#ede8de;font-size:.95rem;padding:14px 16px;min-height:50px;font-family:'DM Sans',sans-serif;transition:border-color .2s,box-shadow .2s}
 .bk-field input:focus,.bk-field textarea:focus{outline:none;border-color:var(--gold,#c8a84b);box-shadow:0 0 0 3px rgba(200,168,75,.08)}
 .bk-field textarea{min-height:88px;resize:vertical}
 .bk-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-.bk-submit{width:100%;background:var(--gold,#c8a84b);color:#080808;font-size:.82rem;font-weight:500;letter-spacing:.14em;text-transform:uppercase;padding:16px;border:none;border-radius:12px;min-height:52px;cursor:pointer;transition:background .3s,transform .2s,box-shadow .2s;margin-top:8px}
+.bk-submit{width:100%;background:var(--gold,#c8a84b);color:#080808;font-size:var(--sys-cta-size);font-weight:700;letter-spacing:var(--sys-cta-track);text-transform:uppercase;padding:16px;border:none;border-radius:10px;min-height:52px;cursor:pointer;transition:background .3s,transform .2s,box-shadow .2s;margin-top:8px}
 .bk-submit:hover{background:var(--gold-lt,#e2c97d);transform:translateY(-1px);box-shadow:0 4px 20px rgba(200,168,75,.22)}
 .bk-submit:disabled{opacity:.5;cursor:not-allowed;transform:none;box-shadow:none}
 
@@ -127,7 +139,7 @@
 .bk-conf-details{display:flex;flex-direction:column;gap:8px;margin:20px 0}
 .bk-conf-row{font-size:.88rem;color:#a8a8a0}
 .bk-conf-row strong{color:#ede8de;font-weight:400}
-.bk-meet-btn{display:inline-block;background:var(--gold,#c8a84b);color:#080808;font-size:.82rem;font-weight:500;letter-spacing:.12em;text-transform:uppercase;padding:14px 32px;border-radius:6px;text-decoration:none;margin:16px 0;transition:background .3s}
+.bk-meet-btn{display:inline-block;background:var(--gold,#c8a84b);color:#080808;font-size:var(--sys-cta-size);font-weight:700;letter-spacing:var(--sys-cta-track);text-transform:uppercase;padding:14px 26px;min-height:44px;border-radius:10px;text-decoration:none;margin:16px 0;transition:background .3s}
 .bk-meet-btn:hover{background:var(--gold-lt,#e2c97d)}
 .bk-gcal-link{font-size:.78rem;color:var(--gold,#c8a84b);text-decoration:none;display:inline-block;margin-top:4px}
 .bk-gcal-link:hover{text-decoration:underline}
@@ -136,7 +148,7 @@
 /* Add-on cards */
 .bk-enhance-title{font-size:.78rem;letter-spacing:.14em;text-transform:uppercase;color:#8a8a82;margin:20px 0 10px}
 .bk-addon-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:18px}
-.bk-addon-card{background:#0b0b0b;border:1px solid #1a1a1a;border-radius:8px;padding:12px 14px;cursor:pointer;transition:border-color .25s,background .25s;display:flex;align-items:flex-start;gap:10px}
+.bk-addon-card{background:#0b0b0b;border:1px solid #1a1a1a;border-radius:10px;padding:12px 14px;cursor:pointer;transition:border-color .25s,background .25s;display:flex;align-items:flex-start;gap:10px}
 .bk-addon-card:hover{border-color:#333;background:#0f0f0f}
 .bk-addon-card.selected{border-color:var(--gold,#c8a84b);background:rgba(200,168,75,.05)}
 .bk-addon-check{width:16px;height:16px;border:1px solid #333;border-radius:3px;flex-shrink:0;margin-top:2px;display:flex;align-items:center;justify-content:center;font-size:.7rem;color:var(--gold,#c8a84b);transition:background .2s,border-color .2s}
@@ -159,7 +171,7 @@
 
 /* Mobile */
 @media(max-width:600px){
-  .bk-box{padding:24px 18px;border-radius:12px}
+  .bk-box{padding:30px 22px;border-radius:14px}
   .bk-row{grid-template-columns:1fr}
   .bk-slots{grid-template-columns:repeat(3,1fr)}
   .bk-summary{flex-direction:column;gap:8px}
@@ -171,7 +183,7 @@
 
 /* ── Panel / inline mode (used on /book) ───────────────────── */
 .bk-overlay.bk-panel{position:static;background:transparent;backdrop-filter:none;z-index:auto;display:block;opacity:1;pointer-events:auto;padding:0 32px 80px;transition:none}
-.bk-overlay.bk-panel .bk-box{max-width:640px;max-height:none;overflow-y:visible;overflow-x:visible;transform:none;transition:none;margin:0 auto;padding:48px 44px;background:#0d0c09;border:1px solid rgba(200,168,75,.12);border-top:2px solid rgba(200,168,75,.30);border-radius:12px;box-shadow:0 0 80px rgba(200,168,75,.03),0 24px 80px rgba(0,0,0,.4)}
+.bk-overlay.bk-panel .bk-box{max-width:640px;max-height:none;overflow-y:visible;overflow-x:visible;transform:none;transition:none;margin:0 auto;padding:48px 44px;background:#0d0c09;border:1px solid rgba(200,168,75,.12);border-top:2px solid rgba(200,168,75,.30);border-radius:var(--sys-panel-radius);box-shadow:0 0 80px rgba(200,168,75,.03),0 24px 80px rgba(0,0,0,.4)}
 @media(max-width:600px){.bk-overlay.bk-panel{padding:0 16px 60px}.bk-overlay.bk-panel .bk-box{border-radius:8px;padding:32px 22px}}
 </style>
 
@@ -193,126 +205,54 @@
       {{-- Error display --}}
       <div class="bk-error" x-show="errorMsg" x-text="errorMsg" x-cloak></div>
 
-      {{-- ═══ STEP 1: Choose consult type ═══ --}}
+      {{-- ═══ STEP 1: Choose entry pathway ═══ --}}
       <div x-show="step === 1">
         @if(!($panelMode ?? false))
-        <h3 class="bk-title">Choose Your Session Type</h3>
-        <p class="bk-sub">Reserve your spot &mdash; takes under 2 minutes.</p>
+        <p class="bk-step-kicker">Activation Intake</p>
+        <h3 class="bk-title">Enter the System</h3>
+        <p class="bk-sub">Reserve a structured entry session for validation, sequence control, and deployment readiness.</p>
         @endif
+        <p class="bk-step1-signal">Qualified pathways only</p>
 
-        {{-- ── Full-service engagements (primary action tier) ── --}}
-        <p class="bk-anchor-label" style="margin-top:0">Full-Service Engagements</p>
+        {{-- ── Premium two-path entry ── --}}
         <div class="bk-fullsvc-grid">
-          <div class="bk-fullsvc-card">
-            <div class="bk-fullsvc-name">Strategy Session</div>
-            <div class="bk-fullsvc-price">$1,500&ndash;$2,500</div>
-            <div class="bk-fullsvc-note">Deep analysis + prioritised growth roadmap. Structured entry into a full expansion plan.</div>
-            <div class="bk-whats-next">
-              <span class="bk-whats-next-label">What happens next</span>
-              <ul class="bk-whats-next-list">
-                <li>Market review and opportunity mapping</li>
-                <li>Expansion strategy across services and locations</li>
-                <li>Prioritised rollout plan</li>
-                <li>Direct next steps for activation</li>
-              </ul>
-            </div>
-            <button type="button" class="bk-fullsvc-cta-primary"
-              onclick="_bkOpenHT({{ ($highTicketTypes ?? collect())->get('strategy-session')?->id ?? 0 }}, 90, 'Strategy Session', 'full_prepay')">
-              Secure Your Session
-            </button>
-            <p style="margin:4px 0 7px;text-align:center;font-size:.70rem;color:rgba(168,168,160,.40);letter-spacing:.03em">Deposit applied toward full engagement</p>
-            <a href="mailto:hello@seoaico.com?subject=Strategy+Session+Inquiry" class="bk-fullsvc-cta-secondary">Contact to discuss</a>
+          <div class="bk-fullsvc-card secondary">
+            <div class="bk-fullsvc-label">System Entry</div>
+            <div class="bk-fullsvc-name">Strategic Activation Intake</div>
+            <div class="bk-fullsvc-price">$250&ndash;$500</div>
+            <div class="bk-fullsvc-note">Structural validation, signal review, and activation sequencing before deployment authority is issued.</div>
+            <a href="{{ route('book.index', ['entry' => 'consultation']) }}" class="bk-fullsvc-cta-primary"
+              onclick="event.preventDefault(); _bkOpenHT({{ ($highTicketTypes ?? collect())->get('consultation')?->id ?? 0 }}, {{ ($highTicketTypes ?? collect())->get('consultation')?->duration_minutes ?? 60 }}, 'Strategic Activation Intake', 'full_prepay')">
+              Begin System Entry
+            </a>
+            <p class="bk-fullsvc-commit">Entry validation required before direct activation in new deployments.</p>
           </div>
-          <div class="bk-fullsvc-card">
-            <div class="bk-fullsvc-badge">Most clients begin here</div>
-            <div class="bk-fullsvc-name">Full Market Expansion System</div>
+          <div class="bk-fullsvc-card primary">
+            <div class="bk-fullsvc-badge">Primary Engagement</div>
+            <div class="bk-fullsvc-name">Full System Activation</div>
             <div class="bk-fullsvc-price">$5,000&ndash;$15,000+</div>
-            <div class="bk-fullsvc-note">Complete build &mdash; done-for-you. Everything from structure to execution, fully managed.</div>
-            <button type="button" class="bk-fullsvc-cta-primary"
-              onclick="_bkOpenHT({{ ($highTicketTypes ?? collect())->get('market-expansion')?->id ?? 0 }}, 60, 'Market Expansion Activation', '50_50_split')">
-              Start Activation
-            </button>
-            <p style="margin:4px 0 7px;text-align:center;font-size:.70rem;color:rgba(168,168,160,.40);letter-spacing:.03em">Activation deposit — applied toward full engagement</p>
-            <a href="mailto:hello@seoaico.com?subject=Market+Review+Application" class="bk-fullsvc-cta-secondary">Apply for market review</a>
-          </div>
-        </div>
-
-        <p class="bk-fullsvc-access">Access is limited per territory. Activation is confirmed based on availability and strategic fit.</p>
-        <p class="bk-priority-note">For clients ready to move forward immediately, priority activation is available.</p>
-
-        {{-- ── Exploration entry points (lower tier) ── --}}
-        <p class="bk-anchor-label bk-lower-label">Explore Your Market Opportunity</p>
-        <div class="bk-types bk-lower-section">
-          <p style="font-size:.75rem;letter-spacing:.06em;color:rgba(168,168,160,.68);margin:0 0 14px">Every market is built with care, strategy, and full support from start to finish.</p>
-          @foreach(($types ?? collect()) as $ct)
-          @continue(in_array($ct->slug, ['strategy-session', 'market-expansion']))
-          <div class="bk-type {{ $ct->slug === 'audit' ? 'featured' : ($ct->slug === 'agency-review' ? 'reserved' : ($ct->is_free ? 'secondary' : '')) }}"
-               :class="{ selected: selectedType === {{ $ct->id }} }"
-               @click="selectType({{ $ct->id }}, {{ $ct->duration_minutes }}, {{ json_encode($ct->name) }}, {{ $ct->is_free ? 'true' : 'false' }})">
-            <div style="flex:1;min-width:0">
-              @if($ct->is_free)
-              <div class="bk-type-badge">Free</div>
-              @endif
-              <div class="bk-type-name">{{ $ct->name }}</div>
-              <div class="bk-type-desc">{{ $ct->description }}</div>
-              @if($ct->slug === 'discovery')
-              <div class="bk-type-qualify">We scan your market using real search data to show you exactly where opportunity exists.</div>
-              @elseif($ct->slug === 'audit')
-              <div class="bk-type-qualify">For businesses ready to build their full market structure and move ahead of competitors.</div>
-              @elseif($ct->slug === 'agency-review')
-              <div class="bk-type-qualify">For businesses that want a clear, actionable growth direction without a long-term commitment.</div>
-              @endif
-            </div>
-            <div class="bk-type-meta">
-              <span class="bk-type-dur">{{ $ct->formattedDuration() }}</span>
-              <span class="bk-type-price">{{ $ct->formattedPrice() }}</span>
-            </div>
-          </div>
-          @endforeach
-          <div style="margin-top:24px;padding:20px 24px;background:rgba(200,168,75,.02);border:1px solid rgba(200,168,75,.10);border-radius:8px">
-            <p style="font-size:.84rem;font-weight:500;color:rgba(237,232,222,.88);margin-bottom:8px">This is more than SEO.</p>
-            <p style="font-size:.80rem;color:rgba(168,168,160,.80);margin-bottom:10px;line-height:1.65">We build, expand, and support your entire growth system:</p>
-            <ul style="list-style:none;display:flex;flex-direction:column;gap:5px;margin-bottom:12px;padding:0">
-              <li style="font-size:.80rem;color:rgba(168,168,160,.78);padding-left:14px;position:relative;line-height:1.5"><span style="position:absolute;left:0;color:rgba(200,168,75,.65)">·</span>Website design and rebuilds</li>
-              <li style="font-size:.80rem;color:rgba(168,168,160,.78);padding-left:14px;position:relative;line-height:1.5"><span style="position:absolute;left:0;color:rgba(200,168,75,.65)">·</span>WordPress updates and development</li>
-              <li style="font-size:.80rem;color:rgba(168,168,160,.78);padding-left:14px;position:relative;line-height:1.5"><span style="position:absolute;left:0;color:rgba(200,168,75,.65)">·</span>Advertising and campaign management</li>
-              <li style="font-size:.80rem;color:rgba(168,168,160,.78);padding-left:14px;position:relative;line-height:1.5"><span style="position:absolute;left:0;color:rgba(200,168,75,.65)">·</span>Branding and print</li>
-            </ul>
-            <p style="font-size:.80rem;color:rgba(168,168,160,.62);font-style:italic;line-height:1.6">The system drives visibility — we support everything behind it.</p>
-          </div>
-        </div>
-
-        <p class="bk-avail-note">Limited availability based on active markets</p>
-
-        {{-- R&D value block --}}
-        <div class="bk-rd-block" x-data="{ rdOpen: false }">
-          <div class="bk-rd-block-hed">Potential Federal R&D Credit Opportunity</div>
-          <div class="bk-rd-block-sub">Some operators may qualify for a CPA-led review of eligible development activity.</div>
-          <ul class="bk-rd-block-list">
-            <li>Custom systems development may qualify</li>
-            <li>Automation and AI infrastructure may qualify</li>
-            <li>Process experimentation may qualify</li>
-          </ul>
-          <button type="button" class="bk-rd-expand" @click="rdOpen = !rdOpen">
-            <span x-text="rdOpen ? 'Close ↑' : 'Learn more →'"></span>
-          </button>
-          <div class="bk-rd-expand-body" x-show="rdOpen" x-cloak>
-            This applies to businesses developing custom systems, automation, or AI-driven infrastructure. To include a CPA review with your intake, complete onboarding and check the relevant option.
+            <div class="bk-fullsvc-note">Qualified systems proceed to full deployment, infrastructure build, and execution ownership.</div>
+            <a href="{{ route('book.index', ['entry' => 'activation']) }}" class="bk-fullsvc-cta-primary"
+              onclick="event.preventDefault(); _bkOpenHT({{ ($highTicketTypes ?? collect())->get('activation')?->id ?? 0 }}, {{ ($highTicketTypes ?? collect())->get('activation')?->duration_minutes ?? 60 }}, 'Full System Activation', '50_50_split')">
+              Start Full Activation
+            </a>
+            <p class="bk-fullsvc-commit">Full system build, deployment, and outcome ownership.</p>
+            <p class="bk-fullsvc-subtext">Activation deposit applied toward full engagement.</p>
           </div>
         </div>
       </div>
 
-      {{-- ═══ STEP 2: Pick date & time ═══ --}}
+      {{-- ═══ STEP 2: Select entry window ═══ --}}
       <div x-show="step === 2">
         <button class="bk-back" @click="step = 1">&larr; Back</button>
-        <h3 class="bk-title">Pick a Date &amp; Time</h3>
+        <h3 class="bk-title">Select Entry Window</h3>
         <p class="bk-sub" x-text="selectedTypeName + ' · ' + selectedDuration + ' min'"></p>
         <div class="bk-datepicker">
-          <input type="text" x-ref="datepicker" placeholder="Choose a date…" readonly>
-          <div class="bk-tz">Times shown in Pacific Time (PT)</div>
+          <input type="text" x-ref="datepicker" placeholder="Select an entry date..." readonly>
+          <div class="bk-tz">Entry windows shown in Pacific Time (PT)</div>
         </div>
         <div x-show="slotsLoading" style="text-align:center;padding:24px 0">
-          <span class="bk-spinner"></span> Loading available times…
+          <span class="bk-spinner"></span> Loading available entry windows...
         </div>
         <div x-show="!slotsLoading && slots.length > 0" class="bk-slots">
           <template x-for="slot in slots" :key="slot">
@@ -323,18 +263,18 @@
           </template>
         </div>
         <div x-show="!slotsLoading && slots.length === 0 && selectedDate" class="bk-no-slots">
-          No available times on this date. Try another day.
+          No entry windows available on this date. Select another day.
         </div>
         <button class="bk-submit" style="margin-top:20px"
                 :disabled="!selectedDate || !selectedTime"
-                @click="step = 3">Continue</button>
+                @click="step = 3">Proceed to Intake</button>
       </div>
 
-      {{-- ═══ STEP 3: Your details ═══ --}}
+      {{-- ═══ STEP 3: Intake profile ═══ --}}
       <div x-show="step === 3">
         <button class="bk-back" @click="step = 2">&larr; Back</button>
-        <h3 class="bk-title">Your Details</h3>
-        <p class="bk-sub" style="margin-bottom:14px">Last step — fill in your details below.</p>
+        <h3 class="bk-title">Activation Intake Profile</h3>
+        <p class="bk-sub" style="margin-bottom:14px">Confirm intake details to reserve this entry session.</p>
         <div class="bk-summary">
           <div class="bk-sum-item"><strong x-text="selectedTypeName"></strong></div>
           <div class="bk-sum-item" x-text="formatDateDisplay()"></div>
@@ -342,7 +282,7 @@
         </div>
         <div x-show="paymentStructure !== null" x-cloak
              style="font-size:.76rem;color:rgba(200,168,75,.72);letter-spacing:.03em;margin:-10px 0 16px;padding:8px 14px;border-left:2px solid rgba(200,168,75,.28);background:rgba(200,168,75,.025);border-radius:0 4px 4px 0;line-height:1.5"
-             x-text="paymentStructure === '50_50_split' ? 'Activation deposit — applied toward full engagement. Remainder due at kickoff.' : 'Deposit secures your session — applied toward full engagement cost.'">
+             x-text="paymentStructure === '50_50_split' ? 'Activation deposit — applied toward full engagement. Remainder due at kickoff.' : 'Intake payment secures your entry session and structural validation review.'">
         </div>
         <div class="bk-row">
           <div class="bk-field">
@@ -375,10 +315,10 @@
         </div>
         <div class="bk-field" style="position:relative">
           <label for="bk-message" style="display:block">
-            Message / Goals
+            Intake Context
           </label>
           <textarea id="bk-message" x-model="form.message" maxlength="1000" spellcheck="true"
-                    placeholder="Tell us what you want to improve, where you feel stuck, and what growth would look like for your business."></textarea>
+                    placeholder="Share current constraints, structural priorities, and target outcomes for this activation cycle."></textarea>
           <div class="bk-char-count" x-text="(form.message || '').length + ' / 1000'" style="font-size:.76rem;color:#7a7a72;text-align:right;margin-top:2px"></div>
         </div>
         {{-- Honeypot — invisible to real users, filled by bots --}}
@@ -422,16 +362,16 @@
         </div>
 
         <button class="bk-submit" :disabled="submitting || !form.name || !form.email" @click="submit()">
-          <span x-show="submitting"><span class="bk-spinner"></span> Booking…</span>
-          <span x-show="!submitting">Confirm Booking</span>
+          <span x-show="submitting"><span class="bk-spinner"></span> Reserving Entry...</span>
+          <span x-show="!submitting">Confirm Entry Session</span>
         </button>
       </div>
 
       {{-- ═══ STEP 4: Redirecting ═══ --}}
       <div x-show="step === 4" style="text-align:center;padding:32px 0">
         <div class="bk-check">&#10003;</div>
-        <h3 class="bk-conf-title">Confirmed &mdash; redirecting&hellip;</h3>
-        <p class="bk-conf-note" style="margin-top:12px">Taking you to your confirmation page.</p>
+        <h3 class="bk-conf-title">Entry Reserved &mdash; redirecting&hellip;</h3>
+        <p class="bk-conf-note" style="margin-top:12px">Taking you to your intake confirmation.</p>
       </div>
     </div>
   </div>
@@ -439,7 +379,10 @@
 
 <script>
 function _bkOpenHT(id, duration, name, paymentStructure) {
-  if (!id) return; // type not seeded yet — secondary mailto link is the fallback
+  if (!id) {
+    window.location.href = '/book';
+    return;
+  }
   var d = { id: id, duration: duration, name: name, isFree: false, paymentStructure: paymentStructure };
   window._bkPending = d;
   window.dispatchEvent(new CustomEvent('open-booking', { detail: d }));
@@ -601,7 +544,7 @@ document.addEventListener('alpine:init', () => {
           return new Date(yr, mo - 1, dy, h, m).getTime() > cutoff;
         });
       } catch (e) {
-        this.errorMsg = 'Could not load available times. Please try again.';
+        this.errorMsg = 'Could not load available entry windows. Please try again.';
       }
       this.slotsLoading = false;
     },
@@ -647,7 +590,7 @@ document.addEventListener('alpine:init', () => {
           return;
         }
         if (!resp.ok) {
-          this.errorMsg = data.message || 'Something went wrong. Please try again.';
+          this.errorMsg = data.message || 'System could not reserve this entry session. Please try again.';
           this.submitting = false;
           return;
         }
@@ -677,7 +620,7 @@ document.addEventListener('alpine:init', () => {
           window.location.href = '/onboarding/start?booking=' + data.booking.id;
         }, 900);
       } catch (e) {
-        this.errorMsg = 'Network error — please try again.';
+        this.errorMsg = 'Network error while reserving entry. Please try again.';
       }
       this.submitting = false;
     },

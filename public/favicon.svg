@@ -1,36 +1,39 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" fill="none">
   <!--
     SEOAIco — Constellation favicon
-    Gold nodes + thin connecting lines on transparent background.
+    Gold nodes + thin connecting lines on dark background.
     Animation: two-node SMIL twinkle (degrades gracefully to static in unsupported browsers).
     Design: 3-node triangle echoing a coverage-map mark.
   -->
 
+  <!-- Dark background for contrast in light browser tab bars -->
+  <rect width="32" height="32" rx="6" fill="#0a0a08"/>
+
   <!-- Connecting lines — drawn under nodes -->
-  <line x1="22" y1="5" x2="6" y2="25"  stroke="#c8a84b" stroke-width="1"   stroke-opacity="0.44" stroke-linecap="round"/>
-  <line x1="22" y1="5" x2="27" y2="22" stroke="#c8a84b" stroke-width="0.8" stroke-opacity="0.30" stroke-linecap="round"/>
-  <line x1="6"  y1="25" x2="27" y2="22" stroke="#c8a84b" stroke-width="0.8" stroke-opacity="0.26" stroke-linecap="round"/>
+  <line x1="22" y1="6" x2="6" y2="24"  stroke="#c8a84b" stroke-width="1.1"  stroke-opacity="0.48" stroke-linecap="round"/>
+  <line x1="22" y1="6" x2="26" y2="22" stroke="#c8a84b" stroke-width="0.9" stroke-opacity="0.34" stroke-linecap="round"/>
+  <line x1="6"  y1="24" x2="26" y2="22" stroke="#c8a84b" stroke-width="0.9" stroke-opacity="0.30" stroke-linecap="round"/>
 
   <!-- Soft glow halos -->
-  <circle cx="22" cy="5"  r="6"   fill="#c8a84b" fill-opacity="0.09"/>
-  <circle cx="6"  cy="25" r="4.5" fill="#c8a84b" fill-opacity="0.06"/>
+  <circle cx="22" cy="6"  r="5.5" fill="#c8a84b" fill-opacity="0.10"/>
+  <circle cx="6"  cy="24" r="4"   fill="#c8a84b" fill-opacity="0.07"/>
 
   <!-- Node A — primary star, upper-right, twinkle animation -->
-  <circle cx="22" cy="5" r="3.2" fill="#c8a84b">
+  <circle cx="22" cy="6" r="3.4" fill="#c8a84b">
     <animate attributeName="opacity"
-             values="1;0.62;0.94;0.62;1"
+             values="1;0.65;0.95;0.65;1"
              dur="4.2s"
              begin="0s"
              repeatCount="indefinite"/>
   </circle>
 
   <!-- Node B — secondary, lower-left, static anchor -->
-  <circle cx="6" cy="25" r="2.6" fill="#c8a84b" opacity="0.90"/>
+  <circle cx="6" cy="24" r="2.8" fill="#c8a84b" opacity="0.92"/>
 
   <!-- Node C — tertiary, lower-right, slow offset twinkle -->
-  <circle cx="27" cy="22" r="1.9" fill="#c8a84b" opacity="0.60">
+  <circle cx="26" cy="22" r="2.1" fill="#c8a84b" opacity="0.65">
     <animate attributeName="opacity"
-             values="0.60;0.28;0.60"
+             values="0.65;0.30;0.65"
              dur="5.8s"
              begin="2.1s"
              repeatCount="indefinite"/>

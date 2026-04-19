@@ -14,7 +14,11 @@ class FunnelTrackController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'event' => ['required', 'string', 'in:homepage_cta_click,deployment_cta_click'],
+            'event' => [
+                'required',
+                'string',
+                'in:homepage_cta_click,deployment_cta_click,dashboard_cta_click,checkout_cancelled',
+            ],
             'metadata' => ['nullable', 'array'],
             'metadata.*' => ['string', 'max:255'],
         ]);

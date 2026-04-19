@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sign In — SEOAIco</title>
+    <link rel="canonical" href="{{ url('/login') }}">
+    <meta name="robots" content="noindex, nofollow">
     <link rel="icon" type="image/x-icon" href="/favicon.ico">
     <link rel="icon" type="image/svg+xml" href="/favicon.svg">
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -70,7 +72,7 @@
             font-family: 'DM Sans', sans-serif;
             font-weight: 300;
             font-size: 1.2rem;
-            color: rgba(150,150,150,.5);
+            color: rgba(255,255,255,.45);
             letter-spacing: .04em;
         }
 
@@ -398,7 +400,7 @@
 </div>
 
 <div class="site-footer">
-    <p>&copy; {{ date('Y') }} SEO AI Co&trade; &middot; <a href="{{ url('/') }}">seoaico.com</a></p>
+    <p>&copy; {{ date('Y') }} SEOAIco &middot; <a href="{{ url('/') }}">seoaico.com</a></p>
 </div>
 
 </body>

@@ -1,7 +1,7 @@
 {
-  "name": "SEOAIco",
+  "name": "SEOAIco — AI Search Infrastructure",
   "short_name": "SEOAIco",
-  "description": "Programmatic search infrastructure. Licensed. Controlled. Exclusive.",
+  "description": "Programmatic visibility systems for local businesses. Licensed. Controlled. Exclusive.",
   "icons": [
     { "src": "/favicon-16x16.png",  "sizes": "16x16",   "type": "image/png" },
     { "src": "/favicon-32x32.png",  "sizes": "32x32",   "type": "image/png" },

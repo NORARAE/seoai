@@ -23,11 +23,11 @@
     </div>
 
     <div style="text-align:center;margin:24px 0">
-      <a href="{{ url('/dashboard') }}" style="display:inline-block;padding:14px 36px;background:#080808;color:#ede8de;font-size:13px;letter-spacing:.1em;text-decoration:none;text-transform:uppercase;margin-bottom:10px">Complete Onboarding</a>
+      <a href="{{ \App\Support\EmailUrl::tracked('/dashboard', 'high-tier-activation', $user->id, $scan->id) }}" style="display:inline-block;padding:14px 36px;background:#080808;color:#ede8de;font-size:13px;letter-spacing:.1em;text-decoration:none;text-transform:uppercase;margin-bottom:10px">Complete Onboarding</a>
     </div>
 
     <div style="text-align:center;margin:0 0 16px">
-      <a href="{{ url('/booking') }}" style="font-size:13px;color:#c8a84b;text-decoration:none;letter-spacing:.08em;text-transform:uppercase">Schedule Call &rarr;</a>
+      <a href="{{ \App\Support\EmailUrl::tracked('/booking', 'high-tier-activation', $user->id, $scan->id) }}" style="font-size:13px;color:#c8a84b;text-decoration:none;letter-spacing:.08em;text-transform:uppercase">Schedule Call &rarr;</a>
     </div>
 
     <p style="font-size:12px;color:#999;line-height:1.6;margin:16px 0 0;text-align:center">Limited deployment capacity each month. Early onboarding gets priority.</p>

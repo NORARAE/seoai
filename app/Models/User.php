@@ -140,6 +140,11 @@ class User extends Authenticatable implements FilamentUser, HasAppAuthentication
         return $this->hasMany(QuickScan::class);
     }
 
+    public function entitlements(): HasMany
+    {
+        return $this->hasMany(UserEntitlement::class);
+    }
+
     /**
      * Check if user has a role
      */
@@ -315,5 +320,13 @@ class User extends Authenticatable implements FilamentUser, HasAppAuthentication
     public function tierRank(): int
     {
         return $this->system_tier?->rank() ?? 0;
+    }
+
+    public function hasAccessTo(string $entitlementKey): bool
+    {
+        return $this->entitlements()
+            ->where('entitlement_key', $entitlementKey)
+            ->where('status', 'active')
+            ->exists();
     }
 }

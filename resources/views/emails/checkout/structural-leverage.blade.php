@@ -27,7 +27,7 @@
 
   <div style="background:#fafaf8;padding:20px 24px;border-top:1px solid #e8e8e8;text-align:center">
     <p style="font-size:12px;color:#888;margin:0 0 10px">Want us to implement the corrections for you?</p>
-    <a href="{{ url('/checkout/system-activation') }}" style="display:inline-block;padding:12px 28px;background:#080808;color:#ede8de;font-size:12px;letter-spacing:.1em;text-decoration:none;text-transform:uppercase">Upgrade to System Activation &mdash; $489</a>
+    <a href="{{ \App\Support\EmailUrl::tracked('/checkout/system-activation', 'checkout-structural-leverage') }}" style="display:inline-block;padding:12px 28px;background:#080808;color:#ede8de;font-size:12px;letter-spacing:.1em;text-decoration:none;text-transform:uppercase">Upgrade to System Activation &mdash; $489</a>
   </div>
 
   <div style="padding:20px 24px;border-top:1px solid #e8e8e8;text-align:center">

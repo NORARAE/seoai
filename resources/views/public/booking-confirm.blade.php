@@ -10,7 +10,7 @@
 <link rel="manifest" href="/site.webmanifest">
 <meta name="theme-color" content="#080808">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Confirm Your Booking | SEO AI Co™</title>
+<title>Confirm Your Entry Session | SEO AI Co™</title>
 <meta name="robots" content="noindex,nofollow">
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
@@ -30,8 +30,8 @@ p{color:#a8a8a0;font-size:.92rem;line-height:1.7;margin-bottom:16px}
 <body>
 <div class="box">
   <div class="check">&#10003;</div>
-  <h1>Booking Confirmed</h1>
-  <p>Your {{ $booking->consultType->name }} is booked.</p>
+  <h1>Entry Reserved</h1>
+  <p>System Intake Scheduled for your {{ $booking->consultType->name }} session.</p>
   <div class="detail"><strong>Date:</strong> {{ $booking->preferred_date->format('l, F j, Y') }}</div>
   <div class="detail"><strong>Time:</strong> {{ \Carbon\Carbon::parse($booking->preferred_time)->format('g:i A') }} PT</div>
   <div class="detail"><strong>Duration:</strong> {{ $booking->consultType->duration_minutes }} minutes</div>

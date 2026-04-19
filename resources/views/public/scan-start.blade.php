@@ -6,6 +6,8 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Start Your AI Search Scan — SEO AI Co</title>
 <meta name="description" content="Enter your website URL and email. We'll analyze your structure, signals, and AI search coverage in seconds.">
+<link rel="canonical" href="{{ url('/scan/start') }}">
+<meta name="robots" content="noindex, nofollow">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
@@ -273,9 +275,9 @@
 
     {{-- ═══ STEP 2 — EMAIL CAPTURE ═══ --}}
     <div class="se-step" x-show="step === 2" x-cloak x-transition:enter="se-step" x-transition:enter-start="opacity-0 translate-y-4" x-transition:enter-end="opacity-100 translate-y-0" x-transition:leave="se-step" x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0">
-      <p class="se-eye">Analysis Active</p>
+      <p class="se-eye">Scan Setup Ready</p>
       <h2 class="se-hed">Where should we send <em>your results?</em></h2>
-      <p class="se-sub">Your scan is in progress. Enter your email to receive your full AI visibility report.</p>
+      <p class="se-sub">Your scan session is prepared. Enter your email so we can deliver the full AI visibility report.</p>
 
       <div class="se-input-wrap">
         <label class="se-label" for="se-email">Email Address</label>
@@ -292,7 +294,7 @@
     <div class="se-step" x-show="step === 3" x-cloak x-transition:enter="se-step" x-transition:enter-start="opacity-0 translate-y-4" x-transition:enter-end="opacity-100 translate-y-0">
       <p class="se-eye">System Ready</p>
       <span class="se-tier-badge" x-text="tierLabels[tier] || tierLabels.basic"></span>
-      <p class="se-tier-desc">Your analysis is ready to run.</p>
+      <p class="se-tier-desc">Your analysis is ready to launch.</p>
       <p class="se-ready">Unlock your results to continue.</p>
 
       <form method="POST" action="{{ route('scan.submit') }}" x-ref="form">

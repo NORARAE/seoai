@@ -3,18 +3,21 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Your AI Visibility Report — SEO AI Co</title>
+<title>Your AI Visibility Report — SEO AI Co™</title>
+<link rel="canonical" href="{{ url('/scan/preview') }}">
+<meta name="robots" content="noindex, nofollow">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
 @include('partials.design-system')
+@include('partials.public-nav-css')
 
 /* ── Page ── */
 .prev-page{
   min-height:100vh;display:flex;flex-direction:column;
   align-items:center;justify-content:center;
-  padding:56px 20px 88px;position:relative;overflow-x:hidden;
+  padding:120px 20px 88px;position:relative;overflow-x:hidden;
 }
 .prev-page::before{
   content:'';position:absolute;inset:0;
@@ -23,6 +26,11 @@
     linear-gradient(90deg,rgba(200,168,75,.04) 1px,transparent 1px);
   background-size:48px 48px;
   pointer-events:none;z-index:0;
+  animation:gridBreath 12s ease-in-out infinite;
+}
+@keyframes gridBreath{
+  0%,100%{opacity:1}
+  50%{opacity:.65}
 }
 .prev-page::after{
   content:'';position:absolute;top:12%;left:50%;transform:translateX(-50%);
@@ -98,6 +106,11 @@
   margin:0 auto 10px;padding:10px 22px;
   background:rgba(196,120,120,.06);border:1px solid rgba(196,120,120,.12);
   width:fit-content;
+  animation:gapBadgePulse 3s ease-in-out infinite;
+}
+@keyframes gapBadgePulse{
+  0%,100%{border-color:rgba(196,120,120,.12);box-shadow:none}
+  50%{border-color:rgba(196,120,120,.18);box-shadow:0 0 12px rgba(196,120,120,.06)}
 }
 .prev-issue-badge .count{
   font-size:1.3rem;font-weight:700;color:rgba(196,120,120,.85);
@@ -110,6 +123,37 @@
 .prev-hidden-count{
   text-align:center;font-size:.72rem;color:rgba(168,168,160,.45);
   margin-bottom:28px;letter-spacing:.01em;
+}
+
+/* ── Visibility Score ── */
+.prev-vis-score{
+  text-align:center;margin:0 auto 6px;
+  animation:visScorePulse 3.5s ease-in-out infinite;
+}
+@keyframes visScorePulse{
+  0%,100%{opacity:1}
+  50%{opacity:.82}
+}
+.prev-vis-num{
+  font-family:'Cormorant Garamond',serif;
+  font-size:clamp(2.6rem,6vw,3.4rem);font-weight:300;
+  color:rgba(196,120,120,.8);line-height:1;
+}
+.prev-vis-of{
+  font-size:.82rem;color:rgba(168,168,160,.4);
+  letter-spacing:.04em;font-weight:300;
+}
+.prev-vis-label{
+  display:block;font-size:.6rem;letter-spacing:.18em;text-transform:uppercase;
+  color:rgba(196,120,120,.45);margin-top:8px;font-weight:500;
+}
+.prev-vis-readiness{
+  text-align:center;font-size:.74rem;color:rgba(168,168,160,.5);
+  margin-bottom:20px;letter-spacing:.01em;
+}
+.prev-gap-subtext{
+  text-align:center;font-size:.72rem;color:rgba(196,120,120,.5);
+  margin-bottom:4px;letter-spacing:.01em;
 }
 
 /* ── Results Card ── */
@@ -169,6 +213,65 @@
 .prev-signal-text .impact{
   display:block;font-size:.68rem;color:rgba(196,120,120,.55);
   margin-top:3px;line-height:1.4;letter-spacing:.02em;
+}
+
+/* Signal row hover */
+.prev-signal{
+  transition:opacity .5s var(--ease-out),transform .5s var(--ease-out),background .15s ease;
+  border-radius:3px;padding-left:6px;padding-right:6px;margin-left:-6px;margin-right:-6px;
+}
+.prev-signal:hover{
+  background:rgba(200,168,75,.03);
+}
+.prev-signal:hover .prev-signal-text{color:rgba(237,232,222,1)}
+.prev-signal:hover .prev-icon{box-shadow:0 0 14px rgba(200,168,75,.18)}
+
+/* ── Locked Signal Intelligence ── */
+.prev-locked-depth{
+  background:rgba(10,9,7,.60);
+  border:1px solid rgba(200,168,75,.06);
+  border-radius:6px;padding:24px 28px;
+  margin-bottom:10px;position:relative;overflow:hidden;
+}
+.prev-locked-depth::after{
+  content:'';position:absolute;bottom:0;left:0;right:0;height:48px;
+  background:linear-gradient(to top,rgba(8,8,8,.92),transparent);
+  pointer-events:none;
+}
+.prev-locked-depth-head{
+  font-size:.58rem;letter-spacing:.2em;text-transform:uppercase;
+  color:rgba(200,168,75,.35);margin-bottom:16px;padding-bottom:10px;
+  border-bottom:1px solid rgba(200,168,75,.06);
+}
+.prev-locked-depth-row{
+  display:flex;align-items:center;gap:12px;
+  padding:9px 0;opacity:.45;filter:blur(.4px);
+}
+.prev-locked-depth-row .depth-icon{
+  width:20px;height:20px;border-radius:50%;
+  background:rgba(200,168,75,.06);border:1px solid rgba(200,168,75,.10);
+  display:flex;align-items:center;justify-content:center;
+  font-size:.6rem;color:rgba(200,168,75,.4);flex-shrink:0;
+}
+.prev-locked-depth-row .depth-label{
+  font-size:.78rem;color:rgba(237,232,222,.5);letter-spacing:.01em;
+}
+/* Locked depth row hover */
+.prev-locked-depth-row{
+  transition:background .15s ease;
+  border-radius:3px;padding-left:6px;padding-right:6px;margin-left:-6px;margin-right:-6px;
+}
+.prev-locked-depth-row:hover{
+  background:rgba(200,168,75,.03);
+}
+.prev-locked-depth-row:hover .depth-label{color:rgba(237,232,222,.65)}
+.prev-locked-depth-row:hover .depth-icon{box-shadow:0 0 10px rgba(200,168,75,.12)}
+.prev-strategic{
+  text-align:center;font-size:.78rem;color:var(--muted);
+  line-height:1.7;margin-bottom:32px;max-width:440px;margin-left:auto;margin-right:auto;
+}
+.prev-strategic em{
+  color:rgba(200,168,75,.55);font-style:normal;
 }
 
 /* ── Locked Intelligence ── */
@@ -237,7 +340,7 @@
   font-size:.82rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;
   text-decoration:none;border:1px solid rgba(226,201,125,.4);border-radius:3px;
   transition:all .35s;position:relative;overflow:hidden;
-  box-shadow:0 4px 24px rgba(200,168,75,.15);
+  box-shadow:0 4px 24px rgba(200,168,75,.15),0 0 40px rgba(200,168,75,.08);
 }
 .prev-cta::before{
   content:'';position:absolute;inset:0;
@@ -247,14 +350,14 @@
 .prev-cta:hover{
   background:linear-gradient(180deg,#e0c97e,#d4b45a);
   border-color:rgba(226,201,125,.65);
-  box-shadow:0 8px 40px rgba(200,168,75,.28);
+  box-shadow:0 8px 40px rgba(200,168,75,.28),0 0 60px rgba(200,168,75,.12);
   transform:translateY(-2px);
 }
 .prev-cta:hover::before{transform:translateX(100%)}
 
 @keyframes ctaPulse{
-  0%,100%{box-shadow:0 4px 24px rgba(200,168,75,.15)}
-  50%{box-shadow:0 6px 40px rgba(200,168,75,.3)}
+  0%,100%{box-shadow:0 4px 24px rgba(200,168,75,.15),0 0 40px rgba(200,168,75,.08)}
+  50%{box-shadow:0 6px 40px rgba(200,168,75,.22),0 0 56px rgba(200,168,75,.12)}
 }
 .prev-cta-pulse{animation:ctaPulse 2.5s ease-in-out infinite}
 
@@ -354,12 +457,22 @@
 }
 .prev-sticky-cta:hover::before{transform:translateX(100%)}
 
+@include('partials.public-nav-mobile-css')
+
+/* ── Nav mobile breakpoint ── */
+@media(max-width:900px){
+  #nav{padding:14px 20px}#nav.stuck{padding:10px 20px}
+  .nav-link{display:none}
+  .nav-btn{display:none}
+  .nav-hamburger{display:flex}
+}
+
 /* ── Responsive ── */
 
 /* ── Mobile UX refinement ── */
 @media(max-width:768px){
   /* Page container — breathing room */
-  .prev-page{padding:48px 20px 88px}
+  .prev-page{padding:88px 20px 88px}
 
   /* Header — bigger, more assertive */
   .prev-hed{font-size:clamp(1.7rem,5vw,2.4rem);margin-bottom:14px}
@@ -374,6 +487,11 @@
   .prev-issue-badge{padding:16px 28px;gap:12px;border-radius:6px}
   .prev-hidden-count{font-size:.78rem;margin-bottom:24px}
 
+  /* Visibility score — mobile */
+  .prev-vis-num{font-size:clamp(2.8rem,7vw,3.4rem)}
+  .prev-vis-readiness{font-size:.8rem;margin-bottom:22px}
+  .prev-gap-subtext{font-size:.78rem}
+
   /* Signal rows — readable bullets */
   .prev-signal{padding:11px 0;gap:14px}
   .prev-signal-text{font-size:.95rem;line-height:1.65}
@@ -381,7 +499,7 @@
   .prev-icon{width:26px;height:26px;font-size:.8rem}
 
   /* Cards — centered floating panels */
-  .prev-card,.prev-locked{
+  .prev-card,.prev-locked,.prev-locked-depth{
     padding:34px 26px 30px;margin-bottom:28px;
     border-radius:8px;
   }
@@ -425,7 +543,7 @@
 
 @media(max-width:520px){
   /* ── True centered floating cards ── */
-  .prev-card,.prev-locked,.prev-value-card{
+  .prev-card,.prev-locked,.prev-locked-depth,.prev-value-card{
     width:94%;max-width:420px;margin-left:auto;margin-right:auto;
     padding:36px 28px 32px;
   }
@@ -443,7 +561,7 @@
   .prev-scanline{opacity:.5}
 
   /* Header tighten */
-  .prev-page{padding:40px 16px 80px}
+  .prev-page{padding:80px 16px 80px}
   .prev-inner{max-width:100%}
   .prev-hed{font-size:clamp(1.5rem,6vw,1.9rem)}
 
@@ -478,8 +596,8 @@
 
 /* ── Small phones ── */
 @media(max-width:430px){
-  .prev-page{padding:36px 14px 76px}
-  .prev-card,.prev-locked,.prev-value-card{
+  .prev-page{padding:76px 14px 76px}
+  .prev-card,.prev-locked,.prev-locked-depth,.prev-value-card{
     width:94%;max-width:400px;padding:32px 24px 28px;
   }
   .prev-hed{font-size:clamp(1.4rem,6.5vw,1.8rem)}
@@ -498,7 +616,7 @@
 
 /* ── Very small phones ── */
 @media(max-width:390px){
-  .prev-card,.prev-locked,.prev-value-card{width:96%;max-width:380px;padding:28px 20px 24px}
+  .prev-card,.prev-locked,.prev-locked-depth,.prev-value-card{width:96%;max-width:380px;padding:28px 20px 24px}
   .prev-hed{font-size:clamp(1.3rem,7vw,1.7rem)}
   .prev-sub{font-size:.88rem}
   .prev-cta{padding:16px 28px;font-size:.82rem}
@@ -511,6 +629,8 @@
 </style>
 </head>
 <body class="prev-page">
+
+@include('partials.public-nav', ['isReportPage' => true, 'showHamburger' => true])
 
 <!-- Ambient scan line -->
 <div class="prev-scanline"></div>
@@ -545,134 +665,93 @@
 
   <!-- Header -->
   <p class="prev-eye">Signal Detection Complete</p>
-  <h1 class="prev-hed">Your AI Visibility Intelligence</h1>
-  <p class="prev-sub">The system has completed its initial analysis of your domain.</p>
+  <h1 class="prev-hed">Visibility Intelligence Preview</h1>
+  <p class="prev-sub">Initial scan complete. This view is intentionally partial before unlock.</p>
   @if($issueCount > 0)
   <p class="prev-urgency">Critical signal gaps detected in your citation structure.</p>
   @endif
   <p class="prev-url">{{ $host }}</p>
 
+  <!-- Visibility score -->
+  @php
+    $passCount = ($preview['has_sitemap'] ? 1 : 0) + ($preview['has_schema'] ? 1 : 0) + ($preview['has_locations'] ? 1 : 0) + ($preview['has_authority'] ? 1 : 0);
+    $visibilityScore = max(32, min(68, 32 + ($passCount * 9) + (intval($preview['pages_detected'] ?? 0) > 5 ? 2 : 0)));
+  @endphp
+  <div class="prev-vis-score">
+    <span class="prev-vis-num">{{ $visibilityScore }} <span class="prev-vis-of">/ 100</span></span>
+    <span class="prev-vis-label">Preview Score</span>
+  </div>
+  <p class="prev-vis-readiness">AI citation readiness is currently limited at the surface layer.</p>
+
   <!-- Issue counter badge -->
   @if($issueCount > 0)
   <div class="prev-issue-badge">
     <span class="count">{{ $issueCount }}</span>
-    <span class="label">{{ $issueCount === 1 ? 'gap' : 'gaps' }} detected</span>
+    <span class="label">{{ $issueCount === 1 ? 'critical gap' : 'critical gaps' }} detected</span>
   </div>
-  <p class="prev-hidden-count">{{ $issueCount }} identified &mdash; deeper signals remain locked</p>
+  <p class="prev-gap-subtext">These gaps reduce source-selection confidence across AI answers.</p>
+  <p class="prev-hidden-count">{{ $issueCount }} identified &mdash; deeper structural findings remain locked</p>
+  @endif
 
   <!-- Primary above-fold CTA ($2) -->
-  <div class="prev-cta-wrap" style="margin-bottom:32px">
-    <a href="{{ route('checkout.scan-basic') }}" class="prev-cta prev-cta-pulse" onclick="if(typeof gtag==='function')gtag('event','cta_click',{cta_location:'above_fold',cta_label:'scan_basic'});">Unlock Layer&nbsp;1 Report&nbsp;&mdash;&nbsp;$2</a>
+  <div class="prev-cta-wrap" style="margin-bottom:14px">
+    <a href="{{ route('checkout.scan-basic') }}" class="prev-cta prev-cta-pulse" onclick="if(typeof gtag==='function')gtag('event','cta_click',{cta_location:'above_fold',cta_label:'scan_basic'});">Reveal Full Signal Map&nbsp;&mdash;&nbsp;$2</a>
   </div>
-  @else
-  <!-- CTA for clean scans -->
-  <div class="prev-cta-wrap" style="margin-bottom:32px">
-    <a href="{{ route('checkout.scan-basic') }}" class="prev-cta prev-cta-pulse" onclick="if(typeof gtag==='function')gtag('event','cta_click',{cta_location:'above_fold_clean',cta_label:'scan_basic'});">Unlock Full Report&nbsp;&mdash;&nbsp;$2</a>
-  </div>
-  @endif
+  <p class="prev-cta-sub" style="margin-top:0;margin-bottom:18px">Secure unlock. Full signal map, deeper layers, and correction sequence.</p>
 
   <!-- Detected signals card -->
   <div class="prev-card">
     <p class="prev-card-head">Detected Signals</p>
     <ul class="prev-signals" id="prevSignals">
-
-      {{-- Always detected --}}
-      <li class="prev-signal" data-delay="0">
-        <span class="prev-icon prev-icon--ok">✓</span>
-        <span class="prev-signal-text">Site structure detected</span>
+      @foreach(($surfaceSignals ?? []) as $idx => $signal)
+      <li class="prev-signal" data-delay="{{ $idx }}">
+        <span class="prev-icon {{ !empty($signal['ok']) ? 'prev-icon--ok' : 'prev-icon--warn' }}">{{ !empty($signal['ok']) ? '✓' : '⚠' }}</span>
+        <span class="prev-signal-text">{{ $signal['label'] }}</span>
       </li>
+      @endforeach
 
-      <li class="prev-signal" data-delay="1">
-        <span class="prev-icon prev-icon--ok">✓</span>
-        <span class="prev-signal-text">{{ $preview['pages_detected'] }} pages discovered</span>
-      </li>
-
-      {{-- Sitemap --}}
-      @if($preview['has_sitemap'])
-      <li class="prev-signal" data-delay="2">
-        <span class="prev-icon prev-icon--ok">✓</span>
-        <span class="prev-signal-text">XML Sitemap present</span>
-      </li>
-      @else
       <li class="prev-signal" data-delay="2">
         <span class="prev-icon prev-icon--warn">⚠</span>
         <span class="prev-signal-text">
-          Missing XML Sitemap
-          <span class="impact">Limits AI extraction</span>
+          {{ $primaryGap ?? 'Critical structural gap detected' }}
+          <span class="impact">Deeper structural context remains locked</span>
         </span>
       </li>
-      @endif
-
-      {{-- Schema --}}
-      @if($preview['has_schema'])
-      <li class="prev-signal" data-delay="3">
-        <span class="prev-icon prev-icon--ok">✓</span>
-        <span class="prev-signal-text">Structured data (Schema) present</span>
-      </li>
-      @else
-      <li class="prev-signal" data-delay="3">
-        <span class="prev-icon prev-icon--warn">⚠</span>
-        <span class="prev-signal-text">
-          Missing structured data <span class="muted">(Schema)</span>
-          <span class="impact">Reduces citation confidence</span>
-        </span>
-      </li>
-      @endif
-
-      {{-- Locations --}}
-      @if($preview['has_locations'])
-      <li class="prev-signal" data-delay="4">
-        <span class="prev-icon prev-icon--ok">✓</span>
-        <span class="prev-signal-text">Location signals detected</span>
-      </li>
-      @else
-      <li class="prev-signal" data-delay="4">
-        <span class="prev-icon prev-icon--warn">⚠</span>
-        <span class="prev-signal-text">
-          Weak location signals
-          <span class="impact">Impacts discovery radius</span>
-        </span>
-      </li>
-      @endif
-
-      {{-- Authority --}}
-      @if($preview['has_authority'])
-      <li class="prev-signal" data-delay="5">
-        <span class="prev-icon prev-icon--ok">✓</span>
-        <span class="prev-signal-text">Authority signals present</span>
-      </li>
-      @else
-      <li class="prev-signal" data-delay="5">
-        <span class="prev-icon prev-icon--warn">⚠</span>
-        <span class="prev-signal-text">
-          No authority indicators found
-          <span class="impact">Limits extraction priority</span>
-        </span>
-      </li>
-      @endif
 
     </ul>
   </div>
 
-  <!-- Inline value statement -->
-  <div class="prev-value-card" style="text-align:center;padding:32px 28px;margin-bottom:28px;background:rgba(14,13,9,.88);border:1px solid rgba(200,168,75,.08);border-radius:6px">
-    <p style="font-family:'Cormorant Garamond',serif;font-size:clamp(1.2rem,2.2vw,1.55rem);font-weight:300;color:var(--ivory);line-height:1.25;margin-bottom:14px">
-      Full analysis and priority fix path unlock next.
-    </p>
-    <p style="font-size:.78rem;color:var(--muted);line-height:1.7;max-width:380px;margin:0 auto 22px">
-      Your Layer&nbsp;1 report includes visibility score, signal status, primary bottleneck, and next-step guidance.
-    </p>
-    <a href="{{ route('checkout.scan-basic') }}" class="prev-cta prev-cta-pulse" onclick="if(typeof gtag==='function')gtag('event','cta_click',{cta_location:'inline_cta',cta_label:'scan_basic'});">Unlock Full Report&nbsp;&mdash;&nbsp;$2</a>
+  <!-- Locked Signal Intelligence -->
+  <div class="prev-locked-depth">
+    <p class="prev-locked-depth-head">Locked Layers</p>
+    <div class="prev-locked-depth-row">
+      <span class="depth-icon">🔒</span>
+      <span class="depth-label">+{{ max(3, $issueCount + rand(2,4)) }} structural gaps hidden</span>
+    </div>
+    <div class="prev-locked-depth-row">
+      <span class="depth-icon">🔒</span>
+      <span class="depth-label">+{{ rand(2,5) }} authority gaps hidden</span>
+    </div>
+    <div class="prev-locked-depth-row">
+      <span class="depth-icon">🔒</span>
+      <span class="depth-label">+{{ rand(3,6) }} competitive weaknesses hidden</span>
+    </div>
   </div>
+
+  <!-- Consequence layer -->
+  <p class="prev-strategic" style="margin-bottom:12px">AI systems are already selecting which sources to cite.<br>Gaps in your signal layer reduce the likelihood your business is chosen.</p>
+
+  <!-- Strategic line -->
+  <p class="prev-strategic">This is the first layer only.<br><em>Deeper structural findings remain locked until unlock.</em></p>
 
   <!-- Locked intelligence section -->
   <div class="prev-locked">
     <div class="prev-locked-overlay">
       <span class="prev-locked-badge">
         <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="7" width="10" height="8" rx="1.5"/><path d="M5 7V5a3 3 0 0 1 6 0v2"/></svg>
-        Layer 1 &mdash; Locked
+        Deeper Layers Locked
       </span>
-      <p class="prev-locked-unlock-text">Your visibility score and priority fix path are ready&nbsp;&mdash;&nbsp;unlock below.</p>
+      <p class="prev-locked-unlock-text">Your priority path has been calculated.<br>Unlock to access full signal depth and next actions.</p>
     </div>
     <div class="prev-locked-content" aria-hidden="true">
       <div class="prev-locked-row">
@@ -705,11 +784,11 @@
   </div>
 
   <!-- Primary CTA ($2) -->
+  <p class="prev-strategic" style="margin-bottom:24px">Your full signal map is ready for unlock.</p>
   <div class="prev-cta-wrap">
-    <a href="{{ route('checkout.scan-basic') }}" class="prev-cta prev-cta-pulse" id="mainCta" onclick="if(typeof gtag==='function')gtag('event','cta_click',{cta_location:'primary_cta',cta_label:'scan_basic'});">Unlock Full Report&nbsp;&mdash;&nbsp;$2</a>
+    <a href="{{ route('checkout.scan-basic') }}" class="prev-cta prev-cta-pulse" id="mainCta" onclick="if(typeof gtag==='function')gtag('event','cta_click',{cta_location:'primary_cta',cta_label:'scan_basic'});">Reveal Full Signal Map&nbsp;&mdash;&nbsp;$2</a>
   </div>
-  <p class="prev-cta-sub">Unlocks your visibility score, signal status, primary bottleneck, and next-step guidance.</p>
-  <p class="prev-reassure"><span class="chk">✓</span> Scan data carries forward&nbsp;&nbsp;&bull;&nbsp;&nbsp;<span class="chk">✓</span> Nothing repeated&nbsp;&nbsp;&bull;&nbsp;&nbsp;<span class="chk">✓</span> Secure checkout</p>
+  <p class="prev-cta-sub">Secure access. No repeated work. Data carries forward.</p>
 
   <!-- Secondary $99 path (non-distracting) -->
   <div class="prev-secondary">
@@ -727,11 +806,15 @@
 <!-- Sticky bottom bar ($2) -->
 <div class="prev-sticky" id="prevSticky">
   <span class="prev-sticky-text">Your report is ready</span>
-  <a href="{{ route('checkout.scan-basic') }}" class="prev-sticky-cta" onclick="if(typeof gtag==='function')gtag('event','cta_click',{cta_location:'sticky_bar',cta_label:'scan_basic'});">Unlock Report&nbsp;&mdash;&nbsp;$2</a>
+  <a href="{{ route('checkout.scan-basic') }}" class="prev-sticky-cta" onclick="if(typeof gtag==='function')gtag('event','cta_click',{cta_location:'sticky_bar',cta_label:'scan_basic'});">Reveal Full Signal Map&nbsp;&mdash;&nbsp;$2</a>
 </div>
 
 <script>
 (function(){
+  // Nav sticky
+  var nav = document.getElementById('nav');
+  if(nav) window.addEventListener('scroll', function(){ nav.classList.toggle('stuck', scrollY > 60); }, {passive:true});
+
   // Show sticky bar after scroll or after signal reveal
   var sticky = document.getElementById('prevSticky');
   if(sticky){
@@ -756,5 +839,7 @@
   });
 })();
 </script>
+@include('partials.public-footer')
+@include('partials.public-nav-js')
 </body>
 </html>

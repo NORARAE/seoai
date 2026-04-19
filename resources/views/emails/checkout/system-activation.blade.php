@@ -25,7 +25,7 @@
 
     <div style="background:#f0ede4;padding:16px;text-align:center;margin-bottom:20px">
       <p style="font-size:13px;color:#555;margin:0 0 10px;line-height:1.6"><strong style="color:#333">Next step:</strong> Complete your onboarding so we can begin implementation.</p>
-      <a href="{{ url('/onboarding/start?tier=activation') }}" style="display:inline-block;padding:12px 28px;background:#080808;color:#ede8de;font-size:12px;letter-spacing:.1em;text-decoration:none;text-transform:uppercase">Start Onboarding</a>
+      <a href="{{ \App\Support\EmailUrl::tracked('/onboarding/start?tier=activation', 'checkout-system-activation') }}" style="display:inline-block;padding:12px 28px;background:#080808;color:#ede8de;font-size:12px;letter-spacing:.1em;text-decoration:none;text-transform:uppercase">Start Onboarding</a>
     </div>
 
     <p style="font-size:12px;color:#999;line-height:1.6;margin:20px 0 0">A strategy advisor will reach out within 24 hours to begin your deployment timeline.</p>

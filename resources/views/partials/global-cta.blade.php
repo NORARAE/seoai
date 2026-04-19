@@ -6,7 +6,7 @@
     <p style="font-size:.84rem;color:var(--muted);line-height:1.8;max-width:480px;margin:0 auto 32px">Your data carries forward through every level. No repeated work. Expand when you&rsquo;re ready.</p>
     <div style="display:flex;align-items:center;justify-content:center;gap:16px;flex-wrap:wrap">
       <a href="/scan/start" class="btn-primary">Start Your Scan&nbsp;&mdash; $2</a>
-      <a href="/book" class="btn-ghost">Book a Strategy Call &rarr;</a>
+      <a href="{{ route('book.index', ['entry' => 'consultation']) }}" class="btn-ghost">Book Consultation &rarr;</a>
     </div>
   </div>
 </section>

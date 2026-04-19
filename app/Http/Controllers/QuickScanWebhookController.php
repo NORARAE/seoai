@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Actions\NotifyOwnerOfPurchase;
 use App\Jobs\RunQuickScanJob;
+use App\Models\FunnelEvent;
 use App\Models\QuickScan;
+use App\Services\Entitlements\EntitlementService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -29,6 +31,10 @@ use UnexpectedValueException;
  */
 class QuickScanWebhookController extends Controller
 {
+    public function __construct(private readonly EntitlementService $entitlements)
+    {
+    }
+
     public function handle(Request $request): JsonResponse
     {
         $payload = $request->getContent();
@@ -90,21 +96,39 @@ class QuickScanWebhookController extends Controller
         }
 
         // ── Handle upgrade payments (idempotent) ─────────────────────────
-        $upgradePlan = $session->metadata?->upgrade_plan ?? null;
+        $upgradePlan = QuickScan::normalizeUpgradePlan($session->metadata?->upgrade_plan ?? null);
 
         if ($upgradePlan && in_array($upgradePlan, ['diagnostic', 'fix-strategy', 'optimization'], true)) {
-            if ($scan->upgrade_status !== 'paid') {
+            $incomingRank = QuickScan::rankForUpgradePlan($upgradePlan);
+            $currentRank = QuickScan::rankForUpgradePlan($scan->normalizedUpgradePlan());
+
+            // Update when payment is not marked paid yet OR when this purchase advances tier rank.
+            if ($scan->upgrade_status !== 'paid' || $incomingRank > $currentRank) {
                 $scan->update([
                     'upgrade_plan' => $upgradePlan,
                     'upgrade_status' => 'paid',
                     'upgrade_stripe_session_id' => $session->id,
                     'upgraded_at' => now(),
                 ]);
+
+                FunnelEvent::fire(FunnelEvent::UPGRADE_PURCHASED, scanId: $scan->id, metadata: [
+                    'plan' => (string) $upgradePlan,
+                    'source_page' => 'quick_scan_webhook',
+                ]);
+
+                FunnelEvent::fire(FunnelEvent::PAYMENT_SUCCESS, scanId: $scan->id, metadata: [
+                    'flow' => 'quick_scan_upgrade',
+                    'tier' => (string) $upgradePlan,
+                    'source_page' => 'quick_scan_webhook',
+                ]);
+
                 Log::info('QuickScan webhook: upgrade payment confirmed', [
                     'scan_id' => $scanId,
                     'plan' => $upgradePlan,
                     'session_id' => $session->id,
                 ]);
+
+                $this->entitlements->issueForScan($scan->fresh());
 
                 // Notify owner of upgrade purchase
                 $upgradeTiers = [
@@ -120,6 +144,16 @@ class QuickScanWebhookController extends Controller
         }
 
         // ── Handle initial $2 payment (idempotent) ───────────────────────
+        if ($scan->stripe_session_id && $scan->stripe_session_id !== $session->id) {
+            Log::warning('QuickScan webhook: session mismatch for scan', [
+                'scan_id' => $scanId,
+                'expected_session' => $scan->stripe_session_id,
+                'received_session' => $session->id,
+            ]);
+
+            return response()->json(['message' => 'Session mismatch.'], Response::HTTP_CONFLICT);
+        }
+
         if (!$scan->paid) {
             $scan->update([
                 'paid' => true,
@@ -128,15 +162,25 @@ class QuickScanWebhookController extends Controller
             ]);
             Log::info('QuickScan webhook: marked paid', ['scan_id' => $scanId]);
 
+            $this->entitlements->issueForScan($scan->fresh());
+
             // Notify owner of $2 scan purchase
             (new NotifyOwnerOfPurchase)->execute($scan, 'AI Citation Quick Scan', 200);
+        }
+
+        if ($scan->paid) {
+            $this->entitlements->issueForScan($scan->fresh());
         }
 
         // Always dispatch — the job is fully idempotent:
         //   - skips scan if already STATUS_SCANNED
         //   - skips emails if emails_sent=true
         //   - CRM upsert is updateOrCreate (safe to repeat)
-        RunQuickScanJob::dispatch($scan->id);
+        if (app()->environment('local')) {
+            RunQuickScanJob::dispatchSync($scan->id);
+        } else {
+            RunQuickScanJob::dispatch($scan->id);
+        }
 
         Log::info('QuickScan webhook: dispatched RunQuickScanJob', [
             'scan_id' => $scanId,

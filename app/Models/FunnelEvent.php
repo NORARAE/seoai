@@ -31,12 +31,20 @@ class FunnelEvent extends Model
     public const HOMEPAGE_CTA_CLICK = 'homepage_cta_click';
 
     // Scan funnel
+    public const SCAN_START_SUBMITTED = 'scan_start_submitted';
     public const SCAN_STARTED = 'scan_started';
     public const SCAN_COMPLETED = 'scan_completed';
+    public const RESULT_PAGE_VIEWED = 'result_page_viewed';
+    public const HIGH_SCORE_RESULT_PAGE_VIEWED = 'high_score_result_page_viewed';
 
     // Upgrade funnel
     public const UPGRADE_CLICK = 'upgrade_click';
     public const UPGRADE_PURCHASED = 'upgrade_purchased';
+    public const CHECKOUT_ENTRY = 'checkout_entry';
+    public const CHECKOUT_CANCELLED = 'checkout_cancelled';
+    public const PAYMENT_SUCCESS = 'payment_success';
+    public const DASHBOARD_VISITED = 'dashboard_visited';
+    public const DASHBOARD_CTA_CLICK = 'dashboard_cta_click';
 
     // High-ticket / deployment
     public const DEPLOYMENT_CTA_CLICK = 'deployment_cta_click';
@@ -44,6 +52,9 @@ class FunnelEvent extends Model
     // Onboarding
     public const ONBOARDING_STARTED = 'onboarding_started';
     public const ONBOARDING_COMPLETED = 'onboarding_completed';
+
+    // Email
+    public const EMAIL_CTA_CLICK = 'email_cta_click';
 
     // Booking (existing)
     public const BOOKING_VIEWED = 'booking_viewed';

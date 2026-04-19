@@ -156,8 +156,8 @@ body.filament-panel {
 
 /* Input fields */
 .fi-input,
-.fi-fo-field-wrp input,
-.fi-fo-field-wrp textarea,
+.fi-fo-field input,
+.fi-fo-field textarea,
 .fi-input-wrp {
     background-color: rgba(8,8,8,.6) !important;
     border-color: rgba(200,168,75,.1) !important;
@@ -166,21 +166,27 @@ body.filament-panel {
 }
 
 .fi-input:focus,
-.fi-fo-field-wrp input:focus {
+.fi-fo-field input:focus {
     border-color: rgba(200,168,75,.35) !important;
     box-shadow: 0 0 0 3px rgba(200,168,75,.08), 0 1px 3px rgba(0,0,0,.3) !important;
     outline: none !important;
 }
 
-/* Labels */
-.fi-fo-field-wrp label,
-.fi-fo-label {
-    color: rgba(168,168,160,.72) !important;
+/* Labels — target actual Filament v5.3 selectors */
+.fi-fo-field-label,
+.fi-fo-field label,
+.fi-fo-field-label-content {
+    color: rgba(168,168,160,.90) !important;
+}
+
+/* Required asterisk — gold tint */
+.fi-fo-field-label-required-mark {
+    color: rgba(200,168,75,.55) !important;
 }
 
 /* "Remember me" text */
 .fi-fo-checkbox-input + label,
-.fi-fo-field-wrp .fi-fo-checkbox label {
+.fi-fo-field .fi-fo-checkbox label {
     color: rgba(168,168,160,.6) !important;
 }
 
@@ -242,7 +248,7 @@ body.filament-panel {
 }
 
 .fi-simple-header-subheading {
-    color: rgba(168,168,160,.65) !important;
+    color: rgba(168,168,160,.78) !important;
     font-size: .9rem !important;
 }
 
@@ -259,11 +265,11 @@ body.filament-panel {
 /* Any other text inside the card — labels & base copy */
 .fi-simple-main,
 .fi-simple-main label {
-    color: rgba(168,168,160,.72);
+    color: rgba(168,168,160,.88);
 }
 /* Paragraphs and secondary text */
 .fi-simple-main p {
-    color: rgba(168,168,160,.6);
+    color: rgba(168,168,160,.72);
 }
 /* Links must always win — gold, higher specificity */
 .fi-simple-main a,
@@ -283,9 +289,53 @@ body.filament-panel {
 }
 
 /* Validation error messages */
-.fi-fo-field-wrp [data-validation-error],
-.fi-simple-main .fi-fo-field-wrp p.text-sm {
+.fi-fo-field [data-validation-error],
+.fi-simple-main .fi-fo-field p.text-sm {
     color: #c47878 !important;
+}
+
+/* Helper text beneath fields — actual Filament v5.3 selector */
+.fi-simple-main .fi-sc-text,
+.fi-simple-main .fi-sc.fi-inline .fi-sc-text {
+    color: rgba(168,168,160,.65) !important;
+    font-size: .82rem !important;
+    line-height: 1.45 !important;
+}
+
+/* Placeholder text inside inputs */
+.fi-simple-main input::placeholder,
+.fi-simple-main textarea::placeholder {
+    color: rgba(168,168,160,.42) !important;
+}
+
+/* Browser autofill override — keep dark bg + ivory text */
+.fi-simple-main input:-webkit-autofill,
+.fi-simple-main input:-webkit-autofill:hover,
+.fi-simple-main input:-webkit-autofill:focus {
+    -webkit-text-fill-color: #ede8de !important;
+    -webkit-box-shadow: 0 0 0 40px rgba(8,8,8,.95) inset !important;
+    box-shadow: 0 0 0 40px rgba(8,8,8,.95) inset !important;
+    border-color: rgba(200,168,75,.15) !important;
+    caret-color: #ede8de !important;
+    transition: background-color 5000s ease-in-out 0s !important;
+}
+
+/* Password reveal / toggle icon */
+.fi-simple-main .fi-input-wrp button,
+.fi-simple-main .fi-input-wrp-suffix button,
+.fi-simple-main .fi-icon-btn.fi-ac-icon-btn-action {
+    color: rgba(168,168,160,.55) !important;
+    transition: color .15s ease !important;
+}
+.fi-simple-main .fi-input-wrp button:hover,
+.fi-simple-main .fi-input-wrp-suffix button:hover,
+.fi-simple-main .fi-icon-btn.fi-ac-icon-btn-action:hover {
+    color: rgba(200,168,75,.7) !important;
+}
+/* Ensure SVG icon inherits button color */
+.fi-simple-main .fi-input-wrp-suffix .fi-icon,
+.fi-simple-main .fi-icon-btn .fi-icon {
+    color: inherit !important;
 }
 
 /* ─── Select / Dropdown components on auth pages ────────────────────────── */
@@ -309,7 +359,7 @@ body.filament-panel {
 /* Placeholder text in select trigger */
 .fi-simple-main .fi-select-input [data-placeholder],
 .fi-simple-main [role="combobox"][aria-expanded="false"] span:first-child {
-    color: rgba(168,168,160,.45) !important;
+    color: rgba(168,168,160,.50) !important;
 }
 
 /* Options dropdown panel — teleported outside .fi-simple-main */
@@ -335,4 +385,80 @@ body.filament-panel {
 [data-headlessui-portal] .fi-select-option[data-active-option] {
     background-color: rgba(200,168,75,.08) !important;
     color: #ede8de !important;
+}
+
+/* ─── Choices.js rendered elements (select component internals) ──── */
+.fi-simple-main .choices__inner {
+    background-color: rgba(8,8,8,.6) !important;
+    border-color: rgba(200,168,75,.1) !important;
+    color: #ede8de !important;
+    min-height: 2.5rem !important;
+}
+.fi-simple-main .choices__item--selectable,
+.fi-simple-main .choices__item--choice {
+    color: #ede8de !important;
+}
+.fi-simple-main .choices__placeholder {
+    color: rgba(168,168,160,.50) !important;
+}
+.fi-simple-main .choices__list--dropdown {
+    background-color: #0e0d09 !important;
+    border-color: rgba(200,168,75,.12) !important;
+}
+.fi-simple-main .choices__list--dropdown .choices__item--selectable.is-highlighted {
+    background-color: rgba(200,168,75,.08) !important;
+    color: #ede8de !important;
+}
+
+/* ─── Mobile refinements for auth pages ──────────────────────── */
+@media (max-width: 640px) {
+    .fi-simple-main {
+        margin-left: .75rem !important;
+        margin-right: .75rem !important;
+        padding: 1.5rem 1.25rem !important;
+        border-radius: 10px !important;
+    }
+
+    .fi-simple-header {
+        text-align: center !important;
+    }
+
+    .fi-simple-header-heading {
+        font-size: 1.15rem !important;
+        line-height: 1.35 !important;
+    }
+
+    .fi-simple-header-subheading {
+        font-size: .82rem !important;
+        line-height: 1.55 !important;
+    }
+
+    /* Increase touch targets */
+    .fi-simple-main .fi-input,
+    .fi-simple-main .fi-fo-field input,
+    .fi-simple-main .fi-fo-field textarea {
+        min-height: 2.75rem !important;
+        font-size: 1rem !important;
+    }
+
+    /* Better field gap on mobile */
+    .fi-simple-main .fi-sc.fi-grid {
+        gap: .875rem !important;
+    }
+
+    /* Label sizing for mobile */
+    .fi-simple-main .fi-fo-field-label {
+        font-size: .84rem !important;
+    }
+
+    /* Submit button touch target */
+    .fi-simple-main .fi-btn {
+        min-height: 2.75rem !important;
+        font-size: .95rem !important;
+    }
+
+    /* Google button block — mobile spacing */
+    .fi-simple-main > .fi-sc > .fi-grid-col > .fi-sc-component > div[style*="flex-direction:column"] a {
+        padding: .9rem 1rem !important;
+    }
 }

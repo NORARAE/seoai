@@ -61,7 +61,7 @@
     <p class="upsell-sub">Move from correction plan to full system deployment. Your structural data carries forward — nothing is lost.</p>
     <div class="upsell-actions">
       <a href="{{ route('checkout.system-activation') }}" class="btn-primary">Upgrade to System Activation — $489</a>
-      <a href="{{ route('onboarding.start') }}" class="btn-ghost">Book a Strategy Call &rarr;</a>
+      <a href="{{ route('book.index', ['entry' => 'consultation']) }}" class="btn-ghost">Book Consultation &rarr;</a>
     </div>
   </div>
 </section>
