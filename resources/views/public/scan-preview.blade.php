@@ -226,6 +226,136 @@
 .prev-signal:hover .prev-signal-text{color:rgba(237,232,222,1)}
 .prev-signal:hover .prev-icon{box-shadow:0 0 14px rgba(200,168,75,.18)}
 
+/* ── AI Proof Section ── */
+.prev-ai-proof{
+  margin:10px 0 30px;
+  padding:24px 22px;
+  border:1px solid rgba(200,168,75,.09);
+  border-radius:8px;
+  background:linear-gradient(180deg,rgba(14,13,10,.92),rgba(10,10,8,.92));
+}
+.prev-ai-proof-title{
+  text-align:center;
+  font-family:'Cormorant Garamond',serif;
+  font-size:clamp(1.35rem,2.7vw,2rem);
+  font-weight:300;
+  color:var(--ivory);
+  margin:0 0 8px;
+}
+.prev-ai-proof-sub{
+  text-align:center;
+  font-size:.8rem;
+  line-height:1.7;
+  color:var(--muted);
+  margin:0 auto 20px;
+  max-width:500px;
+}
+.prev-ai-proof-grid{
+  display:grid;
+  grid-template-columns:1.15fr .95fr;
+  gap:14px;
+}
+.prev-ai-panel{
+  border:1px solid rgba(200,168,75,.08);
+  border-radius:6px;
+  background:rgba(8,8,8,.45);
+  padding:14px;
+}
+.prev-ai-panel-head{
+  font-size:.58rem;
+  letter-spacing:.14em;
+  text-transform:uppercase;
+  color:rgba(200,168,75,.58);
+  margin-bottom:10px;
+}
+.prev-ai-chat-window{
+  border:1px solid rgba(168,168,160,.16);
+  border-radius:6px;
+  padding:12px;
+  background:rgba(18,18,16,.86);
+}
+.prev-ai-chat-line{
+  opacity:0;
+  transform:translateY(5px);
+  transition:opacity .35s ease,transform .35s ease;
+  color:rgba(235,230,220,.92);
+  font-size:.76rem;
+  line-height:1.65;
+  margin:0 0 7px;
+}
+.prev-ai-chat-line.is-visible{opacity:1;transform:translateY(0)}
+.prev-ai-chat-line:last-child{margin-bottom:0}
+.prev-ai-chat-cursor{
+  display:inline-block;
+  width:7px;
+  margin-left:2px;
+  color:rgba(200,168,75,.72);
+  animation:prevProofCursor 1s steps(2, start) infinite;
+}
+@keyframes prevProofCursor{to{visibility:hidden}}
+
+.prev-ai-keyline{
+  margin:12px 0 0;
+  font-size:.78rem;
+  line-height:1.6;
+  color:rgba(226,210,165,.9);
+  font-weight:600;
+}
+
+.prev-ai-signals{list-style:none;margin:0;padding:0}
+.prev-ai-signal{
+  display:flex;
+  align-items:flex-start;
+  gap:10px;
+  padding:8px 0;
+  border-bottom:1px solid rgba(200,168,75,.05);
+  opacity:0;
+  transform:translateY(5px);
+  transition:opacity .35s ease,transform .35s ease;
+}
+.prev-ai-signal:last-child{border-bottom:none}
+.prev-ai-signal.is-visible{opacity:1;transform:translateY(0)}
+.prev-ai-signal-mark{
+  width:18px;
+  flex-shrink:0;
+  font-size:.76rem;
+  line-height:1.45;
+  font-weight:700;
+}
+.prev-ai-signal-mark.is-ok{color:#6aaf90}
+.prev-ai-signal-mark.is-bad{color:#c47878}
+.prev-ai-signal-text{
+  font-size:.76rem;
+  line-height:1.55;
+  color:rgba(232,226,214,.88);
+}
+
+.prev-ai-proof-cta{
+  margin-top:16px;
+  text-align:center;
+}
+.prev-ai-proof-btn{
+  display:inline-block;
+  padding:14px 28px;
+  border-radius:4px;
+  border:1px solid rgba(226,201,125,.4);
+  background:linear-gradient(180deg,#d8be72,#c8a84b);
+  color:#080808;
+  text-decoration:none;
+  font-size:.73rem;
+  letter-spacing:.1em;
+  text-transform:uppercase;
+  font-weight:700;
+  transition:transform .22s ease,box-shadow .22s ease;
+}
+.prev-ai-proof-btn:hover{transform:translateY(-1px);box-shadow:0 8px 24px rgba(200,168,75,.22)}
+.prev-ai-proof-meta{
+  margin-top:9px;
+  font-size:.69rem;
+  color:rgba(168,168,160,.63);
+  letter-spacing:.02em;
+}
+
 /* ── Locked Signal Intelligence ── */
 .prev-locked-depth{
   background:rgba(10,9,7,.60);
@@ -592,6 +722,9 @@
   .prev-sticky{gap:12px;padding:14px 18px}
   .prev-sticky-text{font-size:.76rem}
   .prev-sticky-cta{padding:14px 28px;font-size:.76rem;min-height:46px}
+
+  .prev-ai-proof{padding:20px 16px}
+  .prev-ai-proof-grid{grid-template-columns:1fr;gap:12px}
 }
 
 /* ── Small phones ── */
@@ -612,6 +745,10 @@
   .prev-locked-score{font-size:2.4rem}
   .prev-locked-label{font-size:.84rem}
   .prev-locked-row{padding:9px 0}
+
+  .prev-ai-proof-title{font-size:1.25rem}
+  .prev-ai-proof-sub{font-size:.78rem}
+  .prev-ai-chat-line,.prev-ai-signal-text{font-size:.74rem}
 }
 
 /* ── Very small phones ── */
@@ -720,6 +857,48 @@
 
     </ul>
   </div>
+
+  <!-- AI proof section -->
+  <section class="prev-ai-proof" id="prevAiProof">
+    <h2 class="prev-ai-proof-title">How AI Sees Your Site</h2>
+    <p class="prev-ai-proof-sub">This is what AI systems actually extract &mdash; and why most sites get ignored.</p>
+
+    <div class="prev-ai-proof-grid">
+      <article class="prev-ai-panel">
+        <p class="prev-ai-panel-head">AI View</p>
+        <div class="prev-ai-chat-window" aria-live="polite">
+          <p class="prev-ai-chat-line">Best local biohazard cleanup companies in Seattle include:</p>
+          <p class="prev-ai-chat-line">&bull; American Bio Management</p>
+          <p class="prev-ai-chat-line">&bull; Bio-One Seattle</p>
+          <p class="prev-ai-chat-line">&bull; Aftermath Services<span class="prev-ai-chat-cursor">|</span></p>
+        </div>
+
+        <p class="prev-ai-keyline">
+          @if($issueCount > 0)
+            AI didn't choose your site &mdash; here's why.
+          @else
+            AI would choose your site &mdash; if these were fixed.
+          @endif
+        </p>
+      </article>
+
+      <article class="prev-ai-panel">
+        <p class="prev-ai-panel-head">Extraction Signals</p>
+        <ul class="prev-ai-signals" id="prevAiSignals">
+          <li class="prev-ai-signal"><span class="prev-ai-signal-mark is-ok">&#10003;</span><span class="prev-ai-signal-text">Business name detected</span></li>
+          <li class="prev-ai-signal"><span class="prev-ai-signal-mark is-ok">&#10003;</span><span class="prev-ai-signal-text">Service category detected</span></li>
+          <li class="prev-ai-signal"><span class="prev-ai-signal-mark is-bad">&#10005;</span><span class="prev-ai-signal-text">No clear answer block</span></li>
+          <li class="prev-ai-signal"><span class="prev-ai-signal-mark is-bad">&#10005;</span><span class="prev-ai-signal-text">Weak internal linking</span></li>
+          <li class="prev-ai-signal"><span class="prev-ai-signal-mark is-ok">&#10003;</span><span class="prev-ai-signal-text">Schema partially detected</span></li>
+        </ul>
+      </article>
+    </div>
+
+    <div class="prev-ai-proof-cta">
+      <a href="{{ route('checkout.scan-basic') }}" class="prev-ai-proof-btn" onclick="if(typeof gtag==='function')gtag('event','cta_click',{cta_location:'ai_proof_section',cta_label:'scan_basic'});">See My AI Result &rarr;</a>
+      <p class="prev-ai-proof-meta">Takes 10 seconds &bull; $2 scan</p>
+    </div>
+  </section>
 
   <!-- Locked Signal Intelligence -->
   <div class="prev-locked-depth">
@@ -837,6 +1016,39 @@
       if(icon) setTimeout(function(){ icon.classList.add('revealed-glow'); }, 300);
     }, 400 + delay * 350);
   });
+
+  // AI proof reveal animation
+  var aiProof = document.getElementById('prevAiProof');
+  if(aiProof){
+    var aiLines = aiProof.querySelectorAll('.prev-ai-chat-line');
+    var aiSignals = aiProof.querySelectorAll('.prev-ai-signal');
+    var aiStarted = false;
+
+    function runAiProof(){
+      if(aiStarted) return;
+      aiStarted = true;
+
+      aiLines.forEach(function(line, idx){
+        setTimeout(function(){ line.classList.add('is-visible'); }, 180 + (idx * 260));
+      });
+
+      aiSignals.forEach(function(row, idx){
+        setTimeout(function(){ row.classList.add('is-visible'); }, 650 + (idx * 180));
+      });
+    }
+
+    if('IntersectionObserver' in window){
+      var io = new IntersectionObserver(function(entries){
+        if(entries[0] && entries[0].isIntersecting){
+          runAiProof();
+          io.disconnect();
+        }
+      }, { threshold: 0.24 });
+      io.observe(aiProof);
+    } else {
+      runAiProof();
+    }
+  }
 })();
 </script>
 @include('partials.public-footer')
