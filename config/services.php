@@ -96,6 +96,7 @@ return [
 
     // Stripe webhook secret for the booking payment flow (separate from license webhook).
     'stripe_booking' => [
+        'booking_webhook_secret' => env('STRIPE_BOOKING_WEBHOOK_SECRET'),
         'webhook_secret' => env('STRIPE_BOOKING_WEBHOOK_SECRET'),
     ],
 
