@@ -226,6 +226,7 @@ Route::middleware(['auth', EnsureUserIsApproved::class, EnsureOnboardingComplete
     Route::get('/scans', [DashboardController::class, 'index'])->name('dashboard.scans');
     Route::get('/reports', [DashboardController::class, 'index'])->name('dashboard.reports');
     Route::get('/billing', [DashboardBillingController::class, 'index'])->name('billing');
+    Route::post('/profile-data', [DashboardController::class, 'saveProfileData'])->name('dashboard.profile-data');
 
     // Sites Management (future)
     // Route::get('/sites', [SiteController::class, 'index'])->name('sites.index');

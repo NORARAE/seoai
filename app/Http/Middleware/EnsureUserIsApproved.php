@@ -13,7 +13,7 @@ class EnsureUserIsApproved
         $user = $request->user();
 
         // Must be authenticated first — let the auth middleware handle unauthenticated.
-        if (! $user) {
+        if (!$user) {
             return redirect()->route('login');
         }
 

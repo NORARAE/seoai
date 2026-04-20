@@ -35,6 +35,28 @@ class DashboardController extends Controller
         return view('dashboard.customer-modern', $scanData);
     }
 
+    public function saveProfileData(\Illuminate\Http\Request $request): \Illuminate\Http\JsonResponse
+    {
+        $validated = $request->validate([
+            'business_name' => ['nullable', 'string', 'max:120'],
+            'core_services' => ['nullable', 'string', 'max:500'],
+            'primary_location' => ['nullable', 'string', 'max:120'],
+            'service_areas' => ['nullable', 'string', 'max:300'],
+            'website_url' => ['nullable', 'url', 'max:250'],
+            'level' => ['nullable', 'integer', 'min:1', 'max:4'],
+            'checkout_href' => ['nullable', 'url', 'max:500'],
+        ]);
+
+        $user = Auth::user();
+        $current = is_array($user->profile_data) ? $user->profile_data : [];
+        $patch = array_filter($validated, fn($v) => $v !== null && $v !== '');
+        unset($patch['checkout_href']);
+
+        $user->update(['profile_data' => array_merge($current, $patch)]);
+
+        return response()->json(['ok' => true]);
+    }
+
     /**
      * Customer-safe dashboard data (user-scoped only).
      */

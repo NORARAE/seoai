@@ -14,8 +14,8 @@ class EnsureOnboardingComplete
 
         if (
             $user
-            && ! $user->isPrivilegedStaff()
-            && ! $user->isFrontendDev()
+            && !$user->isPrivilegedStaff()
+            && !$user->isFrontendDev()
             && $user->isApproved()
             && is_null($user->onboarding_completed_at)
         ) {

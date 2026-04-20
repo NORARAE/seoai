@@ -26,10 +26,10 @@ class LogoutTest extends TestCase
     private function makeUser(string $role = 'member', array $extra = []): User
     {
         return User::factory()->create(array_merge([
-            'role'                    => $role,
-            'approved'                => true,
+            'role' => $role,
+            'approved' => true,
             'onboarding_completed_at' => now(),
-            'password'                => Hash::make('Password123!'),
+            'password' => Hash::make('Password123!'),
         ], $extra));
     }
 
@@ -117,8 +117,8 @@ class LogoutTest extends TestCase
 
         $response = $this->withSession(['_token' => 'tok'])
             ->post(route('login'), [
-                '_token'   => 'tok',
-                'email'    => $user->email,
+                '_token' => 'tok',
+                'email' => $user->email,
                 'password' => 'Password123!',
             ]);
 
@@ -131,24 +131,24 @@ class LogoutTest extends TestCase
     public function test_unapproved_user_with_paid_scan_is_auto_approved_on_login(): void
     {
         $user = $this->makeUser('member', [
-            'approved'                => false,
+            'approved' => false,
             'onboarding_completed_at' => null,
         ]);
 
         QuickScan::create([
             'public_scan_id' => 'test-auto-approve',
-            'user_id'        => $user->id,
-            'email'          => $user->email,
-            'url'            => 'https://example.com',
-            'domain'         => 'example.com',
-            'paid'           => true,
-            'status'         => 'complete',
+            'user_id' => $user->id,
+            'email' => $user->email,
+            'url' => 'https://example.com',
+            'domain' => 'example.com',
+            'paid' => true,
+            'status' => 'complete',
         ]);
 
         $this->withSession(['_token' => 'tok'])
             ->post(route('login'), [
-                '_token'   => 'tok',
-                'email'    => $user->email,
+                '_token' => 'tok',
+                'email' => $user->email,
                 'password' => 'Password123!',
             ]);
 
@@ -158,24 +158,24 @@ class LogoutTest extends TestCase
     public function test_unapproved_user_with_paid_scan_redirects_to_dashboard_after_login(): void
     {
         $user = $this->makeUser('member', [
-            'approved'                => false,
+            'approved' => false,
             'onboarding_completed_at' => now(),
         ]);
 
         QuickScan::create([
             'public_scan_id' => 'test-redir-' . rand(1000, 9999),
-            'user_id'        => $user->id,
-            'email'          => $user->email,
-            'url'            => 'https://example.com',
-            'domain'         => 'example.com',
-            'paid'           => true,
-            'status'         => 'complete',
+            'user_id' => $user->id,
+            'email' => $user->email,
+            'url' => 'https://example.com',
+            'domain' => 'example.com',
+            'paid' => true,
+            'status' => 'complete',
         ]);
 
         $response = $this->withSession(['_token' => 'tok'])
             ->post(route('login'), [
-                '_token'   => 'tok',
-                'email'    => $user->email,
+                '_token' => 'tok',
+                'email' => $user->email,
                 'password' => 'Password123!',
             ]);
 
@@ -185,14 +185,14 @@ class LogoutTest extends TestCase
     public function test_unapproved_user_without_scan_still_lands_on_pending_approval(): void
     {
         $user = $this->makeUser('member', [
-            'approved'                => false,
+            'approved' => false,
             'onboarding_completed_at' => null,
         ]);
 
         $response = $this->withSession(['_token' => 'tok'])
             ->post(route('login'), [
-                '_token'   => 'tok',
-                'email'    => $user->email,
+                '_token' => 'tok',
+                'email' => $user->email,
                 'password' => 'Password123!',
             ]);
 

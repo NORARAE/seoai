@@ -634,6 +634,115 @@
     .control-hero::after,.hub-priority-card::after,.hero-score-orb::after,.system-unified-module::after,.state-pulse::before,.system-grid-score::before,.execution-state .chip::before{animation:none!important}
     .surface-reveal,.system-grid-card,.scan-history-card,.next-move-card,.stack-card{transition:none!important}
   }
+
+  /* ── Level System ─────────────────────────────────── */
+  .level-system-shell{display:flex;flex-direction:column;gap:24px}
+
+  /* Rail */
+  .level-rail{display:flex;align-items:center;gap:0;margin-bottom:4px}
+  .level-rail-step{display:flex;flex-direction:column;align-items:center;gap:6px;position:relative;flex:1}
+  .level-rail-step-dot{width:28px;height:28px;border-radius:50%;border:2px solid rgba(200,168,75,.3);background:#1a1610;display:flex;align-items:center;justify-content:center;font-size:.6rem;font-weight:700;letter-spacing:.06em;color:rgba(200,168,75,.4);transition:all .25s ease;position:relative;z-index:2}
+  .level-rail-step.is-complete .level-rail-step-dot{background:rgba(200,168,75,.22);border-color:rgba(200,168,75,.75);color:#c6a85a}
+  .level-rail-step.is-active .level-rail-step-dot{background:rgba(200,168,75,.18);border-color:#c6a85a;color:#c6a85a;box-shadow:0 0 0 4px rgba(200,168,75,.12)}
+  .level-rail-step.is-locked .level-rail-step-dot{opacity:.42}
+  .level-rail-step-label{font-size:.55rem;letter-spacing:.13em;text-transform:uppercase;color:rgba(200,168,75,.45);text-align:center}
+  .level-rail-step.is-complete .level-rail-step-label,.level-rail-step.is-active .level-rail-step-label{color:rgba(200,168,75,.7)}
+  .level-rail-connector{flex:1;height:1px;background:rgba(200,168,75,.18);margin-top:-14px;position:relative;z-index:1}
+  .level-rail-connector.is-complete{background:rgba(200,168,75,.5)}
+
+  /* Level card grid */
+  .level-card-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  @media(max-width:780px){.level-card-grid{grid-template-columns:1fr}}
+
+  /* Level cards */
+  .level-card{border:1px solid rgba(200,168,75,.18);border-radius:14px;background:linear-gradient(155deg,#181410,#0e0c09 70%);padding:18px;position:relative;overflow:hidden;transition:transform .2s ease,box-shadow .2s ease}
+  .level-card::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(200,168,75,.28),transparent)}
+  .level-card.state-active{border-color:rgba(200,168,75,.5);background:linear-gradient(155deg,#1d1a0f,#100e08 68%);box-shadow:0 12px 32px rgba(0,0,0,.32),0 0 0 1px rgba(200,168,75,.08) inset}
+  .level-card.state-active::before{background:linear-gradient(90deg,transparent,rgba(200,168,75,.6),transparent)}
+  .level-card.state-complete{border-color:rgba(106,175,144,.3);background:linear-gradient(155deg,#101a14,#090d0b 70%)}
+  .level-card.state-complete::before{background:linear-gradient(90deg,transparent,rgba(106,175,144,.4),transparent)}
+  .level-card.state-locked{opacity:.58}
+  .level-card:not(.state-locked):hover{transform:translateY(-3px);box-shadow:0 16px 40px rgba(0,0,0,.4)}
+
+  /* Accent bar */
+  .level-card-accent{position:absolute;top:16px;bottom:16px;left:0;width:3px;border-radius:0 2px 2px 0}
+  .state-active .level-card-accent{background:linear-gradient(180deg,#c6a85a,rgba(200,168,75,.45))}
+  .state-complete .level-card-accent{background:linear-gradient(180deg,#6aaf90,rgba(106,175,144,.45))}
+  .state-locked .level-card-accent{background:rgba(200,168,75,.18)}
+
+  /* Card header */
+  .level-card-kicker{font-size:.55rem;letter-spacing:.22em;text-transform:uppercase;margin-bottom:6px}
+  .state-active .level-card-kicker{color:rgba(200,168,75,.8)}
+  .state-complete .level-card-kicker{color:rgba(106,175,144,.8)}
+  .state-locked .level-card-kicker{color:rgba(200,168,75,.38)}
+  .level-card-name{font-size:.95rem;font-weight:600;color:#ede8de;letter-spacing:.01em;margin-bottom:4px}
+  .level-card-desc{font-size:.78rem;line-height:1.55;color:#9a9082;margin-bottom:14px}
+
+  /* Step list */
+  .level-card-steps{display:flex;flex-direction:column;gap:7px;margin-bottom:14px}
+  .level-card-step{display:flex;align-items:flex-start;gap:8px;font-size:.76rem;line-height:1.45;color:#b8b0a0}
+  .level-card-step-icon{flex-shrink:0;width:16px;height:16px;border-radius:50%;display:flex;align-items:center;justify-content:center;margin-top:1px}
+  .state-active .level-card-step-icon{background:rgba(200,168,75,.2);color:#c6a85a}
+  .state-complete .level-card-step-icon{background:rgba(106,175,144,.2);color:#6aaf90}
+  .state-locked .level-card-step-icon{background:rgba(200,168,75,.1);color:rgba(200,168,75,.3)}
+  .level-card-step-icon svg{width:8px;height:8px}
+
+  /* Lift badge */
+  .level-card-lift{display:inline-flex;align-items:center;gap:5px;font-size:.6rem;letter-spacing:.1em;text-transform:uppercase;padding:3px 9px;border-radius:20px;margin-bottom:14px}
+  .state-active .level-card-lift{background:rgba(200,168,75,.14);color:#c6a85a;border:1px solid rgba(200,168,75,.3)}
+  .state-complete .level-card-lift{background:rgba(106,175,144,.12);color:#6aaf90;border:1px solid rgba(106,175,144,.3)}
+  .state-locked .level-card-lift{background:rgba(200,168,75,.06);color:rgba(200,168,75,.3);border:1px solid rgba(200,168,75,.12)}
+
+  /* State badge */
+  .level-state-badge{display:inline-flex;align-items:center;gap:5px;font-size:.52rem;letter-spacing:.18em;text-transform:uppercase;padding:3px 8px;border-radius:20px;position:absolute;top:14px;right:14px}
+  .level-state-badge.badge-ready{background:rgba(200,168,75,.16);color:#c6a85a;border:1px solid rgba(200,168,75,.35)}
+  .level-state-badge.badge-completed{background:rgba(106,175,144,.14);color:#6aaf90;border:1px solid rgba(106,175,144,.3)}
+  .level-state-badge.badge-locked{background:rgba(80,70,55,.3);color:rgba(200,168,75,.4);border:1px solid rgba(200,168,75,.12)}
+
+  /* Level CTAs */
+  .level-card-cta-primary{display:inline-flex;align-items:center;justify-content:center;min-height:40px;padding:0 18px;border-radius:10px;background:#c6a85a;color:#1a1a1a;text-decoration:none;font-size:.68rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;transition:all .2s ease;box-shadow:0 6px 16px rgba(198,168,90,.2),inset 0 1px 0 rgba(255,255,255,.12);border:none;cursor:pointer;width:100%}
+  .level-card-cta-primary:hover{transform:translateY(-2px);box-shadow:0 12px 26px rgba(198,168,90,.36),inset 0 1px 0 rgba(255,255,255,.18)}
+  .level-card-cta-secondary{display:inline-flex;align-items:center;justify-content:center;min-height:38px;padding:0 16px;border-radius:10px;background:transparent;border:1px solid rgba(106,175,144,.4);color:#6aaf90;text-decoration:none;font-size:.68rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;transition:all .2s ease;width:100%}
+  .level-card-cta-secondary:hover{background:rgba(106,175,144,.08);border-color:rgba(106,175,144,.6)}
+  .level-card-cta-disabled{display:inline-flex;align-items:center;justify-content:center;min-height:38px;padding:0 16px;border-radius:10px;background:rgba(200,168,75,.06);border:1px solid rgba(200,168,75,.14);color:rgba(200,168,75,.35);font-size:.68rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;width:100%;cursor:not-allowed;gap:6px}
+
+  /* Premium gate */
+  .premium-gate-card{border:1px solid rgba(200,168,75,.35);border-radius:14px;background:linear-gradient(145deg,#1f1a0e,#120f09 70%);padding:22px;text-align:center;position:relative;overflow:hidden}
+  .premium-gate-card::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 50% 0,rgba(200,168,75,.1),transparent 60%);pointer-events:none}
+  .premium-gate-kicker{font-size:.58rem;letter-spacing:.22em;text-transform:uppercase;color:rgba(200,168,75,.65);margin-bottom:8px}
+  .premium-gate-title{font-size:1.1rem;font-weight:600;color:#ede8de;margin-bottom:8px}
+  .premium-gate-desc{font-size:.82rem;line-height:1.6;color:#9a9082;margin-bottom:18px;max-width:480px;margin-inline:auto}
+  .premium-gate-cta{display:inline-flex;align-items:center;gap:8px;min-height:44px;padding:0 24px;border-radius:11px;background:#c6a85a;color:#1a1a1a;text-decoration:none;font-size:.72rem;font-weight:700;letter-spacing:.13em;text-transform:uppercase;transition:all .2s ease;box-shadow:0 8px 20px rgba(198,168,90,.25)}
+  .premium-gate-cta:hover{transform:translateY(-2px);box-shadow:0 14px 32px rgba(198,168,90,.4)}
+
+  /* Consultation CTA banner */
+  .consult-cta-banner{border:1px solid rgba(200,168,75,.22);border-radius:13px;background:linear-gradient(155deg,#161309,#0d0b07 70%);padding:18px 22px;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap}
+  .consult-cta-copy p:first-child{font-size:.62rem;letter-spacing:.18em;text-transform:uppercase;color:rgba(200,168,75,.65);margin-bottom:4px}
+  .consult-cta-copy p:last-child{font-size:.88rem;color:#d4cebc;line-height:1.45}
+  .consult-cta-btn{flex-shrink:0;display:inline-flex;align-items:center;gap:8px;min-height:40px;padding:0 18px;border-radius:10px;background:transparent;border:1px solid rgba(200,168,75,.5);color:#c6a85a;text-decoration:none;font-size:.68rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;transition:all .2s ease;white-space:nowrap}
+  .consult-cta-btn:hover{background:rgba(200,168,75,.1);border-color:rgba(200,168,75,.75)}
+
+  /* Data capture modal */
+  .dcm-mask{position:fixed;inset:0;background:rgba(0,0,0,.82);z-index:9990;display:flex;align-items:center;justify-content:center;padding:20px;backdrop-filter:blur(6px);opacity:0;pointer-events:none;transition:opacity .22s ease}
+  .dcm-mask[data-open="true"]{opacity:1;pointer-events:all}
+  .dcm-shell{background:linear-gradient(145deg,#1d1912,#0f0d09);border:1px solid rgba(200,168,75,.4);border-radius:16px;padding:28px;width:100%;max-width:480px;position:relative;transform:translateY(12px);transition:transform .22s ease;box-shadow:0 24px 60px rgba(0,0,0,.6),inset 0 1px 0 rgba(255,255,255,.04)}
+  .dcm-mask[data-open="true"] .dcm-shell{transform:translateY(0)}
+  .dcm-kicker{font-size:.58rem;letter-spacing:.22em;text-transform:uppercase;color:rgba(200,168,75,.7);margin-bottom:8px}
+  .dcm-title{font-size:1rem;font-weight:600;color:#ede8de;margin-bottom:4px}
+  .dcm-subtitle{font-size:.8rem;color:#948c7c;line-height:1.5;margin-bottom:20px}
+  .dcm-close{position:absolute;top:16px;right:16px;width:28px;height:28px;border-radius:6px;background:rgba(200,168,75,.1);border:1px solid rgba(200,168,75,.2);color:rgba(200,168,75,.6);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:.9rem;transition:all .15s ease}
+  .dcm-close:hover{background:rgba(200,168,75,.2);color:#c6a85a}
+  .dcm-form-fields{display:flex;flex-direction:column;gap:12px;margin-bottom:20px}
+  .dcm-field label{display:block;font-size:.62rem;letter-spacing:.14em;text-transform:uppercase;color:rgba(200,168,75,.65);margin-bottom:5px}
+  .dcm-field input{width:100%;background:#0f0d09;border:1px solid rgba(200,168,75,.28);border-radius:8px;padding:9px 12px;color:#ede8de;font-size:.84rem;outline:none;transition:border-color .15s ease}
+  .dcm-field input:focus{border-color:rgba(200,168,75,.65)}
+  .dcm-field input::placeholder{color:#5a5245}
+  .dcm-actions{display:flex;gap:10px}
+  .dcm-btn-primary{flex:1;min-height:42px;border-radius:10px;background:#c6a85a;color:#1a1a1a;border:none;font-size:.7rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;cursor:pointer;transition:all .2s ease}
+  .dcm-btn-primary:hover{background:#d4b865;transform:translateY(-1px)}
+  .dcm-btn-primary:disabled{opacity:.55;cursor:not-allowed;transform:none}
+  .dcm-btn-skip{min-height:42px;padding:0 14px;border-radius:10px;background:transparent;border:1px solid rgba(200,168,75,.22);color:rgba(200,168,75,.55);font-size:.68rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;cursor:pointer;transition:all .15s ease}
+  .dcm-btn-skip:hover{border-color:rgba(200,168,75,.4);color:rgba(200,168,75,.75)}
 </style>
 @endpush
 
@@ -731,36 +840,174 @@
       </div>
     </section>
 
-    @if($isSystemView)
-    <section class="system-section system-section-secondary mb-10 dash-section-anchor operations-quiet surface-reveal" id="next-move">
-      <div class="next-move-command-shell">
-        <p class="next-move-command-label">Do This Now</p>
-        <div class="next-move-command-grid">
-          <article class="next-move-command-item">
-            <p>What’s Holding You Back</p>
-            <p>{{ $nextMovePrimaryIssue }}</p>
-          </article>
-          <article class="next-move-command-item">
-            <p>Fix This First</p>
-            <p>{{ $nextMoveFastestFix }}</p>
-          </article>
-          <article class="next-move-command-item">
-            <p>What Happens Next</p>
-            <p>{{ $nextMoveStep }}</p>
-          </article>
+        @if($isSystemView)
+    @php
+      $levelMeta = [
+        ['key' => 'scan-basic',         'num' => 1, 'kicker' => 'Level 1',  'name' => 'Foundation Signals', 'desc' => 'Establishes your core content signal — business identity, services, and location data for AI discovery.',  'steps' => ['Baseline visibility score established', 'Primary service signal validated', 'Location targeting activated'], 'lift' => '+12 visibility pts', 'price' => '$2'],
+        ['key' => 'signal-expansion',   'num' => 2, 'kicker' => 'Level 2',  'name' => 'Authority Signals',  'desc' => 'Expands authority coverage across citation layers and validates your market position signals.',            'steps' => ['Citation authority layer active', 'Competitor gap analysis unlocked', 'Secondary market signals validated'], 'lift' => '+18 visibility pts', 'price' => '$99'],
+        ['key' => 'structural-leverage','num' => 3, 'kicker' => 'Level 3',  'name' => 'Expansion Signals',  'desc' => 'Builds structural web presence with schema alignment, topical depth, and conversion architecture.',        'steps' => ['Schema and structured data mapped', 'Topical authority stack initiated', 'Conversion pathway architecture active'], 'lift' => '+22 visibility pts', 'price' => '$249'],
+        ['key' => 'system-activation',  'num' => 4, 'kicker' => 'Level 4',  'name' => 'Dominance Layer',    'desc' => 'Activates competitive suppression, AI citation eligibility, and full market coverage controls.',           'steps' => ['AI citation eligibility unlocked', 'Competitive suppression active', 'Full market coverage operational'], 'lift' => '+28 visibility pts', 'price' => '$489'],
+      ];
+      $layersByKey = collect($analysisLayers ?? [])->keyBy('key');
+      $firstIncompleteIdx = null;
+      foreach ($levelMeta as $idx => $lm) {
+        $layerData = $layersByKey->get($lm['key']);
+        if (! (bool) ($layerData['complete'] ?? false)) {
+          $firstIncompleteIdx = $idx;
+          break;
+        }
+      }
+      $checkoutRoutes = [
+        'scan-basic'          => 'checkout.scan-basic',
+        'signal-expansion'    => 'checkout.signal-expansion',
+        'structural-leverage' => 'checkout.structural-leverage',
+        'system-activation'   => 'checkout.system-activation',
+      ];
+    @endphp
+
+    {{-- Level Progression Rail --}}
+    <section class="system-section mb-6 dash-section-anchor surface-reveal" id="level-rail-section">
+      <div class="system-subshell" style="padding:20px 24px">
+        <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:18px">
+          <div>
+            <p style="font-size:.58rem;letter-spacing:.22em;text-transform:uppercase;color:rgba(200,168,75,.65);margin-bottom:4px">Your Progression Path</p>
+            <p style="font-size:.9rem;font-weight:600;color:#ede8de">Start Here: Fix Your Top Blocker</p>
+          </div>
+          <span style="font-size:.62rem;letter-spacing:.14em;text-transform:uppercase;padding:4px 10px;border-radius:20px;background:rgba(200,168,75,.12);border:1px solid rgba(200,168,75,.28);color:rgba(200,168,75,.8);white-space:nowrap">Level {{ $tierRank }} Active</span>
         </div>
-        <div class="next-move-command-actions">
-          <a href="{{ $nextMoveActionHref }}" class="next-move-command-primary">Fix Visibility Issue</a>
-          @if($leadRenderable)
-            <a href="{{ $leadReportHref }}" class="next-move-command-secondary">View Full Report →</a>
-          @else
-            <span class="next-move-command-secondary" aria-disabled="true">{{ $leadReadoutStatus }}</span>
-            <p class="text-[11px] text-[#a09585] tracking-[.03em] mt-1">Usually completes in 10–30 seconds. You don't need to do anything.</p>
-          @endif
-          <p class="text-xs text-[#c7bfae]">Takes under 2 minutes • No technical work required</p>
+        <div class="level-rail">
+          @foreach($levelMeta as $idx => $lm)
+            @php
+              $layerData = $layersByKey->get($lm['key']);
+              $isComplete = (bool) ($layerData['complete'] ?? false);
+              $isActive   = $idx === $firstIncompleteIdx;
+              $railState  = $isComplete ? 'is-complete' : ($isActive ? 'is-active' : 'is-locked');
+              $connectorClass = $isComplete ? 'level-rail-connector is-complete' : 'level-rail-connector';
+            @endphp
+            <div class="level-rail-step {{ $railState }}">
+              <div class="level-rail-step-dot">
+                @if($isComplete)
+                  <svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M1.5 5l2.5 2.5 4.5-5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                @elseif($isActive)
+                  <svg width="8" height="8" viewBox="0 0 8 8" fill="none"><circle cx="4" cy="4" r="3" fill="currentColor"/></svg>
+                @else
+                  <svg width="9" height="9" viewBox="0 0 9 9" fill="none"><path d="M4.5 1a1.75 1.75 0 0 1 1.75 1.75V4h-3.5V2.75A1.75 1.75 0 0 1 4.5 1z" stroke="currentColor" stroke-width="1.2"/><rect x="2" y="4" width="5" height="4" rx="1" stroke="currentColor" stroke-width="1.2"/></svg>
+                @endif
+              </div>
+              <span class="level-rail-step-label">L{{ $lm['num'] }}</span>
+            </div>
+            @if(! $loop->last)
+              <div class="{{ $connectorClass }}"></div>
+            @endif
+          @endforeach
         </div>
       </div>
     </section>
+
+    {{-- Level Cards Grid --}}
+    <section class="system-section mb-6 dash-section-anchor surface-reveal" id="level-cards">
+      <div class="level-card-grid">
+        @foreach($levelMeta as $idx => $lm)
+          @php
+            $layerData = $layersByKey->get($lm['key']);
+            $isComplete = (bool) ($layerData['complete'] ?? false);
+            $isActive   = $idx === $firstIncompleteIdx;
+            $isLocked   = ! $isComplete && ! $isActive;
+            $cardState  = $isComplete ? 'state-complete' : ($isActive ? 'state-active' : 'state-locked');
+            $badgeClass = $isComplete ? 'badge-completed' : ($isActive ? 'badge-ready' : 'badge-locked');
+            $badgeLabel = $isComplete ? 'Completed' : ($isActive ? 'Ready' : 'Locked');
+            $checkoutHref = (isset($checkoutRoutes[$lm['key']]) && \Route::has($checkoutRoutes[$lm['key']])) ? route($checkoutRoutes[$lm['key']]) : $nextUnlockHref;
+            $reportHref = ($leadRenderable && $leadRouteKey) ? route('dashboard.scans.show', ['scan' => $leadRouteKey]) : $leadReportHref;
+          @endphp
+          <article class="level-card {{ $cardState }}" aria-label="{{ $lm['name'] }} level card">
+            <div class="level-card-accent" aria-hidden="true"></div>
+            <span class="level-state-badge {{ $badgeClass }}">
+              @if($isComplete)
+                <svg width="8" height="8" viewBox="0 0 8 8" fill="none"><path d="M1 4l2 2 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              @elseif($isActive)
+                <svg width="6" height="6" viewBox="0 0 6 6" fill="none"><circle cx="3" cy="3" r="2.5" fill="currentColor"/></svg>
+              @else
+                <svg width="8" height="8" viewBox="0 0 8 8" fill="none"><path d="M4 0.75a1.5 1.5 0 0 1 1.5 1.5V3.5h-3V2.25A1.5 1.5 0 0 1 4 .75z" stroke="currentColor" stroke-width="1.1"/><rect x="1.5" y="3.5" width="5" height="3.75" rx=".75" stroke="currentColor" stroke-width="1.1"/></svg>
+              @endif
+              {{ $badgeLabel }}
+            </span>
+
+            <p class="level-card-kicker">{{ $lm['kicker'] }}</p>
+            <h3 class="level-card-name">{{ $lm['name'] }}</h3>
+            <p class="level-card-desc">{{ $lm['desc'] }}</p>
+
+            <ul class="level-card-steps" aria-label="Level steps">
+              @foreach($lm['steps'] as $step)
+              <li class="level-card-step">
+                <span class="level-card-step-icon" aria-hidden="true">
+                  @if($isComplete)
+                    <svg width="8" height="8" viewBox="0 0 8 8" fill="none"><path d="M1 4l2 2 4-4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                  @elseif($isActive)
+                    <svg width="6" height="6" viewBox="0 0 6 6" fill="none"><circle cx="3" cy="3" r="2" fill="currentColor"/></svg>
+                  @else
+                    <svg width="6" height="6" viewBox="0 0 6 6" fill="none"><rect x=".75" y=".75" width="4.5" height="4.5" rx="1" stroke="currentColor" stroke-width="1.1"/></svg>
+                  @endif
+                </span>
+                <span>{{ $step }}</span>
+              </li>
+              @endforeach
+            </ul>
+
+            <div class="level-card-lift">
+              <svg width="9" height="9" viewBox="0 0 9 9" fill="none"><path d="M4.5 1v7M1.5 3.5l3-3 3 3" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              {{ $lm['lift'] }}
+            </div>
+
+            @if($isComplete)
+              <a href="{{ $reportHref }}" class="level-card-cta-secondary">View Report &rarr;</a>
+            @elseif($isActive)
+              <button type="button"
+                class="level-card-cta-primary js-dcm-open"
+                data-level="{{ $lm['num'] }}"
+                data-level-name="{{ $lm['name'] }}"
+                data-checkout-href="{{ $checkoutHref }}"
+                data-price="{{ $lm['price'] }}">
+                Unlock This Layer
+              </button>
+            @else
+              <div class="level-card-cta-disabled" aria-disabled="true">
+                <svg width="10" height="10" viewBox="0 0 10 10" fill="none" aria-hidden="true"><path d="M5 0.875a2 2 0 0 1 2 2V4.5H3V2.875A2 2 0 0 1 5 .875z" stroke="currentColor" stroke-width="1.2"/><rect x="1.5" y="4.5" width="7" height="5" rx="1" stroke="currentColor" stroke-width="1.2"/></svg>
+                Unlock Previous Level First
+              </div>
+            @endif
+          </article>
+        @endforeach
+      </div>
+    </section>
+
+    {{-- Premium Gate (shown until Level 3 is achieved) --}}
+    @if($tierRank < 3)
+    <section class="system-section mb-6 dash-section-anchor surface-reveal" id="premium-gate">
+      <div class="premium-gate-card">
+        <p class="premium-gate-kicker">Premium Intelligence</p>
+        <h3 class="premium-gate-title">Unlock Full Competitive Suppression</h3>
+        <p class="premium-gate-desc">Levels 3 and 4 unlock structural leverage, AI citation eligibility, and competitive takedown sequencing &mdash; the tools that move you from visible to dominant.</p>
+        <a href="{{ $nextUnlockHref }}" class="premium-gate-cta">
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M7 1a3 3 0 0 1 3 3v2H4V4A3 3 0 0 1 7 1z" stroke="currentColor" stroke-width="1.4"/><rect x="2" y="6" width="10" height="7" rx="1.5" stroke="currentColor" stroke-width="1.4"/><circle cx="7" cy="9.5" r="1" fill="currentColor"/></svg>
+          Unlock Levels 3 &amp; 4
+        </a>
+      </div>
+    </section>
+    @endif
+
+    {{-- Consultation CTA Banner --}}
+    <section class="system-section mb-6 dash-section-anchor surface-reveal" id="consult-cta">
+      <div class="consult-cta-banner">
+        <div class="consult-cta-copy">
+          <p>Need expert guidance?</p>
+          <p>Apply your system fixes with us &mdash; book a strategy session and we&rsquo;ll execute the corrections for you.</p>
+        </div>
+        <a href="{{ route('book.index') }}?entry=dashboard-level-system" class="consult-cta-btn">
+          Book a Strategy Session &rarr;
+        </a>
+      </div>
+    </section>
+
     @endif
 
     @if($isReportsView)
@@ -1929,6 +2176,136 @@
       }
       if (evt.key === 'Escape' && modal.dataset.open === 'true') closeCorrectionModal();
     });
+
+    // ── Data Capture Modal ────────────────────────────────────────────
+    (function () {
+      var dcmMask = document.getElementById('dcmMask');
+      if (!dcmMask) return;
+
+      var dcmForm     = document.getElementById('dcmForm');
+      var dcmClose    = document.getElementById('dcmClose');
+      var dcmSkip     = document.getElementById('dcmSkip');
+      var dcmSubmit   = document.getElementById('dcmSubmit');
+      var dcmTitle    = document.getElementById('dcmTitle');
+      var dcmSubtitle = document.getElementById('dcmSubtitle');
+      var currentCheckoutHref = '';
+
+      function openDcm(btn) {
+        var levelName    = btn.dataset.levelName   || 'This Level';
+        var checkoutHref = btn.dataset.checkoutHref || '';
+        var price        = btn.dataset.price        || '';
+        currentCheckoutHref = checkoutHref;
+
+        if (dcmTitle)    dcmTitle.textContent    = 'Unlock ' + levelName;
+        if (dcmSubtitle) dcmSubtitle.textContent = 'Tell us a bit about your business so we can tailor your ' + (price ? price + ' ' : '') + 'signal expansion.';
+        dcmMask.dataset.open = 'true';
+        document.body.style.overflow = 'hidden';
+        var firstInput = dcmForm && dcmForm.querySelector('input');
+        if (firstInput) { window.setTimeout(function () { firstInput.focus(); }, 80); }
+      }
+
+      function closeDcm() {
+        dcmMask.dataset.open = 'false';
+        document.body.style.overflow = '';
+      }
+
+      function skipAndRedirect() {
+        closeDcm();
+        if (currentCheckoutHref) window.location.href = currentCheckoutHref;
+      }
+
+      document.querySelectorAll('.js-dcm-open').forEach(function (btn) {
+        btn.addEventListener('click', function () { openDcm(btn); });
+      });
+
+      if (dcmClose) dcmClose.addEventListener('click', closeDcm);
+      if (dcmSkip)  dcmSkip.addEventListener('click', skipAndRedirect);
+
+      dcmMask.addEventListener('click', function (evt) {
+        if (evt.target === dcmMask) closeDcm();
+      });
+
+      document.addEventListener('keydown', function (evt) {
+        if (evt.key === 'Escape' && dcmMask.dataset.open === 'true') closeDcm();
+      });
+
+      if (dcmForm) {
+        dcmForm.addEventListener('submit', function (evt) {
+          evt.preventDefault();
+          if (dcmSubmit) { dcmSubmit.disabled = true; dcmSubmit.textContent = 'Saving…'; }
+
+          var data = new FormData(dcmForm);
+          var payload = {};
+          data.forEach(function (v, k) { if (k !== '_token') payload[k] = v; });
+
+          fetch('{{ route('app.dashboard.profile-data') }}', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'X-CSRF-TOKEN': (document.querySelector('meta[name="csrf-token"]') || {}).content || '',
+              'Accept': 'application/json',
+            },
+            body: JSON.stringify(payload),
+          })
+          .then(function (res) { return res.json(); })
+          .then(function () {
+            closeDcm();
+            if (currentCheckoutHref) window.location.href = currentCheckoutHref;
+          })
+          .catch(function () {
+            // On error still proceed to checkout
+            closeDcm();
+            if (currentCheckoutHref) window.location.href = currentCheckoutHref;
+          });
+        });
+      }
+    })();
+
   })();
 </script>
+
+{{-- Data Capture Modal --}}
+<div id="dcmMask" class="dcm-mask" role="dialog" aria-modal="true" aria-labelledby="dcmTitle" data-open="false">
+  <div class="dcm-shell">
+    <button type="button" id="dcmClose" class="dcm-close" aria-label="Close">&times;</button>
+    <p class="dcm-kicker">Quick Profile</p>
+    <h2 id="dcmTitle" class="dcm-title">Unlock This Layer</h2>
+    <p id="dcmSubtitle" class="dcm-subtitle">Tell us a bit about your business so we can tailor your signal expansion.</p>
+    <form id="dcmForm" novalidate>
+      @csrf
+      <div class="dcm-form-fields">
+        <div class="dcm-field">
+          <label for="dcm_business_name">Business Name</label>
+          <input type="text" id="dcm_business_name" name="business_name" placeholder="e.g. Apex Plumbing Co." autocomplete="organization" maxlength="120"
+            value="{{ auth()->user()->profile_data['business_name'] ?? '' }}">
+        </div>
+        <div class="dcm-field">
+          <label for="dcm_core_services">Core Services</label>
+          <input type="text" id="dcm_core_services" name="core_services" placeholder="e.g. Emergency plumbing, drain cleaning" maxlength="500"
+            value="{{ auth()->user()->profile_data['core_services'] ?? '' }}">
+        </div>
+        <div class="dcm-field">
+          <label for="dcm_primary_location">Primary Location</label>
+          <input type="text" id="dcm_primary_location" name="primary_location" placeholder="e.g. Austin, TX" autocomplete="address-level2" maxlength="120"
+            value="{{ auth()->user()->profile_data['primary_location'] ?? '' }}">
+        </div>
+        <div class="dcm-field">
+          <label for="dcm_service_areas">Service Areas</label>
+          <input type="text" id="dcm_service_areas" name="service_areas" placeholder="e.g. Austin, Round Rock, Cedar Park" maxlength="300"
+            value="{{ auth()->user()->profile_data['service_areas'] ?? '' }}">
+        </div>
+        <div class="dcm-field">
+          <label for="dcm_website_url">Website URL</label>
+          <input type="url" id="dcm_website_url" name="website_url" placeholder="https://yoursite.com" autocomplete="url" maxlength="250"
+            value="{{ auth()->user()->profile_data['website_url'] ?? '' }}">
+        </div>
+      </div>
+      <div class="dcm-actions">
+        <button type="submit" id="dcmSubmit" class="dcm-btn-primary">Save &amp; Continue</button>
+        <button type="button" id="dcmSkip" class="dcm-btn-skip">Skip</button>
+      </div>
+    </form>
+  </div>
+</div>
+
 @endsection
