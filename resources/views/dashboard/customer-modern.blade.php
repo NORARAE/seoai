@@ -64,6 +64,50 @@
   $scanFocusList = $reportReadyScans->take(6);
   $isScansView = request()->is('dashboard/scans');
   $isReportsView = request()->is('dashboard/reports');
+  $leadInsight = $leadScan['quick_insight'] ?? 'Your latest system readout is active and ready for action.';
+  $leadLastEvaluation = $leadScan['scanned_at']?->diffForHumans() ?? $leadScan['created_at']?->diffForHumans() ?? 'Awaiting evaluation';
+  $leadTelemetryTone = $leadScore >= 85 ? 'is-strong' : ($leadScore >= 60 ? 'is-watching' : 'is-critical');
+  $trendSource = $reportReadyScans->take(6)->reverse()->values();
+  $trendScores = $trendSource->map(fn($scan) => max(0, min(100, (int) ($scan['score'] ?? 0))))->values();
+  if ($trendScores->isEmpty()) {
+    $trendScores = collect([max(0, min(100, $leadScore))]);
+  }
+  $sparklineScores = $trendScores->count() === 1 ? collect([$trendScores->first(), $trendScores->first()]) : $trendScores;
+  $sparklineWidth = 240;
+  $sparklineHeight = 72;
+  $sparklinePadding = 8;
+  $sparklineRangeX = $sparklineWidth - ($sparklinePadding * 2);
+  $sparklineRangeY = $sparklineHeight - ($sparklinePadding * 2);
+  $sparklinePoints = $sparklineScores->values()->map(function ($score, $index) use ($sparklineScores, $sparklinePadding, $sparklineRangeX, $sparklineRangeY) {
+    $denominator = max($sparklineScores->count() - 1, 1);
+    $x = $sparklinePadding + ($sparklineRangeX * ($index / $denominator));
+    $y = $sparklinePadding + ($sparklineRangeY * (1 - ($score / 100)));
+
+    return round($x, 1) . ',' . round($y, 1);
+  })->implode(' ');
+  $sparklineAreaPoints = '0,' . $sparklineHeight . ' ' . $sparklinePoints . ' ' . $sparklineWidth . ',' . $sparklineHeight;
+  $scoreDelta = !is_null($leadScan['score_change'] ?? null)
+    ? (int) $leadScan['score_change']
+    : ($trendScores->count() > 1 ? (int) ($trendScores->last() - $trendScores->first()) : 0);
+  $scoreDeltaLabel = ($scoreDelta > 0 ? '+' : '') . $scoreDelta;
+  $scoreDeltaTone = $scoreDelta > 0 ? 'up' : ($scoreDelta < 0 ? 'down' : 'flat');
+  $trendLabel = $scoreDelta > 0 ? 'Readiness climbing' : ($scoreDelta < 0 ? 'Readiness under pressure' : 'Readiness holding');
+  $latestIssues = (int) ($leadScan['issues_count'] ?? 0);
+  $oldestIssues = (int) (($trendSource->first()['issues_count'] ?? $latestIssues));
+  $blockerDelta = $oldestIssues - $latestIssues;
+  $blockerDeltaLabel = $blockerDelta > 0 ? ('-' . $blockerDelta . ' blockers') : ($blockerDelta < 0 ? ('+' . abs($blockerDelta) . ' blockers') : 'No blocker change');
+  $latestImprovement = $scoreDelta > 0
+    ? 'Latest improvement is holding above prior baseline.'
+    : ($scoreDelta < 0 ? 'Latest improvement stalled. Bottleneck pressure increased.' : 'Latest improvement is neutral. Signal needs another push.');
+  $readinessPercent = max(4, min(100, $leadScore > 0 ? $leadScore : 8));
+  $dominantActionHref = ($leadRouteKey && (bool) ($leadScan['is_renderable_report'] ?? false))
+    ? ($leadReportHref . '#layer-signal')
+    : $nextUnlockHref;
+  $dominantActionLabel = ($leadRouteKey && (bool) ($leadScan['is_renderable_report'] ?? false))
+    ? 'Deploy Priority Fix'
+    : $nextUnlockLabel;
+  $featuredRecentScans = $scanFocusList->take($isScansView ? 3 : 2)->values();
+  $archivedScans = $scanFocusList->slice($featuredRecentScans->count())->values();
 @endphp
 
 @push('styles')
@@ -81,6 +125,74 @@
   .system-unified-module{border:1px solid rgba(200,168,75,.24);border-radius:16px;background:linear-gradient(155deg,#1d190f,#100d08 68%);padding:18px;box-shadow:0 10px 34px rgba(0,0,0,.38),inset 0 1px 0 rgba(255,255,255,.03);position:relative;overflow:hidden}
   .system-unified-module::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(200,168,75,.42),transparent)}
   .system-unified-module::after{content:'';position:absolute;inset:-10% -20% auto -20%;height:130%;background:radial-gradient(ellipse at 50% 0,rgba(200,168,75,.08),transparent 60%);pointer-events:none;animation:presenceDrift 12s ease-in-out infinite}
+  .control-hero{padding:24px;background:
+    linear-gradient(140deg,rgba(35,28,15,.96),rgba(13,10,7,.98) 62%),
+    radial-gradient(circle at 12% 20%,rgba(200,168,75,.16),transparent 28%),
+    radial-gradient(circle at 82% 18%,rgba(106,175,144,.12),transparent 26%)}
+  .control-hero::before{height:2px;background:linear-gradient(90deg,transparent,rgba(200,168,75,.72),transparent)}
+  .control-hero::after{inset:0;background:
+    radial-gradient(circle at 18% 22%,rgba(200,168,75,.12),transparent 22%),
+    linear-gradient(transparent 0,rgba(200,168,75,.05) 48%,transparent 100%);
+    opacity:.75;mix-blend-mode:screen;animation:gridDrift 16s linear infinite}
+  .dashboard-primary-flow{display:flex;flex-direction:column;gap:0}
+  .dashboard-primary-flow.is-scans-view #scan-history{order:1}
+  .dashboard-primary-flow.is-scans-view #system-state{order:2}
+  .hero-grid{position:relative;display:grid;grid-template-columns:minmax(0,1.5fr) minmax(280px,.92fr);gap:18px;z-index:1}
+  .hero-main{display:flex;flex-direction:column;gap:14px}
+  .hero-status-strip{display:flex;flex-wrap:wrap;gap:8px}
+  .hero-status-item{display:inline-flex;align-items:center;gap:6px;padding:5px 10px;border-radius:999px;border:1px solid rgba(200,168,75,.18);background:rgba(255,255,255,.03);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:#c4bca7;backdrop-filter:blur(6px)}
+  .hero-status-item::before{content:'';width:6px;height:6px;border-radius:999px;background:rgba(200,168,75,.72)}
+  .hero-overline{font-size:.68rem;letter-spacing:.28em;text-transform:uppercase;color:rgba(200,168,75,.68)}
+  .hero-domain{font-size:clamp(2.2rem,4.8vw,4.35rem);line-height:.96;font-weight:650;letter-spacing:-.04em;color:#f3ecd8;text-wrap:balance;max-width:10ch;text-shadow:0 8px 30px rgba(0,0,0,.35)}
+  .hero-intro{max-width:48rem;font-size:1rem;line-height:1.6;color:#d8cfbb}
+  .hero-priority-grid{margin-top:2px;gap:12px}
+  .hub-priority-card{position:relative;border-color:rgba(200,168,75,.2);border-radius:14px;padding:12px 13px;background:linear-gradient(165deg,rgba(255,255,255,.05),rgba(0,0,0,.18));backdrop-filter:blur(10px);overflow:hidden;box-shadow:inset 0 1px 0 rgba(255,255,255,.03)}
+  .hub-priority-card::after{content:'';position:absolute;inset:0;background:linear-gradient(115deg,transparent 20%,rgba(200,168,75,.08) 48%,transparent 70%);transform:translateX(-135%);animation:heroSweep 10s ease-in-out infinite}
+  .hero-side{display:grid;gap:12px;align-self:stretch}
+  .hero-score-panel,.hero-side-card{position:relative;border:1px solid rgba(200,168,75,.18);border-radius:16px;background:linear-gradient(160deg,rgba(255,255,255,.05),rgba(0,0,0,.18));padding:16px;overflow:hidden;box-shadow:0 12px 28px rgba(0,0,0,.24),inset 0 1px 0 rgba(255,255,255,.03)}
+  .hero-score-panel::before,.hero-side-card::before{content:'';position:absolute;inset:0;background:linear-gradient(180deg,rgba(255,255,255,.02),transparent 36%);pointer-events:none}
+  .hero-panel-label{font-size:.62rem;letter-spacing:.24em;text-transform:uppercase;color:rgba(200,168,75,.7)}
+  .hero-score-wrap{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:12px}
+  .hero-score-orb{position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;width:126px;height:126px;border-radius:999px;border:1px solid rgba(200,168,75,.3);background:radial-gradient(circle at 50% 35%,rgba(200,168,75,.18),rgba(17,13,8,.95) 72%);box-shadow:0 18px 40px rgba(0,0,0,.42),inset 0 1px 0 rgba(255,255,255,.05)}
+  .hero-score-orb::before{content:'';position:absolute;inset:10px;border-radius:999px;border:1px solid rgba(200,168,75,.15)}
+  .hero-score-orb::after{content:'';position:absolute;inset:-12px;border-radius:999px;background:radial-gradient(circle,rgba(200,168,75,.18),transparent 62%);z-index:-1;animation:scorePulse 3.2s ease-in-out infinite}
+  .hero-score-orb.is-critical{border-color:rgba(196,120,120,.38);background:radial-gradient(circle at 50% 35%,rgba(196,120,120,.16),rgba(17,13,8,.95) 72%)}
+  .hero-score-orb.is-critical::after{background:radial-gradient(circle,rgba(196,120,120,.18),transparent 62%)}
+  .hero-score-orb.is-watching{border-color:rgba(214,177,95,.38)}
+  .hero-score-orb.is-strong{border-color:rgba(106,175,144,.34);background:radial-gradient(circle at 50% 35%,rgba(106,175,144,.16),rgba(17,13,8,.95) 72%)}
+  .hero-score-orb.is-strong::after{background:radial-gradient(circle,rgba(106,175,144,.18),transparent 62%)}
+  .hero-score-value{font-size:2.6rem;line-height:1;font-weight:700;color:#f6eed8;letter-spacing:-.04em}
+  .hero-score-caption{margin-top:4px;font-size:.56rem;letter-spacing:.18em;text-transform:uppercase;color:#b8ad92}
+  .hero-score-meta{display:grid;gap:8px;flex:1}
+  .hero-telemetry{border:1px solid rgba(200,168,75,.14);border-radius:12px;background:rgba(0,0,0,.2);padding:10px 11px}
+  .hero-telemetry p:first-child{font-size:.58rem;letter-spacing:.18em;text-transform:uppercase;color:#ae9f81}
+  .hero-telemetry p:last-child{margin-top:4px;font-size:.88rem;color:#ede4cf;line-height:1.4}
+  .hero-telemetry .telemetry-emphasis{color:#f1dfae}
+  .hero-side-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px;margin-top:12px}
+  .hero-side-metric{border:1px solid rgba(200,168,75,.14);border-radius:11px;background:rgba(0,0,0,.18);padding:10px}
+  .hero-side-metric p:first-child{font-size:.56rem;letter-spacing:.16em;text-transform:uppercase;color:#aa9e85}
+  .hero-side-metric p:last-child{margin-top:4px;font-size:.84rem;color:#ebe0c7;line-height:1.4}
+  .hero-telemetry-deck{display:grid;grid-template-columns:minmax(0,1.18fr) minmax(210px,.82fr);gap:12px;margin-top:14px}
+  .telemetry-trend-card,.telemetry-mini-grid{border:1px solid rgba(200,168,75,.18);border-radius:16px;background:linear-gradient(160deg,rgba(255,255,255,.04),rgba(0,0,0,.18));padding:14px;box-shadow:inset 0 1px 0 rgba(255,255,255,.03)}
+  .telemetry-card-label{font-size:.6rem;letter-spacing:.22em;text-transform:uppercase;color:rgba(200,168,75,.68)}
+  .telemetry-trend-row{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-top:10px}
+  .telemetry-delta{display:grid;gap:5px;min-width:88px}
+  .telemetry-delta .value{font-size:1.7rem;font-weight:700;line-height:1;color:#f3ead2;letter-spacing:-.04em}
+  .telemetry-delta .value.up{color:#b9e0ce}
+  .telemetry-delta .value.down{color:#e2b0b0}
+  .telemetry-delta .value.flat{color:#e2d4a8}
+  .telemetry-delta .label{font-size:.58rem;letter-spacing:.16em;text-transform:uppercase;color:#ab9e84}
+  .telemetry-delta .sub{font-size:.75rem;line-height:1.45;color:#d8ceba}
+  .telemetry-chart{flex:1;min-height:90px;border:1px solid rgba(200,168,75,.14);border-radius:14px;background:linear-gradient(180deg,rgba(0,0,0,.18),rgba(0,0,0,.08));padding:10px;position:relative;overflow:hidden}
+  .telemetry-chart::before{content:'';position:absolute;inset:0;background:linear-gradient(180deg,rgba(255,255,255,.02),transparent 30%),repeating-linear-gradient(180deg,transparent,transparent 18px,rgba(200,168,75,.05) 18px,rgba(200,168,75,.05) 19px);pointer-events:none}
+  .telemetry-chart svg{position:relative;z-index:1;width:100%;height:74px;overflow:visible}
+  .telemetry-chart .grid-labels{position:relative;z-index:1;display:flex;justify-content:space-between;margin-top:4px;font-size:.52rem;letter-spacing:.16em;text-transform:uppercase;color:#988d74}
+  .telemetry-mini-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}
+  .telemetry-mini-grid article{border:1px solid rgba(200,168,75,.14);border-radius:12px;background:rgba(0,0,0,.16);padding:10px}
+  .telemetry-mini-grid article p:first-child{font-size:.56rem;letter-spacing:.16em;text-transform:uppercase;color:#ac9f82}
+  .telemetry-mini-grid article p:last-child{margin-top:4px;font-size:.84rem;line-height:1.4;color:#e7ddc4}
+  .surface-reveal{opacity:0;transform:translateY(18px) scale(.985);transition:opacity .7s ease,transform .7s ease}
+  .surface-reveal.is-visible{opacity:1;transform:translateY(0) scale(1)}
   .state-pulse{display:inline-flex;align-items:center;gap:7px;padding:5px 10px;border-radius:999px;border:1px solid rgba(106,175,144,.34);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:#9fd2ba;background:rgba(106,175,144,.12)}
   .state-pulse::before{content:'';width:7px;height:7px;border-radius:999px;background:#6aaf90;box-shadow:0 0 0 0 rgba(106,175,144,.45);animation:statePulse 2.6s ease-in-out infinite}
   .state-pulse.risk{border-color:rgba(196,120,120,.34);background:rgba(196,120,120,.12);color:#db9c9c}
@@ -100,18 +212,39 @@
   .hub-priority-card p:last-child{margin-top:4px;font-size:13px;color:#ece2cb;line-height:1.35}
   .hub-priority-card .hub-link{color:#f0ddb0;text-decoration:none;border-bottom:1px solid rgba(200,168,75,.32)}
   .hub-priority-card .hub-link:hover{border-color:rgba(200,168,75,.62)}
-  .scan-history-shell{border:1px solid rgba(200,168,75,.2);border-radius:16px;background:linear-gradient(155deg,#141108,#0c0a06 72%);padding:16px}
+  .scan-history-shell{position:relative;border:1px solid rgba(200,168,75,.2);border-radius:18px;background:linear-gradient(155deg,#151109,#0b0906 72%);padding:18px;overflow:hidden;box-shadow:0 18px 36px rgba(0,0,0,.26),inset 0 1px 0 rgba(255,255,255,.03)}
+  .scan-history-shell::before{content:'';position:absolute;inset:0;background:radial-gradient(circle at 85% 0,rgba(200,168,75,.1),transparent 30%);pointer-events:none}
+  .scan-library-toolbar{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+  .scan-library-pill{display:inline-flex;align-items:center;gap:6px;padding:6px 10px;border-radius:999px;border:1px solid rgba(200,168,75,.18);background:rgba(255,255,255,.03);font-size:.58rem;letter-spacing:.16em;text-transform:uppercase;color:#c9bea3}
+  .scan-library-pill strong{font-size:.72rem;letter-spacing:normal;color:#f0e4c7}
   .scan-history-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:12px;margin-top:12px}
-  .scan-history-card{border:1px solid rgba(200,168,75,.2);border-radius:12px;background:linear-gradient(152deg,#1a140c,#110d08 68%);padding:12px;display:flex;flex-direction:column;gap:8px}
+  .scan-history-card{position:relative;border:1px solid rgba(200,168,75,.18);border-radius:16px;background:linear-gradient(160deg,#19130c,#0f0b08 72%);padding:14px;display:flex;flex-direction:column;gap:10px;overflow:hidden;box-shadow:0 12px 28px rgba(0,0,0,.28),inset 0 1px 0 rgba(255,255,255,.03);transition:transform .26s ease,box-shadow .28s ease,border-color .25s ease}
+  .scan-history-card::before{content:'';position:absolute;inset:0;background:linear-gradient(180deg,rgba(255,255,255,.03),transparent 34%);pointer-events:none}
+  .scan-history-card::after{content:'';position:absolute;left:-30%;right:-30%;top:-55%;height:120%;background:linear-gradient(120deg,transparent 32%,rgba(200,168,75,.1) 50%,transparent 68%);transform:translateX(-120%);transition:transform 1s ease;pointer-events:none}
+  .scan-history-card:hover{transform:translateY(-4px);border-color:rgba(200,168,75,.34);box-shadow:0 18px 34px rgba(0,0,0,.38),0 0 0 1px rgba(200,168,75,.12) inset}
+  .scan-history-card:hover::after{transform:translateX(120%)}
   .scan-history-card .meta{font-size:10px;letter-spacing:.13em;text-transform:uppercase;color:#ab9f84}
-  .scan-history-card .domain{font-size:15px;font-weight:600;color:#efe6d1;line-height:1.3}
+  .scan-history-head{display:flex;align-items:flex-start;justify-content:space-between;gap:10px}
+  .scan-history-card .domain{font-size:1.05rem;font-weight:650;color:#efe6d1;line-height:1.18;max-width:14ch}
+  .scan-history-subline{margin-top:5px;font-size:.75rem;color:#bfb39a;line-height:1.45}
   .scan-history-card .bottleneck{font-size:12px;color:#d7ccb4;line-height:1.45}
-  .scan-history-card .state-row{display:flex;align-items:center;justify-content:space-between;gap:8px}
+  .scan-history-card .state-row{display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap}
   .scan-history-card .pill{display:inline-flex;align-items:center;gap:6px;border-radius:999px;padding:4px 8px;font-size:10px;letter-spacing:.12em;text-transform:uppercase;border:1px solid rgba(200,168,75,.28);color:#e6d4a5;background:rgba(200,168,75,.12)}
+  .scan-history-score{display:flex;flex-direction:column;align-items:flex-end;gap:3px;padding:7px 9px;border-radius:12px;border:1px solid rgba(200,168,75,.22);background:rgba(0,0,0,.22)}
+  .scan-history-score .score{font-size:1.22rem;font-weight:700;color:#f6ecd0;line-height:1;letter-spacing:-.03em}
+  .scan-history-score .label{font-size:.52rem;letter-spacing:.16em;text-transform:uppercase;color:#b5a788}
+  .scan-history-context{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+  .scan-history-context article{border:1px solid rgba(200,168,75,.14);border-radius:11px;background:rgba(0,0,0,.16);padding:9px 10px}
+  .scan-history-context article p:first-child{font-size:.56rem;letter-spacing:.16em;text-transform:uppercase;color:#ac9f82}
+  .scan-history-context article p:last-child{margin-top:4px;font-size:.78rem;line-height:1.45;color:#e7dcc3}
+  .scan-history-fastfix{border:1px solid rgba(200,168,75,.16);border-radius:12px;background:rgba(0,0,0,.2);padding:10px 11px}
+  .scan-history-fastfix p:first-child{font-size:.58rem;letter-spacing:.16em;text-transform:uppercase;color:#d8c58f}
+  .scan-history-fastfix p:last-child{margin-top:5px;font-size:.83rem;line-height:1.5;color:#ece2ca}
   .scan-history-card .score{font-size:12px;font-weight:700;color:#f1e7cd}
   .scan-history-card .actions{display:flex;gap:8px;flex-wrap:wrap;padding-top:2px}
-  .scan-history-card .actions a{display:inline-flex;align-items:center;justify-content:center;min-height:32px;padding:7px 10px;border-radius:8px;font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;text-decoration:none}
-  .scan-history-card .open{border:1px solid rgba(200,168,75,.4);background:rgba(200,168,75,.16);color:#f3e8cb}
+  .scan-history-card .actions a{display:inline-flex;align-items:center;justify-content:center;min-height:34px;padding:8px 11px;border-radius:10px;font-size:10px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;text-decoration:none;transition:transform .18s ease,border-color .2s ease,background .2s ease,box-shadow .2s ease}
+  .scan-history-card .actions a:hover{transform:translateY(-1px)}
+  .scan-history-card .open{border:1px solid rgba(200,168,75,.42);background:rgba(200,168,75,.16);color:#f3e8cb;box-shadow:0 0 0 1px rgba(200,168,75,.1) inset}
   .scan-history-card .deploy{border:1px solid rgba(106,175,144,.44);background:rgba(106,175,144,.16);color:#bfe3d2}
   .scan-history-card .inspect{border:1px solid rgba(200,168,75,.24);background:rgba(200,168,75,.08);color:#ddd3bc}
   .operations-quiet{opacity:.78}
@@ -121,11 +254,11 @@
   .system-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:14px}
   .system-grid.grid-compact{grid-template-columns:repeat(auto-fill,minmax(220px,1fr))}
   .system-grid.grid-wide{grid-template-columns:repeat(auto-fill,minmax(280px,1fr))}
-  .system-grid-card{position:relative;display:flex;flex-direction:column;border:1px solid rgba(200,168,75,.2);background:linear-gradient(152deg,#1a150d,#100c07 68%);border-radius:14px;padding:11px;min-height:188px;text-decoration:none;color:inherit;overflow:hidden;transition:transform .24s ease,box-shadow .26s ease,border-color .24s ease,background .24s ease,opacity .2s ease}
+  .system-grid-card{position:relative;display:flex;flex-direction:column;border:1px solid rgba(200,168,75,.18);background:linear-gradient(160deg,#1a140d,#0f0b08 72%);border-radius:16px;padding:13px;min-height:202px;text-decoration:none;color:inherit;overflow:hidden;transition:transform .24s ease,box-shadow .26s ease,border-color .24s ease,background .24s ease,opacity .2s ease}
   .system-grid-card.clickable{cursor:pointer}
-  .system-grid-card::before{content:'';position:absolute;inset:0;opacity:.45;pointer-events:none;transition:opacity .25s ease;background:radial-gradient(circle at 80% 0,rgba(255,255,255,.06),transparent 45%)}
+  .system-grid-card::before{content:'';position:absolute;inset:0;opacity:.45;pointer-events:none;transition:opacity .25s ease;background:radial-gradient(circle at 80% 0,rgba(255,255,255,.06),transparent 45%),linear-gradient(180deg,rgba(255,255,255,.03),transparent 32%)}
   .system-grid-card::after{content:'';position:absolute;inset:-1px;background:linear-gradient(110deg,transparent 30%,rgba(200,168,75,.12) 50%,transparent 70%);transform:translateX(-130%);transition:transform .7s ease;pointer-events:none}
-  .system-grid-card:hover{transform:translateY(-4px);border-color:rgba(200,168,75,.48);background:linear-gradient(152deg,#1f1910,#120d08 68%);box-shadow:0 0 0 1px rgba(200,168,75,.22) inset,0 14px 26px rgba(0,0,0,.42),0 0 16px rgba(200,168,75,.12)}
+  .system-grid-card:hover{transform:translateY(-5px);border-color:rgba(200,168,75,.48);background:linear-gradient(160deg,#1f1910,#120d08 72%);box-shadow:0 0 0 1px rgba(200,168,75,.22) inset,0 18px 30px rgba(0,0,0,.46),0 0 18px rgba(200,168,75,.12)}
   .system-grid-card:focus-visible{outline:2px solid rgba(200,168,75,.58);outline-offset:2px}
   .system-grid-card.is-executing{border-color:rgba(214,181,84,.62);box-shadow:0 0 0 1px rgba(214,181,84,.28) inset,0 0 24px rgba(214,181,84,.2)}
   .system-grid-card.is-engaged{border-color:rgba(106,175,144,.46);box-shadow:0 0 0 1px rgba(106,175,144,.22) inset,0 0 20px rgba(106,175,144,.14)}
@@ -257,7 +390,63 @@
   .stack-card{border:1px solid rgba(200,168,75,.16);background:linear-gradient(152deg,#141008,#0f0c07 72%);border-radius:12px;padding:13px;transition:border-color .2s ease,transform .2s ease,box-shadow .2s ease}
   .stack-card:hover{transform:translateY(-2px);border-color:rgba(200,168,75,.3);box-shadow:0 10px 20px rgba(0,0,0,.28)}
   .stack-card.active{border-color:rgba(106,175,144,.32);background:linear-gradient(152deg,#10160f,#0d110d 72%)}
-  .stack-card.dormant{opacity:.86}
+  .stack-card.dormant{opacity:.74}
+
+  .control-hero{border-radius:26px;border-color:rgba(200,168,75,.3);box-shadow:0 28px 56px rgba(0,0,0,.46),0 0 0 1px rgba(200,168,75,.12) inset;padding:28px 28px 24px;background:linear-gradient(145deg,rgba(33,25,15,.98),rgba(11,9,7,.98) 64%),radial-gradient(circle at 8% 18%,rgba(200,168,75,.22),transparent 24%),radial-gradient(circle at 85% 12%,rgba(98,142,135,.16),transparent 26%)}
+  .hero-command-deck{position:relative;z-index:1;display:grid;gap:16px}
+  .hero-grid{grid-template-columns:minmax(0,1.2fr) minmax(320px,1fr);gap:20px}
+  .hero-domain{font-size:clamp(2.8rem,5.5vw,5.2rem);line-height:.9;font-weight:700;letter-spacing:-.05em;color:#f6efdc;max-width:9ch;text-shadow:0 10px 34px rgba(0,0,0,.42)}
+  .hero-bottleneck-panel{position:relative;border:1px solid rgba(200,168,75,.22);border-radius:18px;background:linear-gradient(160deg,rgba(0,0,0,.24),rgba(255,255,255,.03));padding:16px 18px;box-shadow:0 14px 26px rgba(0,0,0,.26),inset 0 1px 0 rgba(255,255,255,.04);overflow:hidden}
+  .hero-bottleneck-panel::after{content:'';position:absolute;inset:0;background:linear-gradient(120deg,transparent 28%,rgba(200,168,75,.1) 50%,transparent 72%);transform:translateX(-140%);animation:heroSweep 12s ease-in-out infinite}
+  .hero-bottleneck-label{font-size:.62rem;letter-spacing:.22em;text-transform:uppercase;color:#d8c58f}
+  .hero-bottleneck-copy{position:relative;z-index:1;margin-top:8px;font-size:1rem;line-height:1.65;color:#f1e7d2;max-width:36rem}
+  .hero-action-band{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+  .hero-primary-cta,.hero-secondary-cta{display:inline-flex;align-items:center;justify-content:center;min-height:46px;padding:0 18px;border-radius:14px;font-size:.72rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;text-decoration:none;transition:transform .18s ease,box-shadow .22s ease,border-color .22s ease,background .22s ease}
+  .hero-primary-cta{background:linear-gradient(135deg,#e7c56a,#c8a84b);color:#100d07;box-shadow:0 18px 28px rgba(200,168,75,.22),0 0 0 1px rgba(255,255,255,.18) inset}
+  .hero-primary-cta:hover{transform:translateY(-2px);box-shadow:0 22px 34px rgba(200,168,75,.28),0 0 0 1px rgba(255,255,255,.22) inset}
+  .hero-secondary-cta{border:1px solid rgba(200,168,75,.28);background:rgba(255,255,255,.03);color:#ece1c8}
+  .hero-secondary-cta:hover{transform:translateY(-2px);border-color:rgba(200,168,75,.52);background:rgba(200,168,75,.1)}
+  .hero-micro-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+  .hero-micro-card{border:1px solid rgba(200,168,75,.16);border-radius:14px;background:rgba(255,255,255,.03);padding:12px 13px;box-shadow:inset 0 1px 0 rgba(255,255,255,.03)}
+  .hero-micro-card p:first-child{font-size:.58rem;letter-spacing:.16em;text-transform:uppercase;color:#ad9f80}
+  .hero-micro-card p:last-child{margin-top:4px;font-size:.88rem;line-height:1.45;color:#eee3ca}
+  .hero-score-panel,.hero-side-card{border-radius:20px;padding:18px;box-shadow:0 16px 32px rgba(0,0,0,.3),inset 0 1px 0 rgba(255,255,255,.03)}
+  .hero-score-orb{width:168px;height:168px;background:radial-gradient(circle at 50% 35%,rgba(200,168,75,.22),rgba(17,13,8,.96) 72%);box-shadow:0 22px 48px rgba(0,0,0,.46),inset 0 1px 0 rgba(255,255,255,.05)}
+  .hero-score-value{font-size:3.7rem;letter-spacing:-.05em}
+  .readiness-meter-card{border:1px solid rgba(200,168,75,.18);border-radius:18px;background:linear-gradient(160deg,rgba(255,255,255,.04),rgba(0,0,0,.18));padding:14px;box-shadow:inset 0 1px 0 rgba(255,255,255,.03)}
+  .readiness-meter-track{position:relative;height:14px;border-radius:999px;background:rgba(255,255,255,.05);overflow:hidden;margin-top:12px;border:1px solid rgba(200,168,75,.12)}
+  .readiness-meter-fill{position:absolute;inset:0 auto 0 0;border-radius:999px;background:linear-gradient(90deg,#7cb89f 0%,#d6b15f 58%,#e6c76b 100%);box-shadow:0 0 18px rgba(200,168,75,.3)}
+  .readiness-meter-meta{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:10px;font-size:.68rem;letter-spacing:.16em;text-transform:uppercase;color:#b4a78b}
+  .readiness-meter-meta strong{font-size:1.15rem;letter-spacing:-.03em;text-transform:none;color:#f5ead2}
+  .scan-history-shell{border:1px solid rgba(200,168,75,.24);border-radius:24px;padding:22px;box-shadow:0 26px 44px rgba(0,0,0,.34),inset 0 1px 0 rgba(255,255,255,.03)}
+  .scan-library-header{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(260px,.9fr);gap:18px;align-items:end;margin-bottom:18px}
+  .scan-library-kicker{font-size:.68rem;letter-spacing:.28em;text-transform:uppercase;color:rgba(200,168,75,.68)}
+  .scan-library-title{margin-top:6px;font-size:clamp(2.1rem,4vw,3.2rem);line-height:.96;font-weight:700;letter-spacing:-.04em;color:#f4ecd7}
+  .scan-library-description{margin-top:10px;max-width:42rem;font-size:.95rem;line-height:1.65;color:#d8cdb7}
+  .scan-library-summary-wall{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+  .scan-library-summary-wall article{border:1px solid rgba(200,168,75,.16);border-radius:16px;background:rgba(255,255,255,.03);padding:12px 13px;box-shadow:inset 0 1px 0 rgba(255,255,255,.03)}
+  .scan-library-summary-wall article p:first-child{font-size:.56rem;letter-spacing:.16em;text-transform:uppercase;color:#aa9e83}
+  .scan-library-summary-wall article p:last-child{margin-top:5px;font-size:.92rem;line-height:1.45;color:#efe2c8}
+  .scan-shelf{margin-top:18px}
+  .scan-shelf-head{display:flex;align-items:end;justify-content:space-between;gap:14px;margin-bottom:12px}
+  .scan-shelf-head h3{font-size:.82rem;letter-spacing:.24em;text-transform:uppercase;color:#d9c58f}
+  .scan-shelf-head p{font-size:.76rem;line-height:1.5;color:#aba08a;max-width:32rem}
+  .scan-featured-grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:12px}
+  .scan-featured-grid .scan-history-card{grid-column:span 6;min-height:100%}
+  .scan-featured-grid .scan-history-card:first-child{grid-column:span 12}
+  .scan-archive-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:12px}
+  .scan-card-badges{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+  .scan-card-badge{display:inline-flex;align-items:center;gap:6px;padding:4px 8px;border-radius:999px;border:1px solid rgba(200,168,75,.16);background:rgba(255,255,255,.03);font-size:.52rem;letter-spacing:.16em;text-transform:uppercase;color:#c7baa0}
+
+  @keyframes gridDrift {
+    0%{transform:translate3d(0,0,0)}
+    50%{transform:translate3d(-2%,2%,0)}
+    100%{transform:translate3d(0,0,0)}
+  }
+  @keyframes heroSweep {
+    0%,18%{transform:translateX(-135%)}
+    38%,100%{transform:translateX(135%)}
+  }
 
   @keyframes scorePulse {
     0%,100%{opacity:.45;transform:scale(1)}
@@ -283,6 +472,9 @@
   @media(max-width:900px){
     .system-grid-toolbar{flex-direction:column;align-items:stretch}
     .state-metric-grid{grid-template-columns:1fr 1fr}
+    .hero-grid{grid-template-columns:1fr}
+    .hero-score-wrap{align-items:flex-start}
+    .hero-telemetry-deck{grid-template-columns:1fr}
   }
   @media(max-width:768px){
     .system-grid{grid-template-columns:1fr}
@@ -291,9 +483,17 @@
     .state-metric-grid{grid-template-columns:1fr}
     .hub-priority-grid{grid-template-columns:1fr}
     .scan-history-grid{grid-template-columns:1fr}
+    .hero-domain{max-width:none}
+    .hero-score-wrap{flex-direction:column;align-items:flex-start}
+    .hero-side-grid,.scan-history-context{grid-template-columns:1fr}
+    .telemetry-mini-grid{grid-template-columns:1fr}
   }
   @media(min-width:1100px){
     .system-grid-card.featured{grid-column:span 2}
+  }
+  @media(prefers-reduced-motion:reduce){
+    .control-hero::after,.hub-priority-card::after,.hero-score-orb::after,.system-unified-module::after,.state-pulse::before,.system-grid-score::before,.execution-state .chip::before{animation:none!important}
+    .surface-reveal,.system-grid-card,.scan-history-card,.next-move-card,.stack-card{transition:none!important}
   }
 </style>
 @endpush
@@ -327,56 +527,226 @@
     <p class="mb-5 text-xs uppercase tracking-[0.14em] text-[#c8a84b]/72">Your previous scans are ready.</p>
     @endif
 
+    <div class="dashboard-primary-flow {{ $isScansView ? 'is-scans-view' : '' }}">
     <section class="system-section system-section-primary mb-8 dash-section-anchor" id="system-state">
-      <div class="system-unified-module">
-        <div class="flex flex-wrap items-start justify-between gap-3">
-          <div>
-            <p class="text-xs uppercase tracking-[0.22em] text-[#c8a84b]/80">{{ $isScansView ? 'System Readout Active · Scan History Focus' : ($isReportsView ? 'System Readout Active · Reports Focus' : 'System Readout Active') }}</p>
-            <h1 class="mt-1 text-2xl font-semibold leading-tight lg:text-3xl">{{ $leadDomain }}</h1>
-            <p class="state-summary">Saved to your dashboard. Previous scans ready for deployment.</p>
-            <p class="mt-1 text-xs text-[#a9a08c]">{{ $summaryLine }}</p>
+      <div class="system-unified-module control-hero surface-reveal is-visible">
+        <div class="hero-command-deck">
+        <div class="hero-grid">
+          <div class="hero-main">
+            <div class="hero-status-strip">
+              <span class="surface-focus-kicker">{{ $isScansView ? 'System Readout Active · Scan History Focus' : ($isReportsView ? 'System Readout Active · Reports Focus' : 'System Readout Active') }}</span>
+              <span class="hero-status-item">Latest evaluation {{ $leadLastEvaluation }}</span>
+              <span class="hero-status-item">Saved report access live</span>
+            </div>
+
+            <div>
+              <p class="hero-overline">AI Visibility Command Center</p>
+              <h1 class="hero-domain">{{ $leadDomain }}</h1>
+              <p class="hero-intro">{{ $leadInsight }} This control surface keeps your latest state, primary bottleneck, and strongest next move in view without feeling like a generic dashboard.</p>
+            </div>
+
+            <div class="hero-bottleneck-panel">
+              <p class="hero-bottleneck-label">Primary Bottleneck</p>
+              <p class="hero-bottleneck-copy">{{ $leadBottleneck }}</p>
+            </div>
+
+            <div class="hero-action-band">
+              <a href="{{ $dominantActionHref }}" class="hero-primary-cta">{{ $dominantActionLabel }}</a>
+              <a href="{{ $leadReportHref }}" class="hero-secondary-cta">Open Latest Readout</a>
+            </div>
+
+            <div class="hero-micro-grid">
+              <article class="hero-micro-card">
+                <p>Readiness State</p>
+                <p>{{ $leadState }}</p>
+              </article>
+              <article class="hero-micro-card">
+                <p>Last Scan</p>
+                <p>{{ $leadLastEvaluation }}</p>
+              </article>
+              <article class="hero-micro-card">
+                <p>Total Scans</p>
+                <p>{{ $totalScans }}</p>
+              </article>
+            </div>
+
+            <div class="hub-priority-grid hero-priority-grid">
+              <article class="hub-priority-card">
+                <p>Latest Score / State</p>
+                <p>{{ $leadScore > 0 ? $leadScore : 'No score yet' }} · {{ $leadState }}</p>
+              </article>
+              <article class="hub-priority-card">
+                <p>Primary Bottleneck</p>
+                <p>{{ $leadBottleneck }}</p>
+              </article>
+              <article class="hub-priority-card">
+                <p>Strongest Next Move</p>
+                <p><a href="{{ $nextUnlockHref }}" class="hub-link">{{ $nextUnlockLabel }}</a></p>
+              </article>
+              <article class="hub-priority-card">
+                <p>Latest Scan Context</p>
+                <p><a href="{{ $leadReportHref }}" class="hub-link">Open latest readout</a> · {{ $latestEvaluatedLabel }}</p>
+              </article>
+            </div>
           </div>
-          <span class="state-pulse {{ in_array($systemState, ['At Risk']) ? 'risk' : (in_array($systemState, ['Expanding']) ? 'expand' : (in_array($systemState, ['Under-optimized']) ? 'optimize' : '')) }}">{{ $leadState }}</span>
+
+          <aside class="hero-side surface-reveal is-visible">
+            <div class="hero-score-panel">
+              <p class="hero-panel-label">Live Readout</p>
+              <div class="hero-score-wrap">
+                <div class="hero-score-orb {{ $leadTelemetryTone }}">
+                  <span class="hero-score-value">{{ $leadScore > 0 ? $leadScore : '--' }}</span>
+                  <span class="hero-score-caption">Score</span>
+                </div>
+                <div class="hero-score-meta">
+                  <div class="hero-telemetry">
+                    <p>State</p>
+                    <p class="telemetry-emphasis">{{ $leadState }}</p>
+                  </div>
+                  <div class="hero-telemetry">
+                    <p>Primary Bottleneck</p>
+                    <p>{{ $leadBottleneck }}</p>
+                  </div>
+                </div>
+              </div>
+              <div class="hero-side-grid">
+                <article class="hero-side-metric">
+                  <p>Next Move</p>
+                  <p>{{ $nextUnlockLabel }}</p>
+                </article>
+                <article class="hero-side-metric">
+                  <p>Last Evaluation</p>
+                  <p>{{ $leadLastEvaluation }}</p>
+                </article>
+              </div>
+
+              <div class="hero-telemetry-deck">
+                <div class="telemetry-trend-card">
+                  <p class="telemetry-card-label">Score Trend</p>
+                  <div class="telemetry-trend-row">
+                    <div class="telemetry-delta">
+                      <span class="value {{ $scoreDeltaTone }}">{{ $scoreDeltaLabel }}</span>
+                      <span class="label">Score Delta</span>
+                      <span class="sub">{{ $trendLabel }}</span>
+                    </div>
+                    <div class="telemetry-chart" aria-label="Score trend sparkline">
+                      <svg viewBox="0 0 {{ $sparklineWidth }} {{ $sparklineHeight }}" preserveAspectRatio="none" role="img" aria-hidden="true">
+                        <polygon points="{{ $sparklineAreaPoints }}" fill="rgba(200,168,75,.10)"></polygon>
+                        <polyline points="{{ $sparklinePoints }}" fill="none" stroke="rgba(200,168,75,.95)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"></polyline>
+                        <polyline points="{{ $sparklinePoints }}" fill="none" stroke="rgba(255,244,219,.26)" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"></polyline>
+                      </svg>
+                      <div class="grid-labels">
+                        <span>Earlier</span>
+                        <span>Current</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="readiness-meter-card">
+                  <p class="telemetry-card-label">Readiness Meter</p>
+                  <div class="readiness-meter-track">
+                    <div class="readiness-meter-fill" style="width: {{ $readinessPercent }}%;"></div>
+                  </div>
+                  <div class="readiness-meter-meta">
+                    <span>Current readiness</span>
+                    <strong>{{ $readinessPercent }}%</strong>
+                  </div>
+                  <div class="telemetry-mini-grid" style="margin-top:12px">
+                    <article>
+                      <p>Current Score</p>
+                      <p>{{ $leadScore > 0 ? $leadScore : '--' }}</p>
+                    </article>
+                    <article>
+                      <p>Latest Improvement</p>
+                      <p>{{ $latestImprovement }}</p>
+                    </article>
+                    <article>
+                      <p>Blocker Shift</p>
+                      <p>{{ $blockerDeltaLabel }}</p>
+                    </article>
+                    <article>
+                      <p>Signal Gain</p>
+                      <p>{{ $scoreDeltaLabel }}</p>
+                    </article>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="hero-side-card">
+              <p class="hero-panel-label">Live Status Strip</p>
+              <div class="hero-side-grid">
+                <article class="hero-side-metric">
+                  <p>System State</p>
+                  <p>{{ $systemState }}</p>
+                </article>
+                <article class="hero-side-metric">
+                  <p>Signals Tracked</p>
+                  <p>{{ $systemCount }}</p>
+                </article>
+                <article class="hero-side-metric">
+                  <p>Pressure Watch</p>
+                  <p>{{ $attentionCount }} active</p>
+                </article>
+                <article class="hero-side-metric">
+                  <p>Saved Reports</p>
+                  <p>{{ $scanFocusList->count() }} ready</p>
+                </article>
+              </div>
+            </div>
+          </aside>
         </div>
-        <div class="hub-priority-grid">
-          <article class="hub-priority-card">
-            <p>Latest Score / State</p>
-            <p>{{ $leadScore > 0 ? $leadScore : 'No score yet' }} · {{ $leadState }}</p>
-          </article>
-          <article class="hub-priority-card">
-            <p>Primary Bottleneck</p>
-            <p>{{ $leadBottleneck }}</p>
-          </article>
-          <article class="hub-priority-card">
-            <p>Next Move / Next Unlock</p>
-            <p><a href="{{ $nextUnlockHref }}" class="hub-link">{{ $nextUnlockLabel }}</a></p>
-          </article>
-          <article class="hub-priority-card">
-            <p>Recent Scan / Report</p>
-            <p><a href="{{ $leadReportHref }}" class="hub-link">Open latest readout</a></p>
-          </article>
         </div>
-        <p class="mt-2 text-[11px] uppercase tracking-[0.14em] text-[#988f7c]">Last evaluated: {{ $latestEvaluatedLabel }} · Deploy Fix or Inspect Signal to move this system forward.</p>
+        <p class="mt-4 text-[11px] uppercase tracking-[0.16em] text-[#988f7c]">Last evaluated: {{ $latestEvaluatedLabel }} · Deploy Fix or Inspect Signal to move this system forward.</p>
       </div>
     </section>
 
-    <section class="system-section mb-10 dash-section-anchor" id="scan-history">
+    <section class="system-section mb-10 dash-section-anchor surface-reveal" id="scan-history">
       <div class="scan-history-shell">
-        <div class="section-head">
+        <div class="scan-library-header">
           <div>
-            <h2>{{ $isScansView ? 'Scan History Control Surface' : 'Scans' }}</h2>
-            <p>Your scan history is the center of this system. Open report, deploy fix, or inspect signal immediately.</p>
+            <p class="scan-library-kicker">{{ $isScansView ? 'Scan Library Active' : 'Scan Surface' }}</p>
+            <h2 class="scan-library-title">{{ $isScansView ? 'Recent Readouts, Archived Signals, Priority Fixes' : 'Scan History Control Surface' }}</h2>
+            <p class="scan-library-description">{{ $isScansView ? 'This is your scan library: the latest AI visibility readouts, archived scan surfaces, and direct action paths to reports, fixes, and signal inspection.' : 'Your scan history is the center of this system. Open report, deploy fix, or inspect signal immediately.' }}</p>
           </div>
-          <div class="flex items-center gap-2">
-            @if($isScansView)
-              <span class="surface-focus-kicker">Scans Destination</span>
-            @endif
-            <span class="text-xs text-[#9f9b8d]">{{ $scanFocusList->count() }} report{{ $scanFocusList->count() === 1 ? '' : 's' }} ready</span>
+          <div class="scan-library-summary-wall">
+            <article>
+              <p>Recent Readouts</p>
+              <p>{{ $scanFocusList->count() }} surfaces ready</p>
+            </article>
+            <article>
+              <p>Latest Delta</p>
+              <p>{{ $scoreDeltaLabel }} · {{ $trendLabel }}</p>
+            </article>
+            <article>
+              <p>Primary Constraint</p>
+              <p>{{ $leadBottleneck }}</p>
+            </article>
+            <article>
+              <p>Library State</p>
+              <p>{{ $leadState }} · {{ $totalScans }} total scans</p>
+            </article>
           </div>
         </div>
 
-        <div class="scan-history-grid">
-          @forelse($scanFocusList as $scan)
+        <div class="scan-library-toolbar">
+          <span class="scan-library-pill">Recent Scans <strong>{{ $scanFocusList->count() }}</strong></span>
+          <span class="scan-library-pill">Total Scans <strong>{{ $totalScans }}</strong></span>
+          <span class="scan-library-pill">Ready State <strong>{{ $leadState }}</strong></span>
+          <span class="scan-library-pill">Latest Delta <strong>{{ $scoreDeltaLabel }}</strong></span>
+        </div>
+
+        @if($featuredRecentScans->isNotEmpty())
+        <div class="scan-shelf">
+          <div class="scan-shelf-head">
+            <div>
+              <h3>Latest Priority Readouts</h3>
+              <p>Newest scan surfaces with the clearest next actions. Start here if you want the most current state first.</p>
+            </div>
+          </div>
+          <div class="scan-featured-grid">
+          @foreach($featuredRecentScans as $scan)
             @php
               $scanRouteKey = $scan['scan_route_key'] ?? $scan['public_scan_id'] ?? $scan['system_scan_id'] ?? null;
               $reportHref = $scanRouteKey ? route('dashboard.scans.show', ['scan' => $scanRouteKey]) : route('quick-scan.show');
@@ -384,37 +754,116 @@
               $scanState = $scanScore >= 85 ? 'Stable' : ($scanScore >= 60 ? 'Under-optimized' : 'At Risk');
               $scanFix = trim((string) ($scan['fastest_fix'] ?? '')) !== '' ? $scan['fastest_fix'] : 'Inspect signal layer for next best correction.';
             @endphp
-            <article class="scan-history-card">
-              <p class="meta">System Readout Active</p>
-              <p class="domain">{{ $scan['scan_name'] ?? $scan['domain'] }}</p>
+            <article class="scan-history-card surface-reveal">
+              <div class="scan-history-head">
+                <div>
+                  <p class="meta">System Readout Active</p>
+                  <p class="domain">{{ $scan['scan_name'] ?? $scan['domain'] }}</p>
+                  <p class="scan-history-subline">Saved intelligence surface. Tactical actions are ready.</p>
+                  <div class="scan-card-badges">
+                    <span class="scan-card-badge">Latest</span>
+                    <span class="scan-card-badge">{{ $scanState }}</span>
+                  </div>
+                </div>
+                <div class="scan-history-score">
+                  <span class="score">{{ $scanScore }}</span>
+                  <span class="label">Readout Score</span>
+                </div>
+              </div>
               <div class="state-row">
                 <span class="pill">{{ $scanState }}</span>
-                <span class="score">Score {{ $scanScore }}</span>
+                <span class="text-[11px] uppercase tracking-[0.12em] text-[#aaa08b]">Updated {{ $scan['scanned_at']?->diffForHumans() ?? $scan['created_at']?->diffForHumans() }}</span>
               </div>
-              <p class="bottleneck"><span class="text-[#d9c78f]">Primary Bottleneck:</span> {{ $scanFix }}</p>
-              <p class="text-[11px] uppercase tracking-[0.12em] text-[#aaa08b]">Updated {{ $scan['scanned_at']?->diffForHumans() ?? $scan['created_at']?->diffForHumans() }}</p>
+              <div class="scan-history-fastfix">
+                <p>Fastest Fix</p>
+                <p>{{ $scanFix }}</p>
+              </div>
+              <div class="scan-history-context">
+                <article>
+                  <p>State</p>
+                  <p>{{ $scanState }}</p>
+                </article>
+                <article>
+                  <p>Inspect Signal</p>
+                  <p>{{ $scan['quick_insight'] ?? 'Detailed signal readout ready.' }}</p>
+                </article>
+              </div>
               <div class="actions">
                 <a href="{{ $reportHref }}" class="open">Open Report</a>
                 <a href="{{ $reportHref }}#layer-signal" class="deploy">Deploy Fix</a>
                 <a href="{{ $reportHref }}#detailed-layer-view" class="inspect">Inspect Signal</a>
               </div>
             </article>
-          @empty
-            <article class="scan-history-card">
-              <p class="meta">System Readout Active</p>
-              <p class="domain">No previous scans ready yet.</p>
-              <p class="bottleneck">Run your first scan to unlock report history, bottlenecks, and next moves.</p>
+          @endforeach
+          </div>
+        </div>
+        @endif
+
+        @if($archivedScans->isNotEmpty())
+        <div class="scan-shelf">
+          <div class="scan-shelf-head">
+            <div>
+              <h3>Scan Archive</h3>
+              <p>Previous readouts stay available as part of your command library. Use them to compare state shifts and reopen detailed reports.</p>
+            </div>
+          </div>
+          <div class="scan-archive-grid">
+          @foreach($archivedScans as $scan)
+            @php
+              $scanRouteKey = $scan['scan_route_key'] ?? $scan['public_scan_id'] ?? $scan['system_scan_id'] ?? null;
+              $reportHref = $scanRouteKey ? route('dashboard.scans.show', ['scan' => $scanRouteKey]) : route('quick-scan.show');
+              $scanScore = (int) ($scan['score'] ?? 0);
+              $scanState = $scanScore >= 85 ? 'Stable' : ($scanScore >= 60 ? 'Under-optimized' : 'At Risk');
+              $scanFix = trim((string) ($scan['fastest_fix'] ?? '')) !== '' ? $scan['fastest_fix'] : 'Inspect signal layer for next best correction.';
+            @endphp
+            <article class="scan-history-card surface-reveal">
+              <div class="scan-history-head">
+                <div>
+                  <p class="meta">Archived Readout</p>
+                  <p class="domain">{{ $scan['scan_name'] ?? $scan['domain'] }}</p>
+                  <div class="scan-card-badges">
+                    <span class="scan-card-badge">Archive</span>
+                    <span class="scan-card-badge">{{ $scanState }}</span>
+                  </div>
+                </div>
+                <div class="scan-history-score">
+                  <span class="score">{{ $scanScore }}</span>
+                  <span class="label">Readout Score</span>
+                </div>
+              </div>
+              <div class="state-row">
+                <span class="pill">{{ $scanState }}</span>
+                <span class="text-[11px] uppercase tracking-[0.12em] text-[#aaa08b]">Updated {{ $scan['scanned_at']?->diffForHumans() ?? $scan['created_at']?->diffForHumans() }}</span>
+              </div>
+              <div class="scan-history-fastfix">
+                <p>Fastest Fix</p>
+                <p>{{ $scanFix }}</p>
+              </div>
               <div class="actions">
-                <a href="{{ route('quick-scan.show') }}" class="open">Run First Scan</a>
+                <a href="{{ $reportHref }}" class="open">Open Report</a>
+                <a href="{{ $reportHref }}#layer-signal" class="deploy">Deploy Fix</a>
+                <a href="{{ $reportHref }}#detailed-layer-view" class="inspect">Inspect Signal</a>
               </div>
             </article>
-          @endforelse
+          @endforeach
+          </div>
         </div>
+        @elseif($featuredRecentScans->isEmpty())
+          <article class="scan-history-card surface-reveal">
+            <p class="meta">System Readout Active</p>
+            <p class="domain">No previous scans ready yet.</p>
+            <p class="bottleneck">Run your first scan to unlock report history, bottlenecks, and next moves.</p>
+            <div class="actions">
+              <a href="{{ route('quick-scan.show') }}" class="open">Run First Scan</a>
+            </div>
+          </article>
+        @endif
       </div>
     </section>
+    </div>
 
-    @if(!$agencyModeActive)
-    <section class="system-section mb-10 rounded-2xl border border-[#c8a84b]/16 bg-linear-to-br from-[#19160f] via-[#121008] to-[#0c0a06] p-5 shadow-xl operations-quiet dash-section-anchor" id="systems">
+    @if(!$agencyModeActive && !$isScansView)
+    <section class="system-section mb-10 rounded-2xl border border-[#c8a84b]/16 bg-linear-to-br from-[#19160f] via-[#121008] to-[#0c0a06] p-5 shadow-xl operations-quiet dash-section-anchor surface-reveal" id="systems">
       <p class="mb-2 text-xs uppercase tracking-[0.22em] text-[#c8a84b]/80">System Readout</p>
       <div class="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
         <div>
@@ -443,7 +892,7 @@
           })
           ->values();
       @endphp
-      <section class="system-section system-section-primary mb-10 dash-section-anchor" id="systems">
+      <section class="system-section system-section-primary mb-10 dash-section-anchor surface-reveal" id="systems">
         <div class="system-grid-shell">
           <div class="system-grid-toolbar">
             <div>
@@ -734,7 +1183,7 @@
     </section>
     @endif
 
-    <section class="system-section system-section-secondary mb-10 dash-section-anchor operations-quiet" id="coverage">
+    <section class="system-section system-section-secondary mb-10 dash-section-anchor operations-quiet surface-reveal" id="coverage">
       <h2 class="mb-3 text-sm uppercase tracking-[0.2em] text-[#c8a84b]/68">Next Move Queue</h2>
       <div class="next-move-grid">
         <a href="{{ route('reports.index') }}" class="next-move-card primary">
@@ -857,6 +1306,26 @@
 
 <script>
   (function () {
+    const revealables = document.querySelectorAll('.surface-reveal');
+    if ('IntersectionObserver' in window) {
+      const revealObserver = new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
+          if (!entry.isIntersecting) return;
+          entry.target.classList.add('is-visible');
+          revealObserver.unobserve(entry.target);
+        });
+      }, { threshold: 0.16, rootMargin: '0px 0px -6% 0px' });
+
+      revealables.forEach(function (node) {
+        if (node.classList.contains('is-visible')) return;
+        revealObserver.observe(node);
+      });
+    } else {
+      revealables.forEach(function (node) {
+        node.classList.add('is-visible');
+      });
+    }
+
     const cards = document.querySelectorAll('.system-grid-card.clickable[data-open-href]');
     const flyout = document.getElementById('readoutFlyout');
     const flyoutDomain = document.getElementById('readoutFlyoutTitle');

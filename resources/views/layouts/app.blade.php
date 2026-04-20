@@ -188,7 +188,7 @@ body::before{
                 {{-- Main Navigation --}}
                 <div class="dash-nav-links">
                   <a href="{{ route('app.dashboard') }}" class="{{ request()->is('dashboard') ? 'active' : '' }}" title="System overview and current state">System</a>
-                  <a href="{{ route('app.dashboard.scans') }}#scan-history" class="{{ request()->is('dashboard/scans') ? 'active' : '' }}" title="Open scan history and readouts">Scans</a>
+                  <a href="{{ route('app.dashboard.scans') }}" class="{{ request()->is('dashboard/scans') ? 'active' : '' }}" title="Open scan library and recent readouts">Scans</a>
                   <a href="{{ route('app.dashboard.reports') }}#coverage" class="{{ request()->is('dashboard/reports') || request()->is('reports*') ? 'active' : '' }}" title="Detailed saved reports and readouts">Reports</a>
                 </div>
             </div>
