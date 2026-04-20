@@ -211,8 +211,8 @@
   .onboarding-command-kicker{font-size:.64rem;letter-spacing:.24em;text-transform:uppercase;color:rgba(200,168,75,.72)}
   .onboarding-command-title{margin-top:10px;font-size:clamp(2rem,4vw,3rem);line-height:.95;font-weight:700;letter-spacing:-.04em;color:#f4ecd7;max-width:12ch}
   .onboarding-command-copy{margin-top:12px;max-width:38rem;font-size:1rem;line-height:1.65;color:#d8cdb6}
-  .onboarding-command-cta{display:inline-flex;align-items:center;justify-content:center;min-height:48px;padding:0 20px;border-radius:14px;margin-top:16px;background:linear-gradient(135deg,#e7c56a,#c8a84b);color:#100d07;text-decoration:none;font-size:.76rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;box-shadow:0 18px 28px rgba(200,168,75,.22),0 0 0 1px rgba(255,255,255,.18) inset;transition:transform .18s ease,box-shadow .2s ease}
-  .onboarding-command-cta:hover{transform:translateY(-2px);box-shadow:0 22px 34px rgba(200,168,75,.28),0 0 0 1px rgba(255,255,255,.22) inset}
+  .onboarding-command-cta{display:inline-flex;align-items:center;justify-content:center;min-height:48px;padding:0 20px;border-radius:14px;margin-top:16px;background:#c6a85a;color:#1a1a1a;text-decoration:none;font-size:.76rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;box-shadow:0 18px 28px rgba(198,168,90,.22),0 0 0 1px rgba(255,255,255,.18) inset;transition:all .2s ease}
+  .onboarding-command-cta:hover{transform:translateY(-2px);box-shadow:0 24px 36px rgba(198,168,90,.38),0 0 0 1px rgba(255,255,255,.22) inset}
   .onboarding-command-reassure{margin-top:10px;font-size:.86rem;line-height:1.5;color:#d9cfba}
   .onboarding-command-footnote{margin-top:12px;font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;color:#b5a988}
   .onboarding-explainer{margin-top:8px}
@@ -246,7 +246,7 @@
   .hero-status-item::before{content:'';width:6px;height:6px;border-radius:999px;background:rgba(200,168,75,.72)}
   .hero-overline{font-size:.68rem;letter-spacing:.28em;text-transform:uppercase;color:rgba(200,168,75,.68)}
   .hero-domain{font-size:clamp(2.2rem,4.8vw,4.35rem);line-height:.96;font-weight:650;letter-spacing:-.04em;color:#f3ecd8;text-wrap:balance;max-width:10ch;text-shadow:0 8px 30px rgba(0,0,0,.35)}
-  .hero-intro{max-width:48rem;font-size:1rem;line-height:1.6;color:#d8cfbb}
+  .hero-intro{max-width:48rem;font-size:1rem;line-height:1.6;color:#eae4d8}
   .hero-priority-grid{margin-top:2px;gap:12px}
   .hub-priority-card{position:relative;border-color:rgba(200,168,75,.2);border-radius:14px;padding:12px 13px;background:linear-gradient(165deg,rgba(255,255,255,.05),rgba(0,0,0,.18));backdrop-filter:blur(10px);overflow:hidden;box-shadow:inset 0 1px 0 rgba(255,255,255,.03)}
   .hub-priority-card::after{content:'';position:absolute;inset:0;background:linear-gradient(115deg,transparent 20%,rgba(200,168,75,.08) 48%,transparent 70%);transform:translateX(-135%);animation:heroSweep 10s ease-in-out infinite}
@@ -504,8 +504,8 @@
   .next-move-command-item p:first-child{font-size:.56rem;letter-spacing:.16em;text-transform:uppercase;color:#b6aa8a}
   .next-move-command-item p:last-child{margin-top:5px;font-size:.88rem;line-height:1.45;color:#eee3ca}
   .next-move-command-actions{display:flex;flex-direction:column;align-items:flex-start;gap:8px;margin-top:14px}
-  .next-move-command-primary{display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:0 18px;border-radius:12px;background:linear-gradient(135deg,#e7c56a,#c8a84b);color:#100d07;text-decoration:none;font-size:.72rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;box-shadow:0 14px 24px rgba(200,168,75,.2),0 0 0 1px rgba(255,255,255,.16) inset}
-  .next-move-command-primary:hover{transform:translateY(-1px)}
+  .next-move-command-primary{display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:0 18px;border-radius:12px;background:#c6a85a;color:#1a1a1a;text-decoration:none;font-size:.72rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;box-shadow:0 14px 24px rgba(198,168,90,.2),0 0 0 1px rgba(255,255,255,.16) inset;transition:all .2s ease}
+  .next-move-command-primary:hover{transform:translateY(-2px);box-shadow:0 20px 32px rgba(198,168,90,.36),0 0 0 1px rgba(255,255,255,.22) inset}
   .next-move-command-secondary{font-size:.7rem;letter-spacing:.14em;text-transform:uppercase;color:#d7ccb4;text-decoration:none;border-bottom:1px solid rgba(200,168,75,.28)}
   .next-move-command-secondary:hover{border-color:rgba(200,168,75,.54);color:#efe2c5}
   .impact-hint{margin-top:5px;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:#b6ad98}
@@ -521,18 +521,18 @@
   .stack-card.active{border-color:rgba(106,175,144,.32);background:linear-gradient(152deg,#10160f,#0d110d 72%)}
   .stack-card.dormant{opacity:.74}
 
-  .control-hero{border-radius:26px;border-color:rgba(200,168,75,.3);box-shadow:0 28px 56px rgba(0,0,0,.46),0 0 0 1px rgba(200,168,75,.12) inset;padding:28px 28px 24px;background:linear-gradient(145deg,rgba(33,25,15,.98),rgba(11,9,7,.98) 64%),radial-gradient(circle at 8% 18%,rgba(200,168,75,.22),transparent 24%),radial-gradient(circle at 85% 12%,rgba(98,142,135,.16),transparent 26%)}
+  .control-hero{border-radius:26px;border-color:rgba(200,168,75,.3);box-shadow:0 28px 56px rgba(0,0,0,.46),0 0 0 1px rgba(200,168,75,.12) inset;padding:28px 28px 24px;background:linear-gradient(145deg,rgba(33,25,15,.98),rgba(11,9,7,.98) 64%),radial-gradient(circle at 8% 18%,rgba(200,168,75,.12),transparent 24%),radial-gradient(circle at 85% 12%,rgba(98,142,135,.1),transparent 26%)}
   .hero-command-deck{position:relative;z-index:1;display:grid;gap:16px}
   .hero-grid{grid-template-columns:minmax(0,1.2fr) minmax(320px,1fr);gap:20px}
   .hero-domain{font-size:clamp(2.8rem,5.5vw,5.2rem);line-height:.9;font-weight:700;letter-spacing:-.05em;color:#f6efdc;max-width:9ch;text-shadow:0 10px 34px rgba(0,0,0,.42)}
   .hero-bottleneck-panel{position:relative;border:1px solid rgba(200,168,75,.22);border-radius:18px;background:linear-gradient(160deg,rgba(0,0,0,.24),rgba(255,255,255,.03));padding:16px 18px;box-shadow:0 14px 26px rgba(0,0,0,.26),inset 0 1px 0 rgba(255,255,255,.04);overflow:hidden}
   .hero-bottleneck-panel::after{content:'';position:absolute;inset:0;background:linear-gradient(120deg,transparent 28%,rgba(200,168,75,.1) 50%,transparent 72%);transform:translateX(-140%);animation:heroSweep 12s ease-in-out infinite}
   .hero-bottleneck-label{font-size:.62rem;letter-spacing:.22em;text-transform:uppercase;color:#d8c58f}
-  .hero-bottleneck-copy{position:relative;z-index:1;margin-top:8px;font-size:1rem;line-height:1.65;color:#f1e7d2;max-width:36rem}
+  .hero-bottleneck-copy{position:relative;z-index:1;margin-top:8px;font-size:1rem;line-height:1.65;color:#eae4d8;max-width:36rem}
   .hero-action-band{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
   .hero-primary-cta,.hero-secondary-cta{display:inline-flex;align-items:center;justify-content:center;min-height:46px;padding:0 18px;border-radius:14px;font-size:.72rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;text-decoration:none;transition:transform .18s ease,box-shadow .22s ease,border-color .22s ease,background .22s ease}
-  .hero-primary-cta{background:linear-gradient(135deg,#e7c56a,#c8a84b);color:#100d07;box-shadow:0 18px 28px rgba(200,168,75,.22),0 0 0 1px rgba(255,255,255,.18) inset}
-  .hero-primary-cta:hover{transform:translateY(-2px);box-shadow:0 22px 34px rgba(200,168,75,.28),0 0 0 1px rgba(255,255,255,.22) inset}
+  .hero-primary-cta{background:#c6a85a;color:#1a1a1a;box-shadow:0 18px 28px rgba(198,168,90,.22),0 0 0 1px rgba(255,255,255,.18) inset}
+  .hero-primary-cta:hover{transform:translateY(-2px);box-shadow:0 24px 36px rgba(198,168,90,.38),0 0 0 1px rgba(255,255,255,.24) inset}
   .hero-secondary-cta{border:1px solid rgba(200,168,75,.28);background:rgba(255,255,255,.03);color:#ece1c8}
   .hero-secondary-cta:hover{transform:translateY(-2px);border-color:rgba(200,168,75,.52);background:rgba(200,168,75,.1)}
   .hero-micro-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
@@ -597,6 +597,12 @@
     0%{transform:translateX(-130%)}
     100%{transform:translateX(130%)}
   }
+
+  .next-action-block{border:1px solid rgba(200,168,75,.26);border-radius:14px;background:linear-gradient(155deg,rgba(30,22,10,.96),rgba(12,9,6,.98) 68%);padding:14px;box-shadow:0 10px 24px rgba(0,0,0,.28),inset 0 1px 0 rgba(255,255,255,.03)}
+  .next-action-label{font-size:.6rem;letter-spacing:.24em;text-transform:uppercase;color:rgba(200,168,75,.72)}
+  .next-action-copy{margin-top:6px;font-size:.86rem;line-height:1.55;color:#eae4d8}
+  .next-action-cta{display:inline-flex;align-items:center;justify-content:center;min-height:42px;padding:0 18px;border-radius:10px;margin-top:12px;background:#c6a85a;color:#1a1a1a;text-decoration:none;font-size:.7rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;transition:all .2s ease;box-shadow:0 8px 18px rgba(198,168,90,.22),0 0 0 1px rgba(255,255,255,.12) inset}
+  .next-action-cta:hover{transform:translateY(-2px);box-shadow:0 14px 28px rgba(198,168,90,.38),0 0 0 1px rgba(255,255,255,.18) inset}
 
   @media(max-width:900px){
     .system-grid-toolbar{flex-direction:column;align-items:stretch}
@@ -712,6 +718,12 @@
                 </article>
               </div>
             </div>
+
+            <div class="next-action-block">
+              <p class="next-action-label">Next Action</p>
+              <p class="next-action-copy">Fix your primary content signal to improve your visibility score.</p>
+              <a href="{{ $nextMoveActionHref }}" class="next-action-cta">Fix This Now</a>
+            </div>
           </aside>
         </div>
         </div>
@@ -738,7 +750,7 @@
           </article>
         </div>
         <div class="next-move-command-actions">
-          <a href="{{ $nextMoveActionHref }}" class="next-move-command-primary">Apply This Fix</a>
+          <a href="{{ $nextMoveActionHref }}" class="next-move-command-primary">Fix Visibility Issue</a>
           @if($leadRenderable)
             <a href="{{ $leadReportHref }}" class="next-move-command-secondary">View Full Report →</a>
           @else

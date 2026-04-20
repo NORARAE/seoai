@@ -93,7 +93,8 @@ body::before{
   transition:color .25s,background .25s;
 }
 .dash-nav-links a:hover{color:var(--ivory);background:rgba(200,168,75,.04)}
-.dash-nav-links a.active{color:var(--gold);background:rgba(200,168,75,.06)}
+.dash-nav-links a.active{color:var(--gold);background:rgba(200,168,75,.04);position:relative}
+.dash-nav-links a.active::after{content:'';position:absolute;bottom:6px;left:14px;right:14px;height:2px;background:linear-gradient(90deg,transparent,var(--gold) 20%,var(--gold) 80%,transparent);border-radius:2px}
 
 /* Right actions */
 .dash-nav-right{display:flex;align-items:center;gap:12px}
@@ -105,7 +106,7 @@ body::before{
   background:linear-gradient(135deg,var(--gold),var(--gold-lt));
   transition:transform .2s ease,box-shadow .2s ease;
 }
-.dash-primary-cta:hover{transform:translateY(-1px);box-shadow:0 8px 20px rgba(200,168,75,.28)}
+.dash-primary-cta:hover{transform:translateY(-2px);box-shadow:0 10px 28px rgba(200,168,75,.42)}
 .dash-primary-cta svg{width:14px;height:14px}
 
 .dash-admin-btn{
@@ -273,9 +274,9 @@ body.is-admin-viewing-dashboard {
                 
                 {{-- Main Navigation --}}
                 <div class="dash-nav-links">
-                  <a href="{{ route('app.dashboard') }}" class="{{ request()->is('dashboard') ? 'active' : '' }}" title="System overview and current state">System</a>
-                  <a href="{{ route('app.dashboard.scans') }}" class="{{ request()->is('dashboard/scans') ? 'active' : '' }}" title="Open scan library and recent readouts">Scans</a>
-                  <a href="{{ route('app.dashboard.reports') }}#report-readouts" class="{{ request()->is('dashboard/reports') || request()->is('reports*') ? 'active' : '' }}" title="Current level, next unlock, and progression path">Progress</a>
+                  <a href="{{ route('app.dashboard.reports') }}#report-readouts" class="{{ request()->is('dashboard') || request()->is('dashboard/reports') || request()->is('reports*') ? 'active' : '' }}" title="Current level, next unlock, and progression path">Progress</a>
+                  <a href="{{ route('quick-scan.show') }}" class="{{ request()->is('quick-scan*') ? 'active' : '' }}" title="Run a new visibility scan">Run New Scan</a>
+                  <a href="{{ route('app.dashboard.scans') }}" class="{{ request()->is('dashboard/scans') ? 'active' : '' }}" title="Open scan library and readout history">System</a>
                 </div>
             </div>
             
@@ -285,7 +286,7 @@ body.is-admin-viewing-dashboard {
                     <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 5v14m7-7H5"/>
                     </svg>
-                    <span>+ New Scan</span>
+                    <span>Run New Scan</span>
                 </a>
 
                   {{-- User avatar/profile --}}
