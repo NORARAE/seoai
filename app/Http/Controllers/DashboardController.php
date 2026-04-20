@@ -32,10 +32,6 @@ class DashboardController extends Controller
             'score_band' => $scoreBand,
         ]);
 
-        if ($user->isPrivilegedStaff() || $user->isFrontendDev()) {
-            return view('dashboard.staff', array_merge($this->buildStaffDashboardData(), $scanData));
-        }
-
         return view('dashboard.customer-modern', $scanData);
     }
 
