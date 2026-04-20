@@ -91,6 +91,7 @@ class QuickScanController extends Controller
     {
         $scan = $this->resolveDashboardScan($scan);
         $user = Auth::user();
+        $sessionId = (string) $request->query('session_id', '');
 
         if (!$scan || !$user) {
             return $this->renderReadoutUnavailable();
@@ -100,18 +101,35 @@ class QuickScanController extends Controller
             return $this->renderReadoutUnavailable();
         }
 
-        if (!$scan->paid || !$scan->stripe_session_id) {
-            return $this->renderReadoutUnavailable($scan);
+        // Checkout success can return before webhook completion.
+        // Reconcile directly when session context is available.
+        if ($sessionId !== '' && (!$scan->paid || $scan->status !== QuickScan::STATUS_SCANNED || $scan->score === null)) {
+            $this->reconcileCheckoutAndKickoffScan($scan, $sessionId);
+            $scan->refresh();
+        }
+
+        if (!$scan->paid) {
+            $hasFreshSessionContext = $sessionId !== ''
+                && $scan->stripe_session_id === $sessionId
+                && $this->isSessionLinkFresh($scan);
+
+            if (!$hasFreshSessionContext) {
+                return $this->renderReadoutUnavailable($scan);
+            }
+
+            return view('public.quick-scan-processing', [
+                'scan' => $scan,
+                'sessionId' => $sessionId,
+                'resultUrl' => route('dashboard.scans.show', ['scan' => $scan->publicScanId()]),
+            ]);
         }
 
         if ($scan->status !== QuickScan::STATUS_SCANNED || $scan->score === null) {
-            return $this->renderReadoutUnavailable($scan);
-        }
-
-        $sessionId = (string) $request->query('session_id', '');
-        if ($sessionId !== '' && $scan->upgrade_status !== 'paid' && $scan->upgrade_stripe_session_id === $sessionId) {
-            $this->reconcileCheckoutAndKickoffScan($scan, $sessionId);
-            $scan->refresh();
+            return view('public.quick-scan-processing', [
+                'scan' => $scan,
+                'sessionId' => $sessionId,
+                'resultUrl' => route('dashboard.scans.show', ['scan' => $scan->publicScanId()]),
+            ]);
         }
 
         $this->trackResultViews($scan, 'dashboard_scan_report');
@@ -238,10 +256,15 @@ class QuickScanController extends Controller
         ]);
 
         try {
+            $dashboardResultRelative = route('dashboard.scans.show', ['scan' => $scan->publicScanId()], false);
+            $dashboardResultWithSession = $dashboardResultRelative
+                . (str_contains($dashboardResultRelative, '?') ? '&' : '?')
+                . 'session_id={CHECKOUT_SESSION_ID}';
+
             $successUrl = Auth::check()
-                ? route('dashboard.scans.show', ['scan' => $scan->publicScanId()])
+                ? url($dashboardResultWithSession)
                 : route('login', [
-                    'redirect' => route('dashboard.scans.show', ['scan' => $scan->publicScanId()], false),
+                    'redirect' => $dashboardResultWithSession,
                     'notice' => 'scan-results',
                 ]);
             $cancelUrl = url('/quick-scan/cancelled') . '?scan_id=' . $scan->id;

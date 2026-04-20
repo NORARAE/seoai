@@ -136,7 +136,7 @@ class RunQuickScanJob implements ShouldQueue, ShouldBeUnique
             return;
         }
 
-        // Email 1: Immediate result
+        // Email 1: Immediate result (transactional — always send)
         try {
             if (app()->environment('local')) {
                 Mail::to($scan->email)->send(new QuickScanResult($scan));
@@ -145,6 +145,20 @@ class RunQuickScanJob implements ShouldQueue, ShouldBeUnique
             }
         } catch (\Throwable $e) {
             Log::warning('RunQuickScanJob: Email 1 failed', ['scan_id' => $scan->id, 'error' => $e->getMessage()]);
+        }
+
+        // Marketing follow-up sequence (Day 1 / 3 / 5).
+        // Skip if the lead has already unsubscribed or opted out of marketing emails.
+        $lead = Lead::where('email', $scan->email)->first();
+        $userOptedOut = \App\Models\User::where('email', $scan->email)
+            ->where('email_marketing_opt_in', false)
+            ->exists();
+
+        if ($lead?->email_unsubscribed_at || $userOptedOut) {
+            Log::info('RunQuickScanJob: marketing follow-ups skipped (unsubscribed)', ['scan_id' => $scan->id]);
+            $scan->update(['emails_sent' => true]);
+            Log::info('RunQuickScanJob: completed', ['scan_id' => $scan->id, 'score' => $scan->score]);
+            return;
         }
 
         // Email 2: Day 1 follow-up

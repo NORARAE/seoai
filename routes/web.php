@@ -47,6 +47,20 @@ Route::post('/login', [CustomerLoginController::class, 'authenticate']);
 Route::get('/register', [CustomerRegisterController::class, 'show'])->name('register');
 Route::post('/register', [CustomerRegisterController::class, 'store'])->name('register.store');
 
+// Unified logout — POST (form) and GET (direct URL / email links).
+// Clears both the web session and the Filament auth guard.
+Route::match(['GET', 'POST'], '/logout', function () {
+    \Illuminate\Support\Facades\Auth::logout();
+    request()->session()->invalidate();
+    request()->session()->regenerateToken();
+    return redirect()->route('login');
+})->middleware('auth')->name('logout');
+
+// /admin/logout via GET — Filament only registers POST; navigating here directly
+// (e.g. typing the URL or following a link) previously returned 403. Redirect to
+// the unified logout handler so both guards are cleared correctly.
+Route::get('/admin/logout', fn() => redirect()->route('logout'))->middleware('auth');
+
 // Google OAuth sign-in — routes registered regardless of enabled flag;
 // the controller itself returns 404 when GOOGLE_LOGIN_ENABLED=false.
 Route::get('/auth/google/redirect', [GoogleAuthController::class, 'redirect'])->name('auth.google.redirect');
@@ -187,8 +201,17 @@ Route::get('/sitemaps/{site}/pages-{page}.xml', [PublicSitemapController::class,
 // ============================================================================
 
 // Authenticated-but-unapproved users land here. No approval check to avoid loops.
-Route::middleware('auth')->get('/pending-approval', fn() => view('pending-approval'))
-    ->name('pending-approval');
+// Redirect already-approved / privileged users away so they never see a stale page.
+Route::middleware('auth')->get('/pending-approval', function (\Illuminate\Http\Request $request) {
+    $user = $request->user();
+    if ($user->isPrivilegedStaff() || $user->isFrontendDev()) {
+        return redirect('/admin');
+    }
+    if ($user->isApproved()) {
+        return redirect('/dashboard');
+    }
+    return view('pending-approval');
+})->name('pending-approval');
 
 // Post-approval user onboarding (workspace setup)
 Route::middleware(['auth', EnsureUserIsApproved::class])->group(function () {
@@ -230,6 +253,12 @@ Route::middleware(['auth', EnsureUserIsApproved::class, EnsureOnboardingComplete
 
     // Settings (future)
     // Route::get('/settings', [SettingController::class, 'index'])->name('settings.index');
+
+    // Notification preferences
+    Route::get('/settings/notifications', [\App\Http\Controllers\NotificationSettingsController::class, 'show'])
+        ->name('settings.notifications');
+    Route::post('/settings/notifications', [\App\Http\Controllers\NotificationSettingsController::class, 'update'])
+        ->name('settings.notifications.update');
 });
 
 // Convenience routes (redirect to app layer)

@@ -121,7 +121,7 @@ body{
 
   <div style="display:flex;gap:32px;align-items:center;justify-content:center;margin-top:32px">
     <a href="/" class="logout-link">← Back to Homepage</a>
-    <form method="POST" action="{{ route('filament.admin.auth.logout') }}" style="display:inline">
+    <form method="POST" action="{{ route('logout') }}" style="display:inline">
       @csrf
       <button type="submit" class="logout-link">Sign Out</button>
     </form>

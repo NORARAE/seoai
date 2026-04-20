@@ -46,6 +46,11 @@
       'href' => route('quick-scan.upgrade') . '?plan=' . $nextTier['plan'] . '&scan_id=' . $scan->id . '&sid=' . $scan->stripe_session_id,
   ] : null;
 
+  $scanCount = auth()->check() ? auth()->user()->quickScans()->count() : 1;
+  $showConsultationOffer = $scanCount >= 1;
+  $consultationHref = url('/book?entry=consultation');
+  $momentumCta = 'Build My Momentum';
+
   $rawBottleneck = trim((string) ($scan->fastest_fix ?? ($scan->issues[0] ?? '')));
   $topBottleneck = $rawBottleneck !== '' ? $rawBottleneck : 'Data depth insufficient for consistent AI extraction.';
 
@@ -93,6 +98,7 @@
   }
   usort($sysActions, fn($a, $b) => $b['max'] <=> $a['max']);
   $sysActionsLimit = $isUpgraded ? count($sysActions) : min(3, count($sysActions));
+  $primaryAction = $sysActions[0] ?? null;
 
   $totalChecks = 0;
   $totalPassed = 0;
@@ -191,6 +197,37 @@
           ['rank' => 4, 'name' => 'System Activation', 'status' => $unlockLevel >= 4 ? 'Included' : 'Locked', 'enabled' => $unlockLevel >= 4, 'value' => 'This layer unlocks competitive control insights and market-level direction.', 'cta' => $unlockLevel >= 4 ? '#priority-actions' : ($singleNextStep['href'] ?? route('quick-scan.upgrade')), 'cta_label' => $unlockLevel >= 4 ? 'View Fix Sequence' : 'Unlock System Activation', 'cta_note' => $unlockLevel >= 4 ? 'Opens competitive signal controls.' : 'Reveals competitive gaps and expansion map.'],
     ];
 
+    $progressionLevels = [
+      [
+        'rank' => 1,
+        'name' => 'Baseline',
+        'locked' => $unlockLevel < 1,
+        'unlocks' => 'A clear starting score and your top blocker.',
+        'improves' => 'You know where to focus first instead of guessing.',
+      ],
+      [
+        'rank' => 2,
+        'name' => 'Signal',
+        'locked' => $unlockLevel < 2,
+        'unlocks' => 'A deeper map of what AI can and cannot read.',
+        'improves' => 'You stop wasting time on low-impact fixes.',
+      ],
+      [
+        'rank' => 3,
+        'name' => 'Leverage',
+        'locked' => $unlockLevel < 3,
+        'unlocks' => 'A ranked fix order based on impact.',
+        'improves' => 'Your biggest gains happen earlier.',
+      ],
+      [
+        'rank' => 4,
+        'name' => 'Activation',
+        'locked' => $unlockLevel < 4,
+        'unlocks' => 'Competitive signals and expansion opportunities.',
+        'improves' => 'Stronger control over where and how you show up.',
+      ],
+    ];
+
   $findings = [
       ['title' => 'Coverage', 'state' => $coveragePct >= 70 ? 'Selection Lifted' : ($coveragePct >= 45 ? 'Selection Diluted' : 'Selection Suppressed'), 'copy' => 'Low coverage → AI excludes your domain from final answers.', 'pct' => $coveragePct],
       ['title' => 'Authority', 'state' => $authorityPct >= 70 ? 'Trust Weighting Active' : ($authorityPct >= 45 ? 'Trust Weighting Reduced' : 'Trust Weighting Lost'), 'copy' => 'Weak authority → AI routes to stronger competitor signals instead.', 'pct' => $authorityPct],
@@ -208,6 +245,16 @@
       $score >= 85 => 'AI can see you clearly, but stronger competitors still provide more complete extraction signals.',
       $score >= 60 => 'Your site is visible, but not yet structurally strong enough to control answer selection.',
       default => 'You are detectable, but AI still lacks enough trusted structure to confidently select your site.',
+  };
+  $ahaLine = match (true) {
+      $score >= 85 => 'Your business is close. AI can already understand you, and this next step helps AI recommend you more often.',
+      $score >= 60 => 'Your business is in a strong position to grow. AI can read key parts, and this next step helps AI recommend you with more confidence.',
+      default => 'Your business has real momentum. One focused fix helps AI understand you clearly and start recommending you more consistently.',
+  };
+  $momentumLine = match (true) {
+      $score >= 85 => 'This is your starting point. One targeted fix puts you ahead of most competitors.',
+      $score >= 60 => 'This is your starting point. Fixing your top blocker moves you into the top tier.',
+      default      => 'This is your starting point. One fix here changes how AI understands and recommends you.',
   };
 @endphp
 <style>
@@ -292,6 +339,7 @@ a{text-decoration:none;color:inherit}
 .hero-title{font-family:'Cormorant Garamond',serif;font-size:2rem;line-height:1.04;margin:0 0 8px;color:var(--text)}
 .hero-state{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:8px}
 .score-meaning{margin:0;font-size:.62rem;letter-spacing:.12em;text-transform:uppercase;color:#dfd2ae}
+.aha-line{margin:7px 0 0;font-size:.74rem;line-height:1.45;color:#ece1c7;max-width:58ch}
 .pill{display:inline-flex;align-items:center;justify-content:center;min-height:25px;padding:4px 10px;border-radius:999px;font-size:.5rem;letter-spacing:.14em;text-transform:uppercase;border:1px solid var(--line-soft);background:rgba(214,181,95,.08);color:#ebddb4}
 .pill-score{border-color:rgba(214,181,95,.35);background:rgba(214,181,95,.14);color:#f0e1bc}
 .pill-state-stable{border-color:rgba(106,175,144,.34);background:rgba(106,175,144,.1);color:#d9eee5}
@@ -305,6 +353,10 @@ a{text-decoration:none;color:inherit}
 .hero-actions{display:flex;gap:8px;flex-wrap:nowrap;align-items:center}
 .hero-actions .btn{min-width:164px}
 .hero-translation{margin:8px 0 0;font-size:.74rem;line-height:1.45;color:#d6cbaa;border-top:1px solid rgba(214,181,95,.12);padding-top:8px}
+.hero-trust-note{margin:7px 0 0;font-size:.66rem;letter-spacing:.06em;color:#cfc4a8;opacity:.9}
+.hero-momentum{margin:10px 0 0;font-size:.67rem;letter-spacing:.06em;color:#a89e87;font-style:italic;line-height:1.4}
+.hero-proof-note{margin:5px 0 0;font-size:.62rem;letter-spacing:.05em;color:#c6b998;opacity:.92}
+.cta-time-value{margin:5px 0 0;font-size:.62rem;letter-spacing:.04em;color:#d5caaf;opacity:.92}
 .btn{display:inline-flex;align-items:center;justify-content:center;min-height:40px;padding:9px 14px;border-radius:10px;font-size:.62rem;letter-spacing:.12em;text-transform:uppercase;border:1px solid transparent;cursor:pointer;text-decoration:none;transition:all .22s ease}
 .btn-primary{background:linear-gradient(180deg,#efd79f,#d8b965 52%,#c9a952);border-color:rgba(214,181,95,.82);color:#090806;font-weight:700;box-shadow:0 2px 8px rgba(214,181,95,.14);transition:all .16s ease}
 .btn-primary:hover{filter:brightness(1.04);box-shadow:0 2px 12px rgba(214,181,95,.22)}
@@ -408,6 +460,18 @@ a{text-decoration:none;color:inherit}
 .action.is-executing{box-shadow:0 0 0 1px rgba(214,181,95,.34) inset,0 0 20px rgba(214,181,95,.16)}
 .action.is-resolved{box-shadow:0 0 0 1px rgba(214,181,95,.3) inset,0 0 20px rgba(214,181,95,.12)}
 
+.next-move-guide{margin:10px 12px 0;padding:11px;border:1px solid rgba(214,181,95,.28);border-radius:11px;background:rgba(214,181,95,.05)}
+.next-move-guide h3{margin:0 0 9px;font-size:.82rem;letter-spacing:.09em;text-transform:uppercase;color:#efdcae}
+.next-move-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;align-items:stretch}
+.next-move-card{border:1px solid var(--line-soft);border-radius:10px;background:rgba(0,0,0,.16);padding:8px 9px}
+.next-move-card strong{display:block;font-size:.5rem;letter-spacing:.16em;text-transform:uppercase;color:#ddc88e;margin-bottom:4px}
+.next-move-card p{margin:0;font-size:.68rem;line-height:1.4;color:#eee2c8}
+
+.consult-offer{margin-top:10px;padding:11px;border:1px solid rgba(214,181,95,.3);border-radius:11px;background:linear-gradient(140deg,rgba(214,181,95,.12),rgba(214,181,95,.04));display:none}
+.consult-offer[data-show='true']{display:block}
+.consult-offer h3{margin:0 0 5px;font-size:.92rem;color:#f0e3bf}
+.consult-offer p{margin:0 0 9px;font-size:.72rem;color:#e9dcc1;line-height:1.42}
+
 .btn.is-disabled{opacity:.62;pointer-events:none}
 .btn.is-executing{box-shadow:0 0 16px rgba(214,181,95,.26)}
 .btn.is-resolved{box-shadow:0 0 16px rgba(214,181,95,.22)}
@@ -473,19 +537,142 @@ a{text-decoration:none;color:inherit}
   .sticky{position:static}
 }
 @media (max-width:900px){
+  /* Match mobile nav behavior used across other public pages */
+  #nav{padding:14px 16px}
+  #nav.stuck{padding:10px 16px}
+  .nav-right{display:none}
+  .nav-hamburger{display:flex}
+
   .grid,.layer-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
   .action-stack{grid-template-columns:1fr}
   .action-stack::before{display:none}
-  .state-rail{grid-template-columns:1fr}
-  .global-state-strip{grid-template-columns:1fr}
+  .shell{padding:64px 14px 38px}
+
+  /* Keep System Analysis visible but secondary and compact */
+  .mode-bar{
+    grid-template-columns:1fr auto;
+    gap:8px;
+    padding:8px 10px;
+    border-radius:10px;
+    margin-bottom:8px;
+  }
+  .mode-kicker{display:none}
+  .mode-meta{gap:6px}
+  .mode-chip{min-height:22px;padding:3px 8px;font-size:.5rem;letter-spacing:.07em}
+  .mode-return{min-height:30px;padding:6px 9px;font-size:.48rem;letter-spacing:.09em;border-radius:8px}
+
+  /* Reduce mobile above-the-fold noise so score -> meaning -> action is clear */
+  .live-feedback-strip,
+  .global-state-strip,
+  .progression-strip{display:none}
+
+  .hero{
+    display:flex;
+    flex-direction:column;
+    padding:14px 12px 12px;
+    border-radius:12px;
+    gap:8px;
+  }
+  .hero-title{font-size:1.52rem;line-height:1.05}
+  .score-meaning{font-size:.56rem;letter-spacing:.11em}
+  .aha-line{font-size:.78rem;line-height:1.42;max-width:100%}
+
+  /* Mobile hierarchy inside hero */
+  .hero > .hero-top{order:1}
+  .hero > .hero-actions{order:2}
+  .hero > .cta-time-value{order:3}
+  .hero > .hero-bottleneck{order:4}
+  .hero > .hero-copy{order:5}
+  .hero > .cta-consequence{order:6}
+  .hero > .hero-translation{order:7}
+  .hero > .hero-trust-note{order:8}
+  .hero > .hero-proof-note{order:9}
+  .hero > .hero-momentum{order:10}
+
+  .hero-bottleneck{padding:9px 10px;margin:2px 0 0}
+  .hero-bottleneck strong{font-size:.5rem}
+  .hero-bottleneck p{font-size:.74rem;line-height:1.35}
+  .hero-copy,.hero-translation{font-size:.72rem;line-height:1.42}
+  .hero-trust-note,.hero-proof-note{font-size:.62rem;line-height:1.35}
+
+  /* One dominant action near top */
+  .hero-actions{display:block;margin-top:2px}
+  .hero-actions .btn-primary{display:flex;width:100%;min-height:42px}
+  .hero-actions .btn-secondary{
+    margin-top:7px;
+    min-height:auto;
+    padding:0;
+    border:none;
+    background:transparent;
+    color:#d9c79e;
+    letter-spacing:.08em;
+    font-size:.56rem;
+    text-transform:uppercase;
+    justify-content:flex-start;
+  }
+  .hero-actions .btn-secondary:hover{background:transparent}
+  .cta-time-value{font-size:.63rem;line-height:1.35;margin-top:3px}
+
+  /* Mobile section flow: next move before progression */
+  .main > #priority-actions{order:2}
+  .main > #layers{order:3}
+  .main > #findings{order:4}
+  .main > #deeper-layers{order:5}
+
+  .section-head{padding:9px 10px}
+  .section-head h2{font-size:1.08rem;line-height:1.2}
+  .state-rail{display:none}
+  .actions{padding:10px}
+
+  .next-move-guide{margin:8px 10px 0;padding:10px}
+  .next-move-guide h3{font-size:.72rem;letter-spacing:.08em;margin-bottom:7px}
+  .next-move-card{padding:8px}
+  .next-move-card p{font-size:.72rem;line-height:1.42}
+
+  /* Reduce overload in fix stack on small phones */
+  .action{padding:11px 10px;min-height:auto}
+  .action h3{font-size:.76rem}
+  .action p{font-size:.68rem}
+  .action-outcome li{font-size:.66rem;line-height:1.33}
+  .action-actions .btn-primary{min-height:36px;font-size:.55rem}
+  .action-actions .btn-secondary{min-height:32px;font-size:.5rem}
+  .action.secondary{display:none}
+
+  /* Progression readability */
+  .layer{padding:10px}
+  .layer-name{font-size:.56rem;letter-spacing:.12em}
+  .layer-main{font-size:.72rem;line-height:1.4}
+  .layer-main strong{font-size:.48rem;letter-spacing:.13em}
+  .layer-micro span{min-width:unset;font-size:.48rem}
+  .layer .btn{min-height:32px;font-size:.52rem;padding:7px 9px}
+  .layer-cta-note{font-size:.53rem;line-height:1.25}
+
+  /* Sticky panel should not compete with hero CTA on mobile */
+  .sticky{margin-top:16px;padding:12px;border-radius:12px}
+  .sticky .js-track-sticky-cta{display:none}
+  .sticky-copy{font-size:.72rem;line-height:1.4}
+  .sticky-unlock{font-size:.66rem;line-height:1.35}
+  .consult-offer{margin-top:12px;padding:10px}
+  .consult-offer h3{font-size:.84rem;line-height:1.25}
+  .consult-offer p{font-size:.69rem;line-height:1.4}
+
+  .action-actions,.fix-detail-actions{grid-template-columns:1fr}
   .progression-strip{grid-template-columns:1fr}
+  .next-move-grid{grid-template-columns:1fr}
 }
 @media (max-width:640px){
+  #nav{padding:12px 14px}
+  #nav.stuck{padding:9px 14px}
+  .logo-seo{font-size:1.08rem}
+  .logo-ai{font-size:1.28rem}
+  .logo-co{font-size:.96rem}
+
   .mode-bar{grid-template-columns:1fr}
-  .mode-return{width:100%}
+  .mode-return{width:100%;justify-content:center;min-height:28px}
+  .mode-meta{display:grid;grid-template-columns:1fr 1fr;gap:5px}
+  .mode-chip{justify-content:center;min-width:0}
+
   .grid,.layer-grid{grid-template-columns:1fr}
-  .hero-actions{flex-wrap:wrap}
-  .hero-actions .btn{min-width:unset;width:100%}
   .action-actions,.fix-detail-actions{grid-template-columns:1fr}
 }
 
@@ -603,35 +790,40 @@ a{text-decoration:none;color:inherit}
         <div class="hero-top">
           <div>
             <p class="hero-domain">{{ $scan->domain() }}</p>
-            <h1 class="hero-title">System Readout Active</h1>
+            <h1 class="hero-title">Your Scan Results</h1>
             <div class="hero-state">
               <span class="pill pill-score">Score {{ $score }}</span>
               <span class="pill pill-state-{{ $readoutStateKey }}">{{ $readoutState }}</span>
               <span class="pill pill-layer">Layer {{ $unlockLevel }}</span>
             </div>
             <p class="score-meaning">{{ $scoreSelectionInterpretation }}</p>
+            <p class="aha-line">{{ $ahaLine }}</p>
           </div>
         </div>
         <div class="hero-bottleneck">
-          <strong>Primary Bottleneck</strong>
+          <strong>Here&rsquo;s what&rsquo;s holding you back</strong>
           <p>{{ $topBottleneck }}</p>
         </div>
-        <p class="hero-copy">{{ $interpretation }}</p>
+        <p class="hero-copy">{{ $humanTranslation }}</p>
         <div class="hero-actions">
           @if($singleNextStep)
-          <a href="{{ $singleNextStep['href'] }}" class="btn btn-primary">Progress System</a>
+          <a href="{{ $singleNextStep['href'] }}" class="btn btn-primary js-track-primary-cta">{{ $momentumCta }}</a>
           @else
-          <a href="#priority-actions" class="btn btn-primary">Deploy Fix</a>
+          <a href="#priority-actions" class="btn btn-primary js-track-primary-cta">{{ $momentumCta }}</a>
           @endif
-          <a href="#priority-actions" class="btn btn-secondary">Inspect Signal</a>
+          <a href="#priority-actions" class="btn btn-secondary">See My Next Move</a>
         </div>
-        <p class="cta-consequence">{{ $singleNextStep ? 'Advances system state → unlocks next signal layer' : 'Removes constraint → improves AI selection likelihood' }}</p>
-        <p class="hero-translation">{{ $humanTranslation }}</p>
+        <p class="cta-time-value">Takes 2-5 minutes to apply. Start seeing improvements today.</p>
+        <p class="cta-consequence">{{ $singleNextStep ? 'Take this step to unlock the next level.' : 'Fix this blocker to improve your chance of being selected.' }}</p>
+        <p class="hero-translation">What this means: {{ $interpretation }}</p>
+        <p class="hero-trust-note">This score is based on real AI answer system patterns, not generic SEO guesses.</p>
+        <p class="hero-proof-note">Used to generate AI answers across Google, ChatGPT, and other systems.</p>
+        <p class="hero-momentum">{{ $momentumLine }}</p>
       </section>
 
       <section class="card" id="findings">
         <div class="section-head">
-          <h2>Key Findings</h2>
+          <h2>What We Found</h2>
           <p style="margin:0;font-size:.55rem;letter-spacing:.12em;text-transform:uppercase;color:#c0b38c">State per signal domain</p>
         </div>
         <div class="grid" style="padding:12px">
@@ -653,29 +845,32 @@ a{text-decoration:none;color:inherit}
 
       <section class="card" id="layers">
         <div class="section-head">
-          <h2>Layer Control Grid</h2>
-          <p style="margin:0;font-size:.55rem;letter-spacing:.12em;text-transform:uppercase;color:#c0b38c">Active layer state</p>
+          <h2>Progression Levels</h2>
+          <p style="margin:0;font-size:.55rem;letter-spacing:.12em;text-transform:uppercase;color:#c0b38c">Baseline to Activation</p>
         </div>
         <div class="layer-grid" style="padding:12px">
-          @foreach($layerCards as $layer)
-          <article class="layer {{ $layer['status'] === 'Locked' ? 'is-locked-card' : 'is-included' }}">
+          @foreach($progressionLevels as $level)
+          <article class="layer {{ $level['locked'] ? 'is-locked-card' : 'is-included' }}">
             <div class="layer-head">
-              <span class="layer-name">Layer {{ $layer['rank'] }} · {{ $layer['name'] }}</span>
-              <span class="layer-status">@if($layer['status'] === 'Locked')<span class="lock-glyph" aria-hidden="true"></span>@endif {{ $layer['status'] }}</span>
+              <span class="layer-name">{{ $level['name'] }}</span>
+              <span class="layer-status">@if($level['locked'])<span class="lock-glyph" aria-hidden="true"></span> Locked @else Completed @endif</span>
             </div>
             <div class="layer-strip">
               <div class="layer-sig">Coverage<div class="meter"><span style="width:{{ $coveragePct }}%"></span></div></div>
               <div class="layer-sig">Authority<div class="meter"><span style="width:{{ $authorityPct }}%"></span></div></div>
               <div class="layer-sig">Structure<div class="meter"><span style="width:{{ $structurePct }}%"></span></div></div>
             </div>
-            <div class="layer-main">{{ $layer['value'] }}</div>
+            <div class="layer-main"><strong style="display:block;font-size:.5rem;letter-spacing:.15em;text-transform:uppercase;color:#ddc88e;margin-bottom:4px">What It Does</strong>{{ $level['unlocks'] }}</div>
             <div class="layer-micro">
-              <span>+{{ $totalPassed }} signals <em>{{ $signalsMeaningLabel }}</em></span>
-              <span>{{ $totalFailed }} blockers <em>{{ $blockersMeaningLabel }}</em></span>
-              <span>{{ max(1, $sysActionsLimit) }} constraints <em>{{ $constraintMeaningLabel }}</em></span>
+              <span>How It Feels <em>{{ $level['improves'] }}</em></span>
             </div>
-            <a href="{{ $layer['cta'] }}" class="btn btn-secondary">{{ $layer['cta_label'] }}</a>
-            <p class="layer-cta-note">{{ $layer['cta_note'] }}</p>
+            @if($level['locked'] && $singleNextStep)
+            <a href="{{ $singleNextStep['href'] }}" class="btn btn-secondary">Unlock Next Level</a>
+            <p class="layer-cta-note">Move from {{ $progressionLevels[max(0, $unlockLevel - 1)]['name'] ?? 'Baseline' }} to {{ $nextUnlockName }}.</p>
+            @else
+            <a href="#priority-actions" class="btn btn-secondary">Review This Level</a>
+            <p class="layer-cta-note">This level is active in your system path.</p>
+            @endif
           </article>
           @endforeach
         </div>
@@ -683,14 +878,42 @@ a{text-decoration:none;color:inherit}
 
       <section class="card" id="priority-actions">
         <div class="section-head">
-          <h2>Fix Sequence</h2>
+          <h2>Your Next Move</h2>
           <div class="state-rail">
             <div class="state-chip"><strong>System State</strong><span>{{ $readoutState }}</span></div>
             <div class="state-chip"><strong>Pressure</strong><span>{{ $totalFailed > 0 ? 'Active' : 'Contained' }}</span></div>
             <div class="state-chip"><strong>Primary Constraint</strong><span>{{ count($sysActions) > 0 ? 'Detected' : 'Clear' }}</span></div>
           </div>
         </div>
-        <p style="margin:8px 12px 0;font-size:.72rem;color:#d9ceb0">You&rsquo;re close. Fix these to increase AI selection likelihood.</p>
+        @if($primaryAction)
+        <div class="next-move-guide">
+          <h3>Your Next Move</h3>
+          <div class="next-move-grid">
+            <div class="next-move-card">
+              <strong>Issue</strong>
+              <p>{{ $primaryAction['label'] }}</p>
+            </div>
+            <div class="next-move-card">
+              <strong>Fix</strong>
+              <p>{{ $primaryAction['fix'] }}</p>
+            </div>
+            <div class="next-move-card">
+              <strong>Action</strong>
+              <p>Start with this fix now to unlock your next level.</p>
+            </div>
+          </div>
+          <p style="margin:8px 0 0;font-size:.7rem;line-height:1.45;color:#e9ddc2"><strong style="font-size:.52rem;letter-spacing:.16em;text-transform:uppercase;color:#ddc88e">What happens after this fix</strong><br>After this, AI can clearly understand and recommend your service.</p>
+          <div style="margin-top:8px">
+            @if($singleNextStep)
+            <a href="{{ $singleNextStep['href'] }}" class="btn btn-primary js-track-next-move-cta">{{ $momentumCta }}</a>
+            @else
+            <a href="#priority-actions" class="btn btn-primary js-track-next-move-cta">{{ $momentumCta }}</a>
+            @endif
+          </div>
+          <p class="cta-time-value">Takes 2-5 minutes to apply. Start seeing improvements today.</p>
+        </div>
+        @endif
+        <p style="margin:8px 12px 0;font-size:.72rem;color:#d9ceb0">Plain and simple: fix the top blocker first, then move to the next level.</p>
         <div class="actions">
           <div class="action-stack">
             @for($i = 0; $i < $sysActionsLimit; $i++)
@@ -760,7 +983,7 @@ a{text-decoration:none;color:inherit}
                   data-next-path="Open Structural Layer Sequence"
                   data-why-matters="Selection pressure remains active while this constraint persists."
                   data-unlocks="Expand data layer coverage, introduce direct-answer nodes, establish authoritative definitions."
-                >Deploy Fix</button>
+                >{{ $momentumCta }}</button>
                 <p class="cta-consequence">Removes constraint → improves AI selection likelihood</p>
                 <button
                   type="button"
@@ -778,7 +1001,7 @@ a{text-decoration:none;color:inherit}
                   data-next-path="Open Structural Layer Sequence"
                   data-why-matters="Selection pressure remains active while this constraint persists."
                   data-unlocks="Expand data layer coverage, introduce direct-answer nodes, establish authoritative definitions."
-                >Inspect Signal</button>
+                >View Details</button>
               </div>
               <p class="action-memory">No action taken yet</p>
             </article>
@@ -882,19 +1105,26 @@ a{text-decoration:none;color:inherit}
     </main>
 
     <aside class="card sticky" id="next-move">
-      <p class="sticky-kicker">Next Step</p>
-      <h2 class="sticky-title">{{ $singleNextStep['title'] ?? 'Deploy your lead fix' }}</h2>
-      <p class="sticky-copy">{{ $singleNextStep['copy'] ?? 'Resolve the lead constraint to reduce selection pressure.' }}</p>
-      <p class="sticky-unlock">Unlocks next: full signal clarity, ranked correction order, and stronger readiness progression.</p>
+      <p class="sticky-kicker">Your Next Move</p>
+      <h2 class="sticky-title">{{ $singleNextStep['title'] ?? 'Fix your top blocker' }}</h2>
+      <p class="sticky-copy">{{ $singleNextStep['copy'] ?? 'Fix this first to raise your score and move forward.' }}</p>
+      <p class="sticky-unlock">This unlocks clearer signals, better fix order, and faster progress.</p>
       <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:4px">
         @if($singleNextStep)
-        <a href="{{ $singleNextStep['href'] }}" class="btn btn-primary">Progress System</a>
+        <a href="{{ $singleNextStep['href'] }}" class="btn btn-primary js-track-sticky-cta">{{ $momentumCta }}</a>
         @else
-        <a href="#priority-actions" class="btn btn-primary">Deploy Fix</a>
+        <a href="#priority-actions" class="btn btn-primary js-track-sticky-cta">{{ $momentumCta }}</a>
         @endif
       </div>
+      <p class="cta-time-value">Takes 2-5 minutes to apply. Start seeing improvements today.</p>
       <p class="cta-consequence" style="margin:0 0 8px">{{ $singleNextStep ? 'Advances to ' . $nextUnlockName . ' → unlocks ranked priorities and signal depth' : 'Removes constraint → improves AI selection likelihood' }}</p>
       <a href="#deeper-layers" class="sticky-link">Preview Restricted Layers</a>
+
+      <div class="consult-offer" id="consultOffer" data-show="{{ $showConsultationOffer ? 'true' : 'false' }}">
+        <h3>Want help implementing this faster?</h3>
+        <p>Once you have scan momentum, we can help you apply fixes in the right order.</p>
+        <a href="{{ $consultationHref }}" class="btn btn-secondary js-track-consultation-cta">Request System Consultation</a>
+      </div>
     </aside>
   </div>
 </div>
@@ -991,6 +1221,32 @@ a{text-decoration:none;color:inherit}
   var fixDetailCategory = document.getElementById('fixDetailCategory');
   var liveFeedbackStrip = document.getElementById('liveFeedbackStrip');
   var liveFeedbackText = document.getElementById('liveFeedbackText');
+  var consultOffer = document.getElementById('consultOffer');
+  var progressionLayers = Array.prototype.slice.call(document.querySelectorAll('#layers .layer'));
+
+  function emitTracking(eventName, payload) {
+    var safePayload = payload && typeof payload === 'object' ? payload : {};
+    if (Array.isArray(window.dataLayer)) {
+      window.dataLayer.push(Object.assign({ event: eventName }, safePayload));
+      return;
+    }
+    if (typeof window.gtag === 'function') {
+      window.gtag('event', eventName, safePayload);
+    }
+  }
+
+  function bindClickTracking(selector, eventName, extra) {
+    document.querySelectorAll(selector).forEach(function (el) {
+      el.addEventListener('click', function () {
+        var href = el.getAttribute('href') || '';
+        emitTracking(eventName, Object.assign({
+          scan_id: {{ (int) $scan->id }},
+          href: href,
+          location: extra && extra.location ? extra.location : ''
+        }, extra || {}));
+      });
+    });
+  }
 
   function rotateFeedback() {
     if (!liveFeedbackStrip || !liveFeedbackText) return;
@@ -1138,7 +1394,38 @@ a{text-decoration:none;color:inherit}
 
       card.dataset.execBusy = 'false';
       if (typeof onComplete === 'function') onComplete();
+      registerConsultEngagement();
     }, delayMs);
+  }
+
+  var CONSULT_ENGAGEMENT_KEY = 'seoai.consult.engagement.count';
+
+  function getConsultEngagementCount() {
+    var raw = sessionStorage.getItem(CONSULT_ENGAGEMENT_KEY) || '0';
+    var parsed = parseInt(raw, 10);
+    return Number.isFinite(parsed) ? Math.max(0, parsed) : 0;
+  }
+
+  function setConsultEngagementCount(count) {
+    sessionStorage.setItem(CONSULT_ENGAGEMENT_KEY, String(Math.max(0, count)));
+  }
+
+  function maybeShowConsultOffer() {
+    if (!consultOffer) return;
+    if (consultOffer.dataset.show === 'true') return;
+
+    if (getConsultEngagementCount() >= 2) {
+      consultOffer.dataset.show = 'true';
+      emitTracking('scan_result_consultation_shown', {
+        scan_id: {{ (int) $scan->id }},
+        trigger: 'engagement'
+      });
+    }
+  }
+
+  function registerConsultEngagement() {
+    setConsultEngagementCount(getConsultEngagementCount() + 1);
+    maybeShowConsultOffer();
   }
 
   document.querySelectorAll('.js-open-fix-detail').forEach(function (btn) {
@@ -1160,6 +1447,78 @@ a{text-decoration:none;color:inherit}
     });
   });
 
+  bindClickTracking('.js-track-primary-cta', 'scan_result_primary_cta_click', { location: 'hero' });
+  bindClickTracking('.js-track-next-move-cta', 'scan_result_next_move_click', { location: 'next_move' });
+  bindClickTracking('.js-track-sticky-cta', 'scan_result_sticky_cta_click', { location: 'sticky' });
+  bindClickTracking('.js-track-consultation-cta', 'scan_result_consultation_click', { location: 'consult_offer' });
+
+  (function setupScrollDepthTracking() {
+    var thresholds = [50, 75, 100];
+    var sent = {};
+    var ticking = false;
+
+    function getScrollPercent() {
+      var doc = document.documentElement;
+      var scrollTop = window.pageYOffset || doc.scrollTop || 0;
+      var maxScroll = Math.max(1, (doc.scrollHeight - window.innerHeight));
+      var pct = Math.round((scrollTop / maxScroll) * 100);
+      return Math.max(0, Math.min(100, pct));
+    }
+
+    function checkDepth() {
+      ticking = false;
+      var pct = getScrollPercent();
+      thresholds.forEach(function (t) {
+        if (!sent[t] && pct >= t) {
+          sent[t] = true;
+          emitTracking('scan_result_scroll_depth', {
+            scan_id: {{ (int) $scan->id }},
+            depth_percent: t
+          });
+        }
+      });
+    }
+
+    function onScroll() {
+      if (ticking) return;
+      ticking = true;
+      window.requestAnimationFrame(checkDepth);
+    }
+
+    window.addEventListener('scroll', onScroll, { passive: true });
+    checkDepth();
+  })();
+
+  (function setupProgressionTracking() {
+    progressionLayers.forEach(function (layer, idx) {
+      var levelNameNode = layer.querySelector('.layer-name');
+      var levelName = levelNameNode ? (levelNameNode.textContent || '').trim() : ('level_' + (idx + 1));
+      var hovered = false;
+
+      layer.addEventListener('mouseenter', function () {
+        if (hovered) return;
+        hovered = true;
+        emitTracking('scan_result_progression_engaged', {
+          scan_id: {{ (int) $scan->id }},
+          interaction: 'hover',
+          level: levelName,
+          level_index: idx + 1
+        });
+      });
+
+      layer.querySelectorAll('a,button').forEach(function (node) {
+        node.addEventListener('click', function () {
+          emitTracking('scan_result_progression_engaged', {
+            scan_id: {{ (int) $scan->id }},
+            interaction: 'click',
+            level: levelName,
+            level_index: idx + 1
+          });
+        });
+      });
+    });
+  })();
+
   if (fixDetailClose) fixDetailClose.addEventListener('click', closeFixDetail);
   if (fixDetailCloseTop) fixDetailCloseTop.addEventListener('click', closeFixDetail);
   if (fixDetailMask) {
@@ -1173,6 +1532,13 @@ a{text-decoration:none;color:inherit}
 
   rotateFeedback();
   restoreActionMemory();
+  if (consultOffer && consultOffer.dataset.show === 'true') {
+    emitTracking('scan_result_consultation_shown', {
+      scan_id: {{ (int) $scan->id }},
+      trigger: 'initial'
+    });
+  }
+  maybeShowConsultOffer();
 })();
 </script>
 @include('partials.back-to-top')

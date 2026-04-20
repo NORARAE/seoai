@@ -99,6 +99,29 @@ nav.stuck{background:rgba(8,8,8,.95);backdrop-filter:blur(16px);border-color:var
   font-size:.88rem;
   margin-top:12px;
 }
+.proc-reassurance{
+  font-size:.72rem;
+  letter-spacing:.04em;
+  color:rgba(168,168,160,.38);
+  margin-top:14px;
+  max-width:380px;
+}
+.proc-payment{
+  font-size:.62rem;
+  letter-spacing:.16em;
+  text-transform:uppercase;
+  color:rgba(100,185,130,.88);
+  margin:0 0 20px;
+}
+.proc-activity{
+  font-size:.6rem;
+  letter-spacing:.14em;
+  text-transform:uppercase;
+  color:rgba(200,168,75,.44);
+  margin:8px 0 0;
+  min-height:1.1em;
+  transition:opacity .5s;
+}
 .proc-status a{color:var(--gold);text-decoration:none;border-bottom:1px solid rgba(200,168,75,.3)}
 .proc-status a:hover{color:var(--gold-lt)}
 
@@ -158,12 +181,32 @@ footer{border-top:1px solid var(--border);padding:28px 48px;display:flex;flex-di
 .footer-legal a{font-size:.64rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);text-decoration:none;transition:color .3s}
 .footer-legal a:hover{color:var(--gold)}
 
-@media(max-width:768px){
-  nav{padding:14px 20px}
+@media(max-width:900px){
+  nav{padding:14px 16px;max-width:100vw}
+  nav.stuck{padding:10px 16px}
+  .nav-right{gap:10px;flex-shrink:0}
   .nav-link{display:none}
-  .nav-btn{padding:10px 20px;font-size:.72rem}
-  .proc-hero{padding:100px 20px 60px}
-  footer{padding:24px 20px}
+  .nav-btn{display:none}
+  .logo-seo{font-size:1.2rem}
+  .logo-ai{font-size:1.36rem}
+  .logo-co{font-size:1.02rem}
+}
+
+@media(max-width:768px){
+  nav{padding:12px 14px}
+  nav.stuck{padding:9px 14px}
+  .proc-hero{padding:88px 18px 56px}
+  .proc-sub{margin:0 auto 28px;line-height:1.55}
+  .proc-url{margin-bottom:30px}
+  footer{padding:22px 18px}
+}
+
+@media(max-width:412px){
+  nav{padding:10px 12px}
+  nav.stuck{padding:8px 12px}
+  .logo-seo{font-size:1.08rem}
+  .logo-ai{font-size:1.24rem}
+  .logo-co{font-size:.94rem}
 }
 </style>
 @include('partials.clarity')
@@ -184,14 +227,17 @@ footer{border-top:1px solid var(--border);padding:28px 48px;display:flex;flex-di
 <!-- Processing state -->
 <section class="proc-hero">
   <p class="proc-eyebrow">AI Citation Quick Scan</p>
+  <p class="proc-payment">✓ Payment received — your scan is running now</p>
   <div class="proc-spinner" id="spinner"></div>
-  <h1 class="proc-h1">Analyzing <em>your site…</em></h1>
-  <p class="proc-sub">This usually takes just a few seconds. Your results will appear automatically.</p>
+  <h1 class="proc-h1" id="procHeading">Starting <em>your scan…</em></h1>
+  <p class="proc-sub">Usually completes in 10–30 seconds. Your results will appear automatically.</p>
   <p class="proc-url">{{ $scan->url ?? '' }}</p>
-  <p class="proc-status" id="statusText">Running checks…</p>
+  <p class="proc-status" id="statusText">Starting scan…</p>
+  <p class="proc-activity" id="procActivity"></p>
+  <p class="proc-reassurance">You don't need to do anything — we'll take you straight to your report when it's ready.</p>
   <div class="proc-fallback" id="processingFallback" role="status" aria-live="polite">
     <p class="proc-fallback-title">This is taking a bit longer than expected.</p>
-    <p class="proc-fallback-text">You can continue in your dashboard — results will appear automatically.</p>
+    <p class="proc-fallback-text">Hold tight — complex sites can take up to a minute. You can also continue in your dashboard and results will appear automatically.</p>
     <div class="proc-fallback-actions">
       <a class="proc-fallback-btn" href="{{ url('/dashboard#ai-scans') }}">Go to Dashboard →</a>
     </div>
@@ -221,10 +267,59 @@ footer{border-top:1px solid var(--border);padding:28px 48px;display:flex;flex-di
   const sessionId = @json($sessionId ?? '');
   const token = @json($token ?? '');
   const statusEl = document.getElementById('statusText');
+  const headingEl = document.getElementById('procHeading');
   const fallbackEl = document.getElementById('processingFallback');
   const spinnerEl = document.getElementById('spinner');
   let attempts = 0;
-  const maxAttempts = 15; // ~45 seconds
+  const maxAttempts = 40; // ~2 minutes at 3s intervals
+
+  // Stage headings and status text to convey progression
+  const stages = [
+    { minAttempt: 0,  heading: 'Starting <em>your scan…</em>',    status: 'Starting scan…' },
+    { minAttempt: 2,  heading: 'Analyzing <em>your site…</em>',    status: 'Analyzing your site…' },
+    { minAttempt: 6,  heading: 'Building <em>your report…</em>',   status: 'Building your report…' },
+    { minAttempt: 11, heading: 'Almost <em>there…</em>',           status: 'Finalizing results…' },
+  ];
+  function applyStage() {
+    for (let i = stages.length - 1; i >= 0; i--) {
+      if (attempts >= stages[i].minAttempt) {
+        if (headingEl) headingEl.innerHTML = stages[i].heading;
+        if (statusEl && !statusEl.classList.contains('error')) statusEl.textContent = stages[i].status;
+        break;
+      }
+    }
+  }
+
+  // Live-feel activity text cycle
+  const scanUrl = @json($scan->url ?? '');
+  const scanDomain = (function(){
+    try{return new URL(scanUrl).hostname;}catch(e){return scanUrl;}
+  }());
+  const activityItems = [
+    'Reviewing: ' + scanDomain,
+    'Structure signals detected',
+    'Entity signals identified',
+    'Citation pattern analysis active',
+    'Location signals mapping\u2026',
+    'Service keywords evaluated',
+    'AI visibility score calculating\u2026',
+  ];
+  let activityIdx = 0;
+  const activityEl = document.getElementById('procActivity');
+  function cycleActivity() {
+    if (!activityEl || activityEl.classList.contains('error')) return;
+    activityEl.style.opacity = '0';
+    setTimeout(function(){
+      activityEl.textContent = activityItems[activityIdx % activityItems.length];
+      activityIdx++;
+      activityEl.style.opacity = '1';
+    }, 320);
+  }
+  if (activityEl) {
+    activityEl.textContent = activityItems[0];
+    activityIdx = 1;
+    setInterval(cycleActivity, 4500);
+  }
 
   function buildFallbackUrl() {
     if (resultUrl.indexOf('/quick-scan/result') !== -1) {
@@ -255,6 +350,7 @@ footer{border-top:1px solid var(--border);padding:28px 48px;display:flex;flex-di
   function pollStatus() {
     if (!scanId) return;
     attempts++;
+    applyStage();
 
     let statusUrl = '/quick-scan/status?scan_id=' + scanId;
     if (sessionId) {

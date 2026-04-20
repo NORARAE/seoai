@@ -118,17 +118,17 @@ class CustomerLoginController extends Controller
 
     private function authenticatedRedirect($user): RedirectResponse
     {
-        // Unapproved non-staff → pending
-        if (!$user->isPrivilegedStaff() && !$user->isApproved()) {
+        // Unapproved non-staff/non-dev → pending
+        if (!$user->isPrivilegedStaff() && !$user->isFrontendDev() && !$user->isApproved()) {
             return redirect()->route('pending-approval');
         }
 
-        // Approved but onboarding not complete
-        if (!$user->isPrivilegedStaff() && $user->isApproved() && is_null($user->onboarding_completed_at)) {
+        // Approved but onboarding not complete (not applicable to staff/dev)
+        if (!$user->isPrivilegedStaff() && !$user->isFrontendDev() && $user->isApproved() && is_null($user->onboarding_completed_at)) {
             return redirect()->route('user.onboarding');
         }
 
-        // Staff → admin panel
+        // Staff and frontend devs → admin panel
         if ($user->isPrivilegedStaff() || $user->isFrontendDev()) {
             return redirect()->intended('/admin');
         }

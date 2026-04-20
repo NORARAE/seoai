@@ -170,10 +170,96 @@ body::before{
   .dash-content{padding:20px 16px}
   .dash-nav-inner{padding:0 16px}
 }
+
+/* ── Admin Mode Indicator ── */
+.admin-mode-banner {
+  background: linear-gradient(90deg, rgba(59, 130, 246, 0.08), rgba(59, 130, 246, 0.04));
+  border-bottom: 1px solid rgba(59, 130, 246, 0.2);
+  padding: 10px 0;
+}
+.admin-mode-banner-inner {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 28px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  font-size: 0.85rem;
+  color: rgba(59, 130, 246, 0.9);
+  letter-spacing: 0.02em;
+}
+.admin-mode-banner-label {
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.admin-mode-banner-label::before {
+  content: '⚙';
+  font-size: 1.1em;
+  opacity: 0.7;
+}
+.admin-mode-banner-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  border: 1px solid rgba(59, 130, 246, 0.3);
+  border-radius: 6px;
+  background: rgba(59, 130, 246, 0.06);
+  color: rgba(59, 130, 246, 0.95);
+  font-size: 0.78rem;
+  font-weight: 500;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  text-decoration: none;
+  transition: all 0.2s;
+}
+.admin-mode-banner-cta:hover {
+  background: rgba(59, 130, 246, 0.12);
+  border-color: rgba(59, 130, 246, 0.5);
+  color: rgba(59, 130, 246, 1);
+}
+.admin-mode-banner-cta::after {
+  content: ' →';
+}
+@media(max-width:768px) {
+  .admin-mode-banner-inner {
+    flex-direction: column;
+    text-align: center;
+    gap: 8px;
+  }
+}
+
+/* ── Dashboard in Admin Mode (subtle visual distinction) ── */
+body.is-admin-viewing-dashboard {
+  --accent-primary: #3b82f6;
+}
 </style>
 @stack('styles')
 </head>
-<body>
+@php
+  $isAdminUser = auth()->check() && (auth()->user()->isPrivilegedStaff() || auth()->user()->isFrontendDev());
+  $isViewingDashboard = request()->is('dashboard*');
+  $isViewingAdmin = request()->is('admin*');
+@endphp
+<body class="{{ $isAdminUser && $isViewingDashboard ? 'is-admin-viewing-dashboard' : '' }}">
+    
+    {{-- Admin Mode Indicator Banner --}}
+    @if($isAdminUser)
+      <div class="admin-mode-banner">
+        <div class="admin-mode-banner-inner">
+          @if($isViewingDashboard)
+            <div class="admin-mode-banner-label">Admin Mode — Viewing Customer System</div>
+            <a href="/admin" class="admin-mode-banner-cta">Open Admin Panel</a>
+          @elseif($isViewingAdmin)
+            <div class="admin-mode-banner-label">Admin Panel</div>
+            <a href="/dashboard" class="admin-mode-banner-cta">View Customer System</a>
+          @endif
+        </div>
+      </div>
+    @endif
     
     {{-- Top Navigation --}}
     <nav class="dash-nav">
@@ -189,7 +275,7 @@ body::before{
                 <div class="dash-nav-links">
                   <a href="{{ route('app.dashboard') }}" class="{{ request()->is('dashboard') ? 'active' : '' }}" title="System overview and current state">System</a>
                   <a href="{{ route('app.dashboard.scans') }}" class="{{ request()->is('dashboard/scans') ? 'active' : '' }}" title="Open scan library and recent readouts">Scans</a>
-                  <a href="{{ route('app.dashboard.reports') }}#coverage" class="{{ request()->is('dashboard/reports') || request()->is('reports*') ? 'active' : '' }}" title="Detailed saved reports and readouts">Reports</a>
+                  <a href="{{ route('app.dashboard.reports') }}#report-readouts" class="{{ request()->is('dashboard/reports') || request()->is('reports*') ? 'active' : '' }}" title="Current level, next unlock, and progression path">Progress</a>
                 </div>
             </div>
             
@@ -212,10 +298,16 @@ body::before{
                   </a>
                   <div class="dash-profile-menu" role="menu">
                     <a href="{{ route('app.billing') }}" role="menuitem">Profile & Billing</a>
-                    @if(auth()->user()?->isFrontendDev())
+                    <a href="{{ route('app.settings.notifications') }}" role="menuitem">Notification Preferences</a>
+                    @if(auth()->user()?->isPrivilegedStaff() || auth()->user()?->isFrontendDev())
                       <div class="sep"></div>
-                      <a href="/admin" target="_blank" role="menuitem">Admin</a>
+                       <a href="/admin" role="menuitem">Admin Panel</a>
                     @endif
+                    <div class="sep"></div>
+                    <form method="POST" action="{{ route('logout') }}" style="margin:0">
+                      @csrf
+                      <button type="submit" role="menuitem" style="background:none;border:none;width:100%;text-align:left;cursor:pointer;padding:0;color:inherit;font:inherit">Sign Out</button>
+                    </form>
                   </div>
                 </div>
             </div>

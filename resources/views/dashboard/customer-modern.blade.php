@@ -24,9 +24,9 @@
   };
   $summaryLine = $hasSystem
     ? ($systemCount . ' signals tracked. ' . $attentionCount . ' under active pressure watch.')
-    : 'No active signals. Baseline detection required.';
+    : 'Baseline not established yet. Run your first scan to begin.';
   $latestEvaluatedAt = $latestScan?->scanned_at ?? $latestScan?->created_at;
-  $latestEvaluatedLabel = $latestEvaluatedAt ? $latestEvaluatedAt->diffForHumans() : 'Awaiting first evaluation';
+  $latestEvaluatedLabel = $latestEvaluatedAt ? $latestEvaluatedAt->diffForHumans() : 'Run your first scan to begin';
   $priorIssueHint = $attentionCount > 0
     ? 'Prior pressure persisting.'
     : 'Stable - no active pressure (temporary).';
@@ -43,29 +43,53 @@
     $avgScore >= 85 => 'Expand coverage next.',
     default => 'Continue stabilization.',
   };
-  $objectiveTitle = $hasSystem ? ($nextStep ?? 'System active') : 'No system deployed';
+  $objectiveTitle = $hasSystem ? ($nextStep ?? 'System active') : 'Baseline not established yet';
   $objectiveCta = $hasSystem ? ($nextRoute ? route($nextRoute) : route('quick-scan.show')) : route('quick-scan.show');
   $objectiveCtaLabel = $hasSystem ? ($nextRoute ? 'Unlock Next Layer' : 'Run New Scan') : 'Run First Scan';
   $secondaryCtaLabel = $hasSystem ? 'Book Consultation' : 'Start System Build';
   $reportReadyScans = $scanHistory->where('is_renderable_report', true)->values();
-  $leadScan = $reportReadyScans->first() ?? $scanHistory->first();
+  $leadScan = $reportReadyScans->first() ?? $scanHistory->first() ?? [];
+  if (!is_array($leadScan)) {
+    $leadScan = [];
+  }
   $leadDomain = $leadScan['scan_name'] ?? $leadScan['domain'] ?? 'No domain scanned yet';
   $leadScore = (int) ($leadScan['score'] ?? 0);
-  $leadState = $leadScore >= 85 ? 'Stable' : ($leadScore >= 60 ? 'Under-optimized' : ($leadScore > 0 ? 'At Risk' : 'Awaiting baseline'));
+  $leadState = $leadScore >= 85 ? 'Stable' : ($leadScore >= 60 ? 'Under-optimized' : ($leadScore > 0 ? 'At Risk' : 'Baseline not established yet'));
   $leadBottleneck = trim((string) ($leadScan['fastest_fix'] ?? '')) !== ''
     ? $leadScan['fastest_fix']
     : 'No bottleneck detected yet. Run a scan to establish baseline constraints.';
   $leadRouteKey = $leadScan['scan_route_key'] ?? $leadScan['public_scan_id'] ?? $leadScan['system_scan_id'] ?? null;
-  $leadReportHref = ($leadRouteKey && (bool) ($leadScan['is_renderable_report'] ?? false))
+  $leadRenderable = (bool) ($leadScan['is_renderable_report'] ?? false);
+  $leadReportHref = ($leadRouteKey && $leadRenderable)
     ? route('dashboard.scans.show', ['scan' => $leadRouteKey])
     : route('quick-scan.show');
+  $leadReadoutStatus = $leadRenderable
+    ? 'Renderable'
+    : match ((string) ($leadScan['status'] ?? '')) {
+        'paid'    => 'Analyzing your site',
+        'error'   => 'Scan could not be completed',
+        'pending' => 'Scan in progress',
+        default   => 'Scan in progress',
+      };
+  $leadLastEvaluation = $leadScannedAt?->diffForHumans() ?? $leadCreatedAt?->diffForHumans() ?? 'Scan in progress';
   $nextUnlockLabel = $nextStep ?? 'Continue improvement loop';
   $nextUnlockHref = $nextRoute ? route($nextRoute) : $leadReportHref;
-  $scanFocusList = $reportReadyScans->take(6);
+  $nextMovePrimaryIssue = trim((string) ($leadScan['primary_issue'] ?? '')) !== ''
+    ? $leadScan['primary_issue']
+    : $leadBottleneck;
+  $nextMoveFastestFix = trim((string) ($leadScan['fastest_fix'] ?? '')) !== ''
+    ? $leadScan['fastest_fix']
+    : 'Strengthen your primary service signal and rerun the scan.';
+  $nextMoveStep = $nextStep ?? 'Deploy Signal Expansion';
+  $nextMoveActionHref = $nextUnlockHref;
+  $scanFocusList = $scanHistory->take(6);
   $isScansView = request()->is('dashboard/scans');
   $isReportsView = request()->is('dashboard/reports');
+  $isSystemView = ! $isScansView && ! $isReportsView;
   $leadInsight = $leadScan['quick_insight'] ?? 'Your latest system readout is active and ready for action.';
-  $leadLastEvaluation = $leadScan['scanned_at']?->diffForHumans() ?? $leadScan['created_at']?->diffForHumans() ?? 'Awaiting evaluation';
+  $leadScannedAt = $leadScan['scanned_at'] ?? null;
+  $leadCreatedAt = $leadScan['created_at'] ?? null;
+  $leadLastEvaluation = $leadScannedAt?->diffForHumans() ?? $leadCreatedAt?->diffForHumans() ?? 'Scan in progress';
   $leadTelemetryTone = $leadScore >= 85 ? 'is-strong' : ($leadScore >= 60 ? 'is-watching' : 'is-critical');
   $trendSource = $reportReadyScans->take(6)->reverse()->values();
   $trendScores = $trendSource->map(fn($scan) => max(0, min(100, (int) ($scan['score'] ?? 0))))->values();
@@ -108,6 +132,24 @@
     : $nextUnlockLabel;
   $featuredRecentScans = $scanFocusList->take($isScansView ? 3 : 2)->values();
   $archivedScans = $scanFocusList->slice($featuredRecentScans->count())->values();
+  $reportDeskScans = $scanFocusList->take(4)->values();
+  $layers = collect($analysisLayers ?? []);
+  $currentLayer = $layers->filter(fn($layer) => (bool) ($layer['complete'] ?? false))->last();
+  $nextLayer = $layers->first(fn($layer) => ! (bool) ($layer['complete'] ?? false));
+  $currentLevelLabel = $currentLayer['label'] ?? 'No level unlocked yet';
+  $nextLevelLabel = $nextLayer['label'] ?? 'System Activation Complete';
+  $nextLevelPrice = $nextLayer['price'] ?? null;
+  $nextLevelHref = $nextRoute ? route($nextRoute) : route('quick-scan.show');
+  $levelUnlockMap = [
+    'scan-basic' => ['Baseline score and initial visibility status.', 'First set of blockers and quick context.'],
+    'signal-expansion' => ['Deeper signal diagnostics.', 'Sharper bottleneck detection and priority fix path.'],
+    'structural-leverage' => ['Structural leverage opportunities.', 'Higher-impact correction sequencing.'],
+    'system-activation' => ['Full system activation controls.', 'Continuous optimization workflow visibility.'],
+  ];
+  $nextLevelUnlocks = $nextLayer
+    ? ($levelUnlockMap[$nextLayer['key']] ?? ['Deeper visibility controls.', 'More actionable correction guidance.'])
+    : ['All core levels are unlocked.', 'Use Scans to review history and compare outcomes.'];
+  $showMarketCoverage = ((string) ($currentLayer['key'] ?? 'scan-basic')) !== 'scan-basic';
 @endphp
 
 @push('styles')
@@ -137,6 +179,66 @@
   .dashboard-primary-flow{display:flex;flex-direction:column;gap:0}
   .dashboard-primary-flow.is-scans-view #scan-history{order:1}
   .dashboard-primary-flow.is-scans-view #system-state{order:2}
+  .dashboard-primary-flow.is-reports-view #report-readouts{order:1}
+  .dashboard-primary-flow.is-reports-view #system-state{order:2}
+  .dashboard-primary-flow.is-reports-view #scan-history{order:3}
+  .view-clarity-note{margin-top:2px;font-size:.76rem;color:#bdb39c;line-height:1.55}
+  .report-readout-shell{border:1px solid rgba(200,168,75,.2);border-radius:18px;background:linear-gradient(160deg,#15110a,#0c0a06 72%);padding:16px;box-shadow:0 14px 30px rgba(0,0,0,.3),inset 0 1px 0 rgba(255,255,255,.03)}
+  .report-readout-head{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:12px;margin-bottom:12px}
+  .report-readout-head p:first-child{font-size:.62rem;letter-spacing:.22em;text-transform:uppercase;color:rgba(200,168,75,.74)}
+  .report-readout-head h2{margin-top:5px;font-size:1.45rem;line-height:1.1;font-weight:650;color:#f3ebd6}
+  .report-readout-head p:last-child{margin-top:6px;max-width:42rem;font-size:.84rem;line-height:1.6;color:#c5bba3}
+  .report-readout-grid{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,.85fr);gap:12px}
+  .report-lead-card,.report-list-card{border:1px solid rgba(200,168,75,.16);border-radius:14px;background:rgba(0,0,0,.2);padding:12px}
+  .report-lead-meta{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:8px}
+  .report-lead-meta p:first-child{font-size:.58rem;letter-spacing:.16em;text-transform:uppercase;color:#b5a886}
+  .report-lead-meta p:last-child{font-size:.68rem;letter-spacing:.12em;text-transform:uppercase;color:#a9a08b}
+  .report-lead-title{margin-top:7px;font-size:1.1rem;font-weight:650;line-height:1.2;color:#eee4cd}
+  .report-lead-summary{margin-top:6px;font-size:.84rem;line-height:1.55;color:#d8ceb7}
+  .report-lead-actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+  .report-lead-actions a{display:inline-flex;align-items:center;justify-content:center;min-height:34px;padding:8px 11px;border-radius:10px;font-size:10px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;text-decoration:none}
+  .report-lead-actions a.primary{border:1px solid rgba(200,168,75,.42);background:rgba(200,168,75,.16);color:#f3e8cb}
+  .report-lead-actions a.secondary{border:1px solid rgba(200,168,75,.24);background:rgba(200,168,75,.08);color:#ddd3bc}
+  .report-list-card h3{font-size:.72rem;letter-spacing:.18em;text-transform:uppercase;color:#cbb98b}
+  .report-list{display:grid;gap:8px;margin-top:10px}
+  .report-list-item{display:flex;align-items:center;justify-content:space-between;gap:10px;border:1px solid rgba(200,168,75,.14);border-radius:10px;background:rgba(0,0,0,.18);padding:9px 10px}
+  .report-list-item p{font-size:.78rem;color:#e9dfc8;line-height:1.35}
+  .report-list-item span{font-size:.62rem;letter-spacing:.12em;text-transform:uppercase;color:#a8a08b}
+  .report-list-item a{font-size:.62rem;letter-spacing:.14em;text-transform:uppercase;color:#ecd8a8;text-decoration:none;border-bottom:1px solid rgba(200,168,75,.3)}
+  .report-list-item a:hover{border-color:rgba(200,168,75,.62)}
+  .onboarding-command-shell{border:1px solid rgba(200,168,75,.26);border-radius:22px;background:linear-gradient(160deg,#17120a,#0b0906 72%);padding:24px;box-shadow:0 18px 40px rgba(0,0,0,.34),inset 0 1px 0 rgba(255,255,255,.03);position:relative;overflow:hidden}
+  .onboarding-command-shell::before{content:'';position:absolute;inset:0;background:radial-gradient(circle at 18% 12%,rgba(200,168,75,.12),transparent 28%);pointer-events:none}
+  .onboarding-command-kicker{font-size:.64rem;letter-spacing:.24em;text-transform:uppercase;color:rgba(200,168,75,.72)}
+  .onboarding-command-title{margin-top:10px;font-size:clamp(2rem,4vw,3rem);line-height:.95;font-weight:700;letter-spacing:-.04em;color:#f4ecd7;max-width:12ch}
+  .onboarding-command-copy{margin-top:12px;max-width:38rem;font-size:1rem;line-height:1.65;color:#d8cdb6}
+  .onboarding-command-cta{display:inline-flex;align-items:center;justify-content:center;min-height:48px;padding:0 20px;border-radius:14px;margin-top:16px;background:linear-gradient(135deg,#e7c56a,#c8a84b);color:#100d07;text-decoration:none;font-size:.76rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;box-shadow:0 18px 28px rgba(200,168,75,.22),0 0 0 1px rgba(255,255,255,.18) inset;transition:transform .18s ease,box-shadow .2s ease}
+  .onboarding-command-cta:hover{transform:translateY(-2px);box-shadow:0 22px 34px rgba(200,168,75,.28),0 0 0 1px rgba(255,255,255,.22) inset}
+  .onboarding-command-reassure{margin-top:10px;font-size:.86rem;line-height:1.5;color:#d9cfba}
+  .onboarding-command-footnote{margin-top:12px;font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;color:#b5a988}
+  .onboarding-explainer{margin-top:8px}
+  .onboarding-explainer summary{display:inline-flex;align-items:center;gap:6px;cursor:pointer;font-size:.74rem;letter-spacing:.08em;text-transform:uppercase;color:#dcc996;list-style:none}
+  .onboarding-explainer summary::-webkit-details-marker{display:none}
+  .onboarding-explainer-panel{margin-top:8px;max-width:34rem;border:1px solid rgba(200,168,75,.14);border-radius:12px;background:rgba(0,0,0,.2);padding:10px 11px}
+  .onboarding-explainer-panel ul{display:grid;gap:5px;padding-left:16px;color:#d5cab2;font-size:.82rem;line-height:1.45}
+  .onboarding-proof-strip{margin-top:14px;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;max-width:42rem}
+  .onboarding-proof-item{border:1px solid rgba(200,168,75,.14);border-radius:11px;background:rgba(255,255,255,.03);padding:9px 10px}
+  .onboarding-proof-item p:first-child{font-size:.56rem;letter-spacing:.14em;text-transform:uppercase;color:#b9ab89}
+  .onboarding-proof-item p:last-child{margin-top:4px;font-size:.8rem;line-height:1.4;color:#ece1c8}
+  .ia-progress-shell{border:1px solid rgba(200,168,75,.2);border-radius:18px;background:linear-gradient(158deg,#151109,#0b0906 72%);padding:18px;box-shadow:0 14px 30px rgba(0,0,0,.3),inset 0 1px 0 rgba(255,255,255,.03)}
+  .ia-progress-head{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:10px;margin-bottom:12px}
+  .ia-progress-head h2{font-size:.88rem;letter-spacing:.22em;text-transform:uppercase;color:#d2c08d}
+  .ia-progress-head p{font-size:.78rem;line-height:1.5;color:#b8ad95;max-width:42rem}
+  .ia-level-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+  .ia-level-card{border:1px solid rgba(200,168,75,.16);border-radius:12px;background:rgba(0,0,0,.2);padding:11px}
+  .ia-level-card p:first-child{font-size:.58rem;letter-spacing:.16em;text-transform:uppercase;color:#b9ac8a}
+  .ia-level-card p:last-child{margin-top:5px;font-size:.9rem;line-height:1.45;color:#ece1c8}
+  .ia-level-unlocks{margin-top:10px;border:1px solid rgba(200,168,75,.14);border-radius:12px;background:rgba(0,0,0,.18);padding:10px 11px}
+  .ia-level-unlocks p{font-size:.58rem;letter-spacing:.16em;text-transform:uppercase;color:#cbb98b}
+  .ia-level-unlocks ul{margin-top:7px;display:grid;gap:6px;padding-left:16px;color:#ddd1b8;font-size:.84rem;line-height:1.45}
+  .ia-progress-actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+  .ia-progress-actions a{display:inline-flex;align-items:center;justify-content:center;min-height:36px;padding:8px 12px;border-radius:10px;font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;text-decoration:none}
+  .ia-progress-actions a.primary{border:1px solid rgba(200,168,75,.42);background:rgba(200,168,75,.16);color:#f3e8cb}
+  .ia-progress-actions a.secondary,.ia-progress-actions .secondary{display:inline-flex;align-items:center;justify-content:center;min-height:36px;padding:8px 12px;border-radius:10px;border:1px solid rgba(200,168,75,.24);background:rgba(200,168,75,.08);color:#ddd3bc}
   .hero-grid{position:relative;display:grid;grid-template-columns:minmax(0,1.5fr) minmax(280px,.92fr);gap:18px;z-index:1}
   .hero-main{display:flex;flex-direction:column;gap:14px}
   .hero-status-strip{display:flex;flex-wrap:wrap;gap:8px}
@@ -244,6 +346,22 @@
   .scan-history-card .actions{display:flex;gap:8px;flex-wrap:wrap;padding-top:2px}
   .scan-history-card .actions a{display:inline-flex;align-items:center;justify-content:center;min-height:34px;padding:8px 11px;border-radius:10px;font-size:10px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;text-decoration:none;transition:transform .18s ease,border-color .2s ease,background .2s ease,box-shadow .2s ease}
   .scan-history-card .actions a:hover{transform:translateY(-1px)}
+  .scan-history-card .actions .disabled{display:inline-flex;align-items:center;justify-content:center;min-height:34px;padding:8px 11px;border-radius:10px;font-size:10px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;border:1px solid rgba(160,153,139,.24);background:rgba(130,124,110,.14);color:#bcb4a1;cursor:not-allowed}
+  /* In-progress scan card accent */
+  @keyframes scan-pulse-ring{0%{opacity:.55;transform:scale(1)}70%{opacity:0;transform:scale(1.7)}100%{opacity:0;transform:scale(1.7)}}
+  @keyframes scan-dot-beat{0%,80%,100%{opacity:.4;transform:scale(.9)}40%{opacity:1;transform:scale(1.1)}}
+  @keyframes scan-shimmer{0%{background-position:-200px 0}100%{background-position:200px 0}}
+  .status-dot{display:inline-block;width:8px;height:8px;border-radius:50%;vertical-align:middle;flex-shrink:0;position:relative}
+  .status-dot.is-active{background:#c8a84b;animation:scan-dot-beat 1.4s ease-in-out infinite}
+  .status-dot.is-active::after{content:'';position:absolute;inset:-3px;border-radius:50%;border:1px solid rgba(200,168,75,.55);animation:scan-pulse-ring 1.6s ease-out infinite}
+  .status-dot.is-error{background:#d64c4c}
+  .status-dot.is-done{background:#5a9e6f}
+  .scan-history-card.is-inprogress{border-color:rgba(200,168,75,.32);background:linear-gradient(160deg,#1a1409,#0f0b08 72%)}
+  .scan-history-card.is-inprogress .scan-history-subline{color:#d0c29a}
+  .scan-history-card.is-error{border-color:rgba(199,72,72,.22);background:linear-gradient(160deg,#180d0d,#0f0b08 72%)}
+  .inprogress-link{display:inline-flex;align-items:center;gap:7px;min-height:34px;padding:8px 11px;border-radius:10px;font-size:10px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;border:1px solid rgba(200,168,75,.32);background:rgba(200,168,75,.1);color:#d9c579;text-decoration:none;transition:background .2s,border-color .2s}
+  .inprogress-link:hover{background:rgba(200,168,75,.18);border-color:rgba(200,168,75,.5);color:#ffe28a}
+  .scan-card-shimmer{height:3px;border-radius:2px;background:linear-gradient(90deg,transparent,rgba(200,168,75,.45) 50%,transparent);background-size:200px 100%;animation:scan-shimmer 1.8s linear infinite;margin-top:4px}
   .scan-history-card .open{border:1px solid rgba(200,168,75,.42);background:rgba(200,168,75,.16);color:#f3e8cb;box-shadow:0 0 0 1px rgba(200,168,75,.1) inset}
   .scan-history-card .deploy{border:1px solid rgba(106,175,144,.44);background:rgba(106,175,144,.16);color:#bfe3d2}
   .scan-history-card .inspect{border:1px solid rgba(200,168,75,.24);background:rgba(200,168,75,.08);color:#ddd3bc}
@@ -379,6 +497,17 @@
   .next-move-card.primary .action-label{color:#f0ddab}
   .next-move-card.secondary{opacity:.82}
   .next-move-card.secondary:hover{opacity:.94}
+  .next-move-command-shell{border:1px solid rgba(200,168,75,.22);border-radius:18px;background:linear-gradient(160deg,#16120b,#0d0a06 72%);padding:18px;box-shadow:0 16px 30px rgba(0,0,0,.3),inset 0 1px 0 rgba(255,255,255,.03)}
+  .next-move-command-label{font-size:.68rem;letter-spacing:.24em;text-transform:uppercase;color:#d1bf8d}
+  .next-move-command-grid{margin-top:12px;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+  .next-move-command-item{border:1px solid rgba(200,168,75,.15);border-radius:12px;background:rgba(0,0,0,.2);padding:11px}
+  .next-move-command-item p:first-child{font-size:.56rem;letter-spacing:.16em;text-transform:uppercase;color:#b6aa8a}
+  .next-move-command-item p:last-child{margin-top:5px;font-size:.88rem;line-height:1.45;color:#eee3ca}
+  .next-move-command-actions{display:flex;flex-direction:column;align-items:flex-start;gap:8px;margin-top:14px}
+  .next-move-command-primary{display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:0 18px;border-radius:12px;background:linear-gradient(135deg,#e7c56a,#c8a84b);color:#100d07;text-decoration:none;font-size:.72rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;box-shadow:0 14px 24px rgba(200,168,75,.2),0 0 0 1px rgba(255,255,255,.16) inset}
+  .next-move-command-primary:hover{transform:translateY(-1px)}
+  .next-move-command-secondary{font-size:.7rem;letter-spacing:.14em;text-transform:uppercase;color:#d7ccb4;text-decoration:none;border-bottom:1px solid rgba(200,168,75,.28)}
+  .next-move-command-secondary:hover{border-color:rgba(200,168,75,.54);color:#efe2c5}
   .impact-hint{margin-top:5px;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:#b6ad98}
   .impact-hint.high{color:#e4cf97}
   .impact-hint.medium{color:#c9b98a}
@@ -475,6 +604,9 @@
     .hero-grid{grid-template-columns:1fr}
     .hero-score-wrap{align-items:flex-start}
     .hero-telemetry-deck{grid-template-columns:1fr}
+    .report-readout-grid{grid-template-columns:1fr}
+    .onboarding-proof-strip{grid-template-columns:1fr}
+    .ia-level-grid{grid-template-columns:1fr}
   }
   @media(max-width:768px){
     .system-grid{grid-template-columns:1fr}
@@ -487,6 +619,7 @@
     .hero-score-wrap{flex-direction:column;align-items:flex-start}
     .hero-side-grid,.scan-history-context{grid-template-columns:1fr}
     .telemetry-mini-grid{grid-template-columns:1fr}
+    .next-move-command-grid{grid-template-columns:1fr}
   }
   @media(min-width:1100px){
     .system-grid-card.featured{grid-column:span 2}
@@ -525,68 +658,27 @@
 
     @if($hasSystem)
     <p class="mb-5 text-xs uppercase tracking-[0.14em] text-[#c8a84b]/72">Your previous scans are ready.</p>
-    @endif
 
-    <div class="dashboard-primary-flow {{ $isScansView ? 'is-scans-view' : '' }}">
+    <div class="dashboard-primary-flow {{ $isScansView ? 'is-scans-view' : '' }} {{ $isReportsView ? 'is-reports-view' : '' }}">
     <section class="system-section system-section-primary mb-8 dash-section-anchor" id="system-state">
       <div class="system-unified-module control-hero surface-reveal is-visible">
         <div class="hero-command-deck">
         <div class="hero-grid">
           <div class="hero-main">
             <div class="hero-status-strip">
-              <span class="surface-focus-kicker">{{ $isScansView ? 'System Readout Active · Scan History Focus' : ($isReportsView ? 'System Readout Active · Reports Focus' : 'System Readout Active') }}</span>
-              <span class="hero-status-item">Latest evaluation {{ $leadLastEvaluation }}</span>
-              <span class="hero-status-item">Saved report access live</span>
+              <span class="surface-focus-kicker">System Command Center</span>
+              <span class="hero-status-item">Latest scan {{ $leadLastEvaluation }}</span>
             </div>
 
             <div>
-              <p class="hero-overline">AI Visibility Command Center</p>
-              <h1 class="hero-domain">{{ $leadDomain }}</h1>
-              <p class="hero-intro">{{ $leadInsight }} This control surface keeps your latest state, primary bottleneck, and strongest next move in view without feeling like a generic dashboard.</p>
+              <p class="hero-overline">Live Baseline</p>
+              <h1 class="hero-domain">Your Visibility Baseline Is Live</h1>
+              <p class="hero-intro">You now have a live readout. Here is your biggest constraint and fastest path forward.</p>
             </div>
 
             <div class="hero-bottleneck-panel">
               <p class="hero-bottleneck-label">Primary Bottleneck</p>
               <p class="hero-bottleneck-copy">{{ $leadBottleneck }}</p>
-            </div>
-
-            <div class="hero-action-band">
-              <a href="{{ $dominantActionHref }}" class="hero-primary-cta">{{ $dominantActionLabel }}</a>
-              <a href="{{ $leadReportHref }}" class="hero-secondary-cta">Open Latest Readout</a>
-            </div>
-
-            <div class="hero-micro-grid">
-              <article class="hero-micro-card">
-                <p>Readiness State</p>
-                <p>{{ $leadState }}</p>
-              </article>
-              <article class="hero-micro-card">
-                <p>Last Scan</p>
-                <p>{{ $leadLastEvaluation }}</p>
-              </article>
-              <article class="hero-micro-card">
-                <p>Total Scans</p>
-                <p>{{ $totalScans }}</p>
-              </article>
-            </div>
-
-            <div class="hub-priority-grid hero-priority-grid">
-              <article class="hub-priority-card">
-                <p>Latest Score / State</p>
-                <p>{{ $leadScore > 0 ? $leadScore : 'No score yet' }} · {{ $leadState }}</p>
-              </article>
-              <article class="hub-priority-card">
-                <p>Primary Bottleneck</p>
-                <p>{{ $leadBottleneck }}</p>
-              </article>
-              <article class="hub-priority-card">
-                <p>Strongest Next Move</p>
-                <p><a href="{{ $nextUnlockHref }}" class="hub-link">{{ $nextUnlockLabel }}</a></p>
-              </article>
-              <article class="hub-priority-card">
-                <p>Latest Scan Context</p>
-                <p><a href="{{ $leadReportHref }}" class="hub-link">Open latest readout</a> · {{ $latestEvaluatedLabel }}</p>
-              </article>
             </div>
           </div>
 
@@ -604,128 +696,139 @@
                     <p class="telemetry-emphasis">{{ $leadState }}</p>
                   </div>
                   <div class="hero-telemetry">
-                    <p>Primary Bottleneck</p>
-                    <p>{{ $leadBottleneck }}</p>
+                    <p>Last Scan</p>
+                    <p>{{ $leadLastEvaluation }}</p>
                   </div>
                 </div>
               </div>
-              <div class="hero-side-grid">
-                <article class="hero-side-metric">
-                  <p>Next Move</p>
-                  <p>{{ $nextUnlockLabel }}</p>
-                </article>
-                <article class="hero-side-metric">
-                  <p>Last Evaluation</p>
-                  <p>{{ $leadLastEvaluation }}</p>
-                </article>
-              </div>
-
-              <div class="hero-telemetry-deck">
-                <div class="telemetry-trend-card">
-                  <p class="telemetry-card-label">Score Trend</p>
-                  <div class="telemetry-trend-row">
-                    <div class="telemetry-delta">
-                      <span class="value {{ $scoreDeltaTone }}">{{ $scoreDeltaLabel }}</span>
-                      <span class="label">Score Delta</span>
-                      <span class="sub">{{ $trendLabel }}</span>
-                    </div>
-                    <div class="telemetry-chart" aria-label="Score trend sparkline">
-                      <svg viewBox="0 0 {{ $sparklineWidth }} {{ $sparklineHeight }}" preserveAspectRatio="none" role="img" aria-hidden="true">
-                        <polygon points="{{ $sparklineAreaPoints }}" fill="rgba(200,168,75,.10)"></polygon>
-                        <polyline points="{{ $sparklinePoints }}" fill="none" stroke="rgba(200,168,75,.95)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"></polyline>
-                        <polyline points="{{ $sparklinePoints }}" fill="none" stroke="rgba(255,244,219,.26)" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"></polyline>
-                      </svg>
-                      <div class="grid-labels">
-                        <span>Earlier</span>
-                        <span>Current</span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                <div class="readiness-meter-card">
-                  <p class="telemetry-card-label">Readiness Meter</p>
-                  <div class="readiness-meter-track">
-                    <div class="readiness-meter-fill" style="width: {{ $readinessPercent }}%;"></div>
-                  </div>
-                  <div class="readiness-meter-meta">
-                    <span>Current readiness</span>
-                    <strong>{{ $readinessPercent }}%</strong>
-                  </div>
-                  <div class="telemetry-mini-grid" style="margin-top:12px">
-                    <article>
-                      <p>Current Score</p>
-                      <p>{{ $leadScore > 0 ? $leadScore : '--' }}</p>
-                    </article>
-                    <article>
-                      <p>Latest Improvement</p>
-                      <p>{{ $latestImprovement }}</p>
-                    </article>
-                    <article>
-                      <p>Blocker Shift</p>
-                      <p>{{ $blockerDeltaLabel }}</p>
-                    </article>
-                    <article>
-                      <p>Signal Gain</p>
-                      <p>{{ $scoreDeltaLabel }}</p>
-                    </article>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div class="hero-side-card">
-              <p class="hero-panel-label">Live Status Strip</p>
               <div class="hero-side-grid">
                 <article class="hero-side-metric">
                   <p>System State</p>
                   <p>{{ $systemState }}</p>
                 </article>
                 <article class="hero-side-metric">
-                  <p>Signals Tracked</p>
-                  <p>{{ $systemCount }}</p>
-                </article>
-                <article class="hero-side-metric">
-                  <p>Pressure Watch</p>
-                  <p>{{ $attentionCount }} active</p>
-                </article>
-                <article class="hero-side-metric">
-                  <p>Saved Reports</p>
-                  <p>{{ $scanFocusList->count() }} ready</p>
+                  <p>Last Scan</p>
+                  <p>{{ $latestEvaluatedLabel }}</p>
                 </article>
               </div>
             </div>
           </aside>
         </div>
         </div>
-        <p class="mt-4 text-[11px] uppercase tracking-[0.16em] text-[#988f7c]">Last evaluated: {{ $latestEvaluatedLabel }} · Deploy Fix or Inspect Signal to move this system forward.</p>
+        <p class="mt-4 text-[11px] uppercase tracking-[0.16em] text-[#988f7c]">Last evaluated: {{ $latestEvaluatedLabel }}</p>
       </div>
     </section>
 
+    @if($isSystemView)
+    <section class="system-section system-section-secondary mb-10 dash-section-anchor operations-quiet surface-reveal" id="next-move">
+      <div class="next-move-command-shell">
+        <p class="next-move-command-label">Do This Now</p>
+        <div class="next-move-command-grid">
+          <article class="next-move-command-item">
+            <p>What’s Holding You Back</p>
+            <p>{{ $nextMovePrimaryIssue }}</p>
+          </article>
+          <article class="next-move-command-item">
+            <p>Fix This First</p>
+            <p>{{ $nextMoveFastestFix }}</p>
+          </article>
+          <article class="next-move-command-item">
+            <p>What Happens Next</p>
+            <p>{{ $nextMoveStep }}</p>
+          </article>
+        </div>
+        <div class="next-move-command-actions">
+          <a href="{{ $nextMoveActionHref }}" class="next-move-command-primary">Apply This Fix</a>
+          @if($leadRenderable)
+            <a href="{{ $leadReportHref }}" class="next-move-command-secondary">View Full Report →</a>
+          @else
+            <span class="next-move-command-secondary" aria-disabled="true">{{ $leadReadoutStatus }}</span>
+            <p class="text-[11px] text-[#a09585] tracking-[.03em] mt-1">Usually completes in 10–30 seconds. You don't need to do anything.</p>
+          @endif
+          <p class="text-xs text-[#c7bfae]">Takes under 2 minutes • No technical work required</p>
+        </div>
+      </div>
+    </section>
+    @endif
+
+    @if($isReportsView)
+    <section class="system-section mb-8 dash-section-anchor surface-reveal" id="report-readouts">
+      <div class="ia-progress-shell">
+        <div class="ia-progress-head">
+          <div>
+            <h2>Progression and Unlock Path</h2>
+            <p>Reports is repurposed for level progression only: current level, next level, what unlocks next, and the direct upgrade path.</p>
+          </div>
+          <span class="scan-library-pill">Current Level <strong>{{ $currentLevelLabel }}</strong></span>
+        </div>
+        <div class="ia-level-grid">
+          <article class="ia-level-card">
+            <p>Current Level</p>
+            <p>{{ $currentLevelLabel }}</p>
+          </article>
+          <article class="ia-level-card">
+            <p>Next Level</p>
+            <p>{{ $nextLevelLabel }}{{ $nextLevelPrice ? (' · ' . $nextLevelPrice) : '' }}</p>
+          </article>
+        </div>
+        <div class="ia-level-unlocks">
+          <p>Next Level Unlocks</p>
+          <ul>
+            @foreach($nextLevelUnlocks as $unlock)
+              <li>{{ $unlock }}</li>
+            @endforeach
+          </ul>
+        </div>
+        <div class="ia-progress-actions">
+          @if($leadRenderable)
+            <a href="{{ $leadReportHref }}" class="secondary">View Full Report</a>
+          @else
+            <span class="secondary" aria-disabled="true">{{ $leadReadoutStatus }}</span>
+          @endif
+          @if($nextLayer)
+            <a href="{{ $nextLevelHref }}" class="primary">Unlock {{ $nextLevelLabel }}{{ $nextLevelPrice ? (' — ' . $nextLevelPrice) : '' }} →</a>
+          @endif
+        </div>
+
+        @if($showMarketCoverage)
+        <div class="ia-level-unlocks" style="margin-top:12px">
+          <p>Expand Your Market Coverage</p>
+          <ul>
+            <li>Programmatic SEO expansion across service and location permutations.</li>
+            <li>AI authority system deployment to strengthen retrieval trust.</li>
+            <li>Advanced deployment workflows for multi-market growth.</li>
+          </ul>
+        </div>
+        @endif
+      </div>
+    </section>
+    @endif
+
+    @if($isScansView)
     <section class="system-section mb-10 dash-section-anchor surface-reveal" id="scan-history">
       <div class="scan-history-shell">
         <div class="scan-library-header">
           <div>
-            <p class="scan-library-kicker">{{ $isScansView ? 'Scan Library Active' : 'Scan Surface' }}</p>
-            <h2 class="scan-library-title">{{ $isScansView ? 'Recent Readouts, Archived Signals, Priority Fixes' : 'Scan History Control Surface' }}</h2>
-            <p class="scan-library-description">{{ $isScansView ? 'This is your scan library: the latest AI visibility readouts, archived scan surfaces, and direct action paths to reports, fixes, and signal inspection.' : 'Your scan history is the center of this system. Open report, deploy fix, or inspect signal immediately.' }}</p>
+            <p class="scan-library-kicker">Scan Library Active</p>
+            <h2 class="scan-library-title">Scan History and Report Access</h2>
+            <p class="scan-library-description">This page is your archive. Review past scans by score, date, and status, then open any full report.</p>
           </div>
           <div class="scan-library-summary-wall">
             <article>
-              <p>Recent Readouts</p>
-              <p>{{ $scanFocusList->count() }} surfaces ready</p>
+              <p>Recent Scans</p>
+              <p>{{ $scanFocusList->count() }} archived</p>
             </article>
             <article>
-              <p>Latest Delta</p>
-              <p>{{ $scoreDeltaLabel }} · {{ $trendLabel }}</p>
+              <p>Last Scan</p>
+              <p>{{ $latestEvaluatedLabel }}</p>
             </article>
             <article>
-              <p>Primary Constraint</p>
-              <p>{{ $leadBottleneck }}</p>
+              <p>Current Status</p>
+              <p>{{ $leadState }}</p>
             </article>
             <article>
-              <p>Library State</p>
-              <p>{{ $leadState }} · {{ $totalScans }} total scans</p>
+              <p>Total Scans</p>
+              <p>{{ $totalScans }}</p>
             </article>
           </div>
         </div>
@@ -733,65 +836,99 @@
         <div class="scan-library-toolbar">
           <span class="scan-library-pill">Recent Scans <strong>{{ $scanFocusList->count() }}</strong></span>
           <span class="scan-library-pill">Total Scans <strong>{{ $totalScans }}</strong></span>
-          <span class="scan-library-pill">Ready State <strong>{{ $leadState }}</strong></span>
-          <span class="scan-library-pill">Latest Delta <strong>{{ $scoreDeltaLabel }}</strong></span>
+          <span class="scan-library-pill">Status <strong>{{ $leadState }}</strong></span>
+          <span class="scan-library-pill">Last Scan <strong>{{ $latestEvaluatedLabel }}</strong></span>
         </div>
 
         @if($featuredRecentScans->isNotEmpty())
         <div class="scan-shelf">
           <div class="scan-shelf-head">
             <div>
-              <h3>Latest Priority Readouts</h3>
-              <p>Newest scan surfaces with the clearest next actions. Start here if you want the most current state first.</p>
+              <h3>Latest Scans</h3>
+              <p>Newest scans first. Open any report to inspect details.</p>
             </div>
           </div>
           <div class="scan-featured-grid">
           @foreach($featuredRecentScans as $scan)
             @php
               $scanRouteKey = $scan['scan_route_key'] ?? $scan['public_scan_id'] ?? $scan['system_scan_id'] ?? null;
-              $reportHref = $scanRouteKey ? route('dashboard.scans.show', ['scan' => $scanRouteKey]) : route('quick-scan.show');
+              $isRenderable = (bool) ($scan['is_renderable_report'] ?? false);
+              $reportHref = ($scanRouteKey && $isRenderable) ? route('dashboard.scans.show', ['scan' => $scanRouteKey]) : null;
               $scanScore = (int) ($scan['score'] ?? 0);
-              $scanState = $scanScore >= 85 ? 'Stable' : ($scanScore >= 60 ? 'Under-optimized' : 'At Risk');
-              $scanFix = trim((string) ($scan['fastest_fix'] ?? '')) !== '' ? $scan['fastest_fix'] : 'Inspect signal layer for next best correction.';
+              $scanStatusStr = (string) ($scan['status'] ?? '');
+              // Compute processing link for paid/pending scans that have a session
+              $scanSessionId = (string) ($scan['stripe_session_id'] ?? '');
+              $isInProgress = !$isRenderable && in_array($scanStatusStr, ['pending', 'paid']);
+              $processingHref = ($isInProgress && $scanRouteKey && $scanSessionId !== '')
+                ? (route('dashboard.scans.show', ['scan' => $scanRouteKey]) . '?session_id=' . urlencode($scanSessionId))
+                : null;
+              $isError = ($scanStatusStr === 'error');
+              $scanState = $isRenderable
+                ? ($scanScore >= 85 ? 'Stable' : ($scanScore >= 60 ? 'Under-optimized' : 'At Risk'))
+                : match ($scanStatusStr) {
+                    'paid'    => 'Analyzing your site',
+                    'error'   => 'Scan could not be completed',
+                    default   => 'Scan in progress',
+                  };
+              $scanSubline = $isRenderable
+                ? 'Report ready — view your full results.'
+                : match ($scanStatusStr) {
+                    'paid'    => 'AI analysis running now. Usually completes in 10–30 seconds.',
+                    'error'   => 'Something went wrong. You can retry below.',
+                    'pending' => 'Queued — starts automatically once payment confirms.',
+                    default   => 'Scan in progress — usually under a minute.',
+                  };
+              $scanNextStep = $isRenderable
+                ? 'View report to see findings and fixes.'
+                : match ($scanStatusStr) {
+                    'paid'    => 'You don\'t need to do anything — we\'ll guide you when it\'s ready.',
+                    'error'   => 'Contact support or run a new scan.',
+                    default   => 'You don\'t need to do anything — results appear automatically.',
+                  };
+              $cardClass = 'scan-history-card surface-reveal'
+                . ($isInProgress ? ' is-inprogress' : '')
+                . ($isError ? ' is-error' : '');
+              $dotClass = $isRenderable ? 'is-done' : ($isError ? 'is-error' : 'is-active');
             @endphp
-            <article class="scan-history-card surface-reveal">
+            <article class="{{ $cardClass }}">
               <div class="scan-history-head">
                 <div>
-                  <p class="meta">System Readout Active</p>
+                  <p class="meta">Scan Archive</p>
                   <p class="domain">{{ $scan['scan_name'] ?? $scan['domain'] }}</p>
-                  <p class="scan-history-subline">Saved intelligence surface. Tactical actions are ready.</p>
+                  <p class="scan-history-subline">{{ $scanSubline }}</p>
                   <div class="scan-card-badges">
                     <span class="scan-card-badge">Latest</span>
-                    <span class="scan-card-badge">{{ $scanState }}</span>
+                    <span class="scan-card-badge" style="display:inline-flex;align-items:center;gap:5px">
+                      <span class="status-dot {{ $dotClass }}"></span>{{ $scanState }}
+                    </span>
                   </div>
                 </div>
                 <div class="scan-history-score">
-                  <span class="score">{{ $scanScore }}</span>
-                  <span class="label">Readout Score</span>
+                  <span class="score">{{ $isRenderable ? $scanScore : '—' }}</span>
+                  <span class="label">{{ $isRenderable ? 'Readout Score' : 'Pending' }}</span>
                 </div>
               </div>
+              @if($isInProgress)
+                <div class="scan-card-shimmer"></div>
+              @endif
               <div class="state-row">
-                <span class="pill">{{ $scanState }}</span>
-                <span class="text-[11px] uppercase tracking-[0.12em] text-[#aaa08b]">Updated {{ $scan['scanned_at']?->diffForHumans() ?? $scan['created_at']?->diffForHumans() }}</span>
+                <span class="pill" style="{{ $isInProgress ? 'border-color:rgba(200,168,75,.4);color:#d9c579' : ($isError ? 'border-color:rgba(199,72,72,.3);color:#d68888' : '') }}">{{ $scanState }}</span>
+                <span class="text-[11px] uppercase tracking-[0.12em] text-[#aaa08b]">
+                  {{ $scan['scanned_at']?->diffForHumans() ?? $scan['created_at']?->diffForHumans() }}
+                </span>
               </div>
-              <div class="scan-history-fastfix">
-                <p>Fastest Fix</p>
-                <p>{{ $scanFix }}</p>
-              </div>
-              <div class="scan-history-context">
-                <article>
-                  <p>State</p>
-                  <p>{{ $scanState }}</p>
-                </article>
-                <article>
-                  <p>Inspect Signal</p>
-                  <p>{{ $scan['quick_insight'] ?? 'Detailed signal readout ready.' }}</p>
-                </article>
-              </div>
+              <p class="scan-history-subline" style="font-size:.72rem;color:#a09585;margin-top:-4px">{{ $scanNextStep }}</p>
               <div class="actions">
-                <a href="{{ $reportHref }}" class="open">Open Report</a>
-                <a href="{{ $reportHref }}#layer-signal" class="deploy">Deploy Fix</a>
-                <a href="{{ $reportHref }}#detailed-layer-view" class="inspect">Inspect Signal</a>
+                @if($reportHref)
+                  <a href="{{ $reportHref }}" class="open">Open Report</a>
+                @elseif($processingHref)
+                  <a href="{{ $processingHref }}" class="inprogress-link">
+                    <span class="status-dot is-active" style="width:6px;height:6px"></span>
+                    Watch Progress
+                  </a>
+                @else
+                  <span class="disabled" aria-disabled="true">{{ $scanState }}</span>
+                @endif
               </div>
             </article>
           @endforeach
@@ -804,45 +941,72 @@
           <div class="scan-shelf-head">
             <div>
               <h3>Scan Archive</h3>
-              <p>Previous readouts stay available as part of your command library. Use them to compare state shifts and reopen detailed reports.</p>
+              <p>Older scans remain available for history and comparison.</p>
             </div>
           </div>
           <div class="scan-archive-grid">
           @foreach($archivedScans as $scan)
             @php
               $scanRouteKey = $scan['scan_route_key'] ?? $scan['public_scan_id'] ?? $scan['system_scan_id'] ?? null;
-              $reportHref = $scanRouteKey ? route('dashboard.scans.show', ['scan' => $scanRouteKey]) : route('quick-scan.show');
+              $isRenderable = (bool) ($scan['is_renderable_report'] ?? false);
+              $reportHref = ($scanRouteKey && $isRenderable) ? route('dashboard.scans.show', ['scan' => $scanRouteKey]) : null;
               $scanScore = (int) ($scan['score'] ?? 0);
-              $scanState = $scanScore >= 85 ? 'Stable' : ($scanScore >= 60 ? 'Under-optimized' : 'At Risk');
-              $scanFix = trim((string) ($scan['fastest_fix'] ?? '')) !== '' ? $scan['fastest_fix'] : 'Inspect signal layer for next best correction.';
+              $archivedStatusStr = (string) ($scan['status'] ?? '');
+              $archivedSessionId = (string) ($scan['stripe_session_id'] ?? '');
+              $archIsInProgress = !$isRenderable && in_array($archivedStatusStr, ['pending', 'paid']);
+              $archProcessingHref = ($archIsInProgress && $scanRouteKey && $archivedSessionId !== '')
+                ? (route('dashboard.scans.show', ['scan' => $scanRouteKey]) . '?session_id=' . urlencode($archivedSessionId))
+                : null;
+              $archIsError = ($archivedStatusStr === 'error');
+              $scanState = $isRenderable
+                ? ($scanScore >= 85 ? 'Stable' : ($scanScore >= 60 ? 'Under-optimized' : 'At Risk'))
+                : match ($archivedStatusStr) {
+                    'paid'    => 'Analyzing your site',
+                    'error'   => 'Scan could not be completed',
+                    default   => 'Scan in progress',
+                  };
+              $archCardClass = 'scan-history-card surface-reveal'
+                . ($archIsInProgress ? ' is-inprogress' : '')
+                . ($archIsError ? ' is-error' : '');
+              $archDotClass = $isRenderable ? 'is-done' : ($archIsError ? 'is-error' : 'is-active');
             @endphp
-            <article class="scan-history-card surface-reveal">
+            <article class="{{ $archCardClass }}">
               <div class="scan-history-head">
                 <div>
-                  <p class="meta">Archived Readout</p>
+                  <p class="meta">Archived Scan</p>
                   <p class="domain">{{ $scan['scan_name'] ?? $scan['domain'] }}</p>
                   <div class="scan-card-badges">
                     <span class="scan-card-badge">Archive</span>
-                    <span class="scan-card-badge">{{ $scanState }}</span>
+                    <span class="scan-card-badge" style="display:inline-flex;align-items:center;gap:5px">
+                      <span class="status-dot {{ $archDotClass }}"></span>{{ $scanState }}
+                    </span>
                   </div>
                 </div>
                 <div class="scan-history-score">
-                  <span class="score">{{ $scanScore }}</span>
-                  <span class="label">Readout Score</span>
+                  <span class="score">{{ $isRenderable ? $scanScore : '—' }}</span>
+                  <span class="label">{{ $isRenderable ? 'Readout Score' : 'Pending' }}</span>
                 </div>
               </div>
+              @if($archIsInProgress)
+                <div class="scan-card-shimmer"></div>
+              @endif
               <div class="state-row">
-                <span class="pill">{{ $scanState }}</span>
-                <span class="text-[11px] uppercase tracking-[0.12em] text-[#aaa08b]">Updated {{ $scan['scanned_at']?->diffForHumans() ?? $scan['created_at']?->diffForHumans() }}</span>
-              </div>
-              <div class="scan-history-fastfix">
-                <p>Fastest Fix</p>
-                <p>{{ $scanFix }}</p>
+                <span class="pill" style="{{ $archIsInProgress ? 'border-color:rgba(200,168,75,.4);color:#d9c579' : ($archIsError ? 'border-color:rgba(199,72,72,.3);color:#d68888' : '') }}">{{ $scanState }}</span>
+                <span class="text-[11px] uppercase tracking-[0.12em] text-[#aaa08b]">
+                  {{ $scan['scanned_at']?->diffForHumans() ?? $scan['created_at']?->diffForHumans() }}
+                </span>
               </div>
               <div class="actions">
-                <a href="{{ $reportHref }}" class="open">Open Report</a>
-                <a href="{{ $reportHref }}#layer-signal" class="deploy">Deploy Fix</a>
-                <a href="{{ $reportHref }}#detailed-layer-view" class="inspect">Inspect Signal</a>
+                @if($reportHref)
+                  <a href="{{ $reportHref }}" class="open">Open Report</a>
+                @elseif($archProcessingHref)
+                  <a href="{{ $archProcessingHref }}" class="inprogress-link">
+                    <span class="status-dot is-active" style="width:6px;height:6px"></span>
+                    Watch Progress
+                  </a>
+                @else
+                  <span class="disabled" aria-disabled="true">{{ $scanState }}</span>
+                @endif
               </div>
             </article>
           @endforeach
@@ -860,25 +1024,72 @@
         @endif
       </div>
     </section>
+    @endif
     </div>
-
-    @if(!$agencyModeActive && !$isScansView)
-    <section class="system-section mb-10 rounded-2xl border border-[#c8a84b]/16 bg-linear-to-br from-[#19160f] via-[#121008] to-[#0c0a06] p-5 shadow-xl operations-quiet dash-section-anchor surface-reveal" id="systems">
-      <p class="mb-2 text-xs uppercase tracking-[0.22em] text-[#c8a84b]/80">System Readout</p>
-      <div class="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
-        <div>
-          <h1 class="text-xl font-semibold leading-tight lg:text-2xl">{{ $objectiveTitle }}</h1>
-          <p class="mt-2 max-w-2xl text-sm text-[#b5b0a3]">{{ $hasSystem ? 'Control surface active. Coverage expanding; gaps persisting.' : 'No baseline detected. Coverage undeployed. Initialization required.' }}</p>
-        </div>
-        <div class="flex flex-wrap gap-3">
-          <a href="{{ $objectiveCta }}" class="inline-flex items-center justify-center rounded-xl bg-[#c8a84b] px-5 py-3 text-sm font-semibold text-[#0b0905] transition hover:bg-[#dfc477]">{{ $objectiveCtaLabel }}</a>
-          <a href="{{ url('/book?entry=consultation') }}" class="inline-flex items-center justify-center rounded-xl border border-[#c8a84b]/40 px-5 py-3 text-sm font-semibold text-[#e7dfc9] transition hover:border-[#c8a84b] hover:bg-[#c8a84b]/10">{{ $secondaryCtaLabel }}</a>
+    @else
+    <section class="system-section system-section-primary mb-10 dash-section-anchor surface-reveal is-visible" id="onboarding-command">
+      <div class="onboarding-command-shell">
+        <p class="onboarding-command-kicker">System Initialization Required</p>
+        <h1 class="onboarding-command-title">AI can’t see your business yet</h1>
+        <p class="onboarding-command-copy">Run your first scan to establish your visibility baseline and unlock your system readout.</p>
+        <a href="{{ route('scan.start') }}" class="onboarding-command-cta">Run My First Scan →</a>
+        <p class="onboarding-command-reassure">See your score, biggest gaps, and first fix in seconds.</p>
+        <p class="onboarding-command-footnote">Takes 10 seconds • $2 scan</p>
+        <details class="onboarding-explainer">
+          <summary>What will the scan show?</summary>
+          <div class="onboarding-explainer-panel">
+            <ul>
+              <li>Your current visibility score baseline.</li>
+              <li>The biggest gaps limiting AI retrieval.</li>
+              <li>The first highest-impact fix to apply.</li>
+            </ul>
+          </div>
+        </details>
+        <div class="onboarding-proof-strip" aria-hidden="true">
+          <article class="onboarding-proof-item">
+            <p>AI Check</p>
+            <p>Visibility score baseline</p>
+          </article>
+          <article class="onboarding-proof-item">
+            <p>AI Check</p>
+            <p>Primary gap identification</p>
+          </article>
+          <article class="onboarding-proof-item">
+            <p>AI Check</p>
+            <p>Fastest first correction</p>
+          </article>
         </div>
       </div>
     </section>
     @endif
 
-    @if($agencyModeActive)
+    @if($hasSystem && !$agencyModeActive && $isSystemView && false)
+    <section class="system-section mb-10 rounded-2xl border border-[#c8a84b]/16 bg-linear-to-br from-[#19160f] via-[#121008] to-[#0c0a06] p-5 shadow-xl operations-quiet dash-section-anchor surface-reveal" id="systems">
+      <p class="mb-2 text-xs uppercase tracking-[0.22em] text-[#c8a84b]/80">System Readout</p>
+      <div class="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
+        <div>
+          <h1 class="text-xl font-semibold leading-tight lg:text-2xl">Current Level: {{ $currentLevelLabel }}</h1>
+          <p class="mt-2 max-w-2xl text-sm text-[#b5b0a3]">Next level: {{ $nextLevelLabel }}{{ $nextLevelPrice ? (' · ' . $nextLevelPrice) : '' }}. This unlock adds deeper guidance for your next optimization step.</p>
+        </div>
+        <div class="flex flex-wrap gap-3">
+          <a href="{{ $leadReportHref }}" class="inline-flex items-center justify-center rounded-xl border border-[#c8a84b]/40 px-5 py-3 text-sm font-semibold text-[#e7dfc9] transition hover:border-[#c8a84b] hover:bg-[#c8a84b]/10">Open Latest Report</a>
+          @if($nextLayer)
+            <a href="{{ $nextLevelHref }}" class="inline-flex items-center justify-center rounded-xl bg-[#c8a84b] px-5 py-3 text-sm font-semibold text-[#0b0905] transition hover:bg-[#dfc477]">Unlock {{ $nextLevelLabel }}</a>
+          @endif
+        </div>
+      </div>
+      <div class="ia-level-unlocks mt-4">
+        <p>What This Level Unlocks</p>
+        <ul>
+          @foreach($nextLevelUnlocks as $unlock)
+            <li>{{ $unlock }}</li>
+          @endforeach
+        </ul>
+      </div>
+    </section>
+    @endif
+
+    @if($hasSystem && $agencyModeActive && $isSystemView && false)
       @php
         $gridClass = $systemCount >= 10 ? 'grid-compact' : ($systemCount <= 4 ? 'grid-wide' : '');
         $gridDensity = $systemCount >= 10 ? 'compact' : ($systemCount <= 4 ? 'wide' : 'standard');
@@ -1131,7 +1342,7 @@
       </section>
     @endif
 
-    @if(!$agencyModeActive)
+    @if($hasSystem && !$agencyModeActive && $isReportsView)
     <section class="system-section system-section-secondary mb-10 dash-section-anchor" id="intelligence-stack">
       <div class="system-subshell">
         <div class="section-head">
@@ -1161,7 +1372,7 @@
     </section>
     @endif
 
-    @if(!$agencyModeActive)
+    @if($hasSystem && !$agencyModeActive && $isReportsView)
     <section class="system-section system-section-tertiary mb-10 dash-section-anchor" id="extensions">
       <div class="system-subshell dim">
         <div class="section-head">
@@ -1183,6 +1394,7 @@
     </section>
     @endif
 
+    @if($hasSystem && $isSystemView && false)
     <section class="system-section system-section-secondary mb-10 dash-section-anchor operations-quiet surface-reveal" id="coverage">
       <h2 class="mb-3 text-sm uppercase tracking-[0.2em] text-[#c8a84b]/68">Next Move Queue</h2>
       <div class="next-move-grid">
@@ -1212,6 +1424,7 @@
         </a>
       </div>
     </section>
+    @endif
 
   </div>
 </div>

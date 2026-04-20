@@ -48,13 +48,18 @@ class AppServiceProvider extends ServiceProvider
                 {
                     $user = Filament::auth()->user();
 
+                    // Auto-approve paid scan users — mirrors CustomerLoginController
+                    if ($user && !$user->isApproved() && $user->quickScans()->where('paid', true)->exists()) {
+                        $user->update(['approved' => true]);
+                    }
+
                     // Unapproved non-privileged users go to pending page
-                    if ($user && !$user->isPrivilegedStaff() && !$user->isApproved()) {
+                    if ($user && !$user->isPrivilegedStaff() && !$user->isFrontendDev() && !$user->isApproved()) {
                         return redirect()->route('pending-approval');
                     }
 
                     // Approved but onboarding not yet done
-                    if ($user && !$user->isPrivilegedStaff() && $user->isApproved() && is_null($user->onboarding_completed_at)) {
+                    if ($user && !$user->isPrivilegedStaff() && !$user->isFrontendDev() && $user->isApproved() && is_null($user->onboarding_completed_at)) {
                         return redirect()->route('user.onboarding');
                     }
 

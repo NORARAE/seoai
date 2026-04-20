@@ -74,6 +74,9 @@ class User extends Authenticatable implements FilamentUser, HasAppAuthentication
         'system_tier',
         'system_tier_upgraded_at',
         'stripe_checkout_session_id',
+        'email_marketing_opt_in',
+        'email_product_updates',
+        'email_scan_notifications',
     ];
 
     /**
@@ -103,6 +106,9 @@ class User extends Authenticatable implements FilamentUser, HasAppAuthentication
             'approved' => 'boolean',
             'system_tier' => SystemTier::class,
             'system_tier_upgraded_at' => 'datetime',
+            'email_marketing_opt_in' => 'boolean',
+            'email_product_updates' => 'boolean',
+            'email_scan_notifications' => 'boolean',
         ];
     }
 

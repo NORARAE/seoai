@@ -17,8 +17,8 @@ class EnsureUserIsApproved
             return redirect()->route('login');
         }
 
-        // Privileged staff always bypass the approval gate.
-        if ($user->isPrivilegedStaff()) {
+        // Privileged staff and frontend devs always bypass the approval gate.
+        if ($user->isPrivilegedStaff() || $user->isFrontendDev()) {
             return $next($request);
         }
 

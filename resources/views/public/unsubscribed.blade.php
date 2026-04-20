@@ -33,6 +33,11 @@
   .note{font-size:.78rem;color:rgba(168,168,160,.4);margin-top:28px}
   .note a{color:var(--gold);text-decoration:none;transition:color .25s}
   .note a:hover{color:var(--gold-lt)}
+  .btn-group{display:flex;flex-direction:column;gap:10px;margin:28px 0 0}
+  .btn-primary{display:block;background:var(--gold);color:#080808;font-family:'DM Sans',sans-serif;font-size:.82rem;font-weight:500;letter-spacing:.08em;text-transform:uppercase;text-decoration:none;padding:13px 24px;transition:background .2s}
+  .btn-primary:hover{background:var(--gold-lt)}
+  .btn-secondary{display:block;border:1px solid var(--gold-dim);color:var(--gold);font-family:'DM Sans',sans-serif;font-size:.78rem;font-weight:400;letter-spacing:.06em;text-decoration:none;padding:11px 24px;transition:border-color .2s,color .2s}
+  .btn-secondary:hover{border-color:var(--gold);color:var(--gold-lt)}
   @media(max-width:500px){
     .wrap{padding:36px 24px}
     h1{font-size:1.4rem}
@@ -49,17 +54,18 @@
     <h1>Already unsubscribed.</h1>
     <p>
       @if($email)
-        <span class="email-ref">{{ $email }}</span> was
+        <span class="email-ref">{{ $email }}</span> is
       @else
-        This address was
+        This address is
       @endif
-      already removed from follow-up emails.
+      already removed from marketing emails. No further action needed.
     </p>
-    <p>No further action needed.</p>
   @elseif($lead)
     <h1>You've been unsubscribed.</h1>
-    <p><span class="email-ref">{{ $email }}</span> has been removed from follow-up emails.</p>
-    <p>You will still receive transactional messages related to confirmed bookings and account activity.</p>
+    <p>
+      <span class="email-ref">{{ $email }}</span> has been removed from marketing emails.
+    </p>
+    <p>You'll still receive scan results, receipts, and messages tied to your account.</p>
   @else
     <h1>Unsubscribe request received.</h1>
     <p>
@@ -68,12 +74,21 @@
       @else
         This address has
       @endif
-      been noted. You will not receive further marketing emails.
+      been removed from marketing emails. Transactional messages remain active.
     </p>
   @endif
 
+  <p style="margin-top:8px;font-size:.82rem;color:var(--muted)">
+    Your dashboard access and report history are unaffected.
+  </p>
+
+  <div class="btn-group">
+    <a href="/dashboard" class="btn-primary">Go to Dashboard</a>
+    <a href="/dashboard/settings/notifications" class="btn-secondary">Manage Email Preferences</a>
+  </div>
+
   <p class="note">
-    Changed your mind? <a href="mailto:hello@seoaico.com">hello@seoaico.com</a>
+    Questions? <a href="mailto:hello@seoaico.com">hello@seoaico.com</a>
   </p>
 </div>
 @include('components.tm-style')

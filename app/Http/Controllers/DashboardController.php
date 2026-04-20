@@ -50,12 +50,16 @@ class DashboardController extends Controller
             ->update(['user_id' => $user->id]);
 
         $scanProjects = $user->quickScans()
-            ->whereIn('status', [QuickScan::STATUS_SCANNED, QuickScan::STATUS_PAID])
+            ->whereIn('status', [QuickScan::STATUS_SCANNED, QuickScan::STATUS_PAID, QuickScan::STATUS_PENDING, QuickScan::STATUS_ERROR])
             ->latest()
             ->get();
 
-        $latestScanned = $scanProjects->first();
-        $highestRankedScan = $scanProjects->sortByDesc(fn(QuickScan $scan) => $scan->upgradeTierRank())->first();
+        // For lead scan in System view, use only completed scans (not pending/error).
+        $latestScanned = $scanProjects->first(fn(QuickScan $s) => $s->status === QuickScan::STATUS_SCANNED && $s->score !== null);
+        $highestRankedScan = $scanProjects
+            ->filter(fn(QuickScan $s) => $s->status === QuickScan::STATUS_SCANNED && $s->score !== null)
+            ->sortByDesc(fn(QuickScan $scan) => $scan->upgradeTierRank())
+            ->first();
 
         $totalScans = $user->quickScans()->count();
 
@@ -104,6 +108,9 @@ class DashboardController extends Controller
                 $issuesCount = is_array($scan->issues) ? count($scan->issues) : 0;
 
                 $quickInsight = match (true) {
+                    $scan->status === QuickScan::STATUS_PENDING => 'Scan queued — starting analysis shortly.',
+                    $scan->status === QuickScan::STATUS_PAID => 'Analyzing your site now — check back in a moment.',
+                    $scan->status === QuickScan::STATUS_ERROR => 'Scan could not be completed. Retry available.',
                     $score >= 88 => 'Strong visibility. Maintain coverage expansion.',
                     $score >= 60 => 'Position building. Structural gaps still limit reach.',
                     $issuesCount > 0 => 'Core issues detected. Priority fixes are available.',

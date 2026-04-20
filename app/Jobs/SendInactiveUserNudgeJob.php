@@ -3,7 +3,9 @@
 namespace App\Jobs;
 
 use App\Mail\InactiveUserNudge;
+use App\Models\Lead;
 use App\Models\QuickScan;
+use App\Models\User;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
@@ -40,6 +42,15 @@ class SendInactiveUserNudgeJob implements ShouldQueue
 
         foreach ($inactiveScans as $scan) {
             try {
+                // Skip if the recipient has unsubscribed (Lead) or opted out of marketing (User)
+                $lead = Lead::where('email', $scan->email)->first();
+                if ($lead?->email_unsubscribed_at) {
+                    continue;
+                }
+                if (User::where('email', $scan->email)->where('email_marketing_opt_in', false)->exists()) {
+                    continue;
+                }
+
                 Mail::to($scan->email)->queue(new InactiveUserNudge($scan));
                 $scan->update(['inactive_nudge_sent' => true]);
                 $count++;
