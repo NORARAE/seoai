@@ -150,6 +150,27 @@
     ? ($levelUnlockMap[$nextLayer['key']] ?? ['Deeper visibility controls.', 'More actionable correction guidance.'])
     : ['All core levels are unlocked.', 'Use Scans to review history and compare outcomes.'];
   $showMarketCoverage = ((string) ($currentLayer['key'] ?? 'scan-basic')) !== 'scan-basic';
+  // Project identity vars
+  $projectDomain = ($leadDomain && $leadDomain !== 'No domain scanned yet')
+    ? preg_replace('#^https?://(www\.)?#i', '', rtrim($leadDomain, '/'))
+    : null;
+  $pagesAnalyzed = (int) ($leadScan['pages_scanned'] ?? 0);
+  $profileData = auth()->user()->profile_data ?? [];
+  $profileBrand = $profileData['business_name'] ?? $profileData['public_brand_name'] ?? null;
+  $heroHeadline = $projectDomain ? 'AI Visibility Baseline for ' . $projectDomain : 'Your AI Visibility Baseline';
+  $scanCompletedLabel = null;
+  if (!empty($leadScan['scanned_at'])) {
+    try { $scanCompletedLabel = \Carbon\Carbon::parse($leadScan['scanned_at'])->format('M j, Y'); } catch (\Throwable $e) {}
+  } elseif (!empty($leadScan['created_at'])) {
+    try { $scanCompletedLabel = \Carbon\Carbon::parse($leadScan['created_at'])->format('M j, Y'); } catch (\Throwable $e) {}
+  }
+  $profileCompletionScore = count(array_filter([
+    !empty($profileData['business_name'] ?? ''),
+    !empty($profileData['primary_service'] ?? ''),
+    !empty($profileData['primary_location'] ?? ''),
+    !empty($profileData['cms_platform'] ?? ''),
+    !empty($profileData['primary_goal'] ?? ''),
+  ]));
 @endphp
 
 @push('styles')
@@ -743,6 +764,46 @@
   .dcm-btn-primary:disabled{opacity:.55;cursor:not-allowed;transform:none}
   .dcm-btn-skip{min-height:42px;padding:0 14px;border-radius:10px;background:transparent;border:1px solid rgba(200,168,75,.22);color:rgba(200,168,75,.55);font-size:.68rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;cursor:pointer;transition:all .15s ease}
   .dcm-btn-skip:hover{border-color:rgba(200,168,75,.4);color:rgba(200,168,75,.75)}
+
+  /* ── Project Identity Bar ─────────────────────────────── */
+  .proj-identity-bar{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;padding:12px 16px;border:1px solid rgba(200,168,75,.2);border-radius:12px;background:linear-gradient(135deg,rgba(26,20,10,.9),rgba(10,8,5,.95));margin-bottom:20px}
+  .proj-identity-left{display:flex;align-items:center;gap:12px}
+  .proj-identity-icon{width:34px;height:34px;border-radius:8px;background:rgba(200,168,75,.12);border:1px solid rgba(200,168,75,.28);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+  .proj-identity-brand{font-size:.7rem;font-weight:600;color:rgba(200,168,75,.9);letter-spacing:.04em;margin-bottom:1px}
+  .proj-identity-url{font-size:.72rem;color:#b8b0a0;letter-spacing:.02em}
+  .proj-identity-meta{display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+  .proj-identity-pill{display:flex;align-items:center;gap:5px;font-size:.58rem;letter-spacing:.14em;text-transform:uppercase;color:rgba(200,168,75,.6);padding:3px 8px;border-radius:6px;background:rgba(200,168,75,.08);border:1px solid rgba(200,168,75,.14)}
+  .proj-identity-pill.is-live{color:rgba(106,175,144,.8);background:rgba(106,175,144,.1);border-color:rgba(106,175,144,.25)}
+  .proj-identity-pill svg{flex-shrink:0}
+  /* Scan provenance line */
+  .scan-provenance{font-size:.58rem;letter-spacing:.1em;text-transform:uppercase;color:rgba(200,168,75,.42);margin-top:6px}
+  /* Level step descriptions */
+  .level-card-why{font-size:.72rem;line-height:1.5;color:rgba(200,168,75,.65);border-left:2px solid rgba(200,168,75,.25);padding-left:10px;margin-bottom:12px;font-style:italic}
+  /* DCM level fields show/hide */
+  .dcm-level-fields{display:none}
+  .dcm-level-fields.is-active{display:block}
+  .dcm-section-label{font-size:.58rem;letter-spacing:.2em;text-transform:uppercase;color:rgba(200,168,75,.55);margin-bottom:10px;padding-bottom:6px;border-bottom:1px solid rgba(200,168,75,.15)}
+  .dcm-field-row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  @media(max-width:500px){.dcm-field-row{grid-template-columns:1fr}}
+
+  /* ── Enhanced Project Identity Bar ─────────────────── */
+  .proj-identity-bar{padding:16px 18px;background:linear-gradient(140deg,rgba(28,22,12,.96),rgba(10,8,5,.98));border-color:rgba(200,168,75,.28);box-shadow:0 8px 28px rgba(0,0,0,.32),inset 0 1px 0 rgba(255,255,255,.03)}
+  .pib-live-row{display:flex;align-items:center;gap:8px;margin-bottom:8px}
+  .pib-live-dot{width:8px;height:8px;border-radius:50%;background:#c8a84b;flex-shrink:0;animation:pibPulse 2.4s ease-in-out infinite;box-shadow:0 0 0 0 rgba(200,168,75,.5)}
+  .pib-live-label{font-size:.58rem;letter-spacing:.2em;text-transform:uppercase;color:rgba(200,168,75,.72)}
+  .pib-domain-name{font-size:1.35rem;font-weight:700;color:#f3ecd8;letter-spacing:-.025em;line-height:1.1;text-shadow:0 0 28px rgba(200,168,75,.18)}
+  .pib-right{display:flex;flex-direction:column;align-items:flex-end;gap:10px}
+  .pib-report-btn{display:inline-flex;align-items:center;gap:7px;min-height:40px;padding:0 18px;border-radius:10px;background:#c6a85a;color:#1a1a1a;text-decoration:none;font-size:.68rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;transition:all .2s ease;box-shadow:0 6px 16px rgba(198,168,90,.24),inset 0 1px 0 rgba(255,255,255,.14);white-space:nowrap;flex-shrink:0}
+  .pib-report-btn:hover{transform:translateY(-1px);box-shadow:0 10px 24px rgba(198,168,90,.38),inset 0 1px 0 rgba(255,255,255,.18)}
+  .pib-report-btn-outline{display:inline-flex;align-items:center;gap:6px;min-height:38px;padding:0 16px;border-radius:10px;border:1px solid rgba(200,168,75,.32);background:transparent;color:rgba(200,168,75,.8);text-decoration:none;font-size:.66rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;transition:all .2s ease;white-space:nowrap;flex-shrink:0}
+  .pib-report-btn-outline:hover{background:rgba(200,168,75,.1);border-color:rgba(200,168,75,.55)}
+  @keyframes pibPulse{0%,100%{box-shadow:0 0 0 0 rgba(200,168,75,.55)}50%{box-shadow:0 0 0 9px rgba(200,168,75,0)}}
+  /* Domain glow on scan cards */
+  .scan-history-card .domain{text-shadow:0 0 22px rgba(200,168,75,.15)}
+  .scan-history-card:hover .domain{text-shadow:0 0 30px rgba(200,168,75,.32);color:#fff8ec}
+  /* DCM select style */
+  .dcm-field select{width:100%;background:#0f0d09;border:1px solid rgba(200,168,75,.28);border-radius:8px;padding:9px 12px;color:#ede8de;font-size:.84rem;outline:none;transition:border-color .15s ease;-webkit-appearance:none;appearance:none;background-image:url("data:image/svg+xml,%3Csvg width='10' height='6' viewBox='0 0 10 6' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1l4 4 4-4' stroke='rgba(200,168,75,0.5)' stroke-width='1.4' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 12px center}
+  .dcm-field select:focus{border-color:rgba(200,168,75,.65)}
 </style>
 @endpush
 
@@ -772,7 +833,43 @@
     @endif
 
     @if($hasSystem)
+
+    {{-- Project Identity Bar --}}
+    @if($projectDomain)
+    <div class="proj-identity-bar" role="region" aria-label="Project: {{ $projectDomain }}">
+      <div class="proj-identity-left" style="flex:1;min-width:0">
+        <div class="pib-live-row">
+          <span class="pib-live-dot" aria-hidden="true"></span>
+          <span class="pib-live-label">AI Visibility System Active</span>
+        </div>
+        @if($profileBrand)<p class="proj-identity-brand" style="margin-bottom:3px">{{ $profileBrand }}</p>@endif
+        <p class="pib-domain-name">{{ $projectDomain }}</p>
+      </div>
+      <div class="pib-right">
+        <div class="proj-identity-meta">
+          @if($scanCompletedLabel)
+          <span class="proj-identity-pill">Scanned {{ $scanCompletedLabel }}</span>
+          @endif
+          @if($pagesAnalyzed > 0)
+          <span class="proj-identity-pill">{{ $pagesAnalyzed }} pages</span>
+          @endif
+          <span class="proj-identity-pill">Level {{ $tierRank }}</span>
+        </div>
+        @if($leadRenderable)
+        <a href="{{ $leadReportHref }}" class="pib-report-btn">
+          Open Latest Report
+          <svg width="10" height="10" viewBox="0 0 10 10" fill="none" aria-hidden="true"><path d="M2 5h6M5.5 2.5 8 5 5.5 7.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </a>
+        @else
+        <a href="{{ route('quick-scan.show') }}" class="pib-report-btn-outline">
+          Run Scan to Activate Report
+        </a>
+        @endif
+      </div>
+    </div>
+    @else
     <p class="mb-5 text-xs uppercase tracking-[0.14em] text-[#c8a84b]/72">Your previous scans are ready.</p>
+    @endif
 
     <div class="dashboard-primary-flow {{ $isScansView ? 'is-scans-view' : '' }} {{ $isReportsView ? 'is-reports-view' : '' }}">
     <section class="system-section system-section-primary mb-8 dash-section-anchor" id="system-state">
@@ -781,14 +878,14 @@
         <div class="hero-grid">
           <div class="hero-main">
             <div class="hero-status-strip">
-              <span class="surface-focus-kicker">System Command Center</span>
-              <span class="hero-status-item">Latest scan {{ $leadLastEvaluation }}</span>
+              <span class="surface-focus-kicker">{{ $projectDomain ?? 'AI Visibility Dashboard' }}</span>
+              <span class="hero-status-item">Scan completed {{ $leadLastEvaluation }}</span>
             </div>
 
             <div>
-              <p class="hero-overline">Live Baseline</p>
-              <h1 class="hero-domain">Your Visibility Baseline Is Live</h1>
-              <p class="hero-intro">You now have a live readout. Here is your biggest constraint and fastest path forward.</p>
+              <p class="hero-overline">Latest Completed Scan</p>
+              <h1 class="hero-domain">{{ $heroHeadline }}</h1>
+              <p class="hero-intro">{{ $projectDomain ? 'Showing your current AI visibility state for '.$projectDomain.'. Your top blocker and fastest improvement path are below.' : 'Your current AI visibility state is ready. Top blockers and your fastest improvement path are below.' }}</p>
             </div>
 
             <div class="hero-bottleneck-panel">
@@ -799,7 +896,7 @@
 
           <aside class="hero-side surface-reveal is-visible">
             <div class="hero-score-panel">
-              <p class="hero-panel-label">Live Readout</p>
+              <p class="hero-panel-label">AI Visibility Score</p>
               <div class="hero-score-wrap">
                 <div class="hero-score-orb {{ $leadTelemetryTone }}">
                   <span class="hero-score-value">{{ $leadScore > 0 ? $leadScore : '--' }}</span>
@@ -807,31 +904,46 @@
                 </div>
                 <div class="hero-score-meta">
                   <div class="hero-telemetry">
-                    <p>State</p>
+                    <p>Status</p>
                     <p class="telemetry-emphasis">{{ $leadState }}</p>
                   </div>
                   <div class="hero-telemetry">
-                    <p>Last Scan</p>
+                    <p>Completed</p>
                     <p>{{ $leadLastEvaluation }}</p>
                   </div>
                 </div>
               </div>
+              @if($scanCompletedLabel)
+              <p class="scan-provenance">Based on scan completed {{ $scanCompletedLabel }}{{ $pagesAnalyzed > 0 ? ' &nbsp;&middot;&nbsp; '.$pagesAnalyzed.' pages' : '' }}</p>
+              @endif
               <div class="hero-side-grid">
                 <article class="hero-side-metric">
-                  <p>System State</p>
-                  <p>{{ $systemState }}</p>
+                  <p>Visibility</p>
+                  <p>{{ $leadState }}</p>
                 </article>
                 <article class="hero-side-metric">
+                  @if($pagesAnalyzed > 0)
+                  <p>Pages Scanned</p>
+                  <p>{{ $pagesAnalyzed }}</p>
+                  @else
                   <p>Last Scan</p>
                   <p>{{ $latestEvaluatedLabel }}</p>
+                  @endif
                 </article>
               </div>
             </div>
 
             <div class="next-action-block">
               <p class="next-action-label">Next Action</p>
-              <p class="next-action-copy">Fix your primary content signal to improve your visibility score.</p>
-              <a href="{{ $nextMoveActionHref }}" class="next-action-cta">Fix This Now</a>
+              <p class="next-action-copy">{{ $projectDomain ? 'Your top blocker for '.$projectDomain.' is limiting AI visibility.' : 'Fix your primary content signal to improve your AI visibility score.' }}</p>
+              <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:12px">
+                @if($leadRenderable)
+                <a href="{{ $leadReportHref }}" class="next-action-cta" style="margin-top:0">Open Latest Report &rarr;</a>
+                <a href="{{ $nextMoveActionHref }}" class="hero-secondary-cta" style="min-height:42px;font-size:.7rem">See Top Fix</a>
+                @else
+                <a href="{{ $nextMoveActionHref }}" class="next-action-cta" style="margin-top:0">Fix This Now</a>
+                @endif
+              </div>
             </div>
           </aside>
         </div>
@@ -843,10 +955,10 @@
         @if($isSystemView)
     @php
       $levelMeta = [
-        ['key' => 'scan-basic',         'num' => 1, 'kicker' => 'Level 1',  'name' => 'Foundation Signals', 'desc' => 'Establishes your core content signal — business identity, services, and location data for AI discovery.',  'steps' => ['Baseline visibility score established', 'Primary service signal validated', 'Location targeting activated'], 'lift' => '+12 visibility pts', 'price' => '$2'],
-        ['key' => 'signal-expansion',   'num' => 2, 'kicker' => 'Level 2',  'name' => 'Authority Signals',  'desc' => 'Expands authority coverage across citation layers and validates your market position signals.',            'steps' => ['Citation authority layer active', 'Competitor gap analysis unlocked', 'Secondary market signals validated'], 'lift' => '+18 visibility pts', 'price' => '$99'],
-        ['key' => 'structural-leverage','num' => 3, 'kicker' => 'Level 3',  'name' => 'Expansion Signals',  'desc' => 'Builds structural web presence with schema alignment, topical depth, and conversion architecture.',        'steps' => ['Schema and structured data mapped', 'Topical authority stack initiated', 'Conversion pathway architecture active'], 'lift' => '+22 visibility pts', 'price' => '$249'],
-        ['key' => 'system-activation',  'num' => 4, 'kicker' => 'Level 4',  'name' => 'Dominance Layer',    'desc' => 'Activates competitive suppression, AI citation eligibility, and full market coverage controls.',           'steps' => ['AI citation eligibility unlocked', 'Competitive suppression active', 'Full market coverage operational'], 'lift' => '+28 visibility pts', 'price' => '$489'],
+        ['key' => 'scan-basic',         'num' => 1, 'kicker' => 'Level 1',  'name' => 'Foundation Signals', 'desc' => 'Establishes your core content signal — business identity, services, and location data for AI discovery.',  'why' => 'AI systems look for clear business identity, service clarity, and a location signal. Without this, your site is invisible to AI-powered search.', 'steps' => ['Baseline visibility score established', 'Primary service signal validated', 'Location targeting activated'], 'lift' => '+12 visibility pts', 'price' => '$2'],
+        ['key' => 'signal-expansion',   'num' => 2, 'kicker' => 'Level 2',  'name' => 'Authority Signals',  'desc' => 'Expands authority coverage across citation layers and validates your market position signals.',            'why' => 'Authority signals tell AI systems you are a real, trusted business in your market. Citation gaps are the #1 reason local businesses are skipped.', 'steps' => ['Citation authority layer active', 'Competitor gap analysis unlocked', 'Secondary market signals validated'], 'lift' => '+18 visibility pts', 'price' => '$99'],
+        ['key' => 'structural-leverage','num' => 3, 'kicker' => 'Level 3',  'name' => 'Expansion Signals',  'desc' => 'Builds structural web presence with schema alignment, topical depth, and conversion architecture.',        'why' => 'Structured data and topical coverage are what move you from "found sometimes" to "consistently cited" in AI and voice search results.', 'steps' => ['Schema and structured data mapped', 'Topical authority stack initiated', 'Conversion pathway architecture active'], 'lift' => '+22 visibility pts', 'price' => '$249'],
+        ['key' => 'system-activation',  'num' => 4, 'kicker' => 'Level 4',  'name' => 'Dominance Layer',    'desc' => 'Activates competitive suppression, AI citation eligibility, and full market coverage controls.',           'why' => 'This is where you go from visible to dominant — AI citation eligibility, competitive suppression, and full market coverage running as a system.', 'steps' => ['AI citation eligibility unlocked', 'Competitive suppression active', 'Full market coverage operational'], 'lift' => '+28 visibility pts', 'price' => '$489'],
       ];
       $layersByKey = collect($analysisLayers ?? [])->keyBy('key');
       $firstIncompleteIdx = null;
@@ -935,6 +1047,10 @@
             <p class="level-card-kicker">{{ $lm['kicker'] }}</p>
             <h3 class="level-card-name">{{ $lm['name'] }}</h3>
             <p class="level-card-desc">{{ $lm['desc'] }}</p>
+
+            @if($isActive && !empty($lm['why']))
+            <p class="level-card-why">{{ $lm['why'] }}</p>
+            @endif
 
             <ul class="level-card-steps" aria-label="Level steps">
               @foreach($lm['steps'] as $step)
@@ -1068,9 +1184,9 @@
       <div class="scan-history-shell">
         <div class="scan-library-header">
           <div>
-            <p class="scan-library-kicker">Scan Library Active</p>
-            <h2 class="scan-library-title">Scan History and Report Access</h2>
-            <p class="scan-library-description">This page is your archive. Review past scans by score, date, and status, then open any full report.</p>
+            <p class="scan-library-kicker">Reports Active</p>
+            <h2 class="scan-library-title">Your Reports &amp; Visibility History</h2>
+            <p class="scan-library-description">Every scan is stored here with its score, status, and full report. Review your visibility history and open any full report below.</p>
           </div>
           <div class="scan-library-summary-wall">
             <article>
@@ -1179,7 +1295,7 @@
               <p class="scan-history-subline" style="font-size:.72rem;color:#a09585;margin-top:-4px">{{ $scanNextStep }}</p>
               <div class="actions">
                 @if($reportHref)
-                  <a href="{{ $reportHref }}" class="open">Open Report</a>
+                  <a href="{{ $reportHref }}" class="open">View Full Report</a>
                 @elseif($processingHref)
                   <a href="{{ $processingHref }}" class="inprogress-link">
                     <span class="status-dot is-active" style="width:6px;height:6px"></span>
@@ -1257,7 +1373,7 @@
               </div>
               <div class="actions">
                 @if($reportHref)
-                  <a href="{{ $reportHref }}" class="open">Open Report</a>
+                  <a href="{{ $reportHref }}" class="open">View Full Report</a>
                 @elseif($archProcessingHref)
                   <a href="{{ $archProcessingHref }}" class="inprogress-link">
                     <span class="status-dot is-active" style="width:6px;height:6px"></span>
@@ -1592,7 +1708,7 @@
                       data-feedback-line="Signal reinforcement initiated"
                     >{{ $correctionLabel }}</button>
                   @endif
-                                  <a href="{{ $inspectHref }}" class="system-grid-cta cta-view js-readout-link">{{ $scan['is_renderable_report'] ? 'Open Report' : 'Inspect Readout' }}</a>
+                                  <a href="{{ $inspectHref }}" class="system-grid-cta cta-view js-readout-link">{{ $scan['is_renderable_report'] ? 'View Full Report' : 'Inspect Readout' }}</a>
                 </div>
               </article>
             @endforeach
@@ -2191,16 +2307,27 @@
       var currentCheckoutHref = '';
 
       function openDcm(btn) {
+        var level        = btn.dataset.level        || '1';
         var levelName    = btn.dataset.levelName   || 'This Level';
         var checkoutHref = btn.dataset.checkoutHref || '';
         var price        = btn.dataset.price        || '';
         currentCheckoutHref = checkoutHref;
 
         if (dcmTitle)    dcmTitle.textContent    = 'Unlock ' + levelName;
-        if (dcmSubtitle) dcmSubtitle.textContent = 'Tell us a bit about your business so we can tailor your ' + (price ? price + ' ' : '') + 'signal expansion.';
+        if (dcmSubtitle) dcmSubtitle.textContent = 'A few details so we can calibrate your' + (price ? ' ' + price : '') + ' signal expansion.';
+
+        // Show the correct level field group
+        if (dcmForm) {
+          dcmForm.querySelectorAll('.dcm-level-fields').forEach(function (g) {
+            g.classList.remove('is-active');
+          });
+          var group = dcmForm.querySelector('.dcm-level-fields[data-level="' + level + '"]');
+          if (group) group.classList.add('is-active');
+        }
+
         dcmMask.dataset.open = 'true';
         document.body.style.overflow = 'hidden';
-        var firstInput = dcmForm && dcmForm.querySelector('input');
+        var firstInput = dcmForm && dcmForm.querySelector('.dcm-level-fields.is-active input, .dcm-level-fields.is-active select');
         if (firstInput) { window.setTimeout(function () { firstInput.focus(); }, 80); }
       }
 
@@ -2270,39 +2397,157 @@
     <button type="button" id="dcmClose" class="dcm-close" aria-label="Close">&times;</button>
     <p class="dcm-kicker">Quick Profile</p>
     <h2 id="dcmTitle" class="dcm-title">Unlock This Layer</h2>
-    <p id="dcmSubtitle" class="dcm-subtitle">Tell us a bit about your business so we can tailor your signal expansion.</p>
+    <p id="dcmSubtitle" class="dcm-subtitle">A few details so we can tailor your signal expansion.</p>
     <form id="dcmForm" novalidate>
       @csrf
-      <div class="dcm-form-fields">
-        <div class="dcm-field">
-          <label for="dcm_business_name">Business Name</label>
-          <input type="text" id="dcm_business_name" name="business_name" placeholder="e.g. Apex Plumbing Co." autocomplete="organization" maxlength="120"
-            value="{{ auth()->user()->profile_data['business_name'] ?? '' }}">
+
+      {{-- ── Level 1: Foundation (business identity + location) ── --}}
+      <div class="dcm-level-fields" data-level="1">
+        <p class="dcm-section-label">Business Identity</p>
+        <div class="dcm-field-row">
+          <div class="dcm-field">
+            <label for="dcm_business_name">Business Name</label>
+            <input type="text" id="dcm_business_name" name="business_name" placeholder="e.g. Apex Plumbing Co." autocomplete="organization" maxlength="120"
+              value="{{ auth()->user()->profile_data['business_name'] ?? '' }}">
+          </div>
+          <div class="dcm-field">
+            <label for="dcm_business_type">Business Type</label>
+            <input type="text" id="dcm_business_type" name="business_type" placeholder="e.g. Plumber, HVAC, Law Firm" maxlength="120"
+              value="{{ auth()->user()->profile_data['business_type'] ?? '' }}">
+          </div>
         </div>
-        <div class="dcm-field">
-          <label for="dcm_core_services">Core Services</label>
-          <input type="text" id="dcm_core_services" name="core_services" placeholder="e.g. Emergency plumbing, drain cleaning" maxlength="500"
-            value="{{ auth()->user()->profile_data['core_services'] ?? '' }}">
-        </div>
-        <div class="dcm-field">
-          <label for="dcm_primary_location">Primary Location</label>
-          <input type="text" id="dcm_primary_location" name="primary_location" placeholder="e.g. Austin, TX" autocomplete="address-level2" maxlength="120"
-            value="{{ auth()->user()->profile_data['primary_location'] ?? '' }}">
-        </div>
-        <div class="dcm-field">
-          <label for="dcm_service_areas">Service Areas</label>
-          <input type="text" id="dcm_service_areas" name="service_areas" placeholder="e.g. Austin, Round Rock, Cedar Park" maxlength="300"
-            value="{{ auth()->user()->profile_data['service_areas'] ?? '' }}">
-        </div>
-        <div class="dcm-field">
-          <label for="dcm_website_url">Website URL</label>
-          <input type="url" id="dcm_website_url" name="website_url" placeholder="https://yoursite.com" autocomplete="url" maxlength="250"
-            value="{{ auth()->user()->profile_data['website_url'] ?? '' }}">
+        <p class="dcm-section-label">Location</p>
+        <div class="dcm-field-row">
+          <div class="dcm-field">
+            <label for="dcm_primary_location">Primary City &amp; State</label>
+            <input type="text" id="dcm_primary_location" name="primary_location" placeholder="e.g. Austin, TX" autocomplete="address-level2" maxlength="120"
+              value="{{ auth()->user()->profile_data['primary_location'] ?? '' }}">
+          </div>
+          <div class="dcm-field">
+            <label for="dcm_website_url">Website URL</label>
+            <input type="url" id="dcm_website_url" name="website_url" placeholder="https://yoursite.com" autocomplete="url" maxlength="250"
+              value="{{ auth()->user()->profile_data['website_url'] ?? ($leadDomain !== 'No domain scanned yet' ? 'https://'.$projectDomain : '') }}">
+          </div>
         </div>
       </div>
+
+      {{-- ── Level 2: Authority (services + market reach) ── --}}
+      <div class="dcm-level-fields" data-level="2">
+        <p class="dcm-section-label">Services</p>
+        <div class="dcm-field-row">
+          <div class="dcm-field">
+            <label for="dcm_primary_service">Primary Service</label>
+            <input type="text" id="dcm_primary_service" name="primary_service" placeholder="e.g. Emergency plumbing" maxlength="200"
+              value="{{ auth()->user()->profile_data['primary_service'] ?? '' }}">
+          </div>
+          <div class="dcm-field">
+            <label for="dcm_core_services">Other Core Services</label>
+            <input type="text" id="dcm_core_services" name="core_services" placeholder="e.g. Drain cleaning, water heater repair" maxlength="500"
+              value="{{ auth()->user()->profile_data['core_services'] ?? '' }}">
+          </div>
+        </div>
+        <p class="dcm-section-label">Market Coverage</p>
+        <div class="dcm-field-row">
+          <div class="dcm-field">
+            <label for="dcm_service_areas">Service Areas</label>
+            <input type="text" id="dcm_service_areas" name="service_areas" placeholder="e.g. Austin, Round Rock, Cedar Park" maxlength="300"
+              value="{{ auth()->user()->profile_data['service_areas'] ?? '' }}">
+          </div>
+          <div class="dcm-field">
+            <label for="dcm_target_cities">Target Cities to Grow Into</label>
+            <input type="text" id="dcm_target_cities" name="target_cities" placeholder="e.g. Pflugerville, Buda, Kyle" maxlength="300"
+              value="{{ auth()->user()->profile_data['target_cities'] ?? '' }}">
+          </div>
+        </div>
+      </div>
+
+      {{-- ── Level 3: Structure (platform + trust signals) ── --}}
+      <div class="dcm-level-fields" data-level="3">
+        <p class="dcm-section-label">Website Platform</p>
+        <div class="dcm-field-row">
+          <div class="dcm-field">
+            <label for="dcm_cms_platform">CMS / Website Builder</label>
+            <select id="dcm_cms_platform" name="cms_platform">
+              <option value="">Select platform&hellip;</option>
+              @foreach(['WordPress','Squarespace','Wix','Webflow','Shopify','Custom/HTML','Other'] as $p)
+              <option value="{{ $p }}" {{ (auth()->user()->profile_data['cms_platform'] ?? '') === $p ? 'selected' : '' }}>{{ $p }}</option>
+              @endforeach
+            </select>
+          </div>
+          <div class="dcm-field">
+            <label for="dcm_has_service_pages">Dedicated Service Pages?</label>
+            <select id="dcm_has_service_pages" name="has_service_pages">
+              <option value="">Select&hellip;</option>
+              <option value="yes"     {{ (auth()->user()->profile_data['has_service_pages'] ?? '') === 'yes'     ? 'selected' : '' }}>Yes — one per service</option>
+              <option value="partial" {{ (auth()->user()->profile_data['has_service_pages'] ?? '') === 'partial' ? 'selected' : '' }}>Partial — some grouped</option>
+              <option value="no"      {{ (auth()->user()->profile_data['has_service_pages'] ?? '') === 'no'      ? 'selected' : '' }}>No — all on one page</option>
+            </select>
+          </div>
+        </div>
+        <p class="dcm-section-label">Trust &amp; Presence</p>
+        <div class="dcm-field-row">
+          <div class="dcm-field">
+            <label for="dcm_gbp_active">Google Business Profile?</label>
+            <select id="dcm_gbp_active" name="gbp_active">
+              <option value="">Select&hellip;</option>
+              <option value="yes"   {{ (auth()->user()->profile_data['gbp_active'] ?? '') === 'yes'   ? 'selected' : '' }}>Yes — claimed and active</option>
+              <option value="no"    {{ (auth()->user()->profile_data['gbp_active'] ?? '') === 'no'    ? 'selected' : '' }}>No — not set up</option>
+              <option value="unsure"{{ (auth()->user()->profile_data['gbp_active'] ?? '') === 'unsure' ? 'selected' : '' }}>Not sure</option>
+            </select>
+          </div>
+          <div class="dcm-field">
+            <label for="dcm_has_reviews">Online Reviews?</label>
+            <select id="dcm_has_reviews" name="has_reviews">
+              <option value="">Select&hellip;</option>
+              <option value="yes_google"   {{ (auth()->user()->profile_data['has_reviews'] ?? '') === 'yes_google'   ? 'selected' : '' }}>Yes — Google reviews</option>
+              <option value="yes_multiple" {{ (auth()->user()->profile_data['has_reviews'] ?? '') === 'yes_multiple' ? 'selected' : '' }}>Yes — Google + others</option>
+              <option value="no"           {{ (auth()->user()->profile_data['has_reviews'] ?? '') === 'no'           ? 'selected' : '' }}>No reviews yet</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      {{-- ── Level 4: Dominance (goals + intent + consultation readiness) ── --}}
+      <div class="dcm-level-fields" data-level="4">
+        <p class="dcm-section-label">Goals &amp; Timeline</p>
+        <div class="dcm-field-row">
+          <div class="dcm-field">
+            <label for="dcm_primary_goal">Primary Growth Goal</label>
+            <input type="text" id="dcm_primary_goal" name="primary_goal" placeholder="e.g. More local leads, rank for HVAC Austin" maxlength="300"
+              value="{{ auth()->user()->profile_data['primary_goal'] ?? '' }}">
+          </div>
+          <div class="dcm-field">
+            <label for="dcm_urgency">Timeline</label>
+            <select id="dcm_urgency" name="urgency">
+              <option value="">Select&hellip;</option>
+              <option value="immediate" {{ (auth()->user()->profile_data['urgency'] ?? '') === 'immediate' ? 'selected' : '' }}>Immediate — need results now</option>
+              <option value="soon"      {{ (auth()->user()->profile_data['urgency'] ?? '') === 'soon'      ? 'selected' : '' }}>Soon — next 1&ndash;3 months</option>
+              <option value="planning"  {{ (auth()->user()->profile_data['urgency'] ?? '') === 'planning'  ? 'selected' : '' }}>Planning — 3&ndash;6 months out</option>
+              <option value="exploring" {{ (auth()->user()->profile_data['urgency'] ?? '') === 'exploring' ? 'selected' : '' }}>Exploring options</option>
+            </select>
+          </div>
+        </div>
+        <div class="dcm-field-row">
+          <div class="dcm-field">
+            <label for="dcm_interest_in_help">Interested in Done-For-You Help?</label>
+            <select id="dcm_interest_in_help" name="interest_in_help">
+              <option value="">Select&hellip;</option>
+              <option value="yes"   {{ (auth()->user()->profile_data['interest_in_help'] ?? '') === 'yes'   ? 'selected' : '' }}>Yes — tell me more</option>
+              <option value="maybe" {{ (auth()->user()->profile_data['interest_in_help'] ?? '') === 'maybe' ? 'selected' : '' }}>Maybe — need more info</option>
+              <option value="no"    {{ (auth()->user()->profile_data['interest_in_help'] ?? '') === 'no'    ? 'selected' : '' }}>No — doing it myself</option>
+            </select>
+          </div>
+          <div class="dcm-field">
+            <label for="dcm_notes">Anything Else?</label>
+            <input type="text" id="dcm_notes" name="notes" placeholder="Open questions, specific challenges&hellip;" maxlength="500"
+              value="{{ auth()->user()->profile_data['notes'] ?? '' }}">
+          </div>
+        </div>
+      </div>
+
       <div class="dcm-actions">
         <button type="submit" id="dcmSubmit" class="dcm-btn-primary">Save &amp; Continue</button>
-        <button type="button" id="dcmSkip" class="dcm-btn-skip">Skip</button>
+        <button type="button" id="dcmSkip" class="dcm-btn-skip">Skip for Now</button>
       </div>
     </form>
   </div>

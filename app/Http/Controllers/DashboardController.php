@@ -38,11 +38,27 @@ class DashboardController extends Controller
     public function saveProfileData(\Illuminate\Http\Request $request): \Illuminate\Http\JsonResponse
     {
         $validated = $request->validate([
+            // Level 1 — Foundation
             'business_name' => ['nullable', 'string', 'max:120'],
-            'core_services' => ['nullable', 'string', 'max:500'],
+            'business_type' => ['nullable', 'string', 'max:120'],
             'primary_location' => ['nullable', 'string', 'max:120'],
-            'service_areas' => ['nullable', 'string', 'max:300'],
             'website_url' => ['nullable', 'url', 'max:250'],
+            // Level 2 — Authority
+            'primary_service' => ['nullable', 'string', 'max:200'],
+            'core_services' => ['nullable', 'string', 'max:500'],
+            'service_areas' => ['nullable', 'string', 'max:300'],
+            'target_cities' => ['nullable', 'string', 'max:300'],
+            // Level 3 — Structure
+            'cms_platform' => ['nullable', 'string', 'max:100'],
+            'has_service_pages' => ['nullable', 'in:yes,partial,no'],
+            'gbp_active' => ['nullable', 'in:yes,no,unsure'],
+            'has_reviews' => ['nullable', 'in:yes_google,yes_multiple,no'],
+            // Level 4 — Dominance
+            'primary_goal' => ['nullable', 'string', 'max:300'],
+            'urgency' => ['nullable', 'in:immediate,soon,planning,exploring'],
+            'interest_in_help' => ['nullable', 'in:yes,maybe,no'],
+            'notes' => ['nullable', 'string', 'max:500'],
+            // Meta
             'level' => ['nullable', 'integer', 'min:1', 'max:4'],
             'checkout_href' => ['nullable', 'url', 'max:500'],
         ]);

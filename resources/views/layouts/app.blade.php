@@ -274,9 +274,9 @@ body.is-admin-viewing-dashboard {
                 
                 {{-- Main Navigation --}}
                 <div class="dash-nav-links">
-                  <a href="{{ route('app.dashboard.reports') }}#report-readouts" class="{{ request()->is('dashboard') || request()->is('dashboard/reports') || request()->is('reports*') ? 'active' : '' }}" title="Current level, next unlock, and progression path">Progress</a>
-                  <a href="{{ route('quick-scan.show') }}" class="{{ request()->is('quick-scan*') ? 'active' : '' }}" title="Run a new visibility scan">Run New Scan</a>
-                  <a href="{{ route('app.dashboard.scans') }}" class="{{ request()->is('dashboard/scans') ? 'active' : '' }}" title="Open scan library and readout history">System</a>
+                  <a href="{{ route('app.dashboard') }}" class="{{ request()->is('dashboard') && !request()->is('dashboard/scans') && !request()->is('dashboard/reports') ? 'active' : '' }}" title="Your AI visibility levels and progression">Progress</a>
+                  <a href="{{ route('app.dashboard.scans') }}" class="{{ request()->is('dashboard/scans') ? 'active' : '' }}" title="Your reports and scan history">Reports</a>
+                  <a href="{{ route('quick-scan.show') }}" class="{{ request()->is('quick-scan*') ? 'active' : '' }}" title="Run a new visibility scan">New Scan</a>
                 </div>
             </div>
             

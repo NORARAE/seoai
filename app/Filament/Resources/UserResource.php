@@ -89,6 +89,31 @@ class UserResource extends Resource
                     ->label('Registered')
                     ->dateTime('M j, Y')
                     ->sortable(),
+
+                TextColumn::make('system_tier')
+                    ->label('Tier')
+                    ->badge()
+                    ->formatStateUsing(fn($state): string => $state
+                        ? (is_string($state) ? ucfirst(str_replace('_', ' ', $state)) : (method_exists($state, 'label') ? $state->label() : $state->value))
+                        : 'Free')
+                    ->color(fn($state): string => match (true) {
+                        $state === null => 'gray',
+                        is_object($state) && in_array($state->value ?? '', ['signal_expansion', 'structural_leverage', 'system_activation']) => 'success',
+                        default => 'warning',
+                    })
+                    ->sortable(),
+
+                TextColumn::make('quickScans_count')
+                    ->label('Scans')
+                    ->counts('quickScans')
+                    ->badge()
+                    ->sortable(),
+
+                TextColumn::make('profile_status')
+                    ->label('Profile')
+                    ->getStateUsing(fn(User $record): string => !empty($record->profile_data) ? 'Captured' : 'Empty')
+                    ->badge()
+                    ->color(fn(User $record): string => !empty($record->profile_data) ? 'success' : 'gray'),
             ])
             ->filters([
                 SelectFilter::make('approved')
@@ -179,6 +204,22 @@ class UserResource extends Resource
 
             \Filament\Forms\Components\Toggle::make('is_active')
                 ->label('Active'),
+
+            \Filament\Forms\Components\Section::make('Client Intelligence')
+                ->description('Profile data captured through the unlock system. Read-only — edit directly in profile_data JSON below.')
+                ->collapsed()
+                ->schema([
+                    \Filament\Forms\Components\Textarea::make('profile_data')
+                        ->label('Profile Data (JSON)')
+                        ->disabled()
+                        ->dehydrated(false)
+                        ->formatStateUsing(fn($state): string =>
+                            is_array($state)
+                            ? json_encode($state, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES)
+                            : '')
+                        ->rows(14)
+                        ->columnSpanFull(),
+                ]),
         ]);
     }
 
