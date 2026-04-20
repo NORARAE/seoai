@@ -787,17 +787,17 @@
   @media(max-width:500px){.dcm-field-row{grid-template-columns:1fr}}
 
   /* ── Enhanced Project Identity Bar ─────────────────── */
-  .proj-identity-bar{padding:16px 18px;background:linear-gradient(140deg,rgba(28,22,12,.96),rgba(10,8,5,.98));border-color:rgba(200,168,75,.28);box-shadow:0 8px 28px rgba(0,0,0,.32),inset 0 1px 0 rgba(255,255,255,.03)}
+  .proj-identity-bar{padding:22px 24px;background:linear-gradient(140deg,rgba(34,26,10,.98),rgba(10,8,5,.99));border-color:rgba(200,168,75,.42);border-radius:14px;box-shadow:0 16px 48px rgba(0,0,0,.5),0 0 0 1px rgba(200,168,75,.1),inset 0 1px 0 rgba(255,255,255,.05);margin-bottom:28px}
   .pib-live-row{display:flex;align-items:center;gap:8px;margin-bottom:8px}
-  .pib-live-dot{width:8px;height:8px;border-radius:50%;background:#c8a84b;flex-shrink:0;animation:pibPulse 2.4s ease-in-out infinite;box-shadow:0 0 0 0 rgba(200,168,75,.5)}
-  .pib-live-label{font-size:.58rem;letter-spacing:.2em;text-transform:uppercase;color:rgba(200,168,75,.72)}
-  .pib-domain-name{font-size:1.35rem;font-weight:700;color:#f3ecd8;letter-spacing:-.025em;line-height:1.1;text-shadow:0 0 28px rgba(200,168,75,.18)}
+  .pib-live-dot{display:inline-block;width:8px;height:8px;border-radius:50%;background:#c8a84b;flex-shrink:0;animation:pibPulse 2s ease-in-out infinite;box-shadow:0 0 10px rgba(198,168,90,.9)}
+  .pib-live-label{font-size:.6rem;letter-spacing:.2em;text-transform:uppercase;color:rgba(200,168,75,.8)}
+  .pib-domain-name{font-size:clamp(1.5rem,3.5vw,2.2rem);font-weight:800;color:#fff;letter-spacing:-.03em;line-height:1.1;text-shadow:0 0 40px rgba(200,168,75,.28),0 2px 10px rgba(0,0,0,.5)}
   .pib-right{display:flex;flex-direction:column;align-items:flex-end;gap:10px}
   .pib-report-btn{display:inline-flex;align-items:center;gap:7px;min-height:40px;padding:0 18px;border-radius:10px;background:#c6a85a;color:#1a1a1a;text-decoration:none;font-size:.68rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;transition:all .2s ease;box-shadow:0 6px 16px rgba(198,168,90,.24),inset 0 1px 0 rgba(255,255,255,.14);white-space:nowrap;flex-shrink:0}
   .pib-report-btn:hover{transform:translateY(-1px);box-shadow:0 10px 24px rgba(198,168,90,.38),inset 0 1px 0 rgba(255,255,255,.18)}
   .pib-report-btn-outline{display:inline-flex;align-items:center;gap:6px;min-height:38px;padding:0 16px;border-radius:10px;border:1px solid rgba(200,168,75,.32);background:transparent;color:rgba(200,168,75,.8);text-decoration:none;font-size:.66rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;transition:all .2s ease;white-space:nowrap;flex-shrink:0}
   .pib-report-btn-outline:hover{background:rgba(200,168,75,.1);border-color:rgba(200,168,75,.55)}
-  @keyframes pibPulse{0%,100%{box-shadow:0 0 0 0 rgba(200,168,75,.55)}50%{box-shadow:0 0 0 9px rgba(200,168,75,0)}}
+  @keyframes pibPulse{0%,100%{transform:scale(1);opacity:1}50%{transform:scale(1.65);opacity:0.45}}
   /* Domain glow on scan cards */
   .scan-history-card .domain{text-shadow:0 0 22px rgba(200,168,75,.15)}
   .scan-history-card:hover .domain{text-shadow:0 0 30px rgba(200,168,75,.32);color:#fff8ec}
@@ -829,6 +829,15 @@
     <div class="mb-6 flex items-center gap-3 rounded-xl border border-[rgba(106,175,144,0.32)] bg-[rgba(106,175,144,0.08)] px-4 py-3" role="alert">
       <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M8 0C3.6 0 0 3.6 0 8s3.6 8 8 8 8-3.6 8-8-3.6-8-8-8zm-1.5 11.5-3-3L4.9 7l1.6 1.6 3.6-3.6 1.4 1.4-5 5z" fill="#6aaf90"/></svg>
       <p class="text-sm text-[#d9eee5]">{{ session('scan_saved') }}</p>
+    </div>
+    @endif
+
+    @if(config('app.debug'))
+    <div style="font-size:.65rem;background:rgba(200,168,75,.08);border:1px dashed rgba(200,168,75,.28);border-radius:8px;padding:8px 12px;margin-bottom:10px;color:rgba(200,168,75,.75);font-family:monospace">
+      DEBUG → domain: <strong style="color:#e8d99a">{{ $projectDomain ?? 'NULL — no domain found' }}</strong>
+      &nbsp;|&nbsp; hasSystem: {{ $hasSystem ? 'true ('.$totalScans.' scans)' : 'false (0 scans)' }}
+      &nbsp;|&nbsp; leadRenderable: {{ $leadRenderable ? 'true' : 'false' }}
+      &nbsp;|&nbsp; leadDomain: {{ $leadDomain }}
     </div>
     @endif
 
