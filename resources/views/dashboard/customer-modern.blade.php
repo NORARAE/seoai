@@ -832,6 +832,20 @@
     </div>
     @endif
 
+    {{-- Checkout resume banner (user backed out of Stripe from dashboard) --}}
+    @if(request()->query('checkout_resumed'))
+    <div id="checkout-resume-banner" role="status" style="display:flex;align-items:flex-start;gap:12px;padding:12px 16px;border:1px solid rgba(200,168,75,.28);border-radius:12px;background:linear-gradient(140deg,rgba(28,22,12,.97),rgba(10,8,5,.98));margin-bottom:16px">
+      <span style="flex-shrink:0;width:20px;height:20px;border-radius:50%;background:rgba(200,168,75,.12);border:1px solid rgba(200,168,75,.3);display:flex;align-items:center;justify-content:center;margin-top:1px">
+        <svg width="9" height="9" viewBox="0 0 9 9" fill="none" aria-hidden="true"><circle cx="4.5" cy="4.5" r="3.5" stroke="rgba(200,168,75,0.8)" stroke-width="1.2"/><path d="M4.5 2.5v2.2l1.3 1.3" stroke="rgba(200,168,75,0.8)" stroke-width="1.1" stroke-linecap="round"/></svg>
+      </span>
+      <div style="flex:1;min-width:0">
+        <p style="font-size:.72rem;font-weight:600;color:rgba(200,168,75,.92);margin-bottom:3px">You paused checkout — your system is still waiting.</p>
+        <p style="font-size:.65rem;color:rgba(200,168,75,.58);line-height:1.5">Resume your next unlock when ready. Your progress and domain context are preserved.</p>
+      </div>
+      <button type="button" aria-label="Dismiss" onclick="this.closest('#checkout-resume-banner').remove()" style="flex-shrink:0;background:none;border:none;cursor:pointer;color:rgba(200,168,75,.4);font-size:1rem;padding:0;line-height:1;margin-top:1px">&times;</button>
+    </div>
+    @endif
+
     @if(config('app.debug'))
     <div style="font-size:.65rem;background:rgba(200,168,75,.08);border:1px dashed rgba(200,168,75,.28);border-radius:8px;padding:8px 12px;margin-bottom:10px;color:rgba(200,168,75,.75);font-family:monospace">
       DEBUG → domain: <strong style="color:#e8d99a">{{ $projectDomain ?? 'NULL — no domain found' }}</strong>
@@ -2320,7 +2334,10 @@
         var levelName    = btn.dataset.levelName   || 'This Level';
         var checkoutHref = btn.dataset.checkoutHref || '';
         var price        = btn.dataset.price        || '';
-        currentCheckoutHref = checkoutHref;
+
+        // Always tag dashboard-originating checkouts so Stripe cancel_url returns here
+        var sep = checkoutHref.indexOf('?') >= 0 ? '&' : '?';
+        currentCheckoutHref = checkoutHref + sep + 'source=dashboard&dash_level=' + level;
 
         if (dcmTitle)    dcmTitle.textContent    = 'Unlock ' + levelName;
         if (dcmSubtitle) dcmSubtitle.textContent = 'A few details so we can calibrate your' + (price ? ' ' + price : '') + ' signal expansion.';
@@ -2397,6 +2414,48 @@
       }
     })();
 
+  })();
+
+  // ── Dashboard checkout return: scroll + highlight ──────────────
+  (function () {
+    var params = new URLSearchParams(window.location.search);
+    var isResumed = params.get('checkout_resumed') === '1';
+    var isSuccess = params.get('checkout_success') === '1';
+    var resumeLevel = parseInt(params.get('resume_level') || '0', 10);
+
+    if (!isResumed && !isSuccess) return;
+
+    // Clean the query params from the URL bar without triggering a reload
+    try {
+      history.replaceState(null, '', window.location.pathname);
+    } catch (e) {}
+
+    if (!resumeLevel) return;
+
+    // Give the page a moment to render, then scroll and highlight
+    setTimeout(function () {
+      var section = document.getElementById('level-cards');
+      if (section) {
+        section.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+
+      // Find and highlight the target level card (1-based index)
+      var cards = document.querySelectorAll('#level-cards .level-card');
+      var card = cards[resumeLevel - 1];
+      if (!card) return;
+
+      // Gold ring highlight that fades after 3 seconds
+      card.style.transition = 'box-shadow 0.4s ease, outline 0.4s ease';
+      card.style.outline = '2px solid rgba(200,168,75,0.65)';
+      card.style.outlineOffset = '3px';
+      setTimeout(function () {
+        card.style.outline = '2px solid rgba(200,168,75,0)';
+        setTimeout(function () {
+          card.style.outline = '';
+          card.style.outlineOffset = '';
+        }, 600);
+      }, 2800);
+    }, 650);
   })();
 </script>
 

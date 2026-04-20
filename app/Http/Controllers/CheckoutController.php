@@ -367,7 +367,14 @@ class CheckoutController extends Controller
                 ->with('system_entry', $systemTier->value);
         }
 
-        return redirect('/dashboard')->with('system_entry', $systemTier->value);
+        // Read dashboard origin context; success_url already carries resume_level via query string
+        // but we also handle the case where the Stripe success_url params reach complete() directly.
+        $origin = Session::pull('checkout_origin', []);
+        $resumeLevel = $request->query('resume_level') ?: ($origin['level'] ?? null);
+        $dashboardRedirect = '/dashboard'
+            . ($resumeLevel ? '?checkout_success=1&resume_level=' . $resumeLevel : '');
+
+        return redirect($dashboardRedirect)->with('system_entry', $systemTier->value);
     }
 
     /**
@@ -378,6 +385,18 @@ class CheckoutController extends Controller
     {
         $tier = self::TIERS[$tierSlug];
 
+        // Detect dashboard origin via query param (preferred) or referer (fallback)
+        $isDashboard = $request->query('source') === 'dashboard'
+            || str_contains((string) ($request->headers->get('referer', '')), '/dashboard');
+        $dashLevel = $request->query('dash_level', '');
+        $levelNumMap = [
+            'scan-basic'          => '1',
+            'signal-expansion'    => '2',
+            'structural-leverage' => '3',
+            'system-activation'   => '4',
+        ];
+        $levelNum = ($dashLevel && is_numeric($dashLevel)) ? $dashLevel : ($levelNumMap[$tierSlug] ?? '1');
+
         $idempotencyKey = 'checkout_redirect.' . $tierSlug;
         $requestFingerprint = sha1(json_encode([
             'tier' => $tierSlug,
@@ -385,6 +404,7 @@ class CheckoutController extends Controller
             'customer_email' => (string) ($extra['customer_email'] ?? ''),
             'scan_url' => (string) ($extra['metadata_extra']['scan_url'] ?? ''),
             'scan_email' => (string) ($extra['metadata_extra']['scan_email'] ?? ''),
+            'is_dashboard' => $isDashboard,
         ]));
 
         $existingRedirect = Session::get($idempotencyKey);
@@ -399,6 +419,15 @@ class CheckoutController extends Controller
             if ($stillFresh) {
                 return redirect((string) $existingRedirect['url']);
             }
+        }
+
+        // Store dashboard return context in session for success/cancel continuity
+        if ($isDashboard) {
+            Session::put('checkout_origin', [
+                'source'  => 'dashboard',
+                'tier'    => $tierSlug,
+                'level'   => $levelNum,
+            ]);
         }
 
         FunnelEvent::fire(FunnelEvent::CHECKOUT_ENTRY, metadata: [
@@ -441,8 +470,11 @@ class CheckoutController extends Controller
 
         $sessionParams = [
             'mode' => 'payment',
-            'success_url' => url('/checkout/complete') . '?session_id={CHECKOUT_SESSION_ID}',
-            'cancel_url' => url('/pricing'),
+            'success_url' => url('/checkout/complete') . '?session_id={CHECKOUT_SESSION_ID}'
+                . ($isDashboard ? '&checkout_success=1&resume_level=' . $levelNum : ''),
+            'cancel_url' => $isDashboard
+                ? url('/dashboard') . '?checkout_resumed=1&resume_level=' . $levelNum
+                : url('/pricing'),
             'line_items' => [
                 [
                     'price_data' => [
