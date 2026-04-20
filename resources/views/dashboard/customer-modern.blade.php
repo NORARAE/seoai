@@ -47,6 +47,23 @@
   $objectiveCta = $hasSystem ? ($nextRoute ? route($nextRoute) : route('quick-scan.show')) : route('quick-scan.show');
   $objectiveCtaLabel = $hasSystem ? ($nextRoute ? 'Unlock Next Layer' : 'Run New Scan') : 'Run First Scan';
   $secondaryCtaLabel = $hasSystem ? 'Book Consultation' : 'Start System Build';
+  $reportReadyScans = $scanHistory->where('is_renderable_report', true)->values();
+  $leadScan = $reportReadyScans->first() ?? $scanHistory->first();
+  $leadDomain = $leadScan['scan_name'] ?? $leadScan['domain'] ?? 'No domain scanned yet';
+  $leadScore = (int) ($leadScan['score'] ?? 0);
+  $leadState = $leadScore >= 85 ? 'Stable' : ($leadScore >= 60 ? 'Under-optimized' : ($leadScore > 0 ? 'At Risk' : 'Awaiting baseline'));
+  $leadBottleneck = trim((string) ($leadScan['fastest_fix'] ?? '')) !== ''
+    ? $leadScan['fastest_fix']
+    : 'No bottleneck detected yet. Run a scan to establish baseline constraints.';
+  $leadRouteKey = $leadScan['scan_route_key'] ?? $leadScan['public_scan_id'] ?? $leadScan['system_scan_id'] ?? null;
+  $leadReportHref = ($leadRouteKey && (bool) ($leadScan['is_renderable_report'] ?? false))
+    ? route('dashboard.scans.show', ['scan' => $leadRouteKey])
+    : route('quick-scan.show');
+  $nextUnlockLabel = $nextStep ?? 'Continue improvement loop';
+  $nextUnlockHref = $nextRoute ? route($nextRoute) : $leadReportHref;
+  $scanFocusList = $reportReadyScans->take(6);
+  $isScansView = request()->is('dashboard/scans');
+  $isReportsView = request()->is('dashboard/reports');
 @endphp
 
 @push('styles')
@@ -77,6 +94,29 @@
   .state-metric .label{font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:#a69f8c}
   .state-metric .value{margin-top:2px;font-size:20px;font-weight:700;color:#eee6d2;line-height:1}
   .state-summary{margin-top:8px;font-size:13px;color:#d3ccb9;line-height:1.45}
+  .hub-priority-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-top:14px}
+  .hub-priority-card{border:1px solid rgba(200,168,75,.18);border-radius:10px;padding:10px;background:rgba(0,0,0,.22)}
+  .hub-priority-card p:first-child{font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:#b6ab90}
+  .hub-priority-card p:last-child{margin-top:4px;font-size:13px;color:#ece2cb;line-height:1.35}
+  .hub-priority-card .hub-link{color:#f0ddb0;text-decoration:none;border-bottom:1px solid rgba(200,168,75,.32)}
+  .hub-priority-card .hub-link:hover{border-color:rgba(200,168,75,.62)}
+  .scan-history-shell{border:1px solid rgba(200,168,75,.2);border-radius:16px;background:linear-gradient(155deg,#141108,#0c0a06 72%);padding:16px}
+  .scan-history-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:12px;margin-top:12px}
+  .scan-history-card{border:1px solid rgba(200,168,75,.2);border-radius:12px;background:linear-gradient(152deg,#1a140c,#110d08 68%);padding:12px;display:flex;flex-direction:column;gap:8px}
+  .scan-history-card .meta{font-size:10px;letter-spacing:.13em;text-transform:uppercase;color:#ab9f84}
+  .scan-history-card .domain{font-size:15px;font-weight:600;color:#efe6d1;line-height:1.3}
+  .scan-history-card .bottleneck{font-size:12px;color:#d7ccb4;line-height:1.45}
+  .scan-history-card .state-row{display:flex;align-items:center;justify-content:space-between;gap:8px}
+  .scan-history-card .pill{display:inline-flex;align-items:center;gap:6px;border-radius:999px;padding:4px 8px;font-size:10px;letter-spacing:.12em;text-transform:uppercase;border:1px solid rgba(200,168,75,.28);color:#e6d4a5;background:rgba(200,168,75,.12)}
+  .scan-history-card .score{font-size:12px;font-weight:700;color:#f1e7cd}
+  .scan-history-card .actions{display:flex;gap:8px;flex-wrap:wrap;padding-top:2px}
+  .scan-history-card .actions a{display:inline-flex;align-items:center;justify-content:center;min-height:32px;padding:7px 10px;border-radius:8px;font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;text-decoration:none}
+  .scan-history-card .open{border:1px solid rgba(200,168,75,.4);background:rgba(200,168,75,.16);color:#f3e8cb}
+  .scan-history-card .deploy{border:1px solid rgba(106,175,144,.44);background:rgba(106,175,144,.16);color:#bfe3d2}
+  .scan-history-card .inspect{border:1px solid rgba(200,168,75,.24);background:rgba(200,168,75,.08);color:#ddd3bc}
+  .operations-quiet{opacity:.78}
+  .surface-focus-kicker{display:inline-flex;align-items:center;gap:6px;padding:5px 10px;border-radius:999px;border:1px solid rgba(200,168,75,.32);background:rgba(200,168,75,.12);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:#e3d0a0}
+  .surface-focus-kicker::before{content:'';width:7px;height:7px;border-radius:999px;background:#c8a84b}
   .system-grid-toolbar{display:flex;align-items:flex-start;justify-content:space-between;gap:14px;flex-wrap:wrap;margin-bottom:14px}
   .system-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:14px}
   .system-grid.grid-compact{grid-template-columns:repeat(auto-fill,minmax(220px,1fr))}
@@ -249,6 +289,8 @@
     .system-grid-card{min-height:unset}
     .next-move-grid{grid-template-columns:1fr}
     .state-metric-grid{grid-template-columns:1fr}
+    .hub-priority-grid{grid-template-columns:1fr}
+    .scan-history-grid{grid-template-columns:1fr}
   }
   @media(min-width:1100px){
     .system-grid-card.featured{grid-column:span 2}
@@ -285,41 +327,98 @@
     <p class="mb-5 text-xs uppercase tracking-[0.14em] text-[#c8a84b]/72">Your previous scans are ready.</p>
     @endif
 
-    <section class="system-section system-section-primary mb-10 dash-section-anchor" id="system-state">
+    <section class="system-section system-section-primary mb-8 dash-section-anchor" id="system-state">
       <div class="system-unified-module">
         <div class="flex flex-wrap items-start justify-between gap-3">
           <div>
-            <p class="text-xs uppercase tracking-[0.22em] text-[#c8a84b]/80">Global Readout</p>
-            <h1 class="mt-1 text-2xl font-semibold leading-tight lg:text-3xl">AI System Control Surface</h1>
-            <p class="state-summary">{{ $summaryLine }}</p>
-            <p class="mt-1 text-xs text-[#a9a08c]">{{ $progressionLine }} {{ $directiveLine }}</p>
+            <p class="text-xs uppercase tracking-[0.22em] text-[#c8a84b]/80">{{ $isScansView ? 'System Readout Active · Scan History Focus' : ($isReportsView ? 'System Readout Active · Reports Focus' : 'System Readout Active') }}</p>
+            <h1 class="mt-1 text-2xl font-semibold leading-tight lg:text-3xl">{{ $leadDomain }}</h1>
+            <p class="state-summary">Saved to your dashboard. Previous scans ready for deployment.</p>
+            <p class="mt-1 text-xs text-[#a9a08c]">{{ $summaryLine }}</p>
           </div>
-          <span class="state-pulse {{ in_array($systemState, ['At Risk']) ? 'risk' : (in_array($systemState, ['Expanding']) ? 'expand' : (in_array($systemState, ['Under-optimized']) ? 'optimize' : '')) }}">{{ $systemState }}</span>
+          <span class="state-pulse {{ in_array($systemState, ['At Risk']) ? 'risk' : (in_array($systemState, ['Expanding']) ? 'expand' : (in_array($systemState, ['Under-optimized']) ? 'optimize' : '')) }}">{{ $leadState }}</span>
         </div>
-        <div class="state-metric-grid">
-          <div class="state-metric">
-            <p class="label">Signals</p>
-            <p class="value">{{ $systemCount }}</p>
+        <div class="hub-priority-grid">
+          <article class="hub-priority-card">
+            <p>Latest Score / State</p>
+            <p>{{ $leadScore > 0 ? $leadScore : 'No score yet' }} · {{ $leadState }}</p>
+          </article>
+          <article class="hub-priority-card">
+            <p>Primary Bottleneck</p>
+            <p>{{ $leadBottleneck }}</p>
+          </article>
+          <article class="hub-priority-card">
+            <p>Next Move / Next Unlock</p>
+            <p><a href="{{ $nextUnlockHref }}" class="hub-link">{{ $nextUnlockLabel }}</a></p>
+          </article>
+          <article class="hub-priority-card">
+            <p>Recent Scan / Report</p>
+            <p><a href="{{ $leadReportHref }}" class="hub-link">Open latest readout</a></p>
+          </article>
+        </div>
+        <p class="mt-2 text-[11px] uppercase tracking-[0.14em] text-[#988f7c]">Last evaluated: {{ $latestEvaluatedLabel }} · Deploy Fix or Inspect Signal to move this system forward.</p>
+      </div>
+    </section>
+
+    <section class="system-section mb-10 dash-section-anchor" id="scan-history">
+      <div class="scan-history-shell">
+        <div class="section-head">
+          <div>
+            <h2>{{ $isScansView ? 'Scan History Control Surface' : 'Scans' }}</h2>
+            <p>Your scan history is the center of this system. Open report, deploy fix, or inspect signal immediately.</p>
           </div>
-          <div class="state-metric">
-            <p class="label">Mean Score</p>
-            <p class="value">{{ $avgScore }}</p>
-          </div>
-          <div class="state-metric">
-            <p class="label">Pressure</p>
-            <p class="value">{{ $attentionCount }}</p>
+          <div class="flex items-center gap-2">
+            @if($isScansView)
+              <span class="surface-focus-kicker">Scans Destination</span>
+            @endif
+            <span class="text-xs text-[#9f9b8d]">{{ $scanFocusList->count() }} report{{ $scanFocusList->count() === 1 ? '' : 's' }} ready</span>
           </div>
         </div>
-        <p class="mt-2 text-[11px] uppercase tracking-[0.14em] text-[#988f7c]">Last evaluated: {{ $latestEvaluatedLabel }} · {{ $priorIssueHint }}</p>
+
+        <div class="scan-history-grid">
+          @forelse($scanFocusList as $scan)
+            @php
+              $scanRouteKey = $scan['scan_route_key'] ?? $scan['public_scan_id'] ?? $scan['system_scan_id'] ?? null;
+              $reportHref = $scanRouteKey ? route('dashboard.scans.show', ['scan' => $scanRouteKey]) : route('quick-scan.show');
+              $scanScore = (int) ($scan['score'] ?? 0);
+              $scanState = $scanScore >= 85 ? 'Stable' : ($scanScore >= 60 ? 'Under-optimized' : 'At Risk');
+              $scanFix = trim((string) ($scan['fastest_fix'] ?? '')) !== '' ? $scan['fastest_fix'] : 'Inspect signal layer for next best correction.';
+            @endphp
+            <article class="scan-history-card">
+              <p class="meta">System Readout Active</p>
+              <p class="domain">{{ $scan['scan_name'] ?? $scan['domain'] }}</p>
+              <div class="state-row">
+                <span class="pill">{{ $scanState }}</span>
+                <span class="score">Score {{ $scanScore }}</span>
+              </div>
+              <p class="bottleneck"><span class="text-[#d9c78f]">Primary Bottleneck:</span> {{ $scanFix }}</p>
+              <p class="text-[11px] uppercase tracking-[0.12em] text-[#aaa08b]">Updated {{ $scan['scanned_at']?->diffForHumans() ?? $scan['created_at']?->diffForHumans() }}</p>
+              <div class="actions">
+                <a href="{{ $reportHref }}" class="open">Open Report</a>
+                <a href="{{ $reportHref }}#layer-signal" class="deploy">Deploy Fix</a>
+                <a href="{{ $reportHref }}#detailed-layer-view" class="inspect">Inspect Signal</a>
+              </div>
+            </article>
+          @empty
+            <article class="scan-history-card">
+              <p class="meta">System Readout Active</p>
+              <p class="domain">No previous scans ready yet.</p>
+              <p class="bottleneck">Run your first scan to unlock report history, bottlenecks, and next moves.</p>
+              <div class="actions">
+                <a href="{{ route('quick-scan.show') }}" class="open">Run First Scan</a>
+              </div>
+            </article>
+          @endforelse
+        </div>
       </div>
     </section>
 
     @if(!$agencyModeActive)
-    <section class="system-section mb-10 rounded-2xl border border-[#c8a84b]/25 bg-linear-to-br from-[#1b170d] via-[#121008] to-[#0d0b06] p-7 shadow-2xl dash-section-anchor" id="systems">
+    <section class="system-section mb-10 rounded-2xl border border-[#c8a84b]/16 bg-linear-to-br from-[#19160f] via-[#121008] to-[#0c0a06] p-5 shadow-xl operations-quiet dash-section-anchor" id="systems">
       <p class="mb-2 text-xs uppercase tracking-[0.22em] text-[#c8a84b]/80">System Readout</p>
       <div class="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
         <div>
-          <h1 class="text-2xl font-semibold leading-tight lg:text-3xl">{{ $objectiveTitle }}</h1>
+          <h1 class="text-xl font-semibold leading-tight lg:text-2xl">{{ $objectiveTitle }}</h1>
           <p class="mt-2 max-w-2xl text-sm text-[#b5b0a3]">{{ $hasSystem ? 'Control surface active. Coverage expanding; gaps persisting.' : 'No baseline detected. Coverage undeployed. Initialization required.' }}</p>
         </div>
         <div class="flex flex-wrap gap-3">
@@ -635,70 +734,36 @@
     </section>
     @endif
 
-    <section class="system-section system-section-secondary mb-10 dash-section-anchor" id="coverage">
-      <h2 class="mb-3 text-sm uppercase tracking-[0.2em] text-[#c8a84b]/75">Command Queue</h2>
+    <section class="system-section system-section-secondary mb-10 dash-section-anchor operations-quiet" id="coverage">
+      <h2 class="mb-3 text-sm uppercase tracking-[0.2em] text-[#c8a84b]/68">Next Move Queue</h2>
       <div class="next-move-grid">
         <a href="{{ route('reports.index') }}" class="next-move-card primary">
-          <p class="text-[11px] uppercase tracking-[0.14em] action-label text-[#c8a84b]/70">Primary Directive</p>
-          <h3 class="mt-1 text-lg font-semibold">Resolve At-Risk Systems</h3>
-          <p class="mt-2 text-sm text-[#b2ac9a]">Highest pressure persisting. Correction sequence required now.</p>
+          <p class="text-[11px] uppercase tracking-[0.14em] action-label text-[#c8a84b]/70">Next Unlock</p>
+          <h3 class="mt-1 text-lg font-semibold">Deploy Fix on At-Risk Readouts</h3>
+          <p class="mt-2 text-sm text-[#b2ac9a]">Primary bottlenecks are still active. Push the highest-impact correction first.</p>
           <p class="impact-hint high">Impact: High</p>
         </a>
         <a href="{{ route('pages.index') }}" class="next-move-card secondary">
-          <p class="text-[11px] uppercase tracking-[0.14em] text-[#c8a84b]/70">Secondary</p>
-          <h3 class="mt-1 text-lg font-semibold">Tighten Page Signals</h3>
-          <p class="mt-2 text-sm text-[#b2ac9a]">Weak extraction signal detected. Meaning and structure tightening required.</p>
+          <p class="text-[11px] uppercase tracking-[0.14em] text-[#c8a84b]/70">Inspect Signal</p>
+          <h3 class="mt-1 text-lg font-semibold">Tighten Page Signal Clarity</h3>
+          <p class="mt-2 text-sm text-[#b2ac9a]">Signal extraction remains soft on key pages. Refine structure and definitions.</p>
           <p class="impact-hint medium">Impact: Medium</p>
         </a>
         <a href="{{ route('quick-scan.show') }}" class="next-move-card secondary">
-          <p class="text-[11px] uppercase tracking-[0.14em] text-[#c8a84b]/70">Secondary</p>
-          <h3 class="mt-1 text-lg font-semibold">Process Fresh Scan</h3>
-          <p class="mt-2 text-sm text-[#b2ac9a]">Refresh readout. Live pressure re-evaluation required.</p>
+          <p class="text-[11px] uppercase tracking-[0.14em] text-[#c8a84b]/70">Next Move</p>
+          <h3 class="mt-1 text-lg font-semibold">Run Fresh System Readout</h3>
+          <p class="mt-2 text-sm text-[#b2ac9a]">Refresh your latest score/state and confirm whether pressure is clearing.</p>
           <p class="impact-hint low">Impact: Low</p>
         </a>
         <a href="{{ ($latestScan && $latestScan->status === \App\Models\QuickScan::STATUS_SCANNED && $latestScan->score !== null) ? route('dashboard.scans.show', ['scan' => $latestScan->publicScanId()]) : route('quick-scan.show') }}" class="next-move-card secondary">
-          <p class="text-[11px] uppercase tracking-[0.14em] text-[#c8a84b]/70">Secondary</p>
-          <h3 class="mt-1 text-lg font-semibold">Inspect Latest State</h3>
-          <p class="mt-2 text-sm text-[#b2ac9a]">Verify prior pressure trajectory: resolving or persisting.</p>
+          <p class="text-[11px] uppercase tracking-[0.14em] text-[#c8a84b]/70">Reports</p>
+          <h3 class="mt-1 text-lg font-semibold">Open Latest Detailed Readout</h3>
+          <p class="mt-2 text-sm text-[#b2ac9a]">Inspect score trajectory, bottleneck context, and fastest fix details.</p>
           <p class="impact-hint low">Impact: Low</p>
         </a>
       </div>
     </section>
 
-    @if(!$agencyModeActive)
-      <section class="system-section system-section-tertiary dash-section-anchor" id="system-memory">
-        <h2 class="mb-3 text-sm uppercase tracking-[0.2em] text-[#c8a84b]/62">System Memory Log</h2>
-        <div class="activation-log grid gap-3 md:grid-cols-2 xl:grid-cols-3">
-          @forelse($scanHistory->where('is_renderable_report', true)->take(6) as $scan)
-            <article class="rounded-xl border border-[#c8a84b]/18 bg-[#0f0d08] p-4">
-              <div class="mb-2 flex items-center justify-between">
-                <p class="text-xs uppercase tracking-[0.14em] text-[#a6a090]">{{ $scan['public_scan_id'] }} · {{ $scan['domain'] }}</p>
-                @if((int)($scan['score'] ?? 0) > 0)
-                  <span class="rounded-full border border-[#c8a84b]/25 px-2 py-0.5 text-xs text-[#e7dfc9]">{{ $scan['score'] }}</span>
-                @else
-                  <span class="rounded-full border border-[#c8a84b]/25 px-2 py-0.5 text-[10px] uppercase tracking-widest text-[#e7dfc9]">No active baseline</span>
-                @endif
-              </div>
-              <p class="mb-1 text-sm text-[#b2ac9a]">Last evaluated {{ $scan['scanned_at']?->diffForHumans() ?? $scan['created_at']?->diffForHumans() }}</p>
-              @if(!is_null($scan['score_change']))
-                <p class="mb-3 text-xs uppercase tracking-[0.12em] {{ (int) $scan['score_change'] >= 0 ? 'text-[#6aaf90]' : 'text-[#d4866f]' }}">State shift {{ (int) $scan['score_change'] >= 0 ? '+' : '' }}{{ (int) $scan['score_change'] }}</p>
-              @else
-                <p class="mb-3 text-xs uppercase tracking-[0.12em] text-[#8f8a7c]">State shift pending</p>
-              @endif
-              <p class="mb-3 text-[10px] uppercase tracking-[0.12em] text-[#958a73]">Readout persisted from prior scan memory.</p>
-              <div class="flex flex-wrap gap-2">
-                <span class="rounded-lg border border-[#c8a84b]/20 px-2 py-1 text-[10px] uppercase tracking-[0.12em] text-[#c8a84b]/80">{{ $scan['ai_scan_id'] }}</span>
-                <a href="{{ route('dashboard.scans.show', ['scan' => $scan['scan_route_key'] ?? $scan['public_scan_id'] ?? $scan['system_scan_id']]) }}" class="inline-flex items-center rounded-lg border border-[#c8a84b]/35 px-3 py-2 text-xs font-semibold uppercase tracking-[0.12em] text-[#e7dfc9] hover:border-[#c8a84b] hover:bg-[#c8a84b]/10">Inspect Memory</a>
-              </div>
-            </article>
-          @empty
-            <article class="rounded-xl border border-[#c8a84b]/20 bg-[#0f0d08] p-6 text-center text-sm text-[#b2ac9a] md:col-span-2 xl:col-span-3">
-              No active memory layer. First scan required for continuous detection.
-            </article>
-          @endforelse
-        </div>
-      </section>
-    @endif
   </div>
 </div>
 

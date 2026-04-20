@@ -200,6 +200,8 @@ Route::middleware(['auth', EnsureUserIsApproved::class, EnsureOnboardingComplete
 
     // Dashboard / Home
     Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
+    Route::get('/scans', [DashboardController::class, 'index'])->name('dashboard.scans');
+    Route::get('/reports', [DashboardController::class, 'index'])->name('dashboard.reports');
     Route::get('/billing', [DashboardBillingController::class, 'index'])->name('billing');
 
     // Sites Management (future)
@@ -234,7 +236,7 @@ Route::middleware(['auth', EnsureUserIsApproved::class, EnsureOnboardingComplete
 Route::get('/sites', fn() => redirect('/dashboard'))->name('sites.index');
 Route::get('/pages', fn() => redirect('/dashboard'))->name('pages.index');
 Route::get('/internal-links', fn() => redirect('/dashboard'))->name('internal-links.index');
-Route::get('/reports', fn() => redirect('/dashboard'))->name('reports.index');
+Route::get('/reports', fn() => redirect('/dashboard/reports'))->name('reports.index');
 Route::get('/automations', fn() => redirect('/dashboard'))->name('automations.index');
 Route::get('/sitemaps', fn() => redirect('/dashboard'))->name('sitemaps.index');
 Route::get('/schema', fn() => redirect('/dashboard'))->name('schema.index');
