@@ -977,10 +977,11 @@ body::after{
 @media(max-width:520px){
   .tier-grid-5{grid-template-columns:1fr}
   .tier-position{max-width:100%}
+  .tier{padding:28px 24px}
   .tier.prime{padding:36px 28px}
   .tier.prime .tier-position{max-width:100%}
-  .tier-name{font-size:1.3rem}
-  .tier-price{font-size:2.4rem}
+  .tier-name{font-size:1.3rem;color:rgba(245,243,238,.96)}
+  .tier-price{font-size:2.6rem;color:rgba(215,182,88,1)}
   .tier-price sup{font-size:.95rem}
   .tier.prime .tier-name{font-size:1.5rem}
   .tier.prime .tier-price{font-size:3rem}
@@ -2682,6 +2683,8 @@ body::before{
     border-bottom:none;
     padding:0 0 18px;
     min-width:auto;
+    width:100%;
+    align-self:stretch;
     position:relative;
   }
   .diag-score-block::after{
@@ -3560,18 +3563,23 @@ body::before{
   }
   .msc-primary{
     flex:1;display:flex;align-items:center;justify-content:center;
-    background:var(--gold);color:var(--bg);
+    background:linear-gradient(180deg,#d8be72,#c9aa4e);color:var(--bg);
     font-family:'DM Sans',sans-serif;
-    font-size:.79rem;font-weight:500;letter-spacing:.14em;text-transform:uppercase;
-    text-decoration:none;padding:16px 18px;min-height:52px;
-    transition:background .25s;white-space:nowrap;
+    font-size:.82rem;font-weight:600;letter-spacing:.14em;text-transform:uppercase;
+    text-decoration:none;padding:18px 18px;min-height:56px;
+    transition:background .25s,box-shadow .25s;white-space:nowrap;
+    box-shadow:0 4px 22px rgba(200,168,75,.3);
+    border-radius:2px;
   }
-  .msc-primary:hover,.msc-primary:active{background:var(--gold-lt)}
+  .msc-primary:hover,.msc-primary:active{
+    background:linear-gradient(180deg,#e0c97e,#d4b45a);
+    box-shadow:0 6px 30px rgba(200,168,75,.42);
+  }
   .msc-primary:focus-visible{outline:2px solid var(--gold);outline-offset:3px}
   .msc-secondary{
     font-family:'DM Sans',sans-serif;
     font-size:.68rem;letter-spacing:.12em;text-transform:uppercase;
-    color:rgba(200,168,75,.6);text-decoration:none;
+    color:rgba(200,168,75,.82);text-decoration:none;
     padding:8px 2px;white-space:nowrap;flex-shrink:0;
     transition:color .25s;
   }
@@ -3584,14 +3592,36 @@ body::before{
 /* ── 5. Pricing card improvements ── */
 @media(max-width:768px){
   .tier-price{margin-bottom:6px;line-height:1}
-  .tier-commitment{margin-bottom:22px}
+  .tier-commitment{margin-bottom:22px;color:rgba(190,188,182,.72);font-size:.72rem}
   .tier-features{gap:17px;margin-bottom:26px}
-  .tier-features li svg{width:15px;height:15px;margin-top:4px;flex-shrink:0}
-  .tier-gated{padding:14px 14px;font-size:.82rem;line-height:1.72}
+  .tier-features li{color:rgba(210,210,202,.9);font-size:.82rem;line-height:1.68}
+  .tier-features li svg{width:16px;height:16px;margin-top:3px;flex-shrink:0;opacity:.88}
+  .tier-features li strong{color:rgba(245,243,238,.96)}
+  .tier-flag{color:rgba(200,168,75,.78);font-size:.62rem}
+  .tier-name{color:rgba(245,243,238,.96)}
+  .tier-position{color:rgba(190,188,182,.78);border-left-color:rgba(200,168,75,.24)}
+  .tier-gated{padding:14px 14px;font-size:.82rem;line-height:1.72;color:rgba(195,193,188,.72)}
+  .tier-gated strong{color:rgba(240,238,232,.9)}
+  /* CTAs — stronger on mobile */
+  .tier-cta{
+    min-height:52px;font-size:.68rem;letter-spacing:.18em;
+    background:rgba(200,168,75,.07);
+    border-color:rgba(200,168,75,.35);
+    color:rgba(215,182,88,.96);
+  }
+  .tier.focal .tier-cta{
+    background:var(--gold);color:var(--bg);
+    box-shadow:0 4px 20px rgba(200,168,75,.24);
+    border-color:rgba(226,201,125,.65);
+  }
+  .tier.prime .tier-cta{
+    box-shadow:0 6px 28px rgba(200,168,75,.28);
+  }
+  .pricing-cta-meta{color:rgba(168,168,160,.68)}
   .offer-scarcity-main{font-size:clamp(1.12rem,4vw,1.48rem)}
   .offer-value{padding:18px 20px;margin:18px 0}
-  .offer-value-price{font-size:.98rem}
-  .offer-value-inline{font-size:.8rem}
+  .offer-value-price{font-size:.98rem;color:rgba(240,238,232,.94)}
+  .offer-value-inline{font-size:.8rem;color:rgba(210,210,202,.85)}
   .offer-positioning-bottom{font-size:clamp(.95rem,3.5vw,1.08rem)}
 }
 
@@ -4563,7 +4593,7 @@ body::before{
 <div id="mobStickyCta" class="mob-sticky-cta" role="complementary" aria-label="Quick access — assess market availability">
   <div class="msc-inner">
     <a href="{{ route('scan.start') }}" class="msc-primary">Start Your Scan — $2</a>
-    <a href="#offer" class="msc-secondary">Pricing (After Scan)</a>
+    <a href="{{ route('how-it-works') }}" class="msc-secondary">How It Works</a>
   </div>
 </div>
 
@@ -5387,6 +5417,7 @@ body::before{
   });
 })();
 </script>
+@include('components.ai-assistant')
 @include('components.tm-style')
 </body>
 </html>

@@ -349,11 +349,29 @@ html:not(.js-enabled) .r{opacity:1;transform:none}
   .hiw-pipe-step::after{animation:none}
 }
 
+/* ── Icon system ── */
+.hiw-icon{
+  display:flex;align-items:center;justify-content:center;
+  width:44px;height:44px;margin-bottom:16px;
+  border-radius:10px;
+  background:rgba(200,168,75,.06);
+  border:1px solid rgba(200,168,75,.16);
+  color:rgba(212,178,82,.9);
+  flex-shrink:0;
+}
+.hiw-icon svg{
+  width:22px;height:22px;
+  stroke:currentColor;stroke-width:1.5;fill:none;
+  stroke-linecap:round;stroke-linejoin:round;
+}
+
 @media(max-width:768px){
   .hiw-happens{grid-template-columns:1fr}
   .wrap{padding:0 24px}
   .hiw-grid{grid-template-columns:1fr}
   .hiw-tiers{grid-template-columns:1fr 1fr}
+  .hiw-icon{width:48px;height:48px;margin-bottom:18px}
+  .hiw-icon svg{width:24px;height:24px;stroke-width:1.6}
 }
 @media(max-width:480px){
   .hiw-tiers{grid-template-columns:1fr}
@@ -363,70 +381,85 @@ html:not(.js-enabled) .r{opacity:1;transform:none}
    MOBILE UX REFINEMENT PASS
    ═══════════════════════════════════════════ */
 
-/* ── Typography + spacing — instant readability ── */
+/* ── Accent brightness boost — mobile ── */
 @media(max-width:768px){
-  /* Hero — bigger, cleaner */
+  .hiw-hero-eye,.hiw-section-eye,.hiw-pipe-num,
+  .hiw-happens-num,.hiw-card-num,.hiw-tier-level{
+    color:rgba(200,168,75,.82);
+  }
+  .hiw-transition-signal{color:rgba(200,168,75,.78)}
+  .hiw-final-reassure{color:rgba(200,168,75,.7);font-size:.8rem;margin-top:20px}
+}
+
+/* ── Typography + spacing — mobile ── */
+@media(max-width:768px){
+  /* Hero */
   .hiw-hero{padding:clamp(88px,12vh,128px) 0 48px}
   .hiw-hero-hed{font-size:clamp(1.9rem,5.5vw,2.8rem);margin-bottom:18px}
-  .hiw-hero-sub{font-size:.96rem;line-height:1.82;margin-bottom:32px}
-  .hiw-hero-eye{font-size:.66rem;letter-spacing:.22em;margin-bottom:16px}
+  .hiw-hero-sub{font-size:1rem;color:#d1d1cf;line-height:1.84;margin-bottom:32px}
+  .hiw-hero-eye{font-size:.68rem;letter-spacing:.22em;margin-bottom:16px}
 
-  /* Section headings — bigger */
+  /* Section headings */
   .hiw-section-hed{font-size:clamp(1.5rem,4.5vw,2rem);margin-bottom:14px}
-  .hiw-section-sub{font-size:.92rem;line-height:1.8;margin-bottom:32px}
-  .hiw-section-eye{font-size:.64rem;letter-spacing:.2em;margin-bottom:12px}
-  .hiw-section{padding:clamp(40px,5vw,64px) 0}
+  .hiw-section-sub{font-size:.96rem;color:#c8c8c0;line-height:1.82;margin-bottom:32px}
+  .hiw-section-eye{font-size:.66rem;letter-spacing:.2em;margin-bottom:12px}
+  .hiw-section{padding:clamp(52px,6.5vw,80px) 0}
 
-  /* Pipeline steps — readable text */
-  .hiw-pipe-label{font-size:.98rem;margin-bottom:6px}
-  .hiw-pipe-desc{font-size:.78rem;line-height:1.68}
-  .hiw-pipe-num{font-size:.58rem;margin-bottom:8px}
+  /* Pipeline steps */
+  .hiw-pipe-label{font-size:1rem;margin-bottom:6px;color:#f0f0ea}
+  .hiw-pipe-desc{font-size:.84rem;color:#c8c8c0;line-height:1.72}
+  .hiw-pipe-num{font-size:.6rem;margin-bottom:8px}
   .hiw-pipe-step{padding:22px 16px 18px}
 
-  /* "What happens" cards — bigger text + more padding */
-  .hiw-happens-block{padding:30px 24px}
-  .hiw-happens-title{font-size:1.16rem;margin-bottom:10px}
-  .hiw-happens-text{font-size:.88rem;line-height:1.78}
-  .hiw-happens-num{font-size:.58rem;margin-bottom:10px}
+  /* What-happens cards */
+  .hiw-happens-block{padding:32px 26px}
+  .hiw-happens-title{font-size:1.2rem;margin-bottom:10px;line-height:1.2;color:#f5f5f3}
+  .hiw-happens-text{font-size:.96rem;color:#c8c8c0;line-height:1.82}
 
-  /* General cards — bigger text + more padding */
-  .hiw-card{padding:30px 24px}
-  .hiw-card-title{font-size:1.18rem;margin-bottom:10px}
-  .hiw-card-text{font-size:.88rem;line-height:1.78}
-  .hiw-card-num{font-size:.6rem;margin-bottom:10px}
+  /* General grid cards */
+  .hiw-card{padding:32px 26px}
+  .hiw-card-title{font-size:1.2rem;margin-bottom:10px;color:#f5f5f3}
+  .hiw-card-text{font-size:.96rem;color:#c8c8c0;line-height:1.82}
+  .hiw-card-num{font-size:.62rem;margin-bottom:10px}
 
-  /* Tier progression cards — readable */
-  .hiw-tier{padding:26px 22px}
-  .hiw-tier-price{font-size:1.5rem;margin-bottom:6px}
-  .hiw-tier-name{font-size:.76rem;letter-spacing:.14em;margin-bottom:10px}
-  .hiw-tier-desc{font-size:.84rem;line-height:1.74}
-  .hiw-tier-level{font-size:.6rem;margin-bottom:6px}
-  .hiw-tier-badge{font-size:.54rem;margin-bottom:10px}
-  .hiw-progression-note{font-size:.9rem;line-height:1.78;margin-top:24px}
+  /* Tier progression cards */
+  .hiw-tier{padding:28px 24px}
+  .hiw-tier-price{font-size:1.6rem;margin-bottom:6px;color:rgba(215,182,88,1)}
+  .hiw-tier-name{font-size:.78rem;letter-spacing:.14em;margin-bottom:10px;color:#f0f0ea}
+  .hiw-tier-desc{font-size:.9rem;color:#c8c8c0;line-height:1.78}
+  .hiw-tier-level{font-size:.62rem;margin-bottom:6px}
+  .hiw-tier-badge{font-size:.56rem;margin-bottom:10px}
+  .hiw-tier.hiw-tier-entry{border-color:rgba(200,168,75,.32);box-shadow:0 0 32px rgba(200,168,75,.1)}
+  .hiw-progression-note{font-size:.94rem;color:#c8c8c0;line-height:1.8;margin-top:28px}
 
-  /* CTA — mobile button sizing */
-  .btn-primary{min-height:52px;padding:16px 28px;font-size:.8rem;display:flex;align-items:center;justify-content:center}
-  .btn-ghost{font-size:.78rem;padding-bottom:4px}
+  /* CTA — glow + bigger tap target */
+  .btn-primary{
+    min-height:56px;padding:18px 28px;font-size:.82rem;
+    display:flex;align-items:center;justify-content:center;
+    box-shadow:0 4px 24px rgba(200,168,75,.24);
+  }
+  .btn-primary:hover,.btn-primary:active{
+    box-shadow:0 6px 32px rgba(200,168,75,.36);
+  }
+  .btn-ghost{font-size:.8rem;padding-bottom:4px;color:rgba(200,168,75,.78)}
+  .hiw-hero-cta{flex-direction:column;gap:14px;width:100%}
   .hiw-hero-cta .btn-primary{width:100%;text-align:center;justify-content:center}
+  .hiw-hero-cta .btn-ghost{width:100%;text-align:center}
 
   /* Transition block */
-  .hiw-transition{padding:48px 0 44px}
+  .hiw-transition{padding:52px 0 48px}
   .hiw-transition::before{width:260px;height:140px}
-  .hiw-transition-calm{font-size:.84rem;line-height:1.8;margin-bottom:20px}
-  .hiw-transition-action{font-size:clamp(1.4rem,5vw,1.9rem);line-height:1.28;margin-bottom:22px}
-  .hiw-transition-signal{font-size:.74rem;letter-spacing:.1em;margin-bottom:26px}
-  .hiw-transition-lead{font-size:.76rem;padding-bottom:4px}
+  .hiw-transition-calm{font-size:.88rem;color:#c8c8c0;line-height:1.82;margin-bottom:20px}
+  .hiw-transition-action{font-size:clamp(1.45rem,5vw,1.95rem);color:#f5f5f3;line-height:1.28;margin-bottom:24px}
+  .hiw-transition-signal{font-size:.76rem;letter-spacing:.1em;margin-bottom:28px}
+  .hiw-transition-lead{font-size:.78rem;color:#c8c8c0;padding-bottom:4px}
 
-  /* Momentum section */
-  .hiw-momentum-hed{font-size:clamp(1.4rem,4.5vw,1.9rem);margin-bottom:14px}
-  .hiw-momentum-sub{font-size:.92rem;line-height:1.8;margin-bottom:28px}
+  /* Momentum + final */
+  .hiw-momentum-hed{font-size:clamp(1.4rem,4.5vw,1.9rem);color:#f5f5f3;margin-bottom:16px}
+  .hiw-momentum-sub{font-size:.96rem;color:#c8c8c0;line-height:1.82;margin-bottom:30px}
+  .hiw-final-hed{font-size:clamp(1.5rem,5vw,2.2rem);margin-bottom:16px}
+  .hiw-final-sub{font-size:.96rem;color:#c8c8c0;line-height:1.82;margin-bottom:30px}
 
-  /* Final section */
-  .hiw-final-hed{font-size:clamp(1.5rem,5vw,2.2rem);margin-bottom:14px}
-  .hiw-final-sub{font-size:.92rem;line-height:1.8;margin-bottom:28px}
-  .hiw-final-reassure{font-size:.78rem;margin-top:18px}
-
-  /* Gold rules — breathing room */
   .gold-rule{margin:8px 0}
 }
 
@@ -434,11 +467,12 @@ html:not(.js-enabled) .r{opacity:1;transform:none}
 @media(max-width:430px){
   .hiw-hero{padding:clamp(80px,10vh,100px) 0 40px}
   .hiw-hero-hed{font-size:clamp(1.7rem,7vw,2.2rem)}
-  .hiw-hero-sub{font-size:.92rem}
+  .hiw-hero-sub{font-size:.94rem}
   .hiw-section-hed{font-size:clamp(1.35rem,5.5vw,1.8rem)}
-  .hiw-happens-title{font-size:1.1rem}
-  .hiw-card-title{font-size:1.12rem}
-  .hiw-tier-price{font-size:1.4rem}
+  .hiw-happens-title{font-size:1.14rem}
+  .hiw-card-title{font-size:1.14rem}
+  .hiw-tier-price{font-size:1.45rem}
+  .hiw-tier-desc{font-size:.88rem}
   .wrap{padding:0 20px}
 }
 
@@ -556,27 +590,33 @@ html:not(.js-enabled) .r{opacity:1;transform:none}
 
     <div class="hiw-happens">
       <div class="hiw-happens-block r">
-        <div class="hiw-happens-num">01</div>
+        <div class="hiw-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7.5"/><path d="M16.5 16.5l4 4"/></svg>
+        </div>
         <div class="hiw-happens-title">Signal Scan Initiated</div>
         <p class="hiw-happens-text">
-          The engine ingests your domain and tests structured signals, topical clarity,
-          and citation readiness across AI discovery patterns.
+          Enter your domain. The system tests structured data, topical clarity,
+          and citation readiness against live AI discovery patterns.
         </p>
       </div>
       <div class="hiw-happens-block r">
-        <div class="hiw-happens-num">02</div>
+        <div class="hiw-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24"><rect x="3" y="13" width="4" height="8" rx="1"/><rect x="10" y="8" width="4" height="13" rx="1"/><rect x="17" y="4" width="4" height="17" rx="1"/></svg>
+        </div>
         <div class="hiw-happens-title">Visibility Score Generated</div>
         <p class="hiw-happens-text">
-          You receive a 0&ndash;100 AI visibility score with the exact gaps that cause systems to
-          surface competitors instead of your site.
+          You get a 0&ndash;100 AI visibility score with the exact gaps that cause
+          systems to surface competitors instead of your site.
         </p>
       </div>
       <div class="hiw-happens-block r">
-        <div class="hiw-happens-num">03</div>
+        <div class="hiw-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24"><path d="M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2"/><rect x="9" y="3" width="6" height="4" rx="1"/><path d="M9 12h6M9 16h4"/></svg>
+        </div>
         <div class="hiw-happens-title">System Build Path Created</div>
         <p class="hiw-happens-text">
-          A clear deployment path is mapped by impact, so each next layer increases the
-          probability your business is seen, cited, and recommended.
+          A prioritized fix list is mapped by impact &mdash; each step raises the
+          probability your business gets cited and recommended.
         </p>
       </div>
     </div>

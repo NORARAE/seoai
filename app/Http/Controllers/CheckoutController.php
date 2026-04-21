@@ -390,10 +390,10 @@ class CheckoutController extends Controller
             || str_contains((string) ($request->headers->get('referer', '')), '/dashboard');
         $dashLevel = $request->query('dash_level', '');
         $levelNumMap = [
-            'scan-basic'          => '1',
-            'signal-expansion'    => '2',
+            'scan-basic' => '1',
+            'signal-expansion' => '2',
             'structural-leverage' => '3',
-            'system-activation'   => '4',
+            'system-activation' => '4',
         ];
         $levelNum = ($dashLevel && is_numeric($dashLevel)) ? $dashLevel : ($levelNumMap[$tierSlug] ?? '1');
 
@@ -424,9 +424,9 @@ class CheckoutController extends Controller
         // Store dashboard return context in session for success/cancel continuity
         if ($isDashboard) {
             Session::put('checkout_origin', [
-                'source'  => 'dashboard',
-                'tier'    => $tierSlug,
-                'level'   => $levelNum,
+                'source' => 'dashboard',
+                'tier' => $tierSlug,
+                'level' => $levelNum,
             ]);
         }
 

@@ -24,7 +24,7 @@
   };
   $summaryLine = $hasSystem
     ? ($systemCount . ' signals tracked. ' . $attentionCount . ' under active pressure watch.')
-    : 'Baseline not established yet. Run your first scan to begin.';
+    : 'Scan complete — we need site access to score visibility.';
   $latestEvaluatedAt = $latestScan?->scanned_at ?? $latestScan?->created_at;
   $latestEvaluatedLabel = $latestEvaluatedAt ? $latestEvaluatedAt->diffForHumans() : 'Run your first scan to begin';
   $priorIssueHint = $attentionCount > 0
@@ -43,7 +43,7 @@
     $avgScore >= 85 => 'Expand coverage next.',
     default => 'Continue stabilization.',
   };
-  $objectiveTitle = $hasSystem ? ($nextStep ?? 'System active') : 'Baseline not established yet';
+  $objectiveTitle = $hasSystem ? ($nextStep ?? 'System active') : 'We couldn\'t fully read your site yet';
   $objectiveCta = $hasSystem ? ($nextRoute ? route($nextRoute) : route('quick-scan.show')) : route('quick-scan.show');
   $objectiveCtaLabel = $hasSystem ? ($nextRoute ? 'Unlock Next Layer' : 'Run New Scan') : 'Run First Scan';
   $secondaryCtaLabel = $hasSystem ? 'Book Consultation' : 'Start System Build';
@@ -54,7 +54,7 @@
   }
   $leadDomain = $leadScan['scan_name'] ?? $leadScan['domain'] ?? 'No domain scanned yet';
   $leadScore = (int) ($leadScan['score'] ?? 0);
-  $leadState = $leadScore >= 85 ? 'Stable' : ($leadScore >= 60 ? 'Under-optimized' : ($leadScore > 0 ? 'At Risk' : 'Baseline not established yet'));
+  $leadState = $leadScore >= 85 ? 'Stable' : ($leadScore >= 60 ? 'Under-optimized' : ($leadScore > 0 ? 'At Risk' : 'We couldn\'t fully read your site yet'));
   $leadBottleneck = trim((string) ($leadScan['fastest_fix'] ?? '')) !== ''
     ? $leadScan['fastest_fix']
     : 'No bottleneck detected yet. Run a scan to establish baseline constraints.';
@@ -141,10 +141,10 @@
   $nextLevelPrice = $nextLayer['price'] ?? null;
   $nextLevelHref = $nextRoute ? route($nextRoute) : route('quick-scan.show');
   $levelUnlockMap = [
-    'scan-basic' => ['Baseline score and initial visibility status.', 'First set of blockers and quick context.'],
-    'signal-expansion' => ['Deeper signal diagnostics.', 'Sharper bottleneck detection and priority fix path.'],
-    'structural-leverage' => ['Structural leverage opportunities.', 'Higher-impact correction sequencing.'],
-    'system-activation' => ['Full system activation controls.', 'Continuous optimization workflow visibility.'],
+    'scan-basic'          => ['Your baseline score and top issue.', 'What to fix first to start improving.'],
+    'signal-expansion'    => ['See where competitors are stronger.', 'Find your biggest visibility gaps.'],
+    'structural-leverage' => ['Your highest-impact fixes, ranked.', 'A faster path to a better score.'],
+    'system-activation'   => ['Full competitor comparison.', 'Your ongoing improvement roadmap.'],
   ];
   $nextLevelUnlocks = $nextLayer
     ? ($levelUnlockMap[$nextLayer['key']] ?? ['Deeper visibility controls.', 'More actionable correction guidance.'])
@@ -154,6 +154,34 @@
   $projectDomain = ($leadDomain && $leadDomain !== 'No domain scanned yet')
     ? preg_replace('#^https?://(www\.)?#i', '', rtrim($leadDomain, '/'))
     : null;
+  // State chip color
+  $stateChipClass = match(true) {
+    $leadState === 'At Risk'           => 'state-chip state-chip-red',
+    $leadState === 'Under-optimized'   => 'state-chip state-chip-amber',
+    $leadState === 'Stable'            => 'state-chip state-chip-green',
+    default                            => 'state-chip state-chip-gold',
+  };
+  // Live feedback insight — plain-English for business users
+  $noScore = ($leadScore === 0);
+  $liveFeedbackInsight = match(true) {
+    $noScore                         => '<strong>Site not fully readable yet</strong> &rarr; fix access to get your score.',
+    $leadState === 'At Risk'         => '<strong>Competitive risk detected</strong> &rarr; stronger sites are outranking yours right now.',
+    $leadState === 'Under-optimized' => '<strong>Visibility gaps found</strong> &rarr; your site has gaps that limit how often AI tools recommend it.',
+    $scoreDelta < 0                  => '<strong>Score dropped</strong> &rarr; your top issue needs attention.',
+    $scoreDelta > 0                  => '<strong>Score improving</strong> &rarr; keep working on your top issues.',
+    default                          => '<strong>Baseline scan complete</strong> &rarr; your visibility reading is ready below.',
+  };
+  $primaryConstraintChip = $attentionCount > 0
+    ? ($attentionCount . ' area' . ($attentionCount > 1 ? 's' : '') . ' need attention')
+    : 'No issues found';
+  $pressureChipClass = $attentionCount > 0 ? 'state-chip state-chip-amber' : 'state-chip state-chip-green';
+  // Score confidence label for baseline readout
+  $scoreConfidence = match(true) {
+    $leadScore >= 70 => 'High',
+    $leadScore >= 45 => 'Medium',
+    $leadScore > 0   => 'Low',
+    default          => null,
+  };
   $pagesAnalyzed = (int) ($leadScan['pages_scanned'] ?? 0);
   $profileData = auth()->user()->profile_data ?? [];
   $profileBrand = $profileData['business_name'] ?? $profileData['public_brand_name'] ?? null;
@@ -666,10 +694,10 @@
   .level-rail-step.is-complete .level-rail-step-dot{background:rgba(200,168,75,.22);border-color:rgba(200,168,75,.75);color:#c6a85a}
   .level-rail-step.is-active .level-rail-step-dot{background:rgba(200,168,75,.18);border-color:#c6a85a;color:#c6a85a;box-shadow:0 0 0 4px rgba(200,168,75,.12)}
   .level-rail-step.is-locked .level-rail-step-dot{opacity:.42}
-  .level-rail-step-label{font-size:.55rem;letter-spacing:.13em;text-transform:uppercase;color:rgba(200,168,75,.45);text-align:center}
+  .level-rail-step-label{font-size:.55rem;letter-spacing:.1em;text-transform:uppercase;color:rgba(200,168,75,.45);text-align:center;max-width:76px;line-height:1.35;word-break:break-word}
   .level-rail-step.is-complete .level-rail-step-label,.level-rail-step.is-active .level-rail-step-label{color:rgba(200,168,75,.7)}
   .level-rail-connector{flex:1;height:1px;background:rgba(200,168,75,.18);margin-top:-14px;position:relative;z-index:1}
-  .level-rail-connector.is-complete{background:rgba(200,168,75,.5)}
+  .level-rail-connector.is-complete{background:rgba(200,168,75,.62);box-shadow:0 0 8px rgba(200,168,75,.28)}
 
   /* Level card grid */
   .level-card-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
@@ -678,11 +706,11 @@
   /* Level cards */
   .level-card{border:1px solid rgba(200,168,75,.18);border-radius:14px;background:linear-gradient(155deg,#181410,#0e0c09 70%);padding:18px;position:relative;overflow:hidden;transition:transform .2s ease,box-shadow .2s ease}
   .level-card::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(200,168,75,.28),transparent)}
-  .level-card.state-active{border-color:rgba(200,168,75,.5);background:linear-gradient(155deg,#1d1a0f,#100e08 68%);box-shadow:0 12px 32px rgba(0,0,0,.32),0 0 0 1px rgba(200,168,75,.08) inset}
+  .level-card.state-active{border-color:rgba(200,168,75,.58);background:linear-gradient(155deg,#1e1b10,#110f08 68%);box-shadow:0 14px 38px rgba(0,0,0,.38),0 0 30px rgba(200,168,75,.18),0 0 0 1px rgba(200,168,75,.14) inset;padding:22px}
   .level-card.state-active::before{background:linear-gradient(90deg,transparent,rgba(200,168,75,.6),transparent)}
   .level-card.state-complete{border-color:rgba(106,175,144,.3);background:linear-gradient(155deg,#101a14,#090d0b 70%)}
   .level-card.state-complete::before{background:linear-gradient(90deg,transparent,rgba(106,175,144,.4),transparent)}
-  .level-card.state-locked{opacity:.58}
+  .level-card.state-locked{border-color:rgba(200,168,75,.1);background:linear-gradient(155deg,#101009,#0a0908 70%)}
   .level-card:not(.state-locked):hover{transform:translateY(-3px);box-shadow:0 16px 40px rgba(0,0,0,.4)}
 
   /* Accent bar */
@@ -697,7 +725,7 @@
   .state-complete .level-card-kicker{color:rgba(106,175,144,.8)}
   .state-locked .level-card-kicker{color:rgba(200,168,75,.38)}
   .level-card-name{font-size:.95rem;font-weight:600;color:#ede8de;letter-spacing:.01em;margin-bottom:4px}
-  .level-card-desc{font-size:.78rem;line-height:1.55;color:#9a9082;margin-bottom:14px}
+  .level-card-desc{font-size:.78rem;line-height:1.52;color:#b5ae9e;margin-bottom:12px}
 
   /* Step list */
   .level-card-steps{display:flex;flex-direction:column;gap:7px;margin-bottom:14px}
@@ -726,6 +754,22 @@
   .level-card-cta-secondary{display:inline-flex;align-items:center;justify-content:center;min-height:38px;padding:0 16px;border-radius:10px;background:transparent;border:1px solid rgba(106,175,144,.4);color:#6aaf90;text-decoration:none;font-size:.68rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;transition:all .2s ease;width:100%}
   .level-card-cta-secondary:hover{background:rgba(106,175,144,.08);border-color:rgba(106,175,144,.6)}
   .level-card-cta-disabled{display:inline-flex;align-items:center;justify-content:center;min-height:38px;padding:0 16px;border-radius:10px;background:rgba(200,168,75,.06);border:1px solid rgba(200,168,75,.14);color:rgba(200,168,75,.35);font-size:.68rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;width:100%;cursor:not-allowed;gap:6px}
+
+  /* "Start Here" label for active step 1 */
+  .lc-start-here{display:inline-flex;align-items:center;gap:5px;padding:3px 9px;border-radius:999px;background:rgba(200,168,75,.2);border:1px solid rgba(200,168,75,.48);color:#f0e2b0;font-size:.52rem;letter-spacing:.18em;text-transform:uppercase;margin-bottom:8px}
+  .lc-start-here::before{content:'';width:5px;height:5px;border-radius:50%;background:#c6a85a;box-shadow:0 0 6px rgba(200,168,75,.7);flex-shrink:0}
+
+  /* Impact badges (replacing bullet step list) */
+  .lc-impact-badges{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:14px}
+  .lc-impact-badge{display:inline-flex;align-items:center;gap:5px;padding:4px 9px;border-radius:999px;font-size:.6rem;letter-spacing:.08em;line-height:1.3;}
+  .state-active .lc-impact-badge{background:rgba(200,168,75,.1);border:1px solid rgba(200,168,75,.22);color:#d8c98a}
+  .state-complete .lc-impact-badge{background:rgba(106,175,144,.1);border:1px solid rgba(106,175,144,.22);color:#9acab8}
+  .state-locked .lc-impact-badge{background:rgba(200,168,75,.05);border:1px solid rgba(200,168,75,.1);color:rgba(200,168,75,.32)}
+  .lc-impact-badge::before{content:'';width:4px;height:4px;border-radius:50%;background:currentColor;flex-shrink:0}
+
+  /* Locked card overlay */
+  .lc-locked-overlay{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(8,6,4,.62);backdrop-filter:blur(2px);border-radius:inherit;z-index:10}
+  .lc-locked-overlay-chip{display:inline-flex;align-items:center;gap:7px;padding:8px 13px;border-radius:999px;background:rgba(18,14,8,.92);border:1px solid rgba(200,168,75,.24);font-size:.58rem;letter-spacing:.14em;text-transform:uppercase;color:rgba(200,168,75,.65)}
 
   /* Premium gate */
   .premium-gate-card{border:1px solid rgba(200,168,75,.35);border-radius:14px;background:linear-gradient(145deg,#1f1a0e,#120f09 70%);padding:22px;text-align:center;position:relative;overflow:hidden}
@@ -804,6 +848,244 @@
   /* DCM select style */
   .dcm-field select{width:100%;background:#0f0d09;border:1px solid rgba(200,168,75,.28);border-radius:8px;padding:9px 12px;color:#ede8de;font-size:.84rem;outline:none;transition:border-color .15s ease;-webkit-appearance:none;appearance:none;background-image:url("data:image/svg+xml,%3Csvg width='10' height='6' viewBox='0 0 10 6' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1l4 4 4-4' stroke='rgba(200,168,75,0.5)' stroke-width='1.4' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 12px center}
   .dcm-field select:focus{border-color:rgba(200,168,75,.65)}
+
+  /* ── Domain-first hero upgrades ───────────────────────────── */
+  /* Bigger, gold-gradient domain name */
+  .hero-domain-live{
+    font-size:clamp(2.6rem,5.8vw,5.6rem);line-height:.9;font-weight:700;
+    letter-spacing:-.05em;
+    background:linear-gradient(125deg,#f5e9c8 8%,#c8a84b 44%,#ede0ba 78%);
+    -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+    text-shadow:none;
+    filter:drop-shadow(0 0 28px rgba(200,168,75,.35));
+    max-width:none;text-wrap:balance
+  }
+
+  /* ── Live feedback strip ───────────────────────────────────── */
+  .live-feedback-strip{
+    display:flex;align-items:center;gap:10px;
+    padding:9px 14px;
+    border:1px solid rgba(200,168,75,.18);
+    border-radius:10px;
+    background:linear-gradient(135deg,rgba(22,17,8,.96),rgba(10,8,5,.98));
+    margin-bottom:16px;
+    box-shadow:0 0 18px rgba(200,168,75,.07);
+    overflow:hidden;position:relative
+  }
+  .live-feedback-strip::before{
+    content:'';position:absolute;left:0;top:0;bottom:0;width:3px;
+    background:linear-gradient(180deg,rgba(200,168,75,.9),rgba(200,168,75,.32));
+    border-radius:2px
+  }
+  .lfs-dot{
+    width:7px;height:7px;border-radius:50%;background:#c8a84b;flex-shrink:0;
+    box-shadow:0 0 0 0 rgba(200,168,75,.55);
+    animation:lfsPulse 2.2s ease-in-out infinite
+  }
+  @keyframes lfsPulse{
+    0%,100%{box-shadow:0 0 0 0 rgba(200,168,75,.55)}
+    50%{box-shadow:0 0 0 8px rgba(200,168,75,0)}
+  }
+  .lfs-label{font-size:.52rem;letter-spacing:.2em;text-transform:uppercase;color:rgba(200,168,75,.62);flex-shrink:0}
+  .lfs-divider{width:1px;height:14px;background:rgba(200,168,75,.2);flex-shrink:0}
+  .lfs-insight{font-size:.76rem;color:#e4dcc8;line-height:1.4}
+  .lfs-insight strong{color:#f0dfaa}
+
+  /* ── State color chips ─────────────────────────────────────── */
+  .state-chip{display:inline-flex;align-items:center;gap:5px;padding:3px 9px;border-radius:999px;font-size:.56rem;letter-spacing:.16em;text-transform:uppercase;font-weight:600}
+  .state-chip::before{content:'';width:5px;height:5px;border-radius:50%;background:currentColor;flex-shrink:0}
+  .state-chip-red{border:1px solid rgba(196,80,80,.45);background:rgba(196,80,80,.14);color:#e8a8a8}
+  .state-chip-amber{border:1px solid rgba(214,163,55,.45);background:rgba(214,163,55,.14);color:#e8cfa0}
+  .state-chip-green{border:1px solid rgba(80,175,120,.42);background:rgba(80,175,120,.13);color:#9fd4b8}
+  .state-chip-gold{border:1px solid rgba(200,168,75,.42);background:rgba(200,168,75,.13);color:#dfc98a}
+
+  /* ── YOU ARE HERE marker ───────────────────────────────────── */
+  .you-are-here{
+    display:inline-flex;align-items:center;gap:7px;
+    padding:5px 12px;border-radius:8px;
+    background:rgba(200,168,75,.12);
+    border:1px solid rgba(200,168,75,.35);
+    border-left:3px solid #c8a84b;
+    font-size:.58rem;letter-spacing:.18em;text-transform:uppercase;color:rgba(200,168,75,.9)
+  }
+  .you-are-here-dot{width:8px;height:8px;border-radius:50%;background:#c8a84b;box-shadow:0 0 10px rgba(200,168,75,.8);flex-shrink:0}
+
+  /* ── System status strip ───────────────────────────────────── */
+  .sys-status-strip{
+    display:flex;flex-wrap:wrap;align-items:center;gap:8px;
+    padding:10px 14px;
+    border:1px solid rgba(200,168,75,.16);
+    border-radius:10px;
+    background:rgba(0,0,0,.24);
+    margin-bottom:16px
+  }
+  .sys-status-label{font-size:.52rem;letter-spacing:.2em;text-transform:uppercase;color:rgba(200,168,75,.48);margin-right:4px}
+
+  /* ── Level rail "YOU ARE HERE" callout ─────────────────────── */
+  .rail-you-are-here{
+    margin-bottom:10px;display:flex;align-items:center;gap:8px
+  }
+
+  /* ── Domain highlight in section headings ─────────────────── */
+  .domain-accent{color:#e8d090;font-style:normal;font-weight:inherit}
+
+  /* ── Score Drivers ─────────────────────────── */
+  .score-drivers-shell{border:1px solid rgba(200,168,75,.22);border-radius:20px;background:linear-gradient(155deg,#16120a,#0d0a06 72%);padding:22px;box-shadow:0 18px 38px rgba(0,0,0,.32),inset 0 1px 0 rgba(255,255,255,.03)}
+  .score-drivers-head{display:flex;flex-wrap:wrap;align-items:flex-start;justify-content:space-between;gap:14px;margin-bottom:18px}
+  .score-drivers-kicker{font-size:.62rem;letter-spacing:.28em;text-transform:uppercase;color:rgba(200,168,75,.65);margin-bottom:6px}
+  .score-drivers-title{font-size:1.05rem;font-weight:600;color:#ede8de;line-height:1.35;max-width:42rem}
+  .score-drivers-desc{margin-top:5px;font-size:.82rem;line-height:1.6;color:#a8a193;max-width:40rem}
+  .score-drivers-meta{display:flex;flex-direction:column;align-items:flex-end;gap:8px;flex-shrink:0}
+  .score-drivers-count{font-size:.56rem;letter-spacing:.16em;text-transform:uppercase;color:#9a9082}
+  .score-drivers-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:14px}
+  .score-driver-card{border:1px solid rgba(200,168,75,.16);border-radius:14px;background:linear-gradient(155deg,#181410,#100d08 70%);padding:16px;display:flex;flex-direction:column;gap:10px;position:relative;overflow:hidden;transition:transform .22s ease,box-shadow .22s ease,border-color .22s ease}
+  .score-driver-card::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(200,168,75,.24),transparent)}
+  .score-driver-card:hover{transform:translateY(-3px);border-color:rgba(200,168,75,.3);box-shadow:0 12px 28px rgba(0,0,0,.34)}
+  .score-driver-card.is-primary{border-color:rgba(200,168,75,.38);background:linear-gradient(155deg,#1e1a0e,#12100a 68%);box-shadow:0 0 0 1px rgba(200,168,75,.16) inset}
+  .score-driver-card.is-primary::before{background:linear-gradient(90deg,transparent,rgba(200,168,75,.52),transparent)}
+  .score-driver-card.is-locked{opacity:.72}
+  .sdc-header{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+  .sdc-rank{display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;border-radius:50%;background:rgba(200,168,75,.14);border:1px solid rgba(200,168,75,.28);font-size:.62rem;font-weight:700;color:rgba(200,168,75,.8);flex-shrink:0}
+  .sdc-impact-badge{padding:2px 8px;border-radius:999px;font-size:.52rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase}
+  .impact-critical{background:rgba(196,80,80,.14);border:1px solid rgba(196,80,80,.3);color:#e8a8a8}
+  .impact-high{background:rgba(214,163,55,.12);border:1px solid rgba(214,163,55,.28);color:#e8cfa0}
+  .impact-medium{background:rgba(200,168,75,.1);border:1px solid rgba(200,168,75,.22);color:#d9c68a}
+  .impact-low{background:rgba(150,142,120,.1);border:1px solid rgba(150,142,120,.2);color:#b4ae9a}
+  .sdc-lock-badge{margin-left:auto;padding:2px 8px;border-radius:999px;font-size:.5rem;letter-spacing:.1em;text-transform:uppercase;background:rgba(80,70,55,.28);border:1px solid rgba(200,168,75,.14);color:rgba(200,168,75,.42)}
+  .sdc-issue{font-size:.88rem;font-weight:600;line-height:1.4;color:#ede3ca}
+  .sdc-why{font-size:.78rem;line-height:1.55;color:#b8b0a0}
+  .sdc-fix{border:1px solid rgba(200,168,75,.16);border-radius:10px;background:rgba(200,168,75,.05);padding:10px 12px}
+  .sdc-fix-label{font-size:.52rem;letter-spacing:.18em;text-transform:uppercase;color:#d8c58f;margin-bottom:5px}
+  .sdc-fix-copy{font-size:.8rem;line-height:1.52;color:#e4dbca}
+  .sdc-ask-btn{display:inline-flex;align-items:center;gap:7px;padding:6px 13px;border-radius:999px;border:1px solid rgba(200,168,75,.28);background:rgba(200,168,75,.08);color:#d9c988;font-size:.62rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;cursor:pointer;transition:all .18s ease;margin-top:auto;align-self:flex-start}
+  .sdc-ask-btn:hover{border-color:rgba(200,168,75,.52);background:rgba(200,168,75,.16);color:#f0dda6}
+  .sdc-locked-hint{font-size:.75rem;line-height:1.5;color:#9a9082;font-style:italic}
+  .sdc-unlock-btn{display:inline-flex;align-items:center;justify-content:center;min-height:32px;padding:6px 14px;border-radius:8px;border:1px solid rgba(200,168,75,.32);background:rgba(200,168,75,.1);color:#d9c988;font-size:.62rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;text-decoration:none;transition:all .18s ease;align-self:flex-start}
+  .sdc-unlock-btn:hover{border-color:rgba(200,168,75,.52);background:rgba(200,168,75,.18)}
+  @media(max-width:640px){.score-drivers-grid{grid-template-columns:1fr}}
+
+  /* ── AI Advisor / Confidence ─────────────────────────────────── */
+  .ai-advisor-shell{border:1px solid rgba(200,168,75,.24);border-radius:18px;background:linear-gradient(155deg,#1a1610,#0e0c08 72%);padding:20px 22px;box-shadow:0 12px 30px rgba(0,0,0,.28),inset 0 1px 0 rgba(255,255,255,.03);position:relative;overflow:hidden}
+  .ai-advisor-shell::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(200,168,75,.54),transparent)}
+  .ai-advisor-shell::after{content:'';position:absolute;inset:-10% -20% auto -20%;height:140%;background:radial-gradient(ellipse at 50% 0,rgba(200,168,75,.07),transparent 56%);pointer-events:none}
+  .ai-advisor-head{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:14px;margin-bottom:16px}
+  .ai-advisor-kicker{font-size:.58rem;letter-spacing:.24em;text-transform:uppercase;color:rgba(200,168,75,.68);margin-bottom:5px}
+  .ai-advisor-title{font-size:.96rem;font-weight:600;color:#ede8de;line-height:1.25}
+  .ai-advisor-desc{margin-top:4px;font-size:.78rem;line-height:1.55;color:#a8a193;max-width:36rem}
+  .ai-advisor-open-btn{flex-shrink:0;display:inline-flex;align-items:center;justify-content:center;min-height:38px;padding:0 18px;border-radius:10px;background:#c6a85a;color:#1a1a1a;font-size:.68rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;border:none;cursor:pointer;transition:all .2s ease;box-shadow:0 6px 16px rgba(198,168,90,.2),inset 0 1px 0 rgba(255,255,255,.14)}
+  .ai-advisor-open-btn:hover{transform:translateY(-1px);box-shadow:0 10px 24px rgba(198,168,90,.34),inset 0 1px 0 rgba(255,255,255,.18)}
+  .ai-advisor-chips{display:flex;flex-wrap:wrap;gap:8px;position:relative;z-index:1}
+  .ai-advisor-chip{display:inline-flex;align-items:center;gap:8px;padding:9px 15px;border-radius:999px;border:1px solid rgba(200,168,75,.22);background:rgba(200,168,75,.07);color:#d9c98a;font-size:.72rem;font-weight:500;letter-spacing:.04em;cursor:pointer;transition:all .18s ease;text-align:left}
+  .ai-advisor-chip:hover{border-color:rgba(200,168,75,.5);background:rgba(200,168,75,.16);color:#f0e0a6;transform:translateY(-1px)}
+  .ai-chip-icon{width:18px;height:18px;border-radius:50%;background:rgba(200,168,75,.14);border:1px solid rgba(200,168,75,.22);display:inline-flex;align-items:center;justify-content:center;flex-shrink:0}
+  @media(max-width:640px){.ai-advisor-chips{flex-direction:column}.ai-advisor-chip{width:100%}.ai-advisor-head{flex-direction:column;align-items:flex-start}}
+
+  /* ── Executive Context Bar ───────────────────────────────────────── */
+  .exec-ctx-bar{display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap;padding:10px 16px;border:1px solid rgba(200,168,75,.16);border-radius:12px;background:rgba(0,0,0,.28);margin-bottom:22px}
+  .exec-ctx-domain{font-size:.95rem;font-weight:700;color:#f2edd8;letter-spacing:-.01em;display:flex;align-items:center;gap:8px}
+  .exec-ctx-live{display:inline-block;width:7px;height:7px;border-radius:50%;background:#c8a84b;animation:pibPulse 2s ease-in-out infinite;flex-shrink:0}
+  .exec-ctx-brand{color:#948c7c;font-size:.84rem;font-weight:400;margin-right:2px}
+  .exec-ctx-meta{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+  .exec-ctx-pill{font-size:.56rem;letter-spacing:.14em;text-transform:uppercase;color:#9a9082;padding:3px 8px;border-radius:6px;background:rgba(200,168,75,.06);border:1px solid rgba(200,168,75,.12)}
+  .exec-ctx-btn{display:inline-flex;align-items:center;gap:6px;min-height:32px;padding:0 14px;border-radius:8px;background:#c6a85a;color:#1a1a1a;text-decoration:none;font-size:.62rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;transition:all .18s ease;box-shadow:0 4px 12px rgba(198,168,90,.18)}
+  .exec-ctx-btn:hover{transform:translateY(-1px);filter:brightness(1.08)}
+  .exec-ctx-btn-outline{display:inline-flex;align-items:center;gap:6px;min-height:32px;padding:0 14px;border-radius:8px;border:1px solid rgba(200,168,75,.26);background:transparent;color:rgba(200,168,75,.78);text-decoration:none;font-size:.62rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;transition:all .18s ease}
+  .exec-ctx-btn-outline:hover{border-color:rgba(200,168,75,.5);background:rgba(200,168,75,.08)}
+
+  /* ── Executive Hero ──────────────────────────────────────────────── */
+  .exec-hero-shell{border:1px solid rgba(200,168,75,.26);border-radius:22px;background:linear-gradient(145deg,rgba(28,22,12,.98),rgba(10,9,7,.99) 66%),radial-gradient(circle at 8% 22%,rgba(200,168,75,.12),transparent 28%);padding:28px 28px 24px;box-shadow:0 24px 52px rgba(0,0,0,.44),0 0 0 1px rgba(200,168,75,.1) inset;position:relative;overflow:hidden}
+  .exec-hero-shell::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,rgba(200,168,75,.72),transparent)}
+  .exec-hero-shell::after{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 50% -10%,rgba(200,168,75,.08),transparent 58%);pointer-events:none}
+  .exec-hero-grid{display:grid;grid-template-columns:auto 1fr auto;gap:28px;align-items:start;position:relative;z-index:1}
+  @media(max-width:840px){.exec-hero-grid{grid-template-columns:auto 1fr;gap:20px}.exec-action-col{grid-column:1/-1}}
+  @media(max-width:520px){.exec-hero-grid{grid-template-columns:1fr}}
+  .exec-score-col{display:flex;flex-direction:column;align-items:center;gap:10px;padding-top:4px}
+  .exec-score-ring{position:relative;width:108px;height:108px;border-radius:50%;border:1.5px solid rgba(200,168,75,.35);background:radial-gradient(circle at 50% 38%,rgba(200,168,75,.2),rgba(14,11,8,.96) 70%);display:flex;flex-direction:column;align-items:center;justify-content:center;box-shadow:0 0 36px rgba(200,168,75,.14),inset 0 1px 0 rgba(255,255,255,.04);flex-shrink:0}
+  .exec-score-ring::before{content:'';position:absolute;inset:8px;border-radius:50%;border:1px solid rgba(200,168,75,.12)}
+  .exec-score-ring::after{content:'';position:absolute;inset:-10px;border-radius:50%;background:radial-gradient(circle,rgba(200,168,75,.14),transparent 60%);z-index:-1;animation:scorePulse 3.2s ease-in-out infinite}
+  .exec-score-ring.is-critical{border-color:rgba(196,80,80,.38);background:radial-gradient(circle at 50% 38%,rgba(196,80,80,.16),rgba(14,11,8,.96) 70%)}
+  .exec-score-ring.is-critical::after{background:radial-gradient(circle,rgba(196,80,80,.14),transparent 60%)}
+  .exec-score-ring.is-watching{border-color:rgba(214,177,95,.36)}
+  .exec-score-ring.is-strong{border-color:rgba(106,175,144,.34);background:radial-gradient(circle at 50% 38%,rgba(106,175,144,.14),rgba(14,11,8,.96) 70%)}
+  .exec-score-ring.is-strong::after{background:radial-gradient(circle,rgba(106,175,144,.14),transparent 60%)}
+  .exec-score-num{font-size:2.6rem;font-weight:700;line-height:1;color:#f5eed8;letter-spacing:-.04em}
+  .exec-score-lbl{font-size:.5rem;letter-spacing:.18em;text-transform:uppercase;color:#9a9080;margin-top:2px}
+  .exec-score-no{font-size:.8rem;color:#7a7266;text-align:center;padding:0 8px;line-height:1.3}
+
+  /* Interpretation column */
+  .exec-interp-col{display:flex;flex-direction:column;gap:14px;min-width:0}
+  .exec-interp-question{font-size:.58rem;letter-spacing:.22em;text-transform:uppercase;color:rgba(200,168,75,.58);margin-bottom:4px}
+  .exec-interp-answer{font-size:1.05rem;line-height:1.58;color:#e8dfcc;font-weight:500;max-width:38rem}
+  .exec-interp-answer strong{color:#f5e6b8;font-weight:600}
+  .exec-bottleneck-block{border:1px solid rgba(200,168,75,.18);border-radius:13px;background:rgba(0,0,0,.24);padding:13px 15px}
+  .exec-bottleneck-label{font-size:.54rem;letter-spacing:.2em;text-transform:uppercase;color:#d8c58f;margin-bottom:5px}
+  .exec-bottleneck-copy{font-size:.86rem;line-height:1.58;color:#d8d0bc}
+  .exec-trust-line{font-size:.6rem;letter-spacing:.1em;color:#6a6254;margin-top:2px}
+
+  /* Action column */
+  .exec-action-col{display:flex;flex-direction:column;gap:10px;min-width:172px}
+  .exec-cta-primary{display:flex;align-items:center;justify-content:center;min-height:44px;padding:0 20px;border-radius:12px;background:#c6a85a;color:#1a1a1a;text-decoration:none;font-size:.7rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;box-shadow:0 12px 24px rgba(198,168,90,.22),0 0 0 1px rgba(255,255,255,.14) inset;transition:all .2s ease;text-align:center;border:none;cursor:pointer}
+  .exec-cta-primary:hover{transform:translateY(-2px);box-shadow:0 18px 32px rgba(198,168,90,.38)}
+  .exec-cta-secondary{display:flex;align-items:center;justify-content:center;border:1px solid rgba(200,168,75,.28);background:transparent;color:#d9cfa9;text-decoration:none;font-size:.68rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;min-height:40px;padding:0 18px;border-radius:10px;transition:all .2s ease;text-align:center}
+  .exec-cta-secondary:hover{border-color:rgba(200,168,75,.52);background:rgba(200,168,75,.08)}
+  .exec-cta-stat{font-size:.56rem;letter-spacing:.12em;text-transform:uppercase;color:#5e5648;text-align:center;line-height:1.4}
+  .exec-cta-stat.positive{color:#6aaf90}
+  .exec-cta-stat.negative{color:#d47878}
+
+  /* ── Section common headers ──────────────────────────────────────── */
+  .dash-section-label{font-size:.58rem;letter-spacing:.26em;text-transform:uppercase;color:rgba(200,168,75,.58);margin-bottom:5px}
+  .dash-section-heading{font-size:1rem;font-weight:600;color:#ede8de;line-height:1.3;margin-bottom:4px}
+  .dash-section-subhead{font-size:.82rem;line-height:1.58;color:#9a8f80;max-width:44rem}
+
+  /* ── What to Do Next ─────────────────────────────────────────────── */
+  .next-move-shell{border:1px solid rgba(200,168,75,.2);border-radius:20px;background:linear-gradient(155deg,#161209,#0e0b07 72%);padding:22px;box-shadow:0 16px 36px rgba(0,0,0,.3),inset 0 1px 0 rgba(255,255,255,.03)}
+  .next-move-row{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:18px}
+  @media(max-width:640px){.next-move-row{grid-template-columns:1fr}}
+  .nm-card{border:1px solid rgba(200,168,75,.15);border-radius:14px;background:linear-gradient(155deg,#17130c,#0e0b08 70%);padding:16px 18px;display:flex;flex-direction:column;gap:10px;transition:transform .2s ease,box-shadow .2s ease,border-color .22s ease}
+  .nm-card:hover{transform:translateY(-2px);box-shadow:0 10px 22px rgba(0,0,0,.3)}
+  .nm-card.nm-primary{border-color:rgba(200,168,75,.3);background:linear-gradient(155deg,#1e1a0e,#120f08 68%);box-shadow:0 0 0 1px rgba(200,168,75,.12) inset}
+  .nm-card-kicker{font-size:.54rem;letter-spacing:.2em;text-transform:uppercase;color:rgba(200,168,75,.62)}
+  .nm-card-title{font-size:.9rem;font-weight:600;color:#ece3cc;line-height:1.45}
+  .nm-card-rationale{font-size:.78rem;line-height:1.55;color:#9a9080}
+  .nm-card-action{display:inline-flex;align-items:center;gap:6px;padding:7px 14px;border-radius:8px;border:1px solid rgba(200,168,75,.3);background:rgba(200,168,75,.09);color:#d9c988;font-size:.62rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;text-decoration:none;align-self:flex-start;transition:all .18s ease;margin-top:auto}
+  .nm-card-action:hover{border-color:rgba(200,168,75,.54);background:rgba(200,168,75,.17)}
+  .nm-card-action-btn{display:inline-flex;align-items:center;gap:6px;padding:7px 14px;border-radius:8px;border:1px solid rgba(200,168,75,.3);background:rgba(200,168,75,.09);color:#d9c988;font-size:.62rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;cursor:pointer;align-self:flex-start;transition:all .18s ease;margin-top:auto}
+  .nm-card-action-btn:hover{border-color:rgba(200,168,75,.54);background:rgba(200,168,75,.17)}
+
+  /* ── Your Plan ───────────────────────────────────────────────────── */
+  .your-plan-shell{border:1px solid rgba(200,168,75,.22);border-radius:22px;background:linear-gradient(155deg,#17130a,#0e0b07 72%);padding:24px;box-shadow:0 20px 42px rgba(0,0,0,.34),inset 0 1px 0 rgba(255,255,255,.03)}
+  .plan-rail-row{display:flex;align-items:center;gap:0;margin:16px 0 20px;padding:0 2px}
+  .plan-level-row{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  @media(max-width:680px){.plan-level-row{grid-template-columns:1fr}}
+  .plan-current-card{border:1px solid rgba(106,175,144,.24);border-radius:16px;background:linear-gradient(155deg,#0f1a12,#090d0b 70%);padding:18px;position:relative;overflow:hidden}
+  .plan-current-card::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(106,175,144,.38),transparent)}
+  .plan-current-kicker{font-size:.55rem;letter-spacing:.22em;text-transform:uppercase;color:rgba(106,175,144,.72);margin-bottom:7px}
+  .plan-current-name{font-size:.94rem;font-weight:600;color:#d6edd8;margin-bottom:5px}
+  .plan-current-desc{font-size:.78rem;line-height:1.52;color:#8ab090;margin-bottom:14px}
+  .plan-included-list{display:flex;flex-direction:column;gap:7px}
+  .plan-included-item{display:flex;align-items:flex-start;gap:8px;font-size:.78rem;line-height:1.45;color:#b8d4bc}
+  .plan-included-icon{flex-shrink:0;color:#6aaf90;margin-top:1px}
+  .plan-view-report-btn{display:inline-flex;align-items:center;gap:6px;min-height:34px;padding:0 14px;border-radius:8px;border:1px solid rgba(106,175,144,.32);background:rgba(106,175,144,.1);color:#9fd4b8;font-size:.62rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;text-decoration:none;transition:all .18s ease;margin-top:14px}
+  .plan-view-report-btn:hover{border-color:rgba(106,175,144,.56);background:rgba(106,175,144,.17)}
+  .plan-next-card{border:1px solid rgba(200,168,75,.26);border-radius:16px;background:linear-gradient(155deg,#1d1910,#120f08 70%);padding:18px;position:relative;overflow:hidden}
+  .plan-next-card::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(200,168,75,.44),transparent)}
+  .plan-next-kicker{font-size:.55rem;letter-spacing:.22em;text-transform:uppercase;color:rgba(200,168,75,.68);margin-bottom:7px}
+  .plan-next-name{font-size:.94rem;font-weight:600;color:#ede8de;margin-bottom:3px}
+  .plan-next-price{font-size:1.05rem;font-weight:700;color:#c6a85a;letter-spacing:-.02em;margin-bottom:8px}
+  .plan-next-desc{font-size:.78rem;line-height:1.52;color:#b0a48c;margin-bottom:14px}
+  .plan-next-unlocks{display:flex;flex-direction:column;gap:7px;margin-bottom:16px}
+  .plan-next-unlock-item{display:flex;align-items:flex-start;gap:8px;font-size:.76rem;line-height:1.45;color:#d6c887}
+  .plan-next-unlock-icon{flex-shrink:0;color:rgba(200,168,75,.62);margin-top:1px}
+  .plan-unlock-cta{display:flex;align-items:center;justify-content:center;min-height:40px;padding:0 18px;border-radius:10px;background:#c6a85a;color:#1a1a1a;text-decoration:none;font-size:.68rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;transition:all .2s ease;box-shadow:0 8px 18px rgba(198,168,90,.2);border:none;cursor:pointer;width:100%}
+  .plan-unlock-cta:hover{transform:translateY(-2px);box-shadow:0 14px 28px rgba(198,168,90,.36)}
+  .plan-all-unlocked-card{border:1px solid rgba(200,168,75,.2);border-radius:16px;background:linear-gradient(155deg,#1a180e,#110f08 70%);padding:18px}
+  .plan-all-unlocked-kicker{font-size:.55rem;letter-spacing:.22em;text-transform:uppercase;color:rgba(200,168,75,.65);margin-bottom:7px}
+  .plan-all-unlocked-title{font-size:.94rem;font-weight:600;color:#e8d88a;margin-bottom:8px}
+  .plan-all-unlocked-desc{font-size:.78rem;line-height:1.55;color:#6aaf90}
+  .plan-consult-row{border-top:1px solid rgba(200,168,75,.1);margin-top:18px;padding-top:16px;display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap}
+  .plan-consult-copy{font-size:.78rem;color:#9a9080;line-height:1.45}
+  .plan-consult-btn{display:inline-flex;align-items:center;gap:6px;min-height:34px;padding:0 14px;border-radius:8px;border:1px solid rgba(200,168,75,.22);background:transparent;color:rgba(200,168,75,.7);text-decoration:none;font-size:.62rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;transition:all .18s ease}
+  .plan-consult-btn:hover{border-color:rgba(200,168,75,.42);background:rgba(200,168,75,.06)}
 </style>
 @endpush
 
@@ -857,139 +1139,135 @@
 
     @if($hasSystem)
 
-    {{-- Project Identity Bar --}}
+    {{-- Domain Context Bar --}}
     @if($projectDomain)
-    <div class="proj-identity-bar" role="region" aria-label="Project: {{ $projectDomain }}">
-      <div class="proj-identity-left" style="flex:1;min-width:0">
-        <div class="pib-live-row">
-          <span class="pib-live-dot" aria-hidden="true"></span>
-          <span class="pib-live-label">AI Visibility System Active</span>
-        </div>
-        @if($profileBrand)<p class="proj-identity-brand" style="margin-bottom:3px">{{ $profileBrand }}</p>@endif
-        <p class="pib-domain-name">{{ $projectDomain }}</p>
+    <div class="exec-ctx-bar" role="banner" aria-label="Project context: {{ $projectDomain }}">
+      <div class="exec-ctx-domain">
+        <span class="exec-ctx-live" aria-hidden="true"></span>
+        @if($profileBrand)<span class="exec-ctx-brand">{{ $profileBrand }} &mdash;</span>@endif
+        {{ $projectDomain }}
       </div>
-      <div class="pib-right">
-        <div class="proj-identity-meta">
-          @if($scanCompletedLabel)
-          <span class="proj-identity-pill">Scanned {{ $scanCompletedLabel }}</span>
-          @endif
-          @if($pagesAnalyzed > 0)
-          <span class="proj-identity-pill">{{ $pagesAnalyzed }} pages</span>
-          @endif
-          <span class="proj-identity-pill">Level {{ $tierRank }}</span>
-        </div>
+      <div class="exec-ctx-meta">
+        @if($scanCompletedLabel)
+        <span class="exec-ctx-pill">Scanned {{ $scanCompletedLabel }}</span>
+        @endif
+        @if($pagesAnalyzed > 0)
+        <span class="exec-ctx-pill">{{ $pagesAnalyzed }} pages</span>
+        @endif
+        <span class="exec-ctx-pill">Level {{ $tierRank }}</span>
         @if($leadRenderable)
-        <a href="{{ $leadReportHref }}" class="pib-report-btn">
-          Open Latest Report
-          <svg width="10" height="10" viewBox="0 0 10 10" fill="none" aria-hidden="true"><path d="M2 5h6M5.5 2.5 8 5 5.5 7.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <a href="{{ $leadReportHref }}" class="exec-ctx-btn">
+          Open Report
+          <svg width="9" height="9" viewBox="0 0 9 9" fill="none" aria-hidden="true"><path d="M2 4.5h5M5 2.5l2 2-2 2" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>
         </a>
         @else
-        <a href="{{ route('quick-scan.show') }}" class="pib-report-btn-outline">
-          Run Scan to Activate Report
-        </a>
+        <a href="{{ route('quick-scan.show') }}" class="exec-ctx-btn-outline">Run Scan</a>
         @endif
       </div>
     </div>
-    @else
-    <p class="mb-5 text-xs uppercase tracking-[0.14em] text-[#c8a84b]/72">Your previous scans are ready.</p>
     @endif
 
     <div class="dashboard-primary-flow {{ $isScansView ? 'is-scans-view' : '' }} {{ $isReportsView ? 'is-reports-view' : '' }}">
-    <section class="system-section system-section-primary mb-8 dash-section-anchor" id="system-state">
-      <div class="system-unified-module control-hero surface-reveal is-visible">
-        <div class="hero-command-deck">
-        <div class="hero-grid">
-          <div class="hero-main">
-            <div class="hero-status-strip">
-              <span class="surface-focus-kicker">{{ $projectDomain ?? 'AI Visibility Dashboard' }}</span>
-              <span class="hero-status-item">Scan completed {{ $leadLastEvaluation }}</span>
-            </div>
+    <section class="system-section system-section-primary mb-6 dash-section-anchor" id="system-state" aria-labelledby="exec-score-label">
+      <div class="exec-hero-shell surface-reveal is-visible">
+        <div class="exec-hero-grid">
 
-            <div>
-              <p class="hero-overline">Latest Completed Scan</p>
-              <h1 class="hero-domain">{{ $heroHeadline }}</h1>
-              <p class="hero-intro">{{ $projectDomain ? 'Showing your current AI visibility state for '.$projectDomain.'. Your top blocker and fastest improvement path are below.' : 'Your current AI visibility state is ready. Top blockers and your fastest improvement path are below.' }}</p>
+          {{-- Score ring --}}
+          <div class="exec-score-col">
+            <div class="exec-score-ring {{ $noScore ? '' : $leadTelemetryTone }}"
+              @if($noScore) style="border-color:rgba(150,140,120,.28);background:radial-gradient(circle at 50% 38%,rgba(80,72,55,.1),rgba(14,11,8,.96) 70%)" @endif>
+              @if($noScore)
+                <span class="exec-score-no" id="exec-score-label">No<br>score<br>yet</span>
+              @else
+                <span class="exec-score-num" id="exec-score-label" aria-label="Score: {{ $leadScore }} out of 100">{{ $leadScore }}</span>
+                <span class="exec-score-lbl" aria-hidden="true">/ 100</span>
+              @endif
             </div>
-
-            <div class="hero-bottleneck-panel">
-              <p class="hero-bottleneck-label">Primary Bottleneck</p>
-              <p class="hero-bottleneck-copy">{{ $leadBottleneck }}</p>
-            </div>
+            <span class="{{ $noScore ? 'state-chip state-chip-gold' : $stateChipClass }}">
+              {{ $noScore ? 'No data yet' : $leadState }}
+            </span>
           </div>
 
-          <aside class="hero-side surface-reveal is-visible">
-            <div class="hero-score-panel">
-              <p class="hero-panel-label">AI Visibility Score</p>
-              <div class="hero-score-wrap">
-                <div class="hero-score-orb {{ $leadTelemetryTone }}">
-                  <span class="hero-score-value">{{ $leadScore > 0 ? $leadScore : '--' }}</span>
-                  <span class="hero-score-caption">Score</span>
-                </div>
-                <div class="hero-score-meta">
-                  <div class="hero-telemetry">
-                    <p>Status</p>
-                    <p class="telemetry-emphasis">{{ $leadState }}</p>
-                  </div>
-                  <div class="hero-telemetry">
-                    <p>Completed</p>
-                    <p>{{ $leadLastEvaluation }}</p>
-                  </div>
-                </div>
-              </div>
-              @if($scanCompletedLabel)
-              <p class="scan-provenance">Based on scan completed {{ $scanCompletedLabel }}{{ $pagesAnalyzed > 0 ? ' &nbsp;&middot;&nbsp; '.$pagesAnalyzed.' pages' : '' }}</p>
-              @endif
-              <div class="hero-side-grid">
-                <article class="hero-side-metric">
-                  <p>Visibility</p>
-                  <p>{{ $leadState }}</p>
-                </article>
-                <article class="hero-side-metric">
-                  @if($pagesAnalyzed > 0)
-                  <p>Pages Scanned</p>
-                  <p>{{ $pagesAnalyzed }}</p>
-                  @else
-                  <p>Last Scan</p>
-                  <p>{{ $latestEvaluatedLabel }}</p>
-                  @endif
-                </article>
-              </div>
+          {{-- Interpretation --}}
+          <div class="exec-interp-col">
+            <div>
+              <p class="exec-interp-question">What this means for your business</p>
+              <p class="exec-interp-answer">{!! $liveFeedbackInsight !!}</p>
             </div>
+            @if(!$noScore)
+            <div class="exec-bottleneck-block">
+              <p class="exec-bottleneck-label">Biggest issue right now</p>
+              <p class="exec-bottleneck-copy">{{ $leadBottleneck }}</p>
+            </div>
+            @else
+            <div class="exec-bottleneck-block">
+              <p class="exec-bottleneck-label">To get your score</p>
+              <p class="exec-bottleneck-copy">We need to be able to read your site content. Open your site in a private browser — if it doesn&rsquo;t load publicly, we can&rsquo;t measure it yet.</p>
+            </div>
+            @endif
+            <p class="exec-trust-line">
+              Based on publicly readable signals
+              @if($scanCompletedLabel) &nbsp;&middot;&nbsp; {{ $scanCompletedLabel }} @endif
+              @if($pagesAnalyzed > 0) &nbsp;&middot;&nbsp; {{ $pagesAnalyzed }} pages analyzed @endif
+              @if($scoreConfidence && !$noScore) &nbsp;&middot;&nbsp; Confidence: {{ $scoreConfidence }} @endif
+            </p>
+          </div>
 
-            <div class="next-action-block">
-              <p class="next-action-label">Next Action</p>
-              <p class="next-action-copy">{{ $projectDomain ? 'Your top blocker for '.$projectDomain.' is limiting AI visibility.' : 'Fix your primary content signal to improve your AI visibility score.' }}</p>
-              <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:12px">
-                @if($leadRenderable)
-                <a href="{{ $leadReportHref }}" class="next-action-cta" style="margin-top:0">Open Latest Report &rarr;</a>
-                <a href="{{ $nextMoveActionHref }}" class="hero-secondary-cta" style="min-height:42px;font-size:.7rem">See Top Fix</a>
-                @else
-                <a href="{{ $nextMoveActionHref }}" class="next-action-cta" style="margin-top:0">Fix This Now</a>
-                @endif
-              </div>
-            </div>
-          </aside>
+          {{-- Primary actions --}}
+          <div class="exec-action-col">
+            @if($noScore)
+              <a href="{{ route('quick-scan.show') }}" class="exec-cta-primary">Re-check my site &rarr;</a>
+            @elseif($leadRenderable)
+              <a href="{{ $leadReportHref }}" class="exec-cta-primary">Open Full Report &rarr;</a>
+              @if($nextRoute)
+              <a href="{{ $nextUnlockHref }}" class="exec-cta-secondary">{{ $nextStep }}</a>
+              @endif
+            @else
+              <a href="{{ $nextMoveActionHref }}" class="exec-cta-primary">{{ $nextUnlockLabel }} &rarr;</a>
+            @endif
+            @if($scoreDelta > 0 && !$noScore)
+              <p class="exec-cta-stat positive">{{ $scoreDeltaLabel }} pts since last scan</p>
+            @elseif($scoreDelta < 0 && !$noScore)
+              <p class="exec-cta-stat negative">{{ $scoreDeltaLabel }} pts since last scan</p>
+            @elseif($leadLastEvaluation)
+              <p class="exec-cta-stat">Last scanned {{ $leadLastEvaluation }}</p>
+            @endif
+          </div>
+
         </div>
-        </div>
-        <p class="mt-4 text-[11px] uppercase tracking-[0.16em] text-[#988f7c]">Last evaluated: {{ $latestEvaluatedLabel }}</p>
       </div>
     </section>
 
         @if($isSystemView)
+
     @php
-      $levelMeta = [
-        ['key' => 'scan-basic',         'num' => 1, 'kicker' => 'Level 1',  'name' => 'Foundation Signals', 'desc' => 'Establishes your core content signal — business identity, services, and location data for AI discovery.',  'why' => 'AI systems look for clear business identity, service clarity, and a location signal. Without this, your site is invisible to AI-powered search.', 'steps' => ['Baseline visibility score established', 'Primary service signal validated', 'Location targeting activated'], 'lift' => '+12 visibility pts', 'price' => '$2'],
-        ['key' => 'signal-expansion',   'num' => 2, 'kicker' => 'Level 2',  'name' => 'Authority Signals',  'desc' => 'Expands authority coverage across citation layers and validates your market position signals.',            'why' => 'Authority signals tell AI systems you are a real, trusted business in your market. Citation gaps are the #1 reason local businesses are skipped.', 'steps' => ['Citation authority layer active', 'Competitor gap analysis unlocked', 'Secondary market signals validated'], 'lift' => '+18 visibility pts', 'price' => '$99'],
-        ['key' => 'structural-leverage','num' => 3, 'kicker' => 'Level 3',  'name' => 'Expansion Signals',  'desc' => 'Builds structural web presence with schema alignment, topical depth, and conversion architecture.',        'why' => 'Structured data and topical coverage are what move you from "found sometimes" to "consistently cited" in AI and voice search results.', 'steps' => ['Schema and structured data mapped', 'Topical authority stack initiated', 'Conversion pathway architecture active'], 'lift' => '+22 visibility pts', 'price' => '$249'],
-        ['key' => 'system-activation',  'num' => 4, 'kicker' => 'Level 4',  'name' => 'Dominance Layer',    'desc' => 'Activates competitive suppression, AI citation eligibility, and full market coverage controls.',           'why' => 'This is where you go from visible to dominant — AI citation eligibility, competitive suppression, and full market coverage running as a system.', 'steps' => ['AI citation eligibility unlocked', 'Competitive suppression active', 'Full market coverage operational'], 'lift' => '+28 visibility pts', 'price' => '$489'],
+      $planLevels = [
+        ['key' => 'scan-basic',          'num' => 1, 'kicker' => 'Step 1', 'name' => 'Baseline Score',
+          'desc'     => 'Your starting visibility score, your top issue, and your first clear fix.',
+          'included' => ['Visibility score (0–100)', 'Site standing: Strong / Average / At Risk', 'Top issue identified', 'Fastest fix recommendation'],
+          'why'      => 'Know where you stand and exactly what to fix first.',
+          'lift' => '+12 pts', 'price' => '$2'],
+        ['key' => 'signal-expansion',    'num' => 2, 'kicker' => 'Step 2', 'name' => 'Signal Analysis',
+          'desc'     => 'See precisely where stronger competitors are outranking or out-citing your site.',
+          'included' => ['Competitor visibility comparison', 'Gap vs. competitors, signal by signal', 'Clearer path to improvement', 'Why you lose to specific competitors'],
+          'why'      => 'Understand exactly why competitors beat you in AI search results.',
+          'lift' => '+18 pts', 'price' => '$99'],
+        ['key' => 'structural-leverage', 'num' => 3, 'kicker' => 'Step 3', 'name' => 'Priority Fixes',
+          'desc'     => 'A ranked list of fixes sorted by impact — stop guessing, start with what matters most.',
+          'included' => ['Impact-ranked fix list', 'Before/after score estimates per fix', 'Specific implementation steps', 'Time vs. impact analysis'],
+          'why'      => 'Know exactly which changes move your score the most.',
+          'lift' => '+22 pts', 'price' => '$249'],
+        ['key' => 'system-activation',   'num' => 4, 'kicker' => 'Step 4', 'name' => 'Expansion Strategy',
+          'desc'     => 'A full roadmap for consistently outranking competitors across AI, voice, and local search.',
+          'included' => ['Full competitor roadmap', 'Multi-channel visibility strategy', 'Long-term growth plan', 'Ongoing improvement framework'],
+          'why'      => 'Go from found sometimes to consistently recommended.',
+          'lift' => '+28 pts', 'price' => '$489'],
       ];
-      $layersByKey = collect($analysisLayers ?? [])->keyBy('key');
+      $layersByKey   = collect($analysisLayers ?? [])->keyBy('key');
       $firstIncompleteIdx = null;
-      foreach ($levelMeta as $idx => $lm) {
-        $layerData = $layersByKey->get($lm['key']);
-        if (! (bool) ($layerData['complete'] ?? false)) {
-          $firstIncompleteIdx = $idx;
-          break;
+      foreach ($planLevels as $idx => $lm) {
+        if (! (bool) ($layersByKey->get($lm['key'])['complete'] ?? false)) {
+          $firstIncompleteIdx = $idx; break;
         }
       }
       $checkoutRoutes = [
@@ -998,179 +1276,369 @@
         'structural-leverage' => 'checkout.structural-leverage',
         'system-activation'   => 'checkout.system-activation',
       ];
+      $completedLevelMeta = collect($planLevels)->filter(function($lm) use ($layersByKey) {
+        return (bool) ($layersByKey->get($lm['key'])['complete'] ?? false);
+      });
+      $nextLevelMeta = isset($firstIncompleteIdx) ? $planLevels[$firstIncompleteIdx] : null;
+      $nextLevelCheckoutHref = $nextLevelMeta && isset($checkoutRoutes[$nextLevelMeta['key']]) && \Route::has($checkoutRoutes[$nextLevelMeta['key']])
+        ? route($checkoutRoutes[$nextLevelMeta['key']])
+        : $nextUnlockHref;
     @endphp
 
-    {{-- Level Progression Rail --}}
-    <section class="system-section mb-6 dash-section-anchor surface-reveal" id="level-rail-section">
-      <div class="system-subshell" style="padding:20px 24px">
-        <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:18px">
+    {{-- ── INTERPRETATION: What's Driving Your Score ───────────────── --}}
+    @if(!$noScore && isset($topFindings) && count($topFindings) > 0)
+    <section class="system-section mb-6 dash-section-anchor surface-reveal" id="score-drivers" aria-labelledby="score-drivers-heading">
+      <div class="score-drivers-shell">
+        <div class="score-drivers-head">
           <div>
-            <p style="font-size:.58rem;letter-spacing:.22em;text-transform:uppercase;color:rgba(200,168,75,.65);margin-bottom:4px">Your Progression Path</p>
-            <p style="font-size:.9rem;font-weight:600;color:#ede8de">Start Here: Fix Your Top Blocker</p>
+            <p class="score-drivers-kicker">What&rsquo;s Driving Your Score</p>
+            <h2 id="score-drivers-heading" class="score-drivers-title">
+              @if($leadScore >= 70)
+                Solid base &mdash; these gaps are limiting your visibility.
+              @elseif($leadScore >= 45)
+                Visibility gaps found &mdash; here&rsquo;s what to prioritize.
+              @else
+                Critical gaps are blocking you from AI citation.
+              @endif
+            </h2>
+            <p class="score-drivers-desc">These are the issues most likely affecting how often AI tools find and recommend {{ $projectDomain ?? 'your business' }}.</p>
           </div>
-          <span style="font-size:.62rem;letter-spacing:.14em;text-transform:uppercase;padding:4px 10px;border-radius:20px;background:rgba(200,168,75,.12);border:1px solid rgba(200,168,75,.28);color:rgba(200,168,75,.8);white-space:nowrap">Level {{ $tierRank }} Active</span>
+          <div class="score-drivers-meta">
+            <span class="{{ $stateChipClass }}">{{ $leadState }}</span>
+            <span class="score-drivers-count">{{ count($topFindings) }} issue{{ count($topFindings) !== 1 ? 's' : '' }} identified</span>
+          </div>
         </div>
-        <div class="level-rail">
-          @foreach($levelMeta as $idx => $lm)
+        <div class="score-drivers-grid">
+          @foreach(array_slice($topFindings ?? [], 0, 3) as $findingIdx => $finding)
+          @php
+            $findingImpact    = (int) ($finding['impact_score'] ?? 0);
+            $impactLabel      = $findingImpact >= 80 ? 'Critical' : ($findingImpact >= 60 ? 'High' : ($findingImpact >= 40 ? 'Medium' : 'Low'));
+            $impactClass      = $findingImpact >= 80 ? 'impact-critical' : ($findingImpact >= 60 ? 'impact-high' : ($findingImpact >= 40 ? 'impact-medium' : 'impact-low'));
+            $findingIsUnlocked = (bool) ($finding['is_unlocked'] ?? false);
+            $findingTierName  = $finding['fix_tier'] ?? '';
+            $findingTierPrice = $finding['fix_price'] ?? '';
+            $findingRouteKey  = $finding['fix_route'] ?? null;
+            // When unlocked, the route is 'dashboard.scans.show' which requires a {scan} param.
+            // Use $leadReportHref (already built with the correct scan key) instead of calling route() bare.
+            $findingUnlockHref = $findingIsUnlocked
+              ? $leadReportHref
+              : (($findingRouteKey && $findingRouteKey !== 'dashboard.scans.show' && \Route::has($findingRouteKey)) ? route($findingRouteKey) : $nextUnlockHref);
+            $findingPrompt    = 'My top issue is: ' . ($finding['what_missing'] ?? 'unknown') . '. Why does this matter for my AI visibility score, and what should I do about it?';
+          @endphp
+          <article class="score-driver-card {{ $findingIdx === 0 ? 'is-primary' : '' }} {{ !$findingIsUnlocked ? 'is-locked' : '' }}"
+            aria-label="Issue {{ $findingIdx + 1 }}: {{ Str::limit($finding['what_missing'] ?? 'Issue detected', 60) }}">
+            <div class="sdc-header">
+              <span class="sdc-rank" aria-label="Priority {{ $findingIdx + 1 }}">{{ $findingIdx + 1 }}</span>
+              <span class="sdc-impact-badge {{ $impactClass }}">{{ $impactLabel }}</span>
+              @if(!$findingIsUnlocked && $findingTierName)
+              <span class="sdc-lock-badge">Unlock {{ $findingTierName }}</span>
+              @endif
+            </div>
+            <h3 class="sdc-issue">{{ $finding['what_missing'] ?? 'Issue detected' }}</h3>
+            @if($findingIsUnlocked)
+              @if(!empty($finding['why_it_matters']))
+              <p class="sdc-why">{{ $finding['why_it_matters'] }}</p>
+              @endif
+              @if(!empty($finding['fix']))
+              <div class="sdc-fix">
+                <p class="sdc-fix-label">Fix</p>
+                <p class="sdc-fix-copy">{{ $finding['fix'] }}</p>
+              </div>
+              @endif
+              <button type="button"
+                class="sdc-ask-btn js-ask-scan-chip"
+                data-prompt="{{ $findingPrompt }}"
+                aria-label="Ask AI about this issue">
+                <svg width="11" height="11" viewBox="0 0 11 11" fill="none" aria-hidden="true"><circle cx="5.5" cy="5.5" r="4.5" stroke="currentColor" stroke-width="1.1"/><path d="M5.5 7V5.5M5.5 4h.01" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>
+                Ask AI about this
+              </button>
+            @else
+              <p class="sdc-locked-hint">Unlock {{ $findingTierName }}{{ $findingTierPrice ? ' ('.$findingTierPrice.')' : '' }} to see the full explanation and fix for this issue.</p>
+              <a href="{{ $findingUnlockHref }}" class="sdc-unlock-btn">Unlock to See Fix &rarr;</a>
+            @endif
+          </article>
+          @endforeach
+        </div>
+      </div>
+    </section>
+    @endif
+
+    {{-- ── PRIORITY: What to Do Next ───────────────────────────────── --}}
+    @if(!$noScore)
+    <section class="system-section mb-6 dash-section-anchor surface-reveal" id="next-move" aria-labelledby="next-move-heading">
+      <div class="next-move-shell">
+        <p class="dash-section-label">What to do next</p>
+        <h2 id="next-move-heading" class="dash-section-heading">Your clearest path to a higher score</h2>
+        <p class="dash-section-subhead">Two actions, ranked by speed and impact for {{ $projectDomain ?? 'your site' }}.</p>
+        <div class="next-move-row">
+
+          {{-- Fastest win --}}
+          <div class="nm-card nm-primary">
+            <p class="nm-card-kicker">Fastest win</p>
+            <h3 class="nm-card-title">{{ $nextMoveFastestFix }}</h3>
+            <p class="nm-card-rationale">The quickest change likely to raise your score before your next scan.</p>
+            @if($leadRenderable)
+            <a href="{{ $leadReportHref }}" class="nm-card-action">View fix in your report &rarr;</a>
+            @else
+            <a href="{{ $nextMoveActionHref }}" class="nm-card-action">{{ $nextUnlockLabel }} &rarr;</a>
+            @endif
+          </div>
+
+          {{-- Highest leverage --}}
+          @if(isset($nextBestAction) && !empty($nextBestAction))
+          <div class="nm-card">
+            <p class="nm-card-kicker">Highest leverage</p>
+            <h3 class="nm-card-title">{{ $nextBestAction['what_missing'] ?? 'Primary visibility gap' }}</h3>
+            <p class="nm-card-rationale">{{ !empty($nextBestAction['why_it_matters']) ? $nextBestAction['why_it_matters'] : 'Fixing this has the highest projected impact on your visibility score.' }}</p>
+            @if($leadRenderable)
+            <a href="{{ $leadReportHref }}" class="nm-card-action">See full fix details &rarr;</a>
+            @else
+            <a href="{{ $nextMoveActionHref }}" class="nm-card-action">{{ $nextUnlockLabel }} &rarr;</a>
+            @endif
+          </div>
+          @elseif(isset($nextUpgrade) && !empty($nextUpgrade))
+          <div class="nm-card">
+            <p class="nm-card-kicker">Deeper insight available</p>
+            <h3 class="nm-card-title">{{ $nextUpgrade['label'] ?? $nextStep }}</h3>
+            <p class="nm-card-rationale">{{ $nextUpgrade['description'] ?? 'Unlock the next level to see your highest-impact fixes, ranked by score potential.' }}</p>
+            <a href="{{ $nextUnlockHref }}" class="nm-card-action">
+              Unlock{{ isset($nextUpgrade['price']) ? ' — '.$nextUpgrade['price'] : ($nextLevelPrice ? ' — '.$nextLevelPrice : '') }} &rarr;
+            </a>
+          </div>
+          @elseif($nextStep)
+          <div class="nm-card">
+            <p class="nm-card-kicker">Deeper analysis available</p>
+            <h3 class="nm-card-title">{{ $nextStep }}</h3>
+            <p class="nm-card-rationale">The next level reveals more precise fixes and shows exactly which changes will move your score the most.</p>
+            <a href="{{ $nextUnlockHref }}" class="nm-card-action">
+              Unlock{{ $nextLevelPrice ? ' — '.$nextLevelPrice : '' }} &rarr;
+            </a>
+          </div>
+          @endif
+
+        </div>
+      </div>
+    </section>
+    @endif
+
+    {{-- ── PROGRESSION: Your Plan ───────────────────────────────────── --}}
+    <section class="system-section mb-6 dash-section-anchor surface-reveal" id="your-plan" aria-labelledby="your-plan-heading">
+      <div class="your-plan-shell">
+
+        <p class="dash-section-label">Your Plan</p>
+        <h2 id="your-plan-heading" class="dash-section-heading">
+          @if($completedLevelMeta->isEmpty())
+            Start with Step 1 — your baseline score
+          @elseif($nextLevelMeta)
+            Level {{ $tierRank }} active &mdash; {{ $nextLevelMeta['name'] }} is your next step
+          @else
+            All levels complete &mdash; expansion mode active
+          @endif
+        </h2>
+        <p class="dash-section-subhead">What your current plan includes, and what deeper access unlocks.</p>
+
+        {{-- Level progress rail --}}
+        <div class="plan-rail-row" aria-label="Analysis level progress">
+          @foreach($planLevels as $idx => $lm)
             @php
-              $layerData = $layersByKey->get($lm['key']);
-              $isComplete = (bool) ($layerData['complete'] ?? false);
-              $isActive   = $idx === $firstIncompleteIdx;
-              $railState  = $isComplete ? 'is-complete' : ($isActive ? 'is-active' : 'is-locked');
-              $connectorClass = $isComplete ? 'level-rail-connector is-complete' : 'level-rail-connector';
+              $plIsComplete = (bool) ($layersByKey->get($lm['key'])['complete'] ?? false);
+              $plIsActive   = $idx === $firstIncompleteIdx;
+              $plRailState  = $plIsComplete ? 'is-complete' : ($plIsActive ? 'is-active' : 'is-locked');
+              $plConnector  = $plIsComplete ? 'level-rail-connector is-complete' : 'level-rail-connector';
             @endphp
-            <div class="level-rail-step {{ $railState }}">
+            <div class="level-rail-step {{ $plRailState }}" aria-label="{{ $lm['name'] }}{{ $plIsComplete ? ' (complete)' : ($plIsActive ? ' (next)' : ' (locked)') }}">
               <div class="level-rail-step-dot">
-                @if($isComplete)
+                @if($plIsComplete)
                   <svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M1.5 5l2.5 2.5 4.5-5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
-                @elseif($isActive)
+                @elseif($plIsActive)
                   <svg width="8" height="8" viewBox="0 0 8 8" fill="none"><circle cx="4" cy="4" r="3" fill="currentColor"/></svg>
                 @else
                   <svg width="9" height="9" viewBox="0 0 9 9" fill="none"><path d="M4.5 1a1.75 1.75 0 0 1 1.75 1.75V4h-3.5V2.75A1.75 1.75 0 0 1 4.5 1z" stroke="currentColor" stroke-width="1.2"/><rect x="2" y="4" width="5" height="4" rx="1" stroke="currentColor" stroke-width="1.2"/></svg>
                 @endif
               </div>
-              <span class="level-rail-step-label">L{{ $lm['num'] }}</span>
+              <span class="level-rail-step-label">{{ $lm['kicker'] }}</span>
             </div>
-            @if(! $loop->last)
-              <div class="{{ $connectorClass }}"></div>
+            @if(!$loop->last)
+              <div class="{{ $plConnector }}"></div>
             @endif
           @endforeach
         </div>
-      </div>
-    </section>
 
-    {{-- Level Cards Grid --}}
-    <section class="system-section mb-6 dash-section-anchor surface-reveal" id="level-cards">
-      <div class="level-card-grid">
-        @foreach($levelMeta as $idx => $lm)
-          @php
-            $layerData = $layersByKey->get($lm['key']);
-            $isComplete = (bool) ($layerData['complete'] ?? false);
-            $isActive   = $idx === $firstIncompleteIdx;
-            $isLocked   = ! $isComplete && ! $isActive;
-            $cardState  = $isComplete ? 'state-complete' : ($isActive ? 'state-active' : 'state-locked');
-            $badgeClass = $isComplete ? 'badge-completed' : ($isActive ? 'badge-ready' : 'badge-locked');
-            $badgeLabel = $isComplete ? 'Completed' : ($isActive ? 'Ready' : 'Locked');
-            $checkoutHref = (isset($checkoutRoutes[$lm['key']]) && \Route::has($checkoutRoutes[$lm['key']])) ? route($checkoutRoutes[$lm['key']]) : $nextUnlockHref;
-            $reportHref = ($leadRenderable && $leadRouteKey) ? route('dashboard.scans.show', ['scan' => $leadRouteKey]) : $leadReportHref;
-          @endphp
-          <article class="level-card {{ $cardState }}" aria-label="{{ $lm['name'] }} level card">
-            <div class="level-card-accent" aria-hidden="true"></div>
-            <span class="level-state-badge {{ $badgeClass }}">
-              @if($isComplete)
-                <svg width="8" height="8" viewBox="0 0 8 8" fill="none"><path d="M1 4l2 2 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-              @elseif($isActive)
-                <svg width="6" height="6" viewBox="0 0 6 6" fill="none"><circle cx="3" cy="3" r="2.5" fill="currentColor"/></svg>
-              @else
-                <svg width="8" height="8" viewBox="0 0 8 8" fill="none"><path d="M4 0.75a1.5 1.5 0 0 1 1.5 1.5V3.5h-3V2.25A1.5 1.5 0 0 1 4 .75z" stroke="currentColor" stroke-width="1.1"/><rect x="1.5" y="3.5" width="5" height="3.75" rx=".75" stroke="currentColor" stroke-width="1.1"/></svg>
-              @endif
-              {{ $badgeLabel }}
-            </span>
+        {{-- Current plan + next upgrade --}}
+        @if($completedLevelMeta->isNotEmpty() || $nextLevelMeta)
+        <div class="plan-level-row">
 
-            <p class="level-card-kicker">{{ $lm['kicker'] }}</p>
-            <h3 class="level-card-name">{{ $lm['name'] }}</h3>
-            <p class="level-card-desc">{{ $lm['desc'] }}</p>
-
-            @if($isActive && !empty($lm['why']))
-            <p class="level-card-why">{{ $lm['why'] }}</p>
-            @endif
-
-            <ul class="level-card-steps" aria-label="Level steps">
-              @foreach($lm['steps'] as $step)
-              <li class="level-card-step">
-                <span class="level-card-step-icon" aria-hidden="true">
-                  @if($isComplete)
-                    <svg width="8" height="8" viewBox="0 0 8 8" fill="none"><path d="M1 4l2 2 4-4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
-                  @elseif($isActive)
-                    <svg width="6" height="6" viewBox="0 0 6 6" fill="none"><circle cx="3" cy="3" r="2" fill="currentColor"/></svg>
-                  @else
-                    <svg width="6" height="6" viewBox="0 0 6 6" fill="none"><rect x=".75" y=".75" width="4.5" height="4.5" rx="1" stroke="currentColor" stroke-width="1.1"/></svg>
-                  @endif
+          {{-- What's included now --}}
+          @if($completedLevelMeta->isNotEmpty())
+          @php $currentPlanLevel = $completedLevelMeta->last(); @endphp
+          <div class="plan-current-card">
+            <p class="plan-current-kicker">What&rsquo;s included in your plan now</p>
+            <h3 class="plan-current-name">{{ $currentPlanLevel['kicker'] }} &mdash; {{ $currentPlanLevel['name'] }}</h3>
+            <p class="plan-current-desc">{{ $currentPlanLevel['why'] }}</p>
+            <div class="plan-included-list">
+              @foreach($currentPlanLevel['included'] as $item)
+              <div class="plan-included-item">
+                <span class="plan-included-icon" aria-hidden="true">
+                  <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M1.5 6l3 3 6-6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
                 </span>
-                <span>{{ $step }}</span>
-              </li>
-              @endforeach
-            </ul>
-
-            <div class="level-card-lift">
-              <svg width="9" height="9" viewBox="0 0 9 9" fill="none"><path d="M4.5 1v7M1.5 3.5l3-3 3 3" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
-              {{ $lm['lift'] }}
-            </div>
-
-            @if($isComplete)
-              <a href="{{ $reportHref }}" class="level-card-cta-secondary">View Report &rarr;</a>
-            @elseif($isActive)
-              <button type="button"
-                class="level-card-cta-primary js-dcm-open"
-                data-level="{{ $lm['num'] }}"
-                data-level-name="{{ $lm['name'] }}"
-                data-checkout-href="{{ $checkoutHref }}"
-                data-price="{{ $lm['price'] }}">
-                Unlock This Layer
-              </button>
-            @else
-              <div class="level-card-cta-disabled" aria-disabled="true">
-                <svg width="10" height="10" viewBox="0 0 10 10" fill="none" aria-hidden="true"><path d="M5 0.875a2 2 0 0 1 2 2V4.5H3V2.875A2 2 0 0 1 5 .875z" stroke="currentColor" stroke-width="1.2"/><rect x="1.5" y="4.5" width="7" height="5" rx="1" stroke="currentColor" stroke-width="1.2"/></svg>
-                Unlock Previous Level First
+                {{ $item }}
               </div>
+              @endforeach
+            </div>
+            @if($leadRenderable)
+            <a href="{{ $leadReportHref }}" class="plan-view-report-btn">View your report &rarr;</a>
             @endif
-          </article>
-        @endforeach
-      </div>
-    </section>
+          </div>
+          @endif
 
-    {{-- Premium Gate (shown until Level 3 is achieved) --}}
-    @if($tierRank < 3)
-    <section class="system-section mb-6 dash-section-anchor surface-reveal" id="premium-gate">
-      <div class="premium-gate-card">
-        <p class="premium-gate-kicker">Premium Intelligence</p>
-        <h3 class="premium-gate-title">Unlock Full Competitive Suppression</h3>
-        <p class="premium-gate-desc">Levels 3 and 4 unlock structural leverage, AI citation eligibility, and competitive takedown sequencing &mdash; the tools that move you from visible to dominant.</p>
-        <a href="{{ $nextUnlockHref }}" class="premium-gate-cta">
-          <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M7 1a3 3 0 0 1 3 3v2H4V4A3 3 0 0 1 7 1z" stroke="currentColor" stroke-width="1.4"/><rect x="2" y="6" width="10" height="7" rx="1.5" stroke="currentColor" stroke-width="1.4"/><circle cx="7" cy="9.5" r="1" fill="currentColor"/></svg>
-          Unlock Levels 3 &amp; 4
-        </a>
-      </div>
-    </section>
-    @endif
+          {{-- Next level --}}
+          @if($nextLevelMeta)
+          @php
+            $nextCheckHref = (isset($checkoutRoutes[$nextLevelMeta['key']]) && \Route::has($checkoutRoutes[$nextLevelMeta['key']]))
+              ? route($checkoutRoutes[$nextLevelMeta['key']]) : $nextUnlockHref;
+          @endphp
+          <div class="plan-next-card">
+            <p class="plan-next-kicker">{{ $nextLevelMeta['kicker'] }} &mdash; next level to unlock</p>
+            <h3 class="plan-next-name">{{ $nextLevelMeta['name'] }}</h3>
+            <p class="plan-next-price">{{ $nextLevelMeta['price'] }}</p>
+            <p class="plan-next-desc">{{ $nextLevelMeta['why'] }}</p>
+            <div class="plan-next-unlocks">
+              @foreach($nextLevelMeta['included'] as $item)
+              <div class="plan-next-unlock-item">
+                <span class="plan-next-unlock-icon" aria-hidden="true">
+                  <svg width="11" height="11" viewBox="0 0 11 11" fill="none"><path d="M2 5.5l2.5 2.5 4.5-4.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </span>
+                {{ $item }}
+              </div>
+              @endforeach
+            </div>
+            <button type="button" class="plan-unlock-cta js-dcm-open"
+              data-level="{{ $nextLevelMeta['num'] }}"
+              data-level-name="{{ $nextLevelMeta['name'] }}"
+              data-checkout-href="{{ $nextCheckHref }}"
+              data-price="{{ $nextLevelMeta['price'] }}">
+              Unlock {{ $nextLevelMeta['name'] }} &mdash; {{ $nextLevelMeta['price'] }}
+            </button>
+          </div>
+          @else
+          {{-- All levels complete --}}
+          <div class="plan-all-unlocked-card">
+            <p class="plan-all-unlocked-kicker">All levels complete</p>
+            <h3 class="plan-all-unlocked-title">System fully activated</h3>
+            <p class="plan-all-unlocked-desc">You have access to all four analysis levels. Your complete visibility framework is active.</p>
+          </div>
+          @endif
 
-    {{-- Consultation CTA Banner --}}
-    <section class="system-section mb-6 dash-section-anchor surface-reveal" id="consult-cta">
-      <div class="consult-cta-banner">
-        <div class="consult-cta-copy">
-          <p>Need expert guidance?</p>
-          <p>Apply your system fixes with us &mdash; book a strategy session and we&rsquo;ll execute the corrections for you.</p>
         </div>
-        <a href="{{ route('book.index') }}?entry=dashboard-level-system" class="consult-cta-btn">
-          Book a Strategy Session &rarr;
-        </a>
+        @else
+        {{-- No completed layers, one next step --}}
+        @if($nextLevelMeta)
+        @php
+          $nextCheckHref = (isset($checkoutRoutes[$nextLevelMeta['key']]) && \Route::has($checkoutRoutes[$nextLevelMeta['key']]))
+            ? route($checkoutRoutes[$nextLevelMeta['key']]) : $nextUnlockHref;
+        @endphp
+        <div class="plan-level-row">
+          <div class="plan-next-card" style="grid-column:1/-1">
+            <p class="plan-next-kicker">Start here — Step 1</p>
+            <h3 class="plan-next-name">Baseline Score</h3>
+            <p class="plan-next-price">$2</p>
+            <p class="plan-next-desc">Get your visibility score, your top issue, and your first clear fix.</p>
+            <button type="button" class="plan-unlock-cta js-dcm-open"
+              data-level="1" data-level-name="Baseline Score"
+              data-checkout-href="{{ $nextCheckHref }}" data-price="$2">
+              Get Your Baseline Score &mdash; $2
+            </button>
+          </div>
+        </div>
+        @endif
+        @endif
+
+        {{-- Consultation row --}}
+        <div class="plan-consult-row">
+          <p class="plan-consult-copy">Want us to implement this for you? We map, build, and deploy your full visibility system.</p>
+          <a href="{{ route('book.index') }}?entry=dashboard-plan" class="plan-consult-btn">Book a Strategy Session &rarr;</a>
+        </div>
+
       </div>
     </section>
 
+    {{-- ── CONFIDENCE: Your AI Advisor ─────────────────────────────── --}}
+    @if($leadScore > 0 || $leadRenderable)
+    <section class="system-section mb-6 dash-section-anchor surface-reveal" id="ai-advisor-section" aria-labelledby="ai-advisor-heading">
+      <div class="ai-advisor-shell">
+        <div class="ai-advisor-head">
+          <div>
+            <p class="ai-advisor-kicker">Your AI Visibility Advisor</p>
+            <h2 id="ai-advisor-heading" class="ai-advisor-title">Ask anything about{{ $projectDomain ? ' '.$projectDomain : ' your scan' }}</h2>
+            <p class="ai-advisor-desc">Get plain-English explanations of your score, what to fix, and what to do next.</p>
+          </div>
+          <button type="button" class="ai-advisor-open-btn js-open-ai-no-prompt" aria-label="Open AI advisor">
+            Open Advisor
+            <svg width="11" height="11" viewBox="0 0 11 11" fill="none" aria-hidden="true" style="margin-left:6px"><path d="M2.5 5.5h6M6.5 3l2.5 2.5L6.5 8" stroke="currentColor" stroke-width="1.45" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+        </div>
+        <div class="ai-advisor-chips" role="list">
+          <button type="button" role="listitem" class="ai-advisor-chip js-ask-scan-chip"
+            data-prompt="My AI visibility score is {{ $leadScore }}/100 and my status is {{ $leadState }}. In plain English, what does this mean for my business, and what's the single most important thing I can do to improve it?"
+            aria-label="Ask: Why is my score {{ $leadScore }}?">
+            <span class="ai-chip-icon" aria-hidden="true"><svg width="9" height="9" viewBox="0 0 9 9" fill="none"><circle cx="4.5" cy="4.5" r="3.5" stroke="rgba(200,168,75,0.7)" stroke-width="1"/><path d="M4.5 6V4.5M4.5 3.5h.01" stroke="rgba(200,168,75,0.7)" stroke-width="1.1" stroke-linecap="round"/></svg></span>
+            Why is my score {{ $leadScore }}?
+          </button>
+          <button type="button" role="listitem" class="ai-advisor-chip js-ask-scan-chip"
+            data-prompt="What's the single fastest fix I can make right now to improve my AI visibility score for {{ $projectDomain ?? 'my website' }}? Be specific and practical."
+            aria-label="Ask about fastest fix">
+            <span class="ai-chip-icon" aria-hidden="true"><svg width="9" height="9" viewBox="0 0 9 9" fill="none"><path d="M4.5 1v3.5l2 1.5" stroke="rgba(200,168,75,0.7)" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round"/><circle cx="4.5" cy="4.5" r="3.5" stroke="rgba(200,168,75,0.7)" stroke-width="1"/></svg></span>
+            What&rsquo;s the fastest fix?
+          </button>
+          <button type="button" role="listitem" class="ai-advisor-chip js-ask-scan-chip"
+            data-prompt="What does being '{{ $leadState }}' mean in practical terms for {{ $projectDomain ?? 'my business' }}? How urgently should I act and what's at risk if I don't?"
+            aria-label="Ask what {{ $leadState }} means">
+            <span class="ai-chip-icon" aria-hidden="true"><svg width="9" height="9" viewBox="0 0 9 9" fill="none"><path d="M1.5 4.5h6M4.5 1.5v6" stroke="rgba(200,168,75,0.7)" stroke-width="1.1" stroke-linecap="round"/></svg></span>
+            What does &lsquo;{{ $leadState }}&rsquo; mean?
+          </button>
+          @if($nextStep)
+          <button type="button" role="listitem" class="ai-advisor-chip js-ask-scan-chip"
+            data-prompt="Is it worth unlocking {{ $nextStep }} for {{ $projectDomain ?? 'my website' }}? What specific improvements will I see, and how does it help my visibility in AI search results?"
+            aria-label="Ask about {{ $nextStep }}">
+            <span class="ai-chip-icon" aria-hidden="true"><svg width="9" height="9" viewBox="0 0 9 9" fill="none"><path d="M4.5 1.5a1.5 1.5 0 0 1 1.5 1.5V4H3V3a1.5 1.5 0 0 1 1.5-1.5z" stroke="rgba(200,168,75,0.7)" stroke-width="1"/><rect x="2" y="4" width="5" height="3.5" rx="0.75" stroke="rgba(200,168,75,0.7)" stroke-width="1"/></svg></span>
+            Is &ldquo;{{ $nextStep }}&rdquo; worth it?
+          </button>
+          @else
+          <button type="button" role="listitem" class="ai-advisor-chip js-ask-scan-chip"
+            data-prompt="I've completed all scan analysis levels for {{ $projectDomain ?? 'my website' }}. What should I focus on next to keep growing my AI visibility score over time?"
+            aria-label="Ask what to focus on next">
+            <span class="ai-chip-icon" aria-hidden="true"><svg width="9" height="9" viewBox="0 0 9 9" fill="none"><path d="M4.5 1v7M2 3.5l2.5-2.5 2.5 2.5" stroke="rgba(200,168,75,0.7)" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+            What should I focus on next?
+          </button>
+          @endif
+        </div>
+      </div>
+    </section>
     @endif
 
+    @endif
     @if($isReportsView)
     <section class="system-section mb-8 dash-section-anchor surface-reveal" id="report-readouts">
       <div class="ia-progress-shell">
         <div class="ia-progress-head">
           <div>
-            <h2>Progression and Unlock Path</h2>
-            <p>Reports is repurposed for level progression only: current level, next level, what unlocks next, and the direct upgrade path.</p>
+            <h2>Your progress path</h2>
+            <p>Where you are now, what you unlock next, and how to get there.</p>
           </div>
           <span class="scan-library-pill">Current Level <strong>{{ $currentLevelLabel }}</strong></span>
         </div>
         <div class="ia-level-grid">
           <article class="ia-level-card">
-            <p>Current Level</p>
+            <p>Where you are</p>
             <p>{{ $currentLevelLabel }}</p>
           </article>
           <article class="ia-level-card">
-            <p>Next Level</p>
-            <p>{{ $nextLevelLabel }}{{ $nextLevelPrice ? (' · ' . $nextLevelPrice) : '' }}</p>
+            <p>What&rsquo;s next</p>
+            <p>{{ $nextLevelLabel }}{{ $nextLevelPrice ? (' &middot; ' . $nextLevelPrice) : '' }}</p>
           </article>
         </div>
         <div class="ia-level-unlocks">
-          <p>Next Level Unlocks</p>
+          <p>What you unlock next</p>
           <ul>
             @foreach($nextLevelUnlocks as $unlock)
               <li>{{ $unlock }}</li>
@@ -1431,30 +1899,30 @@
         <h1 class="onboarding-command-title">AI can’t see your business yet</h1>
         <p class="onboarding-command-copy">Run your first scan to establish your visibility baseline and unlock your system readout.</p>
         <a href="{{ route('scan.start') }}" class="onboarding-command-cta">Run My First Scan →</a>
-        <p class="onboarding-command-reassure">See your score, biggest gaps, and first fix in seconds.</p>
-        <p class="onboarding-command-footnote">Takes 10 seconds • $2 scan</p>
+        <p class="onboarding-command-reassure">See your score, your biggest gap, and your first fix.</p>
+        <p class="onboarding-command-footnote">Takes 10 seconds &bull; $2</p>
         <details class="onboarding-explainer">
           <summary>What will the scan show?</summary>
           <div class="onboarding-explainer-panel">
             <ul>
-              <li>Your current visibility score baseline.</li>
-              <li>The biggest gaps limiting AI retrieval.</li>
-              <li>The first highest-impact fix to apply.</li>
+              <li>Your baseline visibility score (0&ndash;100).</li>
+              <li>Your biggest issue holding you back.</li>
+              <li>The first fix most likely to improve your score.</li>
             </ul>
           </div>
         </details>
         <div class="onboarding-proof-strip" aria-hidden="true">
           <article class="onboarding-proof-item">
-            <p>AI Check</p>
-            <p>Visibility score baseline</p>
+            <p>You get</p>
+            <p>Baseline visibility score</p>
           </article>
           <article class="onboarding-proof-item">
-            <p>AI Check</p>
-            <p>Primary gap identification</p>
+            <p>You get</p>
+            <p>Your biggest issue</p>
           </article>
           <article class="onboarding-proof-item">
-            <p>AI Check</p>
-            <p>Fastest first correction</p>
+            <p>You get</p>
+            <p>Your first fix</p>
           </article>
         </div>
       </div>
@@ -2457,6 +2925,52 @@
       }, 2800);
     }, 650);
   })();
+</script>
+
+<script>
+// ── Dashboard AI Advisor chip wiring ─────────────────────────────────
+(function () {
+  'use strict';
+
+  /**
+   * Open the floating AI assistant panel and optionally send a prompt.
+   * Matches the API used on quick-scan-result.blade.php.
+   */
+  function openAiPanel(prompt) {
+    var trigger = document.getElementById('aiaTrigger');
+    var inputEl = document.getElementById('aiaInput');
+    var sendEl  = document.getElementById('aiaSend');
+    if (!trigger) return;
+
+    // Open the panel
+    if (trigger.getAttribute('aria-expanded') !== 'true') {
+      trigger.click();
+    }
+    if (!prompt) return;
+
+    // After the greeting renders (~420ms), populate and auto-send
+    setTimeout(function () {
+      if (inputEl) {
+        inputEl.value = prompt;
+        inputEl.dispatchEvent(new Event('input', { bubbles: true }));
+      }
+      setTimeout(function () {
+        if (sendEl && !sendEl.disabled) sendEl.click();
+      }, 180);
+    }, 420);
+  }
+
+  // Delegate clicks for all chip classes used on this page
+  document.addEventListener('click', function (e) {
+    var t = e.target.closest('.js-ask-scan-chip, .js-open-ai-panel, .js-open-ai-no-prompt');
+    if (!t) return;
+    if (t.classList.contains('js-open-ai-no-prompt')) {
+      openAiPanel('');
+      return;
+    }
+    openAiPanel(t.dataset.prompt || '');
+  });
+})();
 </script>
 
 {{-- Data Capture Modal --}}

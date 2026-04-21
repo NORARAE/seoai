@@ -21,6 +21,7 @@ use App\Http\Controllers\Auth\GoogleAuthController;
 use App\Http\Controllers\ScanEntryController;
 use App\Http\Controllers\UnsubscribeController;
 use App\Http\Middleware\EnsureUserIsApproved;
+use App\Http\Controllers\AiAssistantController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -34,6 +35,13 @@ use Illuminate\Support\Facades\Route;
 | 3. Internal Admin Layer (/admin) - Filament admin panel (see FilamentServiceProvider)
 |
 */
+
+// ============================================================================
+// AI ASSISTANT — available to guests and authenticated users
+// ============================================================================
+Route::post('/ai/chat', [AiAssistantController::class, 'chat'])
+    ->middleware('throttle:30,1')
+    ->name('ai.chat');
 
 // ============================================================================
 // PUBLIC LAYER - Marketing & Landing Pages

@@ -256,6 +256,18 @@
       $score >= 60 => 'This is your starting point. Fixing your top blocker moves you into the top tier.',
       default      => 'This is your starting point. One fix here changes how AI understands and recommends you.',
   };
+  $currentTierName = match ($unlockLevel) {
+      1 => 'Base Scan',
+      2 => 'Signal Expansion',
+      3 => 'Structural Leverage',
+      default => 'System Activation',
+  };
+  $currentTierPrice = match ($unlockLevel) {
+      1 => '$2',
+      2 => '$99',
+      3 => '$249',
+      default => '$489',
+  };
 @endphp
 <style>
 @include('partials.design-system')
@@ -660,6 +672,29 @@ a{text-decoration:none;color:inherit}
   .progression-strip{grid-template-columns:1fr}
   .next-move-grid{grid-template-columns:1fr}
 }
+
+/* ── Ask-Scan module (inline AI entry point) ─────────── */
+.ask-scan-module{border-color:rgba(200,168,75,.28);background:linear-gradient(155deg,rgba(23,19,13,.97),rgba(11,9,7,.99))}
+.ask-scan-inner{padding:16px 18px}
+.ask-scan-kicker{font-size:.52rem;letter-spacing:.22em;text-transform:uppercase;color:rgba(200,168,75,.72);margin:0 0 4px}
+.ask-scan-title{font-family:'Cormorant Garamond',serif;font-size:1.3rem;font-weight:400;margin:0 0 6px;color:#ede8de}
+.ask-scan-desc{margin:0 0 12px;font-size:.75rem;line-height:1.55;color:#c8beaa}
+.ask-scan-chips{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:12px}
+.ask-scan-chip{background:rgba(200,168,75,.07);border:1px solid rgba(200,168,75,.2);border-radius:18px;padding:6px 13px;font-family:'DM Sans',sans-serif;font-size:.71rem;letter-spacing:.03em;color:rgba(200,168,75,.88);cursor:pointer;white-space:nowrap;transition:background .2s,border-color .2s,color .2s;-webkit-tap-highlight-color:transparent}
+.ask-scan-chip:hover{background:rgba(200,168,75,.14);border-color:rgba(200,168,75,.4);color:#d8be72}
+@media(max-width:640px){.ask-scan-chips{flex-direction:column}.ask-scan-chip{white-space:normal;text-align:left}}
+
+/* ── Hero tier callout ────────────────────────────────── */
+.hero-tier-callout{margin:10px 0 0;padding:10px 13px;border:1px solid rgba(200,168,75,.18);border-radius:10px;background:rgba(200,168,75,.05)}
+.hero-tier-callout strong{display:block;font-size:.52rem;letter-spacing:.18em;text-transform:uppercase;color:#ddc98e;margin-bottom:6px}
+.hero-tier-list{margin:0;padding-left:16px}
+.hero-tier-list li{font-size:.71rem;color:#ece2c7;line-height:1.4;margin:2px 0}
+.hero-tier-upgrade{margin:8px 0 0;font-size:.68rem;line-height:1.45;color:#c8b98a}
+.hero-tier-upgrade em{font-style:italic;color:#e0d0a6}
+
+/* ── Module tier price label ─────────────────────────── */
+.module-tier-price{font-size:.54rem;letter-spacing:.16em;text-transform:uppercase;color:rgba(200,168,75,.72);margin:0 0 7px;padding:4px 8px;border:1px solid rgba(200,168,75,.2);border-radius:6px;display:inline-block}
+
 @media (max-width:640px){
   #nav{padding:12px 14px}
   #nav.stuck{padding:9px 14px}
@@ -814,11 +849,40 @@ a{text-decoration:none;color:inherit}
           <a href="#priority-actions" class="btn btn-secondary">See My Next Move</a>
         </div>
         <p class="cta-time-value">Takes 2-5 minutes to apply. Start seeing improvements today.</p>
+        <div class="hero-tier-callout">
+          <strong>{{ $currentTierName }} ({{ $currentTierPrice }}) includes</strong>
+          <ul class="hero-tier-list">
+            <li>AI Visibility Score — {{ $score }}/100</li>
+            <li>6-signal breakdown (schema, coverage, entity, links, crawlability, extractability)</li>
+            <li>Top issues identified + fastest fix prioritised</li>
+            @if($unlockLevel >= 2)<li>Full signal architecture map + extraction failure tree</li>@endif
+            @if($unlockLevel >= 3)<li>Impact-ranked fix sequence — highest-leverage first</li>@endif
+            @if($unlockLevel >= 4)<li>Competitive intelligence layer + expansion map</li>@endif
+          </ul>
+          @if($nextTier)
+          <p class="hero-tier-upgrade"><span class="lock-glyph" aria-hidden="true"></span> {{ $nextTier['name'] }} ({{ $nextTier['price'] }}) unlocks the full diagnostic: <em>exactly where your signals fail and why.</em></p>
+          @endif
+        </div>
         <p class="cta-consequence">{{ $singleNextStep ? 'Take this step to unlock the next level.' : 'Fix this blocker to improve your chance of being selected.' }}</p>
         <p class="hero-translation">What this means: {{ $interpretation }}</p>
         <p class="hero-trust-note">This score is based on real AI answer system patterns, not generic SEO guesses.</p>
         <p class="hero-proof-note">Used to generate AI answers across Google, ChatGPT, and other systems.</p>
         <p class="hero-momentum">{{ $momentumLine }}</p>
+      </section>
+
+      <section class="card ask-scan-module" id="ask-scan">
+        <div class="ask-scan-inner">
+          <p class="ask-scan-kicker">AI Scan Advisor</p>
+          <h2 class="ask-scan-title">Ask about your scan</h2>
+          <p class="ask-scan-desc">I have your results. Ask me what your {{ $score }}/100 score means for your business, which issue to prioritise, what your tier includes, or what the next level would reveal.</p>
+          <div class="ask-scan-chips">
+            <button type="button" class="ask-scan-chip js-ask-scan-chip" data-prompt="My score is {{ $score }}/100. What does that mean for my AI search visibility and what should I do first?">Why is my score {{ $score }}?</button>
+            <button type="button" class="ask-scan-chip js-ask-scan-chip" data-prompt="What is the single most important thing I should fix first to improve my AI search visibility?">What should I fix first?</button>
+            <button type="button" class="ask-scan-chip js-ask-scan-chip" data-prompt="What does my {{ $currentTierName }} plan include? What am I seeing vs what is locked?">What does my plan include?</button>
+            <button type="button" class="ask-scan-chip js-ask-scan-chip" data-prompt="What would upgrading to the next tier reveal that I currently cannot see in my scan?">What would upgrading reveal?</button>
+          </div>
+          <button type="button" class="btn btn-secondary js-open-ai-panel">Open AI Advisor</button>
+        </div>
       </section>
 
       <section class="card" id="findings">
@@ -845,15 +909,24 @@ a{text-decoration:none;color:inherit}
 
       <section class="card" id="layers">
         <div class="section-head">
-          <h2>Progression Levels</h2>
-          <p style="margin:0;font-size:.55rem;letter-spacing:.12em;text-transform:uppercase;color:#c0b38c">Baseline to Activation</p>
+          <h2>Your Plan</h2>
+          <p style="margin:0;font-size:.55rem;letter-spacing:.12em;text-transform:uppercase;color:#c0b38c">What&rsquo;s included vs what&rsquo;s available</p>
         </div>
         <div class="layer-grid" style="padding:12px">
           @foreach($progressionLevels as $level)
           <article class="layer {{ $level['locked'] ? 'is-locked-card' : 'is-included' }}">
             <div class="layer-head">
               <span class="layer-name">{{ $level['name'] }}</span>
-              <span class="layer-status">@if($level['locked'])<span class="lock-glyph" aria-hidden="true"></span> Locked @else Completed @endif</span>
+              <span class="layer-status">
+              @if($level['locked'])
+                <span class="lock-glyph" aria-hidden="true"></span>
+                Locked &mdash; {{ $tierDefs[$level['rank']]['price'] ?? '' }}
+              @elseif($level['rank'] === $unlockLevel)
+                &#10003; Your Tier
+              @else
+                &#10003; Included
+              @endif
+            </span>
             </div>
             <div class="layer-strip">
               <div class="layer-sig">Coverage<div class="meter"><span style="width:{{ $coveragePct }}%"></span></div></div>
@@ -1057,7 +1130,8 @@ a{text-decoration:none;color:inherit}
 
       <section class="card modules" id="deeper-layers">
         <div class="section-head">
-          <h2>Restricted Intelligence Layers</h2>
+          <h2>Unlock More From Your Scan</h2>
+          <p style="margin:0;font-size:.55rem;letter-spacing:.12em;text-transform:uppercase;color:#c0b38c">Each tier reveals a deeper layer</p>
         </div>
         <div class="accordion">
           @foreach($lockedLayerModules as $module)
@@ -1087,11 +1161,15 @@ a{text-decoration:none;color:inherit}
                 </div>
               </div>
               <div class="module-cta" style="margin-top:10px">
+                @php $modTierDef = $tierDefs[$module['rank']] ?? null; @endphp
+                @if($modTierDef)
+                <p class="module-tier-price">{{ $modTierDef['name'] }} &middot; {{ $modTierDef['price'] }}</p>
+                @endif
                 <a href="{{ $module['href'] }}" class="btn btn-primary">{{ $module['cta'] }}</a>
                 <p class="cta-consequence">
-                  @if($module['rank'] === 2)Reveals extraction failure tree → removes signal suppression
-                  @elseif($module['rank'] === 3)Unlocks impact-ranked fix order → highest-leverage first
-                  @else Exposes competitive gaps → activates expansion intelligence
+                  @if($module['rank'] === 2)Reveals exact extraction failures + full signal map — removes active suppression
+                  @elseif($module['rank'] === 3)Impact-ranked fix order — execute highest-leverage changes first
+                  @else Exposes competitive weaknesses + full expansion map — full system activation
                   @endif
                 </p>
               </div>
@@ -1539,6 +1617,62 @@ a{text-decoration:none;color:inherit}
     });
   }
   maybeShowConsultOffer();
+})();
+</script>
+@php
+$_scanAiGreeting = auth()->check()
+    ? "Your scan for {$scan->domain()} scored {$score}/100 \u2014 {$scoreSelectionInterpretation}. Your fastest improvement: {$topBottleneck}\n\nAsk me what your score means, which issue to prioritise first, or what upgrading would reveal."
+    : "Your scan scored {$score}/100 \u2014 {$scoreSelectionInterpretation}.\n\nAsk me what this score means for your AI search visibility, what to fix first, or what each tier unlocks.";
+$_scanAiPrompts = [
+    "Why is my score {$score} and what does it mean?",
+    "What should I fix first?",
+    "What does my {$currentTierName} plan include?",
+    "What would upgrading reveal?",
+];
+@endphp
+@include('components.ai-assistant', [
+    'aiGreeting'        => $_scanAiGreeting,
+    'aiSuggestedPrompts' => $_scanAiPrompts,
+])
+<script>
+(function () {
+  'use strict';
+  // Wire scan-page "Ask AI" chips and the "Open AI Advisor" button
+  // into the floating assistant panel.
+  function openAiPanel(prompt) {
+    var trigger = document.getElementById('aiaTrigger');
+    var inputEl = document.getElementById('aiaInput');
+    var sendEl  = document.getElementById('aiaSend');
+    if (!trigger) return;
+    // Open panel
+    if (trigger.getAttribute('aria-expanded') !== 'true') {
+      trigger.click();
+    }
+    if (!prompt) return;
+    // After greeting renders (~400ms), populate and send
+    setTimeout(function () {
+      if (inputEl) {
+        inputEl.value = prompt;
+        inputEl.dispatchEvent(new Event('input', { bubbles: true }));
+      }
+      setTimeout(function () {
+        if (sendEl && !sendEl.disabled) sendEl.click();
+      }, 180);
+    }, 420);
+  }
+
+  document.addEventListener('click', function (e) {
+    var target = e.target;
+    // Scan page chips
+    if (target.classList.contains('js-ask-scan-chip') || target.classList.contains('js-open-ai-panel')) {
+      var prompt = target.dataset.prompt || '';
+      openAiPanel(prompt);
+    }
+    // Hero "Ask about this scan" button (no prompt — just open)
+    if (target.classList.contains('js-open-ai-no-prompt')) {
+      openAiPanel('');
+    }
+  });
 })();
 </script>
 @include('partials.back-to-top')

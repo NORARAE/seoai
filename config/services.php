@@ -79,6 +79,11 @@ return [
         'webhook_secret' => env('COINBASE_COMMERCE_WEBHOOK_SECRET'),
     ],
 
+    'openai' => [
+        'api_key' => env('OPENAI_API_KEY'),
+        'model' => env('OPENAI_CHAT_MODEL', 'gpt-4o-mini'),
+    ],
+
     'gsc' => [
         'site_url' => env('GSC_SITE_URL'),
         'credentials_path' => env('GOOGLE_APPLICATION_CREDENTIALS', storage_path('app/google-credentials.json')),

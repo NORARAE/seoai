@@ -322,6 +322,7 @@ body.is-admin-viewing-dashboard {
 
     @stack('scripts')
 
+    @include('components.ai-assistant')
     @include('partials.back-to-top', ['dashMode' => true])
 </body>
 </html>

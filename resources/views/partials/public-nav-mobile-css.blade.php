@@ -34,7 +34,7 @@
 .nav-backdrop{
   position:fixed;inset:0;
   z-index:9100;
-  background:rgba(0,0,0,.62);
+  background:rgba(0,0,0,.48);
   opacity:0;visibility:hidden;
   transition:opacity .3s ease,visibility 0s .3s;
 }
@@ -49,8 +49,8 @@
   top:0;right:0;bottom:0;
   width:320px;max-width:88vw;
   z-index:9200;
-  background:linear-gradient(160deg,#0f0e09 0%,#0a0908 60%,#0d0b06 100%);
-  border-left:1px solid rgba(200,168,75,.14);
+  background:linear-gradient(160deg,#1a1810 0%,#141210 60%,#171510 100%);
+  border-left:1px solid rgba(200,168,75,.22);
   box-shadow:-16px 0 64px rgba(0,0,0,.72);
   overflow-y:auto;
   display:flex;flex-direction:column;
@@ -95,7 +95,7 @@
 }
 .nm-identity-sub{
   font-size:.68rem;letter-spacing:.2em;text-transform:uppercase;
-  color:rgba(200,168,75,.38);
+  color:rgba(200,168,75,.58);
   font-family:'DM Sans',sans-serif;
 }
 
@@ -105,7 +105,7 @@
 }
 .nm-group-label{
   font-size:.6rem;letter-spacing:.26em;text-transform:uppercase;
-  color:rgba(200,168,75,.3);
+  color:rgba(200,168,75,.58);
   font-family:'DM Sans',sans-serif;font-weight:500;
 }
 
@@ -115,7 +115,7 @@
   padding:13px 28px;
   font-family:'DM Sans',sans-serif;
   font-size:.84rem;letter-spacing:.07em;
-  color:rgba(210,210,202,.78);text-decoration:none;
+  color:rgba(220,220,214,.88);text-decoration:none;
   transition:color .18s ease,background .18s ease,transform .15s ease;
   min-height:48px;
   position:relative;
@@ -154,14 +154,14 @@
 /* Tertiary muted link */
 .nm-link.nm-muted{
   font-size:.76rem;
-  color:rgba(168,168,160,.42);
+  color:rgba(168,168,160,.68);
   letter-spacing:.09em;
   padding-top:10px;padding-bottom:10px;
   min-height:44px;
 }
-.nm-link.nm-muted::after{color:rgba(200,168,75,.18);font-size:.9rem}
-.nm-link.nm-muted:hover{color:rgba(168,168,160,.72);background:transparent}
-.nm-link.nm-muted:hover::after{color:rgba(200,168,75,.35)}
+.nm-link.nm-muted::after{color:rgba(200,168,75,.32);font-size:.9rem}
+.nm-link.nm-muted:hover{color:rgba(210,210,202,.88);background:transparent}
+.nm-link.nm-muted:hover::after{color:rgba(200,168,75,.55)}
 
 /* Divider */
 .nm-divider{
@@ -195,10 +195,10 @@
   padding:10px 28px;
   font-family:'DM Sans',sans-serif;
   font-size:.74rem;letter-spacing:.1em;
-  color:rgba(168,168,160,.4);text-decoration:none;
+  color:rgba(168,168,160,.72);text-decoration:none;
   transition:color .18s ease;
   min-height:44px;
 }
-.nm-signin::after{content:'›';color:rgba(200,168,75,.18);font-size:.9rem;transition:color .18s ease,transform .18s ease}
-.nm-signin:hover{color:rgba(168,168,160,.75)}
-.nm-signin:hover::after{color:rgba(200,168,75,.45);transform:translateX(2px)}
+.nm-signin::after{content:'›';color:rgba(200,168,75,.32);font-size:.9rem;transition:color .18s ease,transform .18s ease}
+.nm-signin:hover{color:rgba(210,210,202,.9)}
+.nm-signin:hover::after{color:rgba(200,168,75,.62);transform:translateX(2px)}
