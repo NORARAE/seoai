@@ -312,6 +312,10 @@ Route::get('/preview/{slug}', [LocationPagePreviewController::class, 'show'])
 // See App\Providers\Filament\AdminPanelProvider
 // Protected by Filament's built-in authentication
 
+// ── Customer-facing password reset (hides /admin path from users) ──
+Route::get('/forgot-password', fn() => redirect('/admin/password-reset/request'))
+    ->name('password.request');
+
 // ============================================================================
 // SEO MARKETING PAGES — sitemap routes first, wildcard slug LAST
 // ============================================================================
@@ -327,3 +331,13 @@ Route::get('/sitemaps/marketing-{cluster}.xml', [MarketingSitemapController::cla
 Route::get('/{slug}', [MarketingPageController::class, 'show'])
     ->where('slug', '[a-z0-9\-]+')
     ->name('seo.page.show');
+
+// ============================================================================
+// FALLBACK — catch-all for unmatched routes
+// ============================================================================
+Route::fallback(function () {
+    if (auth()->check()) {
+        return redirect('/dashboard');
+    }
+    return redirect('/');
+});

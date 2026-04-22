@@ -179,11 +179,10 @@ body{
 
 @php
     $popularPages = [
-        ['label' => 'SEO Growth Command Center', 'url' => '/admin', 'desc' => 'Main SEO dashboard & command center', 'icon' => 'chart'],
-        ['label' => 'SEO Marketing Pages', 'url' => '/admin/seo-marketing-pages', 'desc' => 'Browse all indexed SEO content pages', 'icon' => 'document'],
-        ['label' => 'SEO Opportunities', 'url' => '/admin/seo-opportunities', 'desc' => 'Revenue gaps and ranking opportunities', 'icon' => 'trending'],
+        ['label' => 'AI Visibility Scan', 'url' => route('quick-scan.show'), 'desc' => 'Get your $2 citation and visibility report', 'icon' => 'trending'],
+        ['label' => 'Pricing & System Tiers', 'url' => route('pricing'), 'desc' => 'See what each level unlocks', 'icon' => 'chart'],
+        ['label' => 'How It Works', 'url' => route('how-it-works'), 'desc' => 'Understand the system flow', 'icon' => 'document'],
         ['label' => 'Book a Consultation', 'url' => route('book.index'), 'desc' => 'Schedule a strategy call', 'icon' => 'calendar'],
-        ['label' => 'Privacy Policy', 'url' => route('privacy'), 'desc' => 'Legal & data information', 'icon' => 'shield'],
     ];
     $icons = [
         'chart'    => 'M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z',
@@ -219,31 +218,35 @@ body{
         <div class="err-code">404</div>
       </div>
 
-      <h1 class="err-hed fade-2">This Page Doesn't Exist</h1>
-      <p class="err-sub fade-2">The page you're looking for may have been moved, deleted, or never existed.</p>
+      <h1 class="err-hed fade-2">Not everything is visible yet.</h1>
+      <p class="err-sub fade-2">The page you&rsquo;re looking for isn&rsquo;t available &mdash; but your next step is.</p>
       <div class="fade-2">
         <span class="err-path">{{ e('/'.request()->path()) }}</span>
       </div>
 
       {{-- Primary CTAs --}}
       <div class="err-ctas fade-3">
-        <a href="{{ route('home') }}" class="err-btn-primary">
-          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
-          Go to Homepage
-        </a>
-
         @auth
-        <a href="{{ route('app.dashboard') }}" class="err-btn-ghost">
-          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
-          Dashboard
+        <a href="{{ route('app.dashboard') }}" class="err-btn-primary">
+          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
+          Return to your dashboard
+        </a>
+        <a href="{{ route('quick-scan.show') }}" class="err-btn-ghost">
+          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+          Start a scan
+        </a>
+        @else
+        <a href="{{ route('quick-scan.show') }}" class="err-btn-primary">
+          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+          Start a scan
+        </a>
+        <a href="{{ route('home') }}" class="err-btn-ghost">
+          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
+          Return home
         </a>
         @endauth
-
-        <a href="{{ route('book.index') }}" class="err-btn-ghost">
-          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
-          Book a Call
-        </a>
       </div>
+      <p class="err-sub fade-3" style="margin-bottom:32px;font-size:.72rem;color:rgba(168,168,160,.42)">Most users start with a visibility scan.</p>
 
       {{-- Popular Pages --}}
       <div class="fade-4">

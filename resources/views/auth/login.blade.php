@@ -369,12 +369,12 @@
                 @if($googleEnabled)
                 <a href="{{ route('auth.google.redirect') }}">Try Google again</a>
                 @endif
-                <a href="/admin/password-reset/request">Reset your password</a>
+                <a href="/forgot-password">Reset your password</a>
             @else
                 @if($googleEnabled)
                 <a href="{{ route('auth.google.redirect') }}">Try Google again</a>
                 @endif
-                <a href="/admin/password-reset/request">Reset password</a>
+                <a href="/forgot-password">Reset password</a>
             @endif
         </div>
     </div>
@@ -400,9 +400,9 @@
                 @if($googleEnabled)
                 <a href="{{ route('auth.google.redirect') }}" class="action-pill-primary">Continue with Google</a>
                 @endif
-                <a href="/admin/password-reset/request">Set an email password</a>
+                <a href="/forgot-password">Set an email password</a>
             @elseif($loginErrorType === 'wrong_password')
-                <a href="/admin/password-reset/request" class="action-pill-primary">Reset password</a>
+                <a href="/forgot-password" class="action-pill-primary">Reset password</a>
                 @if($googleEnabled)
                 <a href="{{ route('auth.google.redirect') }}">Try Google instead</a>
                 @endif
@@ -463,7 +463,7 @@
                 <input type="checkbox" name="remember" {{ old('remember') ? 'checked' : '' }}>
                 Remember me
             </label>
-            <a href="/admin/password-reset/request" class="forgot-link">Forgot password?</a>
+            <a href="/forgot-password" class="forgot-link">Forgot password?</a>
         </div>
 
         <button type="submit" class="submit-btn">Sign In</button>
