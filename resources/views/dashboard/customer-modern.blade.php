@@ -1473,6 +1473,21 @@
   .ai-ready-badge{display:inline-flex;align-items:center;gap:5px;font-size:.5rem;letter-spacing:.14em;text-transform:uppercase;color:rgba(140,200,155,.6);padding:3px 9px;border:1px solid rgba(140,200,155,.18);border-radius:999px;background:rgba(140,200,155,.04);white-space:nowrap}
   .ai-ready-badge::before{content:'';display:inline-block;width:5px;height:5px;border-radius:50%;background:rgba(140,200,155,.58);flex-shrink:0}
   .ge-progress-context{font-size:.58rem;letter-spacing:.08em;color:rgba(168,160,148,.44);font-style:italic;margin:-10px 0 14px;text-align:right;line-height:1.4}
+  /* Phase 20: conversion pressure + momentum ─────────────────────── */
+  @keyframes upgradeGlow{0%,100%{box-shadow:0 8px 18px rgba(198,168,90,.22),0 0 0 1px rgba(255,255,255,.12) inset}50%{box-shadow:0 14px 32px rgba(255,232,120,.58),0 0 0 2px rgba(255,255,255,.26) inset}}
+  .plan-unlock-cta:hover,.next-action-cta:hover,.cta-unlock:hover{animation:upgradeGlow .6s ease-in-out infinite}
+  .p20-sticky-bar{position:fixed;bottom:0;left:0;right:0;z-index:90;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:9px 20px;background:rgba(11,9,6,.96);border-top:1px solid rgba(200,168,75,.18);backdrop-filter:blur(14px);opacity:0;transform:translateY(100%);transition:opacity .4s ease,transform .4s ease;pointer-events:none}
+  .p20-sticky-bar.is-visible{opacity:1;transform:translateY(0);pointer-events:auto}
+  .p20-sticky-bar-text{font-size:.56rem;letter-spacing:.1em;text-transform:uppercase;color:rgba(220,200,160,.7);flex:1}
+  .p20-sticky-bar-cta{flex-shrink:0;font-size:.56rem;letter-spacing:.1em;text-transform:uppercase;font-weight:700;color:#1a1211;background:#c6a85a;padding:6px 14px;border-radius:7px;text-decoration:none;white-space:nowrap;transition:background .2s ease}
+  .p20-sticky-bar-cta:hover{background:#d9be7a}
+  .p20-sticky-dismiss{background:none;border:none;cursor:pointer;color:rgba(200,180,140,.32);font-size:1rem;padding:2px 6px;line-height:1;flex-shrink:0}
+  .traction-nudge{font-size:.58rem;letter-spacing:.1em;text-transform:uppercase;color:rgba(140,200,155,.62);text-align:center;margin:6px 0 0;opacity:0;transition:opacity .4s ease;pointer-events:none;display:block}
+  .traction-nudge.is-visible{opacity:1}
+  .post-fix-cta-line{font-size:.6rem;letter-spacing:.06em;color:rgba(200,180,150,.54);font-style:italic;text-align:center;margin-top:6px;opacity:0;transition:opacity .35s ease;pointer-events:none}
+  .post-fix-cta-line.is-visible{opacity:1}
+  .unlock-level-line{font-size:.52rem;letter-spacing:.12em;text-transform:uppercase;color:rgba(200,168,75,.42);text-align:center;margin-top:8px;pointer-events:none}
+  .confidence-line{font-size:.6rem;letter-spacing:.08em;color:rgba(162,148,134,.44);font-style:italic;text-align:center;margin:10px 0 0;line-height:1.5}
 </style>
 @endpush
 
@@ -2015,6 +2030,7 @@
               onclick="track('cta_click',{tier:{{ $nextLevelMeta['price'] }},label:'{{ $nextLevelMeta['name'] }}',location:'your_plan'})">
               Unlock {{ $nextLevelMeta['name'] }} &mdash; {{ $nextLevelMeta['price'] }}
             </button>
+            <p class="unlock-level-line">Next step: unlock the next level of visibility improvement.</p>
           </div>
           @else
           {{-- All levels complete --}}
@@ -2044,6 +2060,7 @@
               data-checkout-href="{{ $nextCheckHref }}" data-price="$2">
               Get Your Baseline Score &mdash; $2
             </button>
+            <p class="unlock-level-line">Next step: unlock the next level of visibility improvement.</p>
           </div>
         </div>
         @endif
@@ -2052,6 +2069,7 @@
         {{-- Consultation row --}}
         <div class="plan-consult-row">
           <p class="plan-consult-copy">Your system is built from your scan data. We can deploy, scale, and accelerate what it&rsquo;s already surfaced &mdash; done for you.</p>
+          <p class="confidence-line">Your system is already improving &mdash; continuing will accelerate results.</p>
           <a href="{{ route('book.index') }}?entry=dashboard-plan" class="plan-consult-btn" onclick="track('cta_click',{tier:'consult',label:'consultation',location:'your_plan'})">Book a Strategy Session &rarr;</a>
         </div>
 
@@ -2267,6 +2285,8 @@
         <p class="ge-progress-label" id="ge-progress-label">0 of {{ count($geItems) }} complete</p>
         <p class="ge-progress-context">This represents how much of your visibility system is complete.</p>
         <p id="ge-milestone-msg" class="ge-milestone-msg" aria-live="polite" aria-atomic="true"></p>
+        <p id="tractionNudge" class="traction-nudge" aria-live="polite"></p>
+        <p id="postFixCtaLine" class="post-fix-cta-line" aria-live="polite"></p>
 
         <div class="ge-list" id="ge-checklist">
           @foreach($geItems as $geIdx => $geItem)
@@ -4242,6 +4262,71 @@
     el.textContent = variants[Math.floor(Math.random() * variants.length)];
   }
 })();
+
+// Phase 20: conversion pressure + momentum
+(function () {
+  'use strict';
+
+  // Part 1: Sticky bar — fade in on scroll, hide if dismissed or scrolled back to top
+  var stickyBar = document.getElementById('p20StickyBar');
+  var stickyDismiss = document.getElementById('p20StickyDismiss');
+  if (stickyBar) {
+    var stickyShown = false;
+    var stickyDismissed = false;
+    function checkStickyScroll() {
+      if (stickyDismissed) return;
+      var sy = window.scrollY || window.pageYOffset;
+      if (sy > 320 && !stickyShown) {
+        stickyBar.classList.add('is-visible');
+        stickyShown = true;
+      } else if (sy < 80 && stickyShown) {
+        stickyBar.classList.remove('is-visible');
+        stickyShown = false;
+      }
+    }
+    window.addEventListener('scroll', checkStickyScroll, { passive: true });
+    if (stickyDismiss) {
+      stickyDismiss.addEventListener('click', function () {
+        stickyDismissed = true;
+        stickyBar.classList.remove('is-visible');
+      });
+    }
+  }
+
+  // Part 2 + 3: Traction nudge + post-fix line via geToggle patch
+  var tractionNudge = document.getElementById('tractionNudge');
+  var postFixCtaLine = document.getElementById('postFixCtaLine');
+  function checkTraction() {
+    if (!tractionNudge) return;
+    var done = document.querySelectorAll('.ge-item[aria-pressed="true"]').length;
+    if (done >= 3) {
+      tractionNudge.textContent = 'You\u2019re gaining traction \u2014 most users continue here.';
+      tractionNudge.classList.add('is-visible');
+    }
+  }
+  checkTraction();
+  var _origGe20 = window.geToggle;
+  if (typeof _origGe20 === 'function') {
+    window.geToggle = function (el) {
+      var wasPressed = el.getAttribute('aria-pressed') === 'true';
+      _origGe20.call(this, el);
+      checkTraction();
+      if (!wasPressed && postFixCtaLine) {
+        postFixCtaLine.textContent = 'Continue fixing high-impact gaps to increase visibility faster.';
+        postFixCtaLine.classList.add('is-visible');
+        setTimeout(function () { postFixCtaLine.classList.remove('is-visible'); }, 3500);
+      }
+    };
+  }
+})();
 </script>
+
+@if($tierRank < 4 && $nextLevelMeta)
+<div id="p20StickyBar" class="p20-sticky-bar" role="complementary" aria-label="Next step available">
+  <span class="p20-sticky-bar-text">You&rsquo;re one step away from stronger visibility.</span>
+  <a href="{{ $nextUnlockHref }}" class="p20-sticky-bar-cta" onclick="track('cta_click',{tier:'sticky',label:'next_level',location:'sticky_bar'})">Continue to next level &rarr;</a>
+  <button type="button" id="p20StickyDismiss" class="p20-sticky-dismiss" aria-label="Dismiss">&times;</button>
+</div>
+@endif
 
 @endsection
