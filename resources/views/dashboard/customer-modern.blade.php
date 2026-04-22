@@ -498,9 +498,13 @@
   /* ── Phase 15: Apply Fix progress system ──────────────────────────── */
   @keyframes nextCardPulse{0%,100%{box-shadow:0 0 0 1px rgba(106,175,144,.22) inset,0 0 20px rgba(106,175,144,.14)}50%{box-shadow:0 0 0 2px rgba(106,175,144,.55) inset,0 0 32px rgba(106,175,144,.36),0 0 0 4px rgba(106,175,144,.12)}}
   .system-grid-card.next-fix-pulse{animation:nextCardPulse 1.6s ease-in-out 3}
+  @keyframes fixApplyGlow{0%{box-shadow:0 0 0 2px rgba(106,175,144,.72) inset,0 0 0 rgba(106,175,144,0)}45%{box-shadow:0 0 0 3px rgba(106,175,144,.9) inset,0 0 44px rgba(106,175,144,.56),0 0 0 7px rgba(106,175,144,.2)}100%{box-shadow:0 0 0 2px rgba(106,175,144,.72) inset,0 0 32px rgba(106,175,144,.28)}}
+  .system-grid-card.fix-glow{animation:fixApplyGlow .9s cubic-bezier(.22,1,.36,1) forwards}
   .fix-progress-counter{margin-top:10px;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:#9fd2ba;display:none}
   .fix-progress-counter.has-progress{display:block}
   .cta-applied{border-color:rgba(106,175,144,.66)!important;background:rgba(106,175,144,.22)!important;color:#7fd4ae!important;cursor:default;font-weight:700}
+  .apply-confirm-msg{margin-top:6px;font-size:.59rem;letter-spacing:.09em;color:#6aaf90;line-height:1.4;opacity:0;transform:translateY(4px);transition:opacity .3s ease .1s,transform .3s ease .1s;display:none}
+  .apply-confirm-msg.visible{opacity:1;transform:translateY(0);display:block}
   .modal-apply-note{margin-top:8px;font-size:11px;color:#a99f89;line-height:1.4}
   /* ────────────────────────────────────────────────────────────────── */
   .correction-modal-mask{position:fixed;inset:0;background:rgba(6,5,3,.74);backdrop-filter:blur(3px);z-index:140;display:none}
@@ -2944,7 +2948,7 @@
                 data-correction-next="{{ $nextPathLine }}"
               >
                 <div class="execution-state" aria-hidden="true">
-                  <span class="chip">Applying fix...</span>
+                  <span class="chip">Applying fix…</span>
                 </div>
                 <div class="mb-2 flex items-center justify-between gap-3">
                   <p class="truncate text-sm font-semibold text-[#ece5d4]">
@@ -3009,7 +3013,7 @@
                       data-resolve-type="modal"
                       data-resolve-href=""
                       data-post-label="{{ $postCorrectionLabel }}"
-                      data-feedback-line="Fix details opened &#x2014; reviewing options"
+                      data-feedback-line="Fix applied — check your options below."
                     >{{ $correctionLabel }}</button>
                   @elseif($correctionActionType === 'locked')
                     <button
@@ -3018,7 +3022,7 @@
                       data-resolve-type="redirect"
                       data-resolve-href="{{ $correctionHref }}"
                       data-post-label="{{ $postCorrectionLabel }}"
-                      data-feedback-line="Constraint removed &#x2014; AI can now better interpret this section."
+                      data-feedback-line="Fix applied — this issue is now being addressed."
                     >{{ $correctionLabel }}</button>
                   @else
                     <button
@@ -3027,11 +3031,12 @@
                       data-resolve-type="redirect"
                       data-resolve-href="{{ $correctionHref }}"
                       data-post-label="{{ $postCorrectionLabel }}"
-                      data-feedback-line="Constraint removed &#x2014; AI can now better interpret this section."
+                      data-feedback-line="Fix applied — this issue is now being addressed."
                     >{{ $correctionLabel }}</button>
                   @endif
-                                  <a href="{{ $inspectHref }}" class="system-grid-cta cta-view js-readout-link">{{ $scan['is_renderable_report'] ? 'View Full Report' : 'Inspect Readout' }}</a>
+                  <a href="{{ $inspectHref }}" class="system-grid-cta cta-view js-readout-link">{{ $scan['is_renderable_report'] ? 'View Full Report' : 'Inspect Readout' }}</a>
                 </div>
+                <p class="apply-confirm-msg" aria-live="polite"></p>
               </article>
             @endforeach
           </div>
@@ -3505,7 +3510,7 @@
       if (button) {
         button.classList.remove('cta-progress');
         button.classList.add('cta-applied');
-        button.textContent = postLabel || '\u2713 Fix Applied';
+        button.textContent = postLabel || '\u2713 Applied';
         button.disabled = true;
       }
 
@@ -3517,9 +3522,7 @@
 
       const memoryLine = card.querySelector('.action-memory-line');
       if (memoryLine) {
-        memoryLine.textContent = 'Fix applied just now';
-        memoryLine.classList.add('is-fresh');
-      }
+        memoryLine.textContent = '\u2713 Fix applied just now';
 
       const scanKey = card.dataset.scanKey || '';
       if (scanKey !== '') {
@@ -3587,37 +3590,65 @@
 
     function runCorrectionCommit(button) {
       const card = button.closest('.system-grid-card');
-      if (!card) return;
+      if (!card || button.dataset.busy === 'true') return;
+      button.dataset.busy = 'true';
 
       const resolveType = button.dataset.resolveType || 'redirect';
       const resolveHref = button.dataset.resolveHref || '';
-      const postLabel = button.dataset.postLabel || '✓ Fix Applied';
-      const feedbackLine = button.dataset.feedbackLine || 'This removes a constraint limiting your visibility';
+      const postLabel = button.dataset.postLabel || '\u2713 Applied';
+      const feedbackLine = button.dataset.feedbackLine || 'Fix applied \u2014 this issue is now being addressed.';
 
-      const executionState = card.querySelector('.execution-state');
-      if (executionState) executionState.classList.add('active');
-      card.classList.add('is-executing');
-
+      // Phase 1: immediate "Applying..." state
+      const originalLabel = button.textContent;
       button.classList.add('cta-progress');
       button.disabled = true;
+      button.textContent = 'Applying\u2026';
 
-      const delayMs = 420 + Math.floor(Math.random() * 460);
+      const executionState = card.querySelector('.execution-state');
+      if (executionState) {
+        const chip = executionState.querySelector('.chip');
+        if (chip) chip.textContent = 'Applying fix\u2026';
+        executionState.classList.add('active');
+      }
+      card.classList.add('is-executing');
+
       const actionAt = Date.now();
 
+      // Phase 2 (350ms): show applied state
       window.setTimeout(function () {
         if (executionState) executionState.classList.remove('active');
+        card.classList.remove('fix-glow'); // reset if already present
+        // force reflow for re-trigger
+        void card.offsetWidth;
+        card.classList.add('fix-glow');
 
         applyEngagedState(card, button, feedbackLine, postLabel, actionAt);
 
+        // Inline confirm message
+        const confirmMsg = card.querySelector('.apply-confirm-msg');
+        if (confirmMsg) {
+          confirmMsg.textContent = feedbackLine;
+          confirmMsg.style.display = 'block';
+          window.requestAnimationFrame(function () {
+            confirmMsg.classList.add('visible');
+          });
+        }
+
         if (resolveType === 'modal') {
+          button.dataset.busy = 'false';
           openCorrectionModal(button);
           return;
         }
 
+        // Phase 3 (redirect after 1200ms — user sees applied state)
         if (resolveHref) {
-          window.location.href = resolveHref;
+          window.setTimeout(function () {
+            window.location.href = resolveHref;
+          }, 1200);
+        } else {
+          button.dataset.busy = 'false';
         }
-      }, delayMs);
+      }, 380);
     }
 
     document.querySelectorAll('.js-correction-action, .js-open-correction-modal').forEach(function (btn) {

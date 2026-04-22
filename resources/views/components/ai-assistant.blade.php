@@ -15,12 +15,12 @@ $aiTierRank = $isAuth && (auth()->user()?->system_tier instanceof \App\Enums\Sys
 
 $greeting = $aiGreeting ?? (
     $isAuth && $firstName
-        ? "Hi {$firstName} — I can answer questions about your scan results, what your score means, or what to fix first. What would you like to know?"
-        : "Hi there — I can explain what AI search optimisation is, how our scans work, or help you figure out the right next step. What's on your mind?"
+        ? "Hi {$firstName} — I can walk you through what your score means, which fix to tackle first, and what each level unlocks. Where would you like to start?"
+        : "Hi there — I can explain how AI visibility works, what your scan results mean, or help you figure out the right next step. What's on your mind?"
 );
 
 $suggestedPrompts = $aiSuggestedPrompts ?? ($isAuth
-    ? ["Why is my score low?", "What should I fix first?", "What does my top issue mean?", "What's included in my plan?"]
+    ? ["What does my score mean?", "What should I fix first?", "Walk me through my top issue", "What does upgrading unlock?"]
     : ["What does an AI visibility scan check?", "How does the $2 scan work?", "What's the difference between tiers?", "How do I get started?"]);
 
 $microLabel  = $aiMicroLabel  ?? 'AI Analysis Ready';

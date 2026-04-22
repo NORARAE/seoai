@@ -527,6 +527,7 @@ a{text-decoration:none;color:inherit}
 .action:hover{transform:translateY(-2px);box-shadow:0 2px 10px rgba(214,181,95,.07)}
 .action.is-locked-card{border-left-color:rgba(214,181,95,.4);box-shadow:0 0 16px rgba(214,181,95,.08)}
 .cta-consequence{margin:5px 0 0;font-size:.52rem;letter-spacing:.08em;color:#c8bb94;opacity:.82;line-height:1.35}
+.cta-social-proof{margin:5px 0 0;font-size:.59rem;letter-spacing:.08em;text-transform:uppercase;color:rgba(200,168,75,.72);line-height:1.3}
 
 .layer.is-included{border-left-color:rgba(106,175,144,.3)}
 
@@ -1343,7 +1344,7 @@ button.sys-bar-node:hover .sys-bar-dot{border-color:rgba(214,181,95,.54);backgro
               @endif
               <h3>{{ $action['label'] }}</h3>
               <div class="inline">
-                <span class="muted">AI cannot fully use this yet</span>
+                <span class="muted">AI cannot clearly understand this yet</span>
                 <span>{{ $action['category'] }}</span>
               </div>
               @if($isLead)
@@ -1365,7 +1366,7 @@ button.sys-bar-node:hover .sys-bar-dot{border-color:rgba(214,181,95,.54);backgro
                   <li>+ stronger answer visibility</li>
                   <li>+ better category control potential</li>
                 </ul>
-                <p style="margin:6px 0 0;font-size:.62rem;color:#e7dcc0">This improves your probability of appearing in high-intent answer results.</p>
+                <p style="margin:6px 0 0;font-size:.62rem;color:#e7dcc0">This helps your content get selected more often.</p>
               </div>
               <div class="meter"><span style="width:{{ min(100, max(18, (int) $action['max'] * 10)) }}%" aria-label="{{ min(100, max(18, (int) $action['max'] * 10)) }} percent"></span></div>
               <div style="display:flex;flex-wrap:wrap;gap:6px">
@@ -1391,6 +1392,7 @@ button.sys-bar-node:hover .sys-bar-dot{border-color:rgba(214,181,95,.54);backgro
                   data-why-matters="Selection pressure remains active while this constraint persists."
                   data-unlocks="Expand data layer coverage, introduce direct-answer nodes, establish authoritative definitions."
                 >{{ $momentumCta }}</button>
+                <p class="cta-social-proof">This is your highest-impact fix.</p>
                 <p class="cta-consequence">Removes constraint → improves AI selection likelihood</p>
                 <button
                   type="button"
