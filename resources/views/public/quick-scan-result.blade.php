@@ -49,7 +49,7 @@
   $scanCount = auth()->check() ? auth()->user()->quickScans()->count() : 1;
   $showConsultationOffer = $scanCount >= 1;
   $consultationHref = url('/book?entry=consultation');
-  $momentumCta = 'Build My Momentum';
+  $momentumCta = 'Apply Fix';
 
   $rawBottleneck = trim((string) ($scan->fastest_fix ?? ($scan->issues[0] ?? '')));
   $topBottleneck = $rawBottleneck !== '' ? $rawBottleneck : 'Data depth insufficient for consistent AI extraction.';
@@ -1320,7 +1320,7 @@ button.sys-bar-node:hover .sys-bar-dot{border-color:rgba(214,181,95,.54);backgro
           <p class="cta-time-value">Takes 2-5 minutes to apply. Start seeing improvements today.</p>
         </div>
         @endif
-        <p style="margin:8px 12px 0;font-size:.72rem;color:#d9ceb0">Plain and simple: fix the top blocker first, then move to the next level.</p>
+        <p style="margin:8px 12px 0;font-size:.72rem;color:#d9ceb0">Fix the top issue first. Move to the next level once it&rsquo;s resolved.</p>
         <div class="actions">
           <div class="action-stack">
             @for($i = 0; $i < $sysActionsLimit; $i++)
@@ -1379,7 +1379,7 @@ button.sys-bar-node:hover .sys-bar-dot{border-color:rgba(214,181,95,.54);backgro
                   class="btn btn-primary js-open-fix-detail"
                   data-exec-init="Deploying fix..."
                   data-exec-process="Applying constraint fix..."
-                  data-exec-resolved="Fix deployed"
+                  data-exec-resolved="✓ Fix applied"
                   data-issue-name="{{ $action['label'] }}"
                   data-failure-state="{{ $action['why'] }}"
                   data-required-correction="{{ $action['fix'] }}"
@@ -1410,7 +1410,7 @@ button.sys-bar-node:hover .sys-bar-dot{border-color:rgba(214,181,95,.54);backgro
                   data-unlocks="Expand data layer coverage, introduce direct-answer nodes, establish authoritative definitions."
                 >View Details</button>
               </div>
-              <p class="action-memory">No action taken yet</p>
+              <p class="action-memory">Not applied yet</p>
             </article>
             @endfor
 
@@ -1455,7 +1455,7 @@ button.sys-bar-node:hover .sys-bar-dot{border-color:rgba(214,181,95,.54);backgro
                 @endif
                 <button type="button" class="btn btn-secondary" disabled><span class="lock-glyph" aria-hidden="true"></span> Preview Restricted Layer</button>
               </div>
-              <p class="action-memory">No action taken yet</p>
+              <p class="action-memory">Not applied yet</p>
             </article>
             @endif
           </div>
@@ -1560,8 +1560,8 @@ button.sys-bar-node:hover .sys-bar-dot{border-color:rgba(214,181,95,.54);backgro
   <aside class="fix-detail-panel">
     <div class="fix-detail-inner">
       <div class="fix-detail-head">
-        <p class="fix-detail-kicker">Constraint Intelligence Panel</p>
-        <button type="button" class="fix-detail-close" id="fixDetailCloseTop">Close Panel</button>
+        <p class="fix-detail-kicker">Fix Details</p>
+        <button type="button" class="fix-detail-close" id="fixDetailCloseTop">Close</button>
       </div>
 
       <div class="fix-detail-module">
@@ -1593,12 +1593,12 @@ button.sys-bar-node:hover .sys-bar-dot{border-color:rgba(214,181,95,.54);backgro
       </div>
 
         <div class="fix-detail-grid">
-        <div class="fix-detail-block"><p>State</p><p id="fixDetailFailure">Unavailable</p></div>
-        <div class="fix-detail-block"><p>Effect</p><p id="fixDetailWhy">Unavailable</p></div>
-        <div class="fix-detail-block"><p>Fix Path</p><p id="fixDetailCorrection">Unavailable</p></div>
-        <div class="fix-detail-block"><p>Outcome If Resolved</p><p id="fixDetailUnlocks">Unavailable</p></div>
-        <div class="fix-detail-block"><p>Active Consequence</p><p id="fixDetailConsequence">Unavailable</p></div>
-        <div class="fix-detail-block"><p>Signal Domain</p><p id="fixDetailCategory">Unavailable</p></div>
+        <div class="fix-detail-block"><p>Current state</p><p id="fixDetailFailure">Unavailable</p></div>
+        <div class="fix-detail-block"><p>Why it matters</p><p id="fixDetailWhy">Unavailable</p></div>
+        <div class="fix-detail-block"><p>What to do</p><p id="fixDetailCorrection">Unavailable</p></div>
+        <div class="fix-detail-block"><p>What improves</p><p id="fixDetailUnlocks">Unavailable</p></div>
+        <div class="fix-detail-block"><p>Impact if ignored</p><p id="fixDetailConsequence">Unavailable</p></div>
+        <div class="fix-detail-block"><p>Category</p><p id="fixDetailCategory">Unavailable</p></div>
       </div>
 
       <div class="fix-detail-actions">
@@ -1706,8 +1706,8 @@ button.sys-bar-node:hover .sys-bar-dot{border-color:rgba(214,181,95,.54);backgro
           ? parsed.outcome
           : 'Constraint resolved -> selection pressure reduced -> signal clarity increased';
         var label = elapsedMs < 90000
-          ? 'Fix deployed. Outcome pending verification.'
-          : 'Fix deployed ' + Math.max(1, Math.floor(elapsedMs / 60000)) + ' min ago. Re-evaluation pending.';
+          ? '✓ Fix applied — impact updating'
+          : '✓ Fix applied — re-evaluating';
         setActionMemory(card, label);
       } catch (err) {
         sessionStorage.removeItem(ACTION_MEMORY_PREFIX + key);
@@ -1756,7 +1756,7 @@ button.sys-bar-node:hover .sys-bar-dot{border-color:rgba(214,181,95,.54);backgro
     var nodes = card.querySelectorAll('.btn');
     var initLabel = trigger.dataset.execInit || 'Deploying fix...';
     var processLabel = trigger.dataset.execProcess || 'Processing selection model...';
-    var resolvedLabel = trigger.dataset.execResolved || 'Fix deployed';
+var resolvedLabel = trigger.dataset.execResolved || '✓ Fix applied';
 
     card.dataset.execBusy = 'true';
     card.classList.add('is-executing');
@@ -1782,7 +1782,7 @@ button.sys-bar-node:hover .sys-bar-dot{border-color:rgba(214,181,95,.54);backgro
       if (actionKey) {
         sessionStorage.setItem(ACTION_MEMORY_PREFIX + actionKey, JSON.stringify({ at: Date.now(), outcome: outcomeLine }));
       }
-      setActionMemory(card, 'Fix deployed. Outcome pending verification.');
+      setActionMemory(card, '✓ Fix applied — impact updating');
       trigger.textContent = resolvedLabel;
       card.classList.remove('is-executing');
       card.classList.add('is-resolved');

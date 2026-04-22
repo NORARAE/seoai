@@ -428,11 +428,11 @@
   .system-grid-card:hover{transform:translateY(-5px);border-color:rgba(200,168,75,.48);background:linear-gradient(160deg,#1f1910,#120d08 72%);box-shadow:0 0 0 1px rgba(200,168,75,.22) inset,0 18px 30px rgba(0,0,0,.46),0 0 18px rgba(200,168,75,.12)}
   .system-grid-card:focus-visible{outline:2px solid rgba(200,168,75,.58);outline-offset:2px}
   .system-grid-card.is-executing{border-color:rgba(214,181,84,.62);box-shadow:0 0 0 1px rgba(214,181,84,.28) inset,0 0 24px rgba(214,181,84,.2)}
-  .system-grid-card.is-engaged{border-color:rgba(106,175,144,.46);box-shadow:0 0 0 1px rgba(106,175,144,.22) inset,0 0 20px rgba(106,175,144,.14)}
+  .system-grid-card.is-engaged{border-color:rgba(106,175,144,.72);background:linear-gradient(160deg,#0e1a11,#090e0a 72%);box-shadow:0 0 0 2px rgba(106,175,144,.42) inset,0 0 32px rgba(106,175,144,.28)}
   .system-grid-card:hover::before{opacity:.75}
   .system-grid-card:hover::after{transform:translateX(130%)}
-  .system-grid-card.supporting{opacity:.86;border-color:rgba(200,168,75,.16)}
-  .system-grid-card.featured{border-color:rgba(200,168,75,.62);padding:13px;box-shadow:0 0 0 1px rgba(200,168,75,.3) inset,0 18px 36px rgba(0,0,0,.5),0 0 24px rgba(200,168,75,.2)}
+  .system-grid-card.supporting{opacity:.62;border-color:rgba(200,168,75,.12)}
+  .system-grid-card.featured{border-color:rgba(200,168,75,.80);padding:13px;box-shadow:0 0 0 1px rgba(200,168,75,.42) inset,0 22px 44px rgba(0,0,0,.56),0 0 36px rgba(200,168,75,.28)}
   .system-grid-card.featured .system-grid-score::before{animation:scorePulse 2.8s ease-in-out infinite}
   .system-grid-card.featured .featured-tag{display:inline-flex}
   .system-grid-card.featured .priority-tag{display:inline-flex}
@@ -455,8 +455,8 @@
   .selection-subline{margin-top:5px;font-size:11px;color:#bfb6a0;line-height:1.3}
   .featured-insight{margin-top:6px;padding:7px 8px;border-radius:9px;border:1px solid rgba(200,168,75,.2);background:rgba(200,168,75,.07);font-size:11px;color:#decfa8;line-height:1.35}
   .memory-line{margin-top:5px;font-size:10px;letter-spacing:.09em;color:#a99f89;text-transform:uppercase}
-  .action-memory-line{margin-top:4px;font-size:10px;letter-spacing:.11em;text-transform:uppercase;color:#b8ab87}
-  .action-memory-line.is-fresh{color:#9fd2ba}
+  .action-memory-line{margin-top:4px;font-size:10px;letter-spacing:.11em;text-transform:uppercase;color:#7e7668}
+  .action-memory-line.is-fresh{color:#6aaf90;font-weight:600}
   .card-open-hint{margin-top:4px;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:#9b927e}
   .card-title-link{color:inherit;text-decoration:none;border-bottom:1px solid transparent;transition:border-color .2s ease,color .2s ease}
   .card-title-link:hover{border-color:rgba(200,168,75,.48);color:#f2ead8}
@@ -500,7 +500,7 @@
   .system-grid-card.next-fix-pulse{animation:nextCardPulse 1.6s ease-in-out 3}
   .fix-progress-counter{margin-top:10px;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:#9fd2ba;display:none}
   .fix-progress-counter.has-progress{display:block}
-  .cta-applied{border-color:rgba(106,175,144,.44)!important;background:rgba(106,175,144,.12)!important;color:#a6dabf!important;cursor:default}
+  .cta-applied{border-color:rgba(106,175,144,.66)!important;background:rgba(106,175,144,.22)!important;color:#7fd4ae!important;cursor:default;font-weight:700}
   .modal-apply-note{margin-top:8px;font-size:11px;color:#a99f89;line-height:1.4}
   /* ────────────────────────────────────────────────────────────────── */
   .correction-modal-mask{position:fixed;inset:0;background:rgba(6,5,3,.74);backdrop-filter:blur(3px);z-index:140;display:none}
@@ -860,8 +860,8 @@
   .level-rail-step.is-locked .level-rail-step-dot{opacity:.42}
   .level-rail-step-label{font-size:.55rem;letter-spacing:.1em;text-transform:uppercase;color:rgba(200,168,75,.45);text-align:center;max-width:76px;line-height:1.35;word-break:break-word}
   .level-rail-step.is-complete .level-rail-step-label,.level-rail-step.is-active .level-rail-step-label{color:rgba(200,168,75,.7)}
-  .level-rail-connector{flex:1;height:1px;background:rgba(200,168,75,.18);margin-top:-14px;position:relative;z-index:1}
-  .level-rail-connector.is-complete{background:rgba(200,168,75,.62);box-shadow:0 0 8px rgba(200,168,75,.28)}
+  .level-rail-connector{flex:1;height:1px;background:rgba(200,168,75,.08);margin-top:-14px;position:relative;z-index:1}
+  .level-rail-connector.is-complete{background:rgba(200,168,75,.38);box-shadow:0 0 6px rgba(200,168,75,.18)}
 
   /* Level card grid */
   .level-card-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
@@ -1875,7 +1875,7 @@
         @php
           $nmSubtext = match(true) {
             $tierRank >= 4 => 'You\'ve got the execution checklist. Want this implemented for you?',
-            $tierRank === 3 => 'You\'ve got the plan. Now execute it \u2014 step by step inside your dashboard.',
+            $tierRank === 3 => 'You\'ve got the plan. Now execute it — step by step inside your dashboard.',
             $tierRank === 2 => 'You\'ve identified the gaps. Now fix them in order.',
             $tierRank === 1 && $latestIssues > 0 => 'Your scan found '.$latestIssues.' gap'.($latestIssues !== 1 ? 's' : '').'. This is the next step to fix them.',
             default => 'Your baseline is set. Signal Analysis breaks down exactly where you\'re losing visibility.',
@@ -2836,8 +2836,8 @@
                   ? ($score < 50 ? 'Pressure persisting from prior evaluation.' : 'Prior instability detected. Stabilization in progress.')
                   : 'No pressure detected (temporary).';
                 $actionMemoryLine = $scanEvaluatedAt
-                  ? ('Last action: ' . $scanEvaluatedLabel)
-                  : 'Correction initiated recently';
+                  ? ('Scanned ' . $scanEvaluatedLabel)
+                  : 'Not applied yet';
                 $expansionPotentialLabel = $score >= 85
                   ? '+12-18 expansion potential detected'
                   : ($score >= 70
@@ -2881,7 +2881,7 @@
                 $noDeeperPath = $nextProgressionRank === null;
                 $suggestedCorrectionRank = $nextProgressionRank ?? 4;
 
-                $modalTitle = 'Constraint Resolution';
+                $modalTitle = 'Fix Details';
                 $modalUnlockEffect = 'Next corrective layer unavailable.';
                 $modalPrice = 'N/A';
                 $modalPrimaryHref = $inspectHref;
@@ -2901,7 +2901,7 @@
                 } elseif ($scanTierRank >= $suggestedCorrectionRank) {
                   $correctionActionType = 'unlocked';
                   $correctionLabel = 'Apply Fix';
-                  $postCorrectionLabel = '✓ Constraint removed — improving selection priority';
+                  $postCorrectionLabel = '✓ Fix applied — impact is updating';
                   $nextPathLine = 'Next path: ' . ($rankToLayerName[$suggestedCorrectionRank] ?? 'Signal Analysis');
                   $correctionHref = $inspectHref . '#' . ($rankToLayerAnchor[$suggestedCorrectionRank] ?? 'detailed-layer-view');
                 } else {
@@ -3136,36 +3136,36 @@
   <div class="correction-modal">
     <div class="flex items-start justify-between gap-3">
       <div>
-        <p class="meta">Correction Path</p>
-        <h3 id="correctionPathTitle">Constraint Resolution</h3>
+        <p class="meta">Fix Path</p>
+        <h3 id="correctionPathTitle">Fix Details</h3>
       </div>
       <button type="button" id="correctionPathClose" class="close-btn">Close</button>
     </div>
 
     <div class="panel">
-      <p>What correction means here</p>
+      <p>What this fix does</p>
       <p id="correctionPathWhat">Correction path is being prepared from current system state.</p>
     </div>
 
     <div class="panel">
-      <p>Current constraint</p>
+      <p>The issue</p>
       <p id="correctionPathConstraint">-</p>
     </div>
 
     <div class="panel">
-      <p>Next system action available</p>
+      <p>What happens next</p>
       <p id="correctionPathNext">Open execution pathway or inspect this system readout for highest-priority correction.</p>
     </div>
 
     <div class="panel">
-      <p>Unlock</p>
+      <p>Cost</p>
       <p id="correctionPathPrice">N/A</p>
     </div>
 
     <div class="actions">
       <a id="correctionPathInspect" href="{{ route('quick-scan.show') }}" class="system-grid-cta cta-view">Inspect Readout</a>
       <div>
-        <p class="modal-apply-note">This marks the fix as applied and advances your system progress.</p>
+        <p class="modal-apply-note">Applying this fix marks this issue as being addressed.</p>
         <a id="correctionPathPrimary" href="{{ route('quick-scan.show') }}" class="system-grid-cta cta-fix">Apply This Fix</a>
       </div>
       <a href="{{ url('/book?entry=consultation') }}" class="assist-link">Prefer guided activation? Book consultation</a>
@@ -3177,7 +3177,7 @@
   <aside class="readout-flyout">
     <div class="readout-flyout-inner">
       <div class="readout-flyout-head">
-        <p class="readout-flyout-kicker">System Panel Expanded</p>
+        <p class="readout-flyout-kicker">Issue Detail</p>
         <button type="button" class="readout-flyout-close" id="readoutFlyoutCloseTop">Close</button>
       </div>
 
@@ -3189,7 +3189,7 @@
             <p class="readout-metric-value" id="readoutFlyoutScore">-</p>
           </div>
           <div class="readout-metric">
-            <p class="readout-metric-label">State</p>
+            <p class="readout-metric-label">Status</p>
             <p class="readout-metric-value" id="readoutFlyoutState">-</p>
           </div>
           <div class="readout-metric" style="grid-column:1/-1">
@@ -3200,18 +3200,18 @@
       </div>
 
       <div class="readout-section">
-        <p>Primary Constraint</p>
+        <p>Top Issue</p>
         <p id="readoutFlyoutConstraint">-</p>
       </div>
 
       <div class="readout-section">
-        <p>Current Layer Summary</p>
+        <p>What\'s Active</p>
         <p id="readoutFlyoutLayerIncluded">-</p>
         <p id="readoutFlyoutLayerLocked" style="margin-top:6px;color:#bcae8b">-</p>
       </div>
 
       <div class="readout-correction-inline" id="readoutCorrectionInline">
-        <p id="readoutCorrectionInlineText">Correction path status unavailable.</p>
+        <p id="readoutCorrectionInlineText">Fix status unavailable.</p>
       </div>
 
       <div class="readout-actions">
@@ -3472,7 +3472,7 @@
       const constraint = btn.dataset.constraint || 'Primary service signal remains constrained.';
       const pressure = btn.dataset.pressure || 'Constraint detected';
       const inspectHref = btn.dataset.inspectHref || '{{ route('quick-scan.show') }}';
-      const modalTitle = btn.dataset.modalTitle || 'Constraint Resolution';
+      const modalTitle = btn.dataset.modalTitle || 'Fix Details';
       const unlockEffect = btn.dataset.unlockEffect || 'Unlock adds deeper correction controls and progression context.';
       const unlockPrice = btn.dataset.unlockPrice || 'N/A';
       const primaryHref = btn.dataset.primaryHref || inspectHref;
