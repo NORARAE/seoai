@@ -489,6 +489,26 @@
   font-size:.63rem;color:rgba(155,155,148,.52);
   font-style:italic;letter-spacing:.02em;
 }
+/* Trust trigger — 'See what unlocks' micro-link beside CTA */
+.sys-trust-trigger{
+  display:inline-block;margin-top:9px;
+  background:none;border:none;padding:0;
+  font-family:'DM Sans',sans-serif;font-size:.58rem;
+  letter-spacing:.1em;text-transform:uppercase;
+  color:rgba(200,168,75,.52);cursor:pointer;
+  border-bottom:1px dashed rgba(200,168,75,.28);
+  line-height:1.2;padding-bottom:1px;
+  transition:color .2s,border-color .2s;
+}
+.sys-trust-trigger:hover{color:rgba(200,168,75,.88);border-bottom-color:rgba(200,168,75,.52)}
+.sys-trust-trigger:focus-visible{outline:2px solid rgba(200,168,75,.4);outline-offset:2px;border-radius:2px}
+/* Conversion context line under CTA area */
+.sys-momentum{
+  margin:8px 0 0;
+  font-size:.58rem;letter-spacing:.06em;
+  color:rgba(168,162,148,.52);
+  font-style:italic;
+}
 /* Hover-group dimming */
 .system-pipeline:hover .sys-step .sys-card{
   opacity:.72;filter:brightness(.92);
@@ -1312,7 +1332,7 @@
             <h3 class="sys-name">Action Plan</h3>
             <div class="sys-price"><sup>$</sup>249</div>
           </div>
-          <p class="sys-outcome">See what to build next with a prioritized structure-first sequence for expansion.</p>
+          <p class="sys-outcome">Converts your scan output into a prioritized fix sequence &mdash; ranked by impact, explained in context.</p>
           <ul class="sys-features">
             <li><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.2"><polyline points="3 8 7 12 13 4"/></svg> Prioritized build order by impact</li>
             <li><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.2"><polyline points="3 8 7 12 13 4"/></svg> Structural guidance for expansion</li>
@@ -1324,8 +1344,12 @@
             <span class="sys-cta-owned-badge"><svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M1.5 5l2.5 2.5 4.5-5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg> Action Plan active</span>
             @else
             <a href="{{ route('checkout.structural-leverage') }}" class="sys-cta">Get My Action Plan &mdash; $249</a>
+            <button class="sys-trust-trigger" data-layer="level-3">See what unlocks</button>
             @endif
           </div>
+          @if($ownedTierRank < 3)
+          <p class="sys-momentum">This is the next step after your scan.</p>
+          @endif
         </div>
       </div>
 
@@ -1349,9 +1373,13 @@
             @if($ownedTierRank >= 4)
             <span class="sys-cta-owned-badge"><svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M1.5 5l2.5 2.5 4.5-5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg> Guided Execution active</span>
             @else
-            <a href="{{ route('checkout.system-activation') }}" class="sys-cta">Activate Full System &mdash; $489</a>
+            <a href="{{ route('checkout.system-activation') }}" class="sys-cta">Unlock Guided Execution &mdash; $489</a>
+            <button class="sys-trust-trigger" data-layer="level-4">See what unlocks</button>
             @endif
           </div>
+          @if($ownedTierRank < 4)
+          <p class="sys-momentum">Most users with an Action Plan move here next.</p>
+          @endif
         </div>
       </div>
 

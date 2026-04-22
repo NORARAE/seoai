@@ -316,7 +316,7 @@
   padding:10px 5px 9px;
   font-size:.62rem;
   letter-spacing:.115em;
-  color:rgba(211,204,189,.87);
+  color:rgba(168,160,148,.36);
   border-right:1px solid rgba(200,168,75,.12);
   background:transparent;
   transition:background .22s,color .22s,box-shadow .22s,border-color .22s;
@@ -575,46 +575,46 @@
       badge:      'LEVEL 3',
       price:      '$249',
       title:      'Action Plan',
-      descriptor: 'Prioritized fix list from your scan — ranked by impact, grouped by effort.',
+      descriptor: 'Your scan output converted into a prioritized fix sequence \u2014 each issue ranked by impact on your AI visibility score.',
       bullets: [
-        'Your service-by-location coverage map with missing zones highlighted',
-        'Which page structures need correction first',
-        'The sequence that closes high-value coverage gaps',
-        'How your visibility compounds after structural fixes'
+        'Your scan issues ordered by the impact they have on your score',
+        'Why each issue matters, explained in context of your scan data',
+        'Which fixes deliver the fastest citation confidence gains',
+        'A structured action sequence visible inside your dashboard'
       ],
-      reason: 'When you know your gaps and are ready to build the actual architecture, this layer constructs the system \u2014 not individual fixes, but the full structural model AI platforms use to surface your site reliably across markets.',
+      reason: 'Your scan has already identified the gaps. This level converts that raw output into a clear, impact-ordered roadmap \u2014 so you fix the right things first, not just the easiest ones.',
       qualify: {
         lead: 'Choose this if:',
         points: [
-          'You know something is wrong with your visibility',
-          'You want the exact order to fix it \u2014 not guesswork'
+          'You have a score and want to know exactly what to fix first',
+          'You want a clear sequence \u2014 not a list of raw issues'
         ]
       },
       position:   3,
-      ctaLabel:   'Continue to Next Level \u2192',
+      ctaLabel:   'Unlock This Level \u2192',
       ctaHref:    '{{ route("checkout.structural-leverage") }}'
     },
     'level-4': {
       badge:      'LEVEL 4',
       price:      '$489',
       title:      'Guided Execution',
-      descriptor: 'Step-by-step execution checklist inside your dashboard with progress tracking.',
+      descriptor: 'Your Action Plan converted into a step-by-step checklist inside your dashboard \u2014 each item tied directly to your scan data.',
       bullets: [
-        'Your action plan organized into an in-dashboard checklist',
-        'Guided steps for each fix from your scan',
-        'Progress tracking as you work through items',
-        'How completed items compound your score over time'
+        'Your scan issues organized into a guided, step-by-step checklist',
+        'Each checklist item tied to a specific issue from your scan',
+        'Progress tracking that persists inside your dashboard',
+        'A clear execution path from first fix to final completion'
       ],
-      reason: 'The complete operating layer \u2014 every page, schema object, and content signal working as a unified whole, tuned for AI recommendation at scale. Built to compound, not to maintain.',
+      reason: 'This is where your scan data becomes a structured working list. Each issue from your Action Plan becomes a completable step \u2014 visible in your dashboard, trackable as you work through it.',
       qualify: {
         lead: 'Choose this if:',
         points: [
-          'You\'ve identified your gaps and are ready to deploy',
-          'You want a complete system \u2014 not incremental patches'
+          'You have your action plan and are ready to execute',
+          'You want progress tracking and a guided step-by-step format'
         ]
       },
       position:   4,
-      ctaLabel:   'Continue to Next Level \u2192',
+      ctaLabel:   'Unlock This Level \u2192',
       ctaHref:    '{{ route("checkout.system-activation") }}'
     },
 
@@ -646,46 +646,46 @@
       badge:      'ACTION PLAN',
       price:      '$249',
       title:      'Action Plan',
-      descriptor: 'Structured fix planning that builds on scan and signal gap analysis.',
+      descriptor: 'Your scan output converted into a prioritized fix sequence \u2014 each issue ranked by impact on your AI visibility score.',
       bullets: [
-        'The full service-by-location map your architecture needs',
-        'Priority structural corrections with clear execution order',
-        'Which coverage gaps block visibility growth right now',
-        'How corrected structure improves AI retrieval consistency'
+        'Your scan issues ordered by the impact they have on your score',
+        'Why each issue matters, explained in context of your scan data',
+        'Which fixes deliver the fastest citation confidence gains',
+        'A structured action sequence visible inside your dashboard'
       ],
-      reason: 'When you know your gaps and are ready to build the actual architecture, this layer constructs the system \u2014 not individual fixes, but the full structural model AI platforms use to surface your site reliably.',
+      reason: 'Your scan has already identified the gaps. This level converts that raw output into a clear, impact-ordered roadmap \u2014 so you fix the right things first, not just the easiest ones.',
       qualify: {
         lead: 'Choose this if:',
         points: [
-          'You know something is wrong with your visibility',
-          'You want the exact order to fix it \u2014 not guesswork'
+          'You have a score and want to know exactly what to fix first',
+          'You want a clear sequence \u2014 not a list of raw issues'
         ]
       },
       position:   3,
-      ctaLabel:   'Continue to Next Level \u2192',
+      ctaLabel:   'Unlock This Level \u2192',
       ctaHref:    '{{ route("checkout.structural-leverage") }}'
     },
     'build': {
       badge:      'GUIDED EXECUTION',
       price:      '$489',
       title:      'Guided Execution',
-      descriptor: 'Translate findings into implementation-ready structure across your full domain.',
+      descriptor: 'Your Action Plan converted into a step-by-step checklist inside your dashboard \u2014 each item tied directly to your scan data.',
       bullets: [
-        'What the full activation layer deploys across your site',
-        'How all signals align into one citation-ready system',
-        'Where market-wide coverage expands after deployment',
-        'The ongoing visibility gains this unlocks'
+        'Your scan issues organized into a guided, step-by-step checklist',
+        'Each checklist item tied to a specific issue from your scan',
+        'Progress tracking that persists inside your dashboard',
+        'A clear execution path from first fix to final completion'
       ],
-      reason: 'The complete operating layer \u2014 every page, schema object, and content signal working as a unified whole, tuned for AI recommendation at scale. Built to compound, not to maintain.',
+      reason: 'This is where your scan data becomes a structured working list. Each issue from your Action Plan becomes a completable step \u2014 visible in your dashboard, trackable as you work through it.',
       qualify: {
         lead: 'Choose this if:',
         points: [
-          'You\'ve identified your gaps and are ready to deploy',
-          'You want a complete system \u2014 not incremental patches'
+          'You have your action plan and are ready to execute',
+          'You want progress tracking and a guided step-by-step format'
         ]
       },
       position:   4,
-      ctaLabel:   'Continue to Next Level \u2192',
+      ctaLabel:   'Unlock This Level \u2192',
       ctaHref:    '{{ route("checkout.system-activation") }}'
     },
     'expand': {
