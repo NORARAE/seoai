@@ -509,6 +509,12 @@
   color:rgba(168,162,148,.52);
   font-style:italic;
 }
+/* Source-of-truth scan attribution line */
+.sys-source-truth{
+  font-size:.58rem;letter-spacing:.08em;text-transform:uppercase;
+  color:rgba(200,168,75,.38);margin:0 0 16px;
+  border-left:2px solid rgba(200,168,75,.18);padding-left:9px;
+}
 /* Hover-group dimming */
 .system-pipeline:hover .sys-step .sys-card{
   opacity:.72;filter:brightness(.92);
@@ -1305,18 +1311,19 @@
             <h3 class="sys-name">Signal Analysis</h3>
             <div class="sys-price"><sup>$</sup>99</div>
           </div>
-          <p class="sys-outcome">See exactly why your score is what it is and where signal quality is breaking.</p>
+          <p class="sys-outcome">Your scan score broken down by category &mdash; each gap named, ranked weakest first, visible inside your dashboard.</p>
+          <p class="sys-source-truth">Built from your scan results &mdash; not templates.</p>
           <ul class="sys-features">
-            <li><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.2"><polyline points="3 8 7 12 13 4"/></svg> Score explanation by signal category</li>
-            <li><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.2"><polyline points="3 8 7 12 13 4"/></svg> Signal gaps identified inside your dashboard</li>
-            <li><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.2"><polyline points="3 8 7 12 13 4"/></svg> Immediate access after checkout</li>
-            <li><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.2"><polyline points="3 8 7 12 13 4"/></svg> Builds on your scan data automatically</li>
+            <li><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.2"><polyline points="3 8 7 12 13 4"/></svg> Score breakdown across 6 signal categories</li>
+            <li><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.2"><polyline points="3 8 7 12 13 4"/></svg> Failing checks listed per category</li>
+            <li><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.2"><polyline points="3 8 7 12 13 4"/></svg> Gaps ranked weak-to-strong &mdash; inside your dashboard</li>
+            <li><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.2"><polyline points="3 8 7 12 13 4"/></svg> Pulls directly from your scan data</li>
           </ul>
           <div class="sys-actions">
             @if($ownedTierRank >= 2)
             <span class="sys-cta-owned-badge"><svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M1.5 5l2.5 2.5 4.5-5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg> Signal Analysis active</span>
             @else
-            <a href="{{ route('checkout.signal-expansion') }}" class="sys-cta">Unlock Signal Map &mdash; $99</a>
+            <a href="{{ route('checkout.signal-expansion') }}" class="sys-cta">Unlock Signal Analysis &mdash; $99</a>
             <span class="sys-cta-note">Available after scan</span>
             @endif
           </div>
@@ -1332,11 +1339,12 @@
             <h3 class="sys-name">Action Plan</h3>
             <div class="sys-price"><sup>$</sup>249</div>
           </div>
-          <p class="sys-outcome">Converts your scan output into a prioritized fix sequence &mdash; ranked by impact, explained in context.</p>
+          <p class="sys-outcome">Your scan gaps converted into a numbered fix list &mdash; what to fix first, why it matters, and exactly how.</p>
+          <p class="sys-source-truth">Based on the exact gaps found in your scan.</p>
           <ul class="sys-features">
-            <li><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.2"><polyline points="3 8 7 12 13 4"/></svg> Prioritized build order by impact</li>
-            <li><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.2"><polyline points="3 8 7 12 13 4"/></svg> Structural guidance for expansion</li>
-            <li><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.2"><polyline points="3 8 7 12 13 4"/></svg> Dashboard-first action sequence</li>
+            <li><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.2"><polyline points="3 8 7 12 13 4"/></svg> Ranked fix order &mdash; highest-priority items first</li>
+            <li><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.2"><polyline points="3 8 7 12 13 4"/></svg> Each item: what&rsquo;s broken, why it costs you, how to fix it</li>
+            <li><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.2"><polyline points="3 8 7 12 13 4"/></svg> Issues pulled directly from your scan</li>
             <li><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.2"><polyline points="3 8 7 12 13 4"/></svg> Immediate access after checkout</li>
           </ul>
           <div class="sys-actions">
@@ -1362,18 +1370,19 @@
             <h3 class="sys-name">Guided Execution</h3>
             <div class="sys-price"><sup>$</sup>489</div>
           </div>
-          <p class="sys-outcome">Unlock your step-by-step activation roadmap inside the dashboard &mdash; no external deliverables.</p>
+          <p class="sys-outcome">Your scan gaps become a checkable execution list inside your dashboard &mdash; with progress tracking as you work through each fix.</p>
+          <p class="sys-source-truth">Based on the exact gaps found in your scan.</p>
           <ul class="sys-features">
-            <li><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.2"><polyline points="3 8 7 12 13 4"/></svg> Step-by-step roadmap inside your dashboard</li>
-            <li><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.2"><polyline points="3 8 7 12 13 4"/></svg> Prioritized activation sequence by business impact</li>
-            <li><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.2"><polyline points="3 8 7 12 13 4"/></svg> Immediate in-account access</li>
-            <li><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.2"><polyline points="3 8 7 12 13 4"/></svg> Dashboard-only activation guidance</li>
+            <li><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.2"><polyline points="3 8 7 12 13 4"/></svg> Interactive checklist for every fix in your scan</li>
+            <li><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.2"><polyline points="3 8 7 12 13 4"/></svg> Progress bar tracks completion as you work</li>
+            <li><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.2"><polyline points="3 8 7 12 13 4"/></svg> Each item: the gap, why it matters, how to fix it</li>
+            <li><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.2"><polyline points="3 8 7 12 13 4"/></svg> Immediate in-account access after checkout</li>
           </ul>
           <div class="sys-actions">
             @if($ownedTierRank >= 4)
             <span class="sys-cta-owned-badge"><svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M1.5 5l2.5 2.5 4.5-5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg> Guided Execution active</span>
             @else
-            <a href="{{ route('checkout.system-activation') }}" class="sys-cta">Unlock Guided Execution &mdash; $489</a>
+            <a href="{{ route('checkout.system-activation') }}" class="sys-cta">Start Guided Execution &mdash; $489</a>
             <button class="sys-trust-trigger" data-layer="level-4">See what unlocks</button>
             @endif
           </div>
