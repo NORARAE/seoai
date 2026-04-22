@@ -1443,6 +1443,9 @@
   .dcm-rb-cta:hover{color:#c8a84b;border-color:rgba(200,168,75,.5)}
   /* ── Layer nudges (JS-revealed after 12h away) ───────────────── */
   .dcm-layer-nudge{font-size:.72rem;color:rgba(200,168,75,.42);font-style:italic;margin:6px 0 0;line-height:1.5;display:none}
+  /* Phase 17: nm-card click echo feedback */
+  .nm-fix-echo{font-size:.62rem;color:rgba(140,200,155,.82);letter-spacing:.04em;margin-top:5px;display:block;opacity:0;transition:opacity .3s ease;pointer-events:none}
+  .nm-fix-echo.visible{opacity:1}
 </style>
 @endpush
 
@@ -1822,7 +1825,14 @@
         @endphp
         <p class="dash-section-label">Your next move</p>
         <h2 id="next-move-heading" class="dash-section-heading">{{ $nmSubtext }}</h2>
-        <p class="nm-urgency">You\'ve already done the hard part &mdash; most users at Level {{ $tierRank }} move here next.</p>
+        @php
+          $nmProgressMsg = match(true) {
+            $tierRank >= 5 => 'You\'re ready to expand beyond baseline optimization.',
+            $tierRank >= 3 => 'You\'re now fixing structural visibility issues.',
+            default        => 'You\'re early in the system — clarity comes next.',
+          };
+        @endphp
+        <p class="nm-urgency">{{ $nmProgressMsg }}</p>
         <div class="next-move-row">
 
           {{-- Fastest win: primary when no report yet; secondary when user already has report and an upgrade is the real next step --}}
@@ -1831,7 +1841,7 @@
             <h3 class="nm-card-title">{{ $nextMoveFastestFix }}</h3>
             <p class="nm-card-rationale">The quickest change likely to raise your score before your next scan.</p>
             @if($leadRenderable)
-            <a href="{{ $leadReportHref }}" class="nm-card-action" onclick="track('cta_click',{tier:'report',label:'view_report_fastest_win',location:'next_move'})">View fix in your report &rarr;</a>
+            <a href="{{ $leadReportHref }}" class="nm-card-action" data-fix-confirm="1" onclick="track('cta_click',{tier:'report',label:'view_report_fastest_win',location:'next_move'})">View fix in your report &rarr;</a>
             @else
             <a href="{{ $nextMoveActionHref }}" class="nm-card-action" onclick="track('cta_click',{tier:'next',label:'fastest_win_unlock',location:'next_move'})">{{ $nextUnlockLabel }} &rarr;</a>
             @endif
@@ -1844,7 +1854,7 @@
             <h3 class="nm-card-title">{{ $nextBestAction['what_missing'] ?? 'Primary visibility gap' }}</h3>
             <p class="nm-card-rationale">{{ !empty($nextBestAction['why_it_matters']) ? $nextBestAction['why_it_matters'] : 'Fixing this has the highest projected impact on your visibility score.' }}</p>
             @if($leadRenderable)
-            <a href="{{ $leadReportHref }}" class="nm-card-action" onclick="track('cta_click',{tier:'report',label:'view_report_highest_leverage',location:'next_move'})">See full fix details &rarr;</a>
+            <a href="{{ $leadReportHref }}" class="nm-card-action" data-fix-confirm="1" onclick="track('cta_click',{tier:'report',label:'view_report_highest_leverage',location:'next_move'})">See full fix details &rarr;</a>
             @else
             <a href="{{ $nextMoveActionHref }}" class="nm-card-action" onclick="track('cta_click',{tier:'next',label:'highest_leverage_unlock',location:'next_move'})">{{ $nextUnlockLabel }} &rarr;</a>
             @endif
@@ -4080,5 +4090,24 @@
 })();
 </script>
 @endif
+
+<script>
+// Phase 17: nm-card fix-confirm echo feedback
+(function () {
+  document.querySelectorAll('[data-fix-confirm]').forEach(function (link) {
+    link.addEventListener('click', function () {
+      var echo = link.parentElement.querySelector('.nm-fix-echo');
+      if (!echo) {
+        echo = document.createElement('span');
+        echo.className = 'nm-fix-echo';
+        echo.textContent = 'Fix applied \u2014 this constraint is now being resolved.';
+        link.parentElement.appendChild(echo);
+      }
+      echo.classList.add('visible');
+      setTimeout(function () { echo.classList.remove('visible'); }, 2500);
+    });
+  });
+})();
+</script>
 
 @endsection

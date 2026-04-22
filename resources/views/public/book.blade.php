@@ -365,6 +365,11 @@ body{line-height:1.85}
 @keyframes snavGlowPass{0%{transform:translateX(-100%)}100%{transform:translateX(700%)}}
 .bk-snav-sweep{position:absolute;top:0;bottom:0;left:0;width:60px;background:linear-gradient(90deg,transparent,rgba(200,168,75,.065),transparent);animation:snavGlowPass 12s ease-in-out infinite;pointer-events:none;z-index:1}
 
+/* Phase 17: outcome hints + strip */
+.bk-snav-hint{display:block;font-size:.52rem;line-height:1.38;color:rgba(168,164,155,.50);margin-top:3px;letter-spacing:.03em}
+.bk-snav-item.is-active .bk-snav-hint{color:rgba(200,168,75,.66)}
+.bk-outcome-strip{text-align:center;font-size:.8rem;color:rgba(168,164,155,.60);line-height:1.72;padding:0 0 36px;max-width:520px;margin:0 auto;font-style:italic}
+
 /* ──────────────────────────────────────────────────────────────────── */
 </style>
 @include('partials.clarity')
@@ -440,9 +445,9 @@ body{line-height:1.85}
           <circle cx="480" cy="175" r="2" fill="#c8a84b" fill-opacity=".16"><animate attributeName="fill-opacity" values=".16;.28;.16" dur="7.7s" begin="3.2s" repeatCount="indefinite"/></circle>
         </svg>
 
-        <span class="bk-hero-kicker">System Entry</span>
-        <h1>Enter the system at<br><em>your current position.</em></h1>
-        <p class="hero-sub">Six levels. Each one a standalone product. Choose the step that matches where you are right now&mdash;there is no required starting point.</p>
+        <span class="bk-hero-kicker">AI Visibility System</span>
+        <h1>Start where your<br><em>visibility is breaking.</em></h1>
+        <p class="hero-sub">Your scan reveals where AI cannot fully use your content. Each step fixes a deeper constraint.</p>
 
         @if(request('payment') === 'cancelled')
         <div class="bk-notice">
@@ -463,6 +468,7 @@ body{line-height:1.85}
               <span class="bk-snav-name">Scan</span>
               <span class="bk-snav-price">$2</span>
               <span class="bk-snav-type">Self-serve</span>
+              <span class="bk-snav-hint">Find what&#39;s blocking you</span>
             </a>
             <a class="bk-snav-item" href="{{ route('checkout.signal-expansion') }}" data-target="bk-step-02" data-layer="deep" role="button" aria-haspopup="dialog" tabindex="0">
               <span class="bk-snav-num">02</span>
@@ -470,6 +476,7 @@ body{line-height:1.85}
               <span class="bk-snav-name">Signal</span>
               <span class="bk-snav-price">$99</span>
               <span class="bk-snav-type">Self-serve</span>
+              <span class="bk-snav-hint">See why your score is low</span>
             </a>
             <a class="bk-snav-item" href="{{ route('checkout.structural-leverage') }}" data-target="bk-step-03" data-layer="fix" role="button" aria-haspopup="dialog" tabindex="0">
               <span class="bk-snav-num">03</span>
@@ -477,6 +484,7 @@ body{line-height:1.85}
               <span class="bk-snav-name">Leverage</span>
               <span class="bk-snav-price">$249</span>
               <span class="bk-snav-type">Self-serve</span>
+              <span class="bk-snav-hint">Fix the highest-impact gaps</span>
             </a>
             <a class="bk-snav-item" href="{{ route('checkout.system-activation') }}" data-target="bk-step-04" data-layer="build" role="button" aria-haspopup="dialog" tabindex="0">
               <span class="bk-snav-num">04</span>
@@ -484,6 +492,7 @@ body{line-height:1.85}
               <span class="bk-snav-name">Activate</span>
               <span class="bk-snav-price">$489</span>
               <span class="bk-snav-type">Self-serve</span>
+              <span class="bk-snav-hint">Apply fixes step-by-step</span>
             </a>
             <a class="bk-snav-item" href="{{ route('book.index', ['entry' => 'consultation']) }}" data-target="bk-step-05" data-layer="expand" role="button" aria-haspopup="dialog" tabindex="0">
               <span class="bk-snav-num">05</span>
@@ -491,6 +500,7 @@ body{line-height:1.85}
               <span class="bk-snav-name">Expand</span>
               <span class="bk-snav-price">$500</span>
               <span class="bk-snav-type bk-snav-type--guided">Guided</span>
+              <span class="bk-snav-hint">Build full system coverage</span>
             </a>
             <a class="bk-snav-item" href="{{ route('book.index', ['entry' => 'activation']) }}" data-target="bk-step-06" onclick="openStep06Gate();return false;" role="button" aria-haspopup="dialog" tabindex="0">
               <span class="bk-snav-num">06</span>
@@ -498,6 +508,7 @@ body{line-height:1.85}
               <span class="bk-snav-name">Control</span>
               <span class="bk-snav-price">$5k+</span>
               <span class="bk-snav-type bk-snav-type--guided">Guided</span>
+              <span class="bk-snav-hint">Own your entire market</span>
             </a>
           </nav>
         </div>
@@ -509,6 +520,8 @@ body{line-height:1.85}
 
       {{-- Clarifier strip --}}
       <p class="bk-clarifier">Steps 01&ndash;04 are <strong>self-service</strong> &mdash; pay online, no booking. &nbsp;Steps 05&ndash;06 are <strong>scheduled consultation sessions</strong> &mdash; booked with a specialist.</p>
+
+      <p class="bk-outcome-strip">Each level removes a visibility constraint and increases your AI selection likelihood.</p>
 
       {{-- Booking Ladder — all 6 offers, always visible --}}
       <section class="bk-ladder" aria-label="Booking options" id="bkLadder">

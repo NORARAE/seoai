@@ -432,6 +432,9 @@
   .lm-title{font-size:1.88rem}
   .lm-descriptor,.lm-bullets li,.lm-reason{font-size:1rem}
 }
+/* Phase 17: why-this-step line above primary CTA */
+.lm-why-step{margin:0 0 10px;font-size:.88rem;line-height:1.52;color:rgba(210,200,185,.68);text-align:center;font-style:italic;empty-cells:show}
+.lm-why-step:empty{display:none}
 </style>
 
 {{-- ════ MODAL: LAYER UPGRADE ════ --}}
@@ -499,6 +502,7 @@
         <p class="lm-ladder-banner-text" id="lmLadderBannerText">Most users exploring multiple levels choose Signal Analysis first.</p>
         <a class="lm-ladder-banner-link" id="lmLadderBannerLink" href="{{ route('checkout.signal-expansion') }}">See what’s right for you &rarr;</a>
       </div>
+      <p class="lm-why-step" id="lmWhyStep"></p>
       <a class="lm-cta-primary" id="lmCtaPrimary" href="#">Unlock Deeper Signal Intelligence &rarr;</a>
       <p class="lm-cta-subtext" id="lmCtaSubtext">Understand why your score is stuck &mdash; and what to fix first</p>
       <p class="lm-cta-support" id="lmMomentumLine">Most users at your level move here next.</p>
@@ -752,6 +756,7 @@
   var elBullets   = overlay.querySelector('#lmBullets');
   var elReason    = overlay.querySelector('#lmReason');
   var elCtaPrimary= overlay.querySelector('#lmCtaPrimary');
+  var elWhyStep   = overlay.querySelector('#lmWhyStep');
   var elCtaSubtext = overlay.querySelector('#lmCtaSubtext');
   var elCtaSubtext2= overlay.querySelector('#lmCtaSubtext2');
   var elMomentumLine = overlay.querySelector('#lmMomentumLine');
@@ -836,6 +841,15 @@
         elMomentumLine.textContent = 'Most users at your level move here next.';
       } else {
         elMomentumLine.textContent = 'This unlocks what your score is still missing.';
+      }
+    }
+    if (elWhyStep) {
+      if (d.position === 5) {
+        elWhyStep.textContent = 'You\u2019ve reached the point where guided strategy becomes necessary.';
+      } else if (d.position <= 4) {
+        elWhyStep.textContent = 'This is the next step based on your current scan.';
+      } else {
+        elWhyStep.textContent = 'Most users at your score move here next.';
       }
     }
 
