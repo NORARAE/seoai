@@ -9,6 +9,9 @@
 $isAuth   = auth()->check();
 $userName = $isAuth ? (auth()->user()->name ?? null) : null;
 $firstName = $userName ? explode(' ', trim($userName))[0] : null;
+$aiTierRank = $isAuth && (auth()->user()?->system_tier instanceof \App\Enums\SystemTier)
+    ? auth()->user()->system_tier->rank()
+    : ($isAuth ? 1 : 0); // has scan but no paid tier = rank 1; guest = 0
 
 $greeting = $aiGreeting ?? (
     $isAuth && $firstName
@@ -470,6 +473,71 @@ $csrfToken = csrf_token();
   var CSRF = '{{ $csrfToken }}';
   var MSG     = @json($greeting);
   var IS_AUTH = {{ $isAuth ? 'true' : 'false' }};
+  var TIER_RANK = {{ (int) $aiTierRank }};
+
+  /* ── Behavior signal reader ────────────────────────────────────────── */
+  function readBehaviorSignals() {
+    var signals = { hesitation_type: null, cta_label: null, hours_since_action: null, section_views: {} };
+    try {
+      // Last CTA clicked
+      var lastCta = localStorage.getItem('seo_last_cta');
+      if (lastCta) {
+        var ctaData = JSON.parse(lastCta);
+        signals.cta_label = ctaData.label || null;
+      }
+
+      // Hours since last tracked interaction
+      var lastInteraction = localStorage.getItem('seo_last_interaction');
+      if (lastInteraction) {
+        var elapsed = Date.now() - parseInt(lastInteraction, 10);
+        signals.hours_since_action = Math.round(elapsed / 3600000);
+      }
+
+      // Analyse event log for hesitation patterns
+      var rawLog = localStorage.getItem('seo_event_log');
+      if (rawLog) {
+        var log = JSON.parse(rawLog);
+        var sectionCounts = {};
+        var ctaLocations = [];
+        log.forEach(function(e) {
+          if (e.event === 'section_view' && e.section) {
+            sectionCounts[e.section] = (sectionCounts[e.section] || 0) + 1;
+          }
+          if (e.event === 'cta_click' && e.location) {
+            ctaLocations.push(e.location);
+          }
+        });
+        signals.section_views = sectionCounts;
+
+        // Hesitation case 1: viewed a section 3+ times but no CTA click from it
+        var heavilyViewed = Object.keys(sectionCounts).filter(function(s) { return sectionCounts[s] >= 3; });
+        if (heavilyViewed.length > 0) {
+          var viewedSections = heavilyViewed.join(', ');
+          // Check if any CTA was clicked from those sections
+          var clickedFromViewed = ctaLocations.some(function(loc) {
+            return heavilyViewed.some(function(s) { return loc.indexOf(s) !== -1; });
+          });
+          if (!clickedFromViewed) {
+            signals.hesitation_type = 'repeated_view_no_upgrade';
+            signals.heavily_viewed = viewedSections;
+          }
+        }
+
+        // Hesitation case 2: CTA clicked but no tier advancement (same tier multiple clicks)
+        var ctaClickedCurrent = ctaLocations.filter(function(loc) { return loc.indexOf('next_move') !== -1 || loc.indexOf('upsell') !== -1; });
+        if (ctaClickedCurrent.length >= 2 && !signals.hesitation_type) {
+          signals.hesitation_type = 'cta_clicked_no_conversion';
+        }
+      }
+
+      // Hesitation case 3: stalled (24h+ with no action)
+      if (signals.hours_since_action !== null && signals.hours_since_action >= 24 && !signals.hesitation_type) {
+        signals.hesitation_type = 'stalled';
+      }
+
+    } catch (e) { /* localStorage unavailable or corrupt — fail silently */ }
+    return signals;
+  }
 
   var trigger = document.getElementById('aiaTrigger');
   var backdrop= document.getElementById('aiaBackdrop');
@@ -571,7 +639,8 @@ $csrfToken = csrf_token();
         level_key: pendingContext ? pendingContext.level_key : null,
         level_title: pendingContext ? pendingContext.level_title : null,
         level_price: pendingContext ? pendingContext.level_price : null,
-        user_state: pendingContext ? pendingContext.user_state : 'browsing'
+        user_state: pendingContext ? pendingContext.user_state : 'browsing',
+        behavior_signals: IS_AUTH ? readBehaviorSignals() : null
       })
     })
     .then(function (r) {
@@ -629,21 +698,35 @@ $csrfToken = csrf_token();
     return IS_AUTH ? 'has-scan' : 'no-scan';
   }
 
-  /* ── Append next-step nudge below AI message ── */
+  /* ── Append next-step nudge below AI message (tier-aware) ── */
   function addNextStepNudge (userMsg) {
     var intent  = classifyIntent(userMsg);
     var links   = [];
 
-    if (intent === 'no-scan' || intent === 'action') {
-      links = [{ label: 'See your baseline \u2014 run your $2 scan', href: '{{ route("scan.start") }}' }];
-    } else if (intent === 'score') {
-      links = [{ label: 'Understand why your score is stuck — Signal Analysis', href: '{{ route("checkout.signal-expansion") }}' }];
-    } else if (intent === 'qualify') {
-      links = [{ label: 'Fix what matters — Action Plan', href: '{{ route("checkout.structural-leverage") }}' }];
-    } else if (intent === 'confused') {
-      links = [{ label: 'Map this together \u2014 Book Consultation', href: '{{ route("book.index", ["entry" => "consultation"]) }}' }];
+    // Tier-aware: never suggest a tier the user already owns
+    if (!IS_AUTH || TIER_RANK === 0) {
+      // Guest or no scan
+      links = [{ label: 'Get your baseline — run your $2 scan', href: '{{ route("scan.start") }}' }];
+    } else if (TIER_RANK === 1) {
+      // Has scan, no paid tier
+      if (intent === 'confused') {
+        links = [{ label: 'Map this together — Book Consultation', href: '{{ route("book.index", ["entry" => "consultation"]) }}' }];
+      } else {
+        links = [{ label: 'See why your score is what it is — Signal Analysis ($99)', href: '{{ route("checkout.signal-expansion") }}' }];
+      }
+    } else if (TIER_RANK === 2) {
+      // Has Signal Analysis
+      if (intent === 'confused') {
+        links = [{ label: 'Map this together — Book Consultation', href: '{{ route("book.index", ["entry" => "consultation"]) }}' }];
+      } else {
+        links = [{ label: 'Turn your signals into ranked fixes — Action Plan ($249)', href: '{{ route("checkout.structural-leverage") }}' }];
+      }
+    } else if (TIER_RANK === 3) {
+      // Has Action Plan
+      links = [{ label: 'Execute fix by fix, with progress tracking — Guided Execution ($489)', href: '{{ route("checkout.system-activation") }}' }];
     } else {
-      links = [{ label: 'Understand what\u2019s limiting your score \u2014 Signal Analysis', href: '{{ route("checkout.signal-expansion") }}' }];
+      // Has all tiers — only consultation makes sense
+      links = [{ label: 'Deploy this at scale — Book Strategy Session', href: '{{ route("book.index", ["entry" => "dashboard-upgrade"]) }}' }];
     }
 
     var nudge  = document.createElement('div');

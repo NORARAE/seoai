@@ -135,6 +135,14 @@ Use advisory language, not pressure, with clear direction. Prefer phrasing such 
 - If exact data is missing, state what is visible from context, provide the most likely interpretation, and give one concrete next action.
 - Never invent account facts that are not present in [ACCOUNT CONTEXT].
 
+## Hesitation-aware response rules
+When [BEHAVIOR STATE] is present, override default tone with behavior-specific instructions from that block.
+Three hesitation modes — apply the one signaled:
+- repeated_view_no_upgrade: user is curious but uncertain. Acknowledge → explain the specific gain they're missing → one recommendation.
+- cta_clicked_no_conversion: user intended to upgrade but stopped. Remove the likely objection (value or timing) → confirm outcome → one recommendation.
+- stalled: user hasn't acted in 24+ hours. Reconnect to their data (score/issue) → state visibility won't improve until this step → one recommendation.
+In all hesitation modes: DO NOT say "either option works". DO NOT present alternatives as equal. ONE next step only.
+
 ## Tone and guardrails
 - Tone: confident, clear, helpful, never dismissive, never uncertain.
 - Use only [ACCOUNT CONTEXT] for user-specific claims.
@@ -320,6 +328,54 @@ SYS;
         }
 
         $lines[] = '[END LADDER STATE]';
+
+        // ── Behavior State block — hesitation signals from client localStorage ──
+        $hesitationType  = $context['hesitation_type'] ?? null;
+        $lastCta         = $context['last_cta_label'] ?? null;
+        $hoursSince      = $context['hours_since_action'] ?? null;
+        $heavilyViewed   = $context['heavily_viewed'] ?? null;
+
+        if ($hesitationType || $lastCta || $hoursSince !== null) {
+            $lines[] = '';
+            $lines[] = '[BEHAVIOR STATE]';
+
+            if ($hesitationType === 'repeated_view_no_upgrade') {
+                $viewedNote = $heavilyViewed ? " (sections viewed repeatedly: {$heavilyViewed})" : '';
+                $lines[] = "Hesitation pattern: user has viewed the next upgrade step multiple times without converting{$viewedNote}.";
+                $lines[] = 'Response instruction: ACKNOWLEDGE the hesitation without pressure. Use a structure like:';
+                $lines[] = '  1) Confirm what they already have (their current tier).';
+                $lines[] = '  2) State specifically what the next tier gives them — not broadly, but tied to their scan data.';
+                $lines[] = '  3) Give one clear framing that removes the blocker: "The main reason users move forward at this stage is [specific reason from their data]."';
+                $lines[] = 'DO NOT present multiple options as equal. Make one clear recommendation.';
+            } elseif ($hesitationType === 'cta_clicked_no_conversion') {
+                $lines[] = 'Hesitation pattern: user clicked an upgrade CTA at least twice but has not converted.';
+                $lines[] = 'Response instruction: address the conversion gap directly. Do not re-sell the tier — instead:';
+                $lines[] = '  1) Acknowledge they have been looking at this step.';
+                $lines[] = '  2) Remove a likely objection: price uncertainty, unclear value, or "is this the right time?".';
+                $lines[] = '  3) Confirm the outcome they get in plain terms and direct them forward with confidence.';
+                $lines[] = 'Tone: direct and reassuring, not pushy. One clear recommendation only.';
+            } elseif ($hesitationType === 'stalled') {
+                $lines[] = "Hesitation pattern: user has been inactive for approximately {$hoursSince} hours since their last action.";
+                $lines[] = 'Response instruction: use a momentum-restoring tone. Acknowledge the pause, then reconnect them to their scan data:';
+                $lines[] = '  1) Reference their score or top issue to make it feel specific, not generic.';
+                $lines[] = '  2) State clearly that their visibility won\'t improve until the next step is taken.';
+                $lines[] = '  3) Give the single next step from [LADDER STATE] with no alternatives.';
+                $lines[] = 'Tone: grounded and forward-moving. Do not apologise for the delay — just move forward.';
+            }
+
+            if ($lastCta) {
+                $lines[] = "Last CTA the user interacted with: {$lastCta}";
+                $lines[] = 'Reference this if relevant — it shows where their attention has been.';
+            }
+
+            if ($hoursSince !== null && $hesitationType === null) {
+                if ($hoursSince >= 6) {
+                    $lines[] = "Time since last action: approximately {$hoursSince} hours. User may need a gentle re-engagement.";
+                }
+            }
+
+            $lines[] = '[END BEHAVIOR STATE]';
+        }
 
         return implode("\n", $lines);
     }

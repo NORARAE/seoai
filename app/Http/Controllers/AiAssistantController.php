@@ -35,6 +35,11 @@ class AiAssistantController extends Controller
             'domain' => ['nullable', 'string', 'max:255'],
             'context_page' => ['nullable', 'string', 'max:60'],
             'context' => ['nullable', 'string', 'max:60'],
+            'behavior_signals' => ['nullable', 'array'],
+            'behavior_signals.hesitation_type' => ['nullable', 'string', 'max:60', 'in:repeated_view_no_upgrade,cta_clicked_no_conversion,stalled'],
+            'behavior_signals.cta_label' => ['nullable', 'string', 'max:80'],
+            'behavior_signals.hours_since_action' => ['nullable', 'integer', 'min:0', 'max:8760'],
+            'behavior_signals.heavily_viewed' => ['nullable', 'string', 'max:200'],
         ]);
 
         $context = [];
@@ -43,6 +48,15 @@ class AiAssistantController extends Controller
         if (Auth::check()) {
             $user = Auth::user();
             $context = $this->buildUserContext($user);
+
+            // Attach behavior signals from the client if present (client-side localStorage)
+            $signals = $validated['behavior_signals'] ?? [];
+            if (!empty($signals) && is_array($signals)) {
+                $context['hesitation_type']    = $signals['hesitation_type'] ?? null;
+                $context['last_cta_label']     = isset($signals['cta_label']) ? substr((string) $signals['cta_label'], 0, 80) : null;
+                $context['hours_since_action'] = isset($signals['hours_since_action']) ? (int) $signals['hours_since_action'] : null;
+                $context['heavily_viewed']     = isset($signals['heavily_viewed']) ? substr((string) $signals['heavily_viewed'], 0, 200) : null;
+            }
         }
 
         $result = $this->assistant->chat(
