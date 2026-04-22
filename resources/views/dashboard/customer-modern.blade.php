@@ -2400,7 +2400,6 @@
     </section>
     @endif
 
-    @endif
     @if($isReportsView)
     <section class="system-section mb-8 dash-section-anchor surface-reveal" id="report-readouts">
       <div class="ia-progress-shell">
