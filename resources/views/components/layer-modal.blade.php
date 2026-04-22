@@ -845,7 +845,7 @@
     }
     if (elWhyStep) {
       if (d.position === 5) {
-        elWhyStep.textContent = 'You\u2019ve reached the point where guided strategy becomes necessary.';
+        elWhyStep.textContent = 'You\u2019ve reached the point where guided strategy becomes necessary. This is where businesses move from optimization into market control.';
       } else if (d.position <= 4) {
         elWhyStep.textContent = 'This is the next step based on your current scan.';
       } else {

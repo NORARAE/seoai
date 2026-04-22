@@ -1465,6 +1465,14 @@
   /* AI confidence delayed line */
   .ai-conf-line{font-size:.59rem;letter-spacing:.08em;color:rgba(140,200,155,.62);font-style:italic;margin-top:5px;display:none;line-height:1.4}
   .ai-conf-line.visible{display:block}
+  /* Phase 19: authority + dominance feel ─────────────────────────── */
+  .pos-momentum-line{display:block;font-size:.48rem;letter-spacing:.14em;text-transform:uppercase;color:rgba(140,200,155,.54);text-align:center;margin-top:4px;font-style:italic}
+  .competitive-pos-line{font-size:.62rem;letter-spacing:.06em;color:rgba(168,200,180,.52);font-style:italic;margin-top:6px;line-height:1.5;text-align:center}
+  .market-progression-msg{font-size:.6rem;letter-spacing:.1em;text-transform:uppercase;color:rgba(140,200,155,.58);text-align:center;padding:4px 0;opacity:0;transition:opacity .4s ease;display:block}
+  .market-progression-msg.visible{opacity:1}
+  .ai-ready-badge{display:inline-flex;align-items:center;gap:5px;font-size:.5rem;letter-spacing:.14em;text-transform:uppercase;color:rgba(140,200,155,.6);padding:3px 9px;border:1px solid rgba(140,200,155,.18);border-radius:999px;background:rgba(140,200,155,.04);white-space:nowrap}
+  .ai-ready-badge::before{content:'';display:inline-block;width:5px;height:5px;border-radius:50%;background:rgba(140,200,155,.58);flex-shrink:0}
+  .ge-progress-context{font-size:.58rem;letter-spacing:.08em;color:rgba(168,160,148,.44);font-style:italic;margin:-10px 0 14px;text-align:right;line-height:1.4}
 </style>
 @endpush
 
@@ -1589,6 +1597,9 @@
         <span class="exec-ctx-pill">{{ $pagesAnalyzed }} pages</span>
         @endif
         <span class="exec-ctx-pill">Level {{ $tierRank }}</span>
+        @if($tierRank >= 2)
+        <span class="ai-ready-badge">AI-ready structure: increasing</span>
+        @endif
         @if($leadRenderable)
         <a href="{{ $leadReportHref }}" class="exec-ctx-btn">
           Open Report
@@ -1647,6 +1658,7 @@
               {{ $noScore ? 'No data yet' : $leadState }}
             </span>
             <span id="score-gain-line" class="score-gain-line" aria-live="polite"></span>
+            @if(!$noScore)<span class="pos-momentum-line">Position momentum: increasing</span>@endif
           </div>
 
           {{-- Interpretation --}}
@@ -1672,6 +1684,7 @@
               @if($pagesAnalyzed > 0) &nbsp;&middot;&nbsp; {{ $pagesAnalyzed }} pages analyzed @endif
               @if($scoreConfidence && !$noScore) &nbsp;&middot;&nbsp; Confidence: {{ $scoreConfidence }} @endif
             </p>
+            @if(!$noScore)<p id="competitivePosLine" class="competitive-pos-line"></p>@endif
           </div>
 
           {{-- Primary actions --}}
@@ -2252,6 +2265,7 @@
           <div class="ge-progress-bar-fill" id="ge-progress-fill" style="width:0%"></div>
         </div>
         <p class="ge-progress-label" id="ge-progress-label">0 of {{ count($geItems) }} complete</p>
+        <p class="ge-progress-context">This represents how much of your visibility system is complete.</p>
         <p id="ge-milestone-msg" class="ge-milestone-msg" aria-live="polite" aria-atomic="true"></p>
 
         <div class="ge-list" id="ge-checklist">
@@ -2823,7 +2837,7 @@
                 } elseif ($scanTierRank >= $suggestedCorrectionRank) {
                   $correctionActionType = 'unlocked';
                   $correctionLabel = 'Apply Fix';
-                  $postCorrectionLabel = '✓ Constraint Removed';
+                  $postCorrectionLabel = '✓ Constraint removed — improving selection priority';
                   $nextPathLine = 'Next path: ' . ($rankToLayerName[$suggestedCorrectionRank] ?? 'Signal Analysis');
                   $correctionHref = $inspectHref . '#' . ($rankToLayerAnchor[$suggestedCorrectionRank] ?? 'detailed-layer-view');
                 } else {
@@ -3483,7 +3497,17 @@
       var counter = document.getElementById('fixProgressCounter');
       if (!counter) return;
       if (applied > 0) {
-        counter.textContent = "You've improved " + applied + ' of ' + total + ' visibility blocker' + (total !== 1 ? 's' : '');
+        var msg;
+        if (applied >= 8) {
+          msg = "You're approaching dominant visibility coverage.";
+        } else if (applied >= 5) {
+          msg = "Your system is becoming competitive.";
+        } else if (applied >= 2) {
+          msg = "Your visibility structure is strengthening.";
+        } else {
+          msg = "You've improved " + applied + ' of ' + total + ' visibility blocker' + (total !== 1 ? 's' : '');
+        }
+        counter.textContent = msg;
         counter.classList.add('has-progress');
       } else {
         counter.classList.remove('has-progress');
@@ -4203,6 +4227,20 @@
       if (s) s.style.opacity = '1';
     }
   } catch (e) {}
+})();
+
+// Phase 19: competitive positioning line
+(function () {
+  var variants = [
+    'Your visibility is improving relative to competing pages.',
+    'You are beginning to outrank weaker signals.',
+    'Your content is becoming more selectable by AI systems.',
+    'Signal strength is improving across your structure.'
+  ];
+  var el = document.getElementById('competitivePosLine');
+  if (el) {
+    el.textContent = variants[Math.floor(Math.random() * variants.length)];
+  }
 })();
 </script>
 
