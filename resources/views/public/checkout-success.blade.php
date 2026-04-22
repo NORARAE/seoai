@@ -21,6 +21,8 @@
         .key-note{background:rgba(200,168,75,.08);border:1px solid rgba(200,168,75,.2);border-radius:8px;padding:1.25rem;margin:1.5rem 0;color:#ede8de;font-size:.95rem}
         a{color:#c8a84b;text-decoration:none;font-weight:600}
         a:hover{text-decoration:underline}
+        .return-link{display:inline-block;margin-top:1.5rem;padding:.6rem 1.4rem;border:1px solid rgba(200,168,75,.32);border-radius:8px;font-size:.85rem;font-weight:600;color:rgba(200,168,75,.85);transition:border-color .15s,color .15s}
+        .return-link:hover{border-color:rgba(200,168,75,.6);color:#c8a84b;text-decoration:none}
     </style>
 @include('partials.clarity')
 </head>
@@ -36,6 +38,7 @@
         <p>
             Questions? <a href="mailto:hello@seoaico.com">hello@seoaico.com</a>
         </p>
+        <a href="/dashboard" class="return-link">Open your dashboard &rarr;</a>
     </div>
 @include('components.tm-style')
 </body>

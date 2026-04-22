@@ -1170,6 +1170,16 @@
   .scan-strip-score{opacity:.7;font-weight:400}
   .scan-strip-all{margin-left:auto;font-size:.56rem;letter-spacing:.12em;text-transform:uppercase;color:rgba(200,168,75,.48);text-decoration:none;flex-shrink:0;transition:color .15s}
   .scan-strip-all:hover{color:rgba(200,168,75,.78)}
+  /* ── Single-scan activity bar ────────────────────────────────────── */
+  .scan-activity-bar{display:flex;align-items:center;flex-wrap:wrap;gap:0;padding:9px 14px;border:1px solid rgba(200,168,75,.14);border-radius:12px;background:rgba(200,168,75,.04);margin-bottom:10px}
+  .sab-cell{display:flex;flex-direction:column;gap:2px;padding:4px 14px;border-right:1px solid rgba(200,168,75,.1)}
+  .sab-cell:first-child{padding-left:0}
+  .sab-cell-cta{border-right:none;margin-left:auto;padding-right:0}
+  .sab-label{font-size:.45rem;letter-spacing:.18em;text-transform:uppercase;color:rgba(200,168,75,.4);line-height:1}
+  .sab-val{font-size:.68rem;font-weight:600;color:#c9bb9a;letter-spacing:.02em;line-height:1.2}
+  .sab-open{display:inline-flex;align-items:center;font-size:.58rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:rgba(200,168,75,.82);text-decoration:none;border:1px solid rgba(200,168,75,.28);border-radius:8px;padding:5px 11px;transition:border-color .15s,color .15s}
+  .sab-open:hover{border-color:rgba(200,168,75,.52);color:#c8a84b}
+  @media(max-width:640px){.scan-activity-bar{gap:8px}.sab-cell{border-right:none;padding:2px 8px}}
 
   /* ── Executive Hero ──────────────────────────────────────────────── */
   .exec-hero-shell{border:1px solid rgba(200,168,75,.26);border-radius:22px;background:linear-gradient(145deg,rgba(28,22,12,.98),rgba(10,9,7,.99) 66%),radial-gradient(circle at 8% 22%,rgba(200,168,75,.12),transparent 28%);padding:28px 28px 24px;box-shadow:0 24px 52px rgba(0,0,0,.44),0 0 0 1px rgba(200,168,75,.1) inset;position:relative;overflow:hidden}
@@ -1776,13 +1786,17 @@
           $stripScore = (int) ($stripScan['score'] ?? 0);
           $stripDomain = $stripScan['scan_name'] ?? $stripScan['domain'] ?? 'Unknown';
           $stripDate = ($stripScan['scanned_at'] ?? $stripScan['created_at'] ?? null)?->format('M j') ?? '';
-          $stripIsLead = ($stripLoop->first ?? $loop->first);
+          $stripPages = (int) ($stripScan['pages_scanned'] ?? 0);
+          $stripTier = (int) ($stripScan['tier_rank'] ?? 0);
+          $stripIsLead = $loop->first;
         @endphp
         @if($stripHref)
         <a href="{{ $stripHref }}" class="scan-strip-item{{ $stripIsLead ? ' is-active' : '' }}">
           {{ $stripDomain }}
-          @if($stripScore > 0)<span class="scan-strip-score">&nbsp;{{ $stripScore }}</span>@endif
+          @if($stripScore > 0)<span class="scan-strip-score">&nbsp;&middot;&nbsp;{{ $stripScore }}/100</span>@endif
           @if($stripDate)<span class="scan-strip-score">&nbsp;&middot;&nbsp;{{ $stripDate }}</span>@endif
+          @if($stripPages > 0)<span class="scan-strip-score">&nbsp;&middot;&nbsp;{{ $stripPages }}p</span>@endif
+          @if($stripTier > 0 && !$stripIsLead)<span class="scan-strip-score">&nbsp;&middot;&nbsp;L{{ $stripTier }}</span>@endif
           @if($stripIsLead)<span style="font-size:.48rem;letter-spacing:.1em;text-transform:uppercase;color:rgba(200,168,75,.55);margin-left:2px">&nbsp;Active</span>@endif
         </a>
         @endif
@@ -1795,6 +1809,26 @@
     </div>
     @endif
     {{-- END: compact scan strip --}}
+
+    {{-- START: single-scan activity bar (system view, hasSystem, 1 scan) --}}
+    @if($isSystemView && $hasSystem && $scanHistory->count() === 1)
+    <div class="scan-activity-bar">
+      @if($leadRenderable)
+        <div class="sab-cell"><span class="sab-label">Domain</span><span class="sab-val">{{ $projectDomain }}</span></div>
+        @if($scanCompletedLabel)<div class="sab-cell"><span class="sab-label">Scanned</span><span class="sab-val">{{ $scanCompletedLabel }}</span></div>@endif
+        @if($leadScore > 0)<div class="sab-cell"><span class="sab-label">Score</span><span class="sab-val">{{ $leadScore }}/100</span></div>@endif
+        @if($pagesAnalyzed > 0)<div class="sab-cell"><span class="sab-label">Pages</span><span class="sab-val">{{ $pagesAnalyzed }}</span></div>@endif
+        @if($latestIssues > 0)<div class="sab-cell"><span class="sab-label">Issues</span><span class="sab-val">{{ $latestIssues }}</span></div>@endif
+        <div class="sab-cell"><span class="sab-label">Plan</span><span class="sab-val">Level {{ $tierRank }}</span></div>
+        <div class="sab-cell sab-cell-cta"><a href="{{ $leadReportHref }}" class="sab-open">Open Scan &rarr;</a></div>
+      @else
+        <div class="sab-cell"><span class="sab-label">Domain</span><span class="sab-val">{{ $projectDomain }}</span></div>
+        <div class="sab-cell"><span class="sab-label">Status</span><span class="sab-val">{{ $leadReadoutStatus }}</span></div>
+        <div class="sab-cell sab-cell-cta"><a href="{{ $leadReportHref }}" class="sab-open">View Status &rarr;</a></div>
+      @endif
+    </div>
+    @endif
+    {{-- END: single-scan activity bar --}}
 
     @php
       $planLevels = [
