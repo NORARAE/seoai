@@ -790,7 +790,7 @@ $csrfToken = csrf_token();
     'hero':    'Instant AI insights',
     'proof':   'See how AI ranks your site',
     'offer':   'Get guidance instantly',
-    'contact': 'We\u2019re here to help'
+    'contact': 'We\'re here to help'
   };
   if (microEl && 'IntersectionObserver' in window) {
     Object.keys(ctxMap).forEach(function (id) {

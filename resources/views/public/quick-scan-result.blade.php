@@ -572,6 +572,9 @@ a{text-decoration:none;color:inherit}
 .action-memory{font-size:.51rem;letter-spacing:.11em;text-transform:uppercase;color:#bdb29a;margin-top:2px}
 .action.is-executing{box-shadow:0 0 0 1px rgba(214,181,95,.34) inset,0 0 20px rgba(214,181,95,.16)}
 .action.is-resolved{box-shadow:0 0 0 1px rgba(214,181,95,.3) inset,0 0 20px rgba(214,181,95,.12)}
+.action.is-applied{box-shadow:0 0 0 1px rgba(214,181,95,.45) inset,0 0 18px rgba(214,181,95,.1);background:rgba(214,181,95,.04)}
+.action.is-applied .action-memory{color:rgba(180,210,140,.72)}
+.btn.is-applied{opacity:.62;cursor:default;pointer-events:none}
 
 .next-move-guide{margin:10px 12px 0;padding:11px;border:1px solid rgba(214,181,95,.28);border-radius:11px;background:rgba(214,181,95,.05)}
 .next-move-guide h3{margin:0 0 9px;font-size:.82rem;letter-spacing:.09em;text-transform:uppercase;color:#efdcae}
@@ -625,6 +628,7 @@ a{text-decoration:none;color:inherit}
 
 .fix-detail-mask{position:fixed;inset:0;z-index:150;background:linear-gradient(120deg,rgba(6,5,3,.5),rgba(6,5,3,.82));backdrop-filter:blur(4px);display:none}
 .fix-detail-mask[data-open='true']{display:block}
+body.fix-panel-open .aia-trigger,body.fix-panel-open #aiaPanel,body.fix-panel-open #aiaTeaser,body.fix-panel-open #aiaBackdrop{z-index:80!important}
 .fix-detail-panel{position:absolute;top:0;right:0;height:100%;width:min(620px,100%);border-left:1px solid var(--line);background:linear-gradient(160deg,#16120b,#0c0a07 72%);box-shadow:-24px 0 50px rgba(0,0,0,.52);transform:translateX(100%);transition:transform .34s ease}
 .fix-detail-mask[data-open='true'] .fix-detail-panel{transform:translateX(0)}
 .fix-detail-inner{height:100%;overflow:auto;padding:18px 16px 20px}
@@ -1224,7 +1228,7 @@ button.sys-bar-node:hover .sys-bar-dot{border-color:rgba(214,181,95,.54);backgro
           @php
             $isRecommendedNext = $recommendedProgressionRank !== null && $level['rank'] === $recommendedProgressionRank;
             $momentumCopy = match($level['rank']) {
-              1 => 'You\'ve started \u2014 now build signal clarity',
+              1 => 'You\'ve started — now build signal clarity',
               2 => 'Next: turn insight into prioritized action',
               3 => 'Next: deploy structure across your market',
               default => 'Next: scale and dominate your territory',
@@ -1711,22 +1715,23 @@ button.sys-bar-node:hover .sys-bar-dot{border-color:rgba(214,181,95,.54);backgro
     document.querySelectorAll('.action[data-action-key]').forEach(function (card) {
       var key = card.dataset.actionKey || '';
       if (!key) return;
-      var raw = sessionStorage.getItem(ACTION_MEMORY_PREFIX + key);
+      var raw; try { raw = localStorage.getItem(ACTION_MEMORY_PREFIX + key); } catch (e) { raw = null; }
       if (!raw) return;
       try {
         var parsed = JSON.parse(raw);
         var at = Number(parsed.at || 0);
         if (!Number.isFinite(at) || at <= 0) return;
-        var elapsedMs = Date.now() - at;
-        var outcome = typeof parsed.outcome === 'string' && parsed.outcome !== ''
-          ? parsed.outcome
-          : 'Constraint resolved -> selection pressure reduced -> signal clarity increased';
-        var label = elapsedMs < 90000
-          ? '✓ Fix in progress — system is now addressing this issue'
-          : '✓ Fix in progress — still tracking';
-        setActionMemory(card, label);
+        setActionMemory(card, '✓ Fix applied — tracking signal impact');
+        card.classList.add('is-applied');
+        var applyBtn = card.querySelector('button[data-exec-init]');
+        if (applyBtn) {
+          applyBtn.textContent = '✓ Applied';
+          applyBtn.disabled = true;
+          applyBtn.setAttribute('aria-disabled', 'true');
+          applyBtn.classList.add('is-applied', 'is-disabled');
+        }
       } catch (err) {
-        sessionStorage.removeItem(ACTION_MEMORY_PREFIX + key);
+        try { localStorage.removeItem(ACTION_MEMORY_PREFIX + key); } catch (e) {}
       }
     });
   }
@@ -1757,17 +1762,19 @@ button.sys-bar-node:hover .sys-bar-dot{border-color:rgba(214,181,95,.54);backgro
 
     fixDetailMask.dataset.open = 'true';
     document.body.style.overflow = 'hidden';
+    document.body.classList.add('fix-panel-open');
   }
 
   function closeFixDetail() {
     if (!fixDetailMask) return;
     fixDetailMask.dataset.open = 'false';
     document.body.style.overflow = '';
+    document.body.classList.remove('fix-panel-open');
   }
 
   function runActionExecution(trigger, onComplete) {
     var card = trigger ? trigger.closest('.action') : null;
-    if (!card || card.dataset.execBusy === 'true') return;
+    if (!card || card.dataset.execBusy === 'true' || card.classList.contains('is-applied')) return;
 
     var nodes = card.querySelectorAll('.btn');
     var initLabel = trigger.dataset.execInit || 'Deploying fix...';
@@ -1796,14 +1803,15 @@ var resolvedLabel = trigger.dataset.execResolved || '✓ Fix applied';
       var actionKey = card.dataset.actionKey || '';
       var outcomeLine = 'Constraint resolved -> selection pressure reduced -> signal clarity increased';
       if (actionKey) {
-        sessionStorage.setItem(ACTION_MEMORY_PREFIX + actionKey, JSON.stringify({ at: Date.now(), outcome: outcomeLine }));
+        try { localStorage.setItem(ACTION_MEMORY_PREFIX + actionKey, JSON.stringify({ at: Date.now(), outcome: outcomeLine, applied: true })); } catch (e) {}
       }
-      setActionMemory(card, '✓ In progress');
-      trigger.textContent = resolvedLabel;
+      setActionMemory(card, '✓ Fix applied — tracking signal impact');
+      trigger.textContent = '✓ Applied';
       card.classList.remove('is-executing');
-      card.classList.add('is-resolved');
+      card.classList.add('is-applied');
       trigger.classList.remove('is-executing');
-      trigger.classList.add('is-resolved');
+      trigger.classList.add('is-applied', 'is-disabled');
+      trigger.setAttribute('aria-disabled', 'true');
       // Part 5: briefly highlight next card as suggested next step
       (function () {
         var allCards = document.querySelectorAll('.action:not(.is-locked-card)');
@@ -1817,20 +1825,13 @@ var resolvedLabel = trigger.dataset.execResolved || '✓ Fix applied';
         }
       }());
 
+      // Re-enable non-trigger buttons; keep trigger permanently disabled
       nodes.forEach(function (node) {
+        if (node === trigger) return;
         node.classList.remove('is-disabled');
         node.removeAttribute('aria-disabled');
         if (node.tagName === 'BUTTON') node.disabled = false;
       });
-
-      window.setTimeout(function () {
-        nodes.forEach(function (node) {
-          if (node.dataset.originalLabel) node.textContent = node.dataset.originalLabel;
-          node.classList.remove('is-resolved');
-        });
-        card.classList.remove('is-resolved');
-        trigger.classList.remove('is-resolved');
-      }, 520);
 
       card.dataset.execBusy = 'false';
       if (typeof onComplete === 'function') onComplete();
@@ -1983,8 +1984,8 @@ var resolvedLabel = trigger.dataset.execResolved || '✓ Fix applied';
 </script>
 @php
 $_scanAiGreeting = auth()->check()
-    ? "Your scan for {$scan->domain()} scored {$score}/100 \u2014 {$scoreSelectionInterpretation}. Your next step is clear: fix {$topBottleneck} first.\n\nI can guide you through it, explain what each fix unlocks, or help you figure out what comes next."
-    : "Your scan scored {$score}/100 \u2014 {$scoreSelectionInterpretation}.\n\nAsk me what this score means for your AI search visibility, what to fix first, or what each tier unlocks.";
+    ? "Your scan for {$scan->domain()} scored {$score}/100 — {$scoreSelectionInterpretation}. Your next step is clear: fix {$topBottleneck} first.\n\nI can guide you through it, explain what each fix unlocks, or help you figure out what comes next."
+    : "Your scan scored {$score}/100 — {$scoreSelectionInterpretation}.\n\nAsk me what this score means for your AI search visibility, what to fix first, or what each tier unlocks.";
 $_scanAiPrompts = [
     "Why is my score {$score} and what does it mean?",
     "What should I fix first?",

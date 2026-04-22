@@ -3680,7 +3680,7 @@
       const resolveType = button.dataset.resolveType || 'redirect';
       const resolveHref = button.dataset.resolveHref || '';
       const postLabel = button.dataset.postLabel || '\u2713 Applied';
-      const feedbackLine = button.dataset.feedbackLine || 'Fix in progress \u2014 system is now addressing this issue.';
+      const feedbackLine = button.dataset.feedbackLine || 'Fix in progress — system is now addressing this issue.';
 
       // Phase 1: immediate "Applying..." state
       const originalLabel = button.textContent;
@@ -4185,8 +4185,8 @@
 
   // ── Return banner ──────────────────────────────────────────────
   if (hasReturned && !tierComplete && !seenSession) {
-    var sub = hoursAway >= 72 ? 'Your visibility hasn\u2019t improved yet \u2014 continue your next step'
-            : hoursAway >= 48 ? 'Most users fix this within a day \u2014 your system is waiting'
+    var sub = hoursAway >= 72 ? 'Your visibility hasn\'t improved yet — continue your next step'
+            : hoursAway >= 48 ? 'Most users fix this within a day — your system is waiting'
             : hoursAway >= 12 ? 'You still have unresolved gaps'
             :                   'Pick up where you left off';
 
@@ -4196,7 +4196,7 @@
       var bodyEl = document.getElementById('dcm-rb-body');
       var ctaEl  = document.getElementById('dcm-rb-cta');
       if (subEl)  subEl.textContent  = sub;
-      if (bodyEl) bodyEl.textContent = 'Your scan found ' + issues + ' gap' + (issues !== 1 ? 's' : '') + '. You\u2019re at step ' + tierRank + ' of 4.';
+      if (bodyEl) bodyEl.textContent = 'Your scan found ' + issues + ' gap' + (issues !== 1 ? 's' : '') + '. You\'re at step ' + tierRank + ' of 4.';
       if (ctaEl)  { ctaEl.href = nextHref; ctaEl.textContent = nextLabel + ' \u2192'; }
       banner.style.display = 'block';
 
@@ -4260,9 +4260,9 @@
     var msg = '';
     if      (pct >= 100 && lastMilestonePct < 100) msg = 'Your system is fully executed';
     else if (pct >= 75  && lastMilestonePct < 75)  msg = 'Almost complete';
-    else if (pct >= 50  && lastMilestonePct < 50)  msg = 'You\u2019re halfway to a stronger visibility system';
-    else if (pct >= 25  && lastMilestonePct < 25)  msg = 'You\u2019ve started fixing real gaps';
-    else if (count > 0 && count % 3 === 0 && pct < 100) msg = 'You\u2019re making real progress';
+    else if (pct >= 50  && lastMilestonePct < 50)  msg = 'You\'re halfway to a stronger visibility system';
+    else if (pct >= 25  && lastMilestonePct < 25)  msg = 'You\'ve started fixing real gaps';
+    else if (count > 0 && count % 3 === 0 && pct < 100) msg = 'You\'re making real progress';
     // Advance watermark so fixed milestones only fire once per bracket
     if      (pct >= 100) lastMilestonePct = 100;
     else if (pct >= 75)  lastMilestonePct = 75;
@@ -4337,7 +4337,7 @@
       if (!echo) {
         echo = document.createElement('span');
         echo.className = 'nm-fix-echo';
-        echo.textContent = 'Constraint removed \u2014 AI can now better interpret this section.';
+        echo.textContent = 'Constraint removed — AI can now better interpret this section.';
         link.parentElement.appendChild(echo);
       }
       echo.classList.add('visible');
@@ -4466,7 +4466,7 @@
     if (!tractionNudge) return;
     var done = document.querySelectorAll('.ge-item[aria-pressed="true"]').length;
     if (done >= 3) {
-      tractionNudge.textContent = 'You\u2019re gaining traction \u2014 most users continue here.';
+      tractionNudge.textContent = 'You\'re gaining traction — most users continue here.';
       tractionNudge.classList.add('is-visible');
     }
   }
