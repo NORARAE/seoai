@@ -296,20 +296,28 @@ SYS;
         $lines[] = '';
         $lines[] = '[LADDER STATE]';
 
-        $rank    = (int) ($context['tier_rank'] ?? 0);
+        $rank = (int) ($context['tier_rank'] ?? 0);
         $hasScan = (bool) ($context['has_scan'] ?? false);
 
-        if (!$hasScan || $rank === 0) {
+        if ($rank === 0 && !$hasScan) {
             $lines[] = 'User stage: No completed scan yet. Tier rank: 0.';
             $lines[] = 'Completed tiers: none.';
             $lines[] = 'FORBIDDEN: Do not recommend any paid tier until the user has their baseline scan.';
             $lines[] = 'Next step: $2 Base Scan at /scan/start — get their baseline score and top blocker.';
+        } elseif ($rank === 0 && $hasScan) {
+            // Edge case: scan exists but rank not yet persisted — treat identically to rank 1
+            $lines[] = 'User stage: Baseline scan complete. Tier rank: 0 (scan-only, not yet upgraded).';
+            $lines[] = 'Completed tiers: Baseline Score ($2).';
+            $lines[] = 'FORBIDDEN: Do NOT recommend the $2 scan — the user already has this. They completed it.';
+            $lines[] = 'Next step: Signal Analysis ($99) — explains exactly why their score is what it is, by signal category.';
+            $lines[] = 'Response style: they have their scan. NEVER say "run the $2 scan". Instead say: "You\'ve already completed your scan — your next step is Signal Analysis ($99) to understand exactly why your score is where it is."';
         } elseif ($rank === 1) {
             $lines[] = 'User stage: Baseline scan complete. Tier rank: 1.';
             $lines[] = 'Completed tiers: Baseline Score ($2).';
             $lines[] = 'FORBIDDEN: Do NOT recommend the $2 scan — the user already has this.';
             $lines[] = 'Next step: Signal Analysis ($99) — breaks down exactly why their score is what it is, by category.';
             $lines[] = 'Skip option allowed: if user wants to go directly to Action Plan ($249), explain tradeoff (diagnostic clarity vs. execution speed) but do not block them.';
+            $lines[] = 'Response style: acknowledge the completed scan explicitly. NEVER say "run the $2 scan". Use language like: "You\'ve already completed your scan — your next step is Signal Analysis ($99) to understand exactly why your score is where it is."';
         } elseif ($rank === 2) {
             $lines[] = 'User stage: Signal Analysis active. Tier rank: 2.';
             $lines[] = 'Completed tiers: Baseline Score ($2), Signal Analysis ($99).';
@@ -330,10 +338,10 @@ SYS;
         $lines[] = '[END LADDER STATE]';
 
         // ── Behavior State block — hesitation signals from client localStorage ──
-        $hesitationType  = $context['hesitation_type'] ?? null;
-        $lastCta         = $context['last_cta_label'] ?? null;
-        $hoursSince      = $context['hours_since_action'] ?? null;
-        $heavilyViewed   = $context['heavily_viewed'] ?? null;
+        $hesitationType = $context['hesitation_type'] ?? null;
+        $lastCta = $context['last_cta_label'] ?? null;
+        $hoursSince = $context['hours_since_action'] ?? null;
+        $heavilyViewed = $context['heavily_viewed'] ?? null;
 
         if ($hesitationType || $lastCta || $hoursSince !== null) {
             $lines[] = '';

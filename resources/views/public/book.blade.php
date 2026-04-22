@@ -322,6 +322,50 @@ body{line-height:1.85}
 .bk-card-outcome{color:rgba(237,232,222,.9)}
 .bk-card-footnote,
 .bk-snav-micro{color:rgba(178,178,170,.82)}
+
+/* ── Phase 16: Booking clarity + interaction pass ───────────────────── */
+
+/* Snav numbers — serif, larger, stronger gold */
+.bk-snav-num{font-family:'Cormorant Garamond',serif!important;font-size:.78rem!important;font-weight:400!important;letter-spacing:.13em!important;color:rgba(200,168,75,.74)!important;border:none!important;padding:0!important}
+.bk-snav-item.is-active .bk-snav-num{color:rgba(200,168,75,.96)!important}
+
+/* Snav type — high contrast, readable, gold-tinted */
+.bk-snav-type{font-size:.58rem!important;letter-spacing:.14em!important;color:rgba(200,168,75,.82)!important;margin-top:5px!important;font-weight:600!important}
+.bk-snav-type--guided{color:rgba(140,200,175,.80)!important}
+.bk-snav-item.is-active .bk-snav-type{color:rgba(200,168,75,.96)!important}
+.bk-snav-item.is-active .bk-snav-type--guided{color:rgba(140,200,175,.96)!important}
+
+/* Snav icon */
+.bk-snav-icon{font-style:normal;font-size:.72rem;line-height:1;display:block;margin-bottom:2px;opacity:.80}
+
+/* Card hover + active lift — desktop only */
+@media(min-width:769px){
+  .bk-card{cursor:pointer}
+  .bk-card:hover{transform:translateY(-4px);border-left-color:rgba(200,168,75,.52);background:rgba(200,168,75,.04);box-shadow:0 10px 30px rgba(0,0,0,.34),0 0 20px rgba(200,168,75,.1);transition:transform .22s ease,box-shadow .24s ease,border-left-color .22s,background .22s}
+  .bk-card--scan:hover{background:linear-gradient(148deg,rgba(200,168,75,.08) 0%,rgba(12,11,9,1) 100%)}
+  .bk-card:active{transform:translateY(-2px) scale(.9993)}
+}
+
+/* System grouping divider between self-serve + guided */
+.bk-guided-divider{display:flex;align-items:center;gap:12px;margin:6px 0 0;pointer-events:none}
+.bk-guided-divider::before,.bk-guided-divider::after{content:'';flex:1;border-top:1px solid rgba(106,175,144,.2)}
+.bk-guided-divider-label{font-size:.56rem;letter-spacing:.2em;text-transform:uppercase;font-family:'DM Sans',sans-serif;font-weight:600;color:rgba(140,200,175,.70);white-space:nowrap;padding:3px 10px;border:1px solid rgba(106,175,144,.18);border-radius:999px;background:rgba(106,175,144,.05)}
+
+/* Step 06 gating modal */
+.bk-s06-gate{position:fixed;inset:0;z-index:9200;background:rgba(0,0,0,.82);backdrop-filter:blur(7px);display:flex;align-items:center;justify-content:center;padding:16px;opacity:0;pointer-events:none;transition:opacity .28s}
+.bk-s06-gate[data-open='true']{opacity:1;pointer-events:auto}
+.bk-s06-gate-panel{width:100%;max-width:520px;background:linear-gradient(180deg,#11100d,#0d0c09);border:1px solid rgba(200,168,75,.2);border-top:2px solid rgba(106,175,144,.48);border-radius:12px;padding:34px 30px;box-shadow:0 22px 64px rgba(0,0,0,.46)}
+.bk-s06-gate-kicker{font-size:.6rem;letter-spacing:.18em;text-transform:uppercase;color:rgba(140,200,175,.74);margin-bottom:10px}
+.bk-s06-gate-title{font-family:'Cormorant Garamond',serif;font-size:clamp(1.38rem,3vw,1.92rem);font-weight:400;line-height:1.22;color:var(--ivory);margin-bottom:12px}
+.bk-s06-gate-body{font-size:.88rem;line-height:1.82;color:#c2bcab;margin-bottom:20px}
+.bk-s06-gate-actions{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+@media(max-width:600px){.bk-s06-gate-panel{padding:26px 20px}.bk-s06-gate-actions{flex-direction:column;align-items:stretch}}
+
+/* Snav sweep — subtle glow pass (system feels alive) */
+@keyframes snavGlowPass{0%{transform:translateX(-100%)}100%{transform:translateX(700%)}}
+.bk-snav-sweep{position:absolute;top:0;bottom:0;left:0;width:60px;background:linear-gradient(90deg,transparent,rgba(200,168,75,.065),transparent);animation:snavGlowPass 12s ease-in-out infinite;pointer-events:none;z-index:1}
+
+/* ──────────────────────────────────────────────────────────────────── */
 </style>
 @include('partials.clarity')
 @verbatim
@@ -412,41 +456,48 @@ body{line-height:1.85}
         <span class="bk-snav-label">Select your entry point into the system</span>
         <div class="bk-snav-outer" id="bkSnavOuter">
           <nav class="bk-snav" id="bkSnav" role="navigation" aria-label="System levels">
+            <span class="bk-snav-sweep" aria-hidden="true"></span>
             <a class="bk-snav-item" href="{{ route('scan.start') }}" data-target="bk-step-01">
               <span class="bk-snav-num">01</span>
+              <span class="bk-snav-icon" aria-hidden="true">⚡</span>
               <span class="bk-snav-name">Scan</span>
               <span class="bk-snav-price">$2</span>
               <span class="bk-snav-type">Self-serve</span>
             </a>
             <a class="bk-snav-item" href="{{ route('checkout.signal-expansion') }}" data-target="bk-step-02" data-layer="deep" role="button" aria-haspopup="dialog" tabindex="0">
               <span class="bk-snav-num">02</span>
+              <span class="bk-snav-icon" aria-hidden="true">⚡</span>
               <span class="bk-snav-name">Signal</span>
               <span class="bk-snav-price">$99</span>
               <span class="bk-snav-type">Self-serve</span>
             </a>
             <a class="bk-snav-item" href="{{ route('checkout.structural-leverage') }}" data-target="bk-step-03" data-layer="fix" role="button" aria-haspopup="dialog" tabindex="0">
               <span class="bk-snav-num">03</span>
+              <span class="bk-snav-icon" aria-hidden="true">⚡</span>
               <span class="bk-snav-name">Leverage</span>
               <span class="bk-snav-price">$249</span>
               <span class="bk-snav-type">Self-serve</span>
             </a>
             <a class="bk-snav-item" href="{{ route('checkout.system-activation') }}" data-target="bk-step-04" data-layer="build" role="button" aria-haspopup="dialog" tabindex="0">
               <span class="bk-snav-num">04</span>
+              <span class="bk-snav-icon" aria-hidden="true">⚡</span>
               <span class="bk-snav-name">Activate</span>
               <span class="bk-snav-price">$489</span>
               <span class="bk-snav-type">Self-serve</span>
             </a>
             <a class="bk-snav-item" href="{{ route('book.index', ['entry' => 'consultation']) }}" data-target="bk-step-05" data-layer="expand" role="button" aria-haspopup="dialog" tabindex="0">
               <span class="bk-snav-num">05</span>
+              <span class="bk-snav-icon" aria-hidden="true">📅</span>
               <span class="bk-snav-name">Expand</span>
               <span class="bk-snav-price">$500</span>
-              <span class="bk-snav-type">Scheduled</span>
+              <span class="bk-snav-type bk-snav-type--guided">Guided</span>
             </a>
-            <a class="bk-snav-item" href="{{ route('book.index', ['entry' => 'activation']) }}" data-target="bk-step-06" data-layer="managed" role="button" aria-haspopup="dialog" tabindex="0">
+            <a class="bk-snav-item" href="{{ route('book.index', ['entry' => 'activation']) }}" data-target="bk-step-06" onclick="openStep06Gate();return false;" role="button" aria-haspopup="dialog" tabindex="0">
               <span class="bk-snav-num">06</span>
+              <span class="bk-snav-icon" aria-hidden="true">📅</span>
               <span class="bk-snav-name">Control</span>
               <span class="bk-snav-price">$5k+</span>
-              <span class="bk-snav-type">Scheduled</span>
+              <span class="bk-snav-type bk-snav-type--guided">Guided</span>
             </a>
           </nav>
         </div>
@@ -559,6 +610,9 @@ body{line-height:1.85}
           </div>
         </article>
 
+        {{-- ── Guided system entry divider ── --}}
+        <div class="bk-guided-divider" aria-hidden="true"><span class="bk-guided-divider-label">Guided System Entry</span></div>
+
         {{-- ── Card 05: AI Visibility Consultation ── --}}
         <article class="bk-card" id="bk-step-05">
           <div class="bk-card-top">
@@ -582,7 +636,8 @@ body{line-height:1.85}
             <a href="{{ route('book.index', ['entry' => 'consultation']) }}" class="bk-cta-primary" onclick="return openEntry('consultation');">Book Consultation &mdash; $500 &rarr;</a>
             <a href="{{ route('scan.start') }}" class="bk-cta-link">Haven&rsquo;t scanned? Start at step 01 &rarr;</a>
           </div>
-          <p class="bk-card-footnote">$500 charged at booking. 60 minutes via video. Intake questions sent after you book. The $2 scan cost is not credited toward this session.</p>
+          <p class="bk-card-footnote" style="color:rgba(140,200,175,.72);margin-bottom:8px"><strong>60-minute strategy session.</strong> Required before full system activation at Step 06.</p>
+          <p class="bk-card-footnote" style="margin-top:0">Most users reach this step after completing Levels 1&ndash;4. $500 charged at booking. Intake questions sent after you book. The $2 scan cost is not credited toward this session.</p>
         </article>
 
         {{-- ── Card 06: Full System Activation ── --}}
@@ -605,7 +660,7 @@ body{line-height:1.85}
           <p class="bk-card-for"><strong>For:</strong> Businesses ready for full implementation. Direct access available for returning or referred qualified buyers. All others arrive through step 05.</p>
           <p class="bk-card-outcome">Full infrastructure build, deployment across target markets, and ownership of your AI visibility position at scale.</p>
           <div class="bk-card-cta">
-            <a href="{{ route('book.index', ['entry' => 'activation']) }}" class="bk-cta-primary" onclick="return openEntry('activation');">Start Full Activation &rarr;</a>
+            <a href="{{ route('book.index', ['entry' => 'activation']) }}" class="bk-cta-primary" onclick="openStep06Gate();return false;">Start Full Activation &rarr;</a>
             <a href="{{ route('book.index', ['entry' => 'consultation']) }}" class="bk-cta-link" onclick="return openEntry('consultation');">Not qualified? Book step 05 first &rarr;</a>
           </div>
           <p class="bk-card-footnote">Activation engagements require a qualification review. 50% deposit secures your start date; remainder due at kickoff. Most buyers arrive through step 05.</p>
@@ -645,6 +700,18 @@ body{line-height:1.85}
 
   @include('components.layer-modal')
   @include('components.booking-modal')
+  {{-- Step 06 qualification gate --}}
+  <div class="bk-s06-gate" id="bkS06Gate" data-open="false" role="dialog" aria-modal="true" aria-labelledby="bkS06GateTitle">
+    <div class="bk-s06-gate-panel">
+      <p class="bk-s06-gate-kicker">Qualification Required</p>
+      <h2 class="bk-s06-gate-title" id="bkS06GateTitle">Full system control is only available after consultation.</h2>
+      <p class="bk-s06-gate-body">Step 06 is a qualification-gated engagement. To access it, you must first complete the AI Visibility Consultation (Step 05), where we validate fit and scope the deployment. Most buyers arrive at Step 06 after a strategy session confirms readiness.</p>
+      <div class="bk-s06-gate-actions">
+        <a href="{{ route('book.index', ['entry' => 'consultation']) }}" class="bk-cta-primary" onclick="closeStep06Gate();return openEntry('consultation');">Book Consultation First &mdash; $500 &rarr;</a>
+        <button type="button" class="bk-cta-link" onclick="closeStep06Gate()">Maybe later</button>
+      </div>
+    </div>
+  </div>
   <div class="bk-entry-gate" id="entryGate" data-open="false" role="dialog" aria-modal="true" aria-labelledby="entryGateTitle">
     <div class="bk-entry-gate-panel">
       <p class="bk-entry-gate-kicker">Before you schedule</p>
@@ -750,6 +817,7 @@ body{line-height:1.85}
   if(nav) window.addEventListener('scroll', () => nav.classList.toggle('stuck', scrollY > 60));
   const entryGate = document.getElementById('entryGate');
   const entryGateProceed = document.getElementById('entryGateProceed');
+  const bkS06Gate = document.getElementById('bkS06Gate');
   let pendingEntryKey = null;
 
   function openEntryGate(entryKey) {
@@ -761,6 +829,20 @@ body{line-height:1.85}
   function closeEntryGate() {
     if (!entryGate) return;
     entryGate.dataset.open = 'false';
+  }
+
+  function openStep06Gate() {
+    if (bkS06Gate) bkS06Gate.dataset.open = 'true';
+  }
+
+  function closeStep06Gate() {
+    if (bkS06Gate) bkS06Gate.dataset.open = 'false';
+  }
+
+  if (bkS06Gate) {
+    bkS06Gate.addEventListener('click', function(evt) {
+      if (evt.target === bkS06Gate) closeStep06Gate();
+    });
   }
 
   function triggerEntryScheduling(entryKey) {
@@ -776,8 +858,14 @@ body{line-height:1.85}
   if (entryGateProceed) {
     entryGateProceed.addEventListener('click', function () {
       const key = pendingEntryKey || 'consultation';
+      const entry = bookingEntries[key];
       closeEntryGate();
-      triggerEntryScheduling(key);
+      if (entry && entry.id) {
+        triggerEntryScheduling(key);
+      } else {
+        // Fallback: navigate to same page with ?entry param which triggers server-side booking
+        window.location.href = '{{ route('book.index') }}' + '?entry=' + key;
+      }
     });
   }
 
@@ -788,8 +876,9 @@ body{line-height:1.85}
   }
 
   document.addEventListener('keydown', function (evt) {
-    if (evt.key === 'Escape' && entryGate && entryGate.dataset.open === 'true') {
-      closeEntryGate();
+    if (evt.key === 'Escape') {
+      if (bkS06Gate && bkS06Gate.dataset.open === 'true') { closeStep06Gate(); return; }
+      if (entryGate && entryGate.dataset.open === 'true') closeEntryGate();
     }
   });
 
@@ -812,15 +901,21 @@ body{line-height:1.85}
 
   function openEntry(key) {
     const entry = bookingEntries[key];
-    if (!entry || !entry.id) {
-      return true;
-    }
 
-    if (key === 'consultation') {
-      openEntryGate(key);
+    // Step 06 is always gated — show qualification modal regardless
+    if (key === 'activation') {
+      openStep06Gate();
       return false;
     }
 
+    // Step 05: always show entry gate first for clarity
+    if (key === 'consultation') {
+      openEntryGate(key);
+      return false;    }
+
+    if (!entry || !entry.id) {
+      return true;
+    }
     triggerEntryScheduling(key);
     return false;
   }
