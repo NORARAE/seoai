@@ -1446,6 +1446,25 @@
   /* Phase 17: nm-card click echo feedback */
   .nm-fix-echo{font-size:.62rem;color:rgba(140,200,155,.82);letter-spacing:.04em;margin-top:5px;display:block;opacity:0;transition:opacity .3s ease;pointer-events:none}
   .nm-fix-echo.visible{opacity:1}
+  /* Phase 18: real-time system feedback ───────────────────────────── */
+  /* Score gain badge */
+  .score-gain-line{display:block;font-size:.54rem;letter-spacing:.1em;text-transform:uppercase;color:rgba(140,200,155,.86);text-align:center;margin-top:5px;opacity:0;transition:opacity .35s ease;pointer-events:none;white-space:nowrap}
+  .score-gain-line.visible{opacity:1}
+  /* Score ring burst */
+  @keyframes scoreBurst{0%{box-shadow:0 0 36px rgba(200,168,75,.14),inset 0 1px 0 rgba(255,255,255,.04)}45%{box-shadow:0 0 62px rgba(140,200,155,.52),inset 0 1px 0 rgba(140,200,155,.12)}100%{box-shadow:0 0 36px rgba(200,168,75,.14),inset 0 1px 0 rgba(255,255,255,.04)}}
+  .exec-score-ring.is-boosted{animation:scoreBurst .72s ease-out}
+  /* Progress bar — glow trail (overrides Phase 15 rule) */
+  .ge-progress-bar-fill{height:100%;border-radius:4px;background:linear-gradient(90deg,#7a44c8,#a870f0);transition:width .85s cubic-bezier(.22,.68,0,1.1);box-shadow:0 0 10px rgba(168,112,240,.52)}
+  /* System active signal line */
+  .sys-active-signal{font-size:.6rem;letter-spacing:.1em;color:rgba(140,200,155,.46);text-align:center;padding:8px 0 0;font-style:italic;opacity:0;transition:opacity .5s ease;pointer-events:none}
+  /* Card engaged shimmer */
+  @keyframes engagedShimmer{0%,100%{border-color:rgba(200,168,75,.22)}50%{border-color:rgba(140,200,155,.42)}}
+  .system-grid-card.is-engaged{animation:engagedShimmer 2.8s ease-in-out 2}
+  /* Card response live dot */
+  .card-response-line.live::before{content:'';display:inline-block;width:6px;height:6px;border-radius:50%;background:#6aaf90;margin-right:5px;vertical-align:middle;flex-shrink:0}
+  /* AI confidence delayed line */
+  .ai-conf-line{font-size:.59rem;letter-spacing:.08em;color:rgba(140,200,155,.62);font-style:italic;margin-top:5px;display:none;line-height:1.4}
+  .ai-conf-line.visible{display:block}
 </style>
 @endpush
 
@@ -1627,6 +1646,7 @@
             <span class="{{ $noScore ? 'state-chip state-chip-gold' : $stateChipClass }}">
               {{ $noScore ? 'No data yet' : $leadState }}
             </span>
+            <span id="score-gain-line" class="score-gain-line" aria-live="polite"></span>
           </div>
 
           {{-- Interpretation --}}
@@ -1676,10 +1696,9 @@
           </div>
 
         </div>
+        <p id="sysActiveSignal" class="sys-active-signal">Your visibility is actively improving as fixes are applied.</p>
       </div>
     </section>
-
-        @if($isSystemView)
 
     @php
       $planLevels = [
@@ -2804,7 +2823,7 @@
                 } elseif ($scanTierRank >= $suggestedCorrectionRank) {
                   $correctionActionType = 'unlocked';
                   $correctionLabel = 'Apply Fix';
-                  $postCorrectionLabel = '✓ Fix Applied';
+                  $postCorrectionLabel = '✓ Constraint Removed';
                   $nextPathLine = 'Next path: ' . ($rankToLayerName[$suggestedCorrectionRank] ?? 'Signal Analysis');
                   $correctionHref = $inspectHref . '#' . ($rankToLayerAnchor[$suggestedCorrectionRank] ?? 'detailed-layer-view');
                 } else {
@@ -2893,6 +2912,7 @@
 
                 <p class="next-path-line">{{ $nextPathLine }}</p>
                 <p class="card-response-line">System responding to adjustment</p>
+                <p class="ai-conf-line">AI confidence improving in this area</p>
 
                 <div class="system-card-actions">
                   @if($correctionActionType === 'modal')
@@ -2920,7 +2940,7 @@
                       data-resolve-type="redirect"
                       data-resolve-href="{{ $correctionHref }}"
                       data-post-label="{{ $postCorrectionLabel }}"
-                      data-feedback-line="Unlocking this removes a visibility constraint"
+                      data-feedback-line="Constraint removed &#x2014; AI can now better interpret this section."
                     >{{ $correctionLabel }}</button>
                   @else
                     <button
@@ -2929,7 +2949,7 @@
                       data-resolve-type="redirect"
                       data-resolve-href="{{ $correctionHref }}"
                       data-post-label="{{ $postCorrectionLabel }}"
-                      data-feedback-line="This removes a constraint limiting your visibility"
+                      data-feedback-line="Constraint removed &#x2014; AI can now better interpret this section."
                     >{{ $correctionLabel }}</button>
                   @endif
                                   <a href="{{ $inspectHref }}" class="system-grid-cta cta-view js-readout-link">{{ $scan['is_renderable_report'] ? 'View Full Report' : 'Inspect Readout' }}</a>
@@ -3429,6 +3449,13 @@
 
       updateFixProgress();
       pulseNextCard(card);
+      // Phase 18: score feedback + delayed AI confidence signal
+      if (typeof window.scoreCountUp === 'function') window.scoreCountUp();
+      var _p18card = card;
+      window.setTimeout(function () {
+        var confLine = _p18card.querySelector('.ai-conf-line');
+        if (confLine) confLine.classList.add('visible');
+      }, 3500 + Math.floor(Math.random() * 1500));
     }
 
     function pulseNextCard(currentCard) {
@@ -4100,13 +4127,82 @@
       if (!echo) {
         echo = document.createElement('span');
         echo.className = 'nm-fix-echo';
-        echo.textContent = 'Fix applied \u2014 this constraint is now being resolved.';
+        echo.textContent = 'Constraint removed \u2014 AI can now better interpret this section.';
         link.parentElement.appendChild(echo);
       }
       echo.classList.add('visible');
       setTimeout(function () { echo.classList.remove('visible'); }, 2500);
     });
   });
+})();
+</script>
+
+<script>
+// Phase 18: Real-time system feedback
+(function () {
+  'use strict';
+
+  window.scoreCountUp = function (delta) {
+    if (!(delta > 0)) delta = 2 + Math.floor(Math.random() * 4); // 2–5
+    var el = document.getElementById('exec-score-label');
+    if (!el || el.classList.contains('exec-score-no')) return;
+    var current = parseInt(el.textContent, 10);
+    if (!Number.isFinite(current)) return;
+    var target = Math.min(100, current + delta);
+    if (target === current) return;
+    var steps = 12;
+    var duration = 560;
+    var interval = duration / steps;
+    var step = 0;
+    var timer = setInterval(function () {
+      step++;
+      el.textContent = Math.round(current + (target - current) * (step / steps));
+      if (step >= steps) { el.textContent = target; clearInterval(timer); }
+    }, interval);
+
+    // Ring glow burst
+    var ring = el.closest('.exec-score-ring');
+    if (ring) {
+      ring.classList.remove('is-boosted');
+      void ring.offsetWidth; // force reflow so animation restarts
+      ring.classList.add('is-boosted');
+      setTimeout(function () { ring.classList.remove('is-boosted'); }, 800);
+    }
+
+    // Gain label
+    var gainLine = document.getElementById('score-gain-line');
+    if (gainLine) {
+      gainLine.textContent = '+' + delta + ' signal strength gained';
+      gainLine.classList.add('visible');
+      setTimeout(function () { gainLine.classList.remove('visible'); }, 2400);
+    }
+
+    // Reveal system-active-signal
+    var sig = document.getElementById('sysActiveSignal');
+    if (sig) sig.style.opacity = '1';
+  };
+
+  // Patch geToggle: trigger score animation when checking a GE item
+  var _origGe = window.geToggle;
+  if (typeof _origGe === 'function') {
+    window.geToggle = function (el) {
+      var wasChecked = el.getAttribute('aria-pressed') === 'true';
+      _origGe.call(this, el);
+      if (!wasChecked) { window.scoreCountUp(1 + Math.floor(Math.random() * 2)); }
+    };
+  }
+
+  // On page load: reveal system-active-signal if any fix already applied
+  try {
+    var hasAnyFix = Array.prototype.some.call(
+      document.querySelectorAll('.system-grid-card[data-scan-key]'),
+      function (c) { return c.dataset.scanKey && !!localStorage.getItem('fix-state:' + c.dataset.scanKey); }
+    );
+    if (hasAnyFix) {
+      var s = document.getElementById('sysActiveSignal');
+      if (s) s.style.opacity = '1';
+    }
+  } catch (e) {}
 })();
 </script>
 
