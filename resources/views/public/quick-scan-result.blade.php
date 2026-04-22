@@ -643,6 +643,12 @@ a{text-decoration:none;color:inherit}
 .fix-detail-block p:last-child{margin-top:5px;font-size:.72rem;line-height:1.5;color:#f0e5c8}
 .fix-detail-actions{margin-top:12px;display:grid;grid-template-columns:1fr 1fr;gap:8px}
 .fix-detail-progression{margin-top:10px;display:grid;grid-template-columns:1fr;gap:7px}
+.fix-what-happens{margin:10px 0 8px;padding:10px 11px;border:1px solid rgba(106,175,144,.28);border-radius:9px;background:rgba(106,175,144,.06)}
+.fix-what-happens-title{font-size:.52rem;letter-spacing:.18em;text-transform:uppercase;color:#6aaf90;margin:0 0 7px}
+.fix-what-happens-list{margin:0;padding:0 0 0 1.1em;display:flex;flex-direction:column;gap:4px}
+.fix-what-happens-list li{font-size:.68rem;line-height:1.45;color:#d8ccb0}
+@keyframes nextFocus{0%,100%{box-shadow:none}40%{box-shadow:0 0 0 2px rgba(200,168,75,.42)}}
+.action.next-focus{animation:nextFocus 1s ease forwards}
 
 
 @media (max-width:1080px){
@@ -1393,7 +1399,7 @@ button.sys-bar-node:hover .sys-bar-dot{border-color:rgba(214,181,95,.54);backgro
                   data-unlocks="Expand data layer coverage, introduce direct-answer nodes, establish authoritative definitions."
                 >{{ $momentumCta }}</button>
                 <p class="cta-social-proof">This is your highest-impact fix.</p>
-                <p class="cta-consequence">Removes constraint → improves AI selection likelihood</p>
+                <p class="cta-consequence">This marks this issue as in progress inside your system.</p>
                 <button
                   type="button"
                   class="btn btn-secondary js-open-fix-detail"
@@ -1412,7 +1418,7 @@ button.sys-bar-node:hover .sys-bar-dot{border-color:rgba(214,181,95,.54);backgro
                   data-unlocks="Expand data layer coverage, introduce direct-answer nodes, establish authoritative definitions."
                 >View Details</button>
               </div>
-              <p class="action-memory">Not applied yet</p>
+              <p class="action-memory">Not started</p>
             </article>
             @endfor
 
@@ -1457,7 +1463,7 @@ button.sys-bar-node:hover .sys-bar-dot{border-color:rgba(214,181,95,.54);backgro
                 @endif
                 <button type="button" class="btn btn-secondary" disabled><span class="lock-glyph" aria-hidden="true"></span> Preview Restricted Layer</button>
               </div>
-              <p class="action-memory">Not applied yet</p>
+              <p class="action-memory">Not started</p>
             </article>
             @endif
           </div>
@@ -1520,7 +1526,7 @@ button.sys-bar-node:hover .sys-bar-dot{border-color:rgba(214,181,95,.54);backgro
 
     <aside class="card sticky" id="next-move">
       <p class="sticky-kicker">Your Next Move</p>
-      <h2 class="sticky-title">{{ $singleNextStep['title'] ?? 'Fix your top blocker' }}</h2>
+      <h2 class="sticky-title">{{ $singleNextStep['title'] ?? 'Next issue to address' }}</h2>
       <p class="sticky-copy">{{ $singleNextStep['copy'] ?? 'Fix this first to raise your score and move forward.' }}</p>
       <p class="sticky-unlock">This unlocks clearer signals, better fix order, and faster progress.</p>
       <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:4px">
@@ -1603,6 +1609,14 @@ button.sys-bar-node:hover .sys-bar-dot{border-color:rgba(214,181,95,.54);backgro
         <div class="fix-detail-block"><p>Category</p><p id="fixDetailCategory">Unavailable</p></div>
       </div>
 
+      <div class="fix-what-happens">
+        <p class="fix-what-happens-title">What happens when you apply this fix</p>
+        <ul class="fix-what-happens-list">
+          <li>This issue is marked as in progress inside your system</li>
+          <li>Your dashboard updates to track it</li>
+          <li>Your next step becomes clearer</li>
+        </ul>
+      </div>
       <div class="fix-detail-actions">
         <a href="#priority-actions" class="btn btn-primary" id="fixDetailNext">Apply Fix</a>
         <button type="button" class="btn btn-secondary" id="fixDetailClose">Close Panel</button>
@@ -1708,8 +1722,8 @@ button.sys-bar-node:hover .sys-bar-dot{border-color:rgba(214,181,95,.54);backgro
           ? parsed.outcome
           : 'Constraint resolved -> selection pressure reduced -> signal clarity increased';
         var label = elapsedMs < 90000
-          ? '✓ Fix applied — impact updating'
-          : '✓ Fix applied — re-evaluating';
+          ? '✓ Fix in progress — system is now addressing this issue'
+          : '✓ Fix in progress — still tracking';
         setActionMemory(card, label);
       } catch (err) {
         sessionStorage.removeItem(ACTION_MEMORY_PREFIX + key);
@@ -1784,12 +1798,24 @@ var resolvedLabel = trigger.dataset.execResolved || '✓ Fix applied';
       if (actionKey) {
         sessionStorage.setItem(ACTION_MEMORY_PREFIX + actionKey, JSON.stringify({ at: Date.now(), outcome: outcomeLine }));
       }
-      setActionMemory(card, '✓ Fix applied — impact updating');
+      setActionMemory(card, '✓ In progress');
       trigger.textContent = resolvedLabel;
       card.classList.remove('is-executing');
       card.classList.add('is-resolved');
       trigger.classList.remove('is-executing');
       trigger.classList.add('is-resolved');
+      // Part 5: briefly highlight next card as suggested next step
+      (function () {
+        var allCards = document.querySelectorAll('.action:not(.is-locked-card)');
+        var idx = Array.from(allCards).indexOf(card);
+        var nextCard = allCards[idx + 1];
+        if (nextCard) {
+          window.setTimeout(function () {
+            nextCard.classList.add('next-focus');
+            window.setTimeout(function () { nextCard.classList.remove('next-focus'); }, 1200);
+          }, 420);
+        }
+      }());
 
       nodes.forEach(function (node) {
         node.classList.remove('is-disabled');
@@ -1957,7 +1983,7 @@ var resolvedLabel = trigger.dataset.execResolved || '✓ Fix applied';
 </script>
 @php
 $_scanAiGreeting = auth()->check()
-    ? "Your scan for {$scan->domain()} scored {$score}/100 \u2014 {$scoreSelectionInterpretation}. Your fastest improvement: {$topBottleneck}\n\nAsk me what your score means, which issue to prioritise first, or what upgrading would reveal."
+    ? "Your scan for {$scan->domain()} scored {$score}/100 \u2014 {$scoreSelectionInterpretation}. Your next step is clear: fix {$topBottleneck} first.\n\nI can guide you through it, explain what each fix unlocks, or help you figure out what comes next."
     : "Your scan scored {$score}/100 \u2014 {$scoreSelectionInterpretation}.\n\nAsk me what this score means for your AI search visibility, what to fix first, or what each tier unlocks.";
 $_scanAiPrompts = [
     "Why is my score {$score} and what does it mean?",

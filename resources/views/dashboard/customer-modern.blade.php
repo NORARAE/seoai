@@ -2841,7 +2841,7 @@
                   : 'No pressure detected (temporary).';
                 $actionMemoryLine = $scanEvaluatedAt
                   ? ('Scanned ' . $scanEvaluatedLabel)
-                  : 'Not applied yet';
+                  : 'Not started';
                 $expansionPotentialLabel = $score >= 85
                   ? '+12-18 expansion potential detected'
                   : ($score >= 70
@@ -3013,7 +3013,7 @@
                       data-resolve-type="modal"
                       data-resolve-href=""
                       data-post-label="{{ $postCorrectionLabel }}"
-                      data-feedback-line="Fix applied — check your options below."
+                      data-feedback-line="Fix in progress — check your options below."
                     >{{ $correctionLabel }}</button>
                   @elseif($correctionActionType === 'locked')
                     <button
@@ -3022,7 +3022,7 @@
                       data-resolve-type="redirect"
                       data-resolve-href="{{ $correctionHref }}"
                       data-post-label="{{ $postCorrectionLabel }}"
-                      data-feedback-line="Fix applied — this issue is now being addressed."
+                      data-feedback-line="Fix in progress — system is now addressing this issue."
                     >{{ $correctionLabel }}</button>
                   @else
                     <button
@@ -3031,7 +3031,7 @@
                       data-resolve-type="redirect"
                       data-resolve-href="{{ $correctionHref }}"
                       data-post-label="{{ $postCorrectionLabel }}"
-                      data-feedback-line="Fix applied — this issue is now being addressed."
+                      data-feedback-line="Fix in progress — system is now addressing this issue."
                     >{{ $correctionLabel }}</button>
                   @endif
                   <a href="{{ $inspectHref }}" class="system-grid-cta cta-view js-readout-link">{{ $scan['is_renderable_report'] ? 'View Full Report' : 'Inspect Readout' }}</a>
@@ -3522,7 +3522,7 @@
 
       const memoryLine = card.querySelector('.action-memory-line');
       if (memoryLine) {
-        memoryLine.textContent = '\u2713 Fix applied just now';
+        memoryLine.textContent = '\u2713 Fix in progress';
 
       const scanKey = card.dataset.scanKey || '';
       if (scanKey !== '') {
@@ -3596,7 +3596,7 @@
       const resolveType = button.dataset.resolveType || 'redirect';
       const resolveHref = button.dataset.resolveHref || '';
       const postLabel = button.dataset.postLabel || '\u2713 Applied';
-      const feedbackLine = button.dataset.feedbackLine || 'Fix applied \u2014 this issue is now being addressed.';
+      const feedbackLine = button.dataset.feedbackLine || 'Fix in progress \u2014 system is now addressing this issue.';
 
       // Phase 1: immediate "Applying..." state
       const originalLabel = button.textContent;
