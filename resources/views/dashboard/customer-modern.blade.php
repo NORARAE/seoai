@@ -1369,7 +1369,7 @@
   .ge-heading{font-size:1rem;font-weight:600;color:#e0d0f8;line-height:1.3;margin-bottom:4px}
   .ge-subhead{font-size:.82rem;line-height:1.58;color:#8878a8;max-width:44rem;margin-bottom:16px}
   .ge-progress-bar-track{height:6px;border-radius:4px;background:rgba(255,255,255,.06);overflow:hidden;margin-bottom:6px}
-  .ge-progress-bar-fill{height:100%;border-radius:4px;background:linear-gradient(90deg,#7a44c8,#a870f0);transition:width .5s ease}
+  .ge-progress-bar-fill{height:100%;border-radius:4px;background:linear-gradient(90deg,#7a44c8,#a870f0);transition:width .6s cubic-bezier(.4,0,.2,1)}
   .ge-progress-label{font-size:.62rem;letter-spacing:.12em;text-transform:uppercase;color:rgba(180,140,240,.58);margin-bottom:16px}
   .ge-list{display:flex;flex-direction:column;gap:8px}
   .ge-item{border:1px solid rgba(160,120,220,.14);border-radius:12px;background:linear-gradient(155deg,#15102a,#0e0b18 70%);padding:12px 14px;display:flex;gap:12px;align-items:flex-start;transition:border-color .2s ease,background .2s ease;cursor:pointer}
@@ -1385,6 +1385,21 @@
   .ge-item-fix{font-size:.74rem;line-height:1.48;color:#c0b0e0;margin-top:4px}
   .ge-reset-btn{display:inline-flex;align-items:center;gap:6px;margin-top:16px;padding:6px 14px;border-radius:8px;border:1px solid rgba(160,120,220,.22);background:transparent;color:rgba(180,140,240,.5);font-size:.58rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;cursor:pointer;transition:all .18s ease}
   .ge-reset-btn:hover{border-color:rgba(160,120,220,.36);color:rgba(180,140,240,.8)}
+  /* ── Phase 9: Completion + Momentum ─────────────────────────────── */
+  @keyframes ge-check-pop{0%{transform:scale(0)}60%{transform:scale(1.3)}100%{transform:scale(1)}}
+  @keyframes ge-item-glow{0%{box-shadow:none}35%{box-shadow:0 0 0 3px rgba(168,112,240,.28),inset 0 0 8px rgba(168,112,240,.06)}100%{box-shadow:none}}
+  @keyframes ge-msg-out{to{opacity:0}}
+  .ge-item.just-done .ge-check-icon{animation:ge-check-pop .25s ease forwards}
+  .ge-item.just-done{animation:ge-item-glow .7s ease forwards}
+  .ge-milestone-msg{font-size:.72rem;color:rgba(180,140,240,.7);font-style:italic;letter-spacing:.02em;min-height:1.1em;margin:0 0 12px;line-height:1.5;opacity:0;transition:opacity .3s ease}
+  .ge-milestone-msg.is-visible{opacity:1}
+  .ge-milestone-msg.is-fading{animation:ge-msg-out .42s ease forwards}
+  .ge-completion-nudge{display:none;margin-top:20px;padding:18px 20px;border:1px solid rgba(200,168,75,.28);border-radius:14px;background:linear-gradient(140deg,rgba(25,19,8,.98),rgba(10,8,4,.99));text-align:center}
+  .ge-completion-nudge.is-visible{display:block}
+  .ge-cn-hed{font-size:.92rem;font-weight:600;color:rgba(200,168,75,.9);margin:0 0 6px}
+  .ge-cn-body{font-size:.74rem;color:rgba(200,168,75,.55);margin:0 0 14px;line-height:1.5}
+  .ge-cn-cta{display:inline-block;padding:9px 22px;border-radius:10px;border:1px solid rgba(200,168,75,.44);background:rgba(200,168,75,.1);color:#d9c988;font-size:.68rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;text-decoration:none;transition:all .18s ease}
+  .ge-cn-cta:hover{background:rgba(200,168,75,.2);border-color:rgba(200,168,75,.6)}
   /* ── L4: Consultation nudge ─────────────────────────────────────── */
   .ge-upsell-banner{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px;margin-top:16px;padding:14px 16px;border:1px solid rgba(200,168,75,.22);border-radius:12px;background:rgba(200,168,75,.05)}
   .ge-upsell-text{font-size:.8rem;color:#c8b880;line-height:1.45}
@@ -2145,6 +2160,7 @@
           <div class="ge-progress-bar-fill" id="ge-progress-fill" style="width:0%"></div>
         </div>
         <p class="ge-progress-label" id="ge-progress-label">0 of {{ count($geItems) }} complete</p>
+        <p id="ge-milestone-msg" class="ge-milestone-msg" aria-live="polite" aria-atomic="true"></p>
 
         <div class="ge-list" id="ge-checklist">
           @foreach($geItems as $geIdx => $geItem)
@@ -2179,6 +2195,13 @@
         <div class="ge-upsell-banner">
           <span class="ge-upsell-text">Want this implemented for you? We build and deploy your full visibility system &mdash; no DIY required.</span>
           <a href="{{ route('book.index', ['entry' => 'dashboard-upgrade']) }}" class="ge-upsell-btn">Book Strategy Session &rarr;</a>
+        </div>
+
+        {{-- Phase 9: 100% completion nudge --}}
+        <div id="ge-completion-nudge" class="ge-completion-nudge" role="status" aria-live="polite">
+          <p class="ge-cn-hed">Ready to take this further?</p>
+          <p class="ge-cn-body">We can deploy and scale this system for you.</p>
+          <a href="{{ route('book.index', ['entry' => 'dashboard-completion']) }}" class="ge-cn-cta">Book Strategy Session &rarr;</a>
         </div>
       </div>
     </section>
@@ -3838,11 +3861,13 @@
 
 @if($tierRank >= 4)
 <script>
-// ── Guided Execution Checklist ─────────────────────────────────────────
+// ── Guided Execution Checklist + Momentum System ───────────────────────
 (function () {
   'use strict';
-  var STORAGE_KEY = 'ge_progress_{{ $latestScanned?->id ?? "0" }}';
-  var total = document.querySelectorAll('.ge-item').length;
+  var STORAGE_KEY    = 'ge_progress_{{ $latestScanned?->id ?? "0" }}';
+  var total          = document.querySelectorAll('.ge-item').length;
+  var isInteractive  = false;
+  var lastMilestonePct = 0;
 
   function getCompleted() {
     try { return JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]'); } catch(e) { return []; }
@@ -3850,18 +3875,56 @@
   function saveCompleted(ids) {
     try { localStorage.setItem(STORAGE_KEY, JSON.stringify(ids)); } catch(e) {}
   }
+
+  // ── Milestone message ──────────────────────────────────────────────
+  function showMilestoneMsg(text) {
+    var el = document.getElementById('ge-milestone-msg');
+    if (!el) return;
+    el.classList.remove('is-fading');
+    el.textContent = text;
+    el.classList.add('is-visible');
+    clearTimeout(el._fadeTimer);
+    el._fadeTimer = setTimeout(function () {
+      el.classList.add('is-fading');
+      setTimeout(function () { el.classList.remove('is-visible', 'is-fading'); }, 440);
+    }, 3600);
+  }
+
+  function checkMilestone(count, pct) {
+    // Always reveal completion nudge at 100% (page load + live toggle)
+    if (pct >= 100) {
+      var nudge = document.getElementById('ge-completion-nudge');
+      if (nudge) nudge.classList.add('is-visible');
+    }
+    if (!isInteractive) return;
+    var msg = '';
+    if      (pct >= 100 && lastMilestonePct < 100) msg = 'Your system is fully executed';
+    else if (pct >= 75  && lastMilestonePct < 75)  msg = 'Almost complete';
+    else if (pct >= 50  && lastMilestonePct < 50)  msg = 'You\u2019re halfway to a stronger visibility system';
+    else if (pct >= 25  && lastMilestonePct < 25)  msg = 'You\u2019ve started fixing real gaps';
+    else if (count > 0 && count % 3 === 0 && pct < 100) msg = 'You\u2019re making real progress';
+    // Advance watermark so fixed milestones only fire once per bracket
+    if      (pct >= 100) lastMilestonePct = 100;
+    else if (pct >= 75)  lastMilestonePct = 75;
+    else if (pct >= 50)  lastMilestonePct = 50;
+    else if (pct >= 25)  lastMilestonePct = 25;
+    if (msg) showMilestoneMsg(msg);
+  }
+
   function updateProgress() {
     var done = getCompleted();
-    var pct = total > 0 ? Math.round(done.length / total * 100) : 0;
-    var fill = document.getElementById('ge-progress-fill');
+    var pct  = total > 0 ? Math.round(done.length / total * 100) : 0;
+    var fill  = document.getElementById('ge-progress-fill');
     var label = document.getElementById('ge-progress-label');
-    if (fill) fill.style.width = pct + '%';
+    if (fill)  fill.style.width  = pct + '%';
     if (label) label.textContent = done.length + ' of ' + total + ' complete';
+    checkMilestone(done.length, pct);
   }
+
   function applyState() {
     var done = getCompleted();
     document.querySelectorAll('.ge-item').forEach(function(el) {
-      var id = el.getAttribute('data-ge-id');
+      var id    = el.getAttribute('data-ge-id');
       var isDone = done.indexOf(id) !== -1;
       el.classList.toggle('is-done', isDone);
       el.setAttribute('aria-pressed', isDone ? 'true' : 'false');
@@ -3870,20 +3933,36 @@
     });
     updateProgress();
   }
+
   window.geToggle = function(el) {
     var id = el.getAttribute('data-ge-id');
     if (!id) return;
-    var done = getCompleted();
-    var idx = done.indexOf(id);
-    if (idx === -1) done.push(id); else done.splice(idx, 1);
+    var done   = getCompleted();
+    var idx    = done.indexOf(id);
+    var adding = idx === -1;
+    if (adding) done.push(id); else done.splice(idx, 1);
     saveCompleted(done);
     applyState();
+    if (adding) {
+      el.classList.add('just-done');
+      setTimeout(function () { el.classList.remove('just-done'); }, 750);
+    }
   };
+
   window.geReset = function() {
     saveCompleted([]);
+    lastMilestonePct = 0;
+    var nudge = document.getElementById('ge-completion-nudge');
+    if (nudge) nudge.classList.remove('is-visible');
     applyState();
   };
+
+  // Initial load — seed milestone watermark so already-passed brackets don't re-fire
   applyState();
+  var _done = getCompleted();
+  var _pct  = total > 0 ? Math.round(_done.length / total * 100) : 0;
+  lastMilestonePct = _pct >= 100 ? 100 : _pct >= 75 ? 75 : _pct >= 50 ? 50 : _pct >= 25 ? 25 : 0;
+  isInteractive = true;
 })();
 </script>
 @endif
