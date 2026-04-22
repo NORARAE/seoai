@@ -1296,7 +1296,7 @@
             @if($ownedTierRank >= 1)
             <span class="sys-cta-owned-badge"><svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M1.5 5l2.5 2.5 4.5-5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg> Scan complete &mdash; active</span>
             @else
-            <a href="{{ route('scan.start') }}" class="sys-cta --primary">Start Scan &mdash; $2</a>
+            <a href="{{ route('scan.start') }}" class="sys-cta --primary" onclick="track('cta_click',{tier:2,label:'scan',location:'pricing_step1'})">Start Scan &mdash; $2</a>
             @endif
           </div>
         </div>
@@ -1323,7 +1323,7 @@
             @if($ownedTierRank >= 2)
             <span class="sys-cta-owned-badge"><svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M1.5 5l2.5 2.5 4.5-5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg> Signal Analysis active</span>
             @else
-            <a href="{{ route('checkout.signal-expansion') }}" class="sys-cta --primary">Unlock Signal Analysis &mdash; $99</a>
+            <a href="{{ route('checkout.signal-expansion') }}" class="sys-cta --primary" onclick="track('cta_click',{tier:99,label:'signal_analysis',location:'pricing_step2'})">Unlock Signal Analysis &mdash; $99</a>
             <span class="sys-cta-note">Available after scan</span>
             @endif
           </div>
@@ -1351,7 +1351,7 @@
             @if($ownedTierRank >= 3)
             <span class="sys-cta-owned-badge"><svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M1.5 5l2.5 2.5 4.5-5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg> Action Plan active</span>
             @else
-            <a href="{{ route('checkout.structural-leverage') }}" class="sys-cta --primary">Get My Action Plan &mdash; $249</a>
+            <a href="{{ route('checkout.structural-leverage') }}" class="sys-cta --primary" onclick="track('cta_click',{tier:249,label:'action_plan',location:'pricing_step3'})">Get My Action Plan &mdash; $249</a>
             <button class="sys-trust-trigger" data-layer="level-3">See what unlocks</button>
             @endif
           </div>
@@ -1382,7 +1382,7 @@
             @if($ownedTierRank >= 4)
             <span class="sys-cta-owned-badge"><svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M1.5 5l2.5 2.5 4.5-5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg> Guided Execution active</span>
             @else
-            <a href="{{ route('checkout.system-activation') }}" class="sys-cta">Start Guided Execution &mdash; $489</a>
+            <a href="{{ route('checkout.system-activation') }}" class="sys-cta" onclick="track('cta_click',{tier:489,label:'guided_execution',location:'pricing_step4'})">Start Guided Execution &mdash; $489</a>
             <button class="sys-trust-trigger" data-layer="level-4">See what unlocks</button>
             @endif
           </div>
@@ -1435,7 +1435,7 @@
             </div>
             <div class="sys-actions" style="border-top:none;padding-top:0;flex-direction:column;align-items:flex-start;gap:10px;justify-content:center">
               <a href="{{ route('onboarding.start', ['tier' => 'dominance']) }}" class="sys-cta --primary">Apply for Market Control</a>
-              <a href="{{ url('/book?entry=consultation') }}" class="sys-cta">Book Consultation</a>
+              <a href="{{ url('/book?entry=consultation') }}" class="sys-cta" onclick="track('cta_click',{tier:'consult',label:'consultation',location:'pricing_step6'})">Book Consultation</a>
               <p class="sys-cta-note" style="margin-top:4px">Reviewed individually &middot; Limited capacity</p>
             </div>
           </div>
@@ -1686,7 +1686,7 @@
     <h2 class="final-cta-hed" id="cta-hed">One entry point.<br><em>The system builds from there.</em></h2>
     <p class="final-cta-sub">Every level compounds on the last. Your data carries forward through the entire architecture. No repeated work.</p>
     <div class="final-cta-actions">
-      <a href="{{ route('scan.start') }}" class="btn-primary">Begin Signal Detection&nbsp;&mdash; $2</a>
+      <a href="{{ route('scan.start') }}" class="btn-primary" onclick="track('cta_click',{tier:2,label:'scan',location:'pricing_final_cta'})">Begin Signal Detection&nbsp;&mdash; $2</a>
       <a href="#plans" class="btn-ghost">Compare all levels &rarr;</a>
     </div>
   </div>
@@ -1710,6 +1710,56 @@
 @include('partials.back-to-top')
 
 @include('components.tm-style')
+<script>
+// ── Signal Tracker ────────────────────────────────────────────────────
+(function(){
+  'use strict';
+  var LOG_KEY  = 'seo_event_log';
+  var SES_KEY  = 'seo_session_start';
+  var LAST_KEY = 'seo_last_cta';
+  var MAX      = 200;
+
+  if (!sessionStorage.getItem(SES_KEY)) {
+    try { sessionStorage.setItem(SES_KEY, String(Date.now())); } catch(e) {}
+  }
+
+  window.track = function(event, meta) {
+    var payload = Object.assign({ event: event, ts: Date.now(), page: 'pricing' }, meta || {});
+    console.log('[TRACK]', event, payload);
+    try {
+      var log = JSON.parse(localStorage.getItem(LOG_KEY) || '[]');
+      log.push(payload);
+      if (log.length > MAX) log = log.slice(-MAX);
+      localStorage.setItem(LOG_KEY, JSON.stringify(log));
+      if (event === 'cta_click') localStorage.setItem(LAST_KEY, JSON.stringify(payload));
+    } catch(e) {}
+  };
+
+  // ── Step-section view tracking via IntersectionObserver ──
+  if (typeof IntersectionObserver !== 'undefined') {
+    var sectionMap = {
+      '1': { tier: 2,   label: 'scan' },
+      '2': { tier: 99,  label: 'signal_analysis' },
+      '3': { tier: 249, label: 'action_plan' },
+      '4': { tier: 489, label: 'guided_execution' },
+    };
+    var seenSections = {};
+    var io = new IntersectionObserver(function(entries) {
+      entries.forEach(function(e) {
+        if (!e.isIntersecting) return;
+        var step = e.target.getAttribute('data-step');
+        if (step && !seenSections[step]) {
+          seenSections[step] = true;
+          var s = sectionMap[step];
+          if (s) window.track('section_view', { tier: s.tier, label: s.label });
+        }
+      });
+    }, { threshold: 0.2 });
+    document.querySelectorAll('.sys-step[data-step]').forEach(function(el) { io.observe(el); });
+  }
+})();
+</script>
+
 <script>
 (function(){
   // Nav scroll listener

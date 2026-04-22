@@ -1481,7 +1481,60 @@
 
     {{-- Return Banner (JS-controlled — shown on return visits with incomplete tier) --}}
     @if($tierRank < 4)
-    <div id="dcm-return-banner" class="dcm-return-banner" role="alert" aria-live="polite" style="display:none">
+    <script>
+// ── Signal Tracker ────────────────────────────────────────────────────
+(function(){
+  'use strict';
+  var LOG_KEY   = 'seo_event_log';
+  var SES_KEY   = 'seo_session_start';
+  var LAST_KEY  = 'seo_last_cta';
+  var INT_KEY   = 'seo_last_interaction';
+  var MAX       = 200;
+
+  if (!sessionStorage.getItem(SES_KEY)) {
+    try { sessionStorage.setItem(SES_KEY, String(Date.now())); } catch(e) {}
+  }
+
+  window.track = function(event, meta) {
+    var payload = Object.assign({ event: event, ts: Date.now(), page: 'dashboard', tier_rank: {{ $tierRank }} }, meta || {});
+    console.log('[TRACK]', event, payload);
+    try {
+      var log = JSON.parse(localStorage.getItem(LOG_KEY) || '[]');
+      log.push(payload);
+      if (log.length > MAX) log = log.slice(-MAX);
+      localStorage.setItem(LOG_KEY, JSON.stringify(log));
+      localStorage.setItem(INT_KEY, String(payload.ts));
+      if (event === 'cta_click') localStorage.setItem(LAST_KEY, JSON.stringify(payload));
+    } catch(e) {}
+  };
+
+  // ── Section view tracking (L2 / L3 / L4) ──────────────────────────
+  if (typeof IntersectionObserver !== 'undefined') {
+    var sectionTrackMap = {
+      'signal-analysis':  { tier: 99,  label: 'signal_analysis' },
+      'action-plan':      { tier: 249, label: 'action_plan' },
+      'guided-execution': { tier: 489, label: 'guided_execution' },
+    };
+    var seen = {};
+    var io = new IntersectionObserver(function(entries) {
+      entries.forEach(function(e) {
+        if (!e.isIntersecting) return;
+        var id = e.target.id;
+        if (id && sectionTrackMap[id] && !seen[id]) {
+          seen[id] = true;
+          window.track('section_view', sectionTrackMap[id]);
+        }
+      });
+    }, { threshold: 0.25 });
+    ['signal-analysis', 'action-plan', 'guided-execution'].forEach(function(id) {
+      var el = document.getElementById(id);
+      if (el) io.observe(el);
+    });
+  }
+})();
+</script>
+
+<div id="dcm-return-banner" class="dcm-return-banner" role="alert" aria-live="polite" style="display:none">
       <button type="button" id="dcm-rb-dismiss-btn" class="dcm-rb-dismiss" aria-label="Dismiss">&times;</button>
       <p id="dcm-rb-sub" class="dcm-rb-sub"></p>
       <p class="dcm-rb-hed">Pick up where you left off</p>
@@ -1770,9 +1823,9 @@
             <h3 class="nm-card-title">{{ $nextMoveFastestFix }}</h3>
             <p class="nm-card-rationale">The quickest change likely to raise your score before your next scan.</p>
             @if($leadRenderable)
-            <a href="{{ $leadReportHref }}" class="nm-card-action">View fix in your report &rarr;</a>
+            <a href="{{ $leadReportHref }}" class="nm-card-action" onclick="track('cta_click',{tier:'report',label:'view_report_fastest_win',location:'next_move'})">View fix in your report &rarr;</a>
             @else
-            <a href="{{ $nextMoveActionHref }}" class="nm-card-action">{{ $nextUnlockLabel }} &rarr;</a>
+            <a href="{{ $nextMoveActionHref }}" class="nm-card-action" onclick="track('cta_click',{tier:'next',label:'fastest_win_unlock',location:'next_move'})">{{ $nextUnlockLabel }} &rarr;</a>
             @endif
           </div>
 
@@ -1783,9 +1836,9 @@
             <h3 class="nm-card-title">{{ $nextBestAction['what_missing'] ?? 'Primary visibility gap' }}</h3>
             <p class="nm-card-rationale">{{ !empty($nextBestAction['why_it_matters']) ? $nextBestAction['why_it_matters'] : 'Fixing this has the highest projected impact on your visibility score.' }}</p>
             @if($leadRenderable)
-            <a href="{{ $leadReportHref }}" class="nm-card-action">See full fix details &rarr;</a>
+            <a href="{{ $leadReportHref }}" class="nm-card-action" onclick="track('cta_click',{tier:'report',label:'view_report_highest_leverage',location:'next_move'})">See full fix details &rarr;</a>
             @else
-            <a href="{{ $nextMoveActionHref }}" class="nm-card-action">{{ $nextUnlockLabel }} &rarr;</a>
+            <a href="{{ $nextMoveActionHref }}" class="nm-card-action" onclick="track('cta_click',{tier:'next',label:'highest_leverage_unlock',location:'next_move'})">{{ $nextUnlockLabel }} &rarr;</a>
             @endif
           </div>
           @elseif(isset($nextUpgrade) && !empty($nextUpgrade))
@@ -1793,7 +1846,7 @@
             <p class="nm-card-kicker">Recommended for your level</p>
             <h3 class="nm-card-title">{{ $nextUpgrade['label'] ?? $nextStep }}</h3>
             <p class="nm-card-rationale">{{ $nextUpgrade['description'] ?? 'Unlock the next level to see your highest-impact fixes, ranked by score potential.' }}</p>
-            <a href="{{ $nextUnlockHref }}" class="nm-card-action">
+            <a href="{{ $nextUnlockHref }}" class="nm-card-action" onclick="track('cta_click',{tier:'next',label:'upgrade_recommended',location:'next_move_upgrade'})">
               {{ $nmCtaLabel }}{{ isset($nextUpgrade['price']) ? ' &mdash; '.$nextUpgrade['price'] : ($nextLevelPrice ? ' &mdash; '.$nextLevelPrice : '') }} &rarr;
             </a>
           </div>
@@ -1802,7 +1855,7 @@
             <p class="nm-card-kicker">Recommended for your level</p>
             <h3 class="nm-card-title">{{ $nextStep }}</h3>
             <p class="nm-card-rationale">The next level reveals more precise fixes and shows exactly which changes will move your score the most.</p>
-            <a href="{{ $nextUnlockHref }}" class="nm-card-action">
+            <a href="{{ $nextUnlockHref }}" class="nm-card-action" onclick="track('cta_click',{tier:'next',label:'upgrade_next_step',location:'next_move_upgrade'})">
               {{ $nmCtaLabel }}{{ $nextLevelPrice ? ' &mdash; '.$nextLevelPrice : '' }} &rarr;
             </a>
           </div>
@@ -1908,7 +1961,8 @@
               data-level="{{ $nextLevelMeta['num'] }}"
               data-level-name="{{ $nextLevelMeta['name'] }}"
               data-checkout-href="{{ $nextCheckHref }}"
-              data-price="{{ $nextLevelMeta['price'] }}">
+              data-price="{{ $nextLevelMeta['price'] }}"
+              onclick="track('cta_click',{tier:{{ $nextLevelMeta['price'] }},label:'{{ $nextLevelMeta['name'] }}',location:'your_plan'})">
               Unlock {{ $nextLevelMeta['name'] }} &mdash; {{ $nextLevelMeta['price'] }}
             </button>
           </div>
@@ -1948,7 +2002,7 @@
         {{-- Consultation row --}}
         <div class="plan-consult-row">
           <p class="plan-consult-copy">Your system is built from your scan data. We can deploy, scale, and accelerate what it&rsquo;s already surfaced &mdash; done for you.</p>
-          <a href="{{ route('book.index') }}?entry=dashboard-plan" class="plan-consult-btn">Book a Strategy Session &rarr;</a>
+          <a href="{{ route('book.index') }}?entry=dashboard-plan" class="plan-consult-btn" onclick="track('cta_click',{tier:'consult',label:'consultation',location:'your_plan'})">Book a Strategy Session &rarr;</a>
         </div>
 
       </div>
@@ -2048,7 +2102,7 @@
         @if($tierRank === 2)
         <div class="sa-upsell-banner">
           <span class="sa-upsell-text">Ready to act on these signals? <strong>Action Plan</strong> turns this breakdown into a ranked fix list — ordered by what moves your score the most.</span>
-          <a href="{{ route('checkout.structural-leverage') }}" class="sa-upsell-btn">Get Your Action Plan &mdash; $249 &rarr;</a>
+          <a href="{{ route('checkout.structural-leverage') }}" class="sa-upsell-btn" onclick="track('cta_click',{tier:249,label:'action_plan',location:'signal_analysis_upsell'})">Get Your Action Plan &mdash; $249 &rarr;</a>
         </div>
         @endif
       </div>
@@ -2118,7 +2172,7 @@
         @if($tierRank === 3)
         <div class="ap-upsell-banner">
           <span class="ap-upsell-text">You have the plan — now execute it with structure. <strong>Guided Execution</strong> turns this into a step-by-step checklist with progress tracking inside your dashboard.</span>
-          <a href="{{ route('checkout.system-activation') }}" class="ap-upsell-btn">Start Guided Execution &mdash; $489 &rarr;</a>
+          <a href="{{ route('checkout.system-activation') }}" class="ap-upsell-btn" onclick="track('cta_click',{tier:489,label:'guided_execution',location:'action_plan_upsell'})">Start Guided Execution &mdash; $489 &rarr;</a>
         </div>
         @endif
       </div>
@@ -2195,14 +2249,14 @@
         {{-- Consultation nudge --}}
         <div class="ge-upsell-banner">
           <span class="ge-upsell-text">Your checklist is built from your scan. We can now deploy, scale, and accelerate the full system &mdash; implemented for you.</span>
-          <a href="{{ route('book.index', ['entry' => 'dashboard-upgrade']) }}" class="ge-upsell-btn">Book Strategy Session &rarr;</a>
+          <a href="{{ route('book.index', ['entry' => 'dashboard-upgrade']) }}" class="ge-upsell-btn" onclick="track('cta_click',{tier:'consult',label:'consultation',location:'ge_upsell'})">Book Strategy Session &rarr;</a>
         </div>
 
         {{-- Phase 9: 100% completion nudge --}}
         <div id="ge-completion-nudge" class="ge-completion-nudge" role="status" aria-live="polite">
           <p class="ge-cn-hed">Ready to take this further?</p>
           <p class="ge-cn-body">Your checklist reveals exactly what your system needs. We can build, deploy, and scale everything it&rsquo;s surfaced &mdash; so you don&rsquo;t have to do it alone.</p>
-          <a href="{{ route('book.index', ['entry' => 'dashboard-completion']) }}" class="ge-cn-cta">Book Strategy Session &rarr;</a>
+          <a href="{{ route('book.index', ['entry' => 'dashboard-completion']) }}" class="ge-cn-cta" onclick="track('cta_click',{tier:'consult',label:'consultation_post_completion',location:'ge_completion'})">Book Strategy Session &rarr;</a>
         </div>
       </div>
     </section>
