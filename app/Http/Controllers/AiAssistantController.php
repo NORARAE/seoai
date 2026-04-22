@@ -163,6 +163,8 @@ class AiAssistantController extends Controller
     {
         $ctx = [
             'user_name' => $user->name ?? null,
+            'has_scan'  => false,
+            'tier_rank' => 0,
         ];
 
         // Fetch the most recent completed scan for this user.
@@ -175,6 +177,8 @@ class AiAssistantController extends Controller
         if (!$scan) {
             return $ctx;
         }
+
+        $ctx['has_scan'] = true;
 
         $score = (int) ($scan->score ?? 0);
 
@@ -257,6 +261,7 @@ class AiAssistantController extends Controller
 
         // Current plan tier label — system_tier is a SystemTier enum.
         if ($user->system_tier instanceof \App\Enums\SystemTier) {
+            $ctx['tier_rank'] = $user->system_tier->rank();
             $ctx['tier'] = $user->system_tier->label() . ' (' . $user->system_tier->price() . ')';
 
             // Next tier — what the user could unlock
@@ -270,7 +275,12 @@ class AiAssistantController extends Controller
                 $ctx['next_tier_step'] = $nextStep;
             }
         } else {
-            $ctx['tier'] = 'Free / Unscanned';
+            // Has a scan but no paid tier — rank 1 (baseline scan only)
+            $ctx['tier_rank'] = 1;
+            $ctx['tier'] = 'Baseline Scan only ($2)';
+            $ctx['next_tier_name'] = 'Signal Analysis';
+            $ctx['next_tier_price'] = '$99';
+            $ctx['next_tier_step'] = 'Get your full signal breakdown — $99';
         }
 
         return $ctx;
