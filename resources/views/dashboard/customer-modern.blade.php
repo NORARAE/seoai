@@ -1385,6 +1385,29 @@
   .ge-item-fix{font-size:.74rem;line-height:1.48;color:#c0b0e0;margin-top:4px}
   .ge-reset-btn{display:inline-flex;align-items:center;gap:6px;margin-top:16px;padding:6px 14px;border-radius:8px;border:1px solid rgba(160,120,220,.22);background:transparent;color:rgba(180,140,240,.5);font-size:.58rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;cursor:pointer;transition:all .18s ease}
   .ge-reset-btn:hover{border-color:rgba(160,120,220,.36);color:rgba(180,140,240,.8)}
+  /* ── L4: Consultation nudge ─────────────────────────────────────── */
+  .ge-upsell-banner{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px;margin-top:16px;padding:14px 16px;border:1px solid rgba(200,168,75,.22);border-radius:12px;background:rgba(200,168,75,.05)}
+  .ge-upsell-text{font-size:.8rem;color:#c8b880;line-height:1.45}
+  .ge-upsell-btn{display:inline-flex;align-items:center;gap:6px;padding:8px 18px;border-radius:9px;border:1px solid rgba(200,168,75,.44);background:rgba(200,168,75,.1);color:#d9c988;font-size:.62rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;text-decoration:none;white-space:nowrap;transition:all .18s ease}
+  .ge-upsell-btn:hover{border-color:rgba(200,168,75,.52);background:rgba(200,168,75,.18)}
+  /* ── Progress strip ─────────────────────────────────────────────── */
+  .dcm-progress-strip{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:8px;margin-bottom:10px;padding:8px 14px;border:1px solid rgba(200,168,75,.1);border-radius:10px;background:rgba(200,168,75,.03)}
+  .dcm-progress-steps{display:flex;align-items:center;gap:0}
+  .dcm-progress-step{display:flex;align-items:center;gap:5px}
+  .dcm-ps-dot{width:18px;height:18px;border-radius:50%;border:1.5px solid rgba(200,168,75,.25);display:flex;align-items:center;justify-content:center;flex-shrink:0;background:transparent}
+  .dcm-progress-step.is-done .dcm-ps-dot{background:rgba(200,168,75,.18);border-color:rgba(200,168,75,.5);color:rgba(200,168,75,.9)}
+  .dcm-progress-step.is-current .dcm-ps-dot{background:rgba(200,168,75,.1);border-color:rgba(200,168,75,.6);box-shadow:0 0 0 3px rgba(200,168,75,.1)}
+  .dcm-progress-step.is-ahead .dcm-ps-dot{opacity:.35}
+  .dcm-ps-label{font-size:.54rem;letter-spacing:.1em;text-transform:uppercase;color:rgba(200,168,75,.55);white-space:nowrap}
+  .dcm-progress-step.is-done .dcm-ps-label{color:rgba(200,168,75,.72)}
+  .dcm-progress-step.is-current .dcm-ps-label{color:rgba(200,168,75,.92);font-weight:600}
+  .dcm-progress-step.is-ahead .dcm-ps-label{opacity:.4}
+  .dcm-ps-line{width:20px;height:1px;background:rgba(200,168,75,.15);margin:0 4px;flex-shrink:0}
+  .dcm-ps-line.is-done{background:rgba(200,168,75,.4)}
+  .dcm-progress-pct{font-size:.6rem;letter-spacing:.1em;color:rgba(200,168,75,.48);white-space:nowrap}
+  @media(max-width:520px){.dcm-ps-label{display:none}.dcm-ps-line{width:12px}.dcm-progress-strip{padding:7px 10px}}
+  /* ── Next-move urgency line ─────────────────────────────────────── */
+  .nm-urgency{font-size:.7rem;color:rgba(200,168,75,.5);letter-spacing:.04em;margin:2px 0 0;font-style:italic}
 </style>
 @endpush
 
@@ -1458,6 +1481,32 @@
     @endif
 
     <div class="dashboard-primary-flow {{ $isScansView ? 'is-scans-view' : '' }} {{ $isReportsView ? 'is-reports-view' : '' }}">
+
+    {{-- ── System Progress Strip ──────────────────────────────────── --}}
+    @if($isSystemView)
+    @php
+      $progressLabels = ['Scan', 'Signal Analysis', 'Action Plan', 'Guided Execution'];
+      $progressPct    = min(100, $tierRank * 25);
+    @endphp
+    <div class="dcm-progress-strip" aria-label="System progress: step {{ $tierRank }} of 4">
+      <div class="dcm-progress-steps">
+        @foreach($progressLabels as $pidx => $plbl)
+        <div class="dcm-progress-step {{ $pidx < $tierRank ? 'is-done' : ($pidx === $tierRank - 1 ? 'is-current' : 'is-ahead') }}">
+          <div class="dcm-ps-dot">
+            @if($pidx < $tierRank)
+            <svg width="8" height="8" viewBox="0 0 8 8" fill="none" aria-hidden="true"><path d="M1 4l2 2 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            @endif
+          </div>
+          <span class="dcm-ps-label">{{ $plbl }}</span>
+        </div>
+        @if(!$loop->last)
+        <div class="dcm-ps-line {{ $pidx < $tierRank - 1 ? 'is-done' : '' }}" aria-hidden="true"></div>
+        @endif
+        @endforeach
+      </div>
+      <p class="dcm-progress-pct">{{ $progressPct }}% through your visibility system</p>
+    </div>
+    @endif
     <section class="system-section system-section-primary mb-6 dash-section-anchor" id="system-state" aria-labelledby="exec-score-label">
       <div class="exec-hero-shell surface-reveal is-visible">
         <div class="exec-hero-grid">
@@ -1657,9 +1706,24 @@
     @if(!$noScore)
     <section class="system-section mb-6 dash-section-anchor surface-reveal" id="next-move" aria-labelledby="next-move-heading">
       <div class="next-move-shell">
-        <p class="dash-section-label">What to do next</p>
-        <h2 id="next-move-heading" class="dash-section-heading">Your clearest path to a higher score</h2>
-        <p class="dash-section-subhead">Two actions, ranked by speed and impact for {{ $projectDomain ?? 'your site' }}.</p>
+        @php
+          $nmSubtext = match(true) {
+            $tierRank >= 4 => 'You\'ve got the execution checklist. Want this implemented for you?',
+            $tierRank === 3 => 'You\'ve got the plan. Now execute it \u2014 step by step inside your dashboard.',
+            $tierRank === 2 => 'You\'ve identified the gaps. Now fix them in order.',
+            $tierRank === 1 && $latestIssues > 0 => 'Your scan found '.$latestIssues.' gap'.($latestIssues !== 1 ? 's' : '').'. This is the next step to fix them.',
+            default => 'Your baseline is set. Signal Analysis breaks down exactly where you\'re losing visibility.',
+          };
+          $nmCtaLabel = match(true) {
+            $tierRank >= 4 => 'Book Strategy Session',
+            $tierRank === 3 => 'Start Guided Execution',
+            $tierRank === 2 => 'Get My Action Plan',
+            default        => 'Unlock Signal Analysis',
+          };
+        @endphp
+        <p class="dash-section-label">Your next move</p>
+        <h2 id="next-move-heading" class="dash-section-heading">{{ $nmSubtext }}</h2>
+        <p class="nm-urgency">You\'ve already done the hard part &mdash; most users at Level {{ $tierRank }} move here next.</p>
         <div class="next-move-row">
 
           {{-- Fastest win --}}
@@ -1688,20 +1752,20 @@
           </div>
           @elseif(isset($nextUpgrade) && !empty($nextUpgrade))
           <div class="nm-card">
-            <p class="nm-card-kicker">Deeper insight available</p>
+            <p class="nm-card-kicker">Recommended for your level</p>
             <h3 class="nm-card-title">{{ $nextUpgrade['label'] ?? $nextStep }}</h3>
             <p class="nm-card-rationale">{{ $nextUpgrade['description'] ?? 'Unlock the next level to see your highest-impact fixes, ranked by score potential.' }}</p>
             <a href="{{ $nextUnlockHref }}" class="nm-card-action">
-              Unlock{{ isset($nextUpgrade['price']) ? ' — '.$nextUpgrade['price'] : ($nextLevelPrice ? ' — '.$nextLevelPrice : '') }} &rarr;
+              {{ $nmCtaLabel }}{{ isset($nextUpgrade['price']) ? ' &mdash; '.$nextUpgrade['price'] : ($nextLevelPrice ? ' &mdash; '.$nextLevelPrice : '') }} &rarr;
             </a>
           </div>
           @elseif($nextStep)
           <div class="nm-card">
-            <p class="nm-card-kicker">Deeper analysis available</p>
+            <p class="nm-card-kicker">Recommended for your level</p>
             <h3 class="nm-card-title">{{ $nextStep }}</h3>
             <p class="nm-card-rationale">The next level reveals more precise fixes and shows exactly which changes will move your score the most.</p>
             <a href="{{ $nextUnlockHref }}" class="nm-card-action">
-              Unlock{{ $nextLevelPrice ? ' — '.$nextLevelPrice : '' }} &rarr;
+              {{ $nmCtaLabel }}{{ $nextLevelPrice ? ' &mdash; '.$nextLevelPrice : '' }} &rarr;
             </a>
           </div>
           @endif
@@ -2085,6 +2149,12 @@
           <svg width="11" height="11" viewBox="0 0 11 11" fill="none"><path d="M1 5.5A4.5 4.5 0 0 1 9.5 3M9.5 1v2H7.5M10 5.5A4.5 4.5 0 0 1 1.5 8M1.5 10V8h2" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>
           Reset progress
         </button>
+
+        {{-- Consultation nudge --}}
+        <div class="ge-upsell-banner">
+          <span class="ge-upsell-text">Want this implemented for you? We build and deploy your full visibility system &mdash; no DIY required.</span>
+          <a href="{{ route('book.index', ['entry' => 'dashboard-upgrade']) }}" class="ge-upsell-btn">Book Strategy Session &rarr;</a>
+        </div>
       </div>
     </section>
     @endif
