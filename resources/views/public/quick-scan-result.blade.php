@@ -522,7 +522,7 @@ a{text-decoration:none;color:inherit}
 
 .actions{padding:12px 12px 13px}
 .action-stack{display:grid;grid-template-columns:1.18fr .82fr .82fr;gap:12px;position:relative}
-.action-stack::before{content:'';position:absolute;top:24px;left:23%;right:12%;height:1px;background:linear-gradient(90deg,rgba(214,181,95,.28),rgba(214,181,95,.06));pointer-events:none}
+.action-stack::before{display:none}
 .action{padding:14px 13px;border-radius:12px;border:1px solid var(--line-soft);background:rgba(214,181,95,.03);display:flex;flex-direction:column;gap:11px;min-height:210px;position:relative;transition:all .18s ease;border-left:2px solid transparent}
 .action:hover{transform:translateY(-2px);box-shadow:0 2px 10px rgba(214,181,95,.07)}
 .action.is-locked-card{border-left-color:rgba(214,181,95,.4);box-shadow:0 0 16px rgba(214,181,95,.08)}
@@ -572,9 +572,10 @@ a{text-decoration:none;color:inherit}
 .action-memory{font-size:.51rem;letter-spacing:.11em;text-transform:uppercase;color:#bdb29a;margin-top:2px}
 .action.is-executing{box-shadow:0 0 0 1px rgba(214,181,95,.34) inset,0 0 20px rgba(214,181,95,.16)}
 .action.is-resolved{box-shadow:0 0 0 1px rgba(214,181,95,.3) inset,0 0 20px rgba(214,181,95,.12)}
-.action.is-applied{box-shadow:0 0 0 1px rgba(214,181,95,.45) inset,0 0 18px rgba(214,181,95,.1);background:rgba(214,181,95,.04)}
-.action.is-applied .action-memory{color:rgba(180,210,140,.72)}
-.btn.is-applied{opacity:.62;cursor:default;pointer-events:none}
+.action.is-applied{box-shadow:0 0 0 1px rgba(106,175,144,.52) inset,0 0 22px rgba(106,175,144,.1),0 0 0 1px rgba(214,181,95,.18);background:rgba(106,175,144,.05);border-left-color:rgba(106,175,144,.5)!important}
+.action.is-applied .action-memory{color:rgba(106,175,144,.85);font-weight:500}
+.action-applied-badge{display:inline-flex;align-items:center;width:max-content;font-size:.5rem;letter-spacing:.14em;text-transform:uppercase;padding:2px 7px;border-radius:999px;border:1px solid rgba(106,175,144,.42);background:rgba(106,175,144,.12);color:#7abb9e;margin-top:-2px}
+.btn.is-applied{background:rgba(80,110,90,.22)!important;border-color:rgba(106,175,144,.32)!important;color:#7abb9e!important;box-shadow:none!important;opacity:.78;cursor:default;pointer-events:none}
 
 .next-move-guide{margin:10px 12px 0;padding:11px;border:1px solid rgba(214,181,95,.28);border-radius:11px;background:rgba(214,181,95,.05)}
 .next-move-guide h3{margin:0 0 9px;font-size:.82rem;letter-spacing:.09em;text-transform:uppercase;color:#efdcae}
@@ -1616,9 +1617,9 @@ button.sys-bar-node:hover .sys-bar-dot{border-color:rgba(214,181,95,.54);backgro
       <div class="fix-what-happens">
         <p class="fix-what-happens-title">What happens when you apply this fix</p>
         <ul class="fix-what-happens-list">
-          <li>This issue is marked as in progress inside your system</li>
-          <li>Your dashboard updates to track it</li>
-          <li>Your next step becomes clearer</li>
+          <li>This marks the issue as addressed so your dashboard can track progress and guide your next steps.</li>
+          <li>This does not automatically change your site — it helps you track and prioritize fixes.</li>
+          <li>Your next highest-priority constraint becomes the suggested next move.</li>
         </ul>
       </div>
       <div class="fix-detail-actions">
@@ -1711,6 +1712,36 @@ button.sys-bar-node:hover .sys-bar-dot{border-color:rgba(214,181,95,.54);backgro
     line.textContent = text;
   }
 
+  function addAppliedBadge(card) {
+    if (!card || card.querySelector('.action-applied-badge')) return;
+    var h3 = card.querySelector('h3');
+    if (!h3) return;
+    var badge = document.createElement('span');
+    badge.className = 'action-applied-badge';
+    badge.textContent = '✓ Applied';
+    h3.parentNode.insertBefore(badge, h3.nextSibling);
+  }
+
+  function syncNextMovePanel() {
+    var leadCard = document.querySelector('.action.lead');
+    if (!leadCard || !leadCard.classList.contains('is-applied')) return;
+    var guide = document.querySelector('.next-move-guide');
+    if (!guide) return;
+    var h3 = guide.querySelector('h3');
+    if (h3) h3.textContent = 'Top issue addressed — continue to next fix';
+    var cells = guide.querySelectorAll('.next-move-card');
+    if (cells[0]) {
+      var strong0 = cells[0].querySelector('strong');
+      if (strong0) strong0.textContent = 'Status';
+      var p0 = cells[0].querySelector('p');
+      if (p0) p0.textContent = 'Top constraint marked as handled';
+    }
+    if (cells[2]) {
+      var p2 = cells[2].querySelector('p');
+      if (p2) p2.textContent = 'Move to the next constraint below to continue improving.';
+    }
+  }
+
   function restoreActionMemory() {
     document.querySelectorAll('.action[data-action-key]').forEach(function (card) {
       var key = card.dataset.actionKey || '';
@@ -1723,6 +1754,7 @@ button.sys-bar-node:hover .sys-bar-dot{border-color:rgba(214,181,95,.54);backgro
         if (!Number.isFinite(at) || at <= 0) return;
         setActionMemory(card, '✓ Fix applied — tracking signal impact');
         card.classList.add('is-applied');
+        addAppliedBadge(card);
         var applyBtn = card.querySelector('button[data-exec-init]');
         if (applyBtn) {
           applyBtn.textContent = '✓ Applied';
@@ -1734,6 +1766,7 @@ button.sys-bar-node:hover .sys-bar-dot{border-color:rgba(214,181,95,.54);backgro
         try { localStorage.removeItem(ACTION_MEMORY_PREFIX + key); } catch (e) {}
       }
     });
+    syncNextMovePanel();
   }
 
   function openFixDetail(trigger) {
@@ -1809,10 +1842,11 @@ var resolvedLabel = trigger.dataset.execResolved || '✓ Fix applied';
       trigger.textContent = '✓ Applied';
       card.classList.remove('is-executing');
       card.classList.add('is-applied');
+      addAppliedBadge(card);
       trigger.classList.remove('is-executing');
       trigger.classList.add('is-applied', 'is-disabled');
       trigger.setAttribute('aria-disabled', 'true');
-      // Part 5: briefly highlight next card as suggested next step
+      // briefly highlight next card as suggested next step
       (function () {
         var allCards = document.querySelectorAll('.action:not(.is-locked-card)');
         var idx = Array.from(allCards).indexOf(card);
@@ -1824,6 +1858,7 @@ var resolvedLabel = trigger.dataset.execResolved || '✓ Fix applied';
           }, 420);
         }
       }());
+      syncNextMovePanel();
 
       // Re-enable non-trigger buttons; keep trigger permanently disabled
       nodes.forEach(function (node) {
@@ -1984,8 +2019,8 @@ var resolvedLabel = trigger.dataset.execResolved || '✓ Fix applied';
 </script>
 @php
 $_scanAiGreeting = auth()->check()
-    ? "Your scan for {$scan->domain()} scored {$score}/100 — {$scoreSelectionInterpretation}. Your next step is clear: fix {$topBottleneck} first.\n\nI can guide you through it, explain what each fix unlocks, or help you figure out what comes next."
-    : "Your scan scored {$score}/100 — {$scoreSelectionInterpretation}.\n\nAsk me what this score means for your AI search visibility, what to fix first, or what each tier unlocks.";
+    ? "Your scan for {$scan->domain()} scored {$score}/100 — {$scoreSelectionInterpretation}.\n\nThe fastest way to improve: {$topBottleneck}.\n\nI can walk you through each fix, explain what it improves, or help you decide what to do next."
+    : "Your scan scored {$score}/100 — {$scoreSelectionInterpretation}.\n\nI can walk you through each fix, explain what it improves, or help you decide what to do next.";
 $_scanAiPrompts = [
     "Why is my score {$score} and what does it mean?",
     "What should I fix first?",
