@@ -119,8 +119,8 @@ class DashboardBillingController extends Controller
             $type = 'Quick Scan';
             $layerUnlocked = 'Baseline Layer';
             $summary = 'Baseline Layer Activated with score confirmation and primary bottleneck detection.';
-            $nextAction = 'Advance into Signal Expansion to extend diagnostic depth.';
-            $nextActionLabel = 'Continue to Signal Expansion';
+            $nextAction = 'Advance into Signal Analysis to extend diagnostic depth.';
+            $nextActionLabel = 'Continue to Signal Analysis';
             $nextActionHref = url('/dashboard#ai-scans');
             $sourceType = 'Quick Scan Flow';
         } elseif (str_contains($description, 'signal expansion') || str_contains($description, 'diagnostic')) {
@@ -132,19 +132,19 @@ class DashboardBillingController extends Controller
             $nextActionHref = url('/dashboard#ai-scans');
             $sourceType = 'Layer Upgrade';
         } elseif (str_contains($description, 'structural leverage') || str_contains($description, 'fix strategy')) {
-            $type = 'Structural Leverage';
-            $layerUnlocked = 'Structural Layer';
-            $summary = 'Structural Layer Activated with ranked correction pathways tied to business impact.';
-            $nextAction = 'Execute the top structural sequence and evaluate full System Activation.';
-            $nextActionLabel = 'Open Structural Sequence';
+            $type = 'Action Plan';
+            $layerUnlocked = 'Action Plan Layer';
+            $summary = 'Action Plan Activated with impact-ranked fixes derived from your scan data.';
+            $nextAction = 'Execute your top-priority fixes, then unlock Guided Execution.';
+            $nextActionLabel = 'Open Action Plan';
             $nextActionHref = url('/dashboard#ai-scans');
             $sourceType = 'Layer Upgrade';
         } elseif (str_contains($description, 'system activation') || str_contains($description, 'optimization')) {
-            $type = 'System Activation';
-            $layerUnlocked = 'System Layer';
-            $summary = 'System Layer Activated for competitive positioning and deployment depth.';
-            $nextAction = 'Proceed into deployment and managed execution from this activation baseline.';
-            $nextActionLabel = 'Start Deployment Path';
+            $type = 'Guided Execution';
+            $layerUnlocked = 'Guided Execution Layer';
+            $summary = 'Guided Execution Activated with step-by-step checklist and in-dashboard progress tracking.';
+            $nextAction = 'Work through your execution checklist inside the dashboard.';
+            $nextActionLabel = 'Open Execution Checklist';
             $nextActionHref = url('/book');
             $sourceType = 'System Upgrade';
         }

@@ -1,7 +1,8 @@
 {{--
-    AI Assistant Widget — floating pill trigger + slide-up chat panel
+    AI Assistant Widget — floating orb trigger + slide-up chat panel
     Include once, just before </body>.
-    Props (optional): $aiContext (array), $aiGreeting (string)
+    Props (optional): $aiGreeting (string), $aiSuggestedPrompts (array),
+                      $aiMicroLabel (string), $aiTeaserTitle (string), $aiTeaserText (string)
 --}}
 
 @php
@@ -19,68 +20,125 @@ $suggestedPrompts = $aiSuggestedPrompts ?? ($isAuth
     ? ["Why is my score low?", "What should I fix first?", "What does my top issue mean?", "What's included in my plan?"]
     : ["What does an AI visibility scan check?", "How does the $2 scan work?", "What's the difference between tiers?", "How do I get started?"]);
 
+$microLabel  = $aiMicroLabel  ?? 'AI Analysis Ready';
+$teaserTitle = $aiTeaserTitle ?? 'Your AI System';
+$teaserText  = $aiTeaserText  ?? 'Questions about AI visibility, your score, or next steps? I can help.';
+
 $csrfToken = csrf_token();
 @endphp
 
 <style>
 /* AI ASSISTANT WIDGET ================================================= */
+/* BTT is secondary — AI advisor is primary floating action */
+:root{--btt-bottom:90px;--btt-bottom-mob:72px}
+/* Reduce BTT visual weight so AI advisor reads as primary */
+#btt.show{opacity:.45}
+#btt.show:hover{opacity:.88}
 
 /* Floating pill trigger */
 .aia-trigger {
   position: fixed;
-  bottom: 90px; /* stacked above back-to-top at 32px */
+  bottom: 24px;
   right: 24px;
   z-index: 8200;
   height: 44px;
-  padding: 0 18px 0 14px;
+  padding: 0 20px 0 13px;
   border-radius: 22px;
+  gap: 8px;
   background: linear-gradient(135deg, #d4b85a 0%, #c8a84b 60%, #b8962e 100%);
   border: none;
   cursor: pointer;
   display: flex;
   align-items: center;
-  gap: 9px;
-  box-shadow: 0 4px 20px rgba(200,168,75,.38), 0 1px 6px rgba(0,0,0,.55);
+  justify-content: center;
+  white-space: nowrap;
+  overflow: hidden;
+  box-shadow: 0 4px 22px rgba(200,168,75,.42), 0 1px 6px rgba(0,0,0,.55);
   transition: transform .22s cubic-bezier(.23,1,.32,1), box-shadow .22s,
               padding .22s cubic-bezier(.23,1,.32,1), border-radius .22s, width .22s;
   -webkit-tap-highlight-color: transparent;
-  white-space: nowrap;
-  overflow: hidden;
+  animation: aiaBreath 5s ease-in-out infinite;
 }
 .aia-trigger:hover {
-  transform: translateY(-2px) scale(1.03);
-  box-shadow: 0 6px 28px rgba(200,168,75,.52), 0 2px 8px rgba(0,0,0,.6);
+  transform: translateY(-2px) scale(1.04);
+  box-shadow: 0 8px 36px rgba(200,168,75,.72), 0 2px 10px rgba(0,0,0,.6);
+  animation-play-state: paused;
 }
-.aia-trigger:active { transform: scale(.96); }
+.aia-trigger:active { transform: scale(.95); }
 .aia-trigger-icon {
   width: 18px; height: 18px; flex-shrink: 0; color: #080808;
   transition: transform .3s;
 }
 .aia-trigger-label {
   font-family: 'DM Sans', sans-serif;
-  font-size: .78rem; font-weight: 600; letter-spacing: .06em;
+  font-size: .76rem; font-weight: 600; letter-spacing: .05em;
   color: #080808; line-height: 1;
-  transition: opacity .15s, max-width .22s;
-  max-width: 80px; opacity: 1; overflow: hidden;
+  transition: opacity .18s, max-width .22s;
+  max-width: 160px; opacity: 1; overflow: hidden;
 }
 .aia-trigger.is-open .aia-trigger-label { max-width: 0; opacity: 0; }
-.aia-trigger.is-open { padding: 0; width: 44px; justify-content: center; border-radius: 50%; }
+.aia-trigger.is-open {
+  padding: 0; width: 44px; justify-content: center;
+  border-radius: 50%; animation: none;
+}
 .aia-trigger.is-open .aia-trigger-icon { transform: rotate(180deg); }
 .aia-trigger::after {
-  content: ''; position: absolute; inset: -3px; border-radius: 25px;
-  border: 1.5px solid rgba(200,168,75,.35);
+  content: ''; position: absolute; inset: -4px; border-radius: 27px;
+  border: 1.5px solid rgba(200,168,75,.40);
   animation: aiaPulse 2.8s ease-out infinite; pointer-events: none;
+  transition: border-radius .22s;
 }
-.aia-trigger.is-open::after { display: none; }
+.aia-trigger.is-open::after { border-radius: 50%; }
+.aia-trigger.is-wow::after {
+  border-color: rgba(200,168,75,.65);
+  animation: aiaPulseWow 1.4s ease-out infinite;
+}
+.aia-trigger.is-glow {
+  animation: aiaGlowPulse 1.8s cubic-bezier(.25,.46,.45,.94) 1 both;
+}
+@keyframes aiaBreath {
+  0%,100% { box-shadow: 0 4px 22px rgba(200,168,75,.42), 0 1px 6px rgba(0,0,0,.55); }
+  50%      { box-shadow: 0 4px 30px rgba(200,168,75,.62), 0 1px 6px rgba(0,0,0,.55); }
+}
+@keyframes aiaGlowPulse {
+  0%   { box-shadow: 0 4px 22px rgba(200,168,75,.42), 0 1px 6px rgba(0,0,0,.55); }
+  45%  { box-shadow: 0 6px 44px rgba(200,168,75,.88), 0 2px 18px rgba(0,0,0,.5), 0 0 70px rgba(200,168,75,.22); }
+  100% { box-shadow: 0 4px 22px rgba(200,168,75,.42), 0 1px 6px rgba(0,0,0,.55); }
+}
 @keyframes aiaPulse {
   0%   { transform: scale(1);    opacity: .5; }
-  65%  { transform: scale(1.14); opacity: 0; }
-  100% { transform: scale(1.14); opacity: 0; }
+  65%  { transform: scale(1.24); opacity: 0; }
+  100% { transform: scale(1.24); opacity: 0; }
 }
+@keyframes aiaPulseWow {
+  0%   { transform: scale(1);    opacity: .72; }
+  60%  { transform: scale(1.36); opacity: 0; }
+  100% { transform: scale(1.36); opacity: 0; }
+}
+/* Micro-label above button */
+.aia-micro {
+  position: fixed;
+  bottom: 80px;
+  right: 24px;
+  z-index: 8199;
+  font-family: 'DM Sans', sans-serif;
+  font-size: .6rem;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: rgba(200,168,75,.55);
+  opacity: 0;
+  animation: aiaMicroFade .5s ease 1s forwards;
+  pointer-events: none;
+  text-align: right;
+  white-space: nowrap;
+  transition: opacity .4s;
+}
+.aia-micro.is-hidden { opacity: 0 !important; animation: none; }
+@keyframes aiaMicroFade { to { opacity: 1; } }
 
 /* Teaser bubble */
 .aia-teaser {
-  position: fixed; bottom: 144px; right: 24px; z-index: 8100;
+  position: fixed; bottom: 136px; right: 24px; z-index: 8100;
   background: linear-gradient(155deg, #191610 0%, #120f08 100%);
   border: 1px solid rgba(200,168,75,.22);
   border-radius: 12px 12px 4px 12px;
@@ -299,23 +357,44 @@ $csrfToken = csrf_token();
 .aia-send svg { width: 14px; height: 14px; color: #080808; }
 
 @media (max-width: 520px) {
-  .aia-trigger { bottom: 86px; right: 16px; height: 40px; padding: 0 14px 0 11px; gap: 7px; }
-  .aia-trigger.is-open { width: 40px; padding: 0; }
-  .aia-teaser { right: 16px; bottom: 136px; }
+  /* --mob-bar-h: 0px default; override on pages with fixed bottom bar.
+     Stack from bottom: bar → gap 16px → AI trigger (40px) → gap 16px → BTT (40px) */
+  .aia-trigger {
+    bottom: calc(16px + var(--mob-bar-h,0px) + env(safe-area-inset-bottom,0px));
+    right: 16px;
+    padding: 0; width: 44px; height: 44px; border-radius: 50%; gap: 0;
+  }
+  .aia-trigger .aia-trigger-label { display: none; }
+  .aia-micro { display: none; }
+  .aia-teaser {
+    right: 16px;
+    /* sits above the trigger: trigger bottom + trigger height (40px) + gap (12px) */
+    bottom: calc(68px + var(--mob-bar-h,0px) + env(safe-area-inset-bottom,0px));
+  }
   .aia-panel { width: 100vw; border-radius: 20px 20px 0 0; height: min(600px, 92vh); }
 }
+/* Decision nudge — appended below every AI reply */
+.aia-nudge{margin:6px 0 0 34px;padding:10px 14px;background:rgba(200,168,75,.06);border:1px solid rgba(200,168,75,.18);border-radius:0 10px 10px 10px;animation:aiaMsgIn .3s cubic-bezier(.23,1,.32,1) .05s both}
+.aia-nudge-label{font-size:.6rem;letter-spacing:.14em;text-transform:uppercase;color:rgba(200,168,75,.58);margin-bottom:7px;font-family:'DM Sans',sans-serif}
+.aia-nudge-links{display:flex;flex-direction:column;gap:5px}
+.aia-nudge-link{display:flex;align-items:center;gap:6px;font-family:'DM Sans',sans-serif;font-size:.82rem;color:rgba(200,168,75,.9);text-decoration:none;cursor:pointer;background:none;border:none;padding:3px 0;text-align:left;transition:color .18s;line-height:1.4}
+.aia-nudge-link::before{content:'\2192';font-size:.75rem;opacity:.7;flex-shrink:0}
+.aia-nudge-link:hover{color:rgba(228,198,112,1)}
 </style>
 
 {{-- Teaser tooltip --}}
 <div class="aia-teaser" id="aiaTeaser">
   <button class="aia-teaser-x" id="aiaTeaserX" type="button" aria-label="Dismiss">&#x2715;</button>
   <p class="aia-teaser-text">
-    <strong>AI Chat Assistant</strong><br>
-    Questions about AI visibility, your score, or next steps? I can help.
+    <strong>{{ $teaserTitle }}</strong><br>
+    {{ $teaserText }}
   </p>
 </div>
 
-{{-- Pill trigger --}}
+{{-- Micro-label above orb --}}
+<div class="aia-micro" id="aiaMicro" aria-hidden="true">{{ $microLabel }}</div>
+
+{{-- Orb trigger --}}
 <button class="aia-trigger" id="aiaTrigger" type="button"
   aria-label="Open AI Chat Assistant" aria-expanded="false" aria-controls="aiaPanel">
   <svg class="aia-trigger-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
@@ -323,7 +402,7 @@ $csrfToken = csrf_token();
     <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
     <path d="M8 10h.01M12 10h.01M16 10h.01" stroke-width="2.5"/>
   </svg>
-  <span class="aia-trigger-label">Ask AI</span>
+  <span class="aia-trigger-label">Ask Your AI Advisor</span>
 </button>
 
 {{-- Backdrop --}}
@@ -389,7 +468,8 @@ $csrfToken = csrf_token();
   'use strict';
   var CHAT = '/ai/chat';
   var CSRF = '{{ $csrfToken }}';
-  var MSG  = @json($greeting);
+  var MSG     = @json($greeting);
+  var IS_AUTH = {{ $isAuth ? 'true' : 'false' }};
 
   var trigger = document.getElementById('aiaTrigger');
   var backdrop= document.getElementById('aiaBackdrop');
@@ -402,9 +482,12 @@ $csrfToken = csrf_token();
   var errEl   = document.getElementById('aiaErr');
   var teaser  = document.getElementById('aiaTeaser');
   var teaserX = document.getElementById('aiaTeaserX');
+  var microEl = document.getElementById('aiaMicro');
 
   var open=false, loading=false, greeted=false, interacted=false;
   var history=[], tTimer=null;
+  var pendingContext = null;
+  var aiRespCount = 0;
 
   /* Teaser — auto-show after 2.5 s, auto-dismiss after 6 s */
   tTimer = setTimeout(function () {
@@ -422,6 +505,7 @@ $csrfToken = csrf_token();
   function openPanel () {
     open = true;
     dismissTeaser();
+    if (microEl) microEl.classList.add('is-hidden');
     panel.classList.add('is-open');
     backdrop.classList.add('is-open');
     trigger.classList.add('is-open');
@@ -437,6 +521,7 @@ $csrfToken = csrf_token();
     trigger.classList.remove('is-open');
     trigger.setAttribute('aria-expanded', 'false');
     panel.setAttribute('aria-hidden', 'true');
+    if (microEl) microEl.classList.remove('is-hidden');
     trigger.focus();
   }
 
@@ -479,7 +564,15 @@ $csrfToken = csrf_token();
         'Accept':        'application/json',
         'X-CSRF-TOKEN':  CSRF
       },
-      body: JSON.stringify({ message: text, history: history.slice(0, -1) })
+      body: JSON.stringify({
+        message: text,
+        history: history.slice(0, -1),
+        context_page: pendingContext && pendingContext.context_page ? pendingContext.context_page : 'ai-assistant',
+        level_key: pendingContext ? pendingContext.level_key : null,
+        level_title: pendingContext ? pendingContext.level_title : null,
+        level_price: pendingContext ? pendingContext.level_price : null,
+        user_state: pendingContext ? pendingContext.user_state : 'browsing'
+      })
     })
     .then(function (r) {
       hideDots(); loading = false;
@@ -491,12 +584,30 @@ $csrfToken = csrf_token();
       if (!d.ok || d.error) { showErr(d.error || 'Something went wrong.'); return; }
       var rep = d.reply || '(no reply)';
       addMsg('ai', rep);
+      addNextStepNudge(text);
+      aiRespCount += 1;
       history.push({ role: 'assistant', content: rep });
       if (history.length > 12) history = history.slice(-12);
     })
     .catch(function () { hideDots(); loading = false; showErr('Could not reach the assistant.'); })
-    .finally(function () { send.disabled = ta.value.trim() === ''; });
+    .finally(function () {
+      send.disabled = ta.value.trim() === '';
+      pendingContext = null;
+    });
   }
+
+  window.addEventListener('seoai:open-ai-advisor', function (event) {
+    var detail = event && event.detail ? event.detail : {};
+    pendingContext = detail.modalContext || null;
+    openPanel();
+    if (detail.prompt) {
+      ta.value = detail.prompt;
+      ta.style.height = 'auto';
+      ta.style.height = Math.min(ta.scrollHeight, 120) + 'px';
+      send.disabled = false;
+      requestAnimationFrame(function () { ta.focus(); });
+    }
+  });
 
   /* DOM helpers */
   function addMsg (role, text) {
@@ -506,6 +617,56 @@ $csrfToken = csrf_token();
     var b = document.createElement('div'); b.className = 'aia-bub'; b.innerHTML = fmt(text);
     w.appendChild(av); w.appendChild(b); msgs.appendChild(w);
     msgs.scrollTop = msgs.scrollHeight;
+  }
+
+  /* ── Intent classification ── */
+  function classifyIntent (text) {
+    var t = (text || '').toLowerCase();
+    if (/what should i do|where do i start|next step|how do i fix|what.s first|fix first/.test(t))         return 'action';
+    if (/is this worth it|should i (get|buy|upgrade|choose)|right for me|makes sense|which (plan|level|tier)/.test(t)) return 'qualify';
+    if (/why is my score|score (is )?low|score mean|what does.{0,20}score|bad score|score stuck/.test(t))  return 'score';
+    if (/confused|don.t understand|what does this mean|can you explain|not sure/.test(t))                   return 'confused';
+    return IS_AUTH ? 'has-scan' : 'no-scan';
+  }
+
+  /* ── Append next-step nudge below AI message ── */
+  function addNextStepNudge (userMsg) {
+    var intent  = classifyIntent(userMsg);
+    var links   = [];
+
+    if (intent === 'no-scan' || intent === 'action') {
+      links = [{ label: 'See your baseline \u2014 run your $2 scan', href: '{{ route("scan.start") }}' }];
+    } else if (intent === 'score') {
+      links = [{ label: 'Understand why your score is stuck — Signal Analysis', href: '{{ route("checkout.signal-expansion") }}' }];
+    } else if (intent === 'qualify') {
+      links = [{ label: 'Fix what matters — Action Plan', href: '{{ route("checkout.structural-leverage") }}' }];
+    } else if (intent === 'confused') {
+      links = [{ label: 'Map this together \u2014 Book Consultation', href: '{{ route("book.index", ["entry" => "consultation"]) }}' }];
+    } else {
+      links = [{ label: 'Understand what\u2019s limiting your score \u2014 Signal Analysis', href: '{{ route("checkout.signal-expansion") }}' }];
+    }
+
+    var nudge  = document.createElement('div');
+    nudge.className = 'aia-nudge';
+    var lbl = document.createElement('div'); lbl.className = 'aia-nudge-label'; lbl.textContent = 'Next step';
+    var wrap = document.createElement('div'); wrap.className = 'aia-nudge-links';
+    links.forEach(function (l) {
+      var a = document.createElement('a'); a.className = 'aia-nudge-link';
+      a.href = l.href; a.textContent = l.label;
+    wrap.appendChild(a);
+    });
+    nudge.appendChild(lbl); nudge.appendChild(wrap);
+    msgs.appendChild(nudge);
+    msgs.scrollTop = msgs.scrollHeight;
+  }
+
+  /* ── Floating assistant soft gate: trigger on high-intent queries ── */
+  var ASSISTANT_GATE_RE = /what should i do|is this worth it|why is my score|right for me|which level|where do i start/i;
+  function maybeShowAssistantGate (userMsg) {
+    if (ASSISTANT_GATE_RE.test(userMsg) && aiRespCount >= 1) {
+      /* We don't have a gate UI in the floating assistant — handled by the modal.
+         Future: could dispatch an event to prompt the modal to open. No-op for now. */
+    }
   }
 
   var dotEl = null;
@@ -520,11 +681,50 @@ $csrfToken = csrf_token();
   function showErr (m) { errEl.textContent = m; errEl.classList.add('on'); msgs.scrollTop = msgs.scrollHeight; }
   function clrErr ()   { errEl.textContent = ''; errEl.classList.remove('on'); }
   function fmt (t) {
-    return t.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
+    var clean = sanitizeBookingCopy(t || '');
+    return clean.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
       .replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>')
       .replace(/\*(.+?)\*/g,'<em>$1</em>')
       .replace(/`(.+?)`/g,'<code style="background:rgba(200,168,75,.08);padding:1px 5px;border-radius:3px;font-size:.82em">$1</code>')
       .replace(/\n/g,'<br>');
   }
+
+  function sanitizeBookingCopy (t) {
+    return t
+      .replace(/\/book#05\b/gi, 'Book Consultation')
+      .replace(/\/book\?entry=consultation\b/gi, 'Book Consultation')
+      .replace(/\/book\?entry=activation\b/gi, 'Book Activation Strategy Call')
+      .replace(/\bbookable sessions?\b/gi, 'scheduled consultation sessions')
+      .replace(/\bbookable\b/gi, 'scheduled');
+  }
+
+  function escHtml (s) {
+    return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+  }
+
+  /* Context-aware micro-label via IntersectionObserver */
+  var ctxMap = {
+    'hero':    'Instant AI insights',
+    'proof':   'See how AI ranks your site',
+    'offer':   'Get guidance instantly',
+    'contact': 'We\u2019re here to help'
+  };
+  if (microEl && 'IntersectionObserver' in window) {
+    Object.keys(ctxMap).forEach(function (id) {
+      var el = document.getElementById(id);
+      if (!el) return;
+      new IntersectionObserver(function (entries) {
+        entries.forEach(function (e) {
+          if (e.isIntersecting && !open) microEl.textContent = ctxMap[id];
+        });
+      }, { threshold: 0.25 }).observe(el);
+    });
+  }
+
+  /* Intelligence moment — single glow pulse on every page load */
+  setTimeout(function () {
+    trigger.classList.add('is-glow');
+    setTimeout(function () { trigger.classList.remove('is-glow'); }, 1800);
+  }, 1500);
 })();
 </script>

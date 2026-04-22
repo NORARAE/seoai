@@ -9,6 +9,7 @@ use App\Models\FunnelEvent;
 use App\Models\Lead;
 use App\Models\OnboardingSubmission;
 use App\Models\QuickScan;
+use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
@@ -57,8 +58,18 @@ class OnboardingController extends Controller
             ? $request->query('tier')
             : null;
 
-        // Quick Scan project linkage
-        $scanId = (int) $request->query('scan_id', 0);
+        // Quick Scan project linkage — treat missing/zero as null so the form
+        // hidden field renders empty and nullable validation passes.
+        $scanId = $request->query('scan_id') ? (int) $request->query('scan_id') : null;
+
+        // Auto-attach scan_id from session when not present in URL.
+        // Set by QuickScanController when a result page is successfully rendered.
+        if (!$scanId) {
+            $sessionScanId = (int) session('last_quick_scan_id', 0);
+            if ($sessionScanId > 0) {
+                $scanId = $sessionScanId;
+            }
+        }
 
         // ── Preview mode gate ──────────────────────────────────────────
         // Without a booking, only high-ticket paths may enter onboarding:
@@ -79,8 +90,8 @@ class OnboardingController extends Controller
             }
 
             if (!$hasHighTicketTier && !$hasHighTicketPlan && !$hasQualifyingScan) {
-                return redirect()->route('quick-scan.show')
-                    ->with('flow_message', 'Start with a scan to unlock this level.');
+                return redirect()->route('scan.start')
+                    ->with('flow_message', 'Start with your AI visibility scan to continue.');
             }
 
             FunnelEvent::fire(FunnelEvent::ONBOARDING_STARTED);
@@ -132,7 +143,9 @@ class OnboardingController extends Controller
 
         $validated = $request->validate([
             'booking_id' => 'nullable|integer|exists:bookings,id',
-            'scan_id' => 'nullable|integer|exists:quick_scans,id',
+            // Empty string from the hidden field (no scan_id) passes nullable; "0" is excluded
+            // because we now emit '' not '0' from the view when no scan is linked.
+            'scan_id' => 'nullable|integer|min:1|exists:quick_scans,id',
             'plan' => 'nullable|in:citation-builder,authority-engine',
             'email' => 'nullable|email|max:255',
             'business_name' => 'required|string|max:255',
@@ -141,6 +154,7 @@ class OnboardingController extends Controller
             'goals' => 'nullable|string|max:2000',
             'challenges' => 'nullable|string|max:2000',
             'growth_intent' => 'nullable|in:aggressive,steady,unsure',
+            'focus_area' => 'nullable|in:improve_visibility,expand_markets,generate_leads,not_sure',
             'ads_status' => 'nullable|in:running,has_budget,no_budget,not_interested',
             'license' => 'nullable|file|mimes:pdf,jpg,jpeg,png|max:5120',
             'primary_contact' => 'required|string|max:255',
@@ -228,6 +242,7 @@ class OnboardingController extends Controller
             'goals' => $validated['goals'] ?? null,
             'challenges' => $validated['challenges'] ?? null,
             'growth_intent' => $validated['growth_intent'] ?? null,
+            'focus_area' => $validated['focus_area'] ?? null,
             'ads_status' => $validated['ads_status'] ?? null,
             'license_path' => $storagePath,
             'license_original_name' => $origName,
@@ -292,6 +307,12 @@ class OnboardingController extends Controller
             'tags' => array_values(array_unique(array_merge($existingTags, ['qualified']))),
         ]);
 
+        // ── Bridge onboarding answers → User->profile_data ───────────────────
+        // The dashboard reads profile_data; onboarding had no link to it.
+        // Fill ONLY missing keys so anything the user already typed in the
+        // dashboard quick-fill form is never overwritten.
+        $this->syncSubmissionToUserProfile($lead->email, $submission);
+
         // Funnel tracking
         FunnelEvent::fire(FunnelEvent::ONBOARDING_COMPLETED, null, $lead->id, ['submission_id' => $submission->id]);
 
@@ -319,7 +340,8 @@ class OnboardingController extends Controller
         ]);
 
         return redirect()->route('onboarding.done')
-            ->with('lead_type', $validated['lead_type'] ?? 'single_location');
+            ->with('lead_type', $validated['lead_type'] ?? 'single_location')
+            ->with('focus_area', $validated['focus_area'] ?? null);
     }
 
     /**
@@ -331,6 +353,7 @@ class OnboardingController extends Controller
         return view('public.onboarding-done', [
             'alreadySubmitted' => $request->session()->get('already_submitted', false),
             'leadType' => $request->session()->get('lead_type', 'single_location'),
+            'focusArea' => $request->session()->get('focus_area'),
         ]);
     }
 
@@ -361,5 +384,54 @@ class OnboardingController extends Controller
             $submission->license_path,
             $displayName
         );
+    }
+
+    /**
+     * Bridge curated onboarding fields into User->profile_data so the
+     * dashboard (which already reads profile_data) reflects the user's
+     * intent. Only fills missing keys — never overwrites values the user
+     * has already entered via the dashboard quick-fill form.
+     */
+    private function syncSubmissionToUserProfile(?string $email, OnboardingSubmission $submission): void
+    {
+        if (!is_string($email) || $email === '') {
+            return;
+        }
+
+        $user = User::where('email', $email)->first();
+        if (!$user) {
+            return;
+        }
+
+        // Map onboarding values → dashboard profile_data keys.
+        $urgencyMap = [
+            'aggressive' => 'immediate',
+            'steady' => 'soon',
+            'unsure' => 'exploring',
+        ];
+
+        $cmsMap = [
+            'wordpress' => 'WordPress',
+            'shopify' => 'Shopify',
+            'other' => 'Other',
+        ];
+
+        $candidate = array_filter([
+            'focus_area' => $submission->focus_area,
+            'business_name' => $submission->business_name,
+            'website_url' => $submission->website,
+            'service_areas' => $submission->service_area,
+            'urgency' => $urgencyMap[$submission->growth_intent] ?? null,
+            'cms_platform' => $cmsMap[$submission->platform_type] ?? null,
+        ], fn($v) => $v !== null && $v !== '');
+
+        $current = is_array($user->profile_data) ? $user->profile_data : [];
+
+        // Fill ONLY missing keys — preserve any value the user already set.
+        $merged = $current + $candidate;
+
+        if ($merged !== $current) {
+            $user->update(['profile_data' => $merged]);
+        }
     }
 }

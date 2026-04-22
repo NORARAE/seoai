@@ -10,6 +10,7 @@
 <link rel="manifest" href="/site.webmanifest">
 <meta name="theme-color" content="#080808">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="csrf-token" content="{{ csrf_token() }}">
 <title>Growth Architecture — AI Citation Infrastructure | SEO AI Co™</title>
 <meta name="description" content="Six levels of market control plus supporting execution layers. SEO AI Co™ structures your visibility so AI systems cite you as the answer.">
 <link rel="canonical" href="{{ url('/pricing') }}">
@@ -52,21 +53,21 @@
                 ],
                 [
                     '@type'         => 'Offer',
-                    'name'          => 'Signal Expansion',
+                    'name'          => 'Signal Analysis',
                     'price'         => '99',
                     'priceCurrency' => 'USD',
                     'description'   => 'Complete signal mapping across your footprint — where you are visible, where you are invisible, and what is costing you citations.',
                 ],
                 [
                     '@type'         => 'Offer',
-                    'name'          => 'Structural Leverage',
+                    'name'          => 'Action Plan',
                     'price'         => '249',
                     'priceCurrency' => 'USD',
                     'description'   => 'Your complete action sequence — every correction prioritized, every opportunity sized, every gap closed systematically.',
                 ],
                 [
                     '@type'         => 'Offer',
-                    'name'          => 'System Activation',
+                    'name'          => 'Guided Execution',
                     'price'         => '489',
                     'priceCurrency' => 'USD',
                     'description'   => 'Competitive positioning, market mapping, and complete coverage architecture across 50+ pages.',
@@ -109,7 +110,7 @@
                     'name'  => 'How long does it take to start getting cited by AI?',
                     'acceptedAnswer' => [
                         '@type' => 'Answer',
-                        'text'  => 'Signal Expansion and Structural Leverage levels deliver structured intelligence within two weeks of activation. System Activation and Market Control implementations follow a 4-month structured deployment cycle, with citation improvements observable as coverage compounds.',
+                        'text'  => 'Signal Analysis and Action Plan levels deliver structured intelligence within two weeks of activation. Guided Execution and Market Control implementations follow a 4-month structured deployment cycle, with citation improvements observable as coverage compounds.',
                     ],
                 ],
                 [
@@ -175,16 +176,52 @@
   flex-wrap:wrap;position:relative;z-index:1;
 }
 
-/* ── Hero-to-system bridge ── */
-.p-bridge{
-  width:1px;height:48px;margin:0 auto;
-  background:linear-gradient(180deg,rgba(200,168,75,.14),rgba(200,168,75,.03));
-  position:relative;
+/* ── Hero-to-system bridge — Droplet AI ── */
+@keyframes ai-morph{
+  0%,100%{border-radius:50% 50% 50% 50%/60% 60% 40% 40%}
+  33%{border-radius:52% 48% 44% 56%/58% 64% 36% 42%}
+  66%{border-radius:46% 54% 56% 44%/64% 56% 44% 36%}
 }
+@keyframes ai-ripple{
+  0%{box-shadow:0 0 8px rgba(200,168,75,.22),0 0 0 0px rgba(200,168,75,.2),0 0 0 0px rgba(200,168,75,.1),inset 0 1px 0 rgba(255,248,214,.18)}
+  40%{box-shadow:0 0 16px rgba(200,168,75,.36),0 0 0 7px rgba(200,168,75,.09),0 0 0 0px rgba(200,168,75,.1),inset 0 1px 0 rgba(255,248,214,.28)}
+  75%{box-shadow:0 0 11px rgba(200,168,75,.26),0 0 0 13px rgba(200,168,75,.03),0 0 0 7px rgba(200,168,75,.05),inset 0 1px 0 rgba(255,248,214,.2)}
+  100%{box-shadow:0 0 8px rgba(200,168,75,.2),0 0 0 19px rgba(200,168,75,0),0 0 0 13px rgba(200,168,75,.01),inset 0 1px 0 rgba(255,248,214,.18)}
+}
+@keyframes ai-stem-drip{
+  0%{background-position:0 0,0 -40%}
+  100%{background-position:0 0,0 160%}
+}
+.p-bridge{
+  width:60px;height:72px;margin:0 auto;
+  position:relative;overflow:visible;background:none;
+}
+/* Stem line with animated drip particle */
+.p-bridge::before{
+  content:'';position:absolute;top:0;left:50%;
+  width:1px;height:calc(100% - 22px);
+  transform:translateX(-50%);
+  background-image:
+    linear-gradient(180deg,rgba(200,168,75,.16),rgba(200,168,75,.04)),
+    linear-gradient(180deg,transparent,rgba(255,246,200,.52),transparent);
+  background-size:100% 100%,100% 28%;
+  background-repeat:no-repeat;
+  animation:ai-stem-drip 2.4s ease-in-out infinite;
+}
+/* Droplet orb */
 .p-bridge::after{
-  content:'';position:absolute;bottom:-3px;left:-3px;
-  width:7px;height:7px;border-radius:50%;
-  background:rgba(200,168,75,.18);box-shadow:0 0 12px rgba(200,168,75,.06);
+  content:'';position:absolute;bottom:0;left:50%;
+  width:14px;height:18px;
+  transform:translateX(-50%);
+  background:radial-gradient(
+    ellipse 58% 65% at 38% 32%,
+    rgba(255,248,218,.75) 0%,
+    rgba(226,201,125,.58) 28%,
+    rgba(200,168,75,.42) 58%,
+    rgba(200,168,75,.06) 100%
+  );
+  border-radius:50% 50% 50% 50%/60% 60% 40% 40%;
+  animation:ai-morph 4.2s ease-in-out infinite,ai-ripple 3.6s ease-out infinite;
 }
 
 /* ══════════════════════════════════════════════════════════
@@ -218,9 +255,8 @@
 .ascent-rail{
   display:flex;align-items:center;justify-content:center;gap:0;
   max-width:780px;margin:0 auto 48px;padding:14px 28px;
-  background:rgba(14,13,9,.55);
-  border:1px solid rgba(200,168,75,.06);border-radius:40px;
-  backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);
+  background:rgba(14,13,9,.72);
+  border:1px solid rgba(200,168,75,.18);border-radius:40px;
   position:relative;z-index:1;
   --marker-x:50%;
 }
@@ -234,17 +270,17 @@
   padding:4px 10px;position:relative;
   transition:opacity .26s ease,transform .26s ease;
 }
-.ascent-node-num{font-size:.48rem;letter-spacing:.16em;color:rgba(168,168,160,.38);text-transform:uppercase}
-.ascent-node-label{font-size:.58rem;letter-spacing:.08em;color:rgba(168,168,160,.56)}
-.ascent-node.--active .ascent-node-num{color:rgba(200,168,75,.7)}
-.ascent-node.--active .ascent-node-label{color:rgba(200,168,75,.72);font-weight:500}
+.ascent-node-num{font-size:.48rem;letter-spacing:.16em;color:rgba(168,168,160,.65);text-transform:uppercase}
+.ascent-node-label{font-size:.58rem;letter-spacing:.08em;color:rgba(200,200,195,.74)}
+.ascent-node.--active .ascent-node-num{color:rgba(200,168,75,.92)}
+.ascent-node.--active .ascent-node-label{color:rgba(226,196,115,.95);font-weight:600}
 .ascent-node.--active::after{
   content:'';position:absolute;bottom:-4px;left:50%;transform:translateX(-50%);
   width:18px;height:2px;background:rgba(200,168,75,.3);border-radius:1px;
 }
 .ascent-node.is-linked{transform:translateY(-1px)}
-.ascent-node.is-linked .ascent-node-num{color:rgba(200,168,75,.78)}
-.ascent-node.is-linked .ascent-node-label{color:rgba(226,201,125,.82);font-weight:500}
+.ascent-node.is-linked .ascent-node-num{color:rgba(200,168,75,.94)}
+.ascent-node.is-linked .ascent-node-label{color:rgba(232,204,122,.98);font-weight:600}
 .ascent-node.is-linked::after{
   content:'';position:absolute;bottom:-4px;left:50%;transform:translateX(-50%);
   width:22px;height:2px;background:rgba(226,201,125,.55);border-radius:1px;
@@ -283,194 +319,202 @@
   animation:marker-breathe 3.2s ease-in-out infinite,marker-drift 4.6s ease-in-out infinite;
 }
 
-/* ── Tier grid — 5 top + 1 anchor ── */
-.tier-grid-5{
-  display:grid;grid-template-columns:repeat(5,1fr);gap:var(--grid-gap);
-  max-width:1180px;margin:0 auto;position:relative;z-index:1;
+/* ══════════════════════════════════════════════════════════
+   SYSTEM PIPELINE — Vertical Progression Layout
+   ══════════════════════════════════════════════════════════ */
+.system-pipeline{max-width:820px;margin:0 auto;position:relative;z-index:1;}
+.sys-step{display:grid;grid-template-columns:48px 1fr;gap:0;position:relative;}
+/* Vertical connector between steps */
+.sys-step:not(:last-child) .sys-spine::after{
+  content:'';position:absolute;top:54px;left:50%;bottom:0;width:1px;
+  background:linear-gradient(180deg,rgba(200,168,75,.18),rgba(200,168,75,.04));
+  transform:translateX(-50%);z-index:0;
 }
-/* Horizontal signal trace behind top row */
-.tier-grid-5::before{
-  content:'';position:absolute;top:50%;left:3%;right:3%;height:1px;
-  background:linear-gradient(90deg,transparent,rgba(200,168,75,.04) 20%,rgba(200,168,75,.04) 80%,transparent);
-  z-index:-1;
+.sys-spine{
+  display:flex;flex-direction:column;align-items:center;
+  padding-top:20px;position:relative;pointer-events:none;
 }
-/* Ambient center glow */
-.tier-grid-5::after{
-  content:'';position:absolute;top:40%;left:30%;right:30%;height:30%;
-  background:radial-gradient(ellipse at 50% 50%,rgba(200,168,75,.025),transparent 70%);
-  z-index:-1;pointer-events:none;
+.sys-spine-num{
+  width:32px;height:32px;border-radius:50%;
+  border:1px solid rgba(200,168,75,.2);
+  background:rgba(10,9,7,.96);
+  display:flex;align-items:center;justify-content:center;
+  font-size:.44rem;letter-spacing:.14em;text-transform:uppercase;
+  color:rgba(200,168,75,.6);
+  position:relative;z-index:1;flex-shrink:0;
+  transition:border-color .28s,background .28s,box-shadow .28s;
 }
-/* Sibling dimming on hover */
-.tier-grid-5:hover .tier{opacity:.72;filter:brightness(.92);transition:opacity var(--transition-base),filter var(--transition-base),transform var(--transition-base),box-shadow var(--transition-base)}
-.tier-grid-5:hover .tier:hover{opacity:1;filter:brightness(1);transform:translateY(-3px);box-shadow:0 16px 56px rgba(0,0,0,.45),0 4px 16px rgba(200,168,75,.06)}
-.tier-grid-5:hover .tier.focal{opacity:.82}
-
-.tier{
-  background:var(--card-bg);
-  border:1px solid var(--card-border);
-  padding:30px 24px;display:flex;flex-direction:column;
-  position:relative;transition:opacity var(--transition-base),filter var(--transition-base),transform var(--transition-base),box-shadow var(--transition-base);
-  backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px);
+.sys-step.is-active .sys-spine-num{
+  border-color:rgba(200,168,75,.52);
+  background:rgba(200,168,75,.07);
+  color:rgba(200,168,75,.96);
+  box-shadow:0 0 16px rgba(200,168,75,.1);
 }
-.tier:hover{border-color:var(--card-border-hover)}
-.tier.is-active{
-  border-color:rgba(226,201,125,.26);
-  box-shadow:0 14px 48px rgba(0,0,0,.42),0 0 0 1px rgba(226,201,125,.05) inset;
+.sys-step.sys-entry .sys-spine-num{
+  border-color:rgba(200,168,75,.38);
+  color:rgba(200,168,75,.82);
 }
-.tier.is-active .tier-step{color:rgba(200,168,75,.56)}
-.tier.is-active .tier-name{color:rgba(237,232,222,.95)}
-.tier.is-active .tier-price{color:rgba(245,240,232,.98)}
-
-.tier-grid-5:hover .tier,
-.tier-grid-5:focus-within .tier,
-.tier-anchor-row:hover .tier.prime,
-.tier-anchor-row:focus-within .tier.prime{
-  opacity:.76;
-  filter:brightness(.94);
-}
-.tier-grid-5:hover .tier.is-active,
-.tier-grid-5:focus-within .tier.is-active,
-.tier-anchor-row:hover .tier.prime.is-active,
-.tier-anchor-row:focus-within .tier.prime.is-active{
-  opacity:1;
-  filter:brightness(1);
-  transform:translateY(-3px);
-}
-/* Node connector dots at bottom */
-.tier::after{
-  content:'';position:absolute;bottom:-4px;left:50%;transform:translateX(-50%);
-  width:3px;height:3px;border-radius:50%;
-  background:rgba(200,168,75,.12);
-}
-.tier-step{
-  font-size:.5rem;letter-spacing:.2em;text-transform:uppercase;
-  color:rgba(168,168,160,.32);margin-bottom:10px;
-}
-.tier-flag{
-  font-size:.56rem;letter-spacing:.16em;text-transform:uppercase;
-  color:rgba(200,168,75,.55);margin-bottom:6px;
-}
-.tier-name{
-  font-family:'Cormorant Garamond',serif;
-  font-size:1.3rem;font-weight:400;color:rgba(237,232,222,.88);
-  margin-bottom:10px;line-height:1.2;letter-spacing:.01em;
-}
-.tier-price{
-  font-family:'Cormorant Garamond',serif;
-  font-size:2.8rem;font-weight:300;color:var(--ivory);
-  margin-bottom:4px;line-height:1;
-}
-.tier-price sup{font-size:.92rem;vertical-align:top;margin-top:6px;color:var(--gold-dim);opacity:.7}
-.tier-price sub{font-size:.72rem;color:rgba(168,168,160,.56);letter-spacing:.01em;font-family:'DM Sans',sans-serif}
-.tier-position{
-  font-size:.76rem;color:rgba(168,168,160,.62);
-  line-height:1.72;margin-bottom:18px;min-height:56px;max-width:260px;
-}
-.tier-divider{height:1px;background:rgba(200,168,75,.06);margin:4px 0 16px}
-.tier-features{list-style:none;flex:1;display:flex;flex-direction:column;gap:10px;margin-bottom:0}
-.tier-features li{
-  display:flex;align-items:baseline;gap:9px;
-  font-size:.76rem;color:rgba(168,168,160,.68);line-height:1.6;
-}
-.tier-features li svg{width:13px;height:13px;flex-shrink:0;opacity:.52;color:var(--gold);margin-top:2px}
-.tier-actions{padding-top:18px;margin-top:auto;border-top:1px solid rgba(200,168,75,.05)}
-.tier-cta{
-  display:block;text-align:center;padding:13px 16px;
-  font-size:.64rem;letter-spacing:.16em;text-transform:uppercase;
-  text-decoration:none;color:rgba(200,168,75,.78);
-  border:1px solid rgba(200,168,75,.16);
-  transition:all .3s;position:relative;overflow:hidden;font-weight:500;
-}
-.tier-cta::before{
-  content:'';position:absolute;inset:0;
-  background:linear-gradient(90deg,transparent,rgba(200,168,75,.06),transparent);
-  transform:translateX(-100%);transition:transform .5s;
-}
-.tier-cta:hover{
-  border-color:rgba(200,168,75,.28);color:var(--gold);
-  background:rgba(200,168,75,.04);
-}
-.tier-cta:hover::before{transform:translateX(100%)}
-
-/* Scan tier — muted entry */
-.tier.scan-tier{border-color:rgba(200,168,75,.04)}
-.tier.scan-tier .tier-name{color:rgba(237,232,222,.72)}
-.tier.scan-tier .tier-price{font-size:2.2rem;color:rgba(200,168,75,.58)}
-.tier.scan-tier .tier-price sup{color:rgba(200,168,75,.45)}
-
-/* Focal tier highlight */
-.tier.focal{border-color:rgba(200,168,75,.18)}
-.tier.focal::before{
-  content:'';position:absolute;top:0;left:0;right:0;height:2px;
-  background:linear-gradient(90deg,transparent,rgba(200,168,75,.3),transparent);
-}
-.tier.focal .tier-flag{color:rgba(200,168,75,.65)}
-
-/* ── Anchor row — Market Control ── */
-.tier-anchor-row{
-  display:grid;grid-template-columns:1fr;
-  max-width:1180px;margin:24px auto 0;position:relative;z-index:1;
-}
-/* Vertical connector bridge */
-.tier-anchor-row::before{
-  content:'';position:absolute;top:-24px;left:50%;width:1px;height:48px;
-  background:linear-gradient(180deg,rgba(200,168,75,.1),rgba(200,168,75,.04));
-  transform:translateX(-50%);
-}
-.tier.prime{
-  padding:48px 52px;border-radius:6px;
-  background:rgba(12,11,8,.94);
+.sys-card{
+  background:rgba(10,9,8,.72);
   border:1px solid rgba(200,168,75,.1);
-  backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);
-  box-shadow:
-    inset 0 1px 0 rgba(200,168,75,.06),
-    0 0 110px rgba(200,168,75,.04),
-    0 32px 80px rgba(0,0,0,.45);
-  display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:start;
+  padding:20px 28px 22px;
+  margin:8px 0 6px 0;
+  position:relative;display:flex;flex-direction:column;
+  transition:border-color .28s,background .28s,box-shadow .28s;
 }
-.tier.prime:hover{
-  border-color:rgba(200,168,75,.2);
-  box-shadow:
-    inset 0 1px 0 rgba(200,168,75,.1),
-    0 0 110px rgba(200,168,75,.06),
-    0 32px 80px rgba(0,0,0,.5);
-  transform:translateY(-2px);
+.sys-card:hover{
+  border-color:rgba(200,168,75,.22);
+  background:rgba(12,12,8,.94);
 }
-.prime-left{display:flex;flex-direction:column}
-.prime-right{display:flex;flex-direction:column}
-.tier.prime .tier-step{color:rgba(200,168,75,.35);font-size:.52rem;margin-bottom:14px}
-.tier.prime .tier-flag{color:rgba(200,168,75,.58);font-size:.58rem;margin-bottom:8px}
-.tier.prime .tier-name{font-size:1.6rem;font-weight:400;margin-bottom:16px;letter-spacing:.02em}
-.tier.prime .tier-price{font-size:3.4rem;margin-bottom:8px}
-.tier.prime .tier-position{max-width:420px;margin-bottom:20px;line-height:1.75;min-height:auto}
-.tier.prime .tier-divider{margin:4px 0 18px;background:linear-gradient(90deg,rgba(200,168,75,.12),transparent 70%)}
-.tier.prime .tier-features{gap:12px}
-.tier.prime .tier-features li{font-size:.8rem}
-.tier.prime .tier-features li svg{width:14px;height:14px;opacity:.6}
-.tier.prime .tier-cta{
-  min-height:56px;padding:17px 20px;
-  font-size:.66rem;letter-spacing:.2em;font-weight:600;
+.sys-step.is-active .sys-card{
+  border-color:rgba(226,201,125,.44);
+  background:rgba(200,168,75,.03);
+  box-shadow:0 8px 40px rgba(0,0,0,.38),0 0 0 1px rgba(226,201,125,.1) inset;
+}
+/* Gold left-edge indicator on active step */
+.sys-step.is-active .sys-card::before{
+  content:'';position:absolute;left:0;top:14px;bottom:14px;
+  width:2px;background:linear-gradient(180deg,rgba(200,168,75,.62),rgba(200,168,75,.18));
+}
+/* System state badge */
+.sys-state{
+  display:inline-flex;align-items:center;gap:6px;
+  font-size:.5rem;letter-spacing:.22em;text-transform:uppercase;
+  color:rgba(155,155,148,.52);margin-bottom:12px;align-self:flex-start;
+  font-weight:500;
+}
+.sys-state::before{
+  content:'';width:5px;height:5px;border-radius:50%;
+  background:rgba(155,155,148,.28);flex-shrink:0;
+  transition:background .28s;
+}
+.sys-state.--entry{color:rgba(200,168,75,.82);font-weight:600}
+.sys-state.--entry::before{background:rgba(200,168,75,.65)}
+.sys-state.--next{color:rgba(200,168,75,.62)}
+.sys-state.--next::before{background:rgba(200,168,75,.44)}
+.sys-state.--popular{color:rgba(200,168,75,.82);font-weight:600}
+.sys-state.--popular::before{background:rgba(200,168,75,.65)}
+.sys-state.--full{color:rgba(200,168,75,.74);font-weight:600}
+.sys-state.--full::before{background:rgba(200,168,75,.55)}
+.sys-step.is-active .sys-state{color:rgba(200,168,75,.94)}
+.sys-step.is-active .sys-state::before{background:rgba(200,168,75,.72)}
+/* Card header: name + price inline */
+.sys-header{
+  display:flex;align-items:flex-start;justify-content:space-between;
+  gap:16px;margin-bottom:10px;
+}
+.sys-name{
+  font-family:'Cormorant Garamond',serif;
+  font-size:1.26rem;font-weight:400;color:rgba(232,228,218,.84);
+  line-height:1.12;letter-spacing:.01em;
+}
+.sys-step.is-active .sys-name{color:rgba(242,238,228,.98)}
+.sys-price{
+  font-family:'Cormorant Garamond',serif;
+  font-size:1.75rem;font-weight:300;color:var(--ivory);
+  white-space:nowrap;line-height:1;flex-shrink:0;
+}
+.sys-price sup{font-size:.68rem;vertical-align:top;margin-top:4px;color:var(--gold-dim);opacity:.82}
+.sys-price sub{font-size:.6rem;color:rgba(168,168,160,.5);font-family:'DM Sans',sans-serif}
+.sys-step.sys-entry .sys-price{color:rgba(200,168,75,.88);font-size:1.9rem}
+/* The one outcome line — outcome-driven copy */
+.sys-outcome{
+  font-size:.8rem;color:rgba(180,180,173,.86);
+  line-height:1.64;margin-bottom:14px;font-weight:400;
+  padding-left:12px;
+  border-left:1px solid rgba(200,168,75,.14);
+}
+.sys-step.is-active .sys-outcome{
+  color:rgba(198,195,187,.96);
+  border-left-color:rgba(200,168,75,.36);
+}
+/* Feature pills — compact, two-column */
+.sys-features{
+  list-style:none;display:flex;flex-wrap:wrap;gap:5px 0;
+  margin-bottom:16px;flex:1;
+}
+.sys-features li{
+  font-size:.7rem;color:rgba(162,162,155,.72);line-height:1.62;
+  display:flex;align-items:baseline;gap:7px;
+  width:50%;padding-right:10px;
+}
+.sys-features li svg{width:10px;height:10px;flex-shrink:0;opacity:.56;color:var(--gold);margin-top:3px}
+.sys-step.is-active .sys-features li{color:rgba(182,180,173,.9)}
+.sys-step.is-active .sys-features li svg{opacity:.78}
+/* Prime tier — features full width */
+.sys-step.sys-prime .sys-features li{width:100%}
+/* Actions row */
+.sys-actions{
+  display:flex;align-items:center;gap:12px;flex-wrap:wrap;
+  border-top:1px solid rgba(200,168,75,.07);padding-top:14px;margin-top:auto;
+}
+.sys-cta{
+  display:inline-block;padding:11px 20px;
+  font-size:.6rem;letter-spacing:.16em;text-transform:uppercase;
+  text-decoration:none;color:rgba(200,168,75,.9);
+  border:1px solid rgba(200,168,75,.26);
+  transition:all .28s;font-weight:500;
+}
+.sys-cta:hover{
+  border-color:rgba(200,168,75,.46);color:var(--gold);
+  background:rgba(200,168,75,.05);
+}
+.sys-cta.--primary{
   background:linear-gradient(180deg,#d8be72 0%,#c8a84b 100%);
-  color:var(--bg);border:1px solid rgba(226,201,125,.5);
-  box-shadow:0 4px 20px rgba(200,168,75,.08);
+  color:var(--bg);border-color:rgba(226,201,125,.5);font-weight:600;
 }
-.tier.prime .tier-cta::before{background:linear-gradient(90deg,transparent,rgba(255,255,255,.15),transparent)}
-.tier.prime .tier-cta:hover{
+.sys-cta.--primary:hover{
   background:linear-gradient(180deg,#e0c97e 0%,#d4b45a 100%);
-  border-color:rgba(226,201,125,.7);
-  box-shadow:0 8px 32px rgba(200,168,75,.2);transform:translateY(-2px);
+  box-shadow:0 6px 24px rgba(200,168,75,.18);transform:translateY(-1px);
 }
-.tier-book{
-  display:block;text-align:center;margin-top:10px;padding:10px 16px;
-  font-size:.6rem;letter-spacing:.12em;text-transform:uppercase;
-  color:rgba(168,168,160,.58);text-decoration:none;
-  border:1px solid rgba(200,168,75,.08);transition:all .3s;
+.sys-cta.--owned{
+  background:rgba(106,175,144,.06);border-color:rgba(106,175,144,.28);
+  color:rgba(130,200,155,.72);cursor:default;pointer-events:none;
 }
-.tier-book:hover{border-color:rgba(200,168,75,.2);color:var(--gold)}
-.tier-commitment{
-  font-size:.66rem;color:rgba(168,168,160,.55);text-align:center;
-  margin-top:10px;letter-spacing:.04em;font-style:italic;
+.sys-cta-owned-badge{
+  display:inline-flex;align-items:center;gap:6px;
+  font-size:.56rem;letter-spacing:.14em;text-transform:uppercase;
+  color:rgba(106,175,144,.7);padding:4px 10px;
+  border:1px solid rgba(106,175,144,.22);border-radius:4px;
+  background:rgba(106,175,144,.06);
 }
+.sys-step.is-owned .sys-card{
+  border-color:rgba(106,175,144,.2)!important;
+}
+.sys-state.--owned{
+  background:rgba(106,175,144,.12);color:rgba(130,200,155,.8);
+  border:1px solid rgba(106,175,144,.28);
+}
+.sys-cta-note{
+  font-size:.63rem;color:rgba(155,155,148,.52);
+  font-style:italic;letter-spacing:.02em;
+}
+/* Hover-group dimming */
+.system-pipeline:hover .sys-step .sys-card{
+  opacity:.72;filter:brightness(.92);
+}
+.system-pipeline:hover .sys-step:hover .sys-card,
+.system-pipeline:hover .sys-step.is-active .sys-card{
+  opacity:1;filter:brightness(1);
+}
+/* Entry step accent */
+.sys-step.sys-entry .sys-card{border-color:rgba(200,168,75,.18)}
+/* Prime step (06) */
+.sys-step.sys-prime .sys-card{
+  background:rgba(12,11,8,.96);
+  border-color:rgba(200,168,75,.14);
+  padding:26px 32px;
+}
+.sys-step.sys-prime .sys-name{font-size:1.4rem}
+.sys-step.sys-prime .sys-price{font-size:2.1rem}
+.sys-prime-body{display:grid;grid-template-columns:1fr 1fr;gap:32px;align-items:start}
+/* Connector dot at card base (pipeline signal) */
+.sys-card::after{
+  content:'';position:absolute;bottom:-5px;left:36px;
+  width:4px;height:4px;border-radius:50%;
+  background:rgba(200,168,75,.1);
+}
+.sys-step:last-child .sys-card::after{display:none}
 
 /* ══════════════════════════════════════════════════════════
    EXECUTION LAYERS — Secondary Service Offerings
@@ -794,17 +838,111 @@
 .final-cta-actions{display:flex;flex-direction:column;align-items:center;gap:14px;position:relative;z-index:1}
 
 /* ═══════════════════════════════════════════
+   DESKTOP GRID OVERRIDE — 900px and up
+   Pipeline markup transforms into premium 5+1 grid
+   ═══════════════════════════════════════════ */
+@media(min-width:900px){
+  /* Container: expand to full grid width */
+  .system-pipeline{
+    display:grid;
+    grid-template-columns:repeat(5,1fr);
+    gap:var(--grid-gap);
+    max-width:1180px;
+    align-items:stretch;
+  }
+  /* Hide the pipeline spine — no spine numbers on desktop */
+  .sys-spine{display:none}
+  /* Each step: flex column (like original .tier) */
+  .sys-step{
+    display:flex;flex-direction:column;
+    position:relative;
+  }
+  /* Market Control (step 06) spans full width below the 5 */
+  .sys-step.sys-prime{
+    grid-column:1/-1;
+    display:block;
+    margin-top:8px;
+  }
+  .sys-prime-body{
+    display:grid;grid-template-columns:1fr 1fr;
+    gap:40px;align-items:start;
+  }
+  /* Card: restore tier-like vertical layout */
+  .sys-card{
+    flex:1;padding:30px 24px 26px;margin:0;
+    display:flex;flex-direction:column;
+  }
+  /* Remove pipeline left-edge active indicator — use top line instead */
+  .sys-step.is-active .sys-card::before{
+    left:0;top:0;bottom:auto;width:100%;height:2px;
+    background:linear-gradient(90deg,transparent,rgba(200,168,75,.44),transparent);
+  }
+  /* Header: name on top, price below (vertical stacking like original) */
+  .sys-header{
+    flex-direction:column;align-items:flex-start;
+    gap:2px;margin-bottom:12px;
+  }
+  /* Restore larger type sizes */
+  .sys-name{font-size:1.3rem;margin-bottom:6px}
+  .sys-price{
+    font-size:2.8rem;margin-bottom:6px;
+    line-height:1;
+  }
+  .sys-step.sys-entry .sys-price{font-size:2.2rem}
+  .sys-step.sys-prime .sys-price{font-size:3.4rem}
+  /* Outcome line: plain text, no left border on desktop */
+  .sys-outcome{
+    font-size:.78rem;padding-left:0;border-left:none;
+    margin-bottom:16px;
+  }
+  .sys-step.is-active .sys-outcome{border-left:none}
+  /* Features: single column (full width per item) */
+  .sys-features li{width:100%;font-size:.74rem}
+  /* Actions: stack CTAs vertically, stretch full width */
+  .sys-actions{
+    flex-direction:column;align-items:stretch;
+    padding-top:16px;margin-top:auto;
+  }
+  .sys-cta{text-align:center;display:block}
+  /* Suppress pipeline connector dot on desktop */
+  .sys-card::after{display:none}
+  /* Focal step (03 — Most Activated) subtle top accent — re-enables ::after */
+  .sys-step[data-step="3"] .sys-card{
+    border-color:rgba(200,168,75,.18);
+  }
+  .sys-step[data-step="3"] .sys-card::after{
+    display:block;
+    content:'';position:absolute;top:0;left:0;right:0;
+    height:2px;bottom:auto;width:auto;border-radius:0;
+    background:linear-gradient(90deg,transparent,rgba(200,168,75,.3),transparent);
+  }
+  /* Entry step accent */
+  .sys-step.sys-entry .sys-card{border-color:rgba(200,168,75,.18)}
+  /* Hover dimming — group interaction */
+  .system-pipeline:hover .sys-step:not(.sys-prime) .sys-card{
+    opacity:.76;filter:brightness(.94);
+    transition:opacity var(--transition-smooth) ease,filter var(--transition-smooth) ease,transform var(--transition-smooth) var(--ease-out),box-shadow var(--transition-smooth) ease;
+  }
+  .system-pipeline:hover .sys-step:hover .sys-card,
+  .system-pipeline:hover .sys-step.is-active .sys-card{
+    opacity:1;filter:brightness(1);transform:translateY(-3px);
+  }
+  /* Prime step never dims */
+  .system-pipeline:hover .sys-step.sys-prime .sys-card{
+    opacity:1;filter:none;transform:none;
+  }
+}
+
+/* ═══════════════════════════════════════════
    RESPONSIVE
    ═══════════════════════════════════════════ */
 @media(max-width:1100px){
-  .tier-grid-5{grid-template-columns:repeat(3,1fr)}
   .ascent-rail{flex-wrap:wrap;gap:4px;max-width:620px;padding:12px 20px;margin-bottom:36px}
   .ascent-line{width:16px}
   .ascent-node{padding:4px 8px}
   .ascent-node-label{font-size:.56rem}
   .layers-grid{grid-template-columns:repeat(2,1fr)}
   .layers-grid:hover .layer-card{opacity:1;filter:none}
-  .tier-position{min-height:auto}
 }
 @media(max-width:900px){
   /* A. Above the fold — tighten hero */
@@ -812,35 +950,32 @@
   .p-hero-sub{margin-bottom:32px}
   .p-hero-actions{gap:14px}
   .p-bridge{height:48px}
-  /* B. Card stacking — reduce internal padding + gaps */
-  .tier{padding:24px 20px}
-  .tier-features{gap:8px}
-  .tier-actions{padding-top:14px}
-  .tier-grid-5{grid-template-columns:1fr 1fr;gap:2px}
-  .tier-anchor-row{margin-top:16px}
-  .tier.prime{grid-template-columns:1fr;padding:32px 24px;gap:24px}
-  .tier-anchor-row::before{height:28px;top:-14px}
-  /* C. Ascension rail — intentional compact composition */
-  .ascent-rail{
-    display:grid;
-    grid-template-columns:repeat(3,minmax(0,1fr));
-    gap:8px 10px;
-    max-width:560px;
-    border-radius:20px;
-    padding:12px 14px;
-    margin:0 auto 26px;
-  }
-  .ascent-line{display:none}
-  .ascent-node{padding:6px 8px;border:1px solid rgba(200,168,75,.08);border-radius:10px;background:rgba(12,11,8,.35)}
-  .ascent-node-num{font-size:.5rem}
-  .ascent-node-label{font-size:.6rem;letter-spacing:.06em}
-  .ascent-node.--active::after,.ascent-node.is-linked::after{bottom:2px;width:16px}
-  .ascent-rail::after{top:-9px;width:9px;height:9px}
+  /* B. System pipeline — mobile refinement */
+  /* Hide ascent rail — cards communicate progression clearly on their own */
+  .ascent-rail{display:none}
+  .sys-step{grid-template-columns:40px 1fr}
+  .sys-spine-num{width:26px;height:26px;font-size:.42rem}
+  .sys-card{padding:20px 22px 22px;margin:6px 0 5px 0}
+  /* Stack name → price vertically for stronger hierarchy */
+  .sys-header{flex-direction:column;gap:2px;margin-bottom:8px}
+  .sys-name{font-size:1.22rem;line-height:1.1;margin-bottom:2px}
+  /* Price: commanding, not a corner annotation */
+  .sys-price{font-size:2.2rem;margin-bottom:4px}
+  .sys-step.sys-entry .sys-price{font-size:2.4rem}
+  .sys-step.sys-prime .sys-price{font-size:2.6rem}
+  .sys-outcome{font-size:.8rem;line-height:1.64;margin-bottom:12px;color:rgba(186,184,176,.9)}
+  .sys-features{gap:4px 0;margin-bottom:14px}
+  .sys-features li{width:100%;font-size:.72rem;line-height:1.58}
+  /* Larger icons — easier to scan */
+  .sys-features li svg{width:13px;height:13px;opacity:.72;margin-top:2px}
+  .sys-actions{padding-top:12px}
+  .sys-prime-body{grid-template-columns:1fr}
+  /* Tap state — premium response without animation overhead */
+  .sys-card:active{background:rgba(14,13,9,.98);border-color:rgba(200,168,75,.28);transform:scale(.998)}
   /* Disable hover dimming at touch sizes */
-  .tier-grid-5:hover .tier{opacity:1;filter:none}
+  .system-pipeline:hover .sys-step .sys-card{opacity:1;filter:none}
   .layers-grid:hover .layer-card{opacity:1;filter:none}
   .guide-grid:hover .guide-item{opacity:1;filter:none}
-  .tier-position{min-height:auto}
   /* D. Supporting layers */
   .layer-card{padding:28px 22px}
   .layer-items{gap:6px;margin-bottom:18px}
@@ -867,21 +1002,20 @@
   .p-hero-hed{margin-bottom:16px}
   .p-hero-sub{font-size:.90rem;margin-bottom:28px;max-width:420px}
   .p-bridge{height:40px}
-  /* B. Cards — single column, readable */
-  .tier-grid-5{grid-template-columns:1fr;gap:2px}
-  .tier{padding:26px 22px}
-  .tier-name{font-size:1.18rem}
-  .tier-price{font-size:2.2rem}
-  .tier-position{font-size:.80rem;margin-bottom:14px;line-height:1.7}
-  .tier-features li{font-size:.80rem;line-height:1.65}
-  .tier-cta{padding:16px 20px;font-size:.78rem;min-height:50px}
-  .tier-divider{margin:6px 0 14px}
-  /* Prime tier mobile */
-  .tier.prime .tier-name{font-size:1.36rem}
-  .tier.prime .tier-price{font-size:2.8rem}
-  .tier.prime .tier-cta{min-height:52px;padding:16px 22px;font-size:.78rem}
-  .tier-anchor-row{margin-top:12px}
-  .tier-anchor-row::before{height:24px;top:-12px}
+  /* B. System pipeline — small mobile */
+  .sys-step{grid-template-columns:36px 1fr}
+  .sys-spine-num{width:24px;height:24px;font-size:.40rem}
+  .sys-card{padding:18px 20px 20px;margin:6px 0 4px 0}
+  .sys-name{font-size:1.16rem;line-height:1.1}
+  .sys-price{font-size:2rem}
+  .sys-step.sys-entry .sys-price{font-size:2.2rem}
+  .sys-outcome{font-size:.78rem;line-height:1.62}
+  .sys-features li{font-size:.7rem;width:100%}
+  .sys-cta{padding:12px 16px;font-size:.6rem;min-height:46px}
+  .sys-cta.--primary{padding:14px 18px;font-size:.62rem;min-height:48px}
+  /* Prime step mobile */
+  .sys-step.sys-prime .sys-card{padding:18px 20px}
+  .sys-step.sys-prime .sys-price{font-size:2.2rem}
   .ascent-rail{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin-bottom:20px;padding:10px 10px}
   .ascent-node{padding:6px 6px}
   .ascent-node-label{font-size:.56rem}
@@ -921,10 +1055,6 @@
   .nav-btn{padding:10px 24px;font-size:.72rem;min-height:42px}
 }
 @media(max-width:560px){
-  #nav{flex-wrap:wrap;gap:8px;justify-content:center}
-  .nav-right{gap:10px;flex-wrap:wrap;justify-content:center}
-  .nav-link{font-size:.66rem;letter-spacing:.1em}
-  .nav-btn{font-size:.62rem;padding:8px 18px}
   .btn-primary{padding:13px 28px;font-size:.7rem}
   .btn-ghost{font-size:.74rem}
 }
@@ -944,37 +1074,27 @@
   .p-bridge{height:40px}
 
   /* Section headings — bigger */
-  .s-hed{font-size:clamp(1.6rem,5vw,2.2rem);margin-bottom:14px}
-  .s-sub{font-size:.92rem;line-height:1.78;margin-bottom:10px}
-  .s-eye{font-size:.66rem;letter-spacing:.2em;margin-bottom:16px}
-  .s-clarify{font-size:.78rem;line-height:1.76}
+  .s-hed{font-size:clamp(1.7rem,5.5vw,2.4rem);margin-bottom:14px;line-height:1.1}
+  .s-sub{font-size:.93rem;line-height:1.82;margin-bottom:12px;color:rgba(178,178,170,.9)}
+  .s-eye{font-size:.66rem;letter-spacing:.2em;margin-bottom:16px;color:rgba(200,168,75,.74)}
+  .s-clarify{font-size:.8rem;line-height:1.78;color:rgba(200,168,75,.72)}
 
-  /* Tier cards — readable text + bigger tap targets */
-  .tier{padding:26px 22px}
-  .tier-name{font-size:1.22rem;margin-bottom:10px}
-  .tier-price{font-size:2.6rem;margin-bottom:6px}
-  .tier-position{font-size:.82rem;line-height:1.72;min-height:auto;margin-bottom:16px}
-  .tier-step{font-size:.56rem;margin-bottom:8px}
-  .tier-flag{font-size:.6rem;letter-spacing:.14em;margin-bottom:6px}
-  .tier-features li{font-size:.82rem;line-height:1.68;gap:10px}
-  .tier-features li svg{width:14px;height:14px;margin-top:3px}
-  .tier-features{gap:12px;margin-bottom:6px}
-  .tier-divider{margin:6px 0 14px}
-  .tier-cta{padding:16px 22px;font-size:.80rem;min-height:52px;letter-spacing:.14em}
-  .tier-book{padding:14px 18px;font-size:.72rem}
-  .tier-commitment{font-size:.78rem;line-height:1.76;margin-top:10px}
-  .tier-actions{padding-top:16px}
-
-  /* Focal tier — more prominent */
-  .tier.focal .tier-price{font-size:2.8rem}
-
-  /* Prime / Market Control tier */
-  .tier.prime{padding:28px 22px}
-  .tier.prime .tier-name{font-size:1.4rem}
-  .tier.prime .tier-price{font-size:3rem}
-  .tier.prime .tier-position{font-size:.86rem;line-height:1.76}
-  .tier.prime .tier-features li{font-size:.84rem}
-  .tier.prime .tier-cta{min-height:54px;padding:16px 24px;font-size:.80rem}
+  /* System pipeline — tablet/768px refinement */
+  .sys-step{grid-template-columns:44px 1fr}
+  .sys-card{padding:20px 24px 22px}
+  .sys-header{flex-direction:column;gap:2px;margin-bottom:8px}
+  .sys-name{font-size:1.22rem;line-height:1.1;margin-bottom:2px}
+  .sys-price{font-size:2.2rem;margin-bottom:4px}
+  .sys-step.sys-entry .sys-price{font-size:2.4rem}
+  .sys-outcome{font-size:.8rem;line-height:1.64;color:rgba(186,184,176,.9)}
+  .sys-features li{font-size:.72rem;line-height:1.6}
+  .sys-features li svg{width:13px;height:13px;opacity:.72;margin-top:2px}
+  .sys-cta{padding:12px 18px;font-size:.6rem;min-height:46px}
+  .sys-cta.--primary{padding:13px 20px;font-size:.62rem;min-height:48px}
+  .sys-state{font-size:.48rem;letter-spacing:.18em}
+  /* Prime step */
+  .sys-step.sys-prime .sys-card{padding:20px 24px}
+  .sys-step.sys-prime .sys-price{font-size:2.6rem}
 
   /* Execution layers — readable */
   .layer-card{padding:26px 22px}
@@ -1014,15 +1134,14 @@
 @media(max-width:430px){
   .p-hero-hed{font-size:clamp(1.8rem,7vw,2.4rem)}
   .p-hero-sub{font-size:.90rem}
-  .tier{padding:26px 22px}
-  .tier-name{font-size:1.14rem}
-  .tier-price{font-size:2.4rem}
-  .tier-position{font-size:.80rem;line-height:1.68}
-  .tier-features li{font-size:.80rem}
-  .tier-cta{padding:16px 20px;font-size:.78rem;min-height:50px}
-  .tier.prime .tier-name{font-size:1.3rem}
-  .tier.prime .tier-price{font-size:2.6rem}
-  .tier.prime .tier-cta{font-size:.78rem;min-height:52px}
+  .sys-card{padding:16px 18px 18px}
+  .sys-name{font-size:1.12rem;line-height:1.1}
+  .sys-price{font-size:1.82rem}
+  .sys-outcome{font-size:.75rem}
+  .sys-features li{font-size:.66rem}
+  .sys-features li svg{width:12px;height:12px}
+  .sys-cta{padding:12px 14px;font-size:.58rem;min-height:44px}
+  .sys-step.sys-prime .sys-price{font-size:2rem}
   .layer-card{padding:26px 22px}
   .layer-cta{padding:14px 16px;font-size:.72rem;min-height:46px}
   .guide-action{font-size:.72rem}
@@ -1036,15 +1155,10 @@
 @media(max-width:390px){
   .p-hero-hed{font-size:clamp(1.6rem,8vw,2.1rem)}
   .p-hero-sub{font-size:.88rem}
-  .tier{padding:24px 20px}
-  .tier-name{font-size:1.1rem}
-  .tier-price{font-size:2.2rem}
-  .tier-position{font-size:.78rem}
-  .tier-features li{font-size:.78rem}
-  .tier-cta{font-size:.76rem;min-height:48px}
-  .tier.prime .tier-name{font-size:1.24rem}
-  .tier.prime .tier-price{font-size:2.4rem}
-  .tier.prime .tier-cta{font-size:.76rem;min-height:50px}
+  .sys-step{grid-template-columns:30px 1fr}
+  .sys-spine-num{width:20px;height:20px;font-size:.38rem}
+  .sys-price{font-size:1.7rem}
+  .sys-outcome{font-size:.72rem}
   .layer-cta{font-size:.70rem}
   .faq-q{font-size:1rem}
   .faq-a{font-size:.80rem}
@@ -1060,6 +1174,23 @@
   .nav-btn{display:none}
   .nav-hamburger{display:flex}
 }
+
+/* Final pre-live readability refinements */
+.ascent-node-num,
+.ascent-node-label,
+.layer-num,
+.layer-items li,
+.layer-cta,
+.sys-cta-note,
+.guide-action,
+.sys-outcome,
+.sys-features li{
+  font-size:max(.78rem, 12px);
+  line-height:1.55;
+}
+.layer-items li,
+.sys-outcome,
+.sys-features li{color:rgba(190,190,182,.84)}
 </style>
 @include('partials.clarity')
 </head>
@@ -1096,8 +1227,8 @@
     <div class="plans-intro">
       <p class="s-eye">Core System</p>
       <h2 class="s-hed" id="plans-hed">Six levels of <em>market control.</em></h2>
-      <p class="s-sub">Each level compounds on the last&nbsp;&mdash; broader visibility, deeper infrastructure, stronger position. Your data carries forward. No wasted steps.</p>
-      <p class="s-clarify">Start where your business actually is. The system builds forward&nbsp;&mdash; you don't need to begin at Step&nbsp;01.</p>
+      <p class="s-sub">Each level builds on the last &mdash; deeper infrastructure, wider coverage, stronger position. Start where you are. Your scan data carries forward.</p>
+      <p class="s-clarify">You don&rsquo;t need to start at Step&nbsp;01. Enter at any level &mdash; the system adapts to where you are and builds forward from there.</p>
     </div>
 
     <!-- Ascension Rail -->
@@ -1115,128 +1246,166 @@
       <div class="ascent-node" data-step="6"><span class="ascent-node-num">06</span><span class="ascent-node-label">Control</span></div>
     </div>
 
-    <!-- Top 5 tiers -->
-    <div class="tier-grid-5" role="list">
+    <!-- System Pipeline -->
+    <div class="system-pipeline" role="list">
 
-      {{-- Tier 1 — Scan --}}
-      <div class="tier scan-tier" role="listitem" data-step="1">
-        <p class="tier-step">Step 01</p>
-        <p class="tier-flag">System Entry</p>
-        <h3 class="tier-name">Citation Scan</h3>
-        <div class="tier-price"><sup>$</sup>2</div>
-        <p class="tier-position">The system begins here. Detect your current signal layer and identify where AI visibility breaks down.</p>
-        <div class="tier-divider"></div>
-        <ul class="tier-features">
-          <li><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.2"><polyline points="3 8 7 12 13 4"/></svg> 0&ndash;100 AI citation readiness score</li>
-          <li><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.2"><polyline points="3 8 7 12 13 4"/></svg> Signal detection across your domain</li>
-          <li><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.2"><polyline points="3 8 7 12 13 4"/></svg> Instant results &mdash; data carries forward</li>
-        </ul>
-        <div class="tier-actions">
-          <a href="{{ route('scan.start') }}" class="tier-cta">Begin Signal Detection&nbsp;&mdash; $2</a>
-        </div>
-      </div>
-
-      {{-- Tier 2 — Signal --}}
-      <div class="tier" role="listitem" data-step="2">
-        <p class="tier-step">Step 02</p>
-        <p class="tier-flag">Intelligence</p>
-        <h3 class="tier-name">Signal Expansion</h3>
-        <div class="tier-price"><sup>$</sup>99</div>
-        <p class="tier-position">Full signal mapping&nbsp;&mdash; every gap, every opportunity, ranked by impact.</p>
-        <div class="tier-divider"></div>
-        <ul class="tier-features">
-          <li><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.2"><polyline points="3 8 7 12 13 4"/></svg> Complete visibility mapping</li>
-          <li><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.2"><polyline points="3 8 7 12 13 4"/></svg> Every gap ranked by impact</li>
-          <li><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.2"><polyline points="3 8 7 12 13 4"/></svg> Exportable intelligence report</li>
-        </ul>
-        <div class="tier-actions">
-          <a href="{{ route('checkout.signal-expansion') }}" class="tier-cta">Map Your Signals&nbsp;&mdash; $99</a>
-        </div>
-      </div>
-
-      {{-- Tier 3 — Leverage (focal) --}}
-      <div class="tier focal" role="listitem" data-step="3">
-        <p class="tier-step">Step 03</p>
-        <p class="tier-flag">Most Popular</p>
-        <h3 class="tier-name">Structural Leverage</h3>
-        <div class="tier-price"><sup>$</sup>249</div>
-        <p class="tier-position">Priority correction sequence with structural guidance and opportunity sizing.</p>
-        <div class="tier-divider"></div>
-        <ul class="tier-features">
-          <li><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.2"><polyline points="3 8 7 12 13 4"/></svg> Priority correction sequence</li>
-          <li><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.2"><polyline points="3 8 7 12 13 4"/></svg> Structural guidance + opportunity sizing</li>
-          <li><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.2"><polyline points="3 8 7 12 13 4"/></svg> Full action sequence&nbsp;&mdash; ordered by ROI</li>
-        </ul>
-        <div class="tier-actions">
-          <a href="{{ route('checkout.structural-leverage') }}" class="tier-cta">Build Your Leverage&nbsp;&mdash; $249</a>
-        </div>
-      </div>
-
-      {{-- Tier 4 — Activate --}}
-      <div class="tier" role="listitem" data-step="4">
-        <p class="tier-step">Step 04</p>
-        <p class="tier-flag">Implementation</p>
-        <h3 class="tier-name">System Activation</h3>
-        <div class="tier-price"><sup>$</sup>489</div>
-        <p class="tier-position">Competitive positioning, market mapping, and 50+ page structural architecture.</p>
-        <div class="tier-divider"></div>
-        <ul class="tier-features">
-          <li><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.2"><polyline points="3 8 7 12 13 4"/></svg> Competitive positioning intelligence</li>
-          <li><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.2"><polyline points="3 8 7 12 13 4"/></svg> Market expansion map</li>
-          <li><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.2"><polyline points="3 8 7 12 13 4"/></svg> 50+ page structural architecture</li>
-          <li><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.2"><polyline points="3 8 7 12 13 4"/></svg> Full system coverage plan</li>
-        </ul>
-        <div class="tier-actions">
-          <a href="{{ route('checkout.system-activation') }}" class="tier-cta">Activate Your System&nbsp;&mdash; $489</a>
-        </div>
-      </div>
-
-      {{-- Tier 5 — Expand --}}
-      <div class="tier" role="listitem" data-step="5">
-        <p class="tier-step">Step 05</p>
-        <p class="tier-flag">Expansion</p>
-        <h3 class="tier-name">Market Expansion</h3>
-        <div class="tier-price"><sup>$</sup>1,500<sub>&ndash;2,500</sub></div>
-        <p class="tier-position">Service and location expansion with entity reinforcement across your full footprint.</p>
-        <div class="tier-divider"></div>
-        <ul class="tier-features">
-          <li><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.2"><polyline points="3 8 7 12 13 4"/></svg> Service + location expansion</li>
-          <li><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.2"><polyline points="3 8 7 12 13 4"/></svg> Entity + linking reinforcement</li>
-          <li><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.2"><polyline points="3 8 7 12 13 4"/></svg> Cross-market coverage architecture</li>
-          <li><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.2"><polyline points="3 8 7 12 13 4"/></svg> Compounding authority deployment</li>
-        </ul>
-        <div class="tier-actions">
-          <a href="{{ route('onboarding.start', ['tier' => 'expansion']) }}" class="tier-cta">Expand My Coverage</a>
-        </div>
-      </div>
-
-    </div>
-
-    <!-- Anchor — Market Control -->
-    <div class="tier-anchor-row">
-      <div class="tier prime" role="listitem" data-step="6">
-        <div class="prime-left">
-          <p class="tier-step">Step 06</p>
-          <p class="tier-flag">Full Deployment</p>
-          <h3 class="tier-name">Market Control</h3>
-          <div class="tier-price"><sup>$</sup>4,799<sub>+ /mo</sub></div>
-          <p class="tier-position">Your entire citation infrastructure&nbsp;&mdash; built, deployed, and actively maintained across every surface.</p>
-          <div class="tier-divider"></div>
-          <ul class="tier-features">
-            <li><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.2"><polyline points="3 8 7 12 13 4"/></svg> Complete system activation&nbsp;&mdash; built for you</li>
-            <li><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.2"><polyline points="3 8 7 12 13 4"/></svg> Ongoing maintenance + reinforcement</li>
-            <li><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.2"><polyline points="3 8 7 12 13 4"/></svg> Strategic oversight across full coverage</li>
-            <li><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.2"><polyline points="3 8 7 12 13 4"/></svg> Position defense + competitive intelligence</li>
+      {{-- Step 01 — Entry --}}
+@php $ownedTierRank = $ownedTierRank ?? 0; @endphp
+      <div class="sys-step sys-entry{{ $ownedTierRank >= 1 ? ' is-owned' : '' }}" role="listitem" data-step="1">
+        <div class="sys-spine" aria-hidden="true"><span class="sys-spine-num">01</span></div>
+        <div class="sys-card">
+          <span class="sys-state --entry">Start Here</span>
+          <div class="sys-header">
+            <h3 class="sys-name">Citation Scan</h3>
+            <div class="sys-price"><sup>$</sup>2</div>
+          </div>
+          <p class="sys-outcome">Find out exactly where AI can&rsquo;t see you &mdash; and what it&rsquo;s costing you right now.</p>
+          <ul class="sys-features">
+            <li><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.2"><polyline points="3 8 7 12 13 4"/></svg> AI citation readiness score (0&ndash;100)</li>
+            <li><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.2"><polyline points="3 8 7 12 13 4"/></svg> Top blocker identified immediately</li>
+            <li><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.2"><polyline points="3 8 7 12 13 4"/></svg> Instant results in minutes</li>
+            <li><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.2"><polyline points="3 8 7 12 13 4"/></svg> Data carries forward to every level</li>
           </ul>
-        </div>
-        <div class="prime-right">
-          <div class="tier-actions" style="border-top:none;padding-top:24px">
-            <a href="{{ route('onboarding.start', ['tier' => 'dominance']) }}" class="tier-cta">Dominate Your Market</a>
-            <a href="{{ url('/book?entry=consultation') }}" class="tier-book">Book Consultation</a>
-            <p class="tier-commitment">Reviewed individually per market&nbsp;&middot;&nbsp; Limited capacity</p>
+          <div class="sys-actions">
+            @if($ownedTierRank >= 1)
+            <span class="sys-cta-owned-badge"><svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M1.5 5l2.5 2.5 4.5-5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg> Scan complete &mdash; active</span>
+            @else
+            <a href="{{ route('scan.start') }}" class="sys-cta --primary">Start Scan &mdash; $2</a>
+            @endif
           </div>
         </div>
       </div>
+
+      {{-- Step 02 --}}
+      <div class="sys-step{{ $ownedTierRank >= 2 ? ' is-owned' : '' }}" role="listitem" data-step="2">
+        <div class="sys-spine" aria-hidden="true"><span class="sys-spine-num">02</span></div>
+        <div class="sys-card">
+          <span class="sys-state{{ $ownedTierRank >= 2 ? ' --owned' : ' --next' }}">{{ $ownedTierRank >= 2 ? 'Active' : 'Next Step' }}</span>
+          <div class="sys-header">
+            <h3 class="sys-name">Signal Analysis</h3>
+            <div class="sys-price"><sup>$</sup>99</div>
+          </div>
+          <p class="sys-outcome">See exactly why your score is what it is and where signal quality is breaking.</p>
+          <ul class="sys-features">
+            <li><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.2"><polyline points="3 8 7 12 13 4"/></svg> Score explanation by signal category</li>
+            <li><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.2"><polyline points="3 8 7 12 13 4"/></svg> Signal gaps identified inside your dashboard</li>
+            <li><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.2"><polyline points="3 8 7 12 13 4"/></svg> Immediate access after checkout</li>
+            <li><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.2"><polyline points="3 8 7 12 13 4"/></svg> Builds on your scan data automatically</li>
+          </ul>
+          <div class="sys-actions">
+            @if($ownedTierRank >= 2)
+            <span class="sys-cta-owned-badge"><svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M1.5 5l2.5 2.5 4.5-5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg> Signal Analysis active</span>
+            @else
+            <a href="{{ route('checkout.signal-expansion') }}" class="sys-cta">Unlock Signal Map &mdash; $99</a>
+            <span class="sys-cta-note">Available after scan</span>
+            @endif
+          </div>
+        </div>
+      </div>
+
+      {{-- Step 03 — Focal --}}
+      <div class="sys-step{{ $ownedTierRank >= 3 ? ' is-owned' : '' }}" role="listitem" data-step="3">
+        <div class="sys-spine" aria-hidden="true"><span class="sys-spine-num">03</span></div>
+        <div class="sys-card">
+          <span class="sys-state{{ $ownedTierRank >= 3 ? ' --owned' : ' --popular' }}">{{ $ownedTierRank >= 3 ? 'Active' : 'Most Activated' }}</span>
+          <div class="sys-header">
+            <h3 class="sys-name">Action Plan</h3>
+            <div class="sys-price"><sup>$</sup>249</div>
+          </div>
+          <p class="sys-outcome">See what to build next with a prioritized structure-first sequence for expansion.</p>
+          <ul class="sys-features">
+            <li><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.2"><polyline points="3 8 7 12 13 4"/></svg> Prioritized build order by impact</li>
+            <li><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.2"><polyline points="3 8 7 12 13 4"/></svg> Structural guidance for expansion</li>
+            <li><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.2"><polyline points="3 8 7 12 13 4"/></svg> Dashboard-first action sequence</li>
+            <li><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.2"><polyline points="3 8 7 12 13 4"/></svg> Immediate access after checkout</li>
+          </ul>
+          <div class="sys-actions">
+            @if($ownedTierRank >= 3)
+            <span class="sys-cta-owned-badge"><svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M1.5 5l2.5 2.5 4.5-5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg> Action Plan active</span>
+            @else
+            <a href="{{ route('checkout.structural-leverage') }}" class="sys-cta">Get My Action Plan &mdash; $249</a>
+            @endif
+          </div>
+        </div>
+      </div>
+
+      {{-- Step 04 --}}
+      <div class="sys-step{{ $ownedTierRank >= 4 ? ' is-owned' : '' }}" role="listitem" data-step="4">
+        <div class="sys-spine" aria-hidden="true"><span class="sys-spine-num">04</span></div>
+        <div class="sys-card">
+          <span class="sys-state{{ $ownedTierRank >= 4 ? ' --owned' : '' }}">{{ $ownedTierRank >= 4 ? 'Active' : 'Advanced' }}</span>
+          <div class="sys-header">
+            <h3 class="sys-name">Guided Execution</h3>
+            <div class="sys-price"><sup>$</sup>489</div>
+          </div>
+          <p class="sys-outcome">Unlock your step-by-step activation roadmap inside the dashboard &mdash; no external deliverables.</p>
+          <ul class="sys-features">
+            <li><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.2"><polyline points="3 8 7 12 13 4"/></svg> Step-by-step roadmap inside your dashboard</li>
+            <li><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.2"><polyline points="3 8 7 12 13 4"/></svg> Prioritized activation sequence by business impact</li>
+            <li><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.2"><polyline points="3 8 7 12 13 4"/></svg> Immediate in-account access</li>
+            <li><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.2"><polyline points="3 8 7 12 13 4"/></svg> Dashboard-only activation guidance</li>
+          </ul>
+          <div class="sys-actions">
+            @if($ownedTierRank >= 4)
+            <span class="sys-cta-owned-badge"><svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M1.5 5l2.5 2.5 4.5-5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg> Guided Execution active</span>
+            @else
+            <a href="{{ route('checkout.system-activation') }}" class="sys-cta">Activate Full System &mdash; $489</a>
+            @endif
+          </div>
+        </div>
+      </div>
+
+      {{-- Step 05 --}}
+      <div class="sys-step" role="listitem" data-step="5">
+        <div class="sys-spine" aria-hidden="true"><span class="sys-spine-num">05</span></div>
+        <div class="sys-card">
+          <span class="sys-state">Expansion</span>
+          <div class="sys-header">
+            <h3 class="sys-name">Market Expansion</h3>
+            <div class="sys-price"><sup>$</sup>1,500<sub>+</sub></div>
+          </div>
+          <p class="sys-outcome">Extend your coverage across every service area, location, and entity cluster in your market.</p>
+          <ul class="sys-features">
+            <li><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.2"><polyline points="3 8 7 12 13 4"/></svg> Service + location expansion</li>
+            <li><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.2"><polyline points="3 8 7 12 13 4"/></svg> Entity + linking reinforcement</li>
+            <li><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.2"><polyline points="3 8 7 12 13 4"/></svg> Cross-market coverage architecture</li>
+            <li><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.2"><polyline points="3 8 7 12 13 4"/></svg> Compounding authority deployment</li>
+          </ul>
+          <div class="sys-actions">
+            <a href="{{ route('onboarding.start', ['tier' => 'expansion']) }}" class="sys-cta">Expand My Footprint</a>
+            <a href="{{ url('/book?entry=consultation') }}" class="sys-cta-note" style="text-decoration:underline;text-underline-offset:3px">or book a consultation</a>
+          </div>
+        </div>
+      </div>
+
+      {{-- Step 06 — Prime --}}
+      <div class="sys-step sys-prime" role="listitem" data-step="6">
+        <div class="sys-spine" aria-hidden="true"><span class="sys-spine-num">06</span></div>
+        <div class="sys-card">
+          <span class="sys-state --full">Full System</span>
+          <div class="sys-prime-body">
+            <div>
+              <div class="sys-header">
+                <h3 class="sys-name">Market Control</h3>
+                <div class="sys-price"><sup>$</sup>4,799<sub>+/mo</sub></div>
+              </div>
+              <p class="sys-outcome">Your entire AI citation infrastructure &mdash; built, deployed, and actively maintained so you remain the answer.</p>
+              <ul class="sys-features">
+                <li><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.2"><polyline points="3 8 7 12 13 4"/></svg> Complete system activation &mdash; built for you</li>
+                <li><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.2"><polyline points="3 8 7 12 13 4"/></svg> Ongoing maintenance + reinforcement</li>
+                <li><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.2"><polyline points="3 8 7 12 13 4"/></svg> Strategic oversight across full coverage</li>
+                <li><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.2"><polyline points="3 8 7 12 13 4"/></svg> Position defense + competitive intelligence</li>
+              </ul>
+            </div>
+            <div class="sys-actions" style="border-top:none;padding-top:0;flex-direction:column;align-items:flex-start;gap:10px;justify-content:center">
+              <a href="{{ route('onboarding.start', ['tier' => 'dominance']) }}" class="sys-cta --primary">Apply for Market Control</a>
+              <a href="{{ url('/book?entry=consultation') }}" class="sys-cta">Book Consultation</a>
+              <p class="sys-cta-note" style="margin-top:4px">Reviewed individually &middot; Limited capacity</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
     </div>
 
   </div>
@@ -1368,21 +1537,21 @@
         <span class="guide-marker">&rarr;</span>
         <div class="guide-text">
           <p class="guide-cond">You need a full map of signals and gaps</p>
-          <p class="guide-action"><a href="{{ route('checkout.signal-expansion') }}" style="color:var(--gold);text-decoration:underline;text-underline-offset:3px">Start with Signal Expansion&nbsp;&mdash; $99</a></p>
+          <p class="guide-action"><a href="{{ route('checkout.signal-expansion') }}" style="color:var(--gold);text-decoration:underline;text-underline-offset:3px">Start with Signal Analysis&nbsp;&mdash; $99</a></p>
         </div>
       </div>
       <div class="guide-item">
         <span class="guide-marker">&rarr;</span>
         <div class="guide-text">
           <p class="guide-cond">You know your site needs structural correction</p>
-          <p class="guide-action"><a href="{{ route('checkout.structural-leverage') }}" style="color:var(--gold);text-decoration:underline;text-underline-offset:3px">Start with Structural Leverage&nbsp;&mdash; $249</a></p>
+          <p class="guide-action"><a href="{{ route('checkout.structural-leverage') }}" style="color:var(--gold);text-decoration:underline;text-underline-offset:3px">Start with Action Plan&nbsp;&mdash; $249</a></p>
         </div>
       </div>
       <div class="guide-item">
         <span class="guide-marker">&rarr;</span>
         <div class="guide-text">
           <p class="guide-cond">You&rsquo;re ready for full implementation</p>
-          <p class="guide-action"><a href="{{ route('checkout.system-activation') }}" style="color:var(--gold);text-decoration:underline;text-underline-offset:3px">Start with System Activation&nbsp;&mdash; $489</a></p>
+          <p class="guide-action"><a href="{{ route('checkout.system-activation') }}" style="color:var(--gold);text-decoration:underline;text-underline-offset:3px">Start with Guided Execution&nbsp;&mdash; $489</a></p>
         </div>
       </div>
       <div class="guide-item">
@@ -1449,7 +1618,7 @@
       <div class="faq-item" itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
         <h3 class="faq-q" itemprop="name">How long does it take to start getting cited?</h3>
         <div itemprop="acceptedAnswer" itemscope itemtype="https://schema.org/Answer">
-          <p class="faq-a" itemprop="text">Signal Expansion and Structural Leverage levels deliver structured intelligence within two weeks. System Activation and Market Control implementations follow a <strong>4-month structured deployment cycle</strong>, with citation improvements observable as coverage compounds across your service area and topic set.</p>
+          <p class="faq-a" itemprop="text">Signal Analysis and Action Plan levels deliver structured intelligence within two weeks. Guided Execution and Market Control implementations follow a <strong>4-month structured deployment cycle</strong>, with citation improvements observable as coverage compounds across your service area and topic set.</p>
         </div>
       </div>
 
@@ -1490,6 +1659,18 @@
 
 @include('partials.public-footer')
 
+@include('components.ai-assistant', [
+    'aiMicroLabel'  => 'Ask about this level',
+    'aiTeaserTitle' => 'Which level is right?',
+    'aiTeaserText'  => 'I can walk you through what each tier unlocks and which makes sense for where you are now.',
+    'aiSuggestedPrompts' => [
+        'Which level should I start with?',
+        'What happens after the scan?',
+        'What does each level actually do?',
+        'How does this improve AI visibility?',
+    ],
+])
+
 @include('partials.back-to-top')
 
 @include('components.tm-style')
@@ -1513,7 +1694,7 @@
     var rail = plans.querySelector('.ascent-rail');
     var nodes = rail ? Array.prototype.slice.call(rail.querySelectorAll('.ascent-node[data-step]')) : [];
     var lines = rail ? Array.prototype.slice.call(rail.querySelectorAll('.ascent-line')) : [];
-    var tiers = Array.prototype.slice.call(plans.querySelectorAll('.tier[data-step]'));
+    var tiers = Array.prototype.slice.call(plans.querySelectorAll('.sys-step[data-step]'));
     var defaultStep = '3';
 
     var moveMarker = function(node){
@@ -1549,17 +1730,18 @@
 
     tiers.forEach(function(tier){
       var step = tier.getAttribute('data-step');
-      tier.addEventListener('mouseenter', function(){ setStep(step); });
-      tier.addEventListener('focusin', function(){ setStep(step); });
-      tier.addEventListener('mouseleave', resetStep);
-      tier.addEventListener('focusout', function(){
+      var card = tier.querySelector('.sys-card') || tier;
+      card.addEventListener('mouseenter', function(){ setStep(step); });
+      card.addEventListener('focusin', function(){ setStep(step); });
+      card.addEventListener('mouseleave', resetStep);
+      card.addEventListener('focusout', function(){
         setTimeout(function(){
           if(!plans.contains(document.activeElement)){
             resetStep();
           }
         }, 0);
       });
-      tier.addEventListener('touchstart', function(){ setStep(step); }, {passive:true});
+      card.addEventListener('touchstart', function(){ setStep(step); }, {passive:true});
     });
 
     resetStep();

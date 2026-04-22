@@ -1247,7 +1247,7 @@ class QuickScanService
         $intelligence = [
             'signal-expansion' => [
                 'tier' => 'signal-expansion',
-                'label' => 'Signal Expansion',
+                'label' => 'Signal Analysis',
                 'price' => '$99',
                 'route' => 'checkout.signal-expansion',
                 'description' => 'Missing signals — your business data is not fully readable by AI systems.',
@@ -1255,7 +1255,7 @@ class QuickScanService
             ],
             'structural-leverage' => [
                 'tier' => 'structural-leverage',
-                'label' => 'Structural Leverage',
+                'label' => 'Action Plan',
                 'price' => '$249',
                 'route' => 'checkout.structural-leverage',
                 'description' => 'Missing structure — your content architecture limits AI discoverability.',
@@ -1263,7 +1263,7 @@ class QuickScanService
             ],
             'system-activation' => [
                 'tier' => 'system-activation',
-                'label' => 'System Activation',
+                'label' => 'Guided Execution',
                 'price' => '$489',
                 'route' => 'checkout.system-activation',
                 'description' => 'Needs implementation — competitive positioning and full system deployment.',

@@ -92,16 +92,45 @@ class CheckoutController extends Controller
 
     public function signalExpansion(Request $request)
     {
+        // Ladder rule: Signal Analysis requires a completed baseline scan
+        if (Auth::check()) {
+            $user = Auth::user();
+            $hasScan = $user->quickScans()
+                ->whereIn('status', [QuickScan::STATUS_SCANNED, QuickScan::STATUS_PAID])
+                ->exists();
+            if (!$hasScan) {
+                return redirect()->route('scan.start')
+                    ->with('flow_message', 'Complete your baseline scan ($2) before unlocking Signal Analysis.');
+            }
+        }
         return $this->redirectToStripe('signal-expansion', $request);
     }
 
     public function structuralLeverage(Request $request)
     {
+        // Ladder rule: Action Plan requires Signal Analysis first
+        if (Auth::check()) {
+            $user = Auth::user();
+            $accessMap = $this->entitlements->accessMap($user);
+            if (!($accessMap['signal'] ?? false)) {
+                return redirect()->route('checkout.signal-expansion')
+                    ->with('flow_message', 'Unlock Signal Analysis ($99) before proceeding to the Action Plan.');
+            }
+        }
         return $this->redirectToStripe('structural-leverage', $request);
     }
 
     public function systemActivation(Request $request)
     {
+        // Ladder rule: Guided Execution requires Action Plan first
+        if (Auth::check()) {
+            $user = Auth::user();
+            $accessMap = $this->entitlements->accessMap($user);
+            if (!($accessMap['leverage'] ?? false)) {
+                return redirect()->route('checkout.structural-leverage')
+                    ->with('flow_message', 'Unlock the Action Plan ($249) before proceeding to Guided Execution.');
+            }
+        }
         return $this->redirectToStripe('system-activation', $request);
     }
 

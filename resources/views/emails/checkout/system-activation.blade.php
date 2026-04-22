@@ -6,11 +6,11 @@
 
   <div style="background:#080808;padding:28px 24px;text-align:center">
     <span style="font-size:17px;color:#ede8de;font-weight:300;letter-spacing:.04em">SEO<span style="color:#c8a84b;font-weight:500;font-size:19px;font-style:italic">AI</span> Co&#8482;</span>
-    <p style="font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:rgba(200,168,75,.5);margin:6px 0 0">System Activation</p>
+    <p style="font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:rgba(200,168,75,.5);margin:6px 0 0">Guided Execution</p>
   </div>
 
   <div style="padding:28px 24px">
-    <h1 style="font-size:20px;font-weight:400;color:#111;margin:0 0 14px;line-height:1.3">Your System Activation is underway</h1>
+    <h1 style="font-size:20px;font-weight:400;color:#111;margin:0 0 14px;line-height:1.3">Your Guided Execution plan is underway</h1>
     <p style="font-size:13px;color:#555;line-height:1.7;margin:0 0 20px">We&rsquo;re building your complete system &mdash; competitive positioning, market mapping, and 50+ page structural architecture. You&rsquo;ll receive onboarding instructions within 24 hours.</p>
 
     <div style="background:#fafaf8;border-left:3px solid #c8a84b;padding:14px 16px;margin-bottom:20px">

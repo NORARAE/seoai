@@ -30,6 +30,7 @@ class OnboardingSubmission extends Model
         'goals',
         'challenges',
         'growth_intent',
+        'focus_area',
         'ads_status',
         'rd_referral_interest',
         'lead_type',

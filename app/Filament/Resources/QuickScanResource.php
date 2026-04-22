@@ -4,10 +4,12 @@ namespace App\Filament\Resources;
 
 use App\Filament\Concerns\FrontendDevRestricted;
 use App\Filament\Resources\QuickScanResource\Pages\ListQuickScans;
+use App\Filament\Resources\QuickScanResource\Pages\ViewQuickScan;
 use App\Models\QuickScan;
 use BackedEnum;
 use Filament\Resources\Resource;
 use Filament\Support\Icons\Heroicon;
+use Filament\Actions\ViewAction;
 use Filament\Tables\Columns\BadgeColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\SelectFilter;
@@ -28,6 +30,12 @@ class QuickScanResource extends Resource
     protected static ?int $navigationSort = 1;
 
     public static function canViewAny(): bool
+    {
+        $user = auth()->user();
+        return $user && $user->canApproveUsers();
+    }
+
+    public static function canView(\Illuminate\Database\Eloquent\Model $record): bool
     {
         $user = auth()->user();
         return $user && $user->canApproveUsers();
@@ -72,8 +80,7 @@ class QuickScanResource extends Resource
                 TextColumn::make('domain')
                     ->searchable()
                     ->sortable()
-                    ->placeholder('—')
-                    ->toggleable(isToggledHiddenByDefault: true),
+                    ->placeholder('—'),
 
                 TextColumn::make('user.name')
                     ->label('User')
@@ -220,6 +227,9 @@ class QuickScanResource extends Resource
                     ->dateTime('M j, Y g:i A')
                     ->sortable(),
             ])
+            ->recordActions([
+                ViewAction::make(),
+            ])
             ->filters([
                 SelectFilter::make('status')
                     ->options([
@@ -257,6 +267,7 @@ class QuickScanResource extends Resource
     {
         return [
             'index' => ListQuickScans::route('/'),
+            'view' => ViewQuickScan::route('/{record}'),
         ];
     }
 }

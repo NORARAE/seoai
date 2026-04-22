@@ -5,7 +5,7 @@
 <link rel="icon" type="image/x-icon" href="/favicon.ico">
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Signal Expansion — Results | SEO AI Co™</title>
+<title>Signal Analysis — Results | SEO AI Co™</title>
 <meta name="robots" content="noindex, nofollow">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -41,16 +41,16 @@
 
 <section class="result-hero">
   <div class="wrap">
-    <p class="result-hero-eye">Signal Expansion — $99</p>
-    <h1 class="result-hero-hed">Your <em>full signal map</em> is being prepared.</h1>
-    <p class="result-hero-sub">We're analyzing your complete visibility footprint — every gap, every opportunity, ranked by impact. You'll receive your full intelligence report within 48 hours.</p>
+    <p class="result-hero-eye">Signal Analysis — $99</p>
+    <h1 class="result-hero-hed">Your <em>signal map</em> is being unlocked in your dashboard.</h1>
+    <p class="result-hero-sub">We&rsquo;re processing your complete visibility footprint so your signal gaps and priority opportunities are available inside your dashboard workflow.</p>
   </div>
 </section>
 
 <section class="wrap">
   <div class="result-status">
     <h2 class="result-status-hed">What happens next</h2>
-    <p class="result-status-body">Your Signal Expansion analysis is in progress. We'll email you when your <strong>complete visibility report</strong> is ready — including gap analysis, opportunity ranking, and an exportable intelligence document.</p>
+    <p class="result-status-body">Your Signal Analysis is in progress. As soon as processing completes, your dashboard will show the score explanation, signal gaps, and ranked next actions.</p>
     <a href="/" class="btn-ghost">Return to home &rarr;</a>
   </div>
 </section>
@@ -60,7 +60,7 @@
     <h2 class="upsell-hed">Ready to act on your signals?</h2>
     <p class="upsell-sub">Move from intelligence to implementation. Your signal data carries forward — no repeated work.</p>
     <div class="upsell-actions">
-      <a href="{{ route('checkout.structural-leverage') }}" class="btn-primary">Upgrade to Structural Leverage — $249</a>
+      <a href="{{ route('checkout.structural-leverage') }}" class="btn-primary">Get Your Action Plan — $249</a>
       <a href="{{ route('book.index', ['entry' => 'consultation']) }}" class="btn-ghost">Book Consultation &rarr;</a>
     </div>
   </div>

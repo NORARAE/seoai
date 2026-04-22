@@ -121,7 +121,6 @@ body::after{
   border-radius:50%;
   background:radial-gradient(ellipse at 42% 46%,rgba(200,168,75,.054) 0%,transparent 65%);
   pointer-events:none;z-index:0;
-  will-change:opacity;
   -webkit-backface-visibility:hidden;
   backface-visibility:hidden;
 }
@@ -161,10 +160,18 @@ body::after{
   .amb-orb-a,.amb-orb-b{animation:none}
   .amb-shimmer{display:none!important}
 }
+/* Mobile ≤600px: reduce GPU layer sizes to ease memory/compositing pressure */
+@media(max-width:600px){
+  .amb-orb-a{width:min(100vw,520px);height:min(100vw,520px)}
+  .amb-orb-b{width:min(88vw,440px);height:min(88vw,440px)}
+  .amb-bloom{height:45vh}
+}
 /* ══ END AMBIENT SYSTEM ══ */
 
 /* ── CTAs ── */
 .hero-actions{display:flex;gap:20px;align-items:center}
+
+/* hero-orbit-wrap removed — score lives inside the report window only */
 
 /* ── Scroll cue ── */
 .hero-scroll{
@@ -424,10 +431,10 @@ body::after{
 .step-desc{font-size:.88rem;line-height:1.82;color:var(--muted)}
 /* ── Steps Trust Row ── */
 .steps-trust{margin-top:10px;padding-top:10px;text-align:center}
-.steps-trust-label{font-size:.64rem;letter-spacing:.26em;text-transform:uppercase;color:rgba(200,168,75,.28);margin-bottom:12px}
+.steps-trust-label{font-size:.64rem;letter-spacing:.26em;text-transform:uppercase;color:rgba(200,168,75,.40);margin-bottom:12px}
 .steps-surface-row{display:flex;justify-content:center;align-items:flex-start;flex-wrap:wrap;column-gap:36px;row-gap:14px}
-.steps-surface{display:flex;flex-direction:column;align-items:center;gap:7px;font-size:.65rem;letter-spacing:.16em;text-transform:uppercase;color:rgba(232,220,190,.44);font-family:'DM Sans',sans-serif;font-weight:300;cursor:default;transition:color .25s,transform .25s}
-.steps-surface svg{width:18px;height:18px;color:rgba(200,168,75,.46);flex-shrink:0;transition:color .25s,filter .25s,transform .25s}
+.steps-surface{display:flex;flex-direction:column;align-items:center;gap:7px;font-size:.65rem;letter-spacing:.16em;text-transform:uppercase;color:rgba(232,220,190,.58);font-family:'DM Sans',sans-serif;font-weight:300;cursor:default;transition:color .25s,transform .25s}
+.steps-surface svg{width:18px;height:18px;color:rgba(200,168,75,.54);flex-shrink:0;transition:color .25s,filter .25s,transform .25s}
 .steps-surface:hover{color:rgba(232,220,190,.72);transform:translateY(-2px)}
 .steps-surface:hover svg{color:rgba(200,168,75,.78);filter:drop-shadow(0 0 6px rgba(200,168,75,.28))}
 .steps-surface:active{transform:translateY(-1px) scale(.96)}
@@ -506,7 +513,7 @@ body::after{
 /* ── Buyer guide ── */
 .offer-guide{padding:0 0 24px;text-align:center;position:relative;z-index:2}
 .offer-guide-line{font-size:.72rem;letter-spacing:.18em;text-transform:uppercase;color:var(--gold-dim)}
-.offer-guide-sub{font-size:.82rem;color:rgba(168,168,160,.44);text-align:center;margin-top:10px;letter-spacing:.02em}
+.offer-guide-sub{font-size:.82rem;color:rgba(168,168,160,.58);text-align:center;margin-top:10px;letter-spacing:.02em}
 
 /* ════════════════════════════════════════════════════
    ASCENSION RAIL — Stage progression indicator
@@ -518,7 +525,6 @@ body::after{
   border:1px solid rgba(200,168,75,.06);
   border-radius:40px;
   background:rgba(10,9,7,.55);
-  backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);
   max-width:720px;
 }
 /* Subtle inner glow */
@@ -534,13 +540,13 @@ body::after{
 }
 .ascent-num{
   font-size:.5rem;letter-spacing:.22em;text-transform:uppercase;
-  color:rgba(200,168,75,.28);font-weight:600;
+  color:rgba(200,168,75,.40);font-weight:600;
   font-family:'DM Sans',sans-serif;
   transition:color .3s ease;
 }
 .ascent-label{
   font-size:.58rem;letter-spacing:.12em;text-transform:uppercase;
-  color:rgba(168,168,160,.32);
+  color:rgba(168,168,160,.44);
   transition:color .3s ease;
 }
 .ascent-node.--active .ascent-num{color:rgba(200,168,75,.75)}
@@ -697,7 +703,7 @@ body::after{
 
 /* ── Position line ── */
 .tier-position{
-  font-size:.72rem;letter-spacing:.015em;color:rgba(168,168,160,.4);
+  font-size:.72rem;letter-spacing:.015em;color:rgba(168,168,160,.54);
   line-height:1.62;font-style:italic;margin-bottom:16px;
   border-left:2px solid rgba(200,168,75,.12);padding-left:11px;
   max-width:240px;
@@ -714,7 +720,7 @@ body::after{
 .tier-features{list-style:none;display:flex;flex-direction:column;gap:10px;margin-bottom:0}
 .tier-features li{
   display:flex;align-items:flex-start;gap:9px;
-  font-size:.74rem;color:rgba(168,168,160,.6);line-height:1.58;
+  font-size:.74rem;color:rgba(168,168,160,.68);line-height:1.58;
 }
 .tier-features li svg{
   flex-shrink:0;margin-top:2px;width:13px;height:13px;
@@ -1333,7 +1339,6 @@ body::after{
   flex:1;min-width:240px;max-width:340px;
   border-radius:10px;padding:34px 28px 30px;
   text-align:center;position:relative;
-  backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);
 }
 .fcc-card--scan{
   background:rgba(200,168,75,.05);
@@ -2217,7 +2222,7 @@ body::before{
 
 /* ── Section container ── */
 #proof{
-  padding:72px 64px 0;max-width:1280px;margin:0 auto;
+  padding:32px 64px 0;max-width:1280px;margin:0 auto;
   position:relative;overflow:hidden;text-align:center;
   border-top:none;border-bottom:none;background:transparent;
   scroll-margin-top:64px;
@@ -2246,7 +2251,7 @@ body::before{
 /* ── Typography ── */
 .diag-eyebrow{
   font-size:.58rem;letter-spacing:.32em;text-transform:uppercase;
-  color:rgba(200,168,75,.48);margin-bottom:20px;
+  color:rgba(200,168,75,.48);margin-bottom:14px;
   position:relative;z-index:1;
 }
 .diag-hed{
@@ -2259,7 +2264,7 @@ body::before{
 .diag-hed em{color:var(--gold);font-style:italic}
 .diag-sub{
   font-size:.88rem;color:rgba(168,168,160,.82);
-  margin:0 auto 48px;max-width:500px;line-height:1.76;
+  margin:0 auto 22px;max-width:500px;line-height:1.76;
   position:relative;z-index:1;
 }
 
@@ -2272,16 +2277,13 @@ body::before{
   position:relative;z-index:1;
   backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
   box-shadow:
-    0 0 0 1px rgba(200,168,75,.12),
-    0 12px 40px rgba(0,0,0,.55),
-    inset 0 1px 0 rgba(200,168,75,.08),
-    inset 0 0 36px rgba(200,168,75,.03);
-  animation:diagAmbient 6s ease-in-out infinite;
+    0 0 0 1px rgba(200,168,75,.14),
+    0 12px 44px rgba(0,0,0,.56),
+    inset 0 1px 0 rgba(200,168,75,.09),
+    inset 0 0 40px rgba(200,168,75,.04);
 }
-@keyframes diagAmbient{
-  0%,100%{box-shadow:0 0 0 1px rgba(200,168,75,.12),0 12px 40px rgba(0,0,0,.55),inset 0 1px 0 rgba(200,168,75,.08),inset 0 0 36px rgba(200,168,75,.03)}
-  50%{box-shadow:0 0 0 1px rgba(200,168,75,.16),0 14px 46px rgba(0,0,0,.58),inset 0 1px 0 rgba(200,168,75,.1),inset 0 0 48px rgba(200,168,75,.05)}
-}
+/* diagAmbient retired — box-shadow animation caused paint at 60fps with backdrop-filter active.
+   Breathing ambience is now provided entirely by diagGlow on ::before (opacity only, compositor-safe). */
 /* Soft ambient glow behind panel */
 .diag-panel::before{
   content:'';position:absolute;inset:-48px;
@@ -2311,13 +2313,19 @@ body::before{
   color:rgba(168,168,160,.7);
 }
 .diag-panel-body{
-  padding:36px 36px 30px;display:flex;gap:28px;align-items:flex-start;
+  padding:14px 36px 12px;display:flex;flex-direction:column;align-items:center;gap:0;text-align:center;
 }
 .diag-score-block{
-  flex-shrink:0;text-align:center;
-  padding:6px 26px 6px 6px;
-  border-right:1px solid rgba(200,168,75,.07);
-  min-width:120px;
+  text-align:center;
+  padding:0;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;
+}
+.diag-orbit-container{
+  display:flex;align-items:center;justify-content:center;
+  width:300px;height:300px;margin:0 auto;
+}
+.diag-orbit-container .ai-orbit{
+  flex-shrink:0;
 }
 .diag-score-label{
   font-size:.48rem;letter-spacing:.28em;text-transform:uppercase;
@@ -2331,11 +2339,19 @@ body::before{
   animation:scoreFadeIn 1.2s ease-out;
 }
 .diag-score-proof{
-  font-size:.58rem;
-  color:rgba(176,189,180,.8);
-  letter-spacing:.08em;
+  font-size:1rem;
+  color:rgba(218,214,204,.96);
+  letter-spacing:.04em;
   text-transform:uppercase;
-  margin-bottom:10px;
+  margin-top:0;
+}
+.diag-score-sub{
+  font-size:1.05rem;
+  color:rgba(200,196,186,.92);
+  line-height:1.55;
+  max-width:420px;
+  margin-top:3px;
+  letter-spacing:.01em;
 }
 @keyframes scoreFadeIn{from{opacity:0;transform:scale(.85)}to{opacity:1;transform:scale(1)}}
 .diag-score-state{
@@ -2351,50 +2367,62 @@ body::before{
   color:rgba(106,175,144,.72);border:1px solid rgba(106,175,144,.15);
   padding:3px 10px;border-radius:2px;
 }
-.diag-results{flex:1;display:flex;flex-direction:column;gap:14px}
-.diag-result-row{
-  display:flex;align-items:center;gap:12px;
-  font-size:.78rem;color:rgba(168,168,160,.82);line-height:1.4;
-  padding:10px 0;border-bottom:1px solid rgba(200,168,75,.06);
-  padding-left:2px;border-left:2px solid transparent;
-  transition:border-color .3s;
-  animation:rowSlideIn .5s ease-out both;
+/* ── Signal strength bars ── */
+.diag-signal-bars{
+  width:100%;max-width:380px;
+  margin-top:12px;padding-top:12px;
+  border-top:1px solid rgba(200,168,75,.14);
+  display:flex;flex-direction:column;gap:9px;
+  text-align:left;
 }
-.diag-result-row:nth-child(1){animation-delay:.15s}
-.diag-result-row:nth-child(2){animation-delay:.19s}
-.diag-result-row:nth-child(3){animation-delay:.23s}
-.diag-result-row:nth-child(4){animation-delay:.27s}
-.diag-result-row:nth-child(5){animation-delay:.31s}
-@keyframes rowSlideIn{from{opacity:0;transform:translateX(-6px)}to{opacity:1;transform:translateX(0)}}
-.js-enabled .diag-result-row{opacity:0;transform:translateY(6px);animation:none}
-.js-enabled .diag-result-row.is-visible{opacity:1;transform:translateY(0);transition:opacity .44s ease,transform .44s ease}
-.diag-result-row:hover{border-left-color:rgba(200,168,75,.15)}
-.diag-result-row:last-child{border-bottom:none}
-.diag-result-indicator{width:7px;height:7px;border-radius:50%;flex-shrink:0}
-.diag-result-indicator.--confirmed{background:rgba(106,175,144,.82);box-shadow:0 0 6px rgba(106,175,144,.15)}
-.diag-result-indicator.--issue{background:rgba(196,120,120,.54);box-shadow:0 0 6px rgba(196,120,120,.12)}
-.diag-result-indicator.--evaluating{background:rgba(176,176,168,.56);box-shadow:0 0 6px rgba(176,176,168,.12)}
+.diag-signal-bar-row{
+  display:flex;align-items:center;gap:10px;
+}
+.diag-signal-bar-label{
+  font-size:.78rem;letter-spacing:.01em;
+  color:rgba(205,200,190,.92);
+  width:124px;flex-shrink:0;
+}
+.diag-signal-bar-track{
+  flex:1;height:3px;
+  background:rgba(200,168,75,.1);
+  border-radius:2px;overflow:hidden;
+}
+.diag-signal-bar-fill{
+  height:100%;border-radius:2px;
+  background:linear-gradient(90deg,rgba(200,168,75,.55),rgba(106,175,144,.85));
+  width:0;
+  transition:width 1.4s cubic-bezier(.22,.68,0,1.15);
+}
+.diag-signal-bar-fill.is-loaded{width:var(--bar-w)}
+.diag-signal-bar-val{
+  font-size:.64rem;letter-spacing:.04em;
+  color:rgba(120,200,160,.9);
+  width:22px;text-align:right;flex-shrink:0;
+  font-family:'DM Sans',sans-serif;font-weight:500;
+}
 .diag-panel-footer{
-  border-top:1px solid rgba(200,168,75,.06);
-  margin-top:18px;
-  padding:16px 36px;display:flex;flex-direction:column;gap:6px;
+  border-top:1px solid rgba(200,168,75,.12);
+  background:rgba(200,168,75,.025);
+  margin-top:0;
+  padding:12px 36px;display:flex;flex-direction:column;gap:4px;
   position:relative;z-index:3;
 }
 .diag-opp-label{
-  font-size:.46rem;letter-spacing:.26em;text-transform:uppercase;
-  color:rgba(200,168,75,.7);
+  font-size:.52rem;letter-spacing:.22em;text-transform:uppercase;
+  color:rgba(200,168,75,.9);
 }
-.diag-panel-footer-left{font-size:.72rem;color:rgba(168,168,160,.82);letter-spacing:.02em}
+.diag-panel-footer-left{font-size:.88rem;color:rgba(218,214,204,.96);letter-spacing:.01em}
 .diag-panel-footer-left strong{
-  font-size:.82rem;color:rgba(120,255,220,.7);font-weight:600;
-  text-shadow:0 0 8px rgba(120,255,220,.25);
+  font-size:.92rem;color:rgba(120,255,220,.84);font-weight:600;
+  text-shadow:0 0 10px rgba(120,255,220,.3);
 }
 .diag-opp-micro{
-  margin:4px 0 0;
-  font-size:.62rem;
-  color:rgba(185,182,172,.68);
-  line-height:1.55;
-  letter-spacing:.02em;
+  margin:5px 0 0;
+  font-size:.74rem;
+  color:rgba(200,196,188,.9);
+  line-height:1.58;
+  letter-spacing:.01em;
 }
 .diag-opp-micro span{display:block}
 
@@ -2413,7 +2441,7 @@ body::before{
 .diag-panel-body::after{
   content:'';
   position:absolute;
-  inset:50px 16px 16px;
+  inset:40px 16px 0;
   pointer-events:none;
   background:
     linear-gradient(90deg,rgba(200,168,75,.03) 1px,transparent 1px),
@@ -2426,7 +2454,7 @@ body::before{
 
 /* ── Connector trace — panel to modules ── */
 .diag-connector{
-  width:1px;height:48px;
+  width:1px;height:32px;
   background:linear-gradient(180deg,rgba(200,168,75,.22),rgba(200,168,75,.06));
   margin:0 auto;position:relative;z-index:1;
 }
@@ -2439,8 +2467,19 @@ body::before{
 /* ── Modules label ── */
 .diag-modules-label{
   font-size:.58rem;letter-spacing:.22em;text-transform:uppercase;
-  color:rgba(200,168,75,.42);margin:14px auto 18px;
+  color:rgba(200,168,75,.56);margin:14px auto 18px;
   position:relative;z-index:1;
+}
+.intel-header{
+  text-align:center;max-width:640px;margin:0 auto 36px;position:relative;z-index:1;
+}
+.intel-header h2{
+  font-family:'Cormorant Garamond',serif;
+  font-size:1.6rem;font-weight:500;color:#f5f0e8;
+  margin:0 0 14px;line-height:1.2;
+}
+.intel-header p{
+  font-size:1rem;color:rgba(210,205,190,.85);line-height:1.6;margin:0;
 }
 .diag-modules-sub{
   font-size:.82rem;
@@ -2452,32 +2491,63 @@ body::before{
   position:relative;z-index:1;
 }
 
-/* ── 5 Signal Modules ── */
-.diag-modules{
-  display:grid;grid-template-columns:repeat(5,1fr);gap:1px;
-  max-width:980px;margin:0 auto 40px;
-  background:rgba(200,168,75,.04);
+/* ── Intelligence Grid (5 Signal Modules) ── */
+.intel-grid{
+  display:grid;grid-template-columns:repeat(2,1fr);gap:0;
+  max-width:900px;margin:0 auto 40px;
+  border-top:1px solid rgba(200,168,75,.18);
+  border-left:1px solid rgba(200,168,75,.18);
   position:relative;z-index:1;
 }
-.diag-module{
-  background:rgba(8,8,8,.96);padding:26px 22px;text-align:left;
-  transition:background .3s,transform .3s;position:relative;
+.intel-item{
+  padding:42px;
+  border-right:1px solid rgba(200,168,75,.18);
+  border-bottom:1px solid rgba(200,168,75,.18);
+  background:rgba(10,9,6,.82);
+  text-align:left;
+  position:relative;
+  transition:background .25s ease,transform .25s ease,box-shadow .25s ease;
 }
-.diag-module:hover{background:rgba(14,13,9,.96);transform:translateY(-2px);box-shadow:0 8px 24px rgba(0,0,0,.3)}
-.diag-module:hover .diag-module-num{color:rgba(200,168,75,.5)}
-.diag-module-num{
-  font-size:.52rem;letter-spacing:.22em;text-transform:uppercase;
-  color:rgba(200,168,75,.48);margin-bottom:12px;
+.intel-item:hover{
+  background:rgba(20,17,10,.92);
+  transform:translateY(-2px);
+  box-shadow:0 8px 28px rgba(0,0,0,.32);
 }
-.diag-module-title{
+.intel-item--wide{
+  grid-column:1 / -1;
+}
+.intel-signal{
+  width:44px;height:44px;border-radius:50%;
+  border:1px solid rgba(200,168,75,.4);
+  display:flex;align-items:center;justify-content:center;
+  font-size:.78rem;color:rgba(200,168,75,.85);
+  margin-bottom:16px;position:relative;flex-shrink:0;
+  background:rgba(200,168,75,.06);
+}
+.intel-signal::after{
+  content:'';position:absolute;inset:-7px;border-radius:50%;
+  border:1px solid rgba(200,168,75,.2);
+  opacity:0;
+  animation:intelPulse 6s ease-in-out infinite;
+}
+@keyframes intelPulse{
+  0%,60%,100%{opacity:0;transform:scale(1)}
+  70%{opacity:.45;transform:scale(1.18)}
+}
+.intel-icon{
+  width:18px;height:18px;margin-bottom:10px;
+  color:rgba(200,168,75,.7);display:block;
+}
+.intel-title{
   font-family:'Cormorant Garamond',serif;
-  font-size:1.04rem;font-weight:600;
-  color:rgba(237,232,222,.94);margin-bottom:10px;
-  line-height:1.28;letter-spacing:.01em;
+  font-size:1.18rem;font-weight:500;
+  color:#f5f0e8;margin-bottom:12px;
+  line-height:1.28;
 }
-.diag-module-body{
-  font-size:.9rem;color:rgba(208,206,198,.76);
-  line-height:1.82;font-weight:300;
+.intel-desc{
+  font-size:.95rem;color:rgba(218,213,202,.9);
+  line-height:1.62;font-weight:300;
+  max-width:42ch;
 }
 
 /* ── CTA wrap ── */
@@ -2657,36 +2727,36 @@ body::before{
 
 /* ── Diagnostic responsive ── */
 @media(max-width:900px){
-  #proof{padding:40px 40px 0;scroll-margin-top:56px}
-  .diag-modules{grid-template-columns:repeat(2,1fr);gap:1px;margin-bottom:40px}
-  .diag-module:last-child{grid-column:1 / -1}
-  .diag-module{padding:24px 22px}
-  .diag-module-title{font-size:1.08rem}
-  .diag-module-body{font-size:.92rem;line-height:1.84}
+  #proof{padding:22px 40px 0;scroll-margin-top:56px}
+  .intel-grid{margin-bottom:40px}
+  .intel-item{padding:28px 26px}
+  .intel-title{font-size:1.08rem}
+  .intel-desc{font-size:.9rem;max-width:100%}
   .diag-cta-meta{font-size:.64rem;letter-spacing:.13em}
-  .diag-panel-body{gap:22px;padding:28px 28px 22px}
+  .diag-panel-body{gap:0;padding:14px 28px 10px}
   .diag-bridge{height:40px;margin-top:24px}
   .proof-section{padding:28px 40px 56px}
   .proof-grid{grid-template-columns:1fr;gap:14px}
 }
 @media(max-width:600px){
-  #proof{padding:32px 24px 0;scroll-margin-top:48px}
-  .diag-modules{grid-template-columns:1fr 1fr;margin-bottom:36px}
-  .diag-module{padding:22px 20px}
-  .diag-module-title{font-size:1.1rem}
-  .diag-module-body{font-size:.94rem;line-height:1.86}
+  #proof{padding:18px 24px 0;scroll-margin-top:48px}
   .diag-modules-label{font-size:.58rem;color:rgba(200,168,75,.42)}
+  .intel-grid{grid-template-columns:1fr;margin-bottom:36px}
+  .intel-item--wide{grid-column:auto}
+  .intel-item{padding:26px 22px}
+  .intel-title{font-size:1.1rem}
+  .intel-desc{font-size:.92rem;max-width:100%}
+  .intel-header h2{font-size:1.28rem}
+  .intel-header p{font-size:.88rem}
   .diag-panel{max-width:420px;margin-left:auto;margin-right:auto}
-  .diag-panel-body{flex-direction:column;text-align:center;gap:0;padding:24px 20px 20px}
+  .diag-panel-body{text-align:center;gap:0;padding:12px 20px 10px}
   .diag-score-block{
     border-right:none;
     border-bottom:none;
-    padding:0 0 18px;
-    min-width:auto;
-    width:100%;
-    align-self:stretch;
+    padding:0;
     position:relative;
   }
+  .diag-orbit-container{width:240px;height:240px}
   .diag-score-block::after{
     content:'';
     position:absolute;bottom:0;left:12%;right:12%;height:1px;
@@ -2730,6 +2800,7 @@ body::before{
 @media(max-width:430px){
   /* ── Score block proportion + hierarchy at 430px ── */
   .diag-panel{max-width:400px}
+  .diag-orbit-container{width:250px;height:250px}
   .diag-panel-body{padding:22px 18px 18px}
   .diag-score-block{padding:0 0 16px}
   .diag-score-label{font-size:.5rem;letter-spacing:.24em;margin-bottom:6px}
@@ -2758,9 +2829,6 @@ body::before{
   .diag-panel-footer-left strong{font-size:.76rem}
 }
 @media(max-width:400px){
-  .diag-modules{grid-template-columns:1fr}
-  .diag-module:last-child{grid-column:auto}
-  .diag-module-body{font-size:.96rem;line-height:1.88}
 
   /* ── Panel outer balance at 375–400px ── */
   .diag-panel{max-width:calc(100vw - 40px);margin-left:auto;margin-right:auto}
@@ -3548,7 +3616,7 @@ body::before{
     position:fixed;bottom:0;left:0;right:0;
     z-index:250;
     background:rgba(8,8,8,.97);
-    backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);
+    backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
     border-top:1px solid rgba(200,168,75,.18);
     padding:12px 20px calc(12px + env(safe-area-inset-bottom,0px));
     transform:translateY(100%);
@@ -3585,8 +3653,12 @@ body::before{
   }
   .msc-secondary:hover{color:var(--gold)}
   .msc-secondary:focus-visible{outline:2px solid var(--gold);outline-offset:3px}
-  /* Nudge BTT above bar */
-  body.msc-active .btt{bottom:88px}
+  /* Nudge floating controls above sticky bar via shared --mob-bar-h variable.
+     Sticky bar anatomy: 12px top + 56px btn + 12px bottom = 80px.
+     Floating stack: bar → 16px gap → AI trigger (40px) → 16px gap → BTT (40px). */
+  body.msc-active{--mob-bar-h:80px}
+  /* Legacy fallback (overridden by variable formula, kept for safety) */
+  body.msc-active .btt{bottom:152px}
 }
 
 /* ── 5. Pricing card improvements ── */
@@ -3811,6 +3883,21 @@ body::before{
 @media(max-width:900px){.ace-section{padding:72px 40px}.ace-grid{grid-template-columns:repeat(3,1fr)}}
 @media(max-width:600px){.ace-section{padding:56px 24px}.ace-grid{grid-template-columns:1fr 1fr}.feat-cards{grid-template-columns:1fr}}
 @media(max-width:400px){.ace-grid{grid-template-columns:1fr}}
+
+/* Final pre-live readability refinements */
+.steps-trust-label,
+.steps-surface,
+.offer-guide-line,
+.offer-guide-sub,
+.url-more,
+.tier-price sub,
+.ul-state-label{
+  font-size:max(.78rem, 12px);
+  line-height:1.55;
+}
+.offer-guide-sub,
+.url-more,
+.tier-price sub{color:rgba(180,180,172,.84)}
 </style>
 @if(config('services.recaptcha.site_key'))
 <script src="https://www.google.com/recaptcha/api.js?render={{ config('services.recaptcha.site_key') }}" async defer></script>
@@ -3985,6 +4072,7 @@ body::before{
     <a href="#proof" class="btn-ghost">See an Example</a>
   </div>
 
+
 </section>
 
 <div class="hero-transition">
@@ -4010,21 +4098,44 @@ body::before{
       <span class="diag-panel-label">yourbusiness.com &middot; AI Citation Analysis</span>
     </div>
     <div class="diag-panel-body">
-      <div class="diag-score-block">
-        <div class="diag-score-label">AI Visibility Score</div>
-        <div class="diag-score-num" id="diagScoreNum" data-target="72">0</div>
-        <div class="diag-score-state" id="diagScoreState">Analyzing&hellip;</div>
-        <div class="diag-score-denom">/ 100 Citation Score</div>
-        <div class="diag-score-proof">Based on real AI extraction signals</div>
-        <div class="diag-score-badge">Above Baseline</div>
+      <div class="diag-orbit-container">
+        @include('components.ai-score-orbit', ['score' => 72, 'label' => 'AI Visibility Score', 'size' => 'lg'])
       </div>
-      <div class="diag-results">
-        <div class="diag-result-row"><span class="diag-result-indicator --confirmed"></span> Structured data signals detected</div>
-        <div class="diag-result-row"><span class="diag-result-indicator --issue"></span> Answerable content gaps found</div>
-        <div class="diag-result-row"><span class="diag-result-indicator --confirmed"></span> Entity authority present</div>
-        <div class="diag-result-row"><span class="diag-result-indicator --evaluating"></span> Content connectivity below threshold</div>
-        <div class="diag-result-row"><span class="diag-result-indicator --confirmed"></span> Authority depth sufficient</div>
+      <p class="diag-score-proof">Measured against real AI search behavior</p>
+      <p class="diag-score-sub">Shows how likely AI is to understand and use your site</p>
+      <div class="diag-signal-bars" aria-label="Signal breakdown">
+        <div class="diag-signal-bar-row">
+          <span class="diag-signal-bar-label">Content Structure</span>
+          <div class="diag-signal-bar-track"><div class="diag-signal-bar-fill" style="--bar-w:78%"></div></div>
+          <span class="diag-signal-bar-val">78</span>
+        </div>
+        <div class="diag-signal-bar-row">
+          <span class="diag-signal-bar-label">Entity Clarity</span>
+          <div class="diag-signal-bar-track"><div class="diag-signal-bar-fill" style="--bar-w:68%"></div></div>
+          <span class="diag-signal-bar-val">68</span>
+        </div>
+        <div class="diag-signal-bar-row">
+          <span class="diag-signal-bar-label">Internal Linking</span>
+          <div class="diag-signal-bar-track"><div class="diag-signal-bar-fill" style="--bar-w:54%"></div></div>
+          <span class="diag-signal-bar-val">54</span>
+        </div>
+        <div class="diag-signal-bar-row">
+          <span class="diag-signal-bar-label">AI Extractability</span>
+          <div class="diag-signal-bar-track"><div class="diag-signal-bar-fill" style="--bar-w:82%"></div></div>
+          <span class="diag-signal-bar-val">82</span>
+        </div>
       </div>
+      <script>
+      (function(){
+        var bars = document.querySelectorAll('.diag-signal-bar-fill');
+        if(!bars.length) return;
+        function load(){ bars.forEach(function(b){ b.classList.add('is-loaded'); }); }
+        if('IntersectionObserver' in window){
+          var io = new IntersectionObserver(function(e){ if(e[0].isIntersecting){ setTimeout(load,400); io.disconnect(); } },{threshold:0.2});
+          io.observe(document.querySelector('.diag-signal-bars') || bars[0]);
+        } else { setTimeout(load,400); }
+      })();
+      </script>
     </div>
     <div class="diag-panel-footer">
       <span class="diag-opp-label">Primary opportunity identified</span>
@@ -4034,36 +4145,71 @@ body::before{
   </div>
 
   <div class="diag-connector" aria-hidden="true"></div>
-  <p class="diag-modules-label">What the Scan Checks</p>
-  <p class="diag-modules-sub">In seconds, the system checks whether AI can understand, trust, and cite your site.</p>
 
-  <!-- 5 Signal Modules -->
-  <div class="diag-modules">
-    <div class="diag-module">
-      <p class="diag-module-num">01</p>
-      <p class="diag-module-title">Can AI understand your business?</p>
-      <p class="diag-module-body">We check whether your site clearly tells AI what you do, where you work, and how your business is structured.</p>
+  <div class="intel-header">
+    <p class="diag-modules-label">Signal Intelligence</p>
+    <h2>How AI evaluates your site</h2>
+    <p>Five structural signals determine whether AI systems trust, extract, and cite your content.</p>
+  </div>
+
+  <!-- Intelligence Grid — 5 Signal Modules -->
+  <div class="intel-grid">
+
+    <div class="intel-item">
+      <div class="intel-signal"><span>01</span></div>
+      <svg class="intel-icon" viewBox="0 0 18 18" fill="none" aria-hidden="true">
+        <rect x="1" y="1" width="6" height="6" rx="1" stroke="currentColor" stroke-width="1.2"/>
+        <rect x="11" y="1" width="6" height="6" rx="1" stroke="currentColor" stroke-width="1.2"/>
+        <rect x="1" y="11" width="6" height="6" rx="1" stroke="currentColor" stroke-width="1.2"/>
+        <rect x="11" y="11" width="6" height="6" rx="1" stroke="currentColor" stroke-width="1.2"/>
+      </svg>
+      <p class="intel-title">Can AI understand your business?</p>
+      <p class="intel-desc">We check whether your site clearly tells AI what you do, where you work, and how your business is structured.</p>
     </div>
-    <div class="diag-module">
-      <p class="diag-module-num">02</p>
-      <p class="diag-module-title">Can AI pull a direct answer?</p>
-      <p class="diag-module-body">We check whether your site gives clear answers AI can quote instead of skipping past you.</p>
+
+    <div class="intel-item">
+      <div class="intel-signal"><span>02</span></div>
+      <svg class="intel-icon" viewBox="0 0 18 18" fill="none" aria-hidden="true">
+        <path d="M2 4h14M2 8h10M2 12h12" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/>
+        <path d="M14 14l2-2-2-2" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      <p class="intel-title">Can AI pull a direct answer?</p>
+      <p class="intel-desc">We check whether your site gives clear answers AI can quote instead of skipping past you.</p>
     </div>
-    <div class="diag-module">
-      <p class="diag-module-num">03</p>
-      <p class="diag-module-title">Can AI trust what you say?</p>
-      <p class="diag-module-body">We check whether your site defines services and topics clearly enough to be treated as a reliable source.</p>
+
+    <div class="intel-item">
+      <div class="intel-signal"><span>03</span></div>
+      <svg class="intel-icon" viewBox="0 0 18 18" fill="none" aria-hidden="true">
+        <path d="M9 1L2 4v5c0 4 3.1 7.5 7 8 3.9-.5 7-4 7-8V4L9 1z" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"/>
+        <path d="M6 9l2 2 4-4" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      <p class="intel-title">Can AI trust what you say?</p>
+      <p class="intel-desc">We check whether your site defines services and topics clearly enough to be treated as a reliable source.</p>
     </div>
-    <div class="diag-module">
-      <p class="diag-module-num">04</p>
-      <p class="diag-module-title">Do your pages support each other?</p>
-      <p class="diag-module-body">We check whether your pages work together to reinforce one clear topic instead of competing with each other.</p>
+
+    <div class="intel-item">
+      <div class="intel-signal"><span>04</span></div>
+      <svg class="intel-icon" viewBox="0 0 18 18" fill="none" aria-hidden="true">
+        <circle cx="9" cy="9" r="2.5" stroke="currentColor" stroke-width="1.2"/>
+        <circle cx="2.5" cy="5" r="1.5" stroke="currentColor" stroke-width="1.1"/>
+        <circle cx="15.5" cy="5" r="1.5" stroke="currentColor" stroke-width="1.1"/>
+        <circle cx="2.5" cy="13" r="1.5" stroke="currentColor" stroke-width="1.1"/>
+        <circle cx="15.5" cy="13" r="1.5" stroke="currentColor" stroke-width="1.1"/>
+        <path d="M9 6.5L4 6.5M9 11.5L4 11.5M9 6.5l6 0M9 11.5l6 0" stroke="currentColor" stroke-width="1" stroke-linecap="round"/>
+      </svg>
+      <p class="intel-title">Do your pages support each other?</p>
+      <p class="intel-desc">We check whether your pages work together to reinforce one clear topic instead of competing with each other.</p>
     </div>
-    <div class="diag-module">
-      <p class="diag-module-num">05</p>
-      <p class="diag-module-title">Are you strong enough to be cited?</p>
-      <p class="diag-module-body">We check whether your site has enough depth and clarity to be chosen over weaker competitors.</p>
+
+    <div class="intel-item intel-item--wide">
+      <div class="intel-signal"><span>05</span></div>
+      <svg class="intel-icon" viewBox="0 0 18 18" fill="none" aria-hidden="true">
+        <path d="M9 1.5l2.1 4.3 4.7.7-3.4 3.3.8 4.7L9 12.3l-4.2 2.2.8-4.7L2.2 6.5l4.7-.7L9 1.5z" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"/>
+      </svg>
+      <p class="intel-title">Are you strong enough to be cited?</p>
+      <p class="intel-desc">We check whether your site has enough depth and clarity to be chosen over weaker competitors.</p>
     </div>
+
   </div>
 
   <div class="diag-cta-wrap">
@@ -4171,7 +4317,7 @@ body::before{
   <div class="pricing-cta-actions">
     <a href="{{ route('scan.start') }}" class="btn-primary">Start Your Scan — $2</a>
   </div>
-  <p class="pricing-cta-meta">Instant score &nbsp;&middot;&nbsp; No account needed &nbsp;&middot;&nbsp; One URL, 60 seconds</p>
+  <p class="pricing-cta-meta">Instant score &nbsp;&middot;&nbsp; Takes seconds &nbsp;&middot;&nbsp; One URL</p>
 </div>
 
 <!-- ════════════ PHASE 6 — TIER FRAMING ════════════ -->
@@ -4210,7 +4356,7 @@ body::before{
     </div>
     <div class="offer-panel">
       <div class="offer-positioning">
-        <p class="offer-positioning-bottom">Every level reveals more &mdash; from a quick readiness check to full market infrastructure.</p>
+        <p class="offer-positioning-bottom">Each level expands your system &mdash; from visibility to full market control.</p>
       </div>
     </div>
   </div>
@@ -4266,11 +4412,11 @@ body::before{
       </div>
     </div>
 
-    {{-- TIER 2 — Grow: Signal Expansion --}}
+    {{-- TIER 2 — Grow: Signal Analysis --}}
     <div class="tier report-tier">
       <span class="tier-step">Step 02</span>
       <span class="tier-flag">Grow</span>
-      <h3 class="tier-name">Signal Expansion</h3>
+      <h3 class="tier-name">Signal Analysis</h3>
       <div class="tier-stack">
         <div class="tier-price"><sup>$</sup>99</div>
         <p class="tier-position">Full signal mapping — every gap, every opportunity, ranked by impact.</p>
@@ -4286,7 +4432,7 @@ body::before{
           </li>
           <li>
             <svg fill="none" stroke="currentColor" stroke-width="1.4" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 7h16M4 12h16M4 17h10"/></svg>
-            Exportable intelligence + dashboard
+            Dashboard intelligence with immediate access
           </li>
         </ul>
       </div>
@@ -4295,11 +4441,11 @@ body::before{
       </div>
     </div>
 
-    {{-- TIER 3 — Scale: Structural Leverage (FOCAL / CORE) --}}
+    {{-- TIER 3 — Scale: Action Plan (FOCAL / CORE) --}}
     <div class="tier focal">
       <span class="tier-step">Step 03</span>
       <span class="tier-flag">Scale &mdash; Core</span>
-      <h3 class="tier-name">Structural Leverage</h3>
+      <h3 class="tier-name">Action Plan</h3>
       <div class="tier-stack">
         <div class="tier-price"><sup>$</sup>249</div>
         <p class="tier-position">Every correction prioritized, every opportunity sized, every gap closed.</p>
@@ -4307,7 +4453,7 @@ body::before{
         <ul class="tier-features">
           <li>
             <svg fill="none" stroke="currentColor" stroke-width="1.4" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 4h16v16H4zM4 10h16M10 4v16"/></svg>
-            <strong>Everything in Signal Expansion</strong>
+            <strong>Everything in Signal Analysis</strong>
           </li>
           <li>
             <svg fill="none" stroke="currentColor" stroke-width="1.4" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 17l6-6 4 4 6-8M16 7h4v4"/></svg>
@@ -4324,11 +4470,11 @@ body::before{
       </div>
     </div>
 
-    {{-- TIER 4 — Implement: System Activation --}}
+    {{-- TIER 4 — Implement: Guided Execution --}}
     <div class="tier">
       <span class="tier-step">Step 04</span>
       <span class="tier-flag">Implement</span>
-      <h3 class="tier-name">System Activation</h3>
+      <h3 class="tier-name">Guided Execution</h3>
       <div class="tier-stack">
         <div class="tier-price"><sup>$</sup>489</div>
         <p class="tier-position">Competitive positioning, market mapping, and full coverage architecture.</p>
@@ -4336,7 +4482,7 @@ body::before{
         <ul class="tier-features">
           <li>
             <svg fill="none" stroke="currentColor" stroke-width="1.4" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
-            <strong>Everything in Structural Leverage</strong>
+            <strong>Everything in Action Plan</strong>
           </li>
           <li>
             <svg fill="none" stroke="currentColor" stroke-width="1.4" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064"/></svg>
@@ -4576,7 +4722,7 @@ body::before{
         <p class="fcc-card-label">Start here</p>
         <p class="fcc-card-title">See where you stand</p>
         <a href="{{ route('scan.start') }}" class="fcc-primary" onclick="if(typeof gtag==='function')gtag('event','cta_click',{cta_location:'final_close',cta_label:'run_scan'});">Start Your Scan — $2</a>
-        <p class="fcc-card-note">Results in seconds &middot; No account needed</p>
+        <p class="fcc-card-note">Results in seconds &middot; Guided setup</p>
       </div>
       <div class="fcc-card fcc-card--system">
         <p class="fcc-card-label">Returning users</p>
@@ -4608,7 +4754,7 @@ body::before{
     <p class="gate-desc">Deploy the AI Citation Engine™ into your existing site.<br><br>This includes:<br><strong>&#8226; Structured service + location pages<br>&#8226; Schema, internal linking, and AI guidance signals<br>&#8226; Citation infrastructure across your full service area</strong><br><br>Deployed and managed under a single agreement.</p>
     <div class="gate-tiers">
       <div class="gate-tier" data-tier="expansion">
-        <div class="gate-tier-name">System Activation</div>
+        <div class="gate-tier-name">Guided Execution</div>
         <div class="gate-tier-price">$489+</div>
         <div class="gate-tier-urls">Foundation level</div>
       </div>
@@ -4623,7 +4769,7 @@ body::before{
         <div class="gate-tier-urls">Preferred &middot; Priority access</div>
       </div>
     </div>
-    <p class="gate-guidance">Most businesses start with System Activation, then expand into Market Control.</p>
+    <p class="gate-guidance">Most businesses start with Guided Execution, then expand into Market Control.</p>
     <a href="/onboarding/start?tier=dominance" class="gate-cta" id="gateCta">Activate My Market</a>
     <button class="gate-skip" id="gateSkip">Continue browsing</button>
   </div>
@@ -4882,6 +5028,7 @@ body::before{
     var nodes=[], raf, W, H;
     var COUNT, LINK, mobile;
     var tick = 0;
+    var running = false;
     /* Mouse proximity tracking (CSS-pixel coordinates) */
     var mouseX = -9999, mouseY = -9999;
     var HOVER_R = 180;
@@ -4898,8 +5045,8 @@ body::before{
     }
     function resize(){
       mobile = window.innerWidth < 700;
-      COUNT  = mobile ? 27 : 42;
-      LINK   = mobile ? 195 : 250;
+      COUNT  = mobile ? 18 : 30;
+      LINK   = mobile ? 180 : 220;
       var r = canvas.getBoundingClientRect();
       W = r.width; H = r.height;
       if(!W || !H) return;
@@ -4910,22 +5057,27 @@ body::before{
     function init(){
       resize(); nodes = [];
       for(var i = 0; i < COUNT; i++){
+        /* Layered star field: 70% tiny points, 20% small, 10% slightly larger accent */
+        var tier = Math.random();
+        var baseR = tier < .70 ? Math.random() * .55 + .25   /* 0.25–0.80 — star point */
+                  : tier < .90 ? Math.random() * .55 + .70   /* 0.70–1.25 — small star */
+                  :              Math.random() * .45 + 1.20;  /* 1.20–1.65 — accent (rare) */
         nodes.push({
           x:  Math.random() * W,
           y:  Math.random() * H,
-          vx: (Math.random() - .5) * .26,
-          vy: (Math.random() - .5) * .26,
-          r:  Math.random() * 2.1 + 1.05,  /* larger: range 1.05–3.15 */
+          vx: (Math.random() - .5) * .14,
+          vy: (Math.random() - .5) * .14,
+          r:  baseR,
           phase:    Math.random() * Math.PI * 2,
-          glowMult: Math.random() * .9 + .55  /* depth: 0.55–1.45 */
+          glowMult: Math.random() * .55 + .25  /* restrained depth: 0.25–0.80 */
         });
       }
     }
     function frame(){
-      if(!W || !H){ raf = requestAnimationFrame(frame); return; }
+      if(!W || !H){ if(running) raf = requestAnimationFrame(frame); return; }
       ctx.clearRect(0, 0, W, H);
-      tick += 0.020;  /* slightly faster sine cycle */
-      /* ── Connection lines ── */
+      tick += 0.012;  /* slow, space-like cycle */
+      /* ── Connection lines — faint map lines ── */
       for(var i = 0; i < nodes.length; i++){
         for(var j = i+1; j < nodes.length; j++){
           var dx = nodes[j].x - nodes[i].x;
@@ -4935,50 +5087,56 @@ body::before{
             ctx.beginPath();
             ctx.moveTo(nodes[i].x, nodes[i].y);
             ctx.lineTo(nodes[j].x, nodes[j].y);
-            ctx.strokeStyle = 'rgba('+G+','+(1 - d/LINK)*.42+')';
-            ctx.lineWidth = .65;
+            ctx.strokeStyle = 'rgba('+G+','+(1 - d/LINK)*.16+')';
+            ctx.lineWidth = .35;
             ctx.stroke();
           }
         }
       }
-      /* ── Nodes ── */
+      /* ── Nodes — star points with minimal halo ── */
       for(var i = 0; i < nodes.length; i++){
         var n = nodes[i];
-        var pulse = .44 + Math.sin(tick + n.phase) * .12;  /* range 0.32–0.56 */
+        var pulse = .28 + Math.sin(tick + n.phase) * .06;  /* range 0.22–0.34 — restrained */
         var glow  = n.glowMult;
-        /* proximity boost — subtle card hover effect */
+        /* proximity boost — very subtle */
         var mdx = n.x - mouseX;
         var mdy = n.y - mouseY;
         var md  = Math.sqrt(mdx*mdx + mdy*mdy);
-        var boost = md < HOVER_R ? (1 - md / HOVER_R) * .55 : 0;
-        ctx.shadowBlur  = (glow + boost) * 12;
-        ctx.shadowColor = 'rgba('+G+','+((glow + boost) * .52).toFixed(2)+')';
+        var boost = md < HOVER_R ? (1 - md / HOVER_R) * .20 : 0;
+        /* Minimal halo — barely perceptible, avoids orb look */
+        if(glow > .55){  /* only accent-tier nodes get any halo */
+          ctx.beginPath();
+          ctx.arc(n.x, n.y, n.r * (3.5 + glow * 1.5), 0, Math.PI*2);
+          ctx.fillStyle = 'rgba('+G+','+(glow * .022 + boost * .01).toFixed(3)+')';
+          ctx.fill();
+        }
+        /* Core star point */
         ctx.beginPath();
-        ctx.arc(n.x, n.y, n.r * (1 + boost * .3), 0, Math.PI*2);
-        ctx.fillStyle = 'rgba('+G+','+(pulse + boost * .24).toFixed(3)+')';
+        ctx.arc(n.x, n.y, n.r * (1 + boost * .15), 0, Math.PI*2);
+        ctx.fillStyle = 'rgba('+G+','+(pulse + boost * .08).toFixed(3)+')';
         ctx.fill();
-        ctx.shadowBlur = 0;
         if(!reduced){
-          n.x += n.vx * .80;  /* moderately paced */
-          n.y += n.vy * .80;
+          n.x += n.vx * .55;  /* slow spatial drift */
+          n.y += n.vy * .55;
           if(n.x < 0) n.x = W;  if(n.x > W) n.x = 0;
           if(n.y < 0) n.y = H;  if(n.y > H) n.y = 0;
         }
       }
-      raf = requestAnimationFrame(frame);
+      if(running) raf = requestAnimationFrame(frame);
     }
-    /* IntersectionObserver: only run when section is visible */
+    /* Persistent IO — pauses rendering when out of viewport, resumes on re-entry */
+    function start(){ if(!running){ if(!W) init(); running = true; raf = requestAnimationFrame(frame); } }
+    function stop(){  if(running){  running = false; cancelAnimationFrame(raf); } }
     if('IntersectionObserver' in window){
       var io = new IntersectionObserver(function(entries){
-        if(entries[0].isIntersecting){ init(); raf = requestAnimationFrame(frame); io.disconnect(); }
+        if(entries[0].isIntersecting) start(); else stop();
       },{threshold:.05});
       io.observe(canvas);
-    } else {
-      init(); raf = requestAnimationFrame(frame);
-    }
+    } else { init(); start(); }
+    document.addEventListener('visibilitychange', function(){ if(document.hidden) stop(); });
     window.addEventListener('resize', function(){
-      cancelAnimationFrame(raf); init(); raf = requestAnimationFrame(frame);
-    });
+      stop(); init(); start();
+    },{passive:true});
   })();
 
   /* ── Infrastructure Principle canvas — sparse constellation ── */
@@ -5002,19 +5160,23 @@ body::before{
     function init(){
       resize(); nodes=[];
       for(var i=0;i<COUNT;i++){
+        var tier = Math.random();
+        var baseR = tier < .70 ? Math.random()*.35+.15   /* 0.15–0.50 star point */
+                  : tier < .90 ? Math.random()*.30+.45   /* 0.45–0.75 small star */
+                  :              Math.random()*.25+.72;   /* 0.72–0.97 rare accent */
         nodes.push({
           x:Math.random()*W, y:Math.random()*H,
-          vx:(Math.random()-.5)*.52, vy:(Math.random()-.5)*.52,
-          r:Math.random()*1.2+.7,
+          vx:(Math.random()-.5)*.28, vy:(Math.random()-.5)*.28,
+          r:baseR,
           phase:Math.random()*Math.PI*2
         });
       }
     }
     function frame(){
       ctx.clearRect(0,0,W,H);
-      tick += 0.018;
+      tick += 0.011;
 
-      /* connection lines — sparse, fine */
+      /* connection lines — constellation map lines, very faint */
       for(var i=0;i<nodes.length;i++){
         for(var j=i+1;j<nodes.length;j++){
           var dx=nodes[j].x-nodes[i].x, dy=nodes[j].y-nodes[i].y;
@@ -5023,25 +5185,22 @@ body::before{
             ctx.beginPath();
             ctx.moveTo(nodes[i].x,nodes[i].y);
             ctx.lineTo(nodes[j].x,nodes[j].y);
-            ctx.strokeStyle='rgba('+G+','+(1-d/LINK)*.18+')';
-            ctx.lineWidth=.4;
+            ctx.strokeStyle='rgba('+G+','+(1-d/LINK)*.10+')';
+            ctx.lineWidth=.28;
             ctx.stroke();
           }
         }
       }
 
-      /* nodes — small, gentle pulse, no heavy glow */
+      /* nodes — true star points, no shadow, no glow */
       for(var i=0;i<nodes.length;i++){
         var n = nodes[i];
-        var pulse = .30 + Math.sin(tick + n.phase) * .10;
+        var pulse = .20 + Math.sin(tick + n.phase) * .07;  /* 0.13–0.27 */
 
-        ctx.shadowBlur  = 6;
-        ctx.shadowColor = 'rgba('+G+',.18)';
         ctx.beginPath();
         ctx.arc(n.x, n.y, n.r, 0, Math.PI*2);
         ctx.fillStyle   = 'rgba('+G+','+pulse.toFixed(3)+')';
         ctx.fill();
-        ctx.shadowBlur  = 0;
 
         if(!reduced){
           n.x += n.vx;
@@ -5070,6 +5229,7 @@ body::before{
     var BASE_COUNT=28, LINK=200, G='200,168,75';
     var reduced = window.matchMedia('(prefers-reduced-motion:reduce)').matches;
     var tick=0;
+    var running=false;
 
     function resize(){
       var DPR = Math.min(window.devicePixelRatio||1, 2);
@@ -5083,17 +5243,21 @@ body::before{
       resize(); nodes=[];
       var COUNT = W < 640 ? 16 : BASE_COUNT;
       for(var i=0;i<COUNT;i++){
+        var tier = Math.random();
+        var baseR = tier < .72 ? Math.random()*.40+.18   /* 0.18–0.58 star point */
+                  : tier < .92 ? Math.random()*.35+.52   /* 0.52–0.87 small star */
+                  :              Math.random()*.30+.85;   /* 0.85–1.15 rare accent */
         nodes.push({
           x:Math.random()*W, y:Math.random()*H,
-          vx:(Math.random()-.5)*.14, vy:(Math.random()-.5)*.14,
-          r:Math.random()*1.4+.6,
+          vx:(Math.random()-.5)*.072, vy:(Math.random()-.5)*.072,
+          r:baseR,
           phase:Math.random()*Math.PI*2
         });
       }
     }
     function frame(){
       ctx.clearRect(0,0,W,H);
-      tick += 0.016;
+      tick += 0.010;
 
       for(var i=0;i<nodes.length;i++){
         for(var j=i+1;j<nodes.length;j++){
@@ -5103,8 +5267,8 @@ body::before{
             ctx.beginPath();
             ctx.moveTo(nodes[i].x,nodes[i].y);
             ctx.lineTo(nodes[j].x,nodes[j].y);
-            ctx.strokeStyle='rgba('+G+','+(1-d/LINK)*.22+')';
-            ctx.lineWidth=.45;
+            ctx.strokeStyle='rgba('+G+','+(1-d/LINK)*.12+')';
+            ctx.lineWidth=.30;
             ctx.stroke();
           }
         }
@@ -5112,34 +5276,34 @@ body::before{
 
       for(var i=0;i<nodes.length;i++){
         var n = nodes[i];
-        var pulse = .24 + Math.sin(tick + n.phase) * .09;
+        var pulse = .18 + Math.sin(tick + n.phase) * .06;  /* 0.12–0.24 — fine star point */
         ctx.beginPath();
         ctx.arc(n.x, n.y, n.r, 0, Math.PI*2);
         ctx.fillStyle = 'rgba('+G+','+pulse.toFixed(3)+')';
         ctx.fill();
 
         if(!reduced){
-          n.x += n.vx * .72;
-          n.y += n.vy * .72;
+          n.x += n.vx * .55;
+          n.y += n.vy * .55;
           if(n.x<0)n.x=W; if(n.x>W)n.x=0;
           if(n.y<0)n.y=H; if(n.y>H)n.y=0;
         }
       }
-      raf = requestAnimationFrame(frame);
+      if(running) raf = requestAnimationFrame(frame);
     }
 
+    function start(){ if(!running){ if(!W) init(); running=true; raf=requestAnimationFrame(frame); } }
+    function stop(){  if(running){  running=false; cancelAnimationFrame(raf); } }
     if('IntersectionObserver' in window){
       var io = new IntersectionObserver(function(entries){
-        if(entries[0].isIntersecting){init();raf=requestAnimationFrame(frame);io.disconnect();}
+        if(entries[0].isIntersecting) start(); else stop();
       },{threshold:.05});
       io.observe(canvas);
-    } else {
-      init(); raf = requestAnimationFrame(frame);
-    }
+    } else { init(); start(); }
+    document.addEventListener('visibilitychange', function(){ if(document.hidden) stop(); });
     window.addEventListener('resize',function(){
-      cancelAnimationFrame(raf); init();
-      raf = requestAnimationFrame(frame);
-    });
+      stop(); init(); start();
+    },{passive:true});
   })();
 
   /* ── Final Closing CTA canvas (brighter than infra-principle) ── */
@@ -5148,12 +5312,13 @@ body::before{
     if(!canvas) return;
     var ctx = canvas.getContext('2d');
     var nodes=[], raf, W, H;
-    var COUNT=30, LINK=200, G='200,168,75';
+    var LINK=200, G='200,168,75';
     var reduced = window.matchMedia('(prefers-reduced-motion:reduce)').matches;
     var tick=0;
+    var running=false;
 
     function resize(){
-      var DPR = window.devicePixelRatio || 1;
+      var DPR = Math.min(window.devicePixelRatio || 1, 2);
       W = canvas.offsetWidth;
       H = canvas.offsetHeight;
       canvas.width  = Math.round(W * DPR);
@@ -5161,20 +5326,22 @@ body::before{
       ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
     }
     function init(){
-      resize(); nodes=[];
+      resize();
+      var COUNT = window.innerWidth < 700 ? 14 : 22;
+      nodes=[];
       for(var i=0;i<COUNT;i++){
         nodes.push({
           x:Math.random()*W, y:Math.random()*H,
-          vx:(Math.random()-.5)*.22, vy:(Math.random()-.5)*.22,
-          r:Math.random()*1.8+.9,
+          vx:(Math.random()-.5)*.14, vy:(Math.random()-.5)*.14,
+          r:Math.random()<.70 ? Math.random()*.38+.18 : Math.random()<.90 ? Math.random()*.30+.48 : Math.random()*.28+.72,
           phase:Math.random()*Math.PI*2,
-          glowMult:Math.random()*.9+.6
+          glowMult:Math.random()*.55+.22
         });
       }
     }
     function frame(){
       ctx.clearRect(0,0,W,H);
-      tick += 0.022;
+      tick += 0.012;
 
       for(var i=0;i<nodes.length;i++){
         for(var j=i+1;j<nodes.length;j++){
@@ -5184,8 +5351,8 @@ body::before{
             ctx.beginPath();
             ctx.moveTo(nodes[i].x,nodes[i].y);
             ctx.lineTo(nodes[j].x,nodes[j].y);
-            ctx.strokeStyle='rgba('+G+','+(1-d/LINK)*.22+')';
-            ctx.lineWidth=.45;
+            ctx.strokeStyle='rgba('+G+','+(1-d/LINK)*.13+')';
+            ctx.lineWidth=.30;
             ctx.stroke();
           }
         }
@@ -5193,39 +5360,41 @@ body::before{
 
       for(var i=0;i<nodes.length;i++){
         var n = nodes[i];
-        var pulse = .28 + Math.sin(tick + n.phase) * .10;
+        var pulse = .24 + Math.sin(tick + n.phase) * .06;  /* 0.18–0.30 — restrained */
         var glow  = n.glowMult;
-        ctx.shadowBlur  = glow * 8;
-        ctx.shadowColor = 'rgba('+G+','+(glow*.28).toFixed(2)+')';
+        /* Minimal halo — only accent-tier nodes, barely visible */
+        if(glow > .55){
+          ctx.beginPath();
+          ctx.arc(n.x, n.y, n.r * (2.8 + glow * 1.2), 0, Math.PI*2);
+          ctx.fillStyle = 'rgba('+G+','+(glow * .020).toFixed(3)+')';
+          ctx.fill();
+        }
         ctx.beginPath();
         ctx.arc(n.x, n.y, n.r, 0, Math.PI*2);
         ctx.fillStyle   = 'rgba('+G+','+pulse.toFixed(3)+')';
         ctx.fill();
-        ctx.shadowBlur  = 0;
 
         if(!reduced){
-          n.x += n.vx * .65;
-          n.y += n.vy * .65;
+          n.x += n.vx * .55;
+          n.y += n.vy * .55;
           if(n.x<0)n.x=W; if(n.x>W)n.x=0;
           if(n.y<0)n.y=H; if(n.y>H)n.y=0;
         }
       }
-      raf = requestAnimationFrame(frame);
+      if(running) raf = requestAnimationFrame(frame);
     }
-
-    // Defer start until section enters viewport
+    function start(){ if(!running){ if(!W) init(); running=true; raf=requestAnimationFrame(frame); } }
+    function stop(){  if(running){  running=false; cancelAnimationFrame(raf); } }
     if('IntersectionObserver' in window){
       var io = new IntersectionObserver(function(entries){
-        if(entries[0].isIntersecting){init();raf=requestAnimationFrame(frame);io.disconnect();}
+        if(entries[0].isIntersecting) start(); else stop();
       },{threshold:.05});
       io.observe(canvas);
-    } else {
-      init(); raf = requestAnimationFrame(frame);
-    }
+    } else { init(); start(); }
+    document.addEventListener('visibilitychange', function(){ if(document.hidden) stop(); });
     window.addEventListener('resize',function(){
-      cancelAnimationFrame(raf); init();
-      raf = requestAnimationFrame(frame);
-    });
+      stop(); init(); start();
+    },{passive:true});
   })();
 
   /* ══════════════════════════════════════════════════════
@@ -5417,7 +5586,7 @@ body::before{
   });
 })();
 </script>
-@include('components.ai-assistant')
+@include('components.ai-assistant', ['aiMicroLabel' => 'Instant AI insights'])
 @include('components.tm-style')
 </body>
 </html>

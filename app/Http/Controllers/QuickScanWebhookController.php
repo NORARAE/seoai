@@ -75,26 +75,48 @@ class QuickScanWebhookController extends Controller
         }
 
         $scanId = (int) ($session->metadata?->scan_id ?? 0);
+        $scanUrl = trim((string) ($session->metadata?->scan_url ?? ''));
+        $scanEmail = strtolower(trim((string) ($session->metadata?->scan_email ?? ($session->customer_details?->email ?? ''))));
 
-        if (!$scanId) {
-            Log::warning('QuickScan webhook: missing scan_id in metadata', [
-                'session_id' => $session->id,
-            ]);
-
-            return response()->json(['message' => 'No scan_id in metadata.']);
-        }
-
-        // ── Find and process the scan ─────────────────────────────────────
-        $scan = QuickScan::find($scanId);
-
-        if (!$scan) {
-            Log::error('QuickScan webhook: scan not found', [
+        if ($scanId) {
+            // ── Flow A: scan_id in metadata (QuickScanController checkout path) ─────
+            Log::info('QuickScan webhook: Flow A — resolving by scan_id', [
                 'scan_id' => $scanId,
                 'session_id' => $session->id,
             ]);
 
-            return response()->json(['message' => 'Scan not found.']);
+            $scan = QuickScan::find($scanId);
+
+            if (!$scan) {
+                Log::error('QuickScan webhook: Flow A — scan not found', [
+                    'scan_id' => $scanId,
+                    'session_id' => $session->id,
+                ]);
+
+                return response()->json(['message' => 'Scan not found.'], Response::HTTP_UNPROCESSABLE_ENTITY);
+            }
+        } elseif ($scanEmail !== '' || $scanUrl !== '') {
+            // ── Flow B: scan_url/scan_email metadata (CheckoutController::scanBasic) ─
+            Log::info('QuickScan webhook: Flow B — resolving by scan_url/scan_email', [
+                'scan_email' => $scanEmail,
+                'scan_url' => $scanUrl,
+                'session_id' => $session->id,
+            ]);
+
+            $scan = $this->resolveOrCreateScanForFlowB($session, $scanEmail, $scanUrl);
+        } else {
+            // ── Unknown: metadata has neither scan_id nor scan_url/scan_email ────────
+            Log::warning('QuickScan webhook: no resolution metadata — cannot process', [
+                'session_id' => $session->id,
+                'metadata_keys' => array_keys((array) ($session->metadata ?? [])),
+            ]);
+
+            // Return 200 so Stripe stops retrying for truly unresolvable events.
+            return response()->json(['message' => 'Insufficient metadata to resolve scan.']);
         }
+
+        // Normalise $scanId to the resolved scan for all downstream log/response use.
+        $scanId = $scan->id;
 
         // Recovery safety net: if this scan is orphaned but a user exists by email, attach it.
         if (is_null($scan->user_id) && filled($scan->email)) {
@@ -142,9 +164,9 @@ class QuickScanWebhookController extends Controller
 
                 // Notify owner of upgrade purchase
                 $upgradeTiers = [
-                    'diagnostic' => ['name' => 'Signal Expansion — Full Analysis', 'amount' => 9900],
-                    'fix-strategy' => ['name' => 'Structural Leverage — Fix Strategy', 'amount' => 24900],
-                    'optimization' => ['name' => 'System Activation — Full Deployment', 'amount' => 48900],
+                    'diagnostic' => ['name' => 'Signal Analysis — Full Analysis', 'amount' => 9900],
+                    'fix-strategy' => ['name' => 'Action Plan — Fix Strategy', 'amount' => 24900],
+                    'optimization' => ['name' => 'Guided Execution — Full Deployment', 'amount' => 48900],
                 ];
                 $ut = $upgradeTiers[$upgradePlan] ?? ['name' => $upgradePlan, 'amount' => 0];
                 (new NotifyOwnerOfPurchase)->execute($scan, $ut['name'], $ut['amount']);
@@ -200,5 +222,75 @@ class QuickScanWebhookController extends Controller
         ]);
 
         return response()->json(['message' => 'Scan queued.', 'scan_id' => $scanId]);
+    }
+
+    /**
+     * Flow B resolution: no scan_id in metadata.
+     * Tries to match an existing QuickScan by Stripe session ID (idempotent),
+     * then by email + domain (recent unpaid), otherwise creates a new record.
+     */
+    private function resolveOrCreateScanForFlowB(object $session, string $email, string $rawUrl): QuickScan
+    {
+        // 1. Match by stripe_session_id — safe for webhook re-deliveries.
+        $existing = QuickScan::where('stripe_session_id', $session->id)->first();
+        if ($existing) {
+            Log::info('QuickScan webhook: Flow B — matched existing scan by stripe_session_id', [
+                'scan_id' => $existing->id,
+                'session_id' => $session->id,
+            ]);
+            return $existing;
+        }
+
+        // 2. Match a recent unpaid scan for the same email + domain.
+        if ($email !== '' && $rawUrl !== '') {
+            $domain = parse_url(rtrim($rawUrl, '/'), PHP_URL_HOST) ?: $rawUrl;
+
+            $existing = QuickScan::where('email', $email)
+                ->where('domain', $domain)
+                ->where('paid', false)
+                ->where('created_at', '>=', now()->subDay())
+                ->orderByDesc('created_at')
+                ->first();
+
+            if ($existing) {
+                Log::info('QuickScan webhook: Flow B — matched recent unpaid scan by email+domain', [
+                    'scan_id' => $existing->id,
+                    'session_id' => $session->id,
+                    'email' => $email,
+                    'domain' => $domain,
+                ]);
+                return $existing;
+            }
+        }
+
+        // 3. Create a new QuickScan record from the Stripe session data.
+        $url = $rawUrl !== '' ? rtrim($rawUrl, '/') : '';
+        if ($url !== '' && !preg_match('#^https?://#i', $url)) {
+            $url = 'https://' . $url;
+        }
+        if ($url === '' && $email !== '') {
+            $url = 'https://' . ltrim(substr($email, strpos($email, '@') + 1), 'www.');
+        }
+        $domain = parse_url($url, PHP_URL_HOST) ?: $url;
+        $customerEmail = $email !== '' ? $email : (string) ($session->customer_details?->email ?? '');
+
+        $scan = QuickScan::create([
+            'email' => $customerEmail,
+            'url' => $url,
+            'domain' => $domain,
+            'stripe_session_id' => $session->id,
+            'paid' => true,
+            'status' => QuickScan::STATUS_PAID,
+            'source' => 'checkout_scan-basic',
+        ]);
+
+        Log::info('QuickScan webhook: Flow B — created new QuickScan', [
+            'scan_id' => $scan->id,
+            'session_id' => $session->id,
+            'email' => $customerEmail,
+            'domain' => $domain,
+        ]);
+
+        return $scan;
     }
 }

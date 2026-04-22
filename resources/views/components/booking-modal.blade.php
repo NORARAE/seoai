@@ -12,7 +12,7 @@
   --sys-space-panel:24px;
   --sys-panel-radius:12px;
   --sys-panel-border:rgba(200,168,75,.14);
-  --sys-text-soft:rgba(168,168,160,.72);
+  --sys-text-soft:rgba(224,218,204,.9);
   --sys-cta-size:.72rem;
   --sys-cta-track:.12em;
 }
@@ -27,7 +27,7 @@
 .bk-dot.active{background:var(--gold,#c8a84b)}
 .bk-dot.done{background:var(--gold-dim,#9a7a30)}
 .bk-title{font-family:'Cormorant Garamond',serif;font-size:1.85rem;font-weight:400;letter-spacing:.02em;color:#ede8de;margin-bottom:6px;line-height:1.15}
-.bk-sub{font-size:.88rem;color:var(--sys-text-soft);margin-bottom:24px;line-height:1.75}
+.bk-sub{font-size:1rem;color:var(--sys-text-soft);margin-bottom:22px;line-height:1.58}
 .bk-step1-signal{font-size:.62rem;letter-spacing:.2em;text-transform:uppercase;color:rgba(168,168,160,.48);margin:0 0 14px}
 .bk-step-kicker{font-size:.64rem;letter-spacing:.18em;text-transform:uppercase;color:rgba(200,168,75,.72);margin:0 0 10px}
 .bk-back{background:none;border:none;color:#a8a8a0;font-size:.76rem;letter-spacing:.14em;text-transform:uppercase;cursor:pointer;margin-bottom:18px;transition:color .2s;padding:6px 0;min-height:36px}
@@ -54,8 +54,8 @@
 .bk-type-name{font-size:1rem;color:#ede8de;font-weight:400}
 .bk-type-meta{display:flex;gap:14px;align-items:center;flex-shrink:0;margin-left:12px}
 .bk-type-dur{font-size:.76rem;color:#a8a8a0}
-.bk-type-price{font-size:.92rem;color:var(--gold,#c8a84b);font-weight:500}
-.bk-type-desc{font-size:.78rem;color:#9a9a92;margin-top:4px;line-height:1.55}
+.bk-type-price{font-family:'Cormorant Garamond',serif;font-size:1.15rem;color:rgba(245,232,188,.95);font-weight:500;letter-spacing:.01em}
+.bk-type-desc{font-size:.88rem;color:rgba(230,224,210,.9);margin-top:4px;line-height:1.5}
 .bk-type-microcopy{font-size:.72rem;color:#a8a8a0;margin-top:5px;font-style:italic}
 .bk-type-qualify{font-size:.76rem;color:#9a9a92;margin-top:5px;letter-spacing:.01em;line-height:1.45}
 .bk-avail-note{font-size:.72rem;color:#6a6a60;text-align:center;margin:18px 0 0;letter-spacing:.08em;text-transform:uppercase}
@@ -93,8 +93,8 @@
 .bk-fullsvc-badge{display:inline-flex;align-items:center;background:rgba(200,168,75,.14);color:rgba(200,168,75,.92);font-size:.64rem;font-weight:600;letter-spacing:.14em;text-transform:uppercase;padding:5px 10px;border-radius:999px;margin-bottom:14px;border:1px solid rgba(200,168,75,.32);width:max-content}
 .bk-fullsvc-label{font-size:.64rem;letter-spacing:.16em;text-transform:uppercase;color:rgba(168,168,160,.56);margin-bottom:12px}
 .bk-fullsvc-name{font-family:'Cormorant Garamond',serif;font-size:1.78rem;font-weight:300;letter-spacing:.015em;color:#ede8de;line-height:1.14;margin-bottom:22px}
-.bk-fullsvc-price{font-family:'Cormorant Garamond',serif;font-size:2.2rem;font-weight:300;color:rgba(238,231,219,.9);line-height:1;margin-bottom:20px}
-.bk-fullsvc-note{font-size:.80rem;color:rgba(168,168,160,.63);line-height:1.45;margin-bottom:30px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.bk-fullsvc-price{font-family:'Cormorant Garamond',serif;font-size:2.75rem;font-weight:300;color:rgba(248,232,188,.98);line-height:1;margin-bottom:18px;text-shadow:0 0 18px rgba(200,168,75,.18)}
+.bk-fullsvc-note{font-size:.88rem;color:rgba(228,222,208,.9);line-height:1.5;margin-bottom:28px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
 .bk-fullsvc-subtext{font-size:.70rem;color:rgba(168,168,160,.52);line-height:1.45;margin-top:10px;text-align:center}
 .bk-fullsvc-cta-primary{display:block;width:100%;text-align:center;border-radius:10px;font-size:var(--sys-cta-size);font-weight:700;letter-spacing:var(--sys-cta-track);text-transform:uppercase;padding:0 14px;height:54px;text-decoration:none;transition:background .14s ease,border-color .14s ease,color .14s ease,transform .14s ease;cursor:pointer;font-family:inherit;box-sizing:border-box;margin-top:auto}
 .bk-fullsvc-card.secondary .bk-fullsvc-cta-primary{background:transparent;border:1px solid rgba(168,168,160,.26);color:rgba(237,232,222,.84)}
@@ -334,7 +334,7 @@
               <div class="bk-addon-check" x-text="addOns.includes('seo_audit') ? '✓' : ''"></div>
               <div>
                 <span class="bk-addon-name">Technical Visibility Snapshot <span class="bk-addon-price">+$175</span></span>
-                <div class="bk-addon-desc">Full-site crawl and signal analysis delivered within 48 hours of your session</div>
+                <div class="bk-addon-desc">Full-site crawl and signal analysis available in your dashboard before your session</div>
               </div>
             </div>
             <div class="bk-addon-card" :class="{selected: addOns.includes('competitor_analysis')}" @click="toggleAddOn('competitor_analysis')">

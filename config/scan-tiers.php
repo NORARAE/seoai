@@ -57,7 +57,7 @@ return [
     */
     'fix-strategy' => [
         'price' => 24900, // cents
-        'label' => 'Execution Layer',
+        'label' => 'Action Plan',
         'crawl_depth' => 2,
         'max_pages' => 30,
         'output_detail' => 'actionable', // full + fix prioritization + implementation steps
@@ -80,7 +80,7 @@ return [
     'optimization' => [
         'price_from' => 48900, // cents
         'price_to' => 68900, // cents
-        'label' => 'Full System Strategy',
+        'label' => 'Guided Execution',
         'crawl_depth' => 3,           // deeper internal link traversal
         'max_pages' => 50,          // up to 50 pages analyzed
         'output_detail' => 'expert',    // full + interpretation + opportunity mapping

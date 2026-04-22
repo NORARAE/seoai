@@ -717,14 +717,14 @@
             </div>
 
             @elseif($tierRank >= 3)
-            {{-- Has structural leverage ($249) — push to system activation ($489) --}}
+            {{-- Has Action Plan ($249) — push to Guided Execution ($489) --}}
             <div class="mt-6 bg-gradient-to-br from-indigo-50 to-blue-50 rounded-xl border border-indigo-200 p-6 hover:shadow-lg transition-all">
                 <p class="text-[10px] font-bold uppercase tracking-widest text-indigo-400 mb-1">Your Next Level</p>
-                <h4 class="font-semibold text-gray-900 mb-1">You've taken structural control — now activate the full system</h4>
-                <p class="text-sm text-gray-600 mb-4">System Activation puts your strategy into motion — entity architecture, content connectivity, and live market coverage expansion.</p>
+                <h4 class="font-semibold text-gray-900 mb-1">You've built your action plan — now execute it with guidance</h4>
+                <p class="text-sm text-gray-600 mb-4">Guided Execution turns your action plan into a step-by-step checklist inside your dashboard with progress tracking.</p>
                 <div class="flex flex-wrap gap-3">
                     <a href="{{ route('checkout.system-activation') }}" class="cta-glow inline-flex items-center gap-2 px-5 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg text-sm font-bold transition-all shadow-sm">
-                        Activate Full System — $489 →
+                        Start Guided Execution — $489 →
                     </a>
                     <a href="{{ url('/book?entry=consultation') }}" class="inline-flex items-center gap-2 px-4 py-2 bg-white border border-gray-200 hover:border-indigo-300 text-gray-700 rounded-lg text-sm font-medium transition-colors">
                         Book Consultation
@@ -733,18 +733,18 @@
             </div>
 
             @elseif($tierRank >= 2)
-            {{-- Has signal expansion ($99) — push to structural leverage ($249) --}}
+            {{-- Has Signal Analysis ($99) — push to Action Plan ($249) --}}
             <div class="mt-6 bg-gradient-to-br from-blue-50 to-cyan-50 rounded-xl border border-blue-200 p-6 relative overflow-hidden hover:shadow-lg transition-all">
                 <div class="absolute top-3 right-3 px-2 py-0.5 bg-blue-600 text-white text-[10px] font-bold uppercase rounded-full">Your Next Level</div>
                 <p class="text-[10px] font-bold uppercase tracking-widest text-blue-400 mb-1">Level 3</p>
-                <h4 class="font-semibold text-gray-900 mb-1">You've expanded your signals — now take structural control</h4>
-                <p class="text-sm text-gray-600 mb-4">Structural Leverage gives you the full audit, entity architecture, and content connectivity map. This is where the system becomes real.</p>
+                <h4 class="font-semibold text-gray-900 mb-1">You've got your signal analysis — now get your action plan</h4>
+                <p class="text-sm text-gray-600 mb-4">Action Plan gives you a ranked fix list from your scan, ordered by impact so you execute the highest-value changes first.</p>
                 <div class="flex flex-wrap gap-3">
                     <a href="{{ route('checkout.structural-leverage') }}" class="cta-glow inline-flex items-center gap-2 px-5 py-2.5 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-sm font-bold transition-all shadow-sm">
-                        Resolve Structural Gaps — $249 →
+                        Get Your Action Plan — $249 →
                     </a>
                     <a href="{{ route('checkout.system-activation') }}" class="inline-flex items-center gap-2 px-4 py-2 bg-white border border-gray-200 hover:border-blue-300 text-gray-700 rounded-lg text-sm font-medium transition-colors">
-                        Or Activate Full System — $489
+                        Or Start Guided Execution — $489
                     </a>
                 </div>
             </div>
@@ -754,19 +754,19 @@
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6">
                 <div class="bg-gradient-to-br from-indigo-50 to-blue-50 rounded-xl border border-indigo-100 p-6 hover:shadow-lg hover:-translate-y-0.5 transition-all">
                     <p class="text-[10px] font-bold uppercase tracking-widest text-indigo-400 mb-1">Level 2</p>
-                    <h4 class="font-semibold text-gray-900 mb-1">Signal Expansion</h4>
-                    <p class="text-sm text-gray-600 mb-4">Expanded gap analysis, competitive signal mapping, and actionable fix priorities.</p>
+                    <h4 class="font-semibold text-gray-900 mb-1">Signal Analysis</h4>
+                    <p class="text-sm text-gray-600 mb-4">Full signal breakdown by category, priority gap visibility, and deeper diagnostic context from your scan.</p>
                     <a href="{{ route('checkout.signal-expansion') }}" class="cta-glow inline-flex items-center gap-2 px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg text-sm font-bold transition-all">
-                        Unlock Signal Expansion — $99 →
+                        Unlock Signal Analysis — $99 →
                     </a>
                 </div>
                 <div class="bg-gradient-to-br from-blue-50 to-cyan-50 rounded-xl border border-blue-100 p-6 relative overflow-hidden hover:shadow-lg hover:-translate-y-0.5 transition-all">
                     <div class="absolute top-3 right-3 px-2 py-0.5 bg-blue-600 text-white text-[10px] font-bold uppercase rounded-full">Most Popular</div>
                     <p class="text-[10px] font-bold uppercase tracking-widest text-blue-400 mb-1">Level 3</p>
-                    <h4 class="font-semibold text-gray-900 mb-1">Structural Leverage</h4>
-                    <p class="text-sm text-gray-600 mb-4">Full structural audit, entity architecture, content connectivity — where the system becomes real.</p>
+                    <h4 class="font-semibold text-gray-900 mb-1">Action Plan</h4>
+                    <p class="text-sm text-gray-600 mb-4">Ranked fix list from your scan, ordered by impact — the fastest path from diagnosis to execution.</p>
                     <a href="{{ route('checkout.structural-leverage') }}" class="cta-glow inline-flex items-center gap-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-sm font-bold transition-all">
-                        Resolve Structural Gaps — $249 →
+                        Get Your Action Plan — $249 →
                     </a>
                 </div>
             </div>

@@ -21,7 +21,7 @@ class SystemActivationConfirmation extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Your System Activation is underway',
+            subject: 'Your Guided Execution plan is underway',
         );
     }
 

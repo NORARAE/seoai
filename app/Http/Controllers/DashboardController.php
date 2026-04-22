@@ -115,9 +115,9 @@ class DashboardController extends Controller
         ]));
 
         $nextStep = match (true) {
-            $tierRank <= 1 => 'Unlock Signal Expansion',
-            $tierRank === 2 => 'Unlock Structural Leverage',
-            $tierRank === 3 => 'Activate Full System',
+            $tierRank <= 1 => 'Unlock Signal Analysis',
+            $tierRank === 2 => 'Unlock Action Plan',
+            $tierRank === 3 => 'Unlock Guided Execution',
             default => null,
         };
 
@@ -129,10 +129,10 @@ class DashboardController extends Controller
         };
 
         $analysisLayers = [
-            ['key' => 'scan-basic', 'label' => 'Base Scan', 'price' => '$2', 'complete' => (bool) ($accessMap['scan'] ?? false)],
-            ['key' => 'signal-expansion', 'label' => 'Signal Expansion', 'price' => '$99', 'complete' => (bool) ($accessMap['signal'] ?? false)],
-            ['key' => 'structural-leverage', 'label' => 'Structural Leverage', 'price' => '$249', 'complete' => (bool) ($accessMap['leverage'] ?? false)],
-            ['key' => 'system-activation', 'label' => 'System Activation', 'price' => '$489', 'complete' => (bool) ($accessMap['activation'] ?? false)],
+            ['key' => 'scan-basic', 'label' => 'Baseline Score', 'price' => '$2', 'complete' => (bool) ($accessMap['scan'] ?? false)],
+            ['key' => 'signal-expansion', 'label' => 'Signal Analysis', 'price' => '$99', 'complete' => (bool) ($accessMap['signal'] ?? false)],
+            ['key' => 'structural-leverage', 'label' => 'Action Plan', 'price' => '$249', 'complete' => (bool) ($accessMap['leverage'] ?? false)],
+            ['key' => 'system-activation', 'label' => 'Guided Execution', 'price' => '$489', 'complete' => (bool) ($accessMap['activation'] ?? false)],
         ];
 
         $scanHistory = $scanProjects
@@ -188,6 +188,7 @@ class DashboardController extends Controller
         ];
 
         $scanIntelligence = $latestScanned?->intelligence ?? [];
+        $scanCategories = $latestScanned?->categories ?? [];
 
         $topFindings = [];
         $nextBestAction = null;
@@ -278,6 +279,7 @@ class DashboardController extends Controller
             'nextUpgrade' => $nextUpgrade,
             'scanIntelligence' => $scanIntelligence,
             'entitlements' => $accessMap,
+            'scanCategories' => $scanCategories,
             'scanHistory' => $scanHistory,
             'additionalCapabilities' => $additionalCapabilities,
             'agencyModeActive' => $agencyModeActive,

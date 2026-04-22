@@ -3,6 +3,7 @@
 namespace App\Filament\Resources\QuickScanResource\Pages;
 
 use App\Filament\Resources\QuickScanResource;
+use App\Filament\Widgets\QuickScanPurchaseStatsWidget;
 use App\Models\QuickScan;
 use Filament\Resources\Pages\ListRecords;
 use Filament\Schemas\Components\Tabs\Tab;
@@ -37,6 +38,13 @@ class ListQuickScans extends ListRecords
                 ->modifyQueryUsing(fn(Builder $query) => $query->where('status', 'error'))
                 ->badge(fn() => QuickScan::where('status', 'error')->count())
                 ->badgeColor('danger'),
+        ];
+    }
+
+    protected function getHeaderWidgets(): array
+    {
+        return [
+            QuickScanPurchaseStatsWidget::class,
         ];
     }
 }

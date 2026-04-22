@@ -21,10 +21,10 @@
       <li>Initial visibility gaps</li>
     </ul>
 
-    <p style="font-size:13px;color:#555;line-height:1.7;margin:0 0 24px">Your full report is ready to unlock.</p>
+    <p style="font-size:13px;color:#555;line-height:1.7;margin:0 0 24px">Your full dashboard results are ready to unlock.</p>
 
     <div style="text-align:center;margin:24px 0">
-      <a href="{{ \App\Support\EmailUrl::tracked('/checkout/scan-basic', 'scan-started-reminder') }}" style="display:inline-block;padding:14px 36px;background:#080808;color:#ede8de;font-size:13px;letter-spacing:.1em;text-decoration:none;text-transform:uppercase">Unlock Your Report &mdash; $2</a>
+      <a href="{{ \App\Support\EmailUrl::tracked('/checkout/scan-basic', 'scan-started-reminder') }}" style="display:inline-block;padding:14px 36px;background:#080808;color:#ede8de;font-size:13px;letter-spacing:.1em;text-decoration:none;text-transform:uppercase">Unlock Your Results &mdash; $2</a>
     </div>
 
     <p style="font-size:12px;color:#999;line-height:1.6;margin:20px 0 0;text-align:center">Your data is ready. We just need you to confirm.</p>

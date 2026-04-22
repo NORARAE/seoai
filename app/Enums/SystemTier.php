@@ -12,10 +12,10 @@ enum SystemTier: string
     public function label(): string
     {
         return match ($this) {
-            self::SCAN_BASIC => 'Base Scan',
-            self::SIGNAL_EXPANSION => 'Signal Expansion',
-            self::STRUCTURAL_LEVERAGE => 'Structural Leverage',
-            self::SYSTEM_ACTIVATION => 'System Activation',
+            self::SCAN_BASIC => 'Baseline Score',
+            self::SIGNAL_EXPANSION => 'Signal Analysis',
+            self::STRUCTURAL_LEVERAGE => 'Action Plan',
+            self::SYSTEM_ACTIVATION => 'Guided Execution',
         };
     }
 
@@ -62,19 +62,19 @@ enum SystemTier: string
     public function completedLayers(): array
     {
         return match ($this) {
-            self::SCAN_BASIC => ['Base Scan'],
-            self::SIGNAL_EXPANSION => ['Base Scan', 'Signal Expansion'],
-            self::STRUCTURAL_LEVERAGE => ['Base Scan', 'Signal Expansion', 'Structural Leverage'],
-            self::SYSTEM_ACTIVATION => ['Base Scan', 'Signal Expansion', 'Structural Leverage', 'System Activation'],
+            self::SCAN_BASIC => ['Baseline Score'],
+            self::SIGNAL_EXPANSION => ['Baseline Score', 'Signal Analysis'],
+            self::STRUCTURAL_LEVERAGE => ['Baseline Score', 'Signal Analysis', 'Action Plan'],
+            self::SYSTEM_ACTIVATION => ['Baseline Score', 'Signal Analysis', 'Action Plan', 'Guided Execution'],
         };
     }
 
     public function nextStep(): ?string
     {
         return match ($this) {
-            self::SCAN_BASIC => 'Expand your signals to see the full picture — $99',
-            self::SIGNAL_EXPANSION => 'Take structural control of your visibility — $249',
-            self::STRUCTURAL_LEVERAGE => 'Activate the full system — $489',
+            self::SCAN_BASIC => 'Get your full signal breakdown — $99',
+            self::SIGNAL_EXPANSION => 'Get your prioritized action plan — $249',
+            self::STRUCTURAL_LEVERAGE => 'Start guided execution with progress tracking — $489',
             self::SYSTEM_ACTIVATION => null,
         };
     }

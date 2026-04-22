@@ -24,9 +24,9 @@
   $isUpgraded = $scan->upgrade_status === 'paid' && $scan->normalizedUpgradePlan() !== null;
 
   $tierDefs = [
-    2 => ['name' => 'Signal Expansion', 'plan' => 'diagnostic', 'price' => '$99', 'value' => 'Reveal the full signal architecture behind your score.'],
-    3 => ['name' => 'Structural Leverage', 'plan' => 'fix-strategy', 'price' => '$249', 'value' => 'This unlocks smarter prioritization so you fix what matters first.'],
-    4 => ['name' => 'System Activation', 'plan' => 'optimization', 'price' => '$489', 'value' => 'Expose competitive position and expansion intelligence.'],
+    2 => ['name' => 'Signal Analysis', 'plan' => 'diagnostic', 'price' => '$99', 'value' => 'Full signal-by-signal breakdown — see exactly what is suppressing your score.'],
+    3 => ['name' => 'Action Plan', 'plan' => 'fix-strategy', 'price' => '$249', 'value' => 'Prioritized fix list ordered by impact — know what to execute first.'],
+    4 => ['name' => 'Guided Execution', 'plan' => 'optimization', 'price' => '$489', 'value' => 'Step-by-step execution checklist with progress tracking inside your dashboard.'],
   ];
 
   $currentTierKey = $unlockLevel >= 4 ? 4 : ($unlockLevel >= 3 ? 3 : ($unlockLevel >= 2 ? 2 : null));
@@ -64,6 +64,16 @@
       $score >= 60 => 'expanding',
       default => 'risk',
     };
+  $scoreBadge = match (true) {
+      $score >= 71 => 'Above Baseline',
+      $score >= 41 => 'Emerging',
+      default      => 'At Risk',
+  };
+  $scoreBadgeClass = match (true) {
+      $score >= 71 => 'above',
+      $score >= 41 => 'emerging',
+      default      => 'risk',
+  };
   $interpretation = match (true) {
       $score >= 85 => 'AI can find your surface signals, but competitors still hold stronger extraction depth.',
       $score >= 60 => 'AI can partially parse your site. Selection pressure remains active.',
@@ -144,34 +154,34 @@
       1 => 'Layer 1 active - visibility baseline only',
       2 => 'Layer 2 active - signal map partially available',
       3 => 'Layer 3 active - ranked fix sequencing available',
-      default => 'Layer 4 active - full system activation available',
+      default => 'Layer 4 active — full guided execution available',
     };
-    $nextUnlockName = $nextTier['name'] ?? 'System Activation';
+    $nextUnlockName = $nextTier['name'] ?? 'Guided Execution';
     $nextUnlockBullets = match ($nextUnlockName) {
-        'Signal Expansion' => ['full signal architecture', 'deeper failure mapping', 'ranked correction visibility'],
-        'Structural Leverage' => ['ranked correction sequencing', 'constraint-to-impact mapping', 'execution priority visibility'],
-        'System Activation' => ['competitive intelligence layer', 'expansion opportunity map', 'deployment-grade direction'],
+        'Signal Analysis' => ['full signal breakdown by category', 'deeper failure mapping from scan data', 'ranked correction visibility'],
+        'Action Plan' => ['prioritized fix list from your scan', 'ordered execution sequence by impact', 'grouped recommendations by effort'],
+        'Guided Execution' => ['execution checklist inside your dashboard', 'guided steps tied to your scan issues', 'progress tracking as you complete items'],
         default => ['signal architecture expansion', 'failure visibility increase', 'selection readiness growth'],
     };
 
     $nextUnlockWhyMatters = match ($nextUnlockName) {
-      'Signal Expansion' => 'This reveals exactly where AI cannot extract or trust your site signals.',
-      'Structural Leverage' => 'This exposes highest-impact fixes first so lower-value work does not delay outcomes.',
-      'System Activation' => 'This exposes competitive displacement risk and strategic control opportunities.',
+      'Signal Analysis' => 'This reveals exactly where AI cannot extract or trust your site signals — using your scan data.',
+      'Action Plan' => 'This gives you a ranked fix list from your scan so you execute the highest-impact changes first.',
+      'Guided Execution' => 'This turns your action plan into a step-by-step checklist inside your dashboard with progress tracking.',
       default => 'This unlock clarifies where trust and extraction are currently limited.',
     };
 
     $nextUnlockWhyShort = match ($nextUnlockName) {
-      'Signal Expansion' => 'Reveals where extraction and trust fail.',
-      'Structural Leverage' => 'Reorders fixes by impact for faster gains.',
-      'System Activation' => 'Reveals where market control is won or lost.',
+      'Signal Analysis' => 'Reveals where extraction and trust fail.',
+      'Action Plan' => 'Fix list ranked by impact from your scan.',
+      'Guided Execution' => 'Guided steps + progress tracking in-dashboard.',
       default => 'Clarifies where trust and extraction remain limited.',
     };
 
     $nextUnlockImproves = match ($nextUnlockName) {
-      'Signal Expansion' => ['clearer extraction insight', 'higher signal trust', 'better fix focus'],
-      'Structural Leverage' => ['faster high-impact execution', 'cleaner fix order', 'stronger readiness lift'],
-      'System Activation' => ['market control visibility', 'expansion precision', 'stronger synthesis readiness'],
+      'Signal Analysis' => ['clearer extraction insight', 'higher signal trust', 'better fix focus'],
+      'Action Plan' => ['faster high-impact execution', 'cleaner fix order', 'stronger readiness lift'],
+      'Guided Execution' => ['in-dashboard progress tracking', 'guided step completion', 'execution accountability'],
       default => ['clearer prioritization', 'higher insight quality', 'stronger readiness confidence'],
     };
 
@@ -179,7 +189,7 @@
       ['rank' => 1, 'label' => 'Current visibility confirmed'],
       ['rank' => 2, 'label' => 'Signal map opened'],
       ['rank' => 3, 'label' => 'Correction sequence unlocked'],
-      ['rank' => 4, 'label' => 'System activation / market control'],
+      ['rank' => 4, 'label' => 'Guided Execution active — execute your plan'],
     ];
 
       $liveFeedbackMessages = [
@@ -192,9 +202,9 @@
 
     $layerCards = [
           ['rank' => 1, 'name' => 'Base Scan', 'status' => 'Included', 'enabled' => true, 'value' => 'Current visibility is confirmed, but deeper trust signals are still limited.', 'cta' => '#priority-actions', 'cta_label' => 'View Fix Sequence', 'cta_note' => 'Opens ranked constraint fixes for this layer.'],
-          ['rank' => 2, 'name' => 'Signal Expansion', 'status' => $unlockLevel >= 2 ? 'Included' : 'Locked', 'enabled' => $unlockLevel >= 2, 'value' => 'This layer opens full signal mapping where extraction currently stops.', 'cta' => $unlockLevel >= 2 ? '#priority-actions' : ($singleNextStep['href'] ?? route('checkout.signal-expansion')), 'cta_label' => $unlockLevel >= 2 ? 'View Fix Sequence' : 'Unlock Signal Expansion', 'cta_note' => $unlockLevel >= 2 ? 'Opens signal-map-guided fixes.' : 'Reveals full signal architecture.'],
-          ['rank' => 3, 'name' => 'Structural Leverage', 'status' => $unlockLevel >= 3 ? 'Included' : 'Locked', 'enabled' => $unlockLevel >= 3, 'value' => 'This layer ranks corrections by impact so execution follows leverage.', 'cta' => $unlockLevel >= 3 ? '#priority-actions' : ($singleNextStep['href'] ?? route('quick-scan.upgrade')), 'cta_label' => $unlockLevel >= 3 ? 'View Fix Sequence' : 'Unlock Structural Leverage', 'cta_note' => $unlockLevel >= 3 ? 'Opens impact-ranked correction order.' : 'Unlocks ranked fixes by impact.'],
-          ['rank' => 4, 'name' => 'System Activation', 'status' => $unlockLevel >= 4 ? 'Included' : 'Locked', 'enabled' => $unlockLevel >= 4, 'value' => 'This layer unlocks competitive control insights and market-level direction.', 'cta' => $unlockLevel >= 4 ? '#priority-actions' : ($singleNextStep['href'] ?? route('quick-scan.upgrade')), 'cta_label' => $unlockLevel >= 4 ? 'View Fix Sequence' : 'Unlock System Activation', 'cta_note' => $unlockLevel >= 4 ? 'Opens competitive signal controls.' : 'Reveals competitive gaps and expansion map.'],
+          ['rank' => 2, 'name' => 'Signal Analysis', 'status' => $unlockLevel >= 2 ? 'Included' : 'Locked', 'enabled' => $unlockLevel >= 2, 'value' => 'Full signal-by-signal breakdown from your scan — see exactly what is suppressing your score.', 'cta' => $unlockLevel >= 2 ? '#priority-actions' : ($singleNextStep['href'] ?? route('checkout.signal-expansion')), 'cta_label' => $unlockLevel >= 2 ? 'View Your Signals' : 'Unlock Signal Analysis', 'cta_note' => $unlockLevel >= 2 ? 'Opens your full signal map.' : 'Full breakdown of your scan signals.'],
+          ['rank' => 3, 'name' => 'Action Plan', 'status' => $unlockLevel >= 3 ? 'Included' : 'Locked', 'enabled' => $unlockLevel >= 3, 'value' => 'Prioritized fix list from your scan data — ordered by impact, grouped by effort.', 'cta' => $unlockLevel >= 3 ? '#priority-actions' : ($singleNextStep['href'] ?? route('quick-scan.upgrade')), 'cta_label' => $unlockLevel >= 3 ? 'View Your Action Plan' : 'Unlock Action Plan', 'cta_note' => $unlockLevel >= 3 ? 'Opens your ranked fix list.' : 'Fix list ranked by impact from your scan.'],
+          ['rank' => 4, 'name' => 'Guided Execution', 'status' => $unlockLevel >= 4 ? 'Included' : 'Locked', 'enabled' => $unlockLevel >= 4, 'value' => 'Step-by-step execution checklist inside your dashboard with progress tracking.', 'cta' => $unlockLevel >= 4 ? '#priority-actions' : ($singleNextStep['href'] ?? route('quick-scan.upgrade')), 'cta_label' => $unlockLevel >= 4 ? 'Open Execution Checklist' : 'Unlock Guided Execution', 'cta_note' => $unlockLevel >= 4 ? 'Opens your in-dashboard checklist.' : 'Requires Action Plan first.'],
     ];
 
     $progressionLevels = [
@@ -209,24 +219,28 @@
         'rank' => 2,
         'name' => 'Signal',
         'locked' => $unlockLevel < 2,
-        'unlocks' => 'A deeper map of what AI can and cannot read.',
+        'unlocks' => 'See exactly what AI can and cannot interpret across your site.',
         'improves' => 'You stop wasting time on low-impact fixes.',
       ],
       [
         'rank' => 3,
         'name' => 'Leverage',
         'locked' => $unlockLevel < 3,
-        'unlocks' => 'A ranked fix order based on impact.',
+        'unlocks' => 'Get a ranked fix sequence based on what moves your visibility fastest.',
         'improves' => 'Your biggest gains happen earlier.',
       ],
       [
         'rank' => 4,
         'name' => 'Activation',
         'locked' => $unlockLevel < 4,
-        'unlocks' => 'Competitive signals and expansion opportunities.',
+        'unlocks' => 'Unlock competitive signals and expansion pathways across your market.',
         'improves' => 'Stronger control over where and how you show up.',
       ],
     ];
+
+    $recommendedProgressionRank = ($singleNextStep && $unlockLevel < 4)
+      ? min(4, $unlockLevel + 1)
+      : null;
 
   $findings = [
       ['title' => 'Coverage', 'state' => $coveragePct >= 70 ? 'Selection Lifted' : ($coveragePct >= 45 ? 'Selection Diluted' : 'Selection Suppressed'), 'copy' => 'Low coverage → AI excludes your domain from final answers.', 'pct' => $coveragePct],
@@ -236,9 +250,9 @@
   ];
 
   $lockedLayerModules = [
-      ['rank' => 2, 'title' => 'Signal Expansion', 'statement' => 'Full signal architecture, extraction failure tree, and suppressed answer opportunities.', 'reveals' => 'While suppressed, AI cannot map complete service depth. Selection bias toward competitors with fuller signal graphs persists.', 'improvement' => ['Selection pressure reduced', 'Signal coverage depth increased', 'Extraction failure visibility restored'], 'cta' => 'Unlock Signal Expansion', 'href' => $singleNextStep['href'] ?? route('checkout.signal-expansion')],
-      ['rank' => 3, 'title' => 'Structural Leverage', 'statement' => 'Ranked remediation path, constraint-to-impact map, and fix priority sequence.', 'reveals' => 'Without ranked correction order, fixes compound inefficiency. Highest-ROI constraints remain buried below lower-value work.', 'improvement' => ['Correction sequencing clarified', 'Fix efficiency increased', 'Constraint compounding halted'], 'cta' => 'Unlock Structural Leverage', 'href' => $singleNextStep['href'] ?? route('quick-scan.upgrade')],
-      ['rank' => 4, 'title' => 'System Activation', 'statement' => 'Competitive intelligence layer, market displacement signals, and activation-grade expansion map.', 'reveals' => 'Without activation, competitive entities dominate synthesis-level recommendation slots. AI preference shifts toward fuller-signal domains.', 'improvement' => ['Competitive position exposed', 'Expansion opportunity map unlocked', 'Displacement risk quantified'], 'cta' => 'Unlock System Activation', 'href' => $singleNextStep['href'] ?? route('quick-scan.upgrade')],
+      ['rank' => 2, 'title' => 'Signal Analysis', 'statement' => 'Full signal-by-signal breakdown of your scan data — every category scored and explained.', 'reveals' => 'While suppressed, you only see your score. Signal Analysis shows exactly which signals are failing and why.', 'improvement' => ['See every failing signal from your scan', 'Understand why each is suppressing your score', 'Know exactly what to fix'], 'cta' => 'Unlock Signal Analysis', 'href' => $singleNextStep['href'] ?? route('checkout.signal-expansion')],
+      ['rank' => 3, 'title' => 'Action Plan', 'statement' => 'Prioritized fix list from your scan data — ordered by impact, grouped by effort level.', 'reveals' => 'Without ranked ordering, you might fix low-impact issues first. Action Plan sequences your fixes by what moves your score most.', 'improvement' => ['Fix list ranked by scan impact', 'Ordered execution sequence', 'Grouped by effort'], 'cta' => 'Unlock Action Plan', 'href' => $singleNextStep['href'] ?? route('quick-scan.upgrade')],
+      ['rank' => 4, 'title' => 'Guided Execution', 'statement' => 'Step-by-step execution checklist inside your dashboard with in-progress tracking.', 'reveals' => 'Requires Action Plan to be unlocked first. Turns your fix list into an active workflow you track and complete.', 'improvement' => ['Execution checklist inside dashboard', 'Guided steps for each fix', 'Progress tracking as you complete items'], 'cta' => 'Unlock Guided Execution', 'href' => $singleNextStep['href'] ?? route('quick-scan.upgrade')],
   ];
 
   $humanTranslation = match (true) {
@@ -257,10 +271,10 @@
       default      => 'This is your starting point. One fix here changes how AI understands and recommends you.',
   };
   $currentTierName = match ($unlockLevel) {
-      1 => 'Base Scan',
-      2 => 'Signal Expansion',
-      3 => 'Structural Leverage',
-      default => 'System Activation',
+      1 => 'Baseline Score',
+      2 => 'Signal Analysis',
+      3 => 'Action Plan',
+      default => 'Guided Execution',
   };
   $currentTierPrice = match ($unlockLevel) {
       1 => '$2',
@@ -268,6 +282,77 @@
       3 => '$249',
       default => '$489',
   };
+
+  // ── Score-driven recommendation engine ──────────────────────────────
+  $recommendedTierKey = match (true) {
+      $score <= 40 => 'fix',   // Action Plan ($249)
+      $score <= 70 => 'deep',  // Signal Analysis ($99)
+      default      => 'build', // Guided Execution ($489)
+  };
+  $nbmTierRouteMap = [
+      'deep'  => ['name' => 'Signal Analysis',   'price' => '$99',  'plan' => 'diagnostic',   'routeKey' => 'checkout.signal-expansion'],
+      'fix'   => ['name' => 'Action Plan',        'price' => '$249', 'plan' => 'fix-strategy', 'routeKey' => 'checkout.structural-leverage'],
+      'build' => ['name' => 'Guided Execution',   'price' => '$489', 'plan' => 'optimization', 'routeKey' => 'checkout.system-activation'],
+  ];
+  $nbmTierDef = $nbmTierRouteMap[$recommendedTierKey];
+  // Prefer upgrade flow URL (carries scan_id + stripe_session_id) when it matches
+  $nbmHref = ($nextTier && $nbmTierDef['name'] === $nextTier['name'] && $singleNextStep)
+      ? $singleNextStep['href']
+      : route($nbmTierDef['routeKey']);
+  $nbmCtaLabel = match ($recommendedTierKey) {
+      'fix'   => 'Fix Structure — $249',
+      'deep'  => 'Expand Signals — $99',
+      default => 'Activate System — $489',
+  };
+  // Refined score-band copy — system interpretation tone
+  $nbmScoreCopy = match (true) {
+      $score <= 40 => 'Structure is limiting visibility more than reach. AI cannot extract consistent signals from key pages. Expanding coverage before fixing structure compounds the problem.',
+      $score <= 70 => 'Partial signals are present but inconsistent. AI can partially interpret your site, but gaps in signal coverage prevent reliable selection. Strengthening consistency raises extraction trust.',
+      default      => 'Your signal foundation is strong enough to scale. The system is interpreting your site clearly — activating the full layer expands reach and locks in competitive advantage.',
+  };
+  // "Why now" interpretive line — restrained, below CTA
+  $nbmWhyNow = match (true) {
+      $score <= 40 => 'Your score suggests structure is limiting visibility more than reach.',
+      $score <= 70 => 'Your score suggests stronger signal consistency will improve AI interpretation.',
+      default      => 'Your score suggests your foundation is strong enough to scale.',
+  };
+  $nbmBullets = match (true) {
+      $score <= 40 => ['Schema depth is insufficient for AI extraction', 'Page-level structural signals are inconsistent', 'AI cannot reliably prioritize your site for selection'],
+      $score <= 70 => ['Coverage is partial across key intent signals', 'Signal consistency gaps are reducing extraction trust', 'Competitive domains with stronger consistency are being preferred'],
+      default      => ['Signal foundation is established and readable', 'Architecture is coherent enough to support expansion', 'System is at the threshold for market-level activation'],
+  };
+  $nbmScoreBand = match (true) {
+      $score <= 40 => 'low',
+      $score <= 70 => 'mid',
+      default      => 'high',
+  };
+  // ── Path preview — "what this unlocks next" 2-step rail ─────────────
+  // Ordered full path: deep → fix → build → expand (consult)
+  $nbmFullPath = [
+      ['key' => 'deep',   'label' => 'Signal Analysis',   'price' => '$99',  'modal' => 'deep'],
+      ['key' => 'fix',    'label' => 'Action Plan',        'price' => '$249', 'modal' => 'fix'],
+      ['key' => 'build',  'label' => 'Guided Execution',   'price' => '$489', 'modal' => 'build'],
+      ['key' => 'expand', 'label' => 'Consultation',        'price' => '$500', 'modal' => 'expand'],
+  ];
+  // Find position of recommended tier, then take the 2 that follow
+  $nbmCurrentPathIdx = array_search($recommendedTierKey, array_column($nbmFullPath, 'key'));
+  $nbmNextSteps = array_slice($nbmFullPath, $nbmCurrentPathIdx + 1, 2);
+  // Secondary CTA: the step immediately after recommended tier
+  $nbmSecondaryStep = $nbmNextSteps[0] ?? null;
+  // ── System position bar ─────────────────────────────────────────────
+  // Ordered: Scan → Signal → Fix → Build → Expand → Managed
+  $sysBarNodes = [
+      ['key' => 'scan',    'label' => 'Scan',    'modal' => null,      'price' => null],
+      ['key' => 'deep',    'label' => 'Signal',  'modal' => 'deep',    'price' => '$99'],
+      ['key' => 'fix',     'label' => 'Fix',     'modal' => 'fix',     'price' => '$249'],
+      ['key' => 'build',   'label' => 'Build',   'modal' => 'build',   'price' => '$489'],
+      ['key' => 'expand',  'label' => 'Expand',  'modal' => 'expand',  'price' => '$500'],
+      ['key' => 'managed', 'label' => 'Managed', 'modal' => 'managed', 'price' => null],
+  ];
+  // Current position = recommended tier (score-band driven)
+  // 0–40 → fix | 41–70 → deep (Signal) | 71–100 → build
+  $sysBarCurrentKey = $recommendedTierKey;
+  // ────────────────────────────────────────────────────────────────────
 @endphp
 <style>
 @include('partials.design-system')
@@ -347,6 +432,10 @@ a{text-decoration:none;color:inherit}
 
 .hero{padding:18px 18px 16px;border-color:rgba(214,181,95,.24);box-shadow:0 14px 30px rgba(0,0,0,.34),0 0 0 1px rgba(214,181,95,.05) inset}
 .hero-top{display:flex;flex-wrap:wrap;align-items:flex-start;justify-content:space-between;gap:14px;margin-bottom:12px}
+.hero-score-visual{flex-shrink:0;display:flex;align-items:center;justify-content:center}
+.hero-orbit-container{display:flex;align-items:center;justify-content:center;width:160px;height:160px}
+.hero-orbit-container .ai-orbit{flex-shrink:0}
+@media(max-width:768px){.hero-score-visual{display:none}}
 .hero-domain{font-size:.58rem;letter-spacing:.2em;text-transform:uppercase;color:#d6bf88;margin:0 0 6px}
 .hero-title{font-family:'Cormorant Garamond',serif;font-size:2rem;line-height:1.04;margin:0 0 8px;color:var(--text)}
 .hero-state{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:8px}
@@ -361,12 +450,12 @@ a{text-decoration:none;color:inherit}
 .hero-bottleneck{padding:12px 13px;border:1px solid rgba(214,181,95,.28);border-radius:11px;background:linear-gradient(150deg,rgba(214,181,95,.08),rgba(12,10,8,.3));margin-bottom:11px;box-shadow:0 0 0 1px rgba(214,181,95,.05) inset}
 .hero-bottleneck strong{display:block;font-size:.54rem;letter-spacing:.2em;text-transform:uppercase;color:#dcc995;margin-bottom:6px}
 .hero-bottleneck p{margin:0;font-size:.82rem;color:#efe4cc;line-height:1.45}
-.hero-copy{margin:0 0 12px;font-size:.74rem;color:#c8bea7;line-height:1.45}
+.hero-copy{margin:0 0 12px;font-size:.74rem;color:#d4cab3;line-height:1.45}
 .hero-actions{display:flex;gap:8px;flex-wrap:nowrap;align-items:center}
 .hero-actions .btn{min-width:164px}
 .hero-translation{margin:8px 0 0;font-size:.74rem;line-height:1.45;color:#d6cbaa;border-top:1px solid rgba(214,181,95,.12);padding-top:8px}
 .hero-trust-note{margin:7px 0 0;font-size:.66rem;letter-spacing:.06em;color:#cfc4a8;opacity:.9}
-.hero-momentum{margin:10px 0 0;font-size:.67rem;letter-spacing:.06em;color:#a89e87;font-style:italic;line-height:1.4}
+.hero-momentum{margin:10px 0 0;font-size:.67rem;letter-spacing:.06em;color:#c4b998;font-style:italic;line-height:1.4}
 .hero-proof-note{margin:5px 0 0;font-size:.62rem;letter-spacing:.05em;color:#c6b998;opacity:.92}
 .cta-time-value{margin:5px 0 0;font-size:.62rem;letter-spacing:.04em;color:#d5caaf;opacity:.92}
 .btn{display:inline-flex;align-items:center;justify-content:center;min-height:40px;padding:9px 14px;border-radius:10px;font-size:.62rem;letter-spacing:.12em;text-transform:uppercase;border:1px solid transparent;cursor:pointer;text-decoration:none;transition:all .22s ease}
@@ -397,9 +486,13 @@ a{text-decoration:none;color:inherit}
 .meter>span{display:block;height:100%;background:linear-gradient(90deg,rgba(198,155,60,.75),rgba(229,191,103,.95));transform-origin:left center;transform:scaleX(0);animation:meterGrow .95s ease forwards}
 
 .layer-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
-.layer{padding:11px;border-radius:12px;border:1px solid var(--line-soft);background:rgba(214,181,95,.03);transition:all .18s ease;border-left:2px solid transparent}
-.layer:hover{transform:translateY(-2px);box-shadow:0 2px 12px rgba(214,181,95,.08)}
+.layer{position:relative;padding:11px;border-radius:12px;border:1px solid var(--line-soft);background:rgba(214,181,95,.03);transition:transform .18s ease,box-shadow .2s ease,border-color .2s ease,background .2s ease;border-left:2px solid transparent}
+.layer:hover{transform:translateY(-2px);border-color:rgba(214,181,95,.24);box-shadow:0 4px 16px rgba(214,181,95,.12)}
+.layer:not(:last-child)::after{content:'';position:absolute;top:50%;right:-10px;width:20px;height:1px;background:linear-gradient(90deg,rgba(200,168,75,.24),rgba(200,168,75,.05));pointer-events:none;opacity:.55;transition:opacity .2s ease}
+.layer:hover::after{opacity:.88}
 .layer.is-locked-card{border-left-color:rgba(214,181,95,.4);box-shadow:0 0 16px rgba(214,181,95,.08)}
+.layer.is-next-step{border-color:rgba(200,168,75,.46);border-left-color:rgba(200,168,75,.84);background:linear-gradient(150deg,rgba(42,30,16,.97),rgba(15,12,8,.98));box-shadow:0 0 0 1px rgba(200,168,75,.22) inset,0 0 24px rgba(200,168,75,.16)}
+.layer-next-step-badge{display:inline-flex;margin:0 0 7px;padding:3px 7px;border-radius:999px;border:1px solid rgba(200,168,75,.4);background:rgba(200,168,75,.08);font-size:.43rem;letter-spacing:.2em;text-transform:uppercase;color:rgba(200,168,75,.94)}
 .layer-head{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:7px}
 .layer-name{font-size:.62rem;letter-spacing:.14em;text-transform:uppercase;color:#e2d5af}
 .layer-status{font-size:.48rem;letter-spacing:.14em;text-transform:uppercase;padding:3px 6px;border-radius:999px;border:1px solid var(--line-soft);color:#cabd9a;display:inline-flex;align-items:center;gap:5px}
@@ -412,6 +505,13 @@ a{text-decoration:none;color:inherit}
 .layer-micro span em{font-style:normal;font-size:.45rem;letter-spacing:.14em;text-transform:uppercase;color:#a99463}
 .layer .btn{min-height:34px;font-size:.54rem;padding:7px 10px}
 .layer-cta-note{margin:4px 0 0;font-size:.52rem;letter-spacing:.05em;color:#c5b992;line-height:1.25}
+.layer-momentum-note{margin:5px 0 0;font-size:.51rem;letter-spacing:.07em;color:#cdbf95;line-height:1.3;opacity:.95}
+.layer-cta-unlock{padding:9px 13px}
+.layer.is-next-step .layer-cta-unlock{min-height:38px;padding:10px 14px;font-size:.56rem;box-shadow:0 0 0 1px rgba(200,168,75,.32) inset,0 0 18px rgba(200,168,75,.14);animation:layerUnlockPulse 1.1s ease-out .25s 1}
+.layer.is-next-step .layer-cta-unlock:hover{box-shadow:0 0 0 1px rgba(200,168,75,.42) inset,0 0 24px rgba(200,168,75,.24);filter:brightness(1.08)}
+.layer-ai-link{display:block;margin-top:6px;background:none;border:none;padding:0;cursor:pointer;font-family:'DM Sans',sans-serif;font-size:.5rem;letter-spacing:.1em;text-transform:uppercase;color:rgba(200,168,75,.52);text-align:left;transition:color .2s}
+.layer-ai-link:hover{color:rgba(200,168,75,.82)}
+.layer-ai-link:focus-visible{outline:2px solid rgba(200,168,75,.4);outline-offset:2px;border-radius:2px}
 
 .section-head{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:10px 12px;border-bottom:1px solid var(--line-soft)}
 .section-head h2{margin:0;font-family:'Cormorant Garamond',serif;font-size:1.25rem;font-weight:400}
@@ -556,6 +656,7 @@ a{text-decoration:none;color:inherit}
   .nav-hamburger{display:flex}
 
   .grid,.layer-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .layer::after{display:none}
   .action-stack{grid-template-columns:1fr}
   .action-stack::before{display:none}
   .shell{padding:64px 14px 38px}
@@ -719,6 +820,127 @@ a{text-decoration:none;color:inherit}
   0%{transform:scaleX(0)}
   100%{transform:scaleX(1)}
 }
+@keyframes layerUnlockPulse {
+  0%{box-shadow:0 0 0 1px rgba(200,168,75,.2) inset,0 0 0 rgba(200,168,75,0)}
+  45%{box-shadow:0 0 0 1px rgba(200,168,75,.36) inset,0 0 22px rgba(200,168,75,.24)}
+  100%{box-shadow:0 0 0 1px rgba(200,168,75,.32) inset,0 0 18px rgba(200,168,75,.14)}
+}
+
+/* ── Next Best Move upgrade panel ── */
+.nbm-panel{padding:0;overflow:hidden;border-color:rgba(214,181,95,.4);box-shadow:0 0 32px rgba(214,181,95,.1),0 12px 28px rgba(0,0,0,.32),0 0 0 1px rgba(214,181,95,.06) inset;animation:nbmReveal .55s ease-out both}
+@keyframes nbmReveal{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+/* Score-band border accent */
+.nbm-panel--low .nbm-bar{background:linear-gradient(90deg,rgba(196,120,120,.9) 0%,rgba(196,120,120,.28) 55%,transparent 100%)}
+.nbm-panel--low{border-color:rgba(196,120,120,.36);box-shadow:0 0 28px rgba(196,120,120,.09),0 12px 28px rgba(0,0,0,.32)}
+.nbm-panel--mid .nbm-bar{background:linear-gradient(90deg,rgba(214,181,95,.88) 0%,rgba(214,181,95,.28) 55%,transparent 100%)}
+.nbm-panel--mid{border-color:rgba(214,181,95,.4)}
+.nbm-panel--high .nbm-bar{background:linear-gradient(90deg,rgba(106,175,144,.9) 0%,rgba(106,175,144,.28) 55%,transparent 100%)}
+.nbm-panel--high{border-color:rgba(106,175,144,.36);box-shadow:0 0 28px rgba(106,175,144,.09),0 12px 28px rgba(0,0,0,.32)}
+/* Layout */
+.nbm-inner{display:grid;grid-template-columns:1fr 1fr;gap:0}
+.nbm-left{padding:22px 18px 22px 22px;border-right:1px solid rgba(214,181,95,.11)}
+.nbm-right{padding:22px 22px 22px 20px;display:flex;flex-direction:column;gap:9px}
+/* Primary recommendation typography */
+.nbm-kicker{margin:0 0 8px;font-size:.5rem;letter-spacing:.24em;text-transform:uppercase;color:rgba(214,181,95,.62)}
+.nbm-title{margin:0 0 3px;font-family:'Cormorant Garamond',serif;font-size:1.62rem;line-height:1.1;color:#f2e8cd}
+.nbm-price{margin:0 0 12px;font-family:'Cormorant Garamond',serif;font-size:1rem;color:rgba(214,181,95,.7)}
+.nbm-why{margin:0 0 10px;font-size:.73rem;line-height:1.55;color:#d0c7a4}
+.nbm-panel--low .nbm-why{color:#deccbf}
+.nbm-panel--high .nbm-why{color:#c5d9cf}
+.nbm-bullets{margin:0 0 14px;padding-left:16px;display:flex;flex-direction:column;gap:5px}
+.nbm-bullets li{font-size:.71rem;color:#e0d6be;line-height:1.38}
+/* Right column */
+.nbm-signal{margin:0 0 6px;font-size:.5rem;letter-spacing:.18em;text-transform:uppercase;color:rgba(214,181,95,.52)}
+.nbm-improves{margin:0 0 12px;padding-left:0;list-style:none;display:flex;flex-direction:column;gap:6px}
+.nbm-improves li{font-size:.68rem;color:#ddd4b5;padding-left:14px;position:relative;line-height:1.35}
+.nbm-improves li::before{content:'→';position:absolute;left:0;color:rgba(214,181,95,.5);font-size:.62rem}
+/* CTA */
+.nbm-cta{width:100%;justify-content:center}
+.nbm-cta-pulse{animation:nbmCtaPulse 4s ease-in-out infinite;animation-delay:1.2s}
+@keyframes nbmCtaPulse{
+  0%,72%,100%{box-shadow:0 2px 8px rgba(214,181,95,.14)}
+  80%{box-shadow:0 0 0 5px rgba(214,181,95,.16),0 2px 12px rgba(214,181,95,.28)}
+  88%{box-shadow:0 0 0 2px rgba(214,181,95,.08),0 2px 8px rgba(214,181,95,.14)}
+}
+.nbm-why-now{margin:3px 0 3px;font-size:.6rem;letter-spacing:.05em;color:rgba(214,181,95,.44);font-style:italic;line-height:1.4}
+.nbm-urgency{margin:0 0 4px;font-size:.57rem;letter-spacing:.06em;color:rgba(200,168,75,.38);line-height:1.3}
+/* Secondary CTA (next stage) */
+.nbm-secondary{font-size:.54rem;min-height:32px;padding:6px 10px;opacity:.82}
+.nbm-secondary:hover{opacity:1}
+/* ── System position bar ── */
+.sys-bar{padding:14px 22px 18px;border-bottom:1px solid rgba(214,181,95,.09)}
+.sys-bar-kicker{margin:0 0 10px;font-size:.48rem;letter-spacing:.22em;text-transform:uppercase;color:rgba(214,181,95,.4)}
+.sys-bar-track{display:flex;align-items:center;gap:0;overflow-x:auto;scrollbar-width:none;-ms-overflow-style:none;padding-top:20px}
+.sys-bar-track::-webkit-scrollbar{display:none}
+.sys-bar-node{display:flex;flex-direction:column;align-items:center;gap:0;flex-shrink:0;min-width:54px;cursor:default;background:transparent;border:none;padding:0;font-family:'DM Sans',sans-serif}
+button.sys-bar-node{cursor:pointer;-webkit-tap-highlight-color:transparent}
+button.sys-bar-node:hover .sys-bar-dot{border-color:rgba(214,181,95,.54);background:rgba(214,181,95,.13)}
+.sys-bar-node-head{min-height:17px;display:flex;align-items:flex-end;justify-content:center}
+.sys-bar-dot{width:28px;height:28px;border-radius:50%;border:1px solid rgba(214,181,95,.19);background:rgba(214,181,95,.04);transition:all .18s ease;position:relative;flex-shrink:0;pointer-events:none}
+.sys-bar-node--done .sys-bar-dot{border-color:rgba(106,175,144,.48);background:rgba(106,175,144,.1)}
+.sys-bar-node--done .sys-bar-dot::after{content:'✓';position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);font-size:.52rem;color:#7abb9e;line-height:1}
+.sys-bar-node--active .sys-bar-dot{border-color:rgba(214,181,95,.82);background:rgba(214,181,95,.15);box-shadow:0 0 0 5px rgba(214,181,95,.09),0 0 18px rgba(214,181,95,.22);animation:sysNodePulse 3.8s ease-in-out infinite}
+@keyframes sysNodePulse{
+  0%,70%,100%{box-shadow:0 0 0 5px rgba(214,181,95,.09),0 0 14px rgba(214,181,95,.18)}
+  78%{box-shadow:0 0 0 10px rgba(214,181,95,.12),0 0 26px rgba(214,181,95,.3)}
+  86%{box-shadow:0 0 0 3px rgba(214,181,95,.05),0 0 10px rgba(214,181,95,.12)}
+}
+.sys-bar-node-foot{display:flex;flex-direction:column;align-items:center;gap:3px;margin-top:6px}
+.sys-bar-label{font-size:.5rem;letter-spacing:.13em;text-transform:uppercase;color:rgba(214,181,95,.32);text-align:center;white-space:nowrap;line-height:1}
+.sys-bar-node--done .sys-bar-label{color:rgba(106,175,144,.52)}
+.sys-bar-node--active .sys-bar-label{color:#d8bc62;font-weight:600}
+.sys-bar-price{font-size:.46rem;color:rgba(214,181,95,.27);text-align:center;white-space:nowrap;line-height:1}
+.sys-bar-node--active .sys-bar-price{color:rgba(214,181,95,.6)}
+.sys-bar-you-here{font-size:.44rem;letter-spacing:.12em;text-transform:uppercase;color:rgba(214,181,95,.74);white-space:nowrap;display:none;line-height:1}
+.sys-bar-node--active .sys-bar-you-here{display:block}
+.sys-bar-next-move{font-size:.44rem;letter-spacing:.12em;text-transform:uppercase;color:rgba(214,181,95,.56);white-space:nowrap;display:none;line-height:1}
+.sys-bar-node--active .sys-bar-next-move{display:block}
+.sys-bar-line{width:30px;height:1px;background:rgba(214,181,95,.12);flex-shrink:0;margin-bottom:15px;align-self:center}
+.sys-bar-line--done{background:linear-gradient(90deg,rgba(106,175,144,.34),rgba(214,181,95,.14))}
+@media(prefers-reduced-motion:reduce){.sys-bar-node--active .sys-bar-dot{animation:none}}
+@media(max-width:480px){
+  .sys-bar{padding:8px 10px 12px}
+  .sys-bar-node{min-width:38px}
+  .sys-bar-dot{width:20px;height:20px}
+  .sys-bar-node-head{min-height:14px}
+  .sys-bar-line{width:18px}
+}
+@media(max-width:768px){
+  .nbm-inner{grid-template-columns:1fr}
+  .nbm-left{border-right:none;border-bottom:1px solid rgba(214,181,95,.09);padding:18px 18px 14px}
+  .nbm-right{padding:14px 18px 18px}
+  .sys-bar{padding:10px 14px 14px}
+  .sys-bar-track{padding-top:14px}
+  .sys-bar-node{min-width:44px}
+  .sys-bar-dot{width:22px;height:22px}
+}
+
+/* Final pre-live readability refinements */
+.mode-kicker,
+.mode-chip,
+.saved-report-note,
+.live-feedback-kicker,
+.live-feedback-text,
+.progression-cell p,
+.progression-list li,
+.progression-sub,
+.progression-mini li,
+.progression-model li,
+.hero-domain,
+.score-meaning,
+.hero-copy,
+.hero-translation,
+.hero-trust-note,
+.hero-momentum,
+.hero-proof-note,
+.sys-bar-label,
+.sys-bar-price,
+.save-report-text,
+.save-report-google,
+.save-report-login{
+  font-size:max(.8rem, 12px);
+  line-height:1.55;
+}
 </style>
 @include('partials.clarity')
 </head>
@@ -741,12 +963,12 @@ a{text-decoration:none;color:inherit}
 <style>
 .save-report-bar{position:sticky;top:64px;z-index:80;background:linear-gradient(90deg,rgba(20,16,10,.97),rgba(14,11,8,.98));border-bottom:1px solid rgba(214,181,95,.28);padding:9px 20px;box-shadow:0 2px 12px rgba(0,0,0,.3)}
 .save-report-inner{max-width:1220px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
-.save-report-text{font-size:.72rem;color:#e0d5b8;line-height:1.35}
+.save-report-text{font-size:.8rem;color:#e0d5b8;line-height:1.45}
 .save-report-text strong{color:#f0e2be}
 .save-report-actions{display:flex;align-items:center;gap:8px;flex-shrink:0}
-.save-report-google{display:inline-flex;align-items:center;gap:7px;min-height:34px;padding:6px 12px;border-radius:8px;border:1px solid rgba(214,181,95,.4);background:rgba(214,181,95,.1);font-size:.6rem;letter-spacing:.12em;text-transform:uppercase;color:#f0e5c6;text-decoration:none;transition:all .16s ease}
+.save-report-google{display:inline-flex;align-items:center;gap:7px;min-height:34px;padding:6px 12px;border-radius:8px;border:1px solid rgba(214,181,95,.4);background:rgba(214,181,95,.1);font-size:.74rem;letter-spacing:.09em;text-transform:uppercase;color:#f0e5c6;text-decoration:none;transition:all .16s ease}
 .save-report-google:hover{border-color:rgba(214,181,95,.6);background:rgba(214,181,95,.18)}
-.save-report-login{display:inline-flex;align-items:center;min-height:34px;padding:6px 10px;font-size:.6rem;letter-spacing:.1em;text-transform:uppercase;color:#c8b98a;text-decoration:none;border-bottom:1px solid rgba(214,181,95,.3);transition:color .16s}
+.save-report-login{display:inline-flex;align-items:center;min-height:34px;padding:6px 10px;font-size:.74rem;letter-spacing:.08em;text-transform:uppercase;color:#c8b98a;text-decoration:none;border-bottom:1px solid rgba(214,181,95,.3);transition:color .16s}
 .save-report-login:hover{color:#e8d49a;border-color:rgba(214,181,95,.56)}
 @media(max-width:540px){.save-report-bar{top:56px}.save-report-inner{flex-direction:column;align-items:flex-start;gap:8px}}
 </style>
@@ -834,6 +1056,11 @@ a{text-decoration:none;color:inherit}
             <p class="score-meaning">{{ $scoreSelectionInterpretation }}</p>
             <p class="aha-line">{{ $ahaLine }}</p>
           </div>
+          <div class="hero-score-visual">
+            <div class="hero-orbit-container">
+              @include('components.ai-score-orbit', ['score' => $score, 'label' => 'AI Visibility Score', 'size' => 'md'])
+            </div>
+          </div>
         </div>
         <div class="hero-bottleneck">
           <strong>Here&rsquo;s what&rsquo;s holding you back</strong>
@@ -869,6 +1096,79 @@ a{text-decoration:none;color:inherit}
         <p class="hero-proof-note">Used to generate AI answers across Google, ChatGPT, and other systems.</p>
         <p class="hero-momentum">{{ $momentumLine }}</p>
       </section>
+
+      @if(!$isUpgraded && $nextTier)
+      <section class="card nbm-panel nbm-panel--{{ $nbmScoreBand }}" id="next-best-move"
+               aria-label="Recommended next layer: {{ $nbmTierDef['name'] }}">
+        <div class="nbm-bar" aria-hidden="true"></div>
+        {{-- System position bar: Scan → Signal → Fix → Build → Expand → Managed --}}
+        <div class="sys-bar" role="navigation" aria-label="System progression map">
+          <p class="sys-bar-kicker">System Position</p>
+          <div class="sys-bar-track">
+            @foreach($sysBarNodes as $node)
+            @php $nodeState = $node['key'] === 'scan' ? 'done' : ($node['key'] === $sysBarCurrentKey ? 'active' : 'future'); @endphp
+            @if(!$loop->first)
+            <div class="sys-bar-line{{ $loop->iteration === 2 ? ' sys-bar-line--done' : '' }}" aria-hidden="true"></div>
+            @endif
+            @if($node['modal'])
+            <button type="button" class="sys-bar-node sys-bar-node--{{ $nodeState }}"
+                    data-layer="{{ $node['modal'] }}" aria-haspopup="dialog"
+                    aria-label="{{ $node['label'] }}{{ $node['price'] ? ' — ' . $node['price'] : '' }}">
+            @else
+            <div class="sys-bar-node sys-bar-node--{{ $nodeState }}" aria-label="{{ $node['label'] }} — complete">
+            @endif
+              <div class="sys-bar-node-head"><span class="sys-bar-you-here">You are here</span></div>
+              <div class="sys-bar-dot"></div>
+              <div class="sys-bar-node-foot">
+                <span class="sys-bar-label">{{ $node['label'] }}</span>
+                @if($node['price'])<span class="sys-bar-price">{{ $node['price'] }}</span>@endif
+                <span class="sys-bar-next-move">Next best move</span>
+              </div>
+            @if($node['modal'])
+            </button>
+            @else
+            </div>
+            @endif
+            @endforeach
+          </div>
+        </div>
+        {{-- Primary recommendation: 2-col left/right --}}
+        <div class="nbm-inner">
+          <div class="nbm-left">
+            <p class="nbm-kicker">Recommended Next Layer &mdash; Score {{ $score }}/100</p>
+            <h2 class="nbm-title">{{ $nbmTierDef['name'] }}</h2>
+            <p class="nbm-price">{{ $nbmTierDef['price'] }}</p>
+            <p class="nbm-why">{{ $nbmScoreCopy }}</p>
+            <ul class="nbm-bullets">
+              @foreach($nbmBullets as $bullet)
+              <li>{{ $bullet }}</li>
+              @endforeach
+            </ul>
+          </div>
+          <div class="nbm-right">
+            <p class="nbm-signal">What this unlocks for your {{ $score }}/100 score</p>
+            <ul class="nbm-improves">
+              @foreach($nextUnlockImproves as $item)
+              <li>{{ $item }}</li>
+              @endforeach
+            </ul>
+            {{-- Primary CTA: score-driven tier --}}
+            <a href="{{ $nbmHref }}" class="btn btn-primary nbm-cta nbm-cta-pulse">{{ $nbmCtaLabel }}</a>
+            <p class="nbm-why-now">{{ $nbmWhyNow }}</p>
+            <p class="nbm-urgency">Most users at your score move to this layer next.</p>
+            {{-- Secondary CTA: next stage after recommended, opens layer modal --}}
+            @if($nbmSecondaryStep)
+            <button type="button"
+                    class="btn btn-secondary nbm-secondary"
+                    data-layer="{{ $nbmSecondaryStep['modal'] }}"
+                    aria-haspopup="dialog">View {{ $nbmSecondaryStep['label'] }} &rarr;</button>
+            @elseif($showConsultationOffer)
+            <a href="{{ $consultationHref }}" class="btn btn-secondary nbm-secondary">Book a Consultation</a>
+            @endif
+          </div>
+        </div>
+      </section>
+      @endif
 
       <section class="card ask-scan-module" id="ask-scan">
         <div class="ask-scan-inner">
@@ -914,7 +1214,19 @@ a{text-decoration:none;color:inherit}
         </div>
         <div class="layer-grid" style="padding:12px">
           @foreach($progressionLevels as $level)
-          <article class="layer {{ $level['locked'] ? 'is-locked-card' : 'is-included' }}">
+          @php
+            $isRecommendedNext = $recommendedProgressionRank !== null && $level['rank'] === $recommendedProgressionRank;
+            $momentumCopy = match($level['rank']) {
+              1 => 'You\'ve started \u2014 now build signal clarity',
+              2 => 'Next: turn insight into prioritized action',
+              3 => 'Next: deploy structure across your market',
+              default => 'Next: scale and dominate your territory',
+            };
+          @endphp
+          <article class="layer {{ $level['locked'] ? 'is-locked-card' : 'is-included' }} {{ $isRecommendedNext ? 'is-next-step' : '' }}">
+            @if($isRecommendedNext)
+            <span class="layer-next-step-badge">RECOMMENDED NEXT STEP</span>
+            @endif
             <div class="layer-head">
               <span class="layer-name">{{ $level['name'] }}</span>
               <span class="layer-status">
@@ -937,13 +1249,35 @@ a{text-decoration:none;color:inherit}
             <div class="layer-micro">
               <span>How It Feels <em>{{ $level['improves'] }}</em></span>
             </div>
-            @if($level['locked'] && $singleNextStep)
-            <a href="{{ $singleNextStep['href'] }}" class="btn btn-secondary">Unlock Next Level</a>
-            <p class="layer-cta-note">Move from {{ $progressionLevels[max(0, $unlockLevel - 1)]['name'] ?? 'Baseline' }} to {{ $nextUnlockName }}.</p>
-            @else
-            <a href="#priority-actions" class="btn btn-secondary">Review This Level</a>
-            <p class="layer-cta-note">This level is active in your system path.</p>
+            @if($level['locked'] && $singleNextStep && $isRecommendedNext)
+            <a href="{{ $singleNextStep['href'] }}" class="btn btn-secondary layer-cta-unlock">Unlock Next Layer &rarr;</a>
+            <button type="button" class="layer-ai-link js-ask-scan-chip"
+              data-prompt="Based on my current scan, should I move to {{ $level['name'] }} or stay where I am?">&#128161; Ask AI if you should upgrade</button>
+            <p class="layer-cta-note">&#128274; This layer builds on your current system &mdash; unlock to continue</p>
+            @elseif($level['locked'])
+            @if($level['rank'] > 1)
+            <button type="button" class="btn btn-secondary layer-cta-explore" data-layer="level-{{ $level['rank'] }}">Explore this level &rarr;</button>
             @endif
+            <button type="button" class="layer-ai-link js-ask-scan-chip"
+              data-prompt="Based on my current scan, should I move to {{ $level['name'] }} or stay where I am?">&#128161; Get AI guidance on this level</button>
+            <p class="layer-cta-note">&#128274; This layer builds on your current system &mdash; unlock to continue</p>
+            @else
+            @if($level['rank'] > 1)
+            <button type="button" class="btn btn-secondary layer-cta-explore" data-layer="level-{{ $level['rank'] }}">Explore this level &rarr;</button>
+            @else
+            <a href="#priority-actions" class="btn btn-secondary">Review actions &rarr;</a>
+            @endif
+            <button type="button" class="layer-ai-link js-ask-scan-chip"
+              data-prompt="Based on my current scan, should I move to {{ $level['name'] }} or stay where I am?">&#128161; Get AI guidance on this level</button>
+            <p class="layer-cta-note">
+              @if($level['rank'] === $unlockLevel)
+                &#10004; Active &mdash; your current tier
+              @else
+                &#10004; Included in your plan
+              @endif
+            </p>
+            @endif
+            <p class="layer-momentum-note">{{ $momentumCopy }}</p>
           </article>
           @endforeach
         </div>
@@ -1117,7 +1451,7 @@ a{text-decoration:none;color:inherit}
                 @if($singleNextStep)
                 <a href="{{ $singleNextStep['href'] }}" class="btn btn-primary js-unlock-signal-expansion" data-exec-init="Opening layer access..." data-exec-process="Preparing layer access..." data-exec-resolved="Layer access initiated">Unlock {{ $nextUnlockName }}</a>
                 @else
-                <a href="{{ route('checkout.signal-expansion') }}" class="btn btn-primary js-unlock-signal-expansion" data-exec-init="Opening layer access..." data-exec-process="Preparing layer access..." data-exec-resolved="Layer access initiated">Unlock Signal Expansion</a>
+                <a href="{{ route('checkout.signal-expansion') }}" class="btn btn-primary js-unlock-signal-expansion" data-exec-init="Opening layer access..." data-exec-process="Preparing layer access..." data-exec-resolved="Layer access initiated">Unlock Signal Analysis</a>
                 @endif
                 <button type="button" class="btn btn-secondary" disabled><span class="lock-glyph" aria-hidden="true"></span> Preview Restricted Layer</button>
               </div>
@@ -1631,8 +1965,11 @@ $_scanAiPrompts = [
 ];
 @endphp
 @include('components.ai-assistant', [
-    'aiGreeting'        => $_scanAiGreeting,
+    'aiGreeting'         => $_scanAiGreeting,
     'aiSuggestedPrompts' => $_scanAiPrompts,
+    'aiMicroLabel'       => 'Ask about your score',
+    'aiTeaserTitle'      => 'Ask about your results',
+    'aiTeaserText'       => 'I can explain your score, what to fix first, or what upgrading would reveal.',
 ])
 <script>
 (function () {
@@ -1677,6 +2014,7 @@ $_scanAiPrompts = [
 </script>
 @include('partials.back-to-top')
 @include('components.tm-style')
+@include('components.layer-modal')
 @include('partials.public-nav-js')
 </body>
 </html>

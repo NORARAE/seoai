@@ -35,7 +35,7 @@
     </ul>
 
     <div style="text-align:center;margin:24px 0">
-      <a href="{{ \App\Support\EmailUrl::tracked('/checkout/signal-expansion', 'dashboard-inactive-nudge', $scan->user_id, $scan->id) }}" style="display:inline-block;padding:14px 36px;background:#080808;color:#ede8de;font-size:13px;letter-spacing:.1em;text-decoration:none;text-transform:uppercase">Unlock Signal Expansion &mdash; $99</a>
+      <a href="{{ \App\Support\EmailUrl::tracked('/checkout/signal-expansion', 'dashboard-inactive-nudge', $scan->user_id, $scan->id) }}" style="display:inline-block;padding:14px 36px;background:#080808;color:#ede8de;font-size:13px;letter-spacing:.1em;text-decoration:none;text-transform:uppercase">Unlock Signal Analysis &mdash; $99</a>
     </div>
 
     <p style="font-size:12px;color:#999;line-height:1.6;margin:20px 0 0;text-align:center">Or <a href="{{ \App\Support\EmailUrl::tracked('/book', 'dashboard-inactive-nudge', $scan->user_id, $scan->id) }}" style="color:#c8a84b;text-decoration:none">book a free strategy call</a> to talk through your options.</p>

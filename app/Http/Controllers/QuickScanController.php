@@ -431,6 +431,7 @@ class QuickScanController extends Controller
             if ($scan->paid && $scan->status === QuickScan::STATUS_SCANNED && $scan->score !== null) {
                 if ($hasValidToken) {
                     $this->trackResultViews($scan, 'quick_scan_guest_report');
+                    session(['last_quick_scan_id' => $scan->id]);
                     return view('public.quick-scan-result', compact('scan'));
                 }
 
@@ -468,6 +469,7 @@ class QuickScanController extends Controller
 
         if ($hasValidToken) {
             $this->trackResultViews($scan, 'quick_scan_guest_report');
+            session(['last_quick_scan_id' => $scan->id]);
             return view('public.quick-scan-result', compact('scan'));
         }
 
@@ -718,9 +720,9 @@ class QuickScanController extends Controller
      * Upgrade plan definitions: slug → [label, price in cents].
      */
     private const UPGRADE_PLANS = [
-        'diagnostic' => ['Signal Expansion', 9900],
-        'fix-strategy' => ['Structural Leverage', 24900],
-        'optimization' => ['System Activation', 48900],
+        'diagnostic' => ['Signal Analysis', 9900],
+        'fix-strategy' => ['Action Plan', 24900],
+        'optimization' => ['Guided Execution', 48900],
     ];
 
     /**

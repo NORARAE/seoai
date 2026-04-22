@@ -205,7 +205,7 @@ html:not(.js-enabled) .r{opacity:1;transform:none}
   font-family:'Cormorant Garamond',serif;font-size:.92rem;
   color:var(--ivory);font-weight:400;margin-bottom:4px;
 }
-.hiw-pipe-desc{font-size:.68rem;color:var(--muted);line-height:1.6}
+.hiw-pipe-desc{font-size:.72rem;color:var(--muted);line-height:1.6}
 .hiw-pipe-arrow{
   position:absolute;right:-8px;top:50%;transform:translateY(-50%);z-index:2;
   width:14px;height:14px;color:rgba(200,168,75,.3);
@@ -226,30 +226,111 @@ html:not(.js-enabled) .r{opacity:1;transform:none}
 
 /* ── Tier progression ── */
 .hiw-tiers{
-  display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
-  gap:16px;max-width:960px;margin:0 auto;
+  display:grid;grid-template-columns:repeat(2,1fr);
+  grid-auto-rows:1fr;align-items:stretch;
+  gap:1px;max-width:960px;margin:0 auto;
+  background:rgba(200,168,75,.12); /* fills 1px gap = connector seam */
+  border:1px solid rgba(200,168,75,.14);
+  border-radius:12px;overflow:hidden;
+  position:relative;
+}
+.hiw-tiers::before{
+  content:'';
+  position:absolute;inset:-1px;
+  background:linear-gradient(120deg,transparent 18%,rgba(200,168,75,.1) 50%,transparent 82%);
+  opacity:0;
+  transform:translateX(-24%);
+  transition:opacity .32s ease;
+  pointer-events:none;
+  z-index:1;
+}
+/* center hub node — pinned at grid crosshair; grid-auto-rows:1fr ensures equal rows so top:50% = seam */
+.hiw-tiers::after{
+  content:'';position:absolute;top:50%;left:50%;
+  transform:translate(-50%,-50%);
+  width:22px;height:22px;border-radius:50%;
+  background:var(--bg,#080806);
+  border:1px solid rgba(200,168,75,.46);
+  box-shadow:0 0 0 4px rgba(200,168,75,.05),0 0 20px rgba(200,168,75,.2);
+  z-index:4;pointer-events:none;
 }
 .hiw-tier{
-  background:var(--card-bg);border:1px solid var(--card-border);
-  border-radius:10px;padding:24px 20px;text-align:center;
-  transition:border-color .3s,transform .3s;
+  background:var(--card-bg);border:none;
+  border-radius:0;padding:30px 24px 26px;text-align:center;
+  transition:background .28s,transform .24s,box-shadow .24s,filter .24s;
+  position:relative;z-index:1;
+  display:flex;flex-direction:column;justify-content:center;align-items:center;
+  min-height:254px;
 }
-.hiw-tier:hover{border-color:var(--card-border-hover);transform:translateY(-2px)}
+.hiw-tier:hover{background:rgba(200,168,75,.04);transform:none}
+/* Ladder animation — alive, progressive, directional */
+@keyframes hiwNodePulse{
+  0%,100%{box-shadow:0 0 0 4px rgba(200,168,75,.05),0 0 20px rgba(200,168,75,.2)}
+  50%     {box-shadow:0 0 0 6px rgba(200,168,75,.1), 0 0 32px rgba(200,168,75,.38)}
+}
+.hiw-tiers::after{animation:hiwNodePulse 3.6s ease-in-out infinite}
+@keyframes hiwTierLift{
+  to{transform:translateY(-3px)}
+}
+.hiw-tier:hover{
+  background:rgba(200,168,75,.06);
+  transform:translateY(-4px);
+  box-shadow:0 12px 38px rgba(200,168,75,.16);
+  z-index:2;
+}
+.hiw-tier:hover .hiw-tier-price{color:rgba(228,198,112,1)}
+.hiw-tiers:hover .hiw-tier{filter:brightness(.94)}
+.hiw-tiers:hover .hiw-tier:hover{filter:brightness(1.05)}
+/* Connector seam brightens when any tile is hovered — CSS-only trick via :has() */
+@supports selector(:has(*)){
+  .hiw-tiers:has(.hiw-tier:hover){
+    background:rgba(200,168,75,.28);
+    transition:background .25s;
+  }
+  .hiw-tiers:has(.hiw-tier:hover)::before{
+    opacity:.62;
+    animation:hiwEnergyFlow 2.4s ease-in-out infinite;
+  }
+}
+@keyframes hiwEnergyFlow{
+  0%{transform:translateX(-24%)}
+  50%{transform:translateX(0%)}
+  100%{transform:translateX(24%)}
+}
 .hiw-tier-price{
-  font-family:'Cormorant Garamond',serif;font-size:1.4rem;
-  color:var(--gold-lt);font-weight:400;margin-bottom:4px;
+  font-family:'Cormorant Garamond',serif;font-size:1.52rem;
+  color:var(--gold-lt);font-weight:400;margin-bottom:8px;
+  line-height:1;
 }
+.hiw-tier:not(.hiw-tier-entry) .hiw-tier-price{font-size:2.08rem}
 .hiw-tier-name{
-  font-size:.72rem;letter-spacing:.16em;text-transform:uppercase;
-  color:var(--ivory);margin-bottom:10px;
+  font-size:.78rem;letter-spacing:.145em;text-transform:uppercase;
+  color:var(--ivory);margin-bottom:12px;
 }
-.hiw-tier-desc{font-size:.78rem;color:var(--muted);line-height:1.7}
+.hiw-tier-desc{font-size:.84rem;color:var(--muted);line-height:1.72;max-width:31ch;margin:0 auto}
 .hiw-tier-arrow{
   color:rgba(200,168,75,.25);font-size:.7rem;margin:0 auto;
   display:flex;align-items:center;justify-content:center;padding:8px 0;
 }
 @media(max-width:700px){
   .hiw-tier-arrow{transform:rotate(90deg)}
+}
+
+/* ── Flow sequence indicator strip ── */
+.hiw-flow-seq{
+  display:flex;align-items:center;justify-content:center;
+  gap:8px;flex-wrap:wrap;margin-bottom:20px;
+  overflow:hidden; /* prevent bleed */
+}
+.hiw-flow-seq-step{
+  font-size:.52rem;letter-spacing:.16em;text-transform:uppercase;
+  color:rgba(200,168,75,.46);font-family:'DM Sans',sans-serif;
+  padding:4px 10px;border:1px solid rgba(200,168,75,.18);border-radius:99px;
+  transition:color .2s,border-color .2s;
+}
+.hiw-flow-seq-step.active{color:rgba(200,168,75,.7);border-color:rgba(200,168,75,.26)}
+.hiw-flow-seq-arrow{
+  color:rgba(200,168,75,.2);font-size:.58rem;display:inline-block;
 }
 
 /* ── Final CTA section ── */
@@ -302,28 +383,77 @@ html:not(.js-enabled) .r{opacity:1;transform:none}
   color:rgba(200,168,75,.68);padding:6px 10px;background:rgba(200,168,75,.03);
 }
 
-/* ── Level highlight ── */
+/* ── Level highlight (entry layer) ── */
 .hiw-tier.hiw-tier-entry{
-  border-color:rgba(200,168,75,.22);
-  box-shadow:0 0 24px rgba(200,168,75,.06);
+  background:linear-gradient(148deg,rgba(200,168,75,.045) 0%,var(--card-bg) 60%);
   position:relative;
+}
+.hiw-tier.hiw-tier-entry::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:2px;
+  background:linear-gradient(90deg,rgba(200,168,75,.46),rgba(200,168,75,.1));
+  z-index:2;
+}
+.hiw-tier.hiw-tier-entry:hover{
+  background:linear-gradient(148deg,rgba(200,168,75,.07) 0%,var(--card-bg) 60%);
 }
 .hiw-tier-badge{
   display:inline-block;
   font-size:.5rem;letter-spacing:.18em;text-transform:uppercase;
   color:var(--gold);background:var(--bg);
-  padding:2px 10px;border:1px solid rgba(200,168,75,.2);border-radius:20px;
+  padding:2px 10px;border:1px solid rgba(200,168,75,.22);border-radius:20px;
   margin-bottom:10px;
 }
 .hiw-tier-level{
-  font-size:.56rem;letter-spacing:.16em;text-transform:uppercase;
-  color:rgba(200,168,75,.45);margin-bottom:4px;
+  display:inline-flex;align-items:center;justify-content:center;
+  min-height:24px;padding:0 10px;
+  font-size:.56rem;letter-spacing:.19em;text-transform:uppercase;
+  color:rgba(224,198,114,.92);margin-bottom:8px;
+  border:1px solid rgba(200,168,75,.38);
+  border-radius:999px;
+  background:linear-gradient(180deg,rgba(200,168,75,.16),rgba(200,168,75,.06));
+  box-shadow:inset 0 0 0 1px rgba(200,168,75,.08),0 0 18px rgba(200,168,75,.08);
 }
 .hiw-progression-note{
   text-align:center;font-size:.86rem;color:var(--muted);
   max-width:480px;margin:28px auto 0;line-height:1.78;
 }
 .hiw-progression-note strong{color:var(--ivory);font-weight:400}
+
+/* ── Tier inline CTA link (replaces btn-ghost buttons) ── */
+.hiw-tier-link{
+  display:inline-flex;align-items:center;gap:5px;
+  position:relative;
+  font-family:'DM Sans',sans-serif;font-size:.78rem;font-weight:600;
+  letter-spacing:.11em;text-transform:uppercase;text-decoration:none;
+  color:rgba(232,205,122,.92);
+  margin-top:16px;
+  padding-bottom:3px;
+  cursor:pointer;
+  transition:color .2s,filter .2s;
+}
+.hiw-tier-link::after{
+  content:'';
+  position:absolute;
+  left:0;right:0;bottom:0;
+  height:1px;
+  background:linear-gradient(90deg,rgba(200,168,75,.52),rgba(228,198,112,.82));
+  transform:scaleX(.24);
+  transform-origin:left center;
+  transition:transform .24s ease,opacity .24s ease;
+  opacity:.72;
+}
+.hiw-tier-link .hiw-tier-link-arrow{
+  display:inline-block;transition:transform .22s;
+}
+.hiw-tier-link:hover{color:rgba(242,217,134,.98);filter:drop-shadow(0 0 10px rgba(200,168,75,.3))}
+.hiw-tier-link:hover::after{transform:scaleX(1);opacity:.98}
+.hiw-tier-link:hover .hiw-tier-link-arrow{transform:translateX(3px)}
+
+/* ── Tier stagger animation delays ── */
+.hiw-tiers .hiw-tier:nth-child(1){transition-delay:0s}
+.hiw-tiers .hiw-tier:nth-child(2){transition-delay:.12s}
+.hiw-tiers .hiw-tier:nth-child(3){transition-delay:.22s}
+.hiw-tiers .hiw-tier:nth-child(4){transition-delay:.32s}
 
 /* ── Momentum block ── */
 .hiw-momentum{
@@ -347,6 +477,7 @@ html:not(.js-enabled) .r{opacity:1;transform:none}
 
 @media (prefers-reduced-motion:reduce){
   .hiw-pipe-step::after{animation:none}
+  .hiw-tiers::after,.hiw-tiers::before{animation:none !important}
 }
 
 /* ── Icon system ── */
@@ -369,12 +500,18 @@ html:not(.js-enabled) .r{opacity:1;transform:none}
   .hiw-happens{grid-template-columns:1fr}
   .wrap{padding:0 24px}
   .hiw-grid{grid-template-columns:1fr}
-  .hiw-tiers{grid-template-columns:1fr 1fr}
+  .hiw-tiers{grid-template-columns:1fr 1fr} /* stays 2×2 on tablet */
+  .hiw-tier{padding:28px 20px 24px;min-height:236px}
   .hiw-icon{width:48px;height:48px;margin-bottom:18px}
   .hiw-icon svg{width:24px;height:24px;stroke-width:1.6}
 }
 @media(max-width:480px){
-  .hiw-tiers{grid-template-columns:1fr}
+  .hiw-tiers{grid-template-columns:1fr} /* single column on small phone */
+  .hiw-tier-price{font-size:1.64rem}
+  .hiw-tier:not(.hiw-tier-entry) .hiw-tier-price{font-size:1.86rem}
+  .hiw-flow-seq{gap:5px}
+  .hiw-flow-seq-step{font-size:.46rem;padding:3px 8px}
+  .hiw-flow-seq-arrow{font-size:.5rem}
 }
 
 /* ═══════════════════════════════════════════
@@ -423,8 +560,9 @@ html:not(.js-enabled) .r{opacity:1;transform:none}
   .hiw-card-num{font-size:.62rem;margin-bottom:10px}
 
   /* Tier progression cards */
-  .hiw-tier{padding:28px 24px}
-  .hiw-tier-price{font-size:1.6rem;margin-bottom:6px;color:rgba(215,182,88,1)}
+  .hiw-tier{padding:30px 24px;min-height:236px}
+  .hiw-tier-price{font-size:1.7rem;margin-bottom:8px;color:rgba(215,182,88,1)}
+  .hiw-tier:not(.hiw-tier-entry) .hiw-tier-price{font-size:1.95rem}
   .hiw-tier-name{font-size:.78rem;letter-spacing:.14em;margin-bottom:10px;color:#f0f0ea}
   .hiw-tier-desc{font-size:.9rem;color:#c8c8c0;line-height:1.78}
   .hiw-tier-level{font-size:.62rem;margin-bottom:6px}
@@ -485,6 +623,21 @@ html:not(.js-enabled) .r{opacity:1;transform:none}
   .nav-btn{display:none}
   .nav-hamburger{display:flex}
 }
+
+/* Final pre-live readability refinements */
+.hiw-hero-eye,
+.hiw-pipe-desc,
+.hiw-tier-note,
+.hiw-final-reassure,
+.hiw-transition-signal,
+.hiw-transition-lead,
+.hiw-card-kicker,
+.hiw-happens-kicker{
+  font-size:max(.78rem, 12px);
+  line-height:1.58;
+}
+.hiw-pipe-desc,
+.hiw-transition-lead{color:rgba(190,190,182,.84)}
 
 </style>
 </head>
@@ -577,7 +730,7 @@ html:not(.js-enabled) .r{opacity:1;transform:none}
 <!-- ════════════ SECTION 3 — WHAT ACTUALLY HAPPENS ════════════ -->
 <section class="hiw-section">
   <div class="wrap">
-    <p class="hiw-section-eye r">System Activation</p>
+    <p class="hiw-section-eye r">Guided Execution</p>
     <h2 class="hiw-section-hed r">When your site enters the system</h2>
     <p class="hiw-section-sub r">
       You submit one domain. The system reveals how AI search interprets your business, where visibility breaks, and what to build first.
@@ -645,43 +798,60 @@ html:not(.js-enabled) .r{opacity:1;transform:none}
       so nothing is rebuilt and every step compounds visibility.
     </p>
 
+    {{-- Sequence indicator strip --}}
+    <div class="hiw-flow-seq r" aria-hidden="true">
+      <span class="hiw-flow-seq-step active">01 &middot; Scan</span>
+      <span class="hiw-flow-seq-arrow">&rarr;</span>
+      <span class="hiw-flow-seq-step">02 &middot; Signal</span>
+      <span class="hiw-flow-seq-arrow">&rarr;</span>
+      <span class="hiw-flow-seq-step">03 &middot; Leverage</span>
+      <span class="hiw-flow-seq-arrow">&rarr;</span>
+      <span class="hiw-flow-seq-step">04 &middot; Activate</span>
+    </div>
+
     <div class="hiw-tiers">
+
+      {{-- Level 1 — entry layer --}}
       <div class="hiw-tier hiw-tier-entry r">
         <span class="hiw-tier-badge">Most common entry point</span>
         <div class="hiw-tier-level">Level 1</div>
         <div class="hiw-tier-price">$2</div>
         <div class="hiw-tier-name">AI Visibility Scan</div>
         <p class="hiw-tier-desc">Test whether AI systems are likely to surface or ignore your site, then see the highest-impact fixes.</p>
-        <a href="{{ route('scan.start') }}" class="btn-primary" style="margin-top:14px;font-size:.7rem;padding:12px 28px" onclick="if(typeof gtag==='function')gtag('event','cta_click',{cta_location:'tier_1',cta_label:'start_scan'});">Start Scan &mdash; $2</a>
+        <a href="{{ route('scan.start') }}" class="btn-primary" style="margin-top:16px;font-size:.7rem;padding:12px 28px" onclick="if(typeof gtag==='function')gtag('event','cta_click',{cta_location:'tier_1',cta_label:'start_scan'});">Start Scan &mdash; $2</a>
       </div>
 
+      {{-- Level 2 --}}
       <div class="hiw-tier r">
         <div class="hiw-tier-level">Level 2</div>
         <div class="hiw-tier-price">$99</div>
-        <div class="hiw-tier-name">Signal Expansion</div>
+        <div class="hiw-tier-name">Signal Analysis</div>
         <p class="hiw-tier-desc">Expand analysis depth across structure, schema, and competitive citation signals in active markets.</p>
-        <button type="button" class="btn-ghost js-info-modal-trigger" style="margin-top:10px;font-size:.7rem" data-info-modal="layer-2-answer-readiness" data-info-modal-href="{{ route('checkout.signal-expansion') }}" data-info-modal-cta="Unlock Answer Readiness">Learn More &rarr;</button>
+        <a href="{{ route('checkout.signal-expansion') }}" class="hiw-tier-link" data-layer="level-2" role="button" aria-haspopup="dialog">See this layer <span class="hiw-tier-link-arrow">&rarr;</span></a>
       </div>
 
+      {{-- Level 3 --}}
       <div class="hiw-tier r">
         <div class="hiw-tier-level">Level 3</div>
         <div class="hiw-tier-price">$249</div>
-        <div class="hiw-tier-name">Structural Leverage</div>
+        <div class="hiw-tier-name">Action Plan</div>
         <p class="hiw-tier-desc">Map full service-by-location coverage and generate the structural system AI platforms can reliably interpret.</p>
-        <button type="button" class="btn-ghost js-info-modal-trigger" style="margin-top:10px;font-size:.7rem" data-info-modal="layer-3-structural-leverage" data-info-modal-href="{{ route('checkout.structural-leverage') }}" data-info-modal-cta="Unlock Priority System">Learn More &rarr;</button>
+        <a href="{{ route('checkout.structural-leverage') }}" class="hiw-tier-link" data-layer="level-3" role="button" aria-haspopup="dialog">See this layer <span class="hiw-tier-link-arrow">&rarr;</span></a>
       </div>
 
+      {{-- Level 4 --}}
       <div class="hiw-tier r">
         <div class="hiw-tier-level">Level 4</div>
         <div class="hiw-tier-price">$489</div>
-        <div class="hiw-tier-name">System Activation</div>
+        <div class="hiw-tier-name">Guided Execution</div>
         <p class="hiw-tier-desc">Deploy the full visibility layer: pages, schema, and architecture tuned for AI citation and recommendation scale.</p>
-        <button type="button" class="btn-ghost js-info-modal-trigger" style="margin-top:10px;font-size:.7rem" data-info-modal="layer-4-system-activation" data-info-modal-href="{{ route('checkout.system-activation') }}" data-info-modal-cta="Activate System">Learn More &rarr;</button>
+        <a href="{{ route('checkout.system-activation') }}" class="hiw-tier-link" data-layer="level-4" role="button" aria-haspopup="dialog">See this layer <span class="hiw-tier-link-arrow">&rarr;</span></a>
       </div>
+
     </div>
 
     <p class="hiw-progression-note r">
-      Start with the scan. Expand only when the system shows the next best move.
+      Start here. Move up as the system unlocks what&rsquo;s next.
     </p>
   </div>
 </section>
@@ -756,7 +926,19 @@ html:not(.js-enabled) .r{opacity:1;transform:none}
 
 @include('partials.public-nav-js')
 
+@include('components.layer-modal')
 @include('components.booking-modal')
+@include('components.ai-assistant', [
+    'aiMicroLabel'  => 'Ask how the system works',
+    'aiTeaserTitle' => 'Ask about the system',
+    'aiTeaserText'  => 'I can explain how each level works, what AI visibility means, or what to do first.',
+    'aiSuggestedPrompts' => [
+        'How does the $2 scan work?',
+        'What does Signal Analysis unlock?',
+        'What is AI Visibility Score?',
+        'Which level should I start with?',
+    ],
+])
 @include('components.tm-style')
 </body>
 </html>

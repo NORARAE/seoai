@@ -4,7 +4,7 @@
 </button>
 <style>
 .btt{
-  position:fixed;bottom:32px;right:32px;z-index:300;
+  position:fixed;bottom:var(--btt-bottom,32px);right:32px;z-index:300;
   width:44px;height:44px;border-radius:50%;
   background:var(--card-bg,rgba(18,18,18,.92));
   border:1px solid rgba(200,168,75,.18);
@@ -30,7 +30,13 @@
 .btt--dash svg{width:14px;height:14px}
 
 @media(max-width:768px){
-  .btt{bottom:24px;right:20px;width:40px;height:40px}
+  /*
+   Mobile bottom stack formula:
+     base (set by AI component via --btt-bottom-mob)
+   + --mob-bar-h  (0px default; pages with sticky bottom bar set this)
+   + env(safe-area-inset-bottom) (iPhone home-bar / notch safety)
+  */
+  .btt{bottom:calc(var(--btt-bottom-mob,24px) + var(--mob-bar-h,0px) + env(safe-area-inset-bottom,0px));right:20px;width:40px;height:40px}
   .btt--dash{bottom:20px;right:16px;width:36px;height:36px}
 }
 </style>

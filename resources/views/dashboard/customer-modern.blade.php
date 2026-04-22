@@ -80,7 +80,7 @@
   $nextMoveFastestFix = trim((string) ($leadScan['fastest_fix'] ?? '')) !== ''
     ? $leadScan['fastest_fix']
     : 'Strengthen your primary service signal and rerun the scan.';
-  $nextMoveStep = $nextStep ?? 'Deploy Signal Expansion';
+  $nextMoveStep = $nextStep ?? 'Unlock Signal Analysis';
   $nextMoveActionHref = $nextUnlockHref;
   $scanFocusList = $scanHistory->take(6);
   $isScansView = request()->is('dashboard/scans');
@@ -137,14 +137,14 @@
   $currentLayer = $layers->filter(fn($layer) => (bool) ($layer['complete'] ?? false))->last();
   $nextLayer = $layers->first(fn($layer) => ! (bool) ($layer['complete'] ?? false));
   $currentLevelLabel = $currentLayer['label'] ?? 'No level unlocked yet';
-  $nextLevelLabel = $nextLayer['label'] ?? 'System Activation Complete';
+  $nextLevelLabel = $nextLayer['label'] ?? 'Guided Execution Complete';
   $nextLevelPrice = $nextLayer['price'] ?? null;
   $nextLevelHref = $nextRoute ? route($nextRoute) : route('quick-scan.show');
   $levelUnlockMap = [
     'scan-basic'          => ['Your baseline score and top issue.', 'What to fix first to start improving.'],
     'signal-expansion'    => ['See where competitors are stronger.', 'Find your biggest visibility gaps.'],
-    'structural-leverage' => ['Your highest-impact fixes, ranked.', 'A faster path to a better score.'],
-    'system-activation'   => ['Full competitor comparison.', 'Your ongoing improvement roadmap.'],
+    'structural-leverage' => ['Your impact-ranked fix list from scan data.', 'Execute what moves your score the most.'],
+    'system-activation'   => ['Execution checklist inside your dashboard.', 'Track progress as you complete guided steps.'],
   ];
   $nextLevelUnlocks = $nextLayer
     ? ($levelUnlockMap[$nextLayer['key']] ?? ['Deeper visibility controls.', 'More actionable correction guidance.'])
@@ -291,7 +291,7 @@
   .hero-grid{position:relative;display:grid;grid-template-columns:minmax(0,1.5fr) minmax(280px,.92fr);gap:18px;z-index:1}
   .hero-main{display:flex;flex-direction:column;gap:14px}
   .hero-status-strip{display:flex;flex-wrap:wrap;gap:8px}
-  .hero-status-item{display:inline-flex;align-items:center;gap:6px;padding:5px 10px;border-radius:999px;border:1px solid rgba(200,168,75,.18);background:rgba(255,255,255,.03);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:#c4bca7;backdrop-filter:blur(6px)}
+  .hero-status-item{display:inline-flex;align-items:center;gap:6px;padding:5px 10px;border-radius:999px;border:1px solid rgba(200,168,75,.18);background:rgba(255,255,255,.03);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:#c4bca7}
   .hero-status-item::before{content:'';width:6px;height:6px;border-radius:999px;background:rgba(200,168,75,.72)}
   .hero-overline{font-size:.68rem;letter-spacing:.28em;text-transform:uppercase;color:rgba(200,168,75,.68)}
   .hero-domain{font-size:clamp(2.2rem,4.8vw,4.35rem);line-height:.96;font-weight:650;letter-spacing:-.04em;color:#f3ecd8;text-wrap:balance;max-width:10ch;text-shadow:0 8px 30px rgba(0,0,0,.35)}
@@ -486,7 +486,7 @@
   .cta-modal:hover{border-color:rgba(200,168,75,.4);background:rgba(200,168,75,.12)}
   .cta-progress{border-color:rgba(214,181,84,.58)!important;background:rgba(214,181,84,.2)!important;color:#f4e9cb!important;position:relative;overflow:hidden}
   .cta-progress::after{content:'';position:absolute;inset:-1px;background:linear-gradient(105deg,transparent 35%,rgba(255,240,199,.2) 50%,transparent 65%);transform:translateX(-130%);animation:ctaSweep .95s ease-in-out infinite}
-  .cta-view{border:1px solid rgba(200,168,75,.24);background:rgba(200,168,75,.06);color:#dfd6c1}
+  .cta-view{border:1px solid rgba(200,168,75,.42);background:rgba(200,168,75,.06);color:#dfd6c1}
   .cta-view:hover{border-color:rgba(200,168,75,.45);background:rgba(200,168,75,.14)}
   .system-card-actions{margin-top:auto;display:flex;gap:7px;padding-top:8px}
 
@@ -515,8 +515,8 @@
   .readout-flyout::before{content:'';position:absolute;inset:0;pointer-events:none;background:radial-gradient(480px 280px at 0 var(--origin-y,22%),rgba(200,168,75,.16),transparent 72%)}
   .readout-flyout-inner{position:relative;height:100%;overflow:auto;padding:20px 18px 22px}
   .readout-flyout-head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:12px}
-  .readout-flyout-kicker{font-size:.58rem;letter-spacing:.24em;text-transform:uppercase;color:rgba(200,168,75,.72)}
-  .readout-flyout-close{display:inline-flex;align-items:center;justify-content:center;min-height:34px;padding:7px 10px;border-radius:8px;border:1px solid rgba(200,168,75,.2);background:rgba(200,168,75,.08);font-size:.62rem;letter-spacing:.12em;text-transform:uppercase;color:#ddd2b8}
+  .readout-flyout-kicker{font-size:.58rem;letter-spacing:.24em;text-transform:uppercase;color:rgba(200,168,75,.82)}
+  .readout-flyout-close{display:inline-flex;align-items:center;justify-content:center;min-height:34px;padding:7px 10px;border-radius:8px;border:1px solid rgba(200,168,75,.36);background:rgba(200,168,75,.08);font-size:.62rem;letter-spacing:.12em;text-transform:uppercase;color:#ddd2b8}
   .readout-flyout-close:hover{border-color:rgba(200,168,75,.42);background:rgba(200,168,75,.15)}
   .readout-identity{border:1px solid rgba(200,168,75,.2);background:rgba(200,168,75,.05);border-radius:12px;padding:12px 12px 10px;margin-bottom:10px}
   .readout-identity-domain{font-size:.9rem;font-weight:700;color:#efe5cf;line-height:1.35;margin-bottom:8px}
@@ -598,7 +598,7 @@
   .readiness-meter-meta strong{font-size:1.15rem;letter-spacing:-.03em;text-transform:none;color:#f5ead2}
   .scan-history-shell{border:1px solid rgba(200,168,75,.24);border-radius:24px;padding:22px;box-shadow:0 26px 44px rgba(0,0,0,.34),inset 0 1px 0 rgba(255,255,255,.03)}
   .scan-library-header{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(260px,.9fr);gap:18px;align-items:end;margin-bottom:18px}
-  .scan-library-kicker{font-size:.68rem;letter-spacing:.28em;text-transform:uppercase;color:rgba(200,168,75,.68)}
+  .scan-library-kicker{font-size:.68rem;letter-spacing:.28em;text-transform:uppercase;color:rgba(200,168,75,.76)}
   .scan-library-title{margin-top:6px;font-size:clamp(2.1rem,4vw,3.2rem);line-height:.96;font-weight:700;letter-spacing:-.04em;color:#f4ecd7}
   .scan-library-description{margin-top:10px;max-width:42rem;font-size:.95rem;line-height:1.65;color:#d8cdb7}
   .scan-library-summary-wall{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
@@ -648,7 +648,7 @@
   }
 
   .next-action-block{border:1px solid rgba(200,168,75,.26);border-radius:14px;background:linear-gradient(155deg,rgba(30,22,10,.96),rgba(12,9,6,.98) 68%);padding:14px;box-shadow:0 10px 24px rgba(0,0,0,.28),inset 0 1px 0 rgba(255,255,255,.03)}
-  .next-action-label{font-size:.6rem;letter-spacing:.24em;text-transform:uppercase;color:rgba(200,168,75,.72)}
+  .next-action-label{font-size:.6rem;letter-spacing:.24em;text-transform:uppercase;color:rgba(200,168,75,.82)}
   .next-action-copy{margin-top:6px;font-size:.86rem;line-height:1.55;color:#eae4d8}
   .next-action-cta{display:inline-flex;align-items:center;justify-content:center;min-height:42px;padding:0 18px;border-radius:10px;margin-top:12px;background:#c6a85a;color:#1a1a1a;text-decoration:none;font-size:.7rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;transition:all .2s ease;box-shadow:0 8px 18px rgba(198,168,90,.22),0 0 0 1px rgba(255,255,255,.12) inset}
   .next-action-cta:hover{transform:translateY(-2px);box-shadow:0 14px 28px rgba(198,168,90,.38),0 0 0 1px rgba(255,255,255,.18) inset}
@@ -662,10 +662,13 @@
     .report-readout-grid{grid-template-columns:1fr}
     .onboarding-proof-strip{grid-template-columns:1fr}
     .ia-level-grid{grid-template-columns:1fr}
+    .scan-library-header{grid-template-columns:1fr;gap:10px}
+    .scan-library-summary-wall{grid-template-columns:1fr 1fr}
   }
   @media(max-width:768px){
-    .system-grid{grid-template-columns:1fr}
-    .system-grid-card{min-height:unset}
+    /* ── Grid layouts ── */
+    .system-grid{grid-template-columns:1fr;gap:12px}
+    .system-grid-card{min-height:unset;padding:16px}
     .next-move-grid{grid-template-columns:1fr}
     .state-metric-grid{grid-template-columns:1fr}
     .hub-priority-grid{grid-template-columns:1fr}
@@ -675,6 +678,159 @@
     .hero-side-grid,.scan-history-context{grid-template-columns:1fr}
     .telemetry-mini-grid{grid-template-columns:1fr}
     .next-move-command-grid{grid-template-columns:1fr}
+    .scan-featured-grid .scan-history-card{grid-column:span 12}
+    .hero-micro-grid{grid-template-columns:1fr 1fr}
+
+    /* ── Section shells — comfortable padding on mobile ── */
+    .exec-hero-shell{padding:20px 18px 18px}
+    .proj-identity-bar{padding:14px 16px;margin-bottom:22px}
+    .score-drivers-shell{padding:18px 16px}
+    .ai-advisor-shell{padding:18px 16px}
+    .scan-history-shell{padding:18px 16px}
+    .your-plan-shell{padding:20px 16px}
+    .next-move-shell{padding:20px 16px}
+    .next-action-block{padding:16px}
+    .system-grid-card.featured{padding:16px}
+    .score-driver-card{padding:16px 14px;gap:12px}
+    .nm-card{padding:16px 18px}
+    .level-card{padding:18px 16px}
+    .level-card.state-active{padding:20px 18px}
+    .plan-current-card,.plan-next-card,.plan-all-unlocked-card{padding:16px}
+    .next-move-row{gap:12px}
+    .level-system-shell{gap:20px}
+    .score-drivers-grid{gap:12px}
+    .exec-interp-col{gap:12px}
+
+    /* ── Section header typography ── */
+    .dash-section-label{font-size:.62rem;letter-spacing:.2em}
+    .dash-section-heading{font-size:1.05rem;line-height:1.35;margin-bottom:6px}
+    .dash-section-subhead{font-size:.84rem;line-height:1.62;color:#b0a898}
+    .section-head h2{font-size:.78rem}
+    .section-head p{font-size:.74rem;line-height:1.52}
+
+    /* ── Kicker / label text — floor at .62rem ── */
+    .scan-library-kicker{font-size:.64rem;letter-spacing:.2em}
+    .score-drivers-kicker{font-size:.64rem;letter-spacing:.2em}
+    .ai-advisor-kicker{font-size:.63rem;letter-spacing:.2em}
+    .hero-bottleneck-label{font-size:.64rem}
+    .hero-panel-label{font-size:.64rem}
+    .hero-overline{font-size:.65rem;color:rgba(200,168,75,.78)}
+    .hero-score-caption{font-size:.6rem}
+    .next-action-label{font-size:.62rem;letter-spacing:.18em}
+    .exec-interp-question{font-size:.63rem;letter-spacing:.18em}
+    .exec-bottleneck-label{font-size:.6rem}
+    .readout-flyout-kicker{font-size:.62rem}
+    .plan-current-kicker,.plan-next-kicker,.plan-all-unlocked-kicker{font-size:.6rem}
+    .nm-card-kicker{font-size:.59rem;letter-spacing:.16em}
+    .level-card-kicker{font-size:.6rem;letter-spacing:.16em}
+    .sdc-fix-label{font-size:.6rem}
+    .level-state-badge{font-size:.56rem}
+    .exec-ctx-pill{font-size:.6rem}
+
+    /* ── Body / content text ── */
+    .exec-interp-answer{font-size:1rem;line-height:1.64}
+    .exec-bottleneck-copy{font-size:.88rem;line-height:1.62}
+    .hero-bottleneck-copy{font-size:.95rem;line-height:1.68}
+    .sdc-issue{font-size:.9rem;line-height:1.46}
+    .sdc-why{font-size:.81rem;line-height:1.62}
+    .sdc-fix-copy{font-size:.82rem;line-height:1.58}
+    .nm-card-title{font-size:.92rem;line-height:1.48}
+    .nm-card-rationale{font-size:.81rem;line-height:1.6}
+    .next-action-copy{font-size:.88rem;line-height:1.64}
+    .level-card-desc{font-size:.8rem;line-height:1.58}
+    .level-card-name{font-size:.97rem;line-height:1.35}
+    .level-card-step{font-size:.79rem;line-height:1.52}
+    .level-card-why{font-size:.76rem;line-height:1.54}
+    .plan-current-desc,.plan-next-desc{font-size:.82rem;line-height:1.58}
+    .plan-current-name,.plan-next-name,.plan-all-unlocked-title{font-size:.96rem}
+    .plan-included-item,.plan-next-unlock-item{font-size:.8rem;line-height:1.52}
+    .scan-library-description{font-size:.9rem;line-height:1.66}
+    .scan-library-title{font-size:clamp(1.9rem,5vw,3rem)}
+    .ai-advisor-desc{font-size:.81rem;line-height:1.6}
+    .ai-advisor-title{font-size:.95rem}
+    .score-drivers-title{font-size:1.01rem;line-height:1.38}
+    .score-drivers-desc{font-size:.82rem;line-height:1.62}
+    .consult-cta-copy p:last-child{font-size:.87rem;line-height:1.52}
+    .plan-consult-copy{font-size:.8rem;line-height:1.5}
+
+    /* ── Small meta text — readable on phone screens ── */
+    .system-grid-meta{font-size:.64rem}
+    .selection-row p{font-size:.64rem}
+    .selection-pill{font-size:.6rem}
+    .memory-line,.action-memory-line{font-size:.63rem}
+    .proj-identity-pill{font-size:.62rem}
+    .featured-insight{font-size:.79rem;line-height:1.48}
+    .scan-card-badge{font-size:.58rem}
+    .scan-shelf-head p{font-size:.79rem}
+    .level-rail-step-label{font-size:.58rem;max-width:64px}
+    .card-open-hint{font-size:.62rem}
+    .readout-metric-label{font-size:.62rem}
+    .pressure-line,.next-path-line{font-size:.62rem}
+    .impact-hint{font-size:.62rem}
+    .exec-cta-stat{font-size:.58rem}
+    .exec-trust-line{font-size:.62rem}
+    .proj-identity-brand{font-size:.72rem}
+    .proj-identity-url{font-size:.74rem}
+
+    /* ── Tap targets — all key buttons ≥44px ── */
+    .exec-ctx-btn,.exec-ctx-btn-outline{min-height:44px;padding:0 18px;font-size:.64rem}
+    .sdc-ask-btn{min-height:44px;padding:8px 16px}
+    .sdc-unlock-btn{min-height:44px;padding:0 16px}
+    .nm-card-action,.nm-card-action-btn{min-height:44px;padding:8px 16px}
+    .plan-consult-btn,.plan-view-report-btn{min-height:44px;padding:0 18px}
+    .next-action-cta{min-height:48px;width:100%;font-size:.74rem;border-radius:12px}
+    .exec-cta-primary{min-height:48px;font-size:.72rem}
+    .exec-cta-secondary{min-height:44px;font-size:.7rem}
+    .plan-unlock-cta{min-height:48px;font-size:.72rem}
+    .premium-gate-cta{min-height:48px;font-size:.74rem;padding:0 26px}
+    .ai-advisor-open-btn{min-height:44px;padding:0 20px}
+    .pib-report-btn{min-height:44px;padding:0 20px}
+    .pib-report-btn-outline{min-height:44px;padding:0 18px}
+    .system-grid-cta{min-height:44px;font-size:.64rem;padding:9px 12px}
+    .readout-action-btn{min-height:44px;width:100%}
+    .readout-action-full,.readout-action-correction,.readout-action-close{min-height:44px}
+    .level-card-cta-primary,.level-card-cta-secondary,.level-card-cta-disabled{min-height:44px}
+    .hero-primary-cta{min-height:50px;width:100%;font-size:.74rem}
+    .hero-secondary-cta{min-height:44px;width:100%}
+    .hero-action-band{flex-direction:column;gap:8px;align-items:stretch}
+    .consult-cta-btn{min-height:44px;width:100%;justify-content:center}
+    .dcm-btn-primary,.dcm-btn-skip{min-height:46px}
+
+    /* ── Layout fixes ── */
+    .consult-cta-banner{flex-direction:column;gap:14px;align-items:stretch}
+    .plan-consult-row{flex-direction:column;align-items:flex-start;gap:10px}
+    .pib-right{align-items:stretch;gap:8px}
+    .exec-score-ring{width:90px;height:90px}
+    .exec-score-num{font-size:2.2rem}
+    .score-drivers-head{flex-direction:column;gap:10px}
+    .score-drivers-meta{align-items:flex-start}
+    .ai-advisor-chip{width:100%}
+    .readout-actions{gap:10px}
+    .readout-identity-grid{grid-template-columns:1fr}
+    .exec-action-col{min-width:unset;gap:8px}
+  }
+  @media(max-width:480px){
+    /* Very small phones — tighten shells, scale down a few last elements */
+    .exec-hero-shell{padding:16px 14px 14px}
+    .proj-identity-bar{padding:12px 14px;margin-bottom:18px}
+    .pib-domain-name{font-size:1.5rem;letter-spacing:-.02em}
+    .exec-score-ring{width:80px;height:80px}
+    .exec-score-num{font-size:2rem}
+    .exec-score-lbl{font-size:.48rem}
+    .scan-library-title{font-size:clamp(1.7rem,7vw,2.4rem)}
+    .hero-primary-cta,.hero-secondary-cta{font-size:.72rem}
+    .your-plan-shell{padding:14px}
+    .next-move-shell{padding:14px}
+    .score-drivers-shell{padding:14px}
+    .scan-history-shell{padding:14px}
+    .ai-advisor-shell{padding:14px}
+    .ai-advisor-chip{font-size:.7rem;padding:8px 13px}
+    .level-rail-step-dot{width:24px;height:24px;font-size:.54rem}
+    .level-rail-step-label{font-size:.54rem;max-width:52px}
+    .plan-next-price{font-size:.96rem}
+    .exec-interp-answer{font-size:.94rem}
+    .hero-micro-grid{grid-template-columns:1fr}
+    .next-action-cta,.plan-unlock-cta,.exec-cta-primary{font-size:.72rem}
   }
   @media(min-width:1100px){
     .system-grid-card.featured{grid-column:span 2}
@@ -784,7 +940,7 @@
   .consult-cta-banner{border:1px solid rgba(200,168,75,.22);border-radius:13px;background:linear-gradient(155deg,#161309,#0d0b07 70%);padding:18px 22px;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap}
   .consult-cta-copy p:first-child{font-size:.62rem;letter-spacing:.18em;text-transform:uppercase;color:rgba(200,168,75,.65);margin-bottom:4px}
   .consult-cta-copy p:last-child{font-size:.88rem;color:#d4cebc;line-height:1.45}
-  .consult-cta-btn{flex-shrink:0;display:inline-flex;align-items:center;gap:8px;min-height:40px;padding:0 18px;border-radius:10px;background:transparent;border:1px solid rgba(200,168,75,.5);color:#c6a85a;text-decoration:none;font-size:.68rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;transition:all .2s ease;white-space:nowrap}
+  .consult-cta-btn{flex-shrink:0;display:inline-flex;align-items:center;gap:8px;min-height:40px;padding:0 18px;border-radius:10px;background:transparent;border:1px solid rgba(200,168,75,.5);color:#d4b972;text-decoration:none;font-size:.68rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;transition:all .2s ease;white-space:nowrap}
   .consult-cta-btn:hover{background:rgba(200,168,75,.1);border-color:rgba(200,168,75,.75)}
 
   /* Data capture modal */
@@ -806,7 +962,7 @@
   .dcm-btn-primary{flex:1;min-height:42px;border-radius:10px;background:#c6a85a;color:#1a1a1a;border:none;font-size:.7rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;cursor:pointer;transition:all .2s ease}
   .dcm-btn-primary:hover{background:#d4b865;transform:translateY(-1px)}
   .dcm-btn-primary:disabled{opacity:.55;cursor:not-allowed;transform:none}
-  .dcm-btn-skip{min-height:42px;padding:0 14px;border-radius:10px;background:transparent;border:1px solid rgba(200,168,75,.22);color:rgba(200,168,75,.55);font-size:.68rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;cursor:pointer;transition:all .15s ease}
+  .dcm-btn-skip{min-height:42px;padding:0 14px;border-radius:10px;background:transparent;border:1px solid rgba(200,168,75,.38);color:rgba(200,168,75,.82);font-size:.68rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;cursor:pointer;transition:all .15s ease}
   .dcm-btn-skip:hover{border-color:rgba(200,168,75,.4);color:rgba(200,168,75,.75)}
 
   /* ── Project Identity Bar ─────────────────────────────── */
@@ -839,7 +995,7 @@
   .pib-right{display:flex;flex-direction:column;align-items:flex-end;gap:10px}
   .pib-report-btn{display:inline-flex;align-items:center;gap:7px;min-height:40px;padding:0 18px;border-radius:10px;background:#c6a85a;color:#1a1a1a;text-decoration:none;font-size:.68rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;transition:all .2s ease;box-shadow:0 6px 16px rgba(198,168,90,.24),inset 0 1px 0 rgba(255,255,255,.14);white-space:nowrap;flex-shrink:0}
   .pib-report-btn:hover{transform:translateY(-1px);box-shadow:0 10px 24px rgba(198,168,90,.38),inset 0 1px 0 rgba(255,255,255,.18)}
-  .pib-report-btn-outline{display:inline-flex;align-items:center;gap:6px;min-height:38px;padding:0 16px;border-radius:10px;border:1px solid rgba(200,168,75,.32);background:transparent;color:rgba(200,168,75,.8);text-decoration:none;font-size:.66rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;transition:all .2s ease;white-space:nowrap;flex-shrink:0}
+  .pib-report-btn-outline{display:inline-flex;align-items:center;gap:6px;min-height:38px;padding:0 16px;border-radius:10px;border:1px solid rgba(200,168,75,.48);background:rgba(200,168,75,.06);color:rgba(200,168,75,.9);text-decoration:none;font-size:.66rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;transition:all .2s ease;white-space:nowrap;flex-shrink:0}
   .pib-report-btn-outline:hover{background:rgba(200,168,75,.1);border-color:rgba(200,168,75,.55)}
   @keyframes pibPulse{0%,100%{transform:scale(1);opacity:1}50%{transform:scale(1.65);opacity:0.45}}
   /* Domain glow on scan cards */
@@ -932,7 +1088,7 @@
   /* ── Score Drivers ─────────────────────────── */
   .score-drivers-shell{border:1px solid rgba(200,168,75,.22);border-radius:20px;background:linear-gradient(155deg,#16120a,#0d0a06 72%);padding:22px;box-shadow:0 18px 38px rgba(0,0,0,.32),inset 0 1px 0 rgba(255,255,255,.03)}
   .score-drivers-head{display:flex;flex-wrap:wrap;align-items:flex-start;justify-content:space-between;gap:14px;margin-bottom:18px}
-  .score-drivers-kicker{font-size:.62rem;letter-spacing:.28em;text-transform:uppercase;color:rgba(200,168,75,.65);margin-bottom:6px}
+  .score-drivers-kicker{font-size:.62rem;letter-spacing:.28em;text-transform:uppercase;color:rgba(200,168,75,.76);margin-bottom:6px}
   .score-drivers-title{font-size:1.05rem;font-weight:600;color:#ede8de;line-height:1.35;max-width:42rem}
   .score-drivers-desc{margin-top:5px;font-size:.82rem;line-height:1.6;color:#a8a193;max-width:40rem}
   .score-drivers-meta{display:flex;flex-direction:column;align-items:flex-end;gap:8px;flex-shrink:0}
@@ -953,14 +1109,14 @@
   .impact-low{background:rgba(150,142,120,.1);border:1px solid rgba(150,142,120,.2);color:#b4ae9a}
   .sdc-lock-badge{margin-left:auto;padding:2px 8px;border-radius:999px;font-size:.5rem;letter-spacing:.1em;text-transform:uppercase;background:rgba(80,70,55,.28);border:1px solid rgba(200,168,75,.14);color:rgba(200,168,75,.42)}
   .sdc-issue{font-size:.88rem;font-weight:600;line-height:1.4;color:#ede3ca}
-  .sdc-why{font-size:.78rem;line-height:1.55;color:#b8b0a0}
+  .sdc-why{font-size:.78rem;line-height:1.55;color:#c8c0ae}
   .sdc-fix{border:1px solid rgba(200,168,75,.16);border-radius:10px;background:rgba(200,168,75,.05);padding:10px 12px}
   .sdc-fix-label{font-size:.52rem;letter-spacing:.18em;text-transform:uppercase;color:#d8c58f;margin-bottom:5px}
   .sdc-fix-copy{font-size:.8rem;line-height:1.52;color:#e4dbca}
-  .sdc-ask-btn{display:inline-flex;align-items:center;gap:7px;padding:6px 13px;border-radius:999px;border:1px solid rgba(200,168,75,.28);background:rgba(200,168,75,.08);color:#d9c988;font-size:.62rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;cursor:pointer;transition:all .18s ease;margin-top:auto;align-self:flex-start}
+  .sdc-ask-btn{display:inline-flex;align-items:center;gap:7px;padding:6px 13px;border-radius:999px;border:1px solid rgba(200,168,75,.44);background:rgba(200,168,75,.08);color:#d9c988;font-size:.62rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;cursor:pointer;transition:all .18s ease;margin-top:auto;align-self:flex-start}
   .sdc-ask-btn:hover{border-color:rgba(200,168,75,.52);background:rgba(200,168,75,.16);color:#f0dda6}
   .sdc-locked-hint{font-size:.75rem;line-height:1.5;color:#9a9082;font-style:italic}
-  .sdc-unlock-btn{display:inline-flex;align-items:center;justify-content:center;min-height:32px;padding:6px 14px;border-radius:8px;border:1px solid rgba(200,168,75,.32);background:rgba(200,168,75,.1);color:#d9c988;font-size:.62rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;text-decoration:none;transition:all .18s ease;align-self:flex-start}
+  .sdc-unlock-btn{display:inline-flex;align-items:center;justify-content:center;min-height:32px;padding:6px 14px;border-radius:8px;border:1px solid rgba(200,168,75,.48);background:rgba(200,168,75,.1);color:#d9c988;font-size:.62rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;text-decoration:none;transition:all .18s ease;align-self:flex-start}
   .sdc-unlock-btn:hover{border-color:rgba(200,168,75,.52);background:rgba(200,168,75,.18)}
   @media(max-width:640px){.score-drivers-grid{grid-template-columns:1fr}}
 
@@ -969,7 +1125,7 @@
   .ai-advisor-shell::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(200,168,75,.54),transparent)}
   .ai-advisor-shell::after{content:'';position:absolute;inset:-10% -20% auto -20%;height:140%;background:radial-gradient(ellipse at 50% 0,rgba(200,168,75,.07),transparent 56%);pointer-events:none}
   .ai-advisor-head{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:14px;margin-bottom:16px}
-  .ai-advisor-kicker{font-size:.58rem;letter-spacing:.24em;text-transform:uppercase;color:rgba(200,168,75,.68);margin-bottom:5px}
+  .ai-advisor-kicker{font-size:.58rem;letter-spacing:.24em;text-transform:uppercase;color:rgba(200,168,75,.78);margin-bottom:5px}
   .ai-advisor-title{font-size:.96rem;font-weight:600;color:#ede8de;line-height:1.25}
   .ai-advisor-desc{margin-top:4px;font-size:.78rem;line-height:1.55;color:#a8a193;max-width:36rem}
   .ai-advisor-open-btn{flex-shrink:0;display:inline-flex;align-items:center;justify-content:center;min-height:38px;padding:0 18px;border-radius:10px;background:#c6a85a;color:#1a1a1a;font-size:.68rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;border:none;cursor:pointer;transition:all .2s ease;box-shadow:0 6px 16px rgba(198,168,90,.2),inset 0 1px 0 rgba(255,255,255,.14)}
@@ -989,7 +1145,7 @@
   .exec-ctx-pill{font-size:.56rem;letter-spacing:.14em;text-transform:uppercase;color:#9a9082;padding:3px 8px;border-radius:6px;background:rgba(200,168,75,.06);border:1px solid rgba(200,168,75,.12)}
   .exec-ctx-btn{display:inline-flex;align-items:center;gap:6px;min-height:32px;padding:0 14px;border-radius:8px;background:#c6a85a;color:#1a1a1a;text-decoration:none;font-size:.62rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;transition:all .18s ease;box-shadow:0 4px 12px rgba(198,168,90,.18)}
   .exec-ctx-btn:hover{transform:translateY(-1px);filter:brightness(1.08)}
-  .exec-ctx-btn-outline{display:inline-flex;align-items:center;gap:6px;min-height:32px;padding:0 14px;border-radius:8px;border:1px solid rgba(200,168,75,.26);background:transparent;color:rgba(200,168,75,.78);text-decoration:none;font-size:.62rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;transition:all .18s ease}
+  .exec-ctx-btn-outline{display:inline-flex;align-items:center;gap:6px;min-height:32px;padding:0 14px;border-radius:8px;border:1px solid rgba(200,168,75,.42);background:transparent;color:rgba(200,168,75,.9);text-decoration:none;font-size:.62rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;transition:all .18s ease}
   .exec-ctx-btn-outline:hover{border-color:rgba(200,168,75,.5);background:rgba(200,168,75,.08)}
 
   /* ── Executive Hero ──────────────────────────────────────────────── */
@@ -997,7 +1153,7 @@
   .exec-hero-shell::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,rgba(200,168,75,.72),transparent)}
   .exec-hero-shell::after{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 50% -10%,rgba(200,168,75,.08),transparent 58%);pointer-events:none}
   .exec-hero-grid{display:grid;grid-template-columns:auto 1fr auto;gap:28px;align-items:start;position:relative;z-index:1}
-  @media(max-width:840px){.exec-hero-grid{grid-template-columns:auto 1fr;gap:20px}.exec-action-col{grid-column:1/-1}}
+  @media(max-width:840px){.exec-hero-grid{grid-template-columns:auto 1fr;gap:20px}.exec-action-col{grid-column:1/-1}.exec-bottleneck-block{margin-top:4px}}
   @media(max-width:520px){.exec-hero-grid{grid-template-columns:1fr}}
   .exec-score-col{display:flex;flex-direction:column;align-items:center;gap:10px;padding-top:4px}
   .exec-score-ring{position:relative;width:108px;height:108px;border-radius:50%;border:1.5px solid rgba(200,168,75,.35);background:radial-gradient(circle at 50% 38%,rgba(200,168,75,.2),rgba(14,11,8,.96) 70%);display:flex;flex-direction:column;align-items:center;justify-content:center;box-shadow:0 0 36px rgba(200,168,75,.14),inset 0 1px 0 rgba(255,255,255,.04);flex-shrink:0}
@@ -1047,9 +1203,9 @@
   .nm-card-kicker{font-size:.54rem;letter-spacing:.2em;text-transform:uppercase;color:rgba(200,168,75,.62)}
   .nm-card-title{font-size:.9rem;font-weight:600;color:#ece3cc;line-height:1.45}
   .nm-card-rationale{font-size:.78rem;line-height:1.55;color:#9a9080}
-  .nm-card-action{display:inline-flex;align-items:center;gap:6px;padding:7px 14px;border-radius:8px;border:1px solid rgba(200,168,75,.3);background:rgba(200,168,75,.09);color:#d9c988;font-size:.62rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;text-decoration:none;align-self:flex-start;transition:all .18s ease;margin-top:auto}
+  .nm-card-action{display:inline-flex;align-items:center;gap:6px;padding:7px 14px;border-radius:8px;border:1px solid rgba(200,168,75,.46);background:rgba(200,168,75,.09);color:#d9c988;font-size:.62rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;text-decoration:none;align-self:flex-start;transition:all .18s ease;margin-top:auto}
   .nm-card-action:hover{border-color:rgba(200,168,75,.54);background:rgba(200,168,75,.17)}
-  .nm-card-action-btn{display:inline-flex;align-items:center;gap:6px;padding:7px 14px;border-radius:8px;border:1px solid rgba(200,168,75,.3);background:rgba(200,168,75,.09);color:#d9c988;font-size:.62rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;cursor:pointer;align-self:flex-start;transition:all .18s ease;margin-top:auto}
+  .nm-card-action-btn{display:inline-flex;align-items:center;gap:6px;padding:7px 14px;border-radius:8px;border:1px solid rgba(200,168,75,.46);background:rgba(200,168,75,.09);color:#d9c988;font-size:.62rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;cursor:pointer;align-self:flex-start;transition:all .18s ease;margin-top:auto}
   .nm-card-action-btn:hover{border-color:rgba(200,168,75,.54);background:rgba(200,168,75,.17)}
 
   /* ── Your Plan ───────────────────────────────────────────────────── */
@@ -1065,7 +1221,7 @@
   .plan-included-list{display:flex;flex-direction:column;gap:7px}
   .plan-included-item{display:flex;align-items:flex-start;gap:8px;font-size:.78rem;line-height:1.45;color:#b8d4bc}
   .plan-included-icon{flex-shrink:0;color:#6aaf90;margin-top:1px}
-  .plan-view-report-btn{display:inline-flex;align-items:center;gap:6px;min-height:34px;padding:0 14px;border-radius:8px;border:1px solid rgba(106,175,144,.32);background:rgba(106,175,144,.1);color:#9fd4b8;font-size:.62rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;text-decoration:none;transition:all .18s ease;margin-top:14px}
+  .plan-view-report-btn{display:inline-flex;align-items:center;gap:6px;min-height:34px;padding:0 14px;border-radius:8px;border:1px solid rgba(106,175,144,.48);background:rgba(106,175,144,.1);color:#9fd4b8;font-size:.62rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;text-decoration:none;transition:all .18s ease;margin-top:14px}
   .plan-view-report-btn:hover{border-color:rgba(106,175,144,.56);background:rgba(106,175,144,.17)}
   .plan-next-card{border:1px solid rgba(200,168,75,.26);border-radius:16px;background:linear-gradient(155deg,#1d1910,#120f08 70%);padding:18px;position:relative;overflow:hidden}
   .plan-next-card::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(200,168,75,.44),transparent)}
@@ -1084,8 +1240,151 @@
   .plan-all-unlocked-desc{font-size:.78rem;line-height:1.55;color:#6aaf90}
   .plan-consult-row{border-top:1px solid rgba(200,168,75,.1);margin-top:18px;padding-top:16px;display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap}
   .plan-consult-copy{font-size:.78rem;color:#9a9080;line-height:1.45}
-  .plan-consult-btn{display:inline-flex;align-items:center;gap:6px;min-height:34px;padding:0 14px;border-radius:8px;border:1px solid rgba(200,168,75,.22);background:transparent;color:rgba(200,168,75,.7);text-decoration:none;font-size:.62rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;transition:all .18s ease}
+  .plan-consult-btn{display:inline-flex;align-items:center;gap:6px;min-height:34px;padding:0 14px;border-radius:8px;border:1px solid rgba(200,168,75,.38);background:transparent;color:rgba(200,168,75,.88);text-decoration:none;font-size:.62rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;transition:all .18s ease}
   .plan-consult-btn:hover{border-color:rgba(200,168,75,.42);background:rgba(200,168,75,.06)}
+
+  /* Final pre-live readability refinements + chart-ready style tokens */
+  .section-head p,
+  .view-clarity-note,
+  .report-readout-head p:first-child,
+  .report-lead-meta p:first-child,
+  .report-lead-meta p:last-child,
+  .report-list-card h3,
+  .report-list-item p,
+  .report-list-item span,
+  .report-list-item a,
+  .onboarding-command-kicker,
+  .onboarding-command-footnote,
+  .onboarding-explainer summary,
+  .onboarding-proof-item p:first-child,
+  .ia-progress-head p,
+  .ia-level-card p:first-child,
+  .ia-level-unlocks p,
+  .hero-overline,
+  .hero-panel-label,
+  .hero-score-caption,
+  .dash-section-label,
+  .dash-section-subhead,
+  .nm-card-kicker,
+  .nm-card-rationale,
+  .plan-current-kicker,
+  .plan-current-desc,
+  .plan-next-kicker,
+  .plan-next-desc,
+  .plan-all-unlocked-kicker,
+  .plan-all-unlocked-desc,
+  .plan-consult-copy,
+  .plan-consult-btn,
+  .nm-card-action,
+  .nm-card-action-btn{
+    font-size:max(.8rem, 12px);
+    line-height:1.55;
+  }
+
+  .chart-surface{
+    border:1px solid rgba(200,168,75,.18);
+    border-radius:16px;
+    background:linear-gradient(155deg,#151109,#0d0b07 72%);
+    box-shadow:0 14px 30px rgba(0,0,0,.28), inset 0 1px 0 rgba(255,255,255,.03);
+    padding:16px;
+  }
+  .chart-surface-title{
+    font-size:.84rem;
+    letter-spacing:.14em;
+    text-transform:uppercase;
+    color:rgba(214,181,95,.86);
+    margin-bottom:10px;
+  }
+  .chart-surface-caption{
+    font-size:.8rem;
+    line-height:1.5;
+    color:#c8bca3;
+    margin-top:10px;
+  }
+
+  /* ── L2: Signal Analysis ─────────────────────────────────────────── */
+  .signal-analysis-shell{border:1px solid rgba(100,140,220,.28);border-radius:20px;background:linear-gradient(155deg,#0e1120,#090b14 72%);padding:22px;box-shadow:0 18px 38px rgba(0,0,0,.34),inset 0 1px 0 rgba(255,255,255,.03);position:relative;overflow:hidden}
+  .signal-analysis-shell::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(100,140,220,.52),transparent)}
+  .signal-analysis-shell::after{content:'';position:absolute;inset:-10% -20% auto -20%;height:140%;background:radial-gradient(ellipse at 50% 0,rgba(100,140,220,.07),transparent 56%);pointer-events:none}
+  .sa-kicker{font-size:.58rem;letter-spacing:.26em;text-transform:uppercase;color:rgba(100,160,240,.72);margin-bottom:5px}
+  .sa-heading{font-size:1rem;font-weight:600;color:#d8e8ff;line-height:1.3;margin-bottom:4px}
+  .sa-subhead{font-size:.82rem;line-height:1.58;color:#8898b0;max-width:44rem;margin-bottom:18px}
+  .sa-category-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:12px;margin-bottom:18px}
+  .sa-cat-card{border:1px solid rgba(100,140,220,.18);border-radius:14px;background:linear-gradient(155deg,#0f1428,#0a0d1a 70%);padding:14px;display:flex;flex-direction:column;gap:8px;transition:transform .2s ease,border-color .2s ease}
+  .sa-cat-card:hover{transform:translateY(-2px);border-color:rgba(100,140,220,.3)}
+  .sa-cat-head{display:flex;align-items:center;justify-content:space-between;gap:8px}
+  .sa-cat-name{font-size:.78rem;font-weight:600;color:#c8d8f0;letter-spacing:.02em}
+  .sa-cat-score{font-size:.68rem;font-weight:700;padding:2px 8px;border-radius:999px}
+  .sa-cat-score.good{background:rgba(106,175,144,.14);border:1px solid rgba(106,175,144,.28);color:#8ec8ac}
+  .sa-cat-score.warn{background:rgba(214,163,55,.12);border:1px solid rgba(214,163,55,.28);color:#d9c47a}
+  .sa-cat-score.bad{background:rgba(196,80,80,.12);border:1px solid rgba(196,80,80,.26);color:#d47878}
+  .sa-cat-bar-track{height:4px;border-radius:3px;background:rgba(255,255,255,.06);overflow:hidden}
+  .sa-cat-bar-fill{height:100%;border-radius:3px;transition:width .6s ease}
+  .sa-cat-bar-fill.good{background:linear-gradient(90deg,#3a9a78,#6aaf90)}
+  .sa-cat-bar-fill.warn{background:linear-gradient(90deg,#c8970a,#e8c458)}
+  .sa-cat-bar-fill.bad{background:linear-gradient(90deg,#b43030,#e04848)}
+  .sa-cat-issues{display:flex;flex-direction:column;gap:5px;margin-top:2px}
+  .sa-cat-issue{font-size:.72rem;line-height:1.45;color:#9ab0cc;display:flex;align-items:flex-start;gap:6px}
+  .sa-cat-issue-dot{flex-shrink:0;margin-top:5px;width:5px;height:5px;border-radius:50%;background:rgba(196,90,90,.6)}
+  .sa-cat-pass{font-size:.68rem;color:#5a8868;display:flex;align-items:center;gap:5px}
+  .sa-summary-row{display:flex;flex-wrap:wrap;gap:10px;padding:12px 14px;border:1px solid rgba(100,140,220,.14);border-radius:12px;background:rgba(100,140,220,.04)}
+  .sa-summary-stat{display:flex;flex-direction:column;align-items:center;gap:2px}
+  .sa-summary-stat-num{font-size:1.4rem;font-weight:700;color:#a0c0f0}
+  .sa-summary-stat-label{font-size:.54rem;letter-spacing:.16em;text-transform:uppercase;color:#6888aa}
+  .sa-upsell-banner{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px;margin-top:16px;padding:14px 16px;border:1px solid rgba(200,168,75,.22);border-radius:12px;background:rgba(200,168,75,.05)}
+  .sa-upsell-text{font-size:.8rem;color:#c8b880;line-height:1.45}
+  .sa-upsell-btn{display:inline-flex;align-items:center;gap:6px;padding:8px 18px;border-radius:9px;border:1px solid rgba(200,168,75,.44);background:rgba(200,168,75,.1);color:#d9c988;font-size:.62rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;text-decoration:none;white-space:nowrap;transition:all .18s ease}
+  .sa-upsell-btn:hover{border-color:rgba(200,168,75,.52);background:rgba(200,168,75,.18)}
+  @media(max-width:640px){.sa-category-grid{grid-template-columns:1fr}}
+
+  /* ── L3: Action Plan ─────────────────────────────────────────────── */
+  .action-plan-shell{border:1px solid rgba(90,160,110,.28);border-radius:20px;background:linear-gradient(155deg,#0c1a10,#080f0a 72%);padding:22px;box-shadow:0 18px 38px rgba(0,0,0,.34),inset 0 1px 0 rgba(255,255,255,.03);position:relative;overflow:hidden}
+  .action-plan-shell::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(90,160,110,.44),transparent)}
+  .action-plan-shell::after{content:'';position:absolute;inset:-10% -20% auto -20%;height:140%;background:radial-gradient(ellipse at 50% 0,rgba(90,160,110,.06),transparent 56%);pointer-events:none}
+  .ap-kicker{font-size:.58rem;letter-spacing:.26em;text-transform:uppercase;color:rgba(100,190,130,.72);margin-bottom:5px}
+  .ap-heading{font-size:1rem;font-weight:600;color:#cce8d4;line-height:1.3;margin-bottom:4px}
+  .ap-subhead{font-size:.82rem;line-height:1.58;color:#7a9a84;max-width:44rem;margin-bottom:18px}
+  .ap-list{display:flex;flex-direction:column;gap:10px}
+  .ap-item{border:1px solid rgba(90,160,110,.16);border-radius:14px;background:linear-gradient(155deg,#101c14,#090e0b 70%);padding:14px 16px;display:flex;gap:14px;transition:border-color .2s ease}
+  .ap-item:hover{border-color:rgba(90,160,110,.28)}
+  .ap-item-rank{flex-shrink:0;display:flex;align-items:center;justify-content:center;width:28px;height:28px;border-radius:50%;background:rgba(90,160,110,.12);border:1px solid rgba(90,160,110,.26);font-size:.65rem;font-weight:700;color:rgba(130,200,150,.8);margin-top:2px}
+  .ap-item-body{flex:1;min-width:0;display:flex;flex-direction:column;gap:7px}
+  .ap-item-head{display:flex;align-items:center;flex-wrap:wrap;gap:8px}
+  .ap-item-title{font-size:.86rem;font-weight:600;color:#c8e0cc;line-height:1.35}
+  .ap-item-tier{font-size:.5rem;letter-spacing:.12em;text-transform:uppercase;padding:2px 8px;border-radius:999px;background:rgba(90,160,110,.1);border:1px solid rgba(90,160,110,.22);color:rgba(120,190,140,.7)}
+  .ap-item-why{font-size:.76rem;line-height:1.52;color:#7a9884}
+  .ap-item-fix{border-left:2px solid rgba(90,160,110,.24);padding:8px 12px;background:rgba(90,160,110,.05);border-radius:0 8px 8px 0}
+  .ap-item-fix-label{font-size:.5rem;letter-spacing:.18em;text-transform:uppercase;color:rgba(100,190,130,.6);margin-bottom:4px}
+  .ap-item-fix-copy{font-size:.78rem;line-height:1.5;color:#b0c8b8}
+  .ap-upsell-banner{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px;margin-top:16px;padding:14px 16px;border:1px solid rgba(200,168,75,.22);border-radius:12px;background:rgba(200,168,75,.05)}
+  .ap-upsell-text{font-size:.8rem;color:#c8b880;line-height:1.45}
+  .ap-upsell-btn{display:inline-flex;align-items:center;gap:6px;padding:8px 18px;border-radius:9px;border:1px solid rgba(200,168,75,.44);background:rgba(200,168,75,.1);color:#d9c988;font-size:.62rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;text-decoration:none;white-space:nowrap;transition:all .18s ease}
+  .ap-upsell-btn:hover{border-color:rgba(200,168,75,.52);background:rgba(200,168,75,.18)}
+
+  /* ── L4: Guided Execution ────────────────────────────────────────── */
+  .guided-exec-shell{border:1px solid rgba(160,120,220,.28);border-radius:20px;background:linear-gradient(155deg,#130e1e,#0b0910 72%);padding:22px;box-shadow:0 18px 38px rgba(0,0,0,.34),inset 0 1px 0 rgba(255,255,255,.03);position:relative;overflow:hidden}
+  .guided-exec-shell::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(160,120,220,.44),transparent)}
+  .guided-exec-shell::after{content:'';position:absolute;inset:-10% -20% auto -20%;height:140%;background:radial-gradient(ellipse at 50% 0,rgba(160,120,220,.06),transparent 56%);pointer-events:none}
+  .ge-kicker{font-size:.58rem;letter-spacing:.26em;text-transform:uppercase;color:rgba(180,140,240,.72);margin-bottom:5px}
+  .ge-heading{font-size:1rem;font-weight:600;color:#e0d0f8;line-height:1.3;margin-bottom:4px}
+  .ge-subhead{font-size:.82rem;line-height:1.58;color:#8878a8;max-width:44rem;margin-bottom:16px}
+  .ge-progress-bar-track{height:6px;border-radius:4px;background:rgba(255,255,255,.06);overflow:hidden;margin-bottom:6px}
+  .ge-progress-bar-fill{height:100%;border-radius:4px;background:linear-gradient(90deg,#7a44c8,#a870f0);transition:width .5s ease}
+  .ge-progress-label{font-size:.62rem;letter-spacing:.12em;text-transform:uppercase;color:rgba(180,140,240,.58);margin-bottom:16px}
+  .ge-list{display:flex;flex-direction:column;gap:8px}
+  .ge-item{border:1px solid rgba(160,120,220,.14);border-radius:12px;background:linear-gradient(155deg,#15102a,#0e0b18 70%);padding:12px 14px;display:flex;gap:12px;align-items:flex-start;transition:border-color .2s ease,background .2s ease;cursor:pointer}
+  .ge-item.is-done{opacity:.6;border-color:rgba(160,120,220,.08);background:linear-gradient(155deg,#0f0e1a,#0a0912 70%)}
+  .ge-item:hover:not(.is-done){border-color:rgba(160,120,220,.26)}
+  .ge-item-check{flex-shrink:0;width:20px;height:20px;border-radius:5px;border:1.5px solid rgba(160,120,220,.4);background:rgba(160,120,220,.06);display:flex;align-items:center;justify-content:center;margin-top:2px;transition:all .15s ease}
+  .ge-item.is-done .ge-item-check{background:rgba(160,120,220,.24);border-color:rgba(160,120,220,.5)}
+  .ge-item-body{flex:1;min-width:0;display:flex;flex-direction:column;gap:4px}
+  .ge-item-title{font-size:.84rem;font-weight:600;color:#d8c8f0;line-height:1.35;transition:color .15s ease}
+  .ge-item.is-done .ge-item-title{color:#7a6898;text-decoration:line-through}
+  .ge-item-tier{font-size:.5rem;letter-spacing:.12em;text-transform:uppercase;padding:1px 7px;border-radius:999px;background:rgba(160,120,220,.1);border:1px solid rgba(160,120,220,.2);color:rgba(180,140,240,.6)}
+  .ge-item-why{font-size:.73rem;line-height:1.48;color:#7868a0;margin-top:2px}
+  .ge-item-fix{font-size:.74rem;line-height:1.48;color:#c0b0e0;margin-top:4px}
+  .ge-reset-btn{display:inline-flex;align-items:center;gap:6px;margin-top:16px;padding:6px 14px;border-radius:8px;border:1px solid rgba(160,120,220,.22);background:transparent;color:rgba(180,140,240,.5);font-size:.58rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;cursor:pointer;transition:all .18s ease}
+  .ge-reset-btn:hover{border-color:rgba(160,120,220,.36);color:rgba(180,140,240,.8)}
 </style>
 @endpush
 
@@ -1125,15 +1424,6 @@
         <p style="font-size:.65rem;color:rgba(200,168,75,.58);line-height:1.5">Resume your next unlock when ready. Your progress and domain context are preserved.</p>
       </div>
       <button type="button" aria-label="Dismiss" onclick="this.closest('#checkout-resume-banner').remove()" style="flex-shrink:0;background:none;border:none;cursor:pointer;color:rgba(200,168,75,.4);font-size:1rem;padding:0;line-height:1;margin-top:1px">&times;</button>
-    </div>
-    @endif
-
-    @if(config('app.debug'))
-    <div style="font-size:.65rem;background:rgba(200,168,75,.08);border:1px dashed rgba(200,168,75,.28);border-radius:8px;padding:8px 12px;margin-bottom:10px;color:rgba(200,168,75,.75);font-family:monospace">
-      DEBUG → domain: <strong style="color:#e8d99a">{{ $projectDomain ?? 'NULL — no domain found' }}</strong>
-      &nbsp;|&nbsp; hasSystem: {{ $hasSystem ? 'true ('.$totalScans.' scans)' : 'false (0 scans)' }}
-      &nbsp;|&nbsp; leadRenderable: {{ $leadRenderable ? 'true' : 'false' }}
-      &nbsp;|&nbsp; leadDomain: {{ $leadDomain }}
     </div>
     @endif
 
@@ -1248,19 +1538,19 @@
           'why'      => 'Know where you stand and exactly what to fix first.',
           'lift' => '+12 pts', 'price' => '$2'],
         ['key' => 'signal-expansion',    'num' => 2, 'kicker' => 'Step 2', 'name' => 'Signal Analysis',
-          'desc'     => 'See precisely where stronger competitors are outranking or out-citing your site.',
-          'included' => ['Competitor visibility comparison', 'Gap vs. competitors, signal by signal', 'Clearer path to improvement', 'Why you lose to specific competitors'],
-          'why'      => 'Understand exactly why competitors beat you in AI search results.',
+          'desc'     => 'Your score broken into the signals that actually matter — where structure is weak and what\'s holding you back most.',
+          'included' => ['Visibility score by category', 'Where your structure is weak', 'Where competitors are outranking you', 'What\'s holding you back most'],
+          'why'      => 'Understand exactly why your visibility is limited — and where things are breaking down.',
           'lift' => '+18 pts', 'price' => '$99'],
-        ['key' => 'structural-leverage', 'num' => 3, 'kicker' => 'Step 3', 'name' => 'Priority Fixes',
-          'desc'     => 'A ranked list of fixes sorted by impact — stop guessing, start with what matters most.',
-          'included' => ['Impact-ranked fix list', 'Before/after score estimates per fix', 'Specific implementation steps', 'Time vs. impact analysis'],
-          'why'      => 'Know exactly which changes move your score the most.',
+        ['key' => 'structural-leverage', 'num' => 3, 'kicker' => 'Step 3', 'name' => 'Action Plan',
+          'desc'     => 'A prioritized fix list built from your scan — highest-impact issues ranked first, with clear instructions for each.',
+          'included' => ['Step-by-step fix roadmap from your scan', 'Highest-impact issues ranked first', 'Clear fix instructions per issue', 'Structured path to improve visibility fast'],
+          'why'      => 'Know exactly what to fix — and in what order. This is not generic advice.',
           'lift' => '+22 pts', 'price' => '$249'],
-        ['key' => 'system-activation',   'num' => 4, 'kicker' => 'Step 4', 'name' => 'Expansion Strategy',
-          'desc'     => 'A full roadmap for consistently outranking competitors across AI, voice, and local search.',
-          'included' => ['Full competitor roadmap', 'Multi-channel visibility strategy', 'Long-term growth plan', 'Ongoing improvement framework'],
-          'why'      => 'Go from found sometimes to consistently recommended.',
+        ['key' => 'system-activation',   'num' => 4, 'kicker' => 'Step 4', 'name' => 'Guided Execution',
+          'desc'     => 'An interactive checklist inside your dashboard — follow guided steps and track progress as you complete each fix.',
+          'included' => ['Interactive checklist tied to your action plan', 'Progress tracking as you complete each step', 'Structured execution flow (no guesswork)', 'Clear path from fixes → real visibility improvements'],
+          'why'      => 'Turn your plan into a working system. You don\'t just know what to do — you actually get it done.',
           'lift' => '+28 pts', 'price' => '$489'],
       ];
       $layersByKey   = collect($analysisLayers ?? [])->keyBy('key');
@@ -1562,13 +1852,263 @@
       </div>
     </section>
 
+    {{-- ── L2: SIGNAL ANALYSIS (unlocked for tierRank >= 2) ─────────── --}}
+    @if($tierRank >= 2 && !empty($scanCategories))
+    @php
+      $saCategories = [];
+      $saTotalChecks = 0;
+      $saPassCount = 0;
+      $saFailCount = 0;
+      $categoryLabels = [
+        'extractable_content' => 'Extractable Content',
+        'schema'              => 'Schema & Entities',
+        'coverage'            => 'Topic Coverage',
+        'crawlability'        => 'Crawlability',
+        'internal_linking'    => 'Internal Linking',
+        'authority'           => 'Authority Signals',
+      ];
+      foreach ($scanCategories as $catKey => $cat) {
+        $score   = (int) ($cat['score'] ?? 0);
+        $maxScore = (int) ($cat['max_score'] ?? 20);
+        $pct     = $maxScore > 0 ? min(100, round($score / $maxScore * 100)) : 0;
+        $label   = $categoryLabels[$catKey] ?? ucwords(str_replace('_', ' ', $catKey));
+        $failing = [];
+        $passing = 0;
+        foreach ($cat['checks'] ?? [] as $chk) {
+          $saTotalChecks++;
+          if ($chk['passed'] ?? false) { $saPassCount++; $passing++; }
+          else { $saFailCount++; $failing[] = $chk['label'] ?? $chk['key']; }
+        }
+        $saCategories[] = compact('label','score','maxScore','pct','failing','passing');
+      }
+      usort($saCategories, fn($a,$b) => $a['pct'] <=> $b['pct']); // worst first
+    @endphp
+    <section class="system-section mb-6 dash-section-anchor surface-reveal" id="signal-analysis" aria-labelledby="sa-heading">
+      <div class="signal-analysis-shell">
+        <p class="sa-kicker">Signal Analysis</p>
+        <h2 id="sa-heading" class="sa-heading">Where your visibility signals are breaking down</h2>
+        <p class="sa-subhead">Your site scored across {{ count($saCategories) }} signal categories. These are the areas where AI systems encounter friction — ranked weakest first.</p>
+
+        {{-- Summary stats --}}
+        <div class="sa-summary-row mb-4">
+          <div class="sa-summary-stat">
+            <span class="sa-summary-stat-num">{{ $saPassCount }}</span>
+            <span class="sa-summary-stat-label">Signals Passing</span>
+          </div>
+          <div class="sa-summary-stat">
+            <span class="sa-summary-stat-num" style="color:#d47878">{{ $saFailCount }}</span>
+            <span class="sa-summary-stat-label">Signals Failing</span>
+          </div>
+          <div class="sa-summary-stat">
+            <span class="sa-summary-stat-num">{{ $saTotalChecks > 0 ? round($saPassCount/$saTotalChecks*100) : 0 }}%</span>
+            <span class="sa-summary-stat-label">Pass Rate</span>
+          </div>
+        </div>
+
+        {{-- Category grid --}}
+        <div class="sa-category-grid">
+          @foreach($saCategories as $cat)
+          @php
+            $scoreClass = $cat['pct'] >= 75 ? 'good' : ($cat['pct'] >= 40 ? 'warn' : 'bad');
+          @endphp
+          <div class="sa-cat-card">
+            <div class="sa-cat-head">
+              <span class="sa-cat-name">{{ $cat['label'] }}</span>
+              <span class="sa-cat-score {{ $scoreClass }}">{{ $cat['pct'] }}%</span>
+            </div>
+            <div class="sa-cat-bar-track">
+              <div class="sa-cat-bar-fill {{ $scoreClass }}" style="width:{{ $cat['pct'] }}%"></div>
+            </div>
+            @if(count($cat['failing']) > 0)
+            <div class="sa-cat-issues">
+              @foreach(array_slice($cat['failing'], 0, 3) as $issue)
+              <div class="sa-cat-issue">
+                <span class="sa-cat-issue-dot"></span>
+                {{ $issue }}
+              </div>
+              @endforeach
+              @if(count($cat['failing']) > 3)
+              <div class="sa-cat-issue" style="color:#6888a8">+ {{ count($cat['failing']) - 3 }} more</div>
+              @endif
+            </div>
+            @else
+            <div class="sa-cat-pass">
+              <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M1.5 6l3 3 6-6" stroke="#5a9870" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              All checks passing
+            </div>
+            @endif
+          </div>
+          @endforeach
+        </div>
+
+        {{-- Upsell to L3 if applicable --}}
+        @if($tierRank === 2)
+        <div class="sa-upsell-banner">
+          <span class="sa-upsell-text">Ready to act on these signals? <strong>Action Plan</strong> turns this breakdown into a ranked fix list — ordered by what moves your score the most.</span>
+          <a href="{{ route('checkout.structural-leverage') }}" class="sa-upsell-btn">Get Your Action Plan &mdash; $249 &rarr;</a>
+        </div>
+        @endif
+      </div>
+    </section>
+    @endif
+
+    {{-- ── L3: ACTION PLAN (unlocked for tierRank >= 3) ─────────────── --}}
+    @if($tierRank >= 3 && !empty($scanIntelligence))
+    @php
+      $apItems = [];
+      foreach ($scanIntelligence as $tierBlock) {
+        $blockTier = $tierBlock['tier'] ?? null;
+        $blockRank = match ($blockTier) {
+          'signal-expansion'   => 2,
+          'structural-leverage' => 3,
+          'system-activation'  => 4,
+          default              => 0,
+        };
+        if ($blockRank === 0 || $blockRank > $tierRank) continue;
+        $tierLabel = $tierBlock['label'] ?? '';
+        foreach ($tierBlock['issues'] ?? [] as $issue) {
+          $apItems[] = [
+            'title'      => $issue['what_missing'] ?? $issue['key'] ?? 'Issue',
+            'why'        => $issue['why_it_matters'] ?? '',
+            'fix'        => $issue['fix'] ?? '',
+            'tier_label' => $tierLabel,
+            'rank'       => $blockRank,
+          ];
+        }
+      }
+      // Sort: lower tier first (foundational first), deterministic order
+      usort($apItems, fn($a,$b) => $a['rank'] <=> $b['rank']);
+    @endphp
+    <section class="system-section mb-6 dash-section-anchor surface-reveal" id="action-plan" aria-labelledby="ap-heading">
+      <div class="action-plan-shell">
+        <p class="ap-kicker">Action Plan</p>
+        <h2 id="ap-heading" class="ap-heading">Your ranked fix list</h2>
+        <p class="ap-subhead">{{ count($apItems) }} issue{{ count($apItems) !== 1 ? 's' : '' }} from your scan, ordered by what to fix first. Start at the top — highest-leverage changes for {{ $projectDomain ?? 'your site' }}.</p>
+
+        <div class="ap-list">
+          @foreach($apItems as $apIdx => $apItem)
+          <div class="ap-item">
+            <div class="ap-item-rank">{{ $apIdx + 1 }}</div>
+            <div class="ap-item-body">
+              <div class="ap-item-head">
+                <span class="ap-item-title">{{ $apItem['title'] }}</span>
+                @if($apItem['tier_label'])
+                <span class="ap-item-tier">{{ $apItem['tier_label'] }}</span>
+                @endif
+              </div>
+              @if($apItem['why'])
+              <p class="ap-item-why">{{ $apItem['why'] }}</p>
+              @endif
+              @if($apItem['fix'])
+              <div class="ap-item-fix">
+                <p class="ap-item-fix-label">Fix</p>
+                <p class="ap-item-fix-copy">{{ $apItem['fix'] }}</p>
+              </div>
+              @endif
+            </div>
+          </div>
+          @endforeach
+        </div>
+
+        {{-- Upsell to L4 if applicable --}}
+        @if($tierRank === 3)
+        <div class="ap-upsell-banner">
+          <span class="ap-upsell-text">You have the plan — now execute it with structure. <strong>Guided Execution</strong> turns this into a step-by-step checklist with progress tracking inside your dashboard.</span>
+          <a href="{{ route('checkout.system-activation') }}" class="ap-upsell-btn">Start Guided Execution &mdash; $489 &rarr;</a>
+        </div>
+        @endif
+      </div>
+    </section>
+    @endif
+
+    {{-- ── L4: GUIDED EXECUTION (unlocked for tierRank >= 4) ──────────── --}}
+    @if($tierRank >= 4 && !empty($scanIntelligence))
+    @php
+      $geItems = [];
+      foreach ($scanIntelligence as $tierBlock) {
+        $blockTier = $tierBlock['tier'] ?? null;
+        $blockRank = match ($blockTier) {
+          'signal-expansion'   => 2,
+          'structural-leverage' => 3,
+          'system-activation'  => 4,
+          default              => 0,
+        };
+        if ($blockRank === 0) continue;
+        $tierLabel = $tierBlock['label'] ?? '';
+        foreach ($tierBlock['issues'] ?? [] as $issue) {
+          $geItems[] = [
+            'id'         => 'ge-' . md5(($issue['key'] ?? '') . ($latestScanned?->id ?? '')),
+            'title'      => $issue['what_missing'] ?? $issue['key'] ?? 'Issue',
+            'why'        => $issue['why_it_matters'] ?? '',
+            'fix'        => $issue['fix'] ?? '',
+            'tier_label' => $tierLabel,
+          ];
+        }
+      }
+    @endphp
+    <section class="system-section mb-6 dash-section-anchor surface-reveal" id="guided-execution" aria-labelledby="ge-heading">
+      <div class="guided-exec-shell">
+        <p class="ge-kicker">Guided Execution</p>
+        <h2 id="ge-heading" class="ge-heading">Your execution checklist</h2>
+        <p class="ge-subhead">Work through each fix in order. Check items off as you complete them — your progress is saved in this browser.</p>
+
+        <div class="ge-progress-bar-track">
+          <div class="ge-progress-bar-fill" id="ge-progress-fill" style="width:0%"></div>
+        </div>
+        <p class="ge-progress-label" id="ge-progress-label">0 of {{ count($geItems) }} complete</p>
+
+        <div class="ge-list" id="ge-checklist">
+          @foreach($geItems as $geIdx => $geItem)
+          <div class="ge-item" id="ge-item-{{ $geIdx }}" data-ge-id="{{ $geItem['id'] }}" role="button" tabindex="0" aria-pressed="false" onclick="geToggle(this)" onkeydown="if(event.key==='Enter'||event.key===' ')geToggle(this)">
+            <div class="ge-item-check" aria-hidden="true">
+              <svg width="11" height="11" viewBox="0 0 11 11" fill="none" class="ge-check-icon" style="opacity:0"><path d="M1.5 5.5l3 3 5-5" stroke="#a870f0" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </div>
+            <div class="ge-item-body">
+              <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">
+                <span class="ge-item-title">{{ $geItem['title'] }}</span>
+                @if($geItem['tier_label'])
+                <span class="ge-item-tier">{{ $geItem['tier_label'] }}</span>
+                @endif
+              </div>
+              @if($geItem['why'])
+              <p class="ge-item-why">{{ $geItem['why'] }}</p>
+              @endif
+              @if($geItem['fix'])
+              <p class="ge-item-fix">{{ $geItem['fix'] }}</p>
+              @endif
+            </div>
+          </div>
+          @endforeach
+        </div>
+
+        <button type="button" class="ge-reset-btn" onclick="geReset()" aria-label="Reset checklist progress">
+          <svg width="11" height="11" viewBox="0 0 11 11" fill="none"><path d="M1 5.5A4.5 4.5 0 0 1 9.5 3M9.5 1v2H7.5M10 5.5A4.5 4.5 0 0 1 1.5 8M1.5 10V8h2" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          Reset progress
+        </button>
+      </div>
+    </section>
+    @endif
+
     {{-- ── CONFIDENCE: Your AI Advisor ─────────────────────────────── --}}
     @if($leadScore > 0 || $leadRenderable)
+    @php
+      $userFocusArea = auth()->user()->profile_data['focus_area'] ?? null;
+      $userFocusLabel = match ($userFocusArea) {
+        'improve_visibility' => 'Improve visibility',
+        'expand_markets'     => 'Expand into new markets',
+        'generate_leads'     => 'Generate more leads',
+        'not_sure'           => 'Balanced overview',
+        default              => null,
+      };
+    @endphp
     <section class="system-section mb-6 dash-section-anchor surface-reveal" id="ai-advisor-section" aria-labelledby="ai-advisor-heading">
       <div class="ai-advisor-shell">
         <div class="ai-advisor-head">
           <div>
             <p class="ai-advisor-kicker">Your AI Visibility Advisor</p>
+            @if($userFocusLabel)
+            <p style="font-size:.7rem;letter-spacing:.14em;text-transform:uppercase;color:rgba(200,168,75,.6);margin:0 0 8px">Your focus: <span style="color:var(--gold,#c8a84b);font-weight:500">{{ $userFocusLabel }}</span></p>
+            @endif
             <h2 id="ai-advisor-heading" class="ai-advisor-title">Ask anything about{{ $projectDomain ? ' '.$projectDomain : ' your scan' }}</h2>
             <p class="ai-advisor-desc">Get plain-English explanations of your score, what to fix, and what to do next.</p>
           </div>
@@ -2025,22 +2565,22 @@
                   ? route('dashboard.scans.show', ['scan' => $scanRouteKey])
                   : route('app.dashboard');
                 $rankToLayerAnchor = [2 => 'layer-signal', 3 => 'layer-structure', 4 => 'layer-system'];
-                $rankToLayerName = [2 => 'Signal Expansion', 3 => 'Structural Leverage', 4 => 'System Activation'];
+                $rankToLayerName = [2 => 'Signal Analysis', 3 => 'Action Plan', 4 => 'Guided Execution'];
                 $rankToPlan = [2 => 'diagnostic', 3 => 'fix-strategy', 4 => 'optimization'];
                 $rankToPrice = [2 => '$99', 3 => '$249', 4 => '$489'];
                 $rankToCheckoutRoute = [2 => 'checkout.signal-expansion', 3 => 'checkout.structural-leverage', 4 => 'checkout.system-activation'];
                 $scanTierRank = (int) ($scan['tier_rank'] ?? $tierRank);
                 $includedLayerSummary = match (true) {
                   $scanTierRank >= 4 => 'All system layers active for this readout.',
-                  $scanTierRank === 3 => 'Structural leverage and signal diagnostics active.',
-                  $scanTierRank === 2 => 'Signal diagnostics active with baseline layer.',
+                  $scanTierRank === 3 => 'Action Plan and Signal Analysis active.',
+                  $scanTierRank === 2 => 'Signal Analysis active with baseline layer.',
                   default => 'Baseline readout active only.',
                 };
                 $lockedLayerSummary = match (true) {
-                  $scanTierRank >= 4 => 'No locked layers. Expansion path is active.',
-                  $scanTierRank === 3 => 'System Activation remains as next unlock.',
-                  $scanTierRank === 2 => 'Structural Leverage remains locked.',
-                  default => 'Signal Expansion remains locked.',
+                  $scanTierRank >= 4 => 'No locked layers. Guided Execution is active.',
+                  $scanTierRank === 3 => 'Guided Execution remains as next unlock.',
+                  $scanTierRank === 2 => 'Action Plan remains locked.',
+                  default => 'Signal Analysis remains locked.',
                 };
                 $nextProgressionRank = match (true) {
                   $scanTierRank <= 1 => 2,
@@ -2072,15 +2612,15 @@
                   $correctionActionType = 'unlocked';
                   $correctionLabel = 'Open Correction Path';
                   $postCorrectionLabel = 'Continue Optimization';
-                  $nextPathLine = 'Next path: ' . ($rankToLayerName[$suggestedCorrectionRank] ?? 'Signal Expansion');
+                  $nextPathLine = 'Next path: ' . ($rankToLayerName[$suggestedCorrectionRank] ?? 'Signal Analysis');
                   $correctionHref = $inspectHref . '#' . ($rankToLayerAnchor[$suggestedCorrectionRank] ?? 'detailed-layer-view');
                 } else {
                   $correctionActionType = 'locked';
                   $correctionLabel = 'Unlock Correction Path';
                   $postCorrectionLabel = 'Correction Engaged';
-                  $nextPathLine = 'Next unlock: ' . ($rankToLayerName[$suggestedCorrectionRank] ?? 'Signal Expansion');
+                  $nextPathLine = 'Next unlock: ' . ($rankToLayerName[$suggestedCorrectionRank] ?? 'Signal Analysis');
                   $targetPlan = $rankToPlan[$suggestedCorrectionRank] ?? 'diagnostic';
-                  $modalTitle = 'Unlock ' . ($rankToLayerName[$suggestedCorrectionRank] ?? 'Signal Expansion');
+                  $modalTitle = 'Unlock ' . ($rankToLayerName[$suggestedCorrectionRank] ?? 'Signal Analysis');
                   $modalUnlockEffect = 'Unlock adds deeper correction controls and progression context.';
                   $modalPrice = $rankToPrice[$suggestedCorrectionRank] ?? 'N/A';
                   $correctionHref = !empty($scan['scan_id']) && !empty($scan['stripe_session_id'])
@@ -2091,7 +2631,7 @@
                     ])
                     : route($rankToCheckoutRoute[$suggestedCorrectionRank] ?? 'checkout.signal-expansion');
                   $modalPrimaryHref = $correctionHref;
-                  $modalPrimaryLabel = 'Unlock ' . ($rankToLayerName[$suggestedCorrectionRank] ?? 'Signal Expansion') . ' - ' . ($rankToPrice[$suggestedCorrectionRank] ?? '');
+                  $modalPrimaryLabel = 'Unlock ' . ($rankToLayerName[$suggestedCorrectionRank] ?? 'Signal Analysis') . ' - ' . ($rankToPrice[$suggestedCorrectionRank] ?? '');
                 }
               @endphp
               <article
@@ -2808,7 +3348,7 @@
         currentCheckoutHref = checkoutHref + sep + 'source=dashboard&dash_level=' + level;
 
         if (dcmTitle)    dcmTitle.textContent    = 'Unlock ' + levelName;
-        if (dcmSubtitle) dcmSubtitle.textContent = 'A few details so we can calibrate your' + (price ? ' ' + price : '') + ' signal expansion.';
+        if (dcmSubtitle) dcmSubtitle.textContent = 'A few details so we can calibrate your' + (price ? ' ' + price : '') + ' signal analysis.';
 
         // Show the correct level field group
         if (dcmForm) {
@@ -2979,7 +3519,7 @@
     <button type="button" id="dcmClose" class="dcm-close" aria-label="Close">&times;</button>
     <p class="dcm-kicker">Quick Profile</p>
     <h2 id="dcmTitle" class="dcm-title">Unlock This Layer</h2>
-    <p id="dcmSubtitle" class="dcm-subtitle">A few details so we can tailor your signal expansion.</p>
+    <p id="dcmSubtitle" class="dcm-subtitle">A few details so we can tailor your signal analysis.</p>
     <form id="dcmForm" novalidate>
       @csrf
 
@@ -3134,5 +3674,57 @@
     </form>
   </div>
 </div>
+
+@if($tierRank >= 4)
+<script>
+// ── Guided Execution Checklist ─────────────────────────────────────────
+(function () {
+  'use strict';
+  var STORAGE_KEY = 'ge_progress_{{ $latestScanned?->id ?? "0" }}';
+  var total = document.querySelectorAll('.ge-item').length;
+
+  function getCompleted() {
+    try { return JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]'); } catch(e) { return []; }
+  }
+  function saveCompleted(ids) {
+    try { localStorage.setItem(STORAGE_KEY, JSON.stringify(ids)); } catch(e) {}
+  }
+  function updateProgress() {
+    var done = getCompleted();
+    var pct = total > 0 ? Math.round(done.length / total * 100) : 0;
+    var fill = document.getElementById('ge-progress-fill');
+    var label = document.getElementById('ge-progress-label');
+    if (fill) fill.style.width = pct + '%';
+    if (label) label.textContent = done.length + ' of ' + total + ' complete';
+  }
+  function applyState() {
+    var done = getCompleted();
+    document.querySelectorAll('.ge-item').forEach(function(el) {
+      var id = el.getAttribute('data-ge-id');
+      var isDone = done.indexOf(id) !== -1;
+      el.classList.toggle('is-done', isDone);
+      el.setAttribute('aria-pressed', isDone ? 'true' : 'false');
+      var icon = el.querySelector('.ge-check-icon');
+      if (icon) icon.style.opacity = isDone ? '1' : '0';
+    });
+    updateProgress();
+  }
+  window.geToggle = function(el) {
+    var id = el.getAttribute('data-ge-id');
+    if (!id) return;
+    var done = getCompleted();
+    var idx = done.indexOf(id);
+    if (idx === -1) done.push(id); else done.splice(idx, 1);
+    saveCompleted(done);
+    applyState();
+  };
+  window.geReset = function() {
+    saveCompleted([]);
+    applyState();
+  };
+  applyState();
+})();
+</script>
+@endif
 
 @endsection

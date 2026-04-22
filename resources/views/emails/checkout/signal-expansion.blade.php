@@ -6,28 +6,28 @@
 
   <div style="background:#080808;padding:28px 24px;text-align:center">
     <span style="font-size:17px;color:#ede8de;font-weight:300;letter-spacing:.04em">SEO<span style="color:#c8a84b;font-weight:500;font-size:19px;font-style:italic">AI</span> Co&#8482;</span>
-    <p style="font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:rgba(200,168,75,.5);margin:6px 0 0">Signal Expansion</p>
+    <p style="font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:rgba(200,168,75,.5);margin:6px 0 0">Signal Analysis</p>
   </div>
 
   <div style="padding:28px 24px">
-    <h1 style="font-size:20px;font-weight:400;color:#111;margin:0 0 14px;line-height:1.3">Your Signal Expansion analysis has started</h1>
-    <p style="font-size:13px;color:#555;line-height:1.7;margin:0 0 20px">We&rsquo;re mapping your complete visibility footprint &mdash; every gap, every opportunity, ranked by impact. Your full intelligence report will be delivered within 48 hours.</p>
+    <h1 style="font-size:20px;font-weight:400;color:#111;margin:0 0 14px;line-height:1.3">Your Signal Analysis has started</h1>
+    <p style="font-size:13px;color:#555;line-height:1.7;margin:0 0 20px">We&rsquo;re mapping your complete visibility footprint &mdash; every gap, every opportunity, ranked by impact. Your dashboard will update with signal-gap insights as soon as processing completes.</p>
 
     <div style="background:#fafaf8;border-left:3px solid #c8a84b;padding:14px 16px;margin-bottom:20px">
       <div style="font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:#c8a84b;margin-bottom:6px">What&rsquo;s Included</div>
       <ul style="font-size:13px;color:#444;margin:0;padding:0 0 0 16px;line-height:1.7">
         <li>Complete visibility mapping across AI systems</li>
         <li>Every gap ranked by revenue impact</li>
-        <li>Exportable intelligence report</li>
+        <li>Dashboard-based signal insights</li>
       </ul>
     </div>
 
-    <p style="font-size:12px;color:#999;line-height:1.6;margin:20px 0 0">We&rsquo;ll email you when your report is ready. In the meantime, no action is needed on your part.</p>
+    <p style="font-size:12px;color:#999;line-height:1.6;margin:20px 0 0">We&rsquo;ll email you when your dashboard insights are ready. In the meantime, no action is needed on your part.</p>
   </div>
 
   <div style="background:#fafaf8;padding:20px 24px;border-top:1px solid #e8e8e8;text-align:center">
     <p style="font-size:12px;color:#888;margin:0 0 10px">Ready for implementation-level guidance?</p>
-    <a href="{{ \App\Support\EmailUrl::tracked('/checkout/structural-leverage', 'checkout-signal-expansion') }}" style="display:inline-block;padding:12px 28px;background:#080808;color:#ede8de;font-size:12px;letter-spacing:.1em;text-decoration:none;text-transform:uppercase">Upgrade to Structural Leverage &mdash; $249</a>
+    <a href="{{ \App\Support\EmailUrl::tracked('/checkout/structural-leverage', 'checkout-signal-expansion') }}" style="display:inline-block;padding:12px 28px;background:#080808;color:#ede8de;font-size:12px;letter-spacing:.1em;text-decoration:none;text-transform:uppercase">Get Your Action Plan &mdash; $249</a>
   </div>
 
   <div style="padding:20px 24px;border-top:1px solid #e8e8e8;text-align:center">

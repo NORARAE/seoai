@@ -83,7 +83,7 @@
 :root{
   --bg:#080808;--deep:#0b0b0b;--card:#0e0d09;--border:rgba(200,168,75,.09);
   --gold:#c8a84b;--gold-lt:#e2c97d;--gold-dim:rgba(200,168,75,.4);
-  --ivory:#ede8de;--muted:rgba(168,168,160,.72);
+  --ivory:#ede8de;--muted:rgba(188,188,180,.8);
 }
 html{scroll-behavior:smooth;font-size:18px}
 body{background:var(--bg);color:var(--ivory);font-family:'DM Sans',sans-serif;font-weight:300;line-height:1.75;min-height:100vh}
@@ -169,6 +169,21 @@ footer{border-top:1px solid var(--border);padding:32px 64px;display:flex;align-i
   .page{padding:48px 24px 72px}
   .tier-card{padding:28px 24px}
   footer{padding:28px 24px;flex-direction:column;align-items:flex-start}
+}
+
+/* Final pre-live readability refinements */
+.page-eye,
+.section-label,
+.tier-flag,
+.tier-commitment,
+.tier-price-sub,
+.sys-trust-line,
+.cta-ghost,
+.footer-copy,
+.footer-links a,
+.ai-note{
+  font-size:max(.78rem, 12px);
+  line-height:1.55;
 }
 </style>
 @include('partials.clarity')
@@ -326,5 +341,14 @@ footer{border-top:1px solid var(--border);padding:32px 64px;display:flex;align-i
 </footer>
 
 @include('components.tm-style')
-</body>
-</html>
+@include('components.ai-assistant', [
+    'aiMicroLabel'  => 'Ask about this level',
+    'aiTeaserTitle' => 'Not sure which level fits?',
+    'aiTeaserText'  => 'I can explain what Launch, Expansion, and Dominance each mean for your market.',
+    'aiSuggestedPrompts' => [
+        'What is the difference between Launch and Expansion?',
+        'Who is the Dominance tier for?',
+        'Should I start with the $2 scan first?',
+        'How does market availability work?',
+    ],
+])

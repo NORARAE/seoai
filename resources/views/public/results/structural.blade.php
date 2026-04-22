@@ -5,7 +5,7 @@
 <link rel="icon" type="image/x-icon" href="/favicon.ico">
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Structural Leverage — Results | SEO AI Co™</title>
+<title>Action Plan — Results | SEO AI Co™</title>
 <meta name="robots" content="noindex, nofollow">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -41,7 +41,7 @@
 
 <section class="result-hero">
   <div class="wrap">
-    <p class="result-hero-eye">Structural Leverage — $249</p>
+    <p class="result-hero-eye">Action Plan — $249</p>
     <h1 class="result-hero-hed">Your <em>action sequence</em> is being built.</h1>
     <p class="result-hero-sub">We're building your complete priority correction sequence — every fix prioritized, every opportunity sized, every gap closed systematically.</p>
   </div>
@@ -50,7 +50,7 @@
 <section class="wrap">
   <div class="result-status">
     <h2 class="result-status-hed">What happens next</h2>
-    <p class="result-status-body">Your Structural Leverage analysis is in progress. We'll email you when your <strong>full correction sequence and opportunity sizing report</strong> is ready — including prioritized actions ordered by ROI impact.</p>
+    <p class="result-status-body">Your Action Plan is being built. When processing completes, your dashboard will show your prioritized fix list and highest-impact structural actions.</p>
     <a href="/" class="btn-ghost">Return to home &rarr;</a>
   </div>
 </section>
@@ -60,7 +60,7 @@
     <h2 class="upsell-hed">Ready for full implementation?</h2>
     <p class="upsell-sub">Move from correction plan to full system deployment. Your structural data carries forward — nothing is lost.</p>
     <div class="upsell-actions">
-      <a href="{{ route('checkout.system-activation') }}" class="btn-primary">Upgrade to System Activation — $489</a>
+      <a href="{{ route('checkout.system-activation') }}" class="btn-primary">Start Guided Execution — $489</a>
       <a href="{{ route('book.index', ['entry' => 'consultation']) }}" class="btn-ghost">Book Consultation &rarr;</a>
     </div>
   </div>

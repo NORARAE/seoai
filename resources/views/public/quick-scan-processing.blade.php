@@ -234,7 +234,7 @@ footer{border-top:1px solid var(--border);padding:28px 48px;display:flex;flex-di
   <p class="proc-url">{{ $scan->url ?? '' }}</p>
   <p class="proc-status" id="statusText">Starting scan…</p>
   <p class="proc-activity" id="procActivity"></p>
-  <p class="proc-reassurance">You don't need to do anything — we'll take you straight to your report when it's ready.</p>
+  <p class="proc-reassurance">You don't need to do anything — we'll take you straight to your dashboard results when they're ready.</p>
   <div class="proc-fallback" id="processingFallback" role="status" aria-live="polite">
     <p class="proc-fallback-title">This is taking a bit longer than expected.</p>
     <p class="proc-fallback-text">Hold tight — complex sites can take up to a minute. You can also continue in your dashboard and results will appear automatically.</p>
@@ -277,7 +277,7 @@ footer{border-top:1px solid var(--border);padding:28px 48px;display:flex;flex-di
   const stages = [
     { minAttempt: 0,  heading: 'Starting <em>your scan…</em>',    status: 'Starting scan…' },
     { minAttempt: 2,  heading: 'Analyzing <em>your site…</em>',    status: 'Analyzing your site…' },
-    { minAttempt: 6,  heading: 'Building <em>your report…</em>',   status: 'Building your report…' },
+    { minAttempt: 6,  heading: 'Building <em>your dashboard results…</em>',   status: 'Building your dashboard results…' },
     { minAttempt: 11, heading: 'Almost <em>there…</em>',           status: 'Finalizing results…' },
   ];
   function applyStage() {
@@ -380,7 +380,7 @@ footer{border-top:1px solid var(--border);padding:28px 48px;display:flex;flex-di
           return;
         }
         if (attempts >= maxAttempts) {
-          statusEl.innerHTML = 'Taking longer than expected. <a href="' + buildFallbackUrl() + '">Check this report link</a> or contact <a href="mailto:hello@seoaico.com">hello@seoaico.com</a>.';
+          statusEl.innerHTML = 'Taking longer than expected. <a href="' + buildFallbackUrl() + '">Open your dashboard results</a> or contact <a href="mailto:hello@seoaico.com">hello@seoaico.com</a>.';
           statusEl.classList.add('error');
           if (spinnerEl) spinnerEl.style.display = 'none';
           if (fallbackEl) fallbackEl.classList.add('on');
@@ -390,7 +390,7 @@ footer{border-top:1px solid var(--border);padding:28px 48px;display:flex;flex-di
       })
       .catch(() => {
         if (attempts >= maxAttempts) {
-          statusEl.innerHTML = 'We are still processing your scan. <a href="' + buildFallbackUrl() + '">Open report link</a> or contact <a href="mailto:hello@seoaico.com">hello@seoaico.com</a>.';
+          statusEl.innerHTML = 'We are still processing your scan. <a href="' + buildFallbackUrl() + '">Open dashboard results</a> or contact <a href="mailto:hello@seoaico.com">hello@seoaico.com</a>.';
           statusEl.classList.add('error');
           if (spinnerEl) spinnerEl.style.display = 'none';
           if (fallbackEl) fallbackEl.classList.add('on');

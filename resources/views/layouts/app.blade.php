@@ -27,6 +27,28 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
+/* ============================================================
+   UI PRINCIPLE — Design System Guardrail
+   This stylesheet defines the global visual language.
+   -------
+   TYPOGRAPHY
+   - Cormorant Garamond (serif) → headlines and prices ONLY
+   - DM Sans (sans-serif)       → all body copy, UI labels, metadata
+  - DO NOT replace serif display styles used for premium moments
+  - DO NOT introduce new font families
+  - DO NOT mix inconsistent typography across components
+   Do not use Cormorant for body text. Do not use DM Sans for display headings.
+   -------
+   COLOR
+   - --gold (#c8a84b)  → primary accent, CTAs, icons
+   - --ivory (#ede8de) → body text
+   - --muted           → secondary/metadata text
+   - Never use pure white (#fff) for body text
+   -------
+   MOTION
+   - Favour ease-out curves for entrances; keep durations under 400ms
+   - Reserved keyframe namespace: seoai*, lm*, aia*, hiw*
+   ============================================================ */
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 
 :root{

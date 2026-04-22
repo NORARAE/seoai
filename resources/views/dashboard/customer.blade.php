@@ -763,31 +763,31 @@
     ];
     $tierDescriptions = [
         2 => [
-            'name' => 'Signal Expansion',
+            'name' => 'Signal Analysis',
             'adds' => [
-                'Full signal map',
-                'Priority gap visibility',
+                'Full signal breakdown by category',
+                'Priority gap visibility from scan data',
                 'Deeper diagnostic context',
             ],
         ],
         3 => [
-            'name' => 'Structural Leverage',
+            'name' => 'Action Plan',
             'adds' => [
-                'Ranked correction sequence',
-                'Structural fixes by business impact',
-                'Competitive gap pressure points',
+                'Ranked fix list from your scan',
+                'Structural fixes ordered by business impact',
+                'Execution sequence by effort and impact',
             ],
         ],
         4 => [
-            'name' => 'System Activation',
+            'name' => 'Guided Execution',
             'adds' => [
-                'Full competitive positioning',
-                'Market expansion intelligence',
-                'System-level implementation path',
+                'Step-by-step execution checklist in dashboard',
+                'Guided steps tied to your scan issues',
+                'Progress tracking as you complete items',
             ],
         ],
     ];
-    $currentTierName = $tierRankInt >= 4 ? 'System Activation' : ($tierRankInt >= 3 ? 'Structural Leverage' : ($tierRankInt >= 2 ? 'Signal Expansion' : 'Base Scan'));
+    $currentTierName = $tierRankInt >= 4 ? 'Guided Execution' : ($tierRankInt >= 3 ? 'Action Plan' : ($tierRankInt >= 2 ? 'Signal Analysis' : 'Baseline Score'));
     $nextTierRank = $tierRankInt < 4 ? max(2, $tierRankInt + 1) : null;
     $nextTierDetails = $nextTierRank ? ($tierDescriptions[$nextTierRank] ?? null) : null;
     $currentTierDetails = $tierDescriptions[$tierRankInt] ?? null;
@@ -799,18 +799,18 @@
     $nextAddsStateClass = $nextTierDetails ? $layerVisualClassMap['highlight'] : $layerVisualClassMap['dimmed'];
     $progressionRail = [
         [
-            'name' => 'Signal Expansion',
-            'desc' => 'Signal map + gap visibility.',
+            'name' => 'Signal Analysis',
+            'desc' => 'Signal breakdown + gap visibility from scan.',
             'state' => $tierRankInt > 2 ? 'completed' : ($tierRankInt === 2 ? 'active' : 'locked'),
         ],
         [
-            'name' => 'Structural Leverage',
-            'desc' => 'Prioritized structural correction path.',
+            'name' => 'Action Plan',
+            'desc' => 'Prioritized fix list ordered by impact.',
             'state' => $tierRankInt > 3 ? 'completed' : ($tierRankInt === 3 ? 'active' : 'locked'),
         ],
         [
-            'name' => 'System Activation',
-            'desc' => 'Full system coverage + execution path.',
+            'name' => 'Guided Execution',
+            'desc' => 'In-dashboard execution checklist with progress tracking.',
             'state' => $tierRankInt >= 4 ? 'completed' : ($tierRankInt === 4 ? 'active' : 'locked'),
         ],
     ];
@@ -829,9 +829,9 @@
     $boardPrimaryHref = $nextRoute ? route($nextRoute) : route('quick-scan.show');
     $boardPrimaryLabel = $nextRoute ? 'Advance Layer' : 'Open Scan';
     $boardModuleDefs = [
-        2 => ['title' => 'Signal Expansion', 'line' => 'Expose missing signal coverage and entry gaps.', 'route' => 'checkout.signal-expansion'],
-        3 => ['title' => 'Structural Leverage', 'line' => 'Run impact-ranked structural corrections.', 'route' => 'checkout.structural-leverage'],
-        4 => ['title' => 'System Activation', 'line' => 'Activate full-market execution intelligence.', 'route' => 'checkout.system-activation'],
+        2 => ['title' => 'Signal Analysis', 'line' => 'Full signal breakdown from your scan data.', 'route' => 'checkout.signal-expansion'],
+        3 => ['title' => 'Action Plan', 'line' => 'Prioritized fix list ordered by scan impact.', 'route' => 'checkout.structural-leverage'],
+        4 => ['title' => 'Guided Execution', 'line' => 'In-dashboard execution checklist with progress tracking.', 'route' => 'checkout.system-activation'],
     ];
 @endphp
 
@@ -1264,11 +1264,11 @@
                 </div>
 
                 <h3 class="text-2xl sm:text-3xl font-extrabold text-white mb-3 leading-tight">
-                    @if($nextUpgrade['label'] === 'Signal Expansion')
+                    @if($nextUpgrade['label'] === 'Signal Analysis')
                         {{ $dashIsHighScore ? 'Map where your coverage stops — and which cities to enter next' : 'Fix your core signals to unlock full visibility' }}
-                    @elseif($nextUpgrade['label'] === 'Structural Leverage')
+                    @elseif($nextUpgrade['label'] === 'Action Plan')
                         {{ $dashIsHighScore ? 'Structure your territory before competitors claim adjacent areas' : 'Take structural control of your market position' }}
-                    @elseif($nextUpgrade['label'] === 'System Activation')
+                    @elseif($nextUpgrade['label'] === 'Guided Execution')
                         Activate the full system — own your market
                     @else
                         {{ $nextUpgrade['description'] }}
@@ -1287,11 +1287,11 @@
 
                 <div class="flex flex-wrap items-center gap-4">
                     <a href="{{ route($nextUpgrade['route']) }}" class="cta-glow inline-flex items-center gap-2 px-8 py-4 bg-amber-500 hover:bg-amber-400 text-gray-900 rounded-xl text-base font-extrabold transition-all shadow-lg shadow-amber-500/20 hover:shadow-amber-400/30">
-                        @if($nextUpgrade['label'] === 'Signal Expansion')
-                            {{ $dashIsHighScore ? 'Expand into New Cities' : 'Unlock Signal Expansion' }} — {{ $nextUpgrade['price'] }}
-                        @elseif($nextUpgrade['label'] === 'Structural Leverage')
+                        @if($nextUpgrade['label'] === 'Signal Analysis')
+                            {{ $dashIsHighScore ? 'Expand into New Cities' : 'Unlock Signal Analysis' }} — {{ $nextUpgrade['price'] }}
+                        @elseif($nextUpgrade['label'] === 'Action Plan')
                             {{ $dashIsHighScore ? 'Activate Territory Coverage' : 'Resolve Structural Gaps' }} — {{ $nextUpgrade['price'] }}
-                        @elseif($nextUpgrade['label'] === 'System Activation')
+                        @elseif($nextUpgrade['label'] === 'Guided Execution')
                             Activate Full System — {{ $nextUpgrade['price'] }}
                         @else
                             Unlock {{ $nextUpgrade['label'] }} — {{ $nextUpgrade['price'] }}
@@ -1367,7 +1367,7 @@
                     <p class="text-[10px] text-gray-500 uppercase tracking-wider">Current Footprint</p>
                 </div>
             </div>
-            <p class="text-xs text-gray-600 mb-5">Signal Expansion ($99) identifies where competitors can still enter. Structural Leverage ($249) structures territory to prevent entry. System Deployment ($1,500+) executes full market coverage. Territory is not shared once established.</p>
+            <p class="text-xs text-gray-600 mb-5">Signal Analysis ($99) identifies where your signals are failing. Action Plan ($249) gives you a ranked fix list from your scan. Guided Execution ($489) turns that plan into a step-by-step checklist you track in your dashboard.</p>
             <p class="text-[11px] text-gray-500 mb-5">Use the next layer to validate these modeled ranges with deeper signal evidence before deployment.</p>
             <div class="flex flex-wrap gap-3">
                 <a href="{{ route('onboarding.start', ['tier' => 'expansion', 'plan' => 'authority-engine']) }}" class="cta-glow inline-flex items-center gap-2 px-6 py-3 bg-amber-500 hover:bg-amber-400 text-gray-900 rounded-xl text-sm font-extrabold transition-all shadow-lg shadow-amber-500/20">
@@ -1550,15 +1550,15 @@
                 </div>
             </div>
 
-            @elseif($tierRank >= 3)
-            {{-- Has structural leverage ($249) — push to system activation ($489) --}}
+            @if($tierRank >= 3)
+            {{-- Has Action Plan ($249) — push to Guided Execution ($489) --}}
             <div class="mt-6 bg-linear-to-br from-indigo-50 to-blue-50 rounded-xl border border-indigo-200 p-6 hover:shadow-lg transition-all">
                 <p class="text-[10px] font-bold uppercase tracking-widest text-indigo-400 mb-1">Your Next Level</p>
-                <h4 class="font-semibold text-gray-900 mb-1">You've taken structural control — now activate the full system</h4>
-                <p class="text-sm text-gray-600 mb-4">System Activation puts your strategy into motion — entity architecture, content connectivity, and live market coverage expansion.</p>
+                <h4 class="font-semibold text-gray-900 mb-1">You've built your action plan — now execute it with guidance</h4>
+                <p class="text-sm text-gray-600 mb-4">Guided Execution turns your action plan into a step-by-step checklist inside your dashboard with progress tracking.</p>
                 <div class="flex flex-wrap gap-3">
                     <a href="{{ route('checkout.system-activation') }}" class="cta-glow inline-flex items-center gap-2 px-5 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg text-sm font-bold transition-all shadow-sm">
-                        Activate Full System — $489 →
+                        Start Guided Execution — $489 →
                     </a>
                     <a href="{{ url('/book?entry=consultation') }}" class="inline-flex items-center gap-2 px-4 py-2 bg-white border border-gray-200 hover:border-indigo-300 text-gray-700 rounded-lg text-sm font-medium transition-colors">
                         Secondary: Book Consultation
@@ -1567,18 +1567,18 @@
             </div>
 
             @elseif($tierRank >= 2)
-            {{-- Has signal expansion ($99) — push to structural leverage ($249) --}}
+            {{-- Has Signal Analysis ($99) — push to Action Plan ($249) --}}
             <div class="mt-6 bg-linear-to-br from-blue-50 to-cyan-50 rounded-xl border border-blue-200 p-6 relative overflow-hidden hover:shadow-lg transition-all">
                 <div class="absolute top-3 right-3 px-2 py-0.5 bg-blue-600 text-white text-[10px] font-bold uppercase rounded-full">Your Next Level</div>
                 <p class="text-[10px] font-bold uppercase tracking-widest text-blue-400 mb-1">Level 3</p>
-                <h4 class="font-semibold text-gray-900 mb-1">You've expanded your signals — now take structural control</h4>
-                <p class="text-sm text-gray-600 mb-4">Structural Leverage gives you the full audit, entity architecture, and content connectivity map. This is where the system becomes real.</p>
+                <h4 class="font-semibold text-gray-900 mb-1">You've got your signal analysis — now get your action plan</h4>
+                <p class="text-sm text-gray-600 mb-4">Action Plan gives you a ranked fix list from your scan data, ordered by impact so you execute the highest-value changes first.</p>
                 <div class="flex flex-wrap gap-3">
                     <a href="{{ route('checkout.structural-leverage') }}" class="cta-glow inline-flex items-center gap-2 px-5 py-2.5 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-sm font-bold transition-all shadow-sm">
-                        Resolve Structural Gaps — $249 →
+                        Get Your Action Plan — $249 →
                     </a>
                     <a href="{{ route('checkout.system-activation') }}" class="inline-flex items-center gap-2 px-4 py-2 bg-white border border-gray-200 hover:border-blue-300 text-gray-700 rounded-lg text-sm font-medium transition-colors">
-                        Secondary: Activate Full System — $489
+                        Secondary: Start Guided Execution — $489
                     </a>
                 </div>
             </div>
@@ -1599,30 +1599,31 @@
                     <h4 class="font-semibold text-gray-900 mb-1">Identify Open Entry Zones First</h4>
                     <p class="text-sm text-gray-600 mb-4">For high-score positions, map where competitors can still enter before moving into structural deployment.</p>
                     <a href="{{ route('checkout.signal-expansion') }}" class="cta-glow inline-flex items-center gap-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-sm font-bold transition-all">
-                        Recommended: Unlock Signal Expansion — $99 →
+                        Recommended: Unlock Signal Analysis — $99 →
                     </a>
                     @endif
                 </div>
                 @else
                 <div class="bg-linear-to-br from-indigo-50 to-blue-50 rounded-xl border border-indigo-100 p-6 hover:shadow-lg hover:-translate-y-0.5 transition-all">
                     <p class="text-[10px] font-bold uppercase tracking-widest text-indigo-400 mb-1">Level 2</p>
-                    <h4 class="font-semibold text-gray-900 mb-1">Signal Expansion</h4>
-                    <p class="text-sm text-gray-600 mb-4">Expanded gap analysis, competitive signal mapping, and actionable fix priorities.</p>
+                    <h4 class="font-semibold text-gray-900 mb-1">Signal Analysis</h4>
+                    <p class="text-sm text-gray-600 mb-4">Full signal breakdown by category, priority gap visibility, and deeper diagnostic context from your scan.</p>
                     <a href="{{ route('checkout.signal-expansion') }}" class="cta-glow inline-flex items-center gap-2 px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg text-sm font-bold transition-all">
-                        Unlock Signal Expansion — $99 →
+                        Unlock Signal Analysis — $99 →
                     </a>
                 </div>
                 <div class="bg-linear-to-br from-blue-50 to-cyan-50 rounded-xl border border-blue-100 p-6 relative overflow-hidden hover:shadow-lg hover:-translate-y-0.5 transition-all">
                     <div class="absolute top-3 right-3 px-2 py-0.5 bg-blue-600 text-white text-[10px] font-bold uppercase rounded-full">Most Popular</div>
                     <p class="text-[10px] font-bold uppercase tracking-widest text-blue-400 mb-1">Level 3</p>
-                    <h4 class="font-semibold text-gray-900 mb-1">Structural Leverage</h4>
-                    <p class="text-sm text-gray-600 mb-4">Full structural audit, entity architecture, content connectivity — where the system becomes real.</p>
+                    <h4 class="font-semibold text-gray-900 mb-1">Action Plan</h4>
+                    <p class="text-sm text-gray-600 mb-4">Ranked fix list from your scan, ordered by impact — the fastest path from diagnosis to execution.</p>
                     <a href="{{ route('checkout.structural-leverage') }}" class="cta-glow inline-flex items-center gap-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-sm font-bold transition-all">
-                        Resolve Structural Gaps — $249 →
+                        Get Your Action Plan — $249 →
                     </a>
                 </div>
                 @endif
             </div>
+            @endif
             @endif
             @else
             <!-- Empty state -->

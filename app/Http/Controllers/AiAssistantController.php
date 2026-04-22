@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\AiChatLog;
 use App\Models\QuickScan;
 use App\Services\AiAssistantService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 
 class AiAssistantController extends Controller
 {
@@ -28,6 +30,11 @@ class AiAssistantController extends Controller
             'history' => ['nullable', 'array', 'max:16'],
             'history.*.role' => ['required_with:history', 'in:user,assistant'],
             'history.*.content' => ['required_with:history', 'string', 'max:1000'],
+            'session_id' => ['nullable', 'string', 'max:120'],
+            'scan_id' => ['nullable', 'integer', 'min:1'],
+            'domain' => ['nullable', 'string', 'max:255'],
+            'context_page' => ['nullable', 'string', 'max:60'],
+            'context' => ['nullable', 'string', 'max:60'],
         ]);
 
         $context = [];
@@ -44,6 +51,13 @@ class AiAssistantController extends Controller
             context: $context,
         );
 
+        $this->persistChatLog(
+            request: $request,
+            validated: $validated,
+            accountContext: $context,
+            aiReply: $result['error'] === null ? $result['reply'] : null,
+        );
+
         if ($result['error'] !== null) {
             // Return as 200 with error flag so the front-end can display gracefully.
             return response()->json([
@@ -58,6 +72,87 @@ class AiAssistantController extends Controller
             'reply' => $result['reply'],
             'error' => null,
         ]);
+    }
+
+    /**
+     * Persist chat telemetry for intent and UX analysis without blocking chat UX.
+     */
+    private function persistChatLog(Request $request, array $validated, array $accountContext, ?string $aiReply): void
+    {
+        try {
+            $message = trim((string) ($validated['message'] ?? ''));
+
+            $sessionId = $validated['session_id']
+                ?? ($request->hasSession() ? $request->session()->getId() : null);
+
+            $scanId = $validated['scan_id'] ?? null;
+            $domain = $validated['domain'] ?? ($accountContext['domain'] ?? null);
+
+            AiChatLog::create([
+                'session_id' => $sessionId,
+                'scan_id' => $scanId,
+                'domain' => $domain,
+                'user_message' => $message,
+                'ai_response' => $aiReply,
+                'intent' => $this->classifyIntent($message),
+                'context_page' => $this->resolveContextPage($request, $validated),
+            ]);
+        } catch (\Throwable $e) {
+            Log::warning('AiAssistantController: failed to persist ai chat log', [
+                'error' => $e->getMessage(),
+            ]);
+        }
+    }
+
+    private function classifyIntent(string $message): string
+    {
+        $haystack = strtolower($message);
+
+        if (str_contains($haystack, 'what is')) {
+            return 'education';
+        }
+
+        if (str_contains($haystack, 'should i')) {
+            return 'evaluation';
+        }
+
+        if (str_contains($haystack, 'what do i do')) {
+            return 'action';
+        }
+
+        if (str_contains($haystack, 'upgrade') || str_contains($haystack, '$')) {
+            return 'upgrade';
+        }
+
+        return 'general';
+    }
+
+    private function resolveContextPage(Request $request, array $validated): string
+    {
+        $raw = strtolower(trim((string) (
+            $validated['context_page']
+            ?? $validated['context']
+            ?? ''
+        )));
+
+        if ($raw === '') {
+            $refererPath = parse_url((string) $request->headers->get('referer', ''), PHP_URL_PATH);
+            $raw = strtolower((string) ($refererPath ?? ''));
+        }
+
+        if (str_contains($raw, 'modal')) {
+            return 'modal';
+        }
+
+        if (str_contains($raw, 'dashboard')) {
+            return 'dashboard';
+        }
+
+        if (str_contains($raw, 'result') || str_contains($raw, 'scan')) {
+            return 'result';
+        }
+
+        return 'landing';
     }
 
     /**

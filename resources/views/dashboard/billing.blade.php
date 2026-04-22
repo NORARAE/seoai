@@ -46,7 +46,7 @@
       <p class="mb-2 text-xs uppercase tracking-[0.22em] text-[#c8a84b]/80">Activation Records</p>
       <div class="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
         <div>
-          <h1 class="text-3xl font-semibold leading-tight lg:text-4xl">System Activation Log</h1>
+          <h1 class="text-3xl font-semibold leading-tight lg:text-4xl">Plan Activation Log</h1>
           <p class="mt-2 max-w-2xl text-sm text-[#a8a18f]">Official in-platform record of activated layers, completion state, and next recommended actions.</p>
         </div>
         @if($portalUrl)

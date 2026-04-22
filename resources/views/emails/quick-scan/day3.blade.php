@@ -19,28 +19,28 @@
     </p>
 
     <div style="background:#1a1a1a;border-radius:2px;overflow:hidden;margin-bottom:24px">
-      <!-- Signal Expansion -->
+      <!-- Signal Analysis -->
       <div style="padding:20px 22px;border-bottom:1px solid #2a2a2a">
         <p style="font-size:9px;letter-spacing:.16em;text-transform:uppercase;color:rgba(200,168,75,.5);margin:0 0 6px">Layer 2</p>
-        <p style="font-size:16px;font-weight:500;color:#ede8de;margin:0 0 4px">Signal Expansion</p>
+        <p style="font-size:16px;font-weight:500;color:#ede8de;margin:0 0 4px">Signal Analysis</p>
         <p style="font-size:22px;font-weight:300;color:#c8a84b;margin:0 0 10px">$99 <span style="font-size:13px;color:#777">one-time</span></p>
         <ul style="padding-left:16px;margin:0">
           <li style="font-size:12px;color:#aaa;margin-bottom:6px;line-height:1.55">Complete visibility mapping across AI systems</li>
           <li style="font-size:12px;color:#aaa;margin-bottom:6px;line-height:1.55">Every gap ranked by revenue impact</li>
-          <li style="font-size:12px;color:#aaa;margin-bottom:0;line-height:1.55">Exportable intelligence report</li>
+          <li style="font-size:12px;color:#aaa;margin-bottom:0;line-height:1.55">Dashboard-based signal insights</li>
         </ul>
         <div style="margin-top:14px">
-          <a href="{{ \App\Support\EmailUrl::tracked('/checkout/signal-expansion', 'quick-scan-day3', $scan->user_id, $scan->id) }}" style="display:inline-block;border:1px solid #c8a84b;color:#c8a84b;font-size:11px;font-weight:600;text-decoration:none;padding:9px 24px;letter-spacing:.08em">Unlock Signal Expansion &rarr;</a>
+          <a href="{{ \App\Support\EmailUrl::tracked('/checkout/signal-expansion', 'quick-scan-day3', $scan->user_id, $scan->id) }}" style="display:inline-block;border:1px solid #c8a84b;color:#c8a84b;font-size:11px;font-weight:600;text-decoration:none;padding:9px 24px;letter-spacing:.08em">Unlock Signal Analysis &rarr;</a>
         </div>
       </div>
 
-      <!-- Structural Leverage - Featured -->
+      <!-- Action Plan - Featured -->
       <div style="padding:20px 22px;background:#1e1a10;border-bottom:1px solid #2a2a2a">
         <p style="font-size:9px;letter-spacing:.16em;text-transform:uppercase;color:rgba(200,168,75,.7);margin:0 0 4px">Layer 3 &mdash; Most Popular</p>
-        <p style="font-size:16px;font-weight:500;color:#ede8de;margin:0 0 4px">Structural Leverage</p>
+        <p style="font-size:16px;font-weight:500;color:#ede8de;margin:0 0 4px">Action Plan</p>
         <p style="font-size:22px;font-weight:300;color:#c8a84b;margin:0 0 10px">$249 <span style="font-size:13px;color:#777">one-time</span></p>
         <ul style="padding-left:16px;margin:0">
-          <li style="font-size:12px;color:#c9c09a;margin-bottom:6px;line-height:1.55">Everything in Signal Expansion</li>
+          <li style="font-size:12px;color:#c9c09a;margin-bottom:6px;line-height:1.55">Everything in Signal Analysis</li>
           <li style="font-size:12px;color:#c9c09a;margin-bottom:6px;line-height:1.55">Priority correction sequence ordered by ROI</li>
           <li style="font-size:12px;color:#c9c09a;margin-bottom:0;line-height:1.55">Full action sequence with implementation notes</li>
         </ul>
@@ -49,13 +49,13 @@
         </div>
       </div>
 
-      <!-- System Activation -->
+      <!-- Guided Execution -->
       <div style="padding:20px 22px">
         <p style="font-size:9px;letter-spacing:.16em;text-transform:uppercase;color:rgba(200,168,75,.4);margin:0 0 6px">Layer 4</p>
-        <p style="font-size:16px;font-weight:500;color:#ede8de;margin:0 0 4px">System Activation</p>
+        <p style="font-size:16px;font-weight:500;color:#ede8de;margin:0 0 4px">Guided Execution</p>
         <p style="font-size:22px;font-weight:300;color:#c8a84b;margin:0 0 10px">$489+ <span style="font-size:13px;color:#777">one-time</span></p>
         <ul style="padding-left:16px;margin:0">
-          <li style="font-size:12px;color:#aaa;margin-bottom:6px;line-height:1.55">Everything in Structural Leverage</li>
+          <li style="font-size:12px;color:#aaa;margin-bottom:6px;line-height:1.55">Everything in Action Plan</li>
           <li style="font-size:12px;color:#aaa;margin-bottom:6px;line-height:1.55">Competitive positioning + market mapping</li>
           <li style="font-size:12px;color:#aaa;margin-bottom:0;line-height:1.55">50+ page structural architecture deployed</li>
         </ul>
@@ -72,7 +72,7 @@
     </div>
 
     <div style="text-align:center;margin:20px 0">
-      <a href="{{ \App\Support\EmailUrl::tracked('/checkout/signal-expansion', 'quick-scan-day3', $scan->user_id, $scan->id) }}" style="display:inline-block;background:#c8a84b;color:#080808;font-size:12px;font-weight:600;text-decoration:none;padding:13px 36px;letter-spacing:.08em">Start with Signal Expansion &mdash; $99</a>
+      <a href="{{ \App\Support\EmailUrl::tracked('/checkout/signal-expansion', 'quick-scan-day3', $scan->user_id, $scan->id) }}" style="display:inline-block;background:#c8a84b;color:#080808;font-size:12px;font-weight:600;text-decoration:none;padding:13px 36px;letter-spacing:.08em">Start with Signal Analysis &mdash; $99</a>
     </div>
 
     <p style="font-size:12px;color:#bbb;text-align:center;margin:16px 0 0">

@@ -34,7 +34,7 @@
     </p>
 
     <p style="font-size:14px;color:#555;margin:0 0 16px;line-height:1.65">
-      Our <strong style="color:#333">Signal Expansion</strong> maps every gap ranked by revenue impact &mdash; so you know exactly what to fix, in what order, to get cited.
+      Our <strong style="color:#333">Signal Analysis</strong> maps every gap ranked by revenue impact &mdash; so you know exactly what to fix, in what order, to get cited.
     </p>
 
     <!-- Comparison mini-table -->
@@ -58,7 +58,7 @@
     </table>
 
     <div style="text-align:center;margin:20px 0">
-      <a href="{{ \App\Support\EmailUrl::tracked('/checkout/signal-expansion', 'quick-scan-day2', $scan->user_id, $scan->id) }}" style="display:inline-block;background:#c8a84b;color:#080808;font-size:12px;font-weight:600;text-decoration:none;padding:13px 36px;letter-spacing:.08em">Unlock Signal Expansion &mdash; $99</a>
+      <a href="{{ \App\Support\EmailUrl::tracked('/checkout/signal-expansion', 'quick-scan-day2', $scan->user_id, $scan->id) }}" style="display:inline-block;background:#c8a84b;color:#080808;font-size:12px;font-weight:600;text-decoration:none;padding:13px 36px;letter-spacing:.08em">Unlock Signal Analysis &mdash; $99</a>
     </div>
 
     <p style="font-size:12px;color:#bbb;text-align:center;margin:16px 0 0">

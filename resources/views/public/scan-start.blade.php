@@ -260,6 +260,12 @@
 <body class="scan-start">
 @include('partials.public-nav', ['showHamburger' => true])
 
+@if(session('flow_message'))
+<div style="background:rgba(200,168,75,.08);border-bottom:1px solid rgba(200,168,75,.18);padding:14px 24px;text-align:center;font-size:.82rem;letter-spacing:.04em;color:rgba(200,168,75,.9)">
+  {{ session('flow_message') }}
+</div>
+@endif
+
 <main class="scan-hero">
   <div class="scan-hero-inner"
        x-data="{
@@ -289,7 +295,7 @@
            basic:      'Running initial AI citation scan',
            pro:        'Running full signal analysis',
            structure:  'Mapping structural gaps and site architecture',
-           activation: 'Preparing full system activation plan'
+           activation: 'Preparing your guided execution plan'
          },
          init() {
            if (this.urlError || this.emailError) {
@@ -462,7 +468,7 @@
     <div class="se-step" x-show="step === 2" x-cloak x-transition:enter="se-step" x-transition:enter-start="opacity-0 translate-y-4" x-transition:enter-end="opacity-100 translate-y-0" x-transition:leave="se-step" x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0">
       <p class="se-eye">Scan Setup Ready</p>
       <h2 class="se-hed">Where should we send <em>your results?</em></h2>
-      <p class="se-sub">Your scan session is prepared. Enter your email so we can deliver the full AI visibility report.</p>
+      <p class="se-sub">Your scan session is prepared. Enter your email to access your full AI visibility results inside your dashboard.</p>
 
       <div class="se-input-wrap">
         <label class="se-label" for="se-email">Email Address</label>

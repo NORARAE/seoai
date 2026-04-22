@@ -436,6 +436,52 @@ body {
     <p class="done-next-close" style="margin-top:10px;opacity:.75">Review is typically completed within 1–2 business days.</p>
   </div>
 
+  {{-- ── BEST STARTING POINT (driven by onboarding focus_area) ── --}}
+  @php
+    $focusMap = [
+      'improve_visibility' => [
+        'label'   => 'Improve Visibility',
+        'lead'    => 'Strengthen your visibility foundation.',
+        'detail'  => 'We will start with your AI Visibility Score and the structural fixes that hold everything else.',
+        'pillars' => ['AI Visibility Score', 'Structural SEO Signals', 'AI Citation Readiness'],
+      ],
+      'expand_markets' => [
+        'label'   => 'Expand Into New Markets',
+        'lead'    => 'Map your market coverage first.',
+        'detail'  => 'We will surface service and city gaps so the rollout targets where coverage is weakest.',
+        'pillars' => ['Market Coverage', 'Service + City Gaps', 'Recommended Next Step'],
+      ],
+      'generate_leads' => [
+        'label'   => 'Generate More Leads',
+        'lead'    => 'Close the discoverability-to-lead gap.',
+        'detail'  => 'We will prioritize the visibility and structural moves that compound into qualified inquiries.',
+        'pillars' => ['AI Visibility Score', 'AI Citation Readiness', 'Recommended Next Step'],
+      ],
+      'not_sure' => [
+        'label'   => 'Not Sure Yet',
+        'lead'    => 'Run a baseline scan first.',
+        'detail'  => 'We will show you a balanced overview so you can decide where to focus.',
+        'pillars' => ['AI Visibility Score', 'Market Coverage', 'Recommended Next Step'],
+      ],
+    ];
+    $focusKey  = $focusArea ?: 'not_sure';
+    $focusInfo = $focusMap[$focusKey] ?? $focusMap['not_sure'];
+  @endphp
+
+  @if(!$alreadySubmitted)
+  <div class="done-next" style="margin-top:36px">
+    <span class="done-next-eye" style="color:var(--gold-lt)">Best starting point &middot; {{ $focusInfo['label'] }}</span>
+    <p class="done-next-body" style="font-family:'Cormorant Garamond',serif;font-size:1.35rem;font-weight:300;color:var(--ivory);line-height:1.3;margin-bottom:10px">{{ $focusInfo['lead'] }}</p>
+    <p class="done-next-close" style="font-family:'DM Sans',sans-serif;font-style:normal;color:var(--muted);margin-bottom:14px">{{ $focusInfo['detail'] }}</p>
+    <ul class="done-assess" aria-label="Focus pillars">
+      @foreach($focusInfo['pillars'] as $pillar)
+      <li>{{ $pillar }}</li>
+      @endforeach
+    </ul>
+    <p class="done-next-close" style="margin-top:8px;opacity:.7">Your dashboard will lead with these once activated.</p>
+  </div>
+  @endif
+
   <!-- EXPECTATION PROTECTION -->
   <div class="done-expect">
     <span class="done-expect-label">How this works</span>

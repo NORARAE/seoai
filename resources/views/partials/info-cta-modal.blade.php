@@ -129,6 +129,14 @@
 .info-modal-block ul{margin:0;padding-left:18px}
 .info-modal-actions{display:flex;justify-content:flex-start;gap:12px;flex-wrap:wrap;margin-top:8px}
 .info-modal-close-text{background:none;border:none;color:rgba(198,194,182,.72);cursor:pointer;letter-spacing:.1em;text-transform:uppercase;font-size:.64rem;padding:0 4px}
+.info-modal-translation{font-size:1rem;line-height:1.56;color:rgba(236,232,221,.92);margin:10px 0 0}
+.info-modal-block strong{font-size:.66rem;letter-spacing:.15em;color:rgba(241,214,133,.95);margin:14px 0 6px;font-weight:600}
+.info-modal-block p,.info-modal-block li{font-size:.98rem;line-height:1.5;color:rgba(236,232,221,.91)}
+.info-modal-block ul{margin:0;padding-left:16px}
+.info-modal-block li + li{margin-top:4px}
+.info-modal-close{color:rgba(237,232,222,.9)}
+.info-modal-close-text{color:rgba(216,210,196,.86)}
+.info-modal-actions .btn-primary{font-size:.84rem;letter-spacing:.11em;text-transform:uppercase;padding:14px 20px}
 @media(max-width:640px){
   .info-modal-dialog{width:min(100vw - 20px,700px);padding:20px 18px 18px}
   .info-modal-grid{grid-template-columns:1fr}

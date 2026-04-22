@@ -374,6 +374,18 @@ class PublicController extends Controller
 
     public function pricing(): View
     {
-        return view('public.pricing');
+        $ownedTierRank = 0;
+        if ($user = auth()->user()) {
+            $topScan = $user->quickScans()
+                ->where('status', \App\Models\QuickScan::STATUS_SCANNED)
+                ->whereNotNull('score')
+                ->get()
+                ->sortByDesc(fn($s) => $s->upgradeTierRank())
+                ->first();
+            if ($topScan) {
+                $ownedTierRank = $topScan->upgradeTierRank();
+            }
+        }
+        return view('public.pricing', compact('ownedTierRank'));
     }
 }

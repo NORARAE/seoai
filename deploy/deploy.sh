@@ -35,6 +35,7 @@ rsync -azP --delete \
   --exclude='storage/framework/views/*' \
   --exclude='database/database.sqlite' \
   --exclude='database/database.sqlite-journal' \
+  --exclude='bootstrap/cache/' \
   --exclude='.git/' \
   "${REPO_DIR}/" "${SERVER_USER}@${SERVER_IP}:${APP_DIR}/"
 
@@ -43,6 +44,13 @@ echo "→ Running remote setup..."
 ssh "${SERVER_USER}@${SERVER_IP}" bash << 'REMOTE'
 set -euo pipefail
 cd /var/www/seoai
+
+# Fix ownership FIRST — rsync from macOS sets 501:staff, www-data needs write access
+chown -R www-data:www-data /var/www/seoai/storage /var/www/seoai/bootstrap/cache
+chmod -R 775 storage bootstrap/cache
+# SQLite dir must be writable for journal file creation
+chown www-data:www-data /var/www/seoai/database
+chmod 775 /var/www/seoai/database
 
 # Install dependencies
 composer install --no-dev --optimize-autoloader --no-interaction 2>&1 | tail -3

@@ -28,7 +28,7 @@
       <a href="{{ \App\Support\EmailUrl::tracked('/checkout/structural-leverage', 'upgrade-implement-offer', $scan->user_id, $scan->id) }}" style="display:inline-block;padding:14px 36px;background:#080808;color:#ede8de;font-size:13px;letter-spacing:.1em;text-decoration:none;text-transform:uppercase">Resolve Structural Gaps &mdash; $249</a>
     </div>
     @else
-    <p style="font-size:13px;color:#555;line-height:1.7;margin:0 0 6px">With System Activation, we:</p>
+    <p style="font-size:13px;color:#555;line-height:1.7;margin:0 0 6px">With Guided Execution, we:</p>
     <ul style="font-size:13px;color:#555;line-height:1.8;padding-left:20px;margin:0 0 16px">
       <li>Map your competitive position</li>
       <li>Build your coverage architecture</li>

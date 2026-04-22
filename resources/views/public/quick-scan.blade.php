@@ -142,7 +142,7 @@ body{background:var(--bg);color:var(--ivory);font-family:'DM Sans',sans-serif;fo
 .qs-trust{
   margin-top:18px;
   font-size:.72rem;letter-spacing:.06em;
-  color:rgba(168,168,160,.4);
+  color:rgba(168,168,160,.58);
   text-align:center;
   line-height:1.6;
 }
@@ -205,10 +205,10 @@ body{background:var(--bg);color:var(--ivory);font-family:'DM Sans',sans-serif;fo
 }
 .sys-rail-label{
   font-size:.56rem;letter-spacing:.12em;text-transform:uppercase;
-  color:rgba(168,168,160,.45);
+  color:rgba(168,168,160,.56);
 }
 .sys-rail-arrow{
-  color:rgba(200,168,75,.2);font-size:.7rem;padding:0 2px;
+  color:rgba(200,168,75,.28);font-size:.7rem;padding:0 2px;
   display:flex;align-items:center;
 }
 @media(max-width:600px){
@@ -312,6 +312,19 @@ body{background:var(--bg);color:var(--ivory);font-family:'DM Sans',sans-serif;fo
 @media(max-width:480px){
   .scan-cards-row{gap:14px}
 }
+
+/* Final pre-live readability refinements */
+.qs-domain-kicker,
+.qs-form-group label,
+.qs-form-note,
+.qs-trust-note,
+.qs-error,
+.scan-card-desc{
+  font-size:max(.8rem, 12px);
+  line-height:1.6;
+}
+.qs-form-note,
+.scan-card-desc{color:rgba(196,196,188,.84)}
 </style>
 @include('partials.clarity')
 </head>
@@ -537,6 +550,17 @@ body{background:var(--bg);color:var(--ivory);font-family:'DM Sans',sans-serif;fo
   });
 </script>
 @include('partials.public-nav-js')
+@include('components.ai-assistant', [
+    'aiMicroLabel'  => 'Get guidance instantly',
+    'aiTeaserTitle' => 'Questions before you scan?',
+    'aiTeaserText'  => 'Ask me what the scan checks, what your score will mean, or what happens next.',
+    'aiSuggestedPrompts' => [
+        'What does the scan actually check?',
+        'What will my score tell me?',
+        'Is $2 worth it?',
+        'What happens after I scan?',
+    ],
+])
 @include('components.tm-style')
 </body>
 </html>

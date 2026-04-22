@@ -21,7 +21,7 @@ class StructuralLeverageConfirmation extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Your Structural Leverage report is being built',
+            subject: 'Your Action Plan report is being built',
         );
     }
 

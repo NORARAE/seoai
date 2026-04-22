@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Your AI Visibility Report — SEO AI Co™</title>
+<title>Your AI Visibility Results — SEO AI Co™</title>
 <link rel="canonical" href="{{ url('/scan/preview') }}">
 <meta name="robots" content="noindex, nofollow">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -788,7 +788,7 @@
     </div>
     <div class="prev-prog-step">
       <span class="prev-prog-dot next"></span>
-      <span class="prev-prog-label next">Report</span>
+      <span class="prev-prog-label next">Results</span>
     </div>
     <div class="prev-prog-step">
       <span class="prev-prog-dot locked"></span>
@@ -971,20 +971,20 @@
 
   <!-- Secondary $99 path (non-distracting) -->
   <div class="prev-secondary">
-    <a href="{{ route('checkout.signal-expansion') }}" onclick="if(typeof gtag==='function')gtag('event','cta_click',{cta_location:'secondary',cta_label:'signal_expansion'});">Or go deeper: Signal Expansion &mdash; $99</a>
+    <a href="{{ route('checkout.signal-expansion') }}" onclick="if(typeof gtag==='function')gtag('event','cta_click',{cta_location:'secondary',cta_label:'signal_expansion'});">Or go deeper: Signal Analysis &mdash; $99</a>
   </div>
 
   <!-- Layer progression block -->
   <div class="prev-layer">
     <p class="prev-layer-label">You are at Layer 1</p>
-    <p class="prev-layer-sub"><span>Unlock Report ($2)</span> &rarr; Signal Expansion &rarr; Structure &rarr; Activation</p>
+    <p class="prev-layer-sub"><span>Unlock Results ($2)</span> &rarr; Signal Analysis &rarr; Action Plan &rarr; Guided Execution</p>
   </div>
 
 </div>
 
 <!-- Sticky bottom bar ($2) -->
 <div class="prev-sticky" id="prevSticky">
-  <span class="prev-sticky-text">Your report is ready</span>
+  <span class="prev-sticky-text">Your results are ready</span>
   <a href="{{ route('checkout.scan-basic') }}" class="prev-sticky-cta" onclick="if(typeof gtag==='function')gtag('event','cta_click',{cta_location:'sticky_bar',cta_label:'scan_basic'});">Reveal Full Signal Map&nbsp;&mdash;&nbsp;$2</a>
 </div>
 
