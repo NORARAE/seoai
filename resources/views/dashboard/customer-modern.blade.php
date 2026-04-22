@@ -1530,8 +1530,14 @@
     </div>
     @endif
 
+    {{-- ═══════════════════════════════════════════════════════════════ --}}
+    {{-- START: hasSystem — user has at least one scan                    --}}
+    {{-- ELSE at ~line 2678 → onboarding command section                  --}}
+    {{-- END:   @endif at ~line 2713                                       --}}
+    {{-- ═══════════════════════════════════════════════════════════════ --}}
     @if($hasSystem)
 
+    {{-- START: return-banner script (tierRank < 4) --}}
     {{-- Return Banner (JS-controlled — shown on return visits with incomplete tier) --}}
     @if($tierRank < 4)
     <script>
@@ -1595,7 +1601,9 @@
       <a id="dcm-rb-cta" href="{{ $nextUnlockHref }}" class="dcm-rb-cta">Continue &rarr;</a>
     </div>
     @endif
+    {{-- END: return-banner script --}}
 
+    {{-- START: domain context bar --}}
     {{-- Domain Context Bar --}}
     @if($projectDomain)
     <div class="exec-ctx-bar" role="banner" aria-label="Project context: {{ $projectDomain }}">
@@ -1626,9 +1634,11 @@
       </div>
     </div>
     @endif
+    {{-- END: domain context bar --}}
 
     <div class="dashboard-primary-flow {{ $isScansView ? 'is-scans-view' : '' }} {{ $isReportsView ? 'is-reports-view' : '' }}">
 
+    {{-- START: system-view progress strip --}}
     {{-- ── System Progress Strip ──────────────────────────────────── --}}
     @if($isSystemView)
     @php
@@ -1654,6 +1664,9 @@
       <p class="dcm-progress-pct">{{ $progressPct }}% through your visibility system</p>
     </div>
     @endif
+    {{-- END: system-view progress strip --}}
+
+    {{-- START: exec-hero (score ring + interpretation + CTA) — always shown --}}
     <section class="system-section system-section-primary mb-6 dash-section-anchor" id="system-state" aria-labelledby="exec-score-label">
       <div class="exec-hero-shell surface-reveal is-visible">
         <div class="exec-hero-grid">
@@ -1727,6 +1740,7 @@
         <p id="sysActiveSignal" class="sys-active-signal">Your visibility is actively improving as fixes are applied.</p>
       </div>
     </section>
+    {{-- END: exec-hero --}}
 
     @php
       $planLevels = [
@@ -1773,6 +1787,7 @@
         : $nextUnlockHref;
     @endphp
 
+    {{-- START: score-drivers (requires !noScore + topFindings) --}}
     {{-- ── INTERPRETATION: What's Driving Your Score ───────────────── --}}
     @if(!$noScore && isset($topFindings) && count($topFindings) > 0)
     <section class="system-section mb-6 dash-section-anchor surface-reveal" id="score-drivers" aria-labelledby="score-drivers-heading">
@@ -1850,7 +1865,9 @@
       </div>
     </section>
     @endif
+    {{-- END: score-drivers --}}
 
+    {{-- START: next-move (requires !noScore) --}}
     {{-- ── PRIORITY: What to Do Next ───────────────────────────────── --}}
     @if(!$noScore)
     <section class="system-section mb-6 dash-section-anchor surface-reveal" id="next-move" aria-labelledby="next-move-heading">
@@ -1930,7 +1947,9 @@
       </div>
     </section>
     @endif
+    {{-- END: next-move --}}
 
+    {{-- START: your-plan (always shown when hasSystem) --}}
     {{-- ── PROGRESSION: Your Plan ───────────────────────────────────── --}}
     <section class="system-section mb-6 dash-section-anchor surface-reveal" id="your-plan" aria-labelledby="your-plan-heading">
       <div class="your-plan-shell">
@@ -2075,7 +2094,9 @@
 
       </div>
     </section>
+    {{-- END: your-plan --}}
 
+    {{-- START: L2 signal-analysis (tierRank >= 2) --}}
     {{-- ── L2: SIGNAL ANALYSIS (unlocked for tierRank >= 2) ─────────── --}}
     @if($tierRank >= 2 && !empty($scanCategories))
     @php
@@ -2176,7 +2197,9 @@
       </div>
     </section>
     @endif
+    {{-- END: L2 signal-analysis --}}
 
+    {{-- START: L3 action-plan (tierRank >= 3) --}}
     {{-- ── L3: ACTION PLAN (unlocked for tierRank >= 3) ─────────────── --}}
     @if($tierRank >= 3 && !empty($scanIntelligence))
     @php
@@ -2246,7 +2269,9 @@
       </div>
     </section>
     @endif
+    {{-- END: L3 action-plan --}}
 
+    {{-- START: L4 guided-execution (tierRank >= 4) --}}
     {{-- ── L4: GUIDED EXECUTION (unlocked for tierRank >= 4) ──────────── --}}
     @if($tierRank >= 4 && !empty($scanIntelligence))
     @php
@@ -2332,7 +2357,9 @@
       </div>
     </section>
     @endif
+    {{-- END: L4 guided-execution --}}
 
+    {{-- START: ai-advisor (leadScore > 0 or renderable) --}}
     {{-- ── CONFIDENCE: Your AI Advisor ─────────────────────────────── --}}
     @if($leadScore > 0 || $leadRenderable)
     @php
@@ -2399,7 +2426,9 @@
       </div>
     </section>
     @endif
+    {{-- END: ai-advisor --}}
 
+    {{-- START: reports-view inline section (isReportsView) --}}
     @if($isReportsView)
     <section class="system-section mb-8 dash-section-anchor surface-reveal" id="report-readouts">
       <div class="ia-progress-shell">
@@ -2452,7 +2481,9 @@
       </div>
     </section>
     @endif
+    {{-- END: reports-view inline section --}}
 
+    {{-- START: scans-view scan library (isScansView) --}}
     @if($isScansView)
     <section class="system-section mb-10 dash-section-anchor surface-reveal" id="scan-history">
       <div class="scan-history-shell">
@@ -2674,7 +2705,11 @@
       </div>
     </section>
     @endif
+    {{-- END: scans-view scan library --}}
     </div>
+    {{-- ═══════════════════════════════════════════════════════════════ --}}
+    {{-- ELSE: no scans yet → onboarding command                         --}}
+    {{-- ═══════════════════════════════════════════════════════════════ --}}
     @else
     <section class="system-section system-section-primary mb-10 dash-section-anchor surface-reveal is-visible" id="onboarding-command">
       <div class="onboarding-command-shell">
@@ -2710,8 +2745,16 @@
         </div>
       </div>
     </section>
+    {{-- ═══════════════════════════════════════════════════════════════ --}}
+    {{-- END: hasSystem (opened ~line 1533)                               --}}
+    {{-- ═══════════════════════════════════════════════════════════════ --}}
     @endif
 
+    {{-- ─────────────────────────────────────────────────────────────── --}}
+    {{-- DISABLED SECTIONS (all gated with && false — rendered as no-op) --}}
+    {{-- ─────────────────────────────────────────────────────────────── --}}
+
+    {{-- START: disabled — legacy system-view (non-agency) --}}
     @if($hasSystem && !$agencyModeActive && $isSystemView && false)
     <section class="system-section mb-10 rounded-2xl border border-[#c8a84b]/16 bg-linear-to-br from-[#19160f] via-[#121008] to-[#0c0a06] p-5 shadow-xl operations-quiet dash-section-anchor surface-reveal" id="systems">
       <p class="mb-2 text-xs uppercase tracking-[0.22em] text-[#c8a84b]/80">System Readout</p>
@@ -2737,7 +2780,9 @@
       </div>
     </section>
     @endif
+    {{-- END: disabled — legacy system-view (non-agency) --}}
 
+    {{-- START: disabled — legacy agency system-view --}}
     @if($hasSystem && $agencyModeActive && $isSystemView && false)
       @php
         $gridClass = $systemCount >= 10 ? 'grid-compact' : ($systemCount <= 4 ? 'grid-wide' : '');
@@ -2993,7 +3038,9 @@
         </div>
       </section>
     @endif
+    {{-- END: disabled — legacy agency system-view --}}
 
+    {{-- START: reports-view intelligence stack --}}
     @if($hasSystem && !$agencyModeActive && $isReportsView)
     <section class="system-section system-section-secondary mb-10 dash-section-anchor" id="intelligence-stack">
       <div class="system-subshell">
@@ -3023,7 +3070,9 @@
       </div>
     </section>
     @endif
+    {{-- END: reports-view intelligence stack --}}
 
+    {{-- START: reports-view dormant extensions --}}
     @if($hasSystem && !$agencyModeActive && $isReportsView)
     <section class="system-section system-section-tertiary mb-10 dash-section-anchor" id="extensions">
       <div class="system-subshell dim">
@@ -3045,7 +3094,9 @@
       </div>
     </section>
     @endif
+    {{-- END: reports-view dormant extensions --}}
 
+    {{-- START: disabled — legacy coverage/next-move-queue --}}
     @if($hasSystem && $isSystemView && false)
     <section class="system-section system-section-secondary mb-10 dash-section-anchor operations-quiet surface-reveal" id="coverage">
       <h2 class="mb-3 text-sm uppercase tracking-[0.2em] text-[#c8a84b]/68">Next Move Queue</h2>
@@ -4160,6 +4211,7 @@
 })();
 </script>
 @endif
+{{-- END: GE checklist script --}}
 
 <script>
 // Phase 17: nm-card fix-confirm echo feedback
@@ -4320,6 +4372,7 @@
 })();
 </script>
 
+{{-- START: sticky bar (tierRank < 4 and nextLevelMeta available) --}}
 @if($tierRank < 4 && $nextLevelMeta)
 <div id="p20StickyBar" class="p20-sticky-bar" role="complementary" aria-label="Next step available">
   <span class="p20-sticky-bar-text">You&rsquo;re one step away from stronger visibility.</span>
@@ -4327,5 +4380,6 @@
   <button type="button" id="p20StickyDismiss" class="p20-sticky-dismiss" aria-label="Dismiss">&times;</button>
 </div>
 @endif
+{{-- END: sticky bar --}}
 
 @endsection
