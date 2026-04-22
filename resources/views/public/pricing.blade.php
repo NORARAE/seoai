@@ -1382,7 +1382,7 @@
             @if($ownedTierRank >= 4)
             <span class="sys-cta-owned-badge"><svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M1.5 5l2.5 2.5 4.5-5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg> Guided Execution active</span>
             @else
-            <a href="{{ route('checkout.system-activation') }}" class="sys-cta" onclick="track('cta_click',{tier:489,label:'guided_execution',location:'pricing_step4'})">Start Guided Execution &mdash; $489</a>
+            <a href="{{ route('checkout.system-activation') }}" class="sys-cta --primary" onclick="track('cta_click',{tier:489,label:'guided_execution',location:'pricing_step4'})">Start Guided Execution &mdash; $489</a>
             <button class="sys-trust-trigger" data-layer="level-4">See what unlocks</button>
             @endif
           </div>

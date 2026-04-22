@@ -1332,7 +1332,7 @@
   .sa-summary-stat{display:flex;flex-direction:column;align-items:center;gap:2px}
   .sa-summary-stat-num{font-size:1.4rem;font-weight:700;color:#a0c0f0}
   .sa-summary-stat-label{font-size:.54rem;letter-spacing:.16em;text-transform:uppercase;color:#6888aa}
-  .sa-upsell-banner{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px;margin-top:16px;padding:14px 16px;border:1px solid rgba(200,168,75,.22);border-radius:12px;background:rgba(200,168,75,.05)}
+  .sa-upsell-banner{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px;margin-top:16px;padding:14px 16px;border:1px solid rgba(200,168,75,.38);border-radius:12px;background:rgba(200,168,75,.08);box-shadow:0 2px 12px rgba(200,168,75,.06)}
   .sa-upsell-text{font-size:.8rem;color:#c8b880;line-height:1.45}
   .sa-upsell-btn{display:inline-flex;align-items:center;gap:6px;padding:8px 18px;border-radius:9px;border:1px solid rgba(200,168,75,.44);background:rgba(200,168,75,.1);color:#d9c988;font-size:.62rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;text-decoration:none;white-space:nowrap;transition:all .18s ease}
   .sa-upsell-btn:hover{border-color:rgba(200,168,75,.52);background:rgba(200,168,75,.18)}
@@ -2101,7 +2101,7 @@
         {{-- Upsell to L3 if applicable --}}
         @if($tierRank === 2)
         <div class="sa-upsell-banner">
-          <span class="sa-upsell-text">Ready to act on these signals? <strong>Action Plan</strong> turns this breakdown into a ranked fix list — ordered by what moves your score the most.</span>
+          <span class="sa-upsell-text">You&rsquo;ve seen the gaps. <strong>Action Plan</strong> turns this into a numbered fix list &mdash; what to fix first, in order of impact.</span>
           <a href="{{ route('checkout.structural-leverage') }}" class="sa-upsell-btn" onclick="track('cta_click',{tier:249,label:'action_plan',location:'signal_analysis_upsell'})">Get Your Action Plan &mdash; $249 &rarr;</a>
         </div>
         @endif
