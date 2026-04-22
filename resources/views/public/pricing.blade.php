@@ -1236,7 +1236,7 @@
     </h1>
     <p class="p-hero-sub">Six levels of visibility infrastructure &mdash; from initial signal detection to full market control. Each level compounds on the last. Enter at any point. The system builds forward.</p>
     <div class="p-hero-actions">
-      <a href="{{ route('scan.start') }}" class="btn-primary">Enter the System</a>
+      <a href="{{ route('scan.start') }}" class="btn-primary">Start Scan &mdash; $2</a>
       <a href="#plans" class="btn-ghost">View the full architecture &rarr;</a>
     </div>
   </div>
@@ -1323,7 +1323,7 @@
             @if($ownedTierRank >= 2)
             <span class="sys-cta-owned-badge"><svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M1.5 5l2.5 2.5 4.5-5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg> Signal Analysis active</span>
             @else
-            <a href="{{ route('checkout.signal-expansion') }}" class="sys-cta">Unlock Signal Analysis &mdash; $99</a>
+            <a href="{{ route('checkout.signal-expansion') }}" class="sys-cta --primary">Unlock Signal Analysis &mdash; $99</a>
             <span class="sys-cta-note">Available after scan</span>
             @endif
           </div>
@@ -1351,7 +1351,7 @@
             @if($ownedTierRank >= 3)
             <span class="sys-cta-owned-badge"><svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M1.5 5l2.5 2.5 4.5-5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg> Action Plan active</span>
             @else
-            <a href="{{ route('checkout.structural-leverage') }}" class="sys-cta">Get My Action Plan &mdash; $249</a>
+            <a href="{{ route('checkout.structural-leverage') }}" class="sys-cta --primary">Get My Action Plan &mdash; $249</a>
             <button class="sys-trust-trigger" data-layer="level-3">See what unlocks</button>
             @endif
           </div>
@@ -1410,7 +1410,6 @@
           </ul>
           <div class="sys-actions">
             <a href="{{ route('onboarding.start', ['tier' => 'expansion']) }}" class="sys-cta">Expand My Footprint</a>
-            <a href="{{ url('/book?entry=consultation') }}" class="sys-cta-note" style="text-decoration:underline;text-underline-offset:3px">or book a consultation</a>
           </div>
         </div>
       </div>
@@ -1426,7 +1425,7 @@
                 <h3 class="sys-name">Market Control</h3>
                 <div class="sys-price"><sup>$</sup>4,799<sub>+/mo</sub></div>
               </div>
-              <p class="sys-outcome">Your entire AI citation infrastructure &mdash; built, deployed, and actively maintained so you remain the answer.</p>
+              <p class="sys-outcome">Your scan shows exactly where you&rsquo;re visible and where you&rsquo;re not. We build, deploy, and maintain the full system &mdash; so you remain the answer AI tools return.</p>
               <ul class="sys-features">
                 <li><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.2"><polyline points="3 8 7 12 13 4"/></svg> Complete system activation &mdash; built for you</li>
                 <li><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.2"><polyline points="3 8 7 12 13 4"/></svg> Ongoing maintenance + reinforcement</li>

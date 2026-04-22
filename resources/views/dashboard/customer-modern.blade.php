@@ -1200,6 +1200,7 @@
   .nm-card{border:1px solid rgba(200,168,75,.15);border-radius:14px;background:linear-gradient(155deg,#17130c,#0e0b08 70%);padding:16px 18px;display:flex;flex-direction:column;gap:10px;transition:transform .2s ease,box-shadow .2s ease,border-color .22s ease}
   .nm-card:hover{transform:translateY(-2px);box-shadow:0 10px 22px rgba(0,0,0,.3)}
   .nm-card.nm-primary{border-color:rgba(200,168,75,.3);background:linear-gradient(155deg,#1e1a0e,#120f08 68%);box-shadow:0 0 0 1px rgba(200,168,75,.12) inset}
+  .nm-card.nm-secondary{opacity:.72}
   .nm-card-kicker{font-size:.54rem;letter-spacing:.2em;text-transform:uppercase;color:rgba(200,168,75,.62)}
   .nm-card-title{font-size:.9rem;font-weight:600;color:#ece3cc;line-height:1.45}
   .nm-card-rationale{font-size:.78rem;line-height:1.55;color:#9a9080}
@@ -1763,8 +1764,8 @@
         <p class="nm-urgency">You\'ve already done the hard part &mdash; most users at Level {{ $tierRank }} move here next.</p>
         <div class="next-move-row">
 
-          {{-- Fastest win --}}
-          <div class="nm-card nm-primary">
+          {{-- Fastest win: primary when no report yet; secondary when user already has report and an upgrade is the real next step --}}
+          <div class="nm-card {{ $leadRenderable ? 'nm-secondary' : 'nm-primary' }}">
             <p class="nm-card-kicker">Fastest win</p>
             <h3 class="nm-card-title">{{ $nextMoveFastestFix }}</h3>
             <p class="nm-card-rationale">The quickest change likely to raise your score before your next scan.</p>
@@ -1788,7 +1789,7 @@
             @endif
           </div>
           @elseif(isset($nextUpgrade) && !empty($nextUpgrade))
-          <div class="nm-card">
+          <div class="nm-card {{ $leadRenderable ? 'nm-primary' : '' }}">
             <p class="nm-card-kicker">Recommended for your level</p>
             <h3 class="nm-card-title">{{ $nextUpgrade['label'] ?? $nextStep }}</h3>
             <p class="nm-card-rationale">{{ $nextUpgrade['description'] ?? 'Unlock the next level to see your highest-impact fixes, ranked by score potential.' }}</p>
@@ -1797,7 +1798,7 @@
             </a>
           </div>
           @elseif($nextStep)
-          <div class="nm-card">
+          <div class="nm-card {{ $leadRenderable ? 'nm-primary' : '' }}">
             <p class="nm-card-kicker">Recommended for your level</p>
             <h3 class="nm-card-title">{{ $nextStep }}</h3>
             <p class="nm-card-rationale">The next level reveals more precise fixes and shows exactly which changes will move your score the most.</p>
@@ -1946,7 +1947,7 @@
 
         {{-- Consultation row --}}
         <div class="plan-consult-row">
-          <p class="plan-consult-copy">Want us to implement this for you? We map, build, and deploy your full visibility system.</p>
+          <p class="plan-consult-copy">Your system is built from your scan data. We can deploy, scale, and accelerate what it&rsquo;s already surfaced &mdash; done for you.</p>
           <a href="{{ route('book.index') }}?entry=dashboard-plan" class="plan-consult-btn">Book a Strategy Session &rarr;</a>
         </div>
 
@@ -2193,14 +2194,14 @@
 
         {{-- Consultation nudge --}}
         <div class="ge-upsell-banner">
-          <span class="ge-upsell-text">Want this implemented for you? We build and deploy your full visibility system &mdash; no DIY required.</span>
+          <span class="ge-upsell-text">Your checklist is built from your scan. We can now deploy, scale, and accelerate the full system &mdash; implemented for you.</span>
           <a href="{{ route('book.index', ['entry' => 'dashboard-upgrade']) }}" class="ge-upsell-btn">Book Strategy Session &rarr;</a>
         </div>
 
         {{-- Phase 9: 100% completion nudge --}}
         <div id="ge-completion-nudge" class="ge-completion-nudge" role="status" aria-live="polite">
           <p class="ge-cn-hed">Ready to take this further?</p>
-          <p class="ge-cn-body">We can deploy and scale this system for you.</p>
+          <p class="ge-cn-body">Your checklist reveals exactly what your system needs. We can build, deploy, and scale everything it&rsquo;s surfaced &mdash; so you don&rsquo;t have to do it alone.</p>
           <a href="{{ route('book.index', ['entry' => 'dashboard-completion']) }}" class="ge-cn-cta">Book Strategy Session &rarr;</a>
         </div>
       </div>
