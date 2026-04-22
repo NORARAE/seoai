@@ -1152,13 +1152,24 @@
   .exec-ctx-bar{display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap;padding:10px 16px;border:1px solid rgba(200,168,75,.16);border-radius:12px;background:rgba(0,0,0,.28);margin-bottom:22px}
   .exec-ctx-domain{font-size:.95rem;font-weight:700;color:#f2edd8;letter-spacing:-.01em;display:flex;align-items:center;gap:8px}
   .exec-ctx-live{display:inline-block;width:7px;height:7px;border-radius:50%;background:#c8a84b;animation:pibPulse 2s ease-in-out infinite;flex-shrink:0}
+  .exec-ctx-active-label{font-size:.5rem;letter-spacing:.18em;text-transform:uppercase;color:rgba(200,168,75,.52);font-weight:600;flex-shrink:0}
   .exec-ctx-brand{color:#948c7c;font-size:.84rem;font-weight:400;margin-right:2px}
   .exec-ctx-meta{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
   .exec-ctx-pill{font-size:.56rem;letter-spacing:.14em;text-transform:uppercase;color:#9a9082;padding:3px 8px;border-radius:6px;background:rgba(200,168,75,.06);border:1px solid rgba(200,168,75,.12)}
+  .exec-ctx-pill-link{color:rgba(200,168,75,.8);text-decoration:none;cursor:pointer;transition:border-color .15s,color .15s}.exec-ctx-pill-link:hover{border-color:rgba(200,168,75,.38);color:#c8a84b}
   .exec-ctx-btn{display:inline-flex;align-items:center;gap:6px;min-height:32px;padding:0 14px;border-radius:8px;background:#c6a85a;color:#1a1a1a;text-decoration:none;font-size:.62rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;transition:all .18s ease;box-shadow:0 4px 12px rgba(198,168,90,.18)}
   .exec-ctx-btn:hover{transform:translateY(-1px);filter:brightness(1.08)}
   .exec-ctx-btn-outline{display:inline-flex;align-items:center;gap:6px;min-height:32px;padding:0 14px;border-radius:8px;border:1px solid rgba(200,168,75,.42);background:transparent;color:rgba(200,168,75,.9);text-decoration:none;font-size:.62rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;transition:all .18s ease}
   .exec-ctx-btn-outline:hover{border-color:rgba(200,168,75,.5);background:rgba(200,168,75,.08)}
+  /* ── Compact scan history strip ──────────────────────────────────── */
+  .scan-strip{display:flex;align-items:center;gap:10px;flex-wrap:wrap;padding:10px 14px;border:1px solid rgba(200,168,75,.14);border-radius:12px;background:rgba(200,168,75,.04);margin-bottom:10px}
+  .scan-strip-label{font-size:.5rem;letter-spacing:.2em;text-transform:uppercase;color:rgba(200,168,75,.42);flex-shrink:0;padding-right:4px}
+  .scan-strip-item{display:inline-flex;align-items:center;gap:6px;font-size:.6rem;letter-spacing:.08em;text-transform:uppercase;color:#b5a98a;text-decoration:none;padding:3px 9px;border-radius:8px;border:1px solid rgba(200,168,75,.14);background:rgba(200,168,75,.05);transition:border-color .15s,color .15s}
+  .scan-strip-item:hover{border-color:rgba(200,168,75,.32);color:#d9c98e}
+  .scan-strip-item.is-active{border-color:rgba(200,168,75,.36);color:#e6d89e;background:rgba(200,168,75,.1);font-weight:600}
+  .scan-strip-score{opacity:.7;font-weight:400}
+  .scan-strip-all{margin-left:auto;font-size:.56rem;letter-spacing:.12em;text-transform:uppercase;color:rgba(200,168,75,.48);text-decoration:none;flex-shrink:0;transition:color .15s}
+  .scan-strip-all:hover{color:rgba(200,168,75,.78)}
 
   /* ── Executive Hero ──────────────────────────────────────────────── */
   .exec-hero-shell{border:1px solid rgba(200,168,75,.26);border-radius:22px;background:linear-gradient(145deg,rgba(28,22,12,.98),rgba(10,9,7,.99) 66%),radial-gradient(circle at 8% 22%,rgba(200,168,75,.12),transparent 28%);padding:28px 28px 24px;box-shadow:0 24px 52px rgba(0,0,0,.44),0 0 0 1px rgba(200,168,75,.1) inset;position:relative;overflow:hidden}
@@ -1508,8 +1519,11 @@
       @php
         $entryLabel = ucwords(str_replace('-', ' ', (string) session('system_entry')));
       @endphp
-    <div class="mb-4 rounded-xl border border-[rgba(106,175,144,0.30)] bg-[rgba(106,175,144,0.09)] px-4 py-3" role="status">
-      <p class="text-sm text-[#d9eee5]">Unlock confirmed: {{ $entryLabel }} is now active on your account.</p>
+    <div class="mb-4 rounded-xl border border-[rgba(106,175,144,0.30)] bg-[rgba(106,175,144,0.09)] px-4 py-3 flex items-center justify-between gap-4" role="status">
+      <p class="text-sm text-[#d9eee5]">&#10003; {{ $entryLabel }} unlocked — your scan is ready to review.</p>
+      @if($leadRenderable)
+      <a href="{{ $leadReportHref }}" class="flex-shrink-0 text-xs font-semibold text-[#6aaf90] border border-[rgba(106,175,144,0.36)] rounded-lg px-3 py-1.5 whitespace-nowrap hover:border-[rgba(106,175,144,0.6)] transition-colors">Open your scan &rarr;</a>
+      @endif
     </div>
     @endif
 
@@ -1600,7 +1614,7 @@
 <div id="dcm-return-banner" class="dcm-return-banner" role="alert" aria-live="polite" style="display:none">
       <button type="button" id="dcm-rb-dismiss-btn" class="dcm-rb-dismiss" aria-label="Dismiss">&times;</button>
       <p id="dcm-rb-sub" class="dcm-rb-sub"></p>
-      <p class="dcm-rb-hed">Pick up where you left off</p>
+      <p class="dcm-rb-hed">{{ $projectDomain ? 'Active scan: '.$projectDomain : 'Pick up where you left off' }}</p>
       <p id="dcm-rb-body" class="dcm-rb-body"></p>
       <a id="dcm-rb-cta" href="{{ $nextUnlockHref }}" class="dcm-rb-cta">Continue &rarr;</a>
     </div>
@@ -1610,9 +1624,10 @@
     {{-- START: domain context bar --}}
     {{-- Domain Context Bar --}}
     @if($projectDomain)
-    <div class="exec-ctx-bar" role="banner" aria-label="Project context: {{ $projectDomain }}">
+    <div class="exec-ctx-bar" role="banner" aria-label="Active scan: {{ $projectDomain }}">
       <div class="exec-ctx-domain">
         <span class="exec-ctx-live" aria-hidden="true"></span>
+        <span class="exec-ctx-active-label">Active scan</span>
         @if($profileBrand)<span class="exec-ctx-brand">{{ $profileBrand }} &mdash;</span>@endif
         {{ $projectDomain }}
       </div>
@@ -1626,6 +1641,9 @@
         <span class="exec-ctx-pill">Level {{ $tierRank }}</span>
         @if($tierRank >= 2)
         <span class="ai-ready-badge">AI-ready structure: increasing</span>
+        @endif
+        @if($scanHistory->count() > 1)
+        <a href="{{ route('app.dashboard.scans') }}" class="exec-ctx-pill exec-ctx-pill-link">{{ $scanHistory->count() }} scans &rarr;</a>
         @endif
         @if($leadRenderable)
         <a href="{{ $leadReportHref }}" class="exec-ctx-btn">
@@ -1745,6 +1763,38 @@
       </div>
     </section>
     {{-- END: exec-hero --}}
+
+    {{-- START: compact scan strip (system view, multi-scan) --}}
+    @if($isSystemView && $scanHistory->count() > 1)
+    <div class="scan-strip" role="navigation" aria-label="Your scans">
+      <span class="scan-strip-label">Your scans</span>
+      @foreach($scanHistory->take(5) as $stripScan)
+        @php
+          $stripKey = $stripScan['scan_route_key'] ?? $stripScan['public_scan_id'] ?? null;
+          $stripRenderable = (bool) ($stripScan['is_renderable_report'] ?? false);
+          $stripHref = ($stripKey && $stripRenderable) ? route('dashboard.scans.show', ['scan' => $stripKey]) : null;
+          $stripScore = (int) ($stripScan['score'] ?? 0);
+          $stripDomain = $stripScan['scan_name'] ?? $stripScan['domain'] ?? 'Unknown';
+          $stripDate = ($stripScan['scanned_at'] ?? $stripScan['created_at'] ?? null)?->format('M j') ?? '';
+          $stripIsLead = ($stripLoop->first ?? $loop->first);
+        @endphp
+        @if($stripHref)
+        <a href="{{ $stripHref }}" class="scan-strip-item{{ $stripIsLead ? ' is-active' : '' }}">
+          {{ $stripDomain }}
+          @if($stripScore > 0)<span class="scan-strip-score">&nbsp;{{ $stripScore }}</span>@endif
+          @if($stripDate)<span class="scan-strip-score">&nbsp;&middot;&nbsp;{{ $stripDate }}</span>@endif
+          @if($stripIsLead)<span style="font-size:.48rem;letter-spacing:.1em;text-transform:uppercase;color:rgba(200,168,75,.55);margin-left:2px">&nbsp;Active</span>@endif
+        </a>
+        @endif
+      @endforeach
+      @if($scanHistory->count() > 5)
+      <a href="{{ route('app.dashboard.scans') }}" class="scan-strip-all">+{{ $scanHistory->count() - 5 }} more &rarr;</a>
+      @else
+      <a href="{{ route('app.dashboard.scans') }}" class="scan-strip-all">View all &rarr;</a>
+      @endif
+    </div>
+    @endif
+    {{-- END: compact scan strip --}}
 
     @php
       $planLevels = [
