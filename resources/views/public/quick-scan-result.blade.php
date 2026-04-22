@@ -593,6 +593,24 @@ a{text-decoration:none;color:inherit}
 .btn.is-executing{box-shadow:0 0 16px rgba(214,181,95,.26)}
 .btn.is-resolved{box-shadow:0 0 16px rgba(214,181,95,.22)}
 
+@keyframes applyGlowPulse{0%{box-shadow:0 0 0 1px rgba(106,175,144,.52) inset,0 0 22px rgba(106,175,144,.1)}45%{box-shadow:0 0 0 2px rgba(106,175,144,.72) inset,0 0 40px rgba(106,175,144,.3),0 -5px 28px rgba(106,175,144,.2)}100%{box-shadow:0 0 0 1px rgba(106,175,144,.52) inset,0 0 22px rgba(106,175,144,.1)}}
+.action.is-applying{animation:applyGlowPulse .95s ease-out forwards;transform:translateY(-5px) scale(1.006)!important;transition:transform .34s ease!important}
+.action-memory{transition:opacity .38s ease}
+.action-memory.is-fading{opacity:0}
+
+.fix-progress-bar-wrap{margin:0 12px 8px;display:none;align-items:center;gap:10px}
+.fix-progress-bar{flex:1;height:3px;border-radius:999px;background:rgba(255,255,255,.07);overflow:hidden}
+.fix-progress-bar-fill{height:100%;border-radius:999px;background:linear-gradient(90deg,rgba(106,175,144,.72),rgba(80,175,130,.4));width:0%;transition:width .52s ease}
+.fix-progress-label{font-size:.46rem;letter-spacing:.14em;text-transform:uppercase;color:rgba(214,181,95,.54);white-space:nowrap}
+
+.fix-ai-nudge{position:fixed;bottom:84px;left:50%;transform:translateX(-50%) translateY(18px);z-index:140;background:linear-gradient(140deg,#1a140c,#120f09);border:1px solid rgba(106,175,144,.38);border-radius:12px;padding:10px 14px;display:flex;align-items:center;gap:10px;max-width:420px;width:calc(100% - 32px);box-shadow:0 4px 24px rgba(0,0,0,.42);opacity:0;transition:opacity .3s ease,transform .3s ease;pointer-events:none}
+.fix-ai-nudge.is-visible{opacity:1;transform:translateX(-50%) translateY(0);pointer-events:auto}
+.fix-ai-nudge-label{flex-shrink:0;font-size:.46rem;letter-spacing:.18em;text-transform:uppercase;padding:2px 6px;border-radius:999px;border:1px solid rgba(106,175,144,.42);color:#7abb9e;background:rgba(106,175,144,.1)}
+.fix-ai-nudge p{margin:0;font-size:.68rem;color:#e2d9c1;line-height:1.4;flex:1}
+.fix-ai-nudge-cta{flex-shrink:0;font-size:.52rem;letter-spacing:.1em;text-transform:uppercase;padding:5px 10px;border-radius:7px;border:1px solid rgba(106,175,144,.42);color:#7abb9e;background:rgba(106,175,144,.12);cursor:pointer;white-space:nowrap}
+.fix-ai-nudge-cta:hover{background:rgba(106,175,144,.22)}
+.fix-ai-nudge-dismiss{font-size:.88rem;color:#9a9275;background:none;border:none;cursor:pointer;padding:0 2px;line-height:1;flex-shrink:0}
+
 .modules{padding:12px}
 .accordion{display:flex;flex-direction:column;gap:8px}
 .module{border:1px solid var(--line-soft);border-radius:12px;background:rgba(214,181,95,.03);overflow:hidden;transition:all .18s ease;border-left:2px solid transparent}
@@ -1334,6 +1352,10 @@ button.sys-bar-node:hover .sys-bar-dot{border-color:rgba(214,181,95,.54);backgro
         @endif
         <p style="margin:8px 12px 0;font-size:.72rem;color:#d9ceb0">Fix the top issue first. Move to the next level once it&rsquo;s resolved.</p>
         <div class="actions">
+          <div class="fix-progress-bar-wrap" id="fix-progress-wrap">
+            <span class="fix-progress-label" id="fix-progress-label">0 of {{ $sysActionsLimit }} issue{{ $sysActionsLimit !== 1 ? 's' : '' }} addressed</span>
+            <div class="fix-progress-bar"><div class="fix-progress-bar-fill" id="fix-progress-fill"></div></div>
+          </div>
           <div class="action-stack">
             @for($i = 0; $i < $sysActionsLimit; $i++)
             @php
@@ -1722,24 +1744,124 @@ button.sys-bar-node:hover .sys-bar-dot{border-color:rgba(214,181,95,.54);backgro
     h3.parentNode.insertBefore(badge, h3.nextSibling);
   }
 
+  function triggerApplyGlow(card) {
+    if (!card) return;
+    card.classList.add('is-applying');
+    window.setTimeout(function () { card.classList.remove('is-applying'); }, 1050);
+  }
+
+  function showResultFeedback(card) {
+    if (!card) return;
+    var memLine = card.querySelector('.action-memory');
+    if (!memLine) return;
+    memLine.textContent = 'Signal clarity improving…';
+    window.setTimeout(function () {
+      memLine.classList.add('is-fading');
+      window.setTimeout(function () {
+        memLine.textContent = '✓ Tracked — awaiting validation';
+        memLine.classList.remove('is-fading');
+      }, 380);
+    }, 2400);
+  }
+
+  function animateScoreBump() {
+    var scoreEl = document.querySelector('.orbit-score');
+    if (!scoreEl) return;
+    var current = parseInt(scoreEl.textContent || '0', 10);
+    if (!Number.isFinite(current) || current <= 0) return;
+    var bump = 1 + Math.floor(Math.random() * 3);
+    var target = Math.min(100, current + bump);
+    var steps = 14, step = 0;
+    var up = window.setInterval(function () {
+      step++;
+      scoreEl.textContent = Math.round(current + (target - current) * (step / steps));
+      if (step >= steps) {
+        clearInterval(up);
+        scoreEl.textContent = target;
+        window.setTimeout(function () {
+          var rs = 0;
+          var down = window.setInterval(function () {
+            rs++;
+            scoreEl.textContent = Math.round(target - (target - current) * (rs / steps));
+            if (rs >= steps) { clearInterval(down); scoreEl.textContent = current; }
+          }, 42);
+        }, 4200);
+      }
+    }, 42);
+  }
+
+  function updateProgressBar() {
+    var wrap = document.getElementById('fix-progress-wrap');
+    var fill = document.getElementById('fix-progress-fill');
+    var label = document.getElementById('fix-progress-label');
+    if (!wrap || !fill || !label) return;
+    var total = document.querySelectorAll('.action[data-action-key]:not(.is-locked-card)').length;
+    var done  = document.querySelectorAll('.action.is-applied').length;
+    if (total === 0) return;
+    wrap.style.display = 'flex';
+    fill.style.width = Math.round((done / total) * 100) + '%';
+    label.textContent = done + ' of ' + total + ' issue' + (total !== 1 ? 's' : '') + ' addressed';
+  }
+
+  function showAiNudge() {
+    var old = document.getElementById('fix-ai-nudge');
+    if (old) old.remove();
+    var nudge = document.createElement('div');
+    nudge.id = 'fix-ai-nudge';
+    nudge.className = 'fix-ai-nudge';
+    var aiLabel = document.createElement('span');
+    aiLabel.className = 'fix-ai-nudge-label';
+    aiLabel.textContent = 'AI';
+    var msg = document.createElement('p');
+    msg.textContent = 'Nice \u2014 that removes a key constraint. Want to move to the next highest-impact fix?';
+    var cta = document.createElement('button');
+    cta.type = 'button';
+    cta.className = 'fix-ai-nudge-cta';
+    cta.textContent = 'Ask AI';
+    var dismiss = document.createElement('button');
+    dismiss.type = 'button';
+    dismiss.className = 'fix-ai-nudge-dismiss';
+    dismiss.setAttribute('aria-label', 'Dismiss');
+    dismiss.textContent = '\u00d7';
+    nudge.appendChild(aiLabel);
+    nudge.appendChild(msg);
+    nudge.appendChild(cta);
+    nudge.appendChild(dismiss);
+    document.body.appendChild(nudge);
+    window.setTimeout(function () { nudge.classList.add('is-visible'); }, 60);
+    dismiss.addEventListener('click', function () { nudge.remove(); });
+    cta.addEventListener('click', function () {
+      nudge.remove();
+      var trigger = document.getElementById('aiaTrigger');
+      if (trigger) trigger.click();
+    });
+    window.setTimeout(function () { if (nudge.parentNode) nudge.remove(); }, 9000);
+  }
+
   function syncNextMovePanel() {
     var leadCard = document.querySelector('.action.lead');
     if (!leadCard || !leadCard.classList.contains('is-applied')) return;
     var guide = document.querySelector('.next-move-guide');
     if (!guide) return;
+    guide.style.borderColor = 'rgba(106,175,144,.36)';
+    guide.style.background = 'rgba(106,175,144,.06)';
     var h3 = guide.querySelector('h3');
-    if (h3) h3.textContent = 'Top issue addressed — continue to next fix';
+    if (h3) { h3.textContent = 'Next priority unlocked'; h3.style.color = '#7abb9e'; }
     var cells = guide.querySelectorAll('.next-move-card');
     if (cells[0]) {
-      var strong0 = cells[0].querySelector('strong');
-      if (strong0) strong0.textContent = 'Status';
-      var p0 = cells[0].querySelector('p');
-      if (p0) p0.textContent = 'Top constraint marked as handled';
+      var s0 = cells[0].querySelector('strong'); if (s0) s0.textContent = 'Status';
+      var p0 = cells[0].querySelector('p'); if (p0) p0.textContent = 'Top constraint marked as handled';
+    }
+    if (cells[1]) {
+      var p1 = cells[1].querySelector('p'); if (p1) p1.textContent = 'Apply the next fix to keep momentum building.';
     }
     if (cells[2]) {
-      var p2 = cells[2].querySelector('p');
-      if (p2) p2.textContent = 'Move to the next constraint below to continue improving.';
+      var p2 = cells[2].querySelector('p'); if (p2) p2.textContent = 'Move to fix #2 below to continue strengthening your system.';
     }
+    var subP = guide.querySelector('p[style]');
+    if (subP) subP.innerHTML = "<strong style='font-size:.52rem;letter-spacing:.16em;text-transform:uppercase;color:#7abb9e'>You've cleared the top blocker</strong><br>Continue to strengthen your system.";
+    var cta = guide.querySelector('.btn-primary');
+    if (cta) { cta.textContent = 'Apply next fix'; cta.setAttribute('href', '#priority-actions'); }
   }
 
   function restoreActionMemory() {
@@ -1752,7 +1874,7 @@ button.sys-bar-node:hover .sys-bar-dot{border-color:rgba(214,181,95,.54);backgro
         var parsed = JSON.parse(raw);
         var at = Number(parsed.at || 0);
         if (!Number.isFinite(at) || at <= 0) return;
-        setActionMemory(card, '✓ Fix applied — tracking signal impact');
+        setActionMemory(card, '✓ Tracked — awaiting validation');
         card.classList.add('is-applied');
         addAppliedBadge(card);
         var applyBtn = card.querySelector('button[data-exec-init]');
@@ -1767,6 +1889,7 @@ button.sys-bar-node:hover .sys-bar-dot{border-color:rgba(214,181,95,.54);backgro
       }
     });
     syncNextMovePanel();
+    updateProgressBar();
   }
 
   function openFixDetail(trigger) {
@@ -1859,6 +1982,10 @@ var resolvedLabel = trigger.dataset.execResolved || '✓ Fix applied';
         }
       }());
       syncNextMovePanel();
+      triggerApplyGlow(card);
+      showResultFeedback(card);
+      window.setTimeout(function () { animateScoreBump(); }, 340);
+      window.setTimeout(function () { updateProgressBar(); showAiNudge(); }, 720);
 
       // Re-enable non-trigger buttons; keep trigger permanently disabled
       nodes.forEach(function (node) {
