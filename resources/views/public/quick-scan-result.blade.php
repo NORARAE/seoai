@@ -1602,7 +1602,7 @@ button.sys-bar-node:hover .sys-bar-dot{border-color:rgba(214,181,95,.54);backgro
       </div>
 
       <div class="fix-detail-actions">
-        <a href="#priority-actions" class="btn btn-primary" id="fixDetailNext">Deploy Fix</a>
+        <a href="#priority-actions" class="btn btn-primary" id="fixDetailNext">Apply Fix</a>
         <button type="button" class="btn btn-secondary" id="fixDetailClose">Close Panel</button>
       </div>
     </div>

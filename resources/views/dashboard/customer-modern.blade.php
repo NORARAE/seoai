@@ -495,6 +495,14 @@
   .execution-state .chip{display:inline-flex;align-items:center;gap:8px;padding:7px 11px;border-radius:999px;border:1px solid rgba(214,181,84,.44);background:rgba(214,181,84,.15);font-size:10px;letter-spacing:.13em;text-transform:uppercase;color:#ecd9a8}
   .execution-state .chip::before{content:'';width:8px;height:8px;border-radius:999px;background:#d6b15f;box-shadow:0 0 0 0 rgba(214,177,95,.48);animation:execPulse 1.05s ease-in-out infinite}
 
+  /* ── Phase 15: Apply Fix progress system ──────────────────────────── */
+  @keyframes nextCardPulse{0%,100%{box-shadow:0 0 0 1px rgba(106,175,144,.22) inset,0 0 20px rgba(106,175,144,.14)}50%{box-shadow:0 0 0 2px rgba(106,175,144,.55) inset,0 0 32px rgba(106,175,144,.36),0 0 0 4px rgba(106,175,144,.12)}}
+  .system-grid-card.next-fix-pulse{animation:nextCardPulse 1.6s ease-in-out 3}
+  .fix-progress-counter{margin-top:10px;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:#9fd2ba;display:none}
+  .fix-progress-counter.has-progress{display:block}
+  .cta-applied{border-color:rgba(106,175,144,.44)!important;background:rgba(106,175,144,.12)!important;color:#a6dabf!important;cursor:default}
+  .modal-apply-note{margin-top:8px;font-size:11px;color:#a99f89;line-height:1.4}
+  /* ────────────────────────────────────────────────────────────────── */
   .correction-modal-mask{position:fixed;inset:0;background:rgba(6,5,3,.74);backdrop-filter:blur(3px);z-index:140;display:none}
   .correction-modal-mask[data-open='true']{display:block}
   .correction-modal{max-width:640px;width:calc(100% - 36px);margin:9vh auto 0;border:1px solid rgba(200,168,75,.24);border-radius:14px;background:linear-gradient(155deg,#17130c,#0f0c08 72%);box-shadow:0 18px 46px rgba(0,0,0,.46);padding:18px}
@@ -2688,13 +2696,15 @@
             <div>
               <h2 class="text-sm uppercase tracking-[0.2em] text-[#c8a84b]/78">System Grid</h2>
               <p class="mt-1 text-sm text-[#bcb6a8]">Continuous readout across active systems.</p>
-              <p class="mt-1 text-xs text-[#9f9785]">Priority auto-ranked by selection pressure.</p>
+              <p class="mt-1 text-xs text-[#9f9785]">Priority auto-ranked by active blockers.</p>
             </div>
             <div class="flex flex-wrap gap-2">
               <span class="inline-flex items-center rounded-lg border border-[#c8a84b]/22 px-3 py-2 text-xs font-semibold tracking-[0.08em] text-[#dfd6c1]">{{ $systemCount }} systems</span>
               <a href="{{ route('for-agencies') }}" class="inline-flex items-center rounded-lg border border-[#c8a84b]/30 px-3 py-2 text-xs font-semibold tracking-[0.08em] text-[#dfd6c1] transition hover:border-[#c8a84b] hover:bg-[#c8a84b]/10">Client load detected? Deploy additional systems.</a>
             </div>
           </div>
+
+          <p id="fixProgressCounter" class="fix-progress-counter" aria-live="polite"></p>
 
           <div class="system-grid {{ $gridClass }}" data-grid-density="{{ $gridDensity }}">
             @foreach($orderedScans as $scan)
@@ -2772,9 +2782,9 @@
 
                 if ($noDeeperPath) {
                   $correctionActionType = 'modal';
-                  $correctionLabel = 'View Correction Path';
-                  $postCorrectionLabel = 'Advance System Layer';
-                  $nextPathLine = 'Current path: Constraint Resolution';
+                  $correctionLabel = 'Open Fix Details';
+                  $postCorrectionLabel = '✓ Fix Applied — Verifying impact';
+                  $nextPathLine = 'Current path: See fix options';
                   $correctionHref = null;
                   $modalTitle = 'Expansion Opportunity';
                   $modalUnlockEffect = 'System fully active. Correction now means expanding execution pathways.';
@@ -2783,14 +2793,14 @@
                   $modalPrimaryLabel = 'Open Expansion Opportunities';
                 } elseif ($scanTierRank >= $suggestedCorrectionRank) {
                   $correctionActionType = 'unlocked';
-                  $correctionLabel = 'Open Correction Path';
-                  $postCorrectionLabel = 'Continue Optimization';
+                  $correctionLabel = 'Apply Fix';
+                  $postCorrectionLabel = '✓ Fix Applied';
                   $nextPathLine = 'Next path: ' . ($rankToLayerName[$suggestedCorrectionRank] ?? 'Signal Analysis');
                   $correctionHref = $inspectHref . '#' . ($rankToLayerAnchor[$suggestedCorrectionRank] ?? 'detailed-layer-view');
                 } else {
                   $correctionActionType = 'locked';
-                  $correctionLabel = 'Unlock Correction Path';
-                  $postCorrectionLabel = 'Correction Engaged';
+                  $correctionLabel = 'Unlock to Apply Fix';
+                  $postCorrectionLabel = '✓ Fix Applied';
                   $nextPathLine = 'Next unlock: ' . ($rankToLayerName[$suggestedCorrectionRank] ?? 'Signal Analysis');
                   $targetPlan = $rankToPlan[$suggestedCorrectionRank] ?? 'diagnostic';
                   $modalTitle = 'Unlock ' . ($rankToLayerName[$suggestedCorrectionRank] ?? 'Signal Analysis');
@@ -2827,7 +2837,7 @@
                 data-correction-next="{{ $nextPathLine }}"
               >
                 <div class="execution-state" aria-hidden="true">
-                  <span class="chip">Processing correction path</span>
+                  <span class="chip">Applying fix...</span>
                 </div>
                 <div class="mb-2 flex items-center justify-between gap-3">
                   <p class="truncate text-sm font-semibold text-[#ece5d4]">
@@ -2844,7 +2854,7 @@
                   <p>Readout</p>
                   <span class="selection-pill {{ $selectionClass }}">{{ $selectionLabel }}</span>
                 </div>
-                <p class="selection-subline">Selection active. Retrieval pressure ongoing.</p>
+                <p class="selection-subline">This is limiting your visibility.</p>
                 <p class="pressure-line {{ $score < 60 ? 'risk' : ($score >= 85 ? 'stable' : '') }}">{{ $pressureLabel }}</p>
 
                 @if($isFeatured)
@@ -2891,7 +2901,7 @@
                       data-resolve-type="modal"
                       data-resolve-href=""
                       data-post-label="{{ $postCorrectionLabel }}"
-                      data-feedback-line="Advance system layer"
+                      data-feedback-line="Fix details opened &#x2014; reviewing options"
                     >{{ $correctionLabel }}</button>
                   @elseif($correctionActionType === 'locked')
                     <button
@@ -2900,7 +2910,7 @@
                       data-resolve-type="redirect"
                       data-resolve-href="{{ $correctionHref }}"
                       data-post-label="{{ $postCorrectionLabel }}"
-                      data-feedback-line="Correction path engaged"
+                      data-feedback-line="Unlocking this removes a visibility constraint"
                     >{{ $correctionLabel }}</button>
                   @else
                     <button
@@ -2909,7 +2919,7 @@
                       data-resolve-type="redirect"
                       data-resolve-href="{{ $correctionHref }}"
                       data-post-label="{{ $postCorrectionLabel }}"
-                      data-feedback-line="Signal reinforcement initiated"
+                      data-feedback-line="This removes a constraint limiting your visibility"
                     >{{ $correctionLabel }}</button>
                   @endif
                                   <a href="{{ $inspectHref }}" class="system-grid-cta cta-view js-readout-link">{{ $scan['is_renderable_report'] ? 'View Full Report' : 'Inspect Readout' }}</a>
@@ -2979,7 +2989,7 @@
       <div class="next-move-grid">
         <a href="{{ route('reports.index') }}" class="next-move-card primary">
           <p class="text-[11px] uppercase tracking-[0.14em] action-label text-[#c8a84b]/70">Next Unlock</p>
-          <h3 class="mt-1 text-lg font-semibold">Deploy Fix on At-Risk Readouts</h3>
+          <h3 class="mt-1 text-lg font-semibold">Apply Fix on At-Risk Readouts</h3>
           <p class="mt-2 text-sm text-[#b2ac9a]">Primary bottlenecks are still active. Push the highest-impact correction first.</p>
           <p class="impact-hint high">Impact: High</p>
         </a>
@@ -3040,7 +3050,10 @@
 
     <div class="actions">
       <a id="correctionPathInspect" href="{{ route('quick-scan.show') }}" class="system-grid-cta cta-view">Inspect Readout</a>
-      <a id="correctionPathPrimary" href="{{ route('quick-scan.show') }}" class="system-grid-cta cta-fix">Continue Correction</a>
+      <div>
+        <p class="modal-apply-note">This marks the fix as applied and advances your system progress.</p>
+        <a id="correctionPathPrimary" href="{{ route('quick-scan.show') }}" class="system-grid-cta cta-fix">Apply This Fix</a>
+      </div>
       <a href="{{ url('/book?entry=consultation') }}" class="assist-link">Prefer guided activation? Book consultation</a>
     </div>
   </div>
@@ -3089,7 +3102,7 @@
 
       <div class="readout-actions">
         <a href="{{ route('quick-scan.show') }}" class="readout-action-btn readout-action-full" id="readoutFlyoutFull">Expand to Full Analysis</a>
-        <button type="button" class="readout-action-btn readout-action-correction" id="readoutFlyoutCorrection">View Correction Path</button>
+        <button type="button" class="readout-action-btn readout-action-correction" id="readoutFlyoutCorrection">Open Fix Details</button>
         <button type="button" class="readout-action-btn readout-action-close" id="readoutFlyoutClose">Close Panel</button>
       </div>
     </div>
@@ -3157,7 +3170,7 @@
         fullHref: card.dataset.openHref || '{{ route('quick-scan.show') }}',
         correctionType: card.dataset.correctionType || 'modal',
         correctionHref: card.dataset.correctionHref || '',
-        correctionLabel: card.dataset.correctionLabel || 'View Correction Path',
+        correctionLabel: card.dataset.correctionLabel || 'Open Fix Details',
         correctionNext: card.dataset.correctionNext || 'Correction path available.',
       };
 
@@ -3349,7 +3362,7 @@
       const unlockEffect = btn.dataset.unlockEffect || 'Unlock adds deeper correction controls and progression context.';
       const unlockPrice = btn.dataset.unlockPrice || 'N/A';
       const primaryHref = btn.dataset.primaryHref || inspectHref;
-      const primaryLabel = btn.dataset.primaryLabel || 'Continue Correction';
+      const primaryLabel = btn.dataset.primaryLabel || 'Apply This Fix';
 
       constraintNode.textContent = constraint;
       nextNode.textContent = pressure + '. Execution pathway available.';
@@ -3377,19 +3390,20 @@
 
       if (button) {
         button.classList.remove('cta-progress');
-        button.textContent = postLabel || 'Correction Engaged';
-        button.disabled = false;
+        button.classList.add('cta-applied');
+        button.textContent = postLabel || '\u2713 Fix Applied';
+        button.disabled = true;
       }
 
       const responseLine = card.querySelector('.card-response-line');
       if (responseLine) {
-        responseLine.textContent = feedbackLine || 'System responding to adjustment';
+        responseLine.textContent = feedbackLine || 'This removes a constraint limiting your visibility';
         responseLine.classList.add('live');
       }
 
       const memoryLine = card.querySelector('.action-memory-line');
       if (memoryLine) {
-        memoryLine.textContent = 'Correction initiated recently';
+        memoryLine.textContent = 'Fix applied just now';
         memoryLine.classList.add('is-fresh');
       }
 
@@ -3397,10 +3411,46 @@
       if (scanKey !== '') {
         const payload = {
           at: atMillis,
-          feedback: feedbackLine || 'System responding to adjustment',
-          label: postLabel || 'Correction Engaged',
+          feedback: feedbackLine || 'This removes a constraint limiting your visibility',
+          label: postLabel || '\u2713 Fix Applied',
         };
-        sessionStorage.setItem('correction-state:' + scanKey, JSON.stringify(payload));
+        try { localStorage.setItem('fix-state:' + scanKey, JSON.stringify(payload)); } catch (e) {}
+      }
+
+      updateFixProgress();
+      pulseNextCard(card);
+    }
+
+    function pulseNextCard(currentCard) {
+      var allCards = Array.prototype.slice.call(document.querySelectorAll('.system-grid-card'));
+      var idx = allCards.indexOf(currentCard);
+      if (idx < 0 || idx >= allCards.length - 1) return;
+      var next = allCards[idx + 1];
+      if (next.classList.contains('is-engaged')) return;
+      next.classList.add('next-fix-pulse');
+      next.addEventListener('animationend', function () {
+        next.classList.remove('next-fix-pulse');
+      }, { once: true });
+    }
+
+    function updateFixProgress() {
+      var allCards = document.querySelectorAll('.system-grid-card[data-scan-key]');
+      var total = allCards.length;
+      var applied = 0;
+      allCards.forEach(function (card) {
+        var key = card.dataset.scanKey || '';
+        if (!key) return;
+        var raw; try { raw = localStorage.getItem('fix-state:' + key); } catch (e) { raw = null; }
+        if (raw) applied++;
+      });
+      var counter = document.getElementById('fixProgressCounter');
+      if (!counter) return;
+      if (applied > 0) {
+        counter.textContent = "You've improved " + applied + ' of ' + total + ' visibility blocker' + (total !== 1 ? 's' : '');
+        counter.classList.add('has-progress');
+      } else {
+        counter.classList.remove('has-progress');
+        counter.textContent = '';
       }
     }
 
@@ -3410,8 +3460,8 @@
 
       const resolveType = button.dataset.resolveType || 'redirect';
       const resolveHref = button.dataset.resolveHref || '';
-      const postLabel = button.dataset.postLabel || 'Correction Engaged';
-      const feedbackLine = button.dataset.feedbackLine || 'System responding to adjustment';
+      const postLabel = button.dataset.postLabel || '✓ Fix Applied';
+      const feedbackLine = button.dataset.feedbackLine || 'This removes a constraint limiting your visibility';
 
       const executionState = card.querySelector('.execution-state');
       if (executionState) executionState.classList.add('active');
@@ -3449,15 +3499,15 @@
       const scanKey = card.dataset.scanKey || '';
       if (scanKey === '') return;
 
-      const raw = sessionStorage.getItem('correction-state:' + scanKey);
+      var raw; try { raw = localStorage.getItem('fix-state:' + scanKey); } catch (e) { raw = null; }
       if (!raw) return;
 
       try {
         const parsed = JSON.parse(raw);
         const elapsedMs = Date.now() - Number(parsed.at || 0);
 
-        if (!Number.isFinite(elapsedMs) || elapsedMs < 0 || elapsedMs > 30 * 60 * 1000) {
-          sessionStorage.removeItem('correction-state:' + scanKey);
+        if (!Number.isFinite(elapsedMs) || elapsedMs < 0 || elapsedMs > 48 * 60 * 60 * 1000) {
+          try { localStorage.removeItem('fix-state:' + scanKey); } catch (e) {}
           return;
         }
 
@@ -3465,25 +3515,34 @@
 
         const responseLine = card.querySelector('.card-response-line');
         if (responseLine) {
-          responseLine.textContent = parsed.feedback || 'System responding to adjustment';
+          responseLine.textContent = parsed.feedback || 'This removes a constraint limiting your visibility';
           responseLine.classList.add('live');
         }
 
         const actionBtn = card.querySelector('.js-correction-action, .js-open-correction-modal');
         if (actionBtn && parsed.label) {
+          actionBtn.classList.add('cta-applied');
           actionBtn.textContent = parsed.label;
+          actionBtn.disabled = true;
         }
 
-        const mins = Math.max(1, Math.floor(elapsedMs / 60000));
+        const elapsedHrs = Math.floor(elapsedMs / 3600000);
+        const elapsedMins = Math.max(1, Math.floor((elapsedMs % 3600000) / 60000));
+        const timeStr = elapsedHrs >= 1
+          ? (elapsedHrs + ' hour' + (elapsedHrs === 1 ? '' : 's') + ' ago')
+          : (elapsedMins + ' minute' + (elapsedMins === 1 ? '' : 's') + ' ago');
         const memoryLine = card.querySelector('.action-memory-line');
         if (memoryLine) {
-          memoryLine.textContent = 'Last action: ' + mins + ' minute' + (mins === 1 ? '' : 's') + ' ago';
+          memoryLine.textContent = 'Fix applied: ' + timeStr;
           memoryLine.classList.add('is-fresh');
         }
       } catch (err) {
-        sessionStorage.removeItem('correction-state:' + scanKey);
+        try { localStorage.removeItem('fix-state:' + scanKey); } catch (e) {}
       }
     });
+
+    // Initialize progress counter on load
+    updateFixProgress();
 
     closeBtn.addEventListener('click', closeCorrectionModal);
     modal.addEventListener('click', function (evt) {
