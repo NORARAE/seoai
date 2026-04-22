@@ -1408,6 +1408,17 @@
   @media(max-width:520px){.dcm-ps-label{display:none}.dcm-ps-line{width:12px}.dcm-progress-strip{padding:7px 10px}}
   /* ── Next-move urgency line ─────────────────────────────────────── */
   .nm-urgency{font-size:.7rem;color:rgba(200,168,75,.5);letter-spacing:.04em;margin:2px 0 0;font-style:italic}
+  /* ── Return Banner ──────────────────────────────────────────── */
+  .dcm-return-banner{position:relative;margin-bottom:16px;padding:16px 40px 16px 16px;border:1px solid rgba(200,168,75,.25);border-radius:14px;background:linear-gradient(140deg,rgba(22,17,9,.98),rgba(10,8,5,.99))}
+  .dcm-rb-dismiss{position:absolute;top:10px;right:12px;background:none;border:none;cursor:pointer;color:rgba(200,168,75,.4);font-size:1.1rem;padding:0;line-height:1;transition:color .15s}
+  .dcm-rb-dismiss:hover{color:rgba(200,168,75,.75)}
+  .dcm-rb-sub{font-size:.62rem;letter-spacing:.1em;text-transform:uppercase;color:rgba(200,168,75,.52);margin:0 0 4px}
+  .dcm-rb-hed{font-size:.88rem;font-weight:600;color:rgba(200,168,75,.88);margin:0 0 4px}
+  .dcm-rb-body{font-size:.72rem;color:rgba(200,168,75,.54);margin:0 0 12px;line-height:1.5}
+  .dcm-rb-cta{display:inline-block;font-size:.72rem;font-weight:600;color:rgba(200,168,75,.85);border:1px solid rgba(200,168,75,.28);border-radius:8px;padding:5px 12px;text-decoration:none;transition:border-color .15s,color .15s}
+  .dcm-rb-cta:hover{color:#c8a84b;border-color:rgba(200,168,75,.5)}
+  /* ── Layer nudges (JS-revealed after 12h away) ───────────────── */
+  .dcm-layer-nudge{font-size:.72rem;color:rgba(200,168,75,.42);font-style:italic;margin:6px 0 0;line-height:1.5;display:none}
 </style>
 @endpush
 
@@ -1451,6 +1462,17 @@
     @endif
 
     @if($hasSystem)
+
+    {{-- Return Banner (JS-controlled — shown on return visits with incomplete tier) --}}
+    @if($tierRank < 4)
+    <div id="dcm-return-banner" class="dcm-return-banner" role="alert" aria-live="polite" style="display:none">
+      <button type="button" id="dcm-rb-dismiss-btn" class="dcm-rb-dismiss" aria-label="Dismiss">&times;</button>
+      <p id="dcm-rb-sub" class="dcm-rb-sub"></p>
+      <p class="dcm-rb-hed">Pick up where you left off</p>
+      <p id="dcm-rb-body" class="dcm-rb-body"></p>
+      <a id="dcm-rb-cta" href="{{ $nextUnlockHref }}" class="dcm-rb-cta">Continue &rarr;</a>
+    </div>
+    @endif
 
     {{-- Domain Context Bar --}}
     @if($projectDomain)
@@ -1952,6 +1974,7 @@
         <p class="sa-kicker">Signal Analysis</p>
         <h2 id="sa-heading" class="sa-heading">Where your visibility signals are breaking down</h2>
         <p class="sa-subhead">Your site scored across {{ count($saCategories) }} signal categories. These are the areas where AI systems encounter friction — ranked weakest first.</p>
+        <p class="dcm-layer-nudge">Your weakest category is still unresolved</p>
 
         {{-- Summary stats --}}
         <div class="sa-summary-row mb-4">
@@ -2048,6 +2071,7 @@
         <p class="ap-kicker">Action Plan</p>
         <h2 id="ap-heading" class="ap-heading">Your ranked fix list</h2>
         <p class="ap-subhead">{{ count($apItems) }} issue{{ count($apItems) !== 1 ? 's' : '' }} from your scan, ordered by what to fix first. Start at the top — highest-leverage changes for {{ $projectDomain ?? 'your site' }}.</p>
+        <p class="dcm-layer-nudge">You haven&rsquo;t completed your highest-priority fix</p>
 
         <div class="ap-list">
           @foreach($apItems as $apIdx => $apItem)
@@ -2115,6 +2139,7 @@
         <p class="ge-kicker">Guided Execution</p>
         <h2 id="ge-heading" class="ge-heading">Your execution checklist</h2>
         <p class="ge-subhead">Work through each fix in order. Check items off as you complete them — your progress is saved in this browser.</p>
+        <p class="dcm-layer-nudge">You&rsquo;ve started execution &mdash; keep going</p>
 
         <div class="ge-progress-bar-track">
           <div class="ge-progress-bar-fill" id="ge-progress-fill" style="width:0%"></div>
@@ -3744,6 +3769,72 @@
     </form>
   </div>
 </div>
+
+<script>
+// ── Return + Reminder System ───────────────────────────────────────────
+(function () {
+  'use strict';
+  var VISIT_KEY   = 'dcm_last_visit';
+  var TIER_KEY    = 'dcm_tier_rank';
+  var SESSION_KEY = 'dcm_banner_seen';
+
+  var tierRank  = {{ $tierRank }};
+  var issues    = {{ $latestIssues }};
+  var nextHref  = '{{ $nextUnlockHref }}';
+  var nextLabel = tierRank >= 4 ? 'Book Strategy Session'
+                : tierRank === 3 ? 'Start Guided Execution'
+                : tierRank === 2 ? 'Get My Action Plan'
+                : 'Unlock Signal Analysis';
+
+  var lastVisitMs = parseInt(localStorage.getItem(VISIT_KEY) || '0', 10);
+  var now         = Date.now();
+  var hoursAway   = lastVisitMs ? (now - lastVisitMs) / 3600000 : 0;
+
+  // Record this visit
+  try {
+    localStorage.setItem(VISIT_KEY, String(now));
+    localStorage.setItem(TIER_KEY, String(tierRank));
+  } catch (e) {}
+
+  var hasReturned  = lastVisitMs > 0;
+  var tierComplete = tierRank >= 4;
+  var seenSession  = sessionStorage.getItem(SESSION_KEY);
+
+  // ── Return banner ──────────────────────────────────────────────
+  if (hasReturned && !tierComplete && !seenSession) {
+    var sub = hoursAway >= 72 ? 'Your visibility hasn\u2019t improved yet \u2014 continue your next step'
+            : hoursAway >= 48 ? 'Most users fix this within a day \u2014 your system is waiting'
+            : hoursAway >= 12 ? 'You still have unresolved gaps'
+            :                   'Pick up where you left off';
+
+    var banner = document.getElementById('dcm-return-banner');
+    if (banner) {
+      var subEl  = document.getElementById('dcm-rb-sub');
+      var bodyEl = document.getElementById('dcm-rb-body');
+      var ctaEl  = document.getElementById('dcm-rb-cta');
+      if (subEl)  subEl.textContent  = sub;
+      if (bodyEl) bodyEl.textContent = 'Your scan found ' + issues + ' gap' + (issues !== 1 ? 's' : '') + '. You\u2019re at step ' + tierRank + ' of 4.';
+      if (ctaEl)  { ctaEl.href = nextHref; ctaEl.textContent = nextLabel + ' \u2192'; }
+      banner.style.display = 'block';
+
+      var dismissBtn = document.getElementById('dcm-rb-dismiss-btn');
+      if (dismissBtn) {
+        dismissBtn.addEventListener('click', function () {
+          banner.remove();
+          try { sessionStorage.setItem(SESSION_KEY, '1'); } catch (e) {}
+        });
+      }
+    }
+  }
+
+  // ── Layer nudges (reveal after ≥ 12 h away) ────────────────────
+  if (hasReturned && hoursAway >= 12) {
+    document.querySelectorAll('.dcm-layer-nudge').forEach(function (el) {
+      el.style.display = 'block';
+    });
+  }
+})();
+</script>
 
 @if($tierRank >= 4)
 <script>
