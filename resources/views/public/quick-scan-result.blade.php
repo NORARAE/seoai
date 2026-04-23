@@ -648,12 +648,13 @@ a{text-decoration:none;color:inherit}
 .fix-detail-mask{position:fixed;inset:0;z-index:150;background:linear-gradient(120deg,rgba(6,5,3,.5),rgba(6,5,3,.82));backdrop-filter:blur(4px);display:none}
 .fix-detail-mask[data-open='true']{display:block}
 body.fix-panel-open .aia-trigger,body.fix-panel-open #aiaPanel,body.fix-panel-open #aiaTeaser,body.fix-panel-open #aiaBackdrop{z-index:80!important}
+body.fix-panel-open .fix-ai-nudge{display:none!important}
 .fix-detail-panel{position:absolute;top:0;right:0;height:100%;width:min(620px,100%);border-left:1px solid var(--line);background:linear-gradient(160deg,#16120b,#0c0a07 72%);box-shadow:-24px 0 50px rgba(0,0,0,.52);transform:translateX(100%);transition:transform .34s ease}
 .fix-detail-mask[data-open='true'] .fix-detail-panel{transform:translateX(0)}
 .fix-detail-inner{height:100%;overflow:auto;padding:18px 16px 20px}
 .fix-detail-head{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:10px}
 .fix-detail-kicker{font-size:.54rem;letter-spacing:.24em;text-transform:uppercase;color:rgba(200,168,75,.72)}
-.fix-detail-close{display:inline-flex;align-items:center;justify-content:center;min-height:32px;padding:7px 9px;border-radius:8px;border:1px solid var(--line);background:rgba(200,168,75,.09);font-size:.58rem;letter-spacing:.12em;text-transform:uppercase;color:#ddd1b8}
+.fix-detail-close{display:inline-flex;align-items:center;justify-content:center;min-height:32px;padding:7px 9px;border-radius:8px;border:1px solid var(--line);background:rgba(200,168,75,.09);font-size:.58rem;letter-spacing:.12em;text-transform:uppercase;color:#ddd1b8;position:relative;z-index:2}
 .fix-detail-close:hover{border-color:rgba(200,168,75,.42);background:rgba(200,168,75,.16)}
 .fix-detail-module{border:1px solid var(--line);background:rgba(200,168,75,.04);border-radius:10px;padding:10px 11px;margin-bottom:10px}
 .fix-detail-title{font-size:.84rem;line-height:1.35;color:var(--text);margin:0}
@@ -1464,25 +1465,6 @@ button.sys-bar-node:hover .sys-bar-dot{border-color:rgba(214,181,95,.54);backgro
                   data-why-matters="Selection pressure remains active while this constraint persists."
                   data-unlocks="Expand data layer coverage, introduce direct-answer nodes, establish authoritative definitions."
                 >{{ $momentumCta }}</button>
-                <p class="cta-social-proof">This is your highest-impact fix.</p>
-                <p class="cta-consequence">This marks this issue as in progress inside your system.</p>
-                <button
-                  type="button"
-                  class="btn btn-secondary js-open-fix-detail"
-                  data-exec-init="Loading signal detail..."
-                  data-exec-process="Pulling signal context..."
-                  data-exec-resolved="Signal context loaded"
-                  data-issue-name="{{ $action['label'] }}"
-                  data-failure-state="{{ $action['why'] }}"
-                  data-required-correction="{{ $action['fix'] }}"
-                  data-impact-label="{{ ucfirst($action['impact']) }} impact"
-                  data-impact-points="{{ $action['max'] }}"
-                  data-state-label="{{ strtoupper($action['impact']) }} PRIORITY"
-                  data-category-label="{{ $action['category'] }}"
-                  data-next-path="Open Structural Layer Sequence"
-                  data-why-matters="Selection pressure remains active while this constraint persists."
-                  data-unlocks="Expand data layer coverage, introduce direct-answer nodes, establish authoritative definitions."
-                >View Details</button>
               </div>
               <p class="action-memory">Not started</p>
             </article>

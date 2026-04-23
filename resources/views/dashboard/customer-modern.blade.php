@@ -1693,7 +1693,7 @@
         @endif
         @endforeach
       </div>
-      <p class="dcm-progress-pct">{{ $progressPct }}% through your visibility system</p>
+      <p class="dcm-progress-pct">You&rsquo;re here: Step {{ $tierRank }} of 4 &mdash; {{ $progressLabels[$tierRank - 1] ?? 'Active' }} &nbsp;&middot;&nbsp; {{ $progressPct }}% complete</p>
     </div>
     @endif
     {{-- END: system-view progress strip --}}
