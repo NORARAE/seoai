@@ -494,7 +494,7 @@ body{line-height:1.85}
               <span class="bk-snav-type">Self-serve</span>
               <span class="bk-snav-hint">Apply fixes step-by-step</span>
             </a>
-            <a class="bk-snav-item" href="{{ route('book.index', ['entry' => 'consultation']) }}" data-target="bk-step-05" data-layer="expand" role="button" aria-haspopup="dialog" tabindex="0">
+            <a class="bk-snav-item" href="{{ route('book.index', ['entry' => 'consultation']) }}" data-target="bk-step-05" data-layer="expand" onclick="return openEntry('consultation');" role="button" aria-haspopup="dialog" tabindex="0">
               <span class="bk-snav-num">05</span>
               <span class="bk-snav-icon" aria-hidden="true">📅</span>
               <span class="bk-snav-name">Expand</span>
@@ -933,11 +933,15 @@ body{line-height:1.85}
     return false;
   }
 
-  const requestedEntry = new URLSearchParams(window.location.search).get('entry');
-  if (requestedEntry && bookingEntries[requestedEntry]?.id) {
-    window._bkPending = bookingEntries[requestedEntry];
-    window.dispatchEvent(new CustomEvent('open-booking', { detail: bookingEntries[requestedEntry] }));
-  }
+  // Delay open-booking dispatch until Alpine has initialized all components.
+  // Dispatching synchronously during body parse misses the @open-booking.window listener.
+  document.addEventListener('alpine:initialized', function() {
+    var requestedEntry = new URLSearchParams(window.location.search).get('entry');
+    if (requestedEntry && bookingEntries[requestedEntry] && bookingEntries[requestedEntry].id) {
+      window._bkPending = bookingEntries[requestedEntry];
+      window.dispatchEvent(new CustomEvent('open-booking', { detail: bookingEntries[requestedEntry] }));
+    }
+  });
   </script>
   @include('partials.public-nav-js')
   <script>

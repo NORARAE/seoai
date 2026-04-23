@@ -38,6 +38,7 @@ class BookingWebhookController extends Controller
 {
     public function handle(Request $request): JsonResponse
     {
+        try {
         $payload = $request->getContent();
         $sigHeader = $request->header('Stripe-Signature');
         $secret = (string) config('services.stripe_booking.webhook_secret', '');
@@ -46,7 +47,9 @@ class BookingWebhookController extends Controller
         if ($secret === '') {
             Log::channel('booking')->error('Booking Stripe webhook secret is not configured.');
 
-            return response()->json(['message' => 'Webhook secret not configured.'], Response::HTTP_BAD_REQUEST);
+            // Return 200 so Stripe does not mark this endpoint as failing and disable it.
+            // This is a server-side configuration error, not a bad request from Stripe.
+            return response()->json(['message' => 'Webhook secret not configured.']);
         }
 
         try {
@@ -174,6 +177,15 @@ class BookingWebhookController extends Controller
         ]);
 
         return response()->json(['message' => 'Booking confirmed.', 'booking_id' => $bookingId]);
+        } catch (\Throwable $e) {
+            Log::channel('booking')->error('Booking webhook: unhandled exception', [
+                'error' => $e->getMessage(),
+                'file'  => $e->getFile(),
+                'line'  => $e->getLine(),
+            ]);
+            // Return 200 to prevent Stripe from retrying on our internal errors.
+            return response()->json(['message' => 'Internal error — logged for review.']);
+        }
     }
 
     /**
