@@ -666,10 +666,35 @@ body.fix-panel-open .aia-trigger,body.fix-panel-open #aiaPanel,body.fix-panel-op
 .fix-detail-block p:last-child{margin-top:5px;font-size:.72rem;line-height:1.5;color:#f0e5c8}
 .fix-detail-actions{margin-top:12px;display:grid;grid-template-columns:1fr 1fr;gap:8px}
 .fix-detail-progression{margin-top:10px;display:grid;grid-template-columns:1fr;gap:7px}
-.fix-what-happens{margin:10px 0 8px;padding:10px 11px;border:1px solid rgba(106,175,144,.28);border-radius:9px;background:rgba(106,175,144,.06)}
-.fix-what-happens-title{font-size:.52rem;letter-spacing:.18em;text-transform:uppercase;color:#6aaf90;margin:0 0 7px}
+.fix-what-happens{margin:10px 0 8px;padding:10px 11px;border:1px solid rgba(106,175,144,.28);border-radius:9px;background:rgba(106,175,144,.06)}.fix-what-happens-title{font-size:.52rem;letter-spacing:.18em;text-transform:uppercase;color:#6aaf90;margin:0 0 7px}
 .fix-what-happens-list{margin:0;padding:0 0 0 1.1em;display:flex;flex-direction:column;gap:4px}
 .fix-what-happens-list li{font-size:.68rem;line-height:1.45;color:#d8ccb0}
+
+/* ── Phase 29: upgrade pressure system ── */
+.fix-locked-insight{margin:10px 0 8px;padding:10px 11px;border:1px solid rgba(196,120,120,.28);border-radius:9px;background:rgba(196,120,120,.05);display:none}
+.fix-locked-insight.is-visible{display:block}
+.fix-locked-insight-title{font-size:.52rem;letter-spacing:.18em;text-transform:uppercase;color:#c47878;margin:0 0 6px;display:flex;align-items:center;gap:5px}
+.fix-locked-insight-title::before{content:'\1F512';font-size:.7rem;filter:grayscale(.4)}
+.fix-locked-insight p{margin:0 0 6px;font-size:.68rem;line-height:1.45;color:#d8ccb0}
+.fix-locked-insight ul{margin:0 0 8px;padding-left:1.1em;display:flex;flex-direction:column;gap:3px}
+.fix-locked-insight ul li{font-size:.67rem;line-height:1.42;color:#ddd1b4}
+.fix-locked-partial{margin:8px 0 0;border:1px solid rgba(196,120,120,.2);border-radius:8px;overflow:hidden}
+.fix-locked-partial-head{font-size:.5rem;letter-spacing:.14em;text-transform:uppercase;padding:5px 9px;background:rgba(196,120,120,.1);color:#c47878;opacity:.82}
+.fix-locked-partial-row{padding:5px 9px;font-size:.67rem;color:#ccbf9e;border-top:1px solid rgba(255,255,255,.04)}
+.fix-locked-partial-row.is-blurred{filter:blur(3px);opacity:.42;user-select:none;pointer-events:none}
+
+.fix-friction-bar{margin:0 0 8px;padding:9px 11px;border:1px solid rgba(196,120,120,.22);border-radius:9px;background:rgba(196,120,120,.05);display:none}
+.fix-friction-bar.is-visible{display:block}
+.fix-friction-bar-title{font-size:.5rem;letter-spacing:.18em;text-transform:uppercase;color:#c47878;margin:0 0 5px}
+.fix-friction-bar ul{margin:0;padding-left:1.2em;display:flex;flex-direction:column;gap:3px}
+.fix-friction-bar li{font-size:.66rem;color:#d8ccb0;line-height:1.36}
+
+.upgrade-pressure-bar{margin:8px 12px 0;padding:11px 13px;border:1px solid rgba(214,181,95,.32);border-radius:11px;background:linear-gradient(140deg,rgba(36,26,14,.94),rgba(16,12,8,.97));display:none;align-items:center;gap:12px}
+.upgrade-pressure-bar.is-visible{display:flex}
+.upgrade-pressure-bar p{margin:0;font-size:.7rem;line-height:1.42;color:#e9ddc2;flex:1}
+.upgrade-pressure-bar p strong{color:#f0e3bf;display:block;font-size:.76rem;margin-bottom:2px}
+.upgrade-pressure-bar-cta{flex-shrink:0;padding:8px 12px;border-radius:9px;border:1px solid rgba(214,181,95,.5);background:rgba(214,181,95,.14);font-size:.56rem;letter-spacing:.1em;text-transform:uppercase;color:#efdcae;font-weight:700;cursor:pointer;white-space:nowrap;text-decoration:none}
+.upgrade-pressure-bar-cta:hover{background:rgba(214,181,95,.24)}
 @keyframes nextFocus{0%,100%{box-shadow:none}40%{box-shadow:0 0 0 2px rgba(200,168,75,.42)}}
 .action.next-focus{animation:nextFocus 1s ease forwards}
 
@@ -1351,6 +1376,20 @@ button.sys-bar-node:hover .sys-bar-dot{border-color:rgba(214,181,95,.54);backgro
         </div>
         @endif
         <p style="margin:8px 12px 0;font-size:.72rem;color:#d9ceb0">Fix the top issue first. Move to the next level once it&rsquo;s resolved.</p>
+        @if(!$isUpgraded)
+        <div class="fix-friction-bar" id="fixFrictionBar">
+          <p class="fix-friction-bar-title">At this level, without upgrading:</p>
+          <ul>
+            <li>Fixes are applied manually, one at a time</li>
+            <li>Prioritization is limited to what you can see</li>
+            <li>Deeper structural patterns remain hidden</li>
+          </ul>
+        </div>
+        <div class="upgrade-pressure-bar" id="upgradePressureBar">
+          <p><strong>You&rsquo;re making progress</strong>Your next gains come from structured prioritization — not manual guesswork.</p>
+          <a href="{{ $singleNextStep['href'] ?? route('checkout.signal-expansion') }}" class="upgrade-pressure-bar-cta">Unlock Action Plan</a>
+        </div>
+        @endif
         <div class="actions">
           <div class="fix-progress-bar-wrap" id="fix-progress-wrap">
             <span class="fix-progress-label" id="fix-progress-label">0 of {{ $sysActionsLimit }} issue{{ $sysActionsLimit !== 1 ? 's' : '' }} addressed</span>
@@ -1644,6 +1683,28 @@ button.sys-bar-node:hover .sys-bar-dot{border-color:rgba(214,181,95,.54);backgro
           <li>Your next highest-priority constraint becomes the suggested next move.</li>
         </ul>
       </div>
+      @if(!$isUpgraded)
+      <div class="fix-locked-insight" id="fixLockedInsight">
+        <p class="fix-locked-insight-title">Deeper Insight Available</p>
+        <p>This issue is part of a broader structural pattern across your site. Unlocking the next layer reveals:</p>
+        <ul>
+          <li>How this issue connects to other pages</li>
+          <li>Which pages are most affected</li>
+          <li>The optimal order of fixes across your system</li>
+        </ul>
+        <div class="fix-locked-partial">
+          <div class="fix-locked-partial-head">Additional impacted pages</div>
+          <div class="fix-locked-partial-row">Page structure layer — signal: detected</div>
+          <div class="fix-locked-partial-row">Content depth layer — signal: partial</div>
+          <div class="fix-locked-partial-row is-blurred">Authority layer — signal: suppressed</div>
+          <div class="fix-locked-partial-row is-blurred">Extraction node map — status: restricted</div>
+          <div class="fix-locked-partial-row is-blurred">Competitive gap analysis — status: locked</div>
+        </div>
+        <div style="margin-top:9px">
+          <a href="{{ $singleNextStep['href'] ?? route('checkout.signal-expansion') }}" class="btn btn-primary" style="font-size:.56rem;min-height:34px;padding:7px 13px">Unlock Full Fix Strategy</a>
+        </div>
+      </div>
+      @endif
       <div class="fix-detail-actions">
         <a href="#priority-actions" class="btn btn-primary" id="fixDetailNext">Apply Fix</a>
         <button type="button" class="btn btn-secondary" id="fixDetailClose">Close Panel</button>
@@ -1801,9 +1862,19 @@ button.sys-bar-node:hover .sys-bar-dot{border-color:rgba(214,181,95,.54);backgro
     wrap.style.display = 'flex';
     fill.style.width = Math.round((done / total) * 100) + '%';
     label.textContent = done + ' of ' + total + ' issue' + (total !== 1 ? 's' : '') + ' addressed';
+    // Show friction bar after first fix
+    var frictionBar = document.getElementById('fixFrictionBar');
+    if (frictionBar && done >= 1) frictionBar.classList.add('is-visible');
+    // Show upgrade pressure bar after 2+ fixes OR >20% progress
+    var pressureBar = document.getElementById('upgradePressureBar');
+    if (pressureBar && (done >= 2 || Math.round((done / total) * 100) > 20)) {
+      pressureBar.classList.add('is-visible');
+    }
   }
 
   function showAiNudge() {
+    var done = document.querySelectorAll('.action.is-applied').length;
+    var isEscalation = done >= 2;
     var old = document.getElementById('fix-ai-nudge');
     if (old) old.remove();
     var nudge = document.createElement('div');
@@ -1813,11 +1884,15 @@ button.sys-bar-node:hover .sys-bar-dot{border-color:rgba(214,181,95,.54);backgro
     aiLabel.className = 'fix-ai-nudge-label';
     aiLabel.textContent = 'AI';
     var msg = document.createElement('p');
-    msg.textContent = 'Nice \u2014 that removes a key constraint. Want to move to the next highest-impact fix?';
+    if (isEscalation) {
+      msg.textContent = 'You\'re doing this manually right now. I can show you the exact order of fixes to maximize impact — want to unlock that?';
+    } else {
+      msg.textContent = 'Nice \u2014 that removes a key constraint. Want to move to the next highest-impact fix?';
+    }
     var cta = document.createElement('button');
     cta.type = 'button';
     cta.className = 'fix-ai-nudge-cta';
-    cta.textContent = 'Ask AI';
+    cta.textContent = isEscalation ? 'Unlock Strategy' : 'Ask AI';
     var dismiss = document.createElement('button');
     dismiss.type = 'button';
     dismiss.className = 'fix-ai-nudge-dismiss';
@@ -1832,8 +1907,13 @@ button.sys-bar-node:hover .sys-bar-dot{border-color:rgba(214,181,95,.54);backgro
     dismiss.addEventListener('click', function () { nudge.remove(); });
     cta.addEventListener('click', function () {
       nudge.remove();
-      var trigger = document.getElementById('aiaTrigger');
-      if (trigger) trigger.click();
+      if (isEscalation) {
+        var bar = document.getElementById('upgradePressureBar');
+        if (bar) { bar.scrollIntoView({ behavior: 'smooth', block: 'center' }); }
+      } else {
+        var aiTrigger = document.getElementById('aiaTrigger');
+        if (aiTrigger) aiTrigger.click();
+      }
     });
     window.setTimeout(function () { if (nudge.parentNode) nudge.remove(); }, 9000);
   }
@@ -1841,27 +1921,49 @@ button.sys-bar-node:hover .sys-bar-dot{border-color:rgba(214,181,95,.54);backgro
   function syncNextMovePanel() {
     var leadCard = document.querySelector('.action.lead');
     if (!leadCard || !leadCard.classList.contains('is-applied')) return;
+    var done = document.querySelectorAll('.action.is-applied').length;
     var guide = document.querySelector('.next-move-guide');
     if (!guide) return;
-    guide.style.borderColor = 'rgba(106,175,144,.36)';
-    guide.style.background = 'rgba(106,175,144,.06)';
     var h3 = guide.querySelector('h3');
-    if (h3) { h3.textContent = 'Next priority unlocked'; h3.style.color = '#7abb9e'; }
     var cells = guide.querySelectorAll('.next-move-card');
-    if (cells[0]) {
-      var s0 = cells[0].querySelector('strong'); if (s0) s0.textContent = 'Status';
-      var p0 = cells[0].querySelector('p'); if (p0) p0.textContent = 'Top constraint marked as handled';
-    }
-    if (cells[1]) {
-      var p1 = cells[1].querySelector('p'); if (p1) p1.textContent = 'Apply the next fix to keep momentum building.';
-    }
-    if (cells[2]) {
-      var p2 = cells[2].querySelector('p'); if (p2) p2.textContent = 'Move to fix #2 below to continue strengthening your system.';
-    }
     var subP = guide.querySelector('p[style]');
-    if (subP) subP.innerHTML = "<strong style='font-size:.52rem;letter-spacing:.16em;text-transform:uppercase;color:#7abb9e'>You've cleared the top blocker</strong><br>Continue to strengthen your system.";
     var cta = guide.querySelector('.btn-primary');
-    if (cta) { cta.textContent = 'Apply next fix'; cta.setAttribute('href', '#priority-actions'); }
+    if (done >= 2) {
+      // Multi-fix upgrade state
+      guide.style.borderColor = 'rgba(214,181,95,.48)';
+      guide.style.background = 'rgba(214,181,95,.08)';
+      if (h3) { h3.textContent = 'Structured execution unlocks next-level gains'; h3.style.color = '#efdcae'; }
+      if (cells[0]) {
+        var s0 = cells[0].querySelector('strong'); if (s0) s0.textContent = 'Status';
+        var p0 = cells[0].querySelector('p'); if (p0) p0.textContent = 'Initial blockers removed';
+      }
+      if (cells[1]) {
+        var p1 = cells[1].querySelector('p');
+        if (p1) p1.innerHTML = '\u2192 Optimize fix order<br>\u2192 Identify highest-impact pages<br>\u2192 Move faster with structured execution';
+      }
+      if (cells[2]) {
+        var p2 = cells[2].querySelector('p'); if (p2) p2.textContent = 'Upgrade to unlock the full fix sequence.';
+      }
+      if (subP) subP.innerHTML = "<strong style='font-size:.52rem;letter-spacing:.16em;text-transform:uppercase;color:#ddc88e'>You've removed initial blockers</strong><br>Next step: structured prioritization moves faster.";
+      if (cta) { cta.textContent = 'Upgrade to Action Plan'; cta.setAttribute('href', cta.getAttribute('href') || '#'); }
+    } else {
+      // Single fix state
+      guide.style.borderColor = 'rgba(106,175,144,.36)';
+      guide.style.background = 'rgba(106,175,144,.06)';
+      if (h3) { h3.textContent = 'Next priority unlocked'; h3.style.color = '#7abb9e'; }
+      if (cells[0]) {
+        var s0b = cells[0].querySelector('strong'); if (s0b) s0b.textContent = 'Status';
+        var p0b = cells[0].querySelector('p'); if (p0b) p0b.textContent = 'Top constraint marked as handled';
+      }
+      if (cells[1]) {
+        var p1b = cells[1].querySelector('p'); if (p1b) p1b.textContent = 'Apply the next fix to keep momentum building.';
+      }
+      if (cells[2]) {
+        var p2b = cells[2].querySelector('p'); if (p2b) p2b.textContent = 'Move to fix #2 below to continue strengthening your system.';
+      }
+      if (subP) subP.innerHTML = "<strong style='font-size:.52rem;letter-spacing:.16em;text-transform:uppercase;color:#7abb9e'>You've cleared the top blocker</strong><br>Continue to strengthen your system.";
+      if (cta) { cta.textContent = 'Apply next fix'; cta.setAttribute('href', '#priority-actions'); }
+    }
   }
 
   function restoreActionMemory() {
@@ -1919,6 +2021,11 @@ button.sys-bar-node:hover .sys-bar-dot{border-color:rgba(214,181,95,.54);backgro
     fixDetailMask.dataset.open = 'true';
     document.body.style.overflow = 'hidden';
     document.body.classList.add('fix-panel-open');
+    // Show locked insight for non-upgraded users (delay slightly for panel animation)
+    var lockedInsight = document.getElementById('fixLockedInsight');
+    if (lockedInsight) {
+      window.setTimeout(function () { lockedInsight.classList.add('is-visible'); }, 260);
+    }
   }
 
   function closeFixDetail() {
