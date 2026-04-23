@@ -1878,7 +1878,7 @@
     {{-- START: score-drivers (requires !noScore + topFindings) --}}
     {{-- ── INTERPRETATION: What's Driving Your Score ───────────────── --}}
     @if(!$noScore && isset($topFindings) && count($topFindings) > 0)
-    <section class="system-section mb-6 dash-section-anchor surface-reveal" id="score-drivers" aria-labelledby="score-drivers-heading">
+    <section class="system-section mb-6 dash-section-anchor surface-reveal is-visible" id="score-drivers" aria-labelledby="score-drivers-heading">
       <div class="score-drivers-shell">
         <div class="score-drivers-head">
           <div>
@@ -1958,7 +1958,7 @@
     {{-- START: next-move (requires !noScore) --}}
     {{-- ── PRIORITY: What to Do Next ───────────────────────────────── --}}
     @if(!$noScore)
-    <section class="system-section mb-6 dash-section-anchor surface-reveal" id="next-move" aria-labelledby="next-move-heading">
+    <section class="system-section mb-6 dash-section-anchor surface-reveal is-visible" id="next-move" aria-labelledby="next-move-heading">
       <div class="next-move-shell">
         @php
           $nmSubtext = match(true) {
@@ -2034,12 +2034,37 @@
         </div>
       </div>
     </section>
+    @else
+    {{-- Fallback: scan done but no score extracted --}}
+    <section class="system-section mb-6 dash-section-anchor surface-reveal is-visible" id="next-move-fallback" aria-label="Next step when score is pending">
+      <div class="next-move-shell">
+        <p class="dash-section-label">Your next move</p>
+        <h2 class="dash-section-heading">Your scan ran &mdash; we couldn&rsquo;t read a score yet.</h2>
+        <p class="nm-urgency">Make sure your site loads in a private browser window. If it doesn&rsquo;t load publicly, AI tools can&rsquo;t measure it &mdash; and neither can we.</p>
+        <div class="next-move-row">
+          <div class="nm-card nm-primary">
+            <p class="nm-card-kicker">Recommended first step</p>
+            <h3 class="nm-card-title">Check your site&rsquo;s public accessibility</h3>
+            <p class="nm-card-rationale">Open your site in a private browsing window. If it loads cleanly, run a fresh scan &mdash; your score should appear.</p>
+            <a href="{{ route('quick-scan.show') }}" class="nm-card-action">Run a new scan &rarr;</a>
+          </div>
+          @if($nextStep)
+          <div class="nm-card">
+            <p class="nm-card-kicker">When your score is ready</p>
+            <h3 class="nm-card-title">{{ $nextStep }}</h3>
+            <p class="nm-card-rationale">Once your scan shows a score, this unlocks your full set of findings and the fix roadmap built from your data.</p>
+            <a href="{{ $nextUnlockHref }}" class="nm-card-action">{{ $nextUnlockLabel }} &rarr;</a>
+          </div>
+          @endif
+        </div>
+      </div>
+    </section>
     @endif
     {{-- END: next-move --}}
 
     {{-- START: your-plan (always shown when hasSystem) --}}
     {{-- ── PROGRESSION: Your Plan ───────────────────────────────────── --}}
-    <section class="system-section mb-6 dash-section-anchor surface-reveal" id="your-plan" aria-labelledby="your-plan-heading">
+    <section class="system-section mb-6 dash-section-anchor surface-reveal is-visible" id="your-plan" aria-labelledby="your-plan-heading">
       <div class="your-plan-shell">
 
         <p class="dash-section-label">Your Plan</p>
@@ -2187,6 +2212,7 @@
     {{-- START: L2 signal-analysis (tierRank >= 2) --}}
     {{-- ── L2: SIGNAL ANALYSIS (unlocked for tierRank >= 2) ─────────── --}}
     @if($tierRank >= 2 && !empty($scanCategories))
+    {{-- L2 signal-analysis: force immediate visibility --}}
     @php
       $saCategories = [];
       $saTotalChecks = 0;
@@ -2216,7 +2242,7 @@
       }
       usort($saCategories, fn($a,$b) => $a['pct'] <=> $b['pct']); // worst first
     @endphp
-    <section class="system-section mb-6 dash-section-anchor surface-reveal" id="signal-analysis" aria-labelledby="sa-heading">
+    <section class="system-section mb-6 dash-section-anchor surface-reveal is-visible" id="signal-analysis" aria-labelledby="sa-heading">
       <div class="signal-analysis-shell">
         <p class="sa-kicker">Signal Analysis</p>
         <h2 id="sa-heading" class="sa-heading">Where your visibility signals are breaking down</h2>
@@ -2315,7 +2341,7 @@
       // Sort: lower tier first (foundational first), deterministic order
       usort($apItems, fn($a,$b) => $a['rank'] <=> $b['rank']);
     @endphp
-    <section class="system-section mb-6 dash-section-anchor surface-reveal" id="action-plan" aria-labelledby="ap-heading">
+    <section class="system-section mb-6 dash-section-anchor surface-reveal is-visible" id="action-plan" aria-labelledby="ap-heading">
       <div class="action-plan-shell">
         <p class="ap-kicker">Action Plan</p>
         <h2 id="ap-heading" class="ap-heading">Your ranked fix list</h2>
@@ -2385,7 +2411,7 @@
         }
       }
     @endphp
-    <section class="system-section mb-6 dash-section-anchor surface-reveal" id="guided-execution" aria-labelledby="ge-heading">
+    <section class="system-section mb-6 dash-section-anchor surface-reveal is-visible" id="guided-execution" aria-labelledby="ge-heading">
       <div class="guided-exec-shell">
         <p class="ge-kicker">Guided Execution</p>
         <h2 id="ge-heading" class="ge-heading">Your execution checklist</h2>
@@ -2460,7 +2486,7 @@
         default              => null,
       };
     @endphp
-    <section class="system-section mb-6 dash-section-anchor surface-reveal" id="ai-advisor-section" aria-labelledby="ai-advisor-heading">
+    <section class="system-section mb-6 dash-section-anchor surface-reveal is-visible" id="ai-advisor-section" aria-labelledby="ai-advisor-heading">
       <div class="ai-advisor-shell">
         <div class="ai-advisor-head">
           <div>
@@ -2518,7 +2544,7 @@
 
     {{-- START: reports-view inline section (isReportsView) --}}
     @if($isReportsView)
-    <section class="system-section mb-8 dash-section-anchor surface-reveal" id="report-readouts">
+    <section class="system-section mb-8 dash-section-anchor surface-reveal is-visible" id="report-readouts">
       <div class="ia-progress-shell">
         <div class="ia-progress-head">
           <div>
@@ -2573,7 +2599,7 @@
 
     {{-- START: scans-view scan library (isScansView) --}}
     @if($isScansView)
-    <section class="system-section mb-10 dash-section-anchor surface-reveal" id="scan-history">
+    <section class="system-section mb-10 dash-section-anchor surface-reveal is-visible" id="scan-history">
       <div class="scan-history-shell">
         <div class="scan-library-header">
           <div>
