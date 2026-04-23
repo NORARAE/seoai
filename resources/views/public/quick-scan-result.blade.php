@@ -251,7 +251,7 @@
 
   $lockedLayerModules = [
       ['rank' => 2, 'title' => 'Signal Analysis', 'statement' => 'Full signal-by-signal breakdown of your scan data — every category scored and explained.', 'reveals' => 'While suppressed, you only see your score. Signal Analysis shows exactly which signals are failing and why.', 'improvement' => ['See every failing signal from your scan', 'Understand why each is suppressing your score', 'Know exactly what to fix'], 'cta' => 'Unlock Signal Analysis', 'href' => $singleNextStep['href'] ?? route('checkout.signal-expansion')],
-      ['rank' => 3, 'title' => 'Action Plan', 'statement' => 'Prioritized fix list from your scan data — ordered by impact, grouped by effort level.', 'reveals' => 'Without ranked ordering, you might fix low-impact issues first. Action Plan sequences your fixes by what moves your score most.', 'improvement' => ['Fix list ranked by scan impact', 'Ordered execution sequence', 'Grouped by effort'], 'cta' => 'Unlock Action Plan', 'href' => $singleNextStep['href'] ?? route('quick-scan.upgrade')],
+      ['rank' => 3, 'title' => 'Action Plan', 'statement' => 'Prioritized fix list from your scan data — ordered by impact, grouped by effort level.', 'reveals' => 'Fixing low-impact issues first wastes effort and delays results. Action Plan sequences your fixes by what moves your score most.', 'improvement' => ['Fix list ranked by scan impact', 'Ordered execution sequence', 'Grouped by effort'], 'cta' => 'Unlock Action Plan', 'href' => $singleNextStep['href'] ?? route('quick-scan.upgrade')],
       ['rank' => 4, 'title' => 'Guided Execution', 'statement' => 'Step-by-step execution checklist inside your dashboard with in-progress tracking.', 'reveals' => 'Requires Action Plan to be unlocked first. Turns your fix list into an active workflow you track and complete.', 'improvement' => ['Execution checklist inside dashboard', 'Guided steps for each fix', 'Progress tracking as you complete items'], 'cta' => 'Unlock Guided Execution', 'href' => $singleNextStep['href'] ?? route('quick-scan.upgrade')],
   ];
 
@@ -698,6 +698,20 @@ body.fix-panel-open .fix-ai-nudge{display:none!important}
 .upgrade-pressure-bar-cta:hover{background:rgba(214,181,95,.24)}
 @keyframes nextFocus{0%,100%{box-shadow:none}40%{box-shadow:0 0 0 2px rgba(200,168,75,.42)}}
 .action.next-focus{animation:nextFocus 1s ease forwards}
+
+.fix-apply-confirm{margin:4px 0 0;font-size:.52rem;letter-spacing:.1em;color:rgba(106,175,144,.9);opacity:0;max-height:0;overflow:hidden;transition:opacity .38s ease,max-height .38s ease}
+.fix-apply-confirm.is-visible{opacity:1;max-height:40px}
+
+.fix-example-block{margin:8px 0 0;padding:8px 10px;border:1px solid rgba(214,181,95,.13);border-radius:8px;background:rgba(214,181,95,.03)}
+.fix-example-block-title{font-size:.44rem;letter-spacing:.18em;text-transform:uppercase;color:rgba(200,168,75,.55);margin:0 0 5px}
+.fix-example-block ul{margin:0;padding-left:1.1em;display:flex;flex-direction:column;gap:3px}
+.fix-example-block li{font-size:.65rem;color:#c8bfa2;line-height:1.42}
+
+.fix-completion-signal{margin:12px 0 0;padding:13px 14px;border:1px solid rgba(106,175,144,.28);border-radius:11px;background:rgba(106,175,144,.05);display:none}
+.fix-completion-signal.is-visible{display:block}
+.fix-completion-signal p{margin:0 0 6px;font-size:.74rem;color:#dfd5b8;line-height:1.5}
+.fix-completion-signal p strong{color:#b4dece;display:block;font-size:.78rem;margin-bottom:3px}
+.fix-completion-signal .btn{margin-top:6px;font-size:.56rem;min-height:36px;padding:8px 13px}
 
 
 @media (max-width:1080px){
@@ -1397,6 +1411,36 @@ button.sys-bar-node:hover .sys-bar-dot{border-color:rgba(214,181,95,.54);backgro
             <div class="fix-progress-bar"><div class="fix-progress-bar-fill" id="fix-progress-fill"></div></div>
           </div>
           <div class="action-stack">
+            @php
+            $fixExamplesMap = [
+              'Topic Depth Markers'          => ['Add subheadings: "Services Offered", "How It Works", "Pricing"', 'Break long paragraphs into scannable sections', 'Cover topic variations of your core service'],
+              'Primary Topic Signal'         => ['Set page title: "Your Service | City Name"', 'Add H1 with service + location, e.g. "Plumbing in Austin, TX"', 'Use your primary topic in the first sentence of body copy'],
+              'Page Summary Signal'          => ['Write a 1-2 sentence intro describing your core offering', 'Include your business name and main service in the first 50 words', 'Mirror your meta description in your on-page intro'],
+              'Primary Content Marker'       => ['Open body content with your business name and service category', 'e.g. "Smith Electrical provides licensed electrical services in Dallas"', 'Repeat the service name naturally 2-3 times across the page'],
+              'Content Substance'            => ['Expand to 300+ words covering your services, process, and area', 'Add a "How It Works" or "Our Process" section', 'Include a service area list or neighborhood details'],
+              'Structured Data Layer'        => ['Add JSON-LD with @type: LocalBusiness to your homepage', 'Include name, address, phone, and services in the schema block', 'Validate at schema.org/validator before publishing'],
+              'Entity Type Declaration'      => ['Specify @type: Plumber, Attorney, or your exact business type', 'Nest under LocalBusiness if applicable', 'Match the type to your actual primary service category'],
+              'Business Category Signal'     => ['Add your category — e.g. "Licensed Plumber" — in the page title', 'Include the category in H1 or meta description', 'Use the official industry term, not a branded variation'],
+              'Data Depth Coverage'          => ['Add Service schema for each service you offer', 'Add FAQPage schema if you have a FAQ section', 'Layer AggregateRating schema if you collect reviews'],
+              'Brand Identity Signal'        => ['Include your business name in title, H1, and footer', 'Use your exact brand name — avoid abbreviations or variations', 'Add name to the alt text of your logo image'],
+              'Offering Clarity'             => ['List your specific services: "We offer X, Y, Z"', 'Add a services section with one sentence per service', 'Use precise terms — "roof replacement" not "home services"'],
+              'Geographic Context'           => ['Include your city and state in the page title', 'Add a "Service Area" section listing neighborhoods or cities you cover', 'Mention location in the first paragraph and again in the footer'],
+              'Content Graph Density'        => ['Link your homepage to each service page', 'Add "Related Services" links at the bottom of every page', 'Ensure every page is reachable from the homepage within 2 clicks'],
+              'Direct Answer Content'        => ['Add a FAQ section with 5-8 specific questions about your service', 'Answer each in 2-3 sentences with direct, factual language', 'Start answers with the answer — not a disclaimer'],
+              'Authoritative Definitions'    => ['Define your core service in plain language on your homepage', 'e.g. "Residential electrical work involves..." with a factual definition', 'Avoid marketing language in definitions'],
+              'Organized Content Blocks'     => ['Break content into sections with clear headings', 'Use H2 for major sections, H3 for sub-topics', 'Each block should cover exactly one distinct topic'],
+              'Secure Connection'            => ['Ensure all URLs use https:// and redirect from http://', 'Check for mixed-content warnings in browser DevTools', 'Update any hardcoded http:// links in your CMS'],
+              'Access Speed'                 => ['Compress images to under 150KB each', 'Remove unused JavaScript plugins from your site', 'Enable server-side caching via your hosting control panel'],
+              'Discoverability'              => ['Submit sitemap.xml to Google Search Console', 'Ensure robots.txt does not block your key pages', 'Verify indexing: google.com/search?q=site:yourdomain.com'],
+              'Authority Consolidation'      => ['Redirect www.yourdomain.com and yourdomain.com to one canonical version', 'Set a canonical tag on duplicate or near-duplicate pages', 'Redirect any staging or test URLs that are publicly accessible'],
+              'Citation Readiness'           => ['Add Name, Address, and Phone to every page footer', 'Ensure NAP exactly matches your Google Business Profile', 'Format: business name, street, city, state, ZIP, phone'],
+              'Content Extraction Structure' => ['Use short paragraphs (3-4 sentences max)', 'Add bulleted lists for features, services, or steps', 'Use numbered lists for processes or how-to sequences'],
+              'Service & Location Coverage'  => ['Create one page per service + location combination', 'e.g. "Roof Repair in Denver" as a separate URL', 'Each page needs at least 200 unique words'],
+              'Internal Linking & Navigation'=> ['Add a nav link to each top-level service', 'Link from the homepage to your 5 most important pages', 'Add a "Related Services" section at the bottom of each page'],
+              'Authority Signals'            => ['Get listed on 3+ industry directories: Yelp, BBB, Houzz, etc.', 'Request a Google review from recent customers', 'Get a mention or link from a local news source or partner'],
+              'Technical Signals'            => ['Fix broken links using Screaming Frog or a site audit tool', 'Add a canonical tag to your primary pages', 'Ensure page titles are unique and under 60 characters'],
+            ];
+            @endphp
             @for($i = 0; $i < $sysActionsLimit; $i++)
             @php
               $action = $sysActions[$i];
@@ -1406,6 +1450,7 @@ button.sys-bar-node:hover .sys-bar-dot{border-color:rgba(214,181,95,.54);backgro
               $gainSignalsHigh = $gainSignalsLow + max(4, (int) ceil($action['max'] * .9));
               $reducibleBlockers = max(1, min(5, (int) ceil($action['max'] / 3)));
               $clarityLift = max(8, min(28, (int) ceil($action['max'] * 1.8)));
+              $fixExamples = $fixExamplesMap[$action['label']] ?? [];
             @endphp
             <article class="action {{ $isLead ? 'lead' : 'secondary' }}" data-action-key="{{ md5(($action['label'] ?? '') . '|' . ($action['category'] ?? '') . '|' . ($i + 1)) }}">
               <div class="action-top">
@@ -1464,8 +1509,10 @@ button.sys-bar-node:hover .sys-bar-dot{border-color:rgba(214,181,95,.54);backgro
                   data-next-path="Open Structural Layer Sequence"
                   data-why-matters="Selection pressure remains active while this constraint persists."
                   data-unlocks="Expand data layer coverage, introduce direct-answer nodes, establish authoritative definitions."
+                  data-fix-examples="{{ implode('|', $fixExamples) }}"
                 >{{ $momentumCta }}</button>
               </div>
+              <p class="fix-apply-confirm" aria-live="polite"></p>
               <p class="action-memory">Not started</p>
             </article>
             @endfor
@@ -1514,6 +1561,10 @@ button.sys-bar-node:hover .sys-bar-dot{border-color:rgba(214,181,95,.54);backgro
               <p class="action-memory">Not started</p>
             </article>
             @endif
+          </div>
+          <div class="fix-completion-signal" id="fixCompletionSignal" role="status" aria-live="polite">
+            <p><strong>You&rsquo;re making progress.</strong>Most users move to Guided Execution at this point to complete all fixes in the right order.</p>
+            <a href="{{ $singleNextStep['href'] ?? route('checkout.signal-expansion') }}" class="btn btn-primary">Start Guided Execution &rarr;</a>
           </div>
         </div>
       </section>
@@ -1652,6 +1703,10 @@ button.sys-bar-node:hover .sys-bar-dot{border-color:rgba(214,181,95,.54);backgro
         <div class="fix-detail-block"><p>Current state</p><p id="fixDetailFailure">Unavailable</p></div>
         <div class="fix-detail-block"><p>Why it matters</p><p id="fixDetailWhy">Unavailable</p></div>
         <div class="fix-detail-block"><p>What to do</p><p id="fixDetailCorrection">Unavailable</p></div>
+        <div class="fix-example-block" id="fixDetailExamples" style="display:none">
+          <p class="fix-example-block-title">Example improvements</p>
+          <ul id="fixDetailExamplesList"></ul>
+        </div>
         <div class="fix-detail-block"><p>What improves</p><p id="fixDetailUnlocks">Unavailable</p></div>
         <div class="fix-detail-block"><p>Impact if ignored</p><p id="fixDetailConsequence">Unavailable</p></div>
         <div class="fix-detail-block"><p>Category</p><p id="fixDetailCategory">Unavailable</p></div>
@@ -1805,6 +1860,15 @@ button.sys-bar-node:hover .sys-bar-dot{border-color:rgba(214,181,95,.54);backgro
         memLine.classList.remove('is-fading');
       }, 380);
     }, 2400);
+    // Inline confirmation under button
+    var confirm = card.querySelector('.fix-apply-confirm');
+    if (confirm) {
+      confirm.textContent = '✓ This fix is now tracked in your system';
+      confirm.classList.add('is-visible');
+      window.setTimeout(function () {
+        confirm.style.opacity = '.42';
+      }, 3200);
+    }
   }
 
   function animateScoreBump() {
@@ -1852,6 +1916,9 @@ button.sys-bar-node:hover .sys-bar-dot{border-color:rgba(214,181,95,.54);backgro
     if (pressureBar && (done >= 2 || Math.round((done / total) * 100) > 20)) {
       pressureBar.classList.add('is-visible');
     }
+    // Show completion signal after 2+ fixes
+    var completionSignal = document.getElementById('fixCompletionSignal');
+    if (completionSignal && done >= 2) completionSignal.classList.add('is-visible');
   }
 
   function showAiNudge() {
@@ -1999,6 +2066,24 @@ button.sys-bar-node:hover .sys-bar-dot{border-color:rgba(214,181,95,.54);backgro
     fixDetailUnlocks.textContent = unlocks;
     fixDetailConsequence.textContent = 'Selection pressure remains active while this constraint persists.';
     fixDetailCategory.textContent = category;
+
+    // Render fix examples
+    var examplesWrap = document.getElementById('fixDetailExamples');
+    var examplesList = document.getElementById('fixDetailExamplesList');
+    if (examplesWrap && examplesList) {
+      var examplesRaw = (trigger.dataset.fixExamples || '').trim();
+      examplesList.innerHTML = '';
+      if (examplesRaw) {
+        examplesRaw.split('|').forEach(function (ex) {
+          var li = document.createElement('li');
+          li.textContent = ex.trim();
+          examplesList.appendChild(li);
+        });
+        examplesWrap.style.display = 'block';
+      } else {
+        examplesWrap.style.display = 'none';
+      }
+    }
 
     fixDetailMask.dataset.open = 'true';
     document.body.style.overflow = 'hidden';

@@ -2376,7 +2376,7 @@
         {{-- Upsell to L4 if applicable --}}
         @if($tierRank === 3)
         <div class="ap-upsell-banner">
-          <span class="ap-upsell-text">You have the plan — now execute it with structure. <strong>Guided Execution</strong> turns this into a step-by-step checklist with progress tracking inside your dashboard.</span>
+          <span class="ap-upsell-text">You&rsquo;ve identified your gaps. Execution turns this into measurable visibility gains. <strong>Guided Execution</strong> gives you a step-by-step checklist with progress tracking inside your dashboard.</span>
           <a href="{{ route('checkout.system-activation') }}" class="ap-upsell-btn" onclick="track('cta_click',{tier:489,label:'guided_execution',location:'action_plan_upsell'})">Start Guided Execution &mdash; $489 &rarr;</a>
         </div>
         @endif
