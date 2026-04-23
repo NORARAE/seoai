@@ -1869,7 +1869,7 @@ button.sys-bar-node:hover .sys-bar-dot{border-color:rgba(214,181,95,.54);backgro
     if (isEscalation) {
       msg.textContent = 'You\'re doing this manually right now. I can show you the exact order of fixes to maximize impact — want to unlock that?';
     } else {
-      msg.textContent = 'Nice \u2014 that removes a key constraint. Want to move to the next highest-impact fix?';
+      msg.textContent = 'Nice — that removes a key constraint. Want to move to the next highest-impact fix?';
     }
     var cta = document.createElement('button');
     cta.type = 'button';

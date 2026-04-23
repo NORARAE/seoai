@@ -279,7 +279,7 @@ class QuickScanService
             'label' => 'Topic Depth Markers',
             'pass' => "Multiple topic depth markers detected ({$h2Count}) — strong structure.",
             'fail' => 'Insufficient topic depth markers — AI cannot map your content structure.',
-            'fix' => 'Add topic depth markers covering different aspects of your service.',
+            'fix' => 'Add topic depth markers across your service pages.',
         ];
 
         // Word count (4 pts for 300+)
