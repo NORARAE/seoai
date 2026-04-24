@@ -1322,9 +1322,11 @@
           <div class="sys-actions">
             @if($ownedTierRank >= 2)
             <span class="sys-cta-owned-badge"><svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M1.5 5l2.5 2.5 4.5-5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg> Signal Analysis active</span>
-            @else
+            @elseif($ownedTierRank >= 1)
             <a href="{{ route('checkout.signal-expansion') }}" class="sys-cta --primary" onclick="track('cta_click',{tier:99,label:'signal_analysis',location:'pricing_step2'})">Upgrade to Signal Analysis &mdash; $99</a>
-            <span class="sys-cta-note">Available after scan</span>
+            @else
+            <a href="{{ route('scan.start') }}" class="sys-cta --primary" onclick="track('cta_click',{tier:2,label:'scan_first_from_signal',location:'pricing_step2'})">Start with Scan &mdash; $2</a>
+            <span class="sys-cta-note">Signal Analysis ($99) available after your scan</span>
             @endif
           </div>
         </div>
@@ -1350,9 +1352,12 @@
           <div class="sys-actions">
             @if($ownedTierRank >= 3)
             <span class="sys-cta-owned-badge"><svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M1.5 5l2.5 2.5 4.5-5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg> Action Plan active</span>
-            @else
+            @elseif($ownedTierRank >= 1)
             <a href="{{ route('checkout.structural-leverage') }}" class="sys-cta --primary" onclick="track('cta_click',{tier:249,label:'action_plan',location:'pricing_step3'})">Get My Action Plan &mdash; $249</a>
             <button class="sys-trust-trigger" data-layer="level-3">See what unlocks</button>
+            @else
+            <a href="{{ route('scan.start') }}" class="sys-cta --primary" onclick="track('cta_click',{tier:2,label:'scan_first_from_action_plan',location:'pricing_step3'})">Start with Scan &mdash; $2</a>
+            <span class="sys-cta-note">Action Plan ($249) available after your scan</span>
             @endif
           </div>
           @if($ownedTierRank < 3)
@@ -1381,9 +1386,12 @@
           <div class="sys-actions">
             @if($ownedTierRank >= 4)
             <span class="sys-cta-owned-badge"><svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M1.5 5l2.5 2.5 4.5-5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg> Guided Execution active</span>
-            @else
+            @elseif($ownedTierRank >= 1)
             <a href="{{ route('checkout.system-activation') }}" class="sys-cta --primary" onclick="track('cta_click',{tier:489,label:'guided_execution',location:'pricing_step4'})">Start Guided Execution &mdash; $489</a>
             <button class="sys-trust-trigger" data-layer="level-4">See what unlocks</button>
+            @else
+            <a href="{{ route('scan.start') }}" class="sys-cta --primary" onclick="track('cta_click',{tier:2,label:'scan_first_from_guided',location:'pricing_step4'})">Start with Scan &mdash; $2</a>
+            <span class="sys-cta-note">Guided Execution ($489) available after your scan</span>
             @endif
           </div>
           @if($ownedTierRank < 4)
