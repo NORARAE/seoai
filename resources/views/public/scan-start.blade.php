@@ -417,7 +417,7 @@
 
            window.setTimeout(() => {
              try {
-               this.$refs.form.submit();
+               window._scanStartSubmit(this.$refs.form);
              } catch (e) {
                // Keep manual fallback usable if submit binding fails.
                this.hasAdvanced = false;
@@ -500,6 +500,10 @@
 
       <form method="POST" action="{{ route('scan.submit') }}" x-ref="form" @submit.prevent="submitForm()">
         @csrf
+        @if(config('services.turnstile.site_key'))
+        <input type="hidden" name="cf-turnstile-response" id="ss-cf-turnstile-response" value="">
+        <div id="cf-turnstile-scanstart" aria-hidden="true"></div>
+        @endif
         <input type="hidden" name="url" :value="url">
         <input type="hidden" name="email" :value="email">
         <button type="submit" class="se-btn" :class="{ 'is-securing': hasAdvanced }" :disabled="hasAdvanced" style="max-width:480px;margin:0 auto;display:block" x-text="hasAdvanced ? 'Securing Checkout\u2026' : 'Unlock Full Scan \u2192'"></button>
@@ -518,9 +522,63 @@
 <script>
 const nav = document.getElementById('nav');
 if(nav) window.addEventListener('scroll', () => nav.classList.toggle('stuck', scrollY > 60), {passive:true});
+
+@if(config('services.turnstile.site_key'))
+// Cloudflare Turnstile — executed just before form submit
+var _ssTsWidgetId = null;
+var _ssTsToken = null;
+window._ssTsCallback = function(token) {
+  _ssTsToken = token;
+  var inp = document.getElementById('ss-cf-turnstile-response');
+  if (inp) inp.value = token;
+};
+window._ssTsError = function() { _ssTsToken = ''; };
+function _ssRenderTs() {
+  if (window.turnstile && !_ssTsWidgetId) {
+    _ssTsWidgetId = turnstile.render('#cf-turnstile-scanstart', {
+      sitekey: @json(config('services.turnstile.site_key')),
+      size: 'invisible', theme: 'dark', execution: 'execute',
+      callback: window._ssTsCallback,
+      'error-callback': window._ssTsError,
+    });
+  }
+}
+if (window.turnstile) { _ssRenderTs(); }
+else {
+  var _prevTsLoad2 = window.onTurnstileLoad;
+  window.onTurnstileLoad = function() { if (_prevTsLoad2) _prevTsLoad2(); _ssRenderTs(); };
+}
+window._scanStartSubmit = function(form) {
+  if (_ssTsToken !== null) {
+    // Token already received (or error — fail-open)
+    form.submit();
+    return;
+  }
+  if (_ssTsWidgetId !== null) {
+    // Execute and submit in callback
+    var _orig = window._ssTsCallback;
+    window._ssTsCallback = function(token) {
+      _orig(token);
+      form.submit();
+    };
+    var _origErr = window._ssTsError;
+    window._ssTsError = function() {
+      _origErr();
+      form.submit();
+    };
+    turnstile.execute(_ssTsWidgetId);
+    return;
+  }
+  // Fallback: widget not ready, submit without token (fail-open)
+  form.submit();
+};
+@else
+window._scanStartSubmit = function(form) { form.submit(); };
+@endif
 </script>
 @include('partials.public-nav-js')
 @include('components.booking-modal')
 @include('components.tm-style')
+@include('partials.turnstile-script')
 </body>
 </html>

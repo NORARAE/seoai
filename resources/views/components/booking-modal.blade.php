@@ -365,6 +365,9 @@
           <span x-show="submitting"><span class="bk-spinner"></span> Reserving Entry...</span>
           <span x-show="!submitting">Confirm Entry Session</span>
         </button>
+        @if(config('services.turnstile.site_key'))
+        <div id="cf-turnstile-booking" aria-hidden="true" style="display:none"></div>
+        @endif
       </div>
 
       {{-- ═══ STEP 4: Redirecting ═══ --}}
@@ -416,7 +419,7 @@ document.addEventListener('alpine:init', () => {
     confirmation: { consult_type: '', date: '', time: '', duration: 0, meet_link: '' },
 
     // When true, overlay click and Escape will not close the modal (used on /book).
-    disableOverlayDismiss: {{ json_encode($disableOverlayDismiss ?? false) }},
+    disableOverlayDismiss: @json($disableOverlayDismiss ?? false),
 
     // Available days (0=Sun..6=Sat) — supplied by the controller, never re-queried in the view.
     availableDays: @json($availableDays ?? []),
@@ -563,7 +566,7 @@ document.addEventListener('alpine:init', () => {
       try {
         const endpoint = this.selectedTypeIsFree ? '/book' : '/book/checkout';
         const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content')
-              || '{{ csrf_token() }}';
+              || @json(csrf_token());
         const resp = await fetch(endpoint, {
           method: 'POST',
           credentials: 'include',
@@ -579,6 +582,7 @@ document.addEventListener('alpine:init', () => {
             ...this.form,
             add_ons: this.addOns,
             ...(this.paymentStructure ? { payment_structure: this.paymentStructure } : {}),
+            'cf_turnstile_response': window._bkTsToken || '',
           })
         });
         const data = await resp.json();
@@ -672,3 +676,34 @@ document.addEventListener('alpine:init', () => {
   }));
 });
 </script>
+@if(config('services.turnstile.site_key'))
+<script>
+window._bkTsToken = null;
+window._bkTsWidgetId = null;
+function _bkRenderTurnstile() {
+  if (window.turnstile && !window._bkTsWidgetId && document.getElementById('cf-turnstile-booking')) {
+    window._bkTsWidgetId = turnstile.render('#cf-turnstile-booking', {
+      sitekey: @json(config('services.turnstile.site_key')),
+      size: 'invisible', theme: 'dark', execution: 'execute',
+      callback: function(token) { window._bkTsToken = token; },
+      'error-callback': function() { window._bkTsToken = ''; },
+    });
+  }
+}
+if (window.turnstile) { _bkRenderTurnstile(); }
+else {
+  var _prevTsLoad3 = window.onTurnstileLoad;
+  window.onTurnstileLoad = function() { if (_prevTsLoad3) _prevTsLoad3(); _bkRenderTurnstile(); };
+}
+// Execute Turnstile token refresh whenever booking modal opens
+document.addEventListener('alpine:init', function() {
+  document.addEventListener('open-booking', function() {
+    if (window.turnstile && window._bkTsWidgetId !== null) {
+      window._bkTsToken = null;
+      turnstile.reset(window._bkTsWidgetId);
+      turnstile.execute(window._bkTsWidgetId);
+    }
+  });
+});
+</script>
+@endif

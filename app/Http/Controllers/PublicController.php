@@ -6,7 +6,9 @@ use App\Mail\NewAccountInquiryAdminMail;
 use App\Mail\NewAccountInquiryWelcomeMail;
 use App\Models\Inquiry;
 use App\Models\SpamLog;
+use App\Services\InquiryAntiSpamService;
 use App\Services\InquiryEnrichmentService;
+use App\Services\TurnstileVerificationService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
@@ -18,6 +20,8 @@ class PublicController extends Controller
 {
     public function __construct(
         private readonly InquiryEnrichmentService $enrichment,
+        private readonly InquiryAntiSpamService $antiSpam,
+        private readonly TurnstileVerificationService $turnstile,
     ) {
     }
 
@@ -53,10 +57,11 @@ class PublicController extends Controller
      *  2. Honeypot check  — silently reject bots that fill hidden fields
      *  3. Duplicate check — silently suppress repeat submissions within 10 min
      *  4. Persist inquiry (always — even if enrichment or mail fails)
-     *  5. Run enrichment pipeline (geo, URL, email, company, reCAPTCHA, timer)
-     *  6. Score spam risk — update record
-     *  7. Silent-reject high-risk / honeypot hits — log to spam_logs, no admin email
-     *  8. Send emails for legitimate submissions
+     *  5. Anti-spam pre-flight (IP blocklist, company names, speed, rate limit — no API calls)
+     *  6. Run enrichment pipeline (geo, URL, email, company, reCAPTCHA, timer)
+     *  7. Score spam risk — update record
+     *  8. Silent-reject high-risk / honeypot hits — log to spam_logs, no admin email
+     *  9. Send emails for legitimate submissions
      */
     public function storeLicensingInquiry(Request $request): RedirectResponse
     {
@@ -77,6 +82,7 @@ class PublicController extends Controller
             'website_confirm' => ['nullable', 'string', 'max:512'],
             'form_loaded_at' => ['nullable', 'integer'],
             'g-recaptcha-response' => ['nullable', 'string', 'max:2048'],
+            'cf-turnstile-response' => ['nullable', 'string', 'max:2048'],
         ]);
 
         $ip = $request->ip() ?? '0.0.0.0';
@@ -98,6 +104,14 @@ class PublicController extends Controller
         // ── 4. Persist inquiry (always — even rejections are stored for review) ──
         $formLoadedAt = isset($validated['form_loaded_at']) ? (int) $validated['form_loaded_at'] : null;
         $recaptchaToken = $validated['g-recaptcha-response'] ?? '';
+        $turnstileToken = $validated['cf-turnstile-response'] ?? '';
+
+        // ── Turnstile pre-check — verify token server-side before persisting ──────
+        $tsResult = $this->turnstile->verify($turnstileToken, $ip);
+        // Differentiate "missing token" (2 pts) from "invalid token" (8 pts) in antispam scoring:
+        // When the reason is 'turnstile_missing', pass null (unchecked) — not false (invalid).
+        $turnstileValid = ($tsResult['reason'] === 'turnstile_missing') ? null : $tsResult['valid'];
+        $turnstileMissing = ($turnstileToken === '');
 
         $inquiry = Inquiry::create([
             'name' => $validated['name'],
@@ -119,7 +133,44 @@ class PublicController extends Controller
             Cache::put($ipKey, 1, now()->addMinutes(10));
         }
 
-        // ── 5. Enrichment pipeline ──────────────────────────────────────────────
+        // ── 5. Anti-spam pre-flight check (no external calls) ───────────────────
+        $antiSpamResult = $this->antiSpam->evaluate($ip, [
+            'company' => $validated['company'],
+            'email' => $validated['email'],
+            'message' => $validated['message'],
+            'form_loaded_at' => $formLoadedAt,
+            'honeypot_value' => $validated['website_confirm'] ?? null,
+            'ip_is_proxy' => null, // not yet known — enrichment runs next
+            'recaptcha_score' => null, // not yet known — enrichment runs next
+            'turnstile_valid' => $turnstileValid,
+            'turnstile_missing' => $turnstileMissing,
+        ]);
+
+        if ($antiSpamResult['action'] === 'block') {
+            $inquiry->update(['spam_risk' => 'high', 'status' => 'rejected']);
+
+            SpamLog::create([
+                'inquiry_id' => $inquiry->id,
+                'reason' => 'antispam_blocked',
+                'spam_risk' => 'high',
+                'risk_score' => $antiSpamResult['risk_score'],
+                'ip_address' => $ip,
+                'email' => $validated['email'],
+                'signals' => $antiSpamResult['reasons'],
+            ]);
+
+            Log::info('Inquiry blocked by anti-spam pre-flight', [
+                'id' => $inquiry->id,
+                'ip' => $ip,
+                'email' => $validated['email'],
+                'score' => $antiSpamResult['risk_score'],
+                'reasons' => $antiSpamResult['reasons'],
+            ]);
+
+            return redirect(url('/') . '#contact')->with('inquiry_success', $successMsg);
+        }
+
+        // ── 6. Enrichment pipeline ──────────────────────────────────────────────
         try {
             $enrichData = $this->enrichment->enrichAll(
                 $ip,
@@ -145,7 +196,7 @@ class PublicController extends Controller
             $enrichData = [];
         }
 
-        // ── 6. Spam risk scoring ────────────────────────────────────────────────
+        // ── 7. Spam risk scoring ────────────────────────────────────────────────
         $enrichData['honeypot_triggered'] = $honeypotTriggered;
 
         $riskResult = $this->enrichment->scoreSpamRisk($enrichData);
@@ -155,7 +206,7 @@ class PublicController extends Controller
 
         $inquiry->update(['spam_risk' => $spamRisk]);
 
-        // ── 7. Silent rejection ─────────────────────────────────────────────────
+        // ── 8. Silent rejection ─────────────────────────────────────────────────
         $shouldReject = $honeypotTriggered
             || $spamRisk === 'high'
             || $isDuplicate;
@@ -190,7 +241,7 @@ class PublicController extends Controller
             return redirect(url('/') . '#contact')->with('inquiry_success', $successMsg);
         }
 
-        // ── 8. Send emails ──────────────────────────────────────────────────────
+        // ── 9. Send emails ────────────────────────────────────────────────────────
         try {
             Mail::to($inquiry->email)->queue(new NewAccountInquiryWelcomeMail($inquiry));
             $inquiry->update(['welcome_sent_at' => now()]);

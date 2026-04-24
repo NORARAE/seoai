@@ -4698,6 +4698,10 @@ body::before{
       @if(config('services.recaptcha.site_key'))
       <input type="hidden" name="g-recaptcha-response" id="g-recaptcha-response" value="">
       @endif
+      @if(config('services.turnstile.site_key'))
+      <input type="hidden" name="cf-turnstile-response" id="cf-turnstile-response" value="">
+      <div id="cf-turnstile-inquiry" aria-hidden="true"></div>
+      @endif
 
       <p style="font-size:.82rem;color:var(--muted);text-align:center;letter-spacing:.04em;margin-bottom:8px">We review every message personally. Not all markets are available.</p>
       <button type="submit" class="fsub" id="submitBtn">Send My Question</button>
@@ -4823,22 +4827,82 @@ body::before{
 
   document.getElementById('form_loaded_at').value = Math.floor(Date.now() / 1000);
 
+  @if(config('services.turnstile.site_key'))
+  // Cloudflare Turnstile (invisible) — renders and executes on form submit
+  var _inquiryTurnstileReady = false;
+  var _inquiryTurnstileWidgetId = null;
+
+  window._inquiryTurnstileCallback = function(token) {
+    document.getElementById('cf-turnstile-response').value = token;
+    _inquiryTurnstileReady = true;
+    // Proceed to reCAPTCHA step or final submit
+    _inquiryProceedSubmit();
+  };
+  window._inquiryTurnstileError = function() {
+    // Fail-open: Turnstile error should not block legitimate users
+    _inquiryTurnstileReady = true;
+    _inquiryProceedSubmit();
+  };
+
+  function _inquiryRenderTurnstile() {
+    if (window.turnstile && !_inquiryTurnstileWidgetId) {
+      _inquiryTurnstileWidgetId = turnstile.render('#cf-turnstile-inquiry', {
+        sitekey: @json(config('services.turnstile.site_key')),
+        size: 'invisible',
+        theme: 'dark',
+        execution: 'execute',
+        callback: window._inquiryTurnstileCallback,
+        'error-callback': window._inquiryTurnstileError,
+      });
+    }
+  }
+  // Try immediately if Turnstile loaded synchronously, else wait for onload
+  if (window.turnstile) {
+    _inquiryRenderTurnstile();
+  } else {
+    var _prevTurnstileLoad = window.onTurnstileLoad;
+    window.onTurnstileLoad = function() {
+      if (_prevTurnstileLoad) _prevTurnstileLoad();
+      _inquiryRenderTurnstile();
+    };
+  }
+  @endif
+
+  function _inquiryProceedSubmit() {
+    @if(config('services.recaptcha.site_key'))
+    grecaptcha.ready(function() {
+      grecaptcha.execute(@json(config('services.recaptcha.site_key')), {action: 'inquiry_submit'}).then(function(token) {
+        document.getElementById('g-recaptcha-response').value = token;
+        document.getElementById('inquiryForm').submit();
+      }).catch(function() {
+        document.getElementById('inquiryForm').submit();
+      });
+    });
+    @else
+    document.getElementById('inquiryForm').submit();
+    @endif
+  }
+
   document.getElementById('inquiryForm').addEventListener('submit', function(e) {
     const btn = document.getElementById('submitBtn');
     btn.disabled = true;
     btn.textContent = 'Submitting…';
+    @if(config('services.turnstile.site_key'))
+    if (!_inquiryTurnstileReady && _inquiryTurnstileWidgetId !== null) {
+      e.preventDefault();
+      turnstile.execute(_inquiryTurnstileWidgetId);
+      return;
+    }
+    if (!_inquiryTurnstileReady) {
+      // Turnstile widget not rendered yet (script still loading) — submit without token
+      e.preventDefault();
+      _inquiryProceedSubmit();
+      return;
+    }
+    @endif
     @if(config('services.recaptcha.site_key'))
-    // reCAPTCHA v3 — execute before submit
     e.preventDefault();
-    grecaptcha.ready(function() {
-      grecaptcha.execute('{{ config('services.recaptcha.site_key') }}', {action: 'inquiry_submit'}).then(function(token) {
-        document.getElementById('g-recaptcha-response').value = token;
-        document.getElementById('inquiryForm').submit();
-      }).catch(function() {
-        // reCAPTCHA failure should not block submission
-        document.getElementById('inquiryForm').submit();
-      });
-    });
+    _inquiryProceedSubmit();
     @endif
   });
 
@@ -5570,8 +5634,8 @@ body::before{
 </script>
 <script>
 (function(){
-  var userState = {{ auth()->check() ? "'logged_in'" : "'guest'" }};
-  var role = {{ auth()->check() ? "'" . ((auth()->user()?->isPrivilegedStaff() || auth()->user()?->isFrontendDev()) ? 'staff' : 'customer') . "'" : "'guest'" }};
+  var userState = @json(auth()->check() ? 'logged_in' : 'guest');
+  var role = @json(auth()->check() ? ((auth()->user()?->isPrivilegedStaff() || auth()->user()?->isFrontendDev()) ? 'staff' : 'customer') : 'guest');
 
   document.querySelectorAll('a[href*="/scan/start"]').forEach(function(el){
     el.addEventListener('click',function(){
@@ -5588,5 +5652,6 @@ body::before{
 </script>
 @include('components.ai-assistant', ['aiMicroLabel' => 'Instant AI insights'])
 @include('components.tm-style')
+@include('partials.turnstile-script')
 </body>
 </html>

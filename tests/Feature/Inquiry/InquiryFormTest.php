@@ -2,9 +2,11 @@
 
 namespace Tests\Feature\Inquiry;
 
+use App\Models\BlockedIp;
 use App\Models\Inquiry;
 use App\Models\SpamLog;
 use App\Services\InquiryEnrichmentService;
+use App\Services\TurnstileVerificationService;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Mail;
@@ -36,14 +38,14 @@ class InquiryFormTest extends TestCase
     private function validPayload(array $overrides = []): array
     {
         return array_merge([
-            'name'           => 'Test User',
-            'company'        => 'Test Corp',
-            'email'          => 'test@realcompany.com',
-            'website'        => 'https://realcompany.com',
-            'type'           => 'business',
-            'tier'           => '5k',
-            'niche'          => 'Law',
-            'message'        => 'Looking for SEO solution for our business.',
+            'name' => 'Test User',
+            'company' => 'Test Corp',
+            'email' => 'test@realcompany.com',
+            'website' => 'https://realcompany.com',
+            'type' => 'business',
+            'tier' => '5k',
+            'niche' => 'Law',
+            'message' => 'Looking for SEO solution for our business.',
             'form_loaded_at' => (string) (time() - 60),  // 60 seconds ago — valid
         ], $overrides);
     }
@@ -53,19 +55,19 @@ class InquiryFormTest extends TestCase
         $mock = $this->createMock(InquiryEnrichmentService::class);
 
         $defaults = [
-            'ip_city'                => 'Seattle',
-            'ip_region'              => 'Washington',
-            'ip_country'             => 'US',
-            'ip_isp'                 => 'Test ISP',
-            'ip_is_proxy'            => false,
-            'ip_is_hosting'          => false,
-            'url_status'             => 'valid',
-            'url_is_https'           => true,
-            'domain_age_days'        => 400,
-            'email_type'             => 'business',
-            'company_enrichment'     => null,
+            'ip_city' => 'Seattle',
+            'ip_region' => 'Washington',
+            'ip_country' => 'US',
+            'ip_isp' => 'Test ISP',
+            'ip_is_proxy' => false,
+            'ip_is_hosting' => false,
+            'url_status' => 'valid',
+            'url_is_https' => true,
+            'domain_age_days' => 400,
+            'email_type' => 'business',
+            'company_enrichment' => null,
             'time_to_submit_seconds' => 60,
-            'recaptcha_score'        => null,
+            'recaptcha_score' => null,
         ];
 
         $enrichData = array_merge($defaults, $override);
@@ -74,7 +76,7 @@ class InquiryFormTest extends TestCase
         $mock->method('verifyRecaptcha')->willReturn(null);
         $mock->method('scoreSpamRisk')->willReturnCallback(
             // Delegate to the real scoring method for accuracy
-            fn (array $data) => (new InquiryEnrichmentService())->scoreSpamRisk($data)
+            fn(array $data) => (new InquiryEnrichmentService())->scoreSpamRisk($data)
         );
 
         $this->app->instance(InquiryEnrichmentService::class, $mock);
@@ -107,7 +109,9 @@ class InquiryFormTest extends TestCase
 
         $spamLog = SpamLog::where('inquiry_id', $inquiry->id)->first();
         $this->assertNotNull($spamLog);
-        $this->assertEquals('honeypot_triggered', $spamLog->reason);
+        // Anti-spam service fires first and logs 'antispam_blocked' with 'honeypot_filled' signal
+        $this->assertEquals('antispam_blocked', $spamLog->reason);
+        $this->assertContains('honeypot_filled', $spamLog->signals ?? []);
     }
 
     public function test_legacy_website_url_honeypot_also_triggers_rejection(): void
@@ -131,7 +135,8 @@ class InquiryFormTest extends TestCase
     public function test_bot_speed_submission_raises_spam_risk(): void
     {
         Queue::fake();
-        // form_loaded_at = 2 seconds ago (under 4 second threshold)
+        // form_loaded_at = 2 seconds ago (under 3 second anti-spam threshold)
+        // Anti-spam service blocks this outright — enrichment never runs
         $this->mockEnrichment(['time_to_submit_seconds' => 2]);
 
         $this->post(route('licensing-inquiry.store'), $this->validPayload([
@@ -139,9 +144,14 @@ class InquiryFormTest extends TestCase
         ]));
 
         $inquiry = Inquiry::latest()->first();
-        // 2s fast submit = +3 pts → medium or high depending on other signals
-        $this->assertContains($inquiry->spam_risk, ['medium', 'high']);
-        $this->assertEquals(2, $inquiry->time_to_submit_seconds);
+        // Anti-spam blocks before enrichment, so status=rejected and spam_risk=high
+        $this->assertEquals('rejected', $inquiry->status);
+        $this->assertEquals('high', $inquiry->spam_risk);
+
+        $spamLog = SpamLog::where('inquiry_id', $inquiry->id)->first();
+        $this->assertNotNull($spamLog);
+        $this->assertEquals('antispam_blocked', $spamLog->reason);
+        $this->assertContains('submit_too_fast', $spamLog->signals ?? []);
     }
 
     // ──────────────────────────────────────────────────────────────────────────
@@ -154,7 +164,7 @@ class InquiryFormTest extends TestCase
         $this->mockEnrichment();
 
         $testEmail = 'unique_test_dup@realcompany.com';
-        $payload   = $this->validPayload(['email' => $testEmail]);
+        $payload = $this->validPayload(['email' => $testEmail]);
 
         // Simulate a prior submission by pre-seeding both cache keys
         // (replicating what the controller puts after a successful first submission)
@@ -184,8 +194,8 @@ class InquiryFormTest extends TestCase
         Queue::fake();
         // Proxy IP + disposable email = score 6 = high risk
         $this->mockEnrichment([
-            'ip_is_proxy'   => true,
-            'email_type'    => 'disposable',
+            'ip_is_proxy' => true,
+            'email_type' => 'disposable',
         ]);
 
         $response = $this->post(route('licensing-inquiry.store'), $this->validPayload([
@@ -249,5 +259,92 @@ class InquiryFormTest extends TestCase
         // The user sees the standard thank-you message, not an error
         $response->assertSessionHas('inquiry_success');
         $response->assertSessionMissing('errors');
+    }
+
+    // ──────────────────────────────────────────────────────────────────────────
+    // TURNSTILE INTEGRATION
+    // ──────────────────────────────────────────────────────────────────────────
+
+    private function mockTurnstile(bool $valid, ?string $reason = null): void
+    {
+        $mock = $this->createMock(TurnstileVerificationService::class);
+        $mock->method('verify')->willReturn(['valid' => $valid, 'reason' => $reason]);
+        $this->app->instance(TurnstileVerificationService::class, $mock);
+    }
+
+    public function test_valid_turnstile_token_allows_inquiry_through(): void
+    {
+        Queue::fake();
+        $this->mockEnrichment();
+        $this->mockTurnstile(true);
+
+        $response = $this->post(route('licensing-inquiry.store'), $this->validPayload([
+            'cf-turnstile-response' => 'valid-token-abc',
+        ]));
+
+        $response->assertSessionHas('inquiry_success');
+        $this->assertDatabaseHas('inquiries', ['email' => 'test@realcompany.com']);
+        $inquiry = Inquiry::where('email', 'test@realcompany.com')->first();
+        $this->assertSame('new', $inquiry->status); // not rejected
+        // Both emails queued
+        Queue::assertCount(2);
+    }
+
+    public function test_invalid_turnstile_token_blocks_inquiry(): void
+    {
+        Queue::fake();
+        $this->mockEnrichment();
+        $this->mockTurnstile(false, 'turnstile_invalid');
+
+        $response = $this->post(route('licensing-inquiry.store'), $this->validPayload([
+            'cf-turnstile-response' => 'bad-token',
+        ]));
+
+        // Still shows success message (silent rejection)
+        $response->assertSessionHas('inquiry_success');
+        // Inquiry should exist but be rejected by anti-spam pre-flight
+        $this->assertDatabaseHas('inquiries', ['email' => 'test@realcompany.com']);
+        $inquiry = Inquiry::where('email', 'test@realcompany.com')->first();
+        $this->assertSame('rejected', $inquiry->status);
+        // No emails sent
+        Queue::assertNothingPushed();
+    }
+
+    public function test_turnstile_disabled_does_not_block_valid_inquiry(): void
+    {
+        Queue::fake();
+        $this->mockEnrichment();
+
+        // Turnstile disabled — verify() returns valid=true with reason turnstile_disabled
+        $this->mockTurnstile(true, 'turnstile_disabled');
+
+        $response = $this->post(route('licensing-inquiry.store'), $this->validPayload());
+
+        $response->assertSessionHas('inquiry_success');
+        $this->assertDatabaseHas('inquiries', ['email' => 'test@realcompany.com']);
+        $inquiry = Inquiry::where('email', 'test@realcompany.com')->first();
+        $this->assertSame('new', $inquiry->status); // not rejected
+    }
+
+    // ──────────────────────────────────────────────────────────────────────────
+    // DB PERSISTENT BLOCKLIST
+    // ──────────────────────────────────────────────────────────────────────────
+
+    public function test_db_blocked_ip_is_silently_rejected(): void
+    {
+        Queue::fake();
+        $this->mockEnrichment();
+
+        // Block the test IP in DB
+        BlockedIp::block('127.0.0.1', 'test block', 'test');
+
+        $response = $this->post(route('licensing-inquiry.store'), $this->validPayload());
+
+        $response->assertSessionHas('inquiry_success');
+        // Should be rejected
+        $inquiry = Inquiry::where('email', 'test@realcompany.com')->first();
+        $this->assertNotNull($inquiry);
+        $this->assertSame('rejected', $inquiry->status);
+        Queue::assertNothingPushed();
     }
 }

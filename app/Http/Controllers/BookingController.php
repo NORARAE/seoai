@@ -15,6 +15,7 @@ use App\Models\FunnelEvent;
 use App\Models\Lead;
 use App\Models\QuickScan;
 use App\Services\GoogleCalendarService;
+use App\Services\TurnstileVerificationService;
 use Carbon\Carbon;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
@@ -91,6 +92,20 @@ class BookingController extends Controller
     {
         // Honeypot — bots fill hidden fields; legitimate users never do
         if ($request->filled('website_confirm')) {
+            return response()->json(['message' => 'Invalid request.'], 422);
+        }
+
+        // Turnstile verification — only hard-reject confirmed invalid tokens; missing = fail-open
+        $turnstileToken = (string) $request->input('cf_turnstile_response', '');
+        $ip = $request->ip() ?? '0.0.0.0';
+        $tsResult = app(TurnstileVerificationService::class)->verify($turnstileToken, $ip);
+        $tsReason = $tsResult['reason'] ?? null;
+        $tsPassthrough = in_array($tsReason, ['turnstile_disabled', 'turnstile_error', 'turnstile_missing'], true);
+        if (!$tsResult['valid'] && !$tsPassthrough) {
+            Log::info('BookingController: Turnstile rejected booking attempt', [
+                'ip' => $ip,
+                'reason' => $tsReason,
+            ]);
             return response()->json(['message' => 'Invalid request.'], 422);
         }
 

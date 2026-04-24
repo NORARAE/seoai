@@ -29,5 +29,8 @@ class DatabaseSeeder extends Seeder
 
         // Seed consult types and booking availability
         $this->call(BookingSeeder::class);
+
+        // Seed persistent IP blocklist
+        $this->call(BlockedIpSeeder::class);
     }
 }

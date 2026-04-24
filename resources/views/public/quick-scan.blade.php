@@ -402,6 +402,10 @@ body{background:var(--bg);color:var(--ivory);font-family:'DM Sans',sans-serif;fo
         @enderror
       </div>
 
+      @if(config('services.turnstile.site_key'))
+      <input type="hidden" name="cf-turnstile-response" id="qs-cf-turnstile-response" value="">
+      <div id="cf-turnstile-scan" aria-hidden="true"></div>
+      @endif
       <button type="submit" class="qs-submit" id="submitBtn">
         <span id="btnText">See Where You Stand — $2</span>
         <span id="btnSpinner" style="display:none">Redirecting to payment…</span>
@@ -540,6 +544,49 @@ body{background:var(--bg);color:var(--ivory);font-family:'DM Sans',sans-serif;fo
   // Set timing check value on page load
   document.getElementById('_loadedAt').value = (Date.now() / 1000).toFixed(3);
 
+  @if(config('services.turnstile.site_key'))
+  var _scanTsReady = false;
+  var _scanTsWidgetId = null;
+  window._scanTsCallback = function(token) {
+    document.getElementById('qs-cf-turnstile-response').value = token;
+    _scanTsReady = true;
+    _scanProceedSubmit();
+  };
+  window._scanTsError = function() { _scanTsReady = true; _scanProceedSubmit(); };
+  function _scanProceedSubmit() {
+    var btn = document.getElementById('submitBtn');
+    var txt = document.getElementById('btnText');
+    var spin = document.getElementById('btnSpinner');
+    btn.disabled = true; txt.style.display = 'none'; spin.style.display = 'inline';
+    document.getElementById('scanForm').submit();
+  }
+  function _scanRenderTs() {
+    if (window.turnstile && !_scanTsWidgetId) {
+      _scanTsWidgetId = turnstile.render('#cf-turnstile-scan', {
+        sitekey: @json(config('services.turnstile.site_key')),
+        size: 'invisible', theme: 'dark', execution: 'execute',
+        callback: window._scanTsCallback,
+        'error-callback': window._scanTsError,
+      });
+    }
+  }
+  if (window.turnstile) { _scanRenderTs(); }
+  else {
+    var _prevTsLoad = window.onTurnstileLoad;
+    window.onTurnstileLoad = function() { if(_prevTsLoad) _prevTsLoad(); _scanRenderTs(); };
+  }
+  document.getElementById('scanForm').addEventListener('submit', function(e) {
+    if (!_scanTsReady && _scanTsWidgetId !== null) {
+      e.preventDefault();
+      turnstile.execute(_scanTsWidgetId);
+      return;
+    }
+    var btn = document.getElementById('submitBtn');
+    var txt = document.getElementById('btnText');
+    var spin = document.getElementById('btnSpinner');
+    btn.disabled = true; txt.style.display = 'none'; spin.style.display = 'inline';
+  });
+  @else
   document.getElementById('scanForm').addEventListener('submit', function() {
     var btn = document.getElementById('submitBtn');
     var txt = document.getElementById('btnText');
@@ -548,6 +595,7 @@ body{background:var(--bg);color:var(--ivory);font-family:'DM Sans',sans-serif;fo
     txt.style.display = 'none';
     spin.style.display = 'inline';
   });
+  @endif
 </script>
 @include('partials.public-nav-js')
 @include('components.ai-assistant', [
@@ -562,5 +610,6 @@ body{background:var(--bg);color:var(--ivory);font-family:'DM Sans',sans-serif;fo
     ],
 ])
 @include('components.tm-style')
+@include('partials.turnstile-script')
 </body>
 </html>
