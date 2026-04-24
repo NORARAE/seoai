@@ -128,7 +128,7 @@ Route::get('/web-design-development', [PublicController::class, 'webDesignDevelo
 Route::get('/wordpress-support', [PublicController::class, 'wordpressSupport'])->name('wordpress-support');
 Route::get('/ads-management', [PublicController::class, 'adsManagement'])->name('ads-management');
 Route::get('/branding-print', [PublicController::class, 'brandingPrint'])->name('branding-print');
-Route::get('/access-plans', [PublicController::class, 'accessPlans'])->name('access-plans');
+Route::redirect('/access-plans', '/pricing', 301)->name('access-plans');
 Route::get('/ai-seo-for-chatgpt-geo-aeo', [PublicController::class, 'aiSeoGeoAeo'])->name('ai-seo-geo-aeo');
 Route::get('/pricing', [PublicController::class, 'pricing'])->name('pricing');
 
