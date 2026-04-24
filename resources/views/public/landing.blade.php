@@ -4700,12 +4700,15 @@ body::before{
       @endif
       @if(config('services.turnstile.site_key'))
       <input type="hidden" name="cf-turnstile-response" id="cf-turnstile-response" value="">
-      <div id="cf-turnstile-inquiry" aria-hidden="true"></div>
       @endif
 
       <p style="font-size:.82rem;color:var(--muted);text-align:center;letter-spacing:.04em;margin-bottom:8px">We review every message personally. Not all markets are available.</p>
       <button type="submit" class="fsub" id="submitBtn">Send My Question</button>
     </form>
+    @if(config('services.turnstile.site_key'))
+    {{-- Widget div is outside the form so Cloudflare's auto-injected input doesn't duplicate ours --}}
+    <div id="cf-turnstile-inquiry" aria-hidden="true" style="display:none"></div>
+    @endif
   </div>
 </section>
 
@@ -4828,38 +4831,32 @@ body::before{
   document.getElementById('form_loaded_at').value = Math.floor(Date.now() / 1000);
 
   @if(config('services.turnstile.site_key'))
-  // Cloudflare Turnstile (invisible) — renders and executes on form submit
-  var _inquiryTurnstileReady = false;
+  // Cloudflare Turnstile (invisible) — widget is outside the form to prevent duplicate hidden inputs
   var _inquiryTurnstileWidgetId = null;
-
-  window._inquiryTurnstileCallback = function(token) {
-    document.getElementById('cf-turnstile-response').value = token;
-    _inquiryTurnstileReady = true;
-    // Proceed to reCAPTCHA step or final submit
-    _inquiryProceedSubmit();
-  };
-  window._inquiryTurnstileError = function() {
-    // Fail-open: Turnstile error should not block legitimate users
-    _inquiryTurnstileReady = true;
-    _inquiryProceedSubmit();
-  };
+  var _inquiryTurnstileVerified = false;
 
   function _inquiryRenderTurnstile() {
     if (window.turnstile && !_inquiryTurnstileWidgetId) {
       _inquiryTurnstileWidgetId = turnstile.render('#cf-turnstile-inquiry', {
         sitekey: @json(config('services.turnstile.site_key')),
-        size: 'invisible',
-        theme: 'dark',
-        execution: 'execute',
-        callback: window._inquiryTurnstileCallback,
-        'error-callback': window._inquiryTurnstileError,
+        size: 'invisible', theme: 'dark', execution: 'execute',
+        callback: function(token) {
+          var form = document.getElementById('inquiryForm');
+          var inp = form.querySelector('input[name="cf-turnstile-response"]');
+          if (inp) inp.value = token;
+          _inquiryTurnstileVerified = true;
+          _inquiryProceedSubmit();
+        },
+        'error-callback': function() {
+          // Fail-open: do not block legitimate users on Turnstile error
+          _inquiryTurnstileVerified = true;
+          _inquiryProceedSubmit();
+        },
       });
     }
   }
-  // Try immediately if Turnstile loaded synchronously, else wait for onload
-  if (window.turnstile) {
-    _inquiryRenderTurnstile();
-  } else {
+  if (window.turnstile) { _inquiryRenderTurnstile(); }
+  else {
     var _prevTurnstileLoad = window.onTurnstileLoad;
     window.onTurnstileLoad = function() {
       if (_prevTurnstileLoad) _prevTurnstileLoad();
@@ -4884,22 +4881,25 @@ body::before{
   }
 
   document.getElementById('inquiryForm').addEventListener('submit', function(e) {
-    const btn = document.getElementById('submitBtn');
-    btn.disabled = true;
-    btn.textContent = 'Submitting…';
     @if(config('services.turnstile.site_key'))
-    if (!_inquiryTurnstileReady && _inquiryTurnstileWidgetId !== null) {
+    if (!_inquiryTurnstileVerified) {
       e.preventDefault();
-      turnstile.execute(_inquiryTurnstileWidgetId);
-      return;
-    }
-    if (!_inquiryTurnstileReady) {
-      // Turnstile widget not rendered yet (script still loading) — submit without token
-      e.preventDefault();
-      _inquiryProceedSubmit();
+      var btn = document.getElementById('submitBtn');
+      btn.disabled = true;
+      btn.textContent = 'Submitting…';
+      if (_inquiryTurnstileWidgetId !== null) {
+        turnstile.execute(_inquiryTurnstileWidgetId);
+      } else {
+        // Widget not ready yet (script still loading) — fail-open
+        _inquiryTurnstileVerified = true;
+        _inquiryProceedSubmit();
+      }
       return;
     }
     @endif
+    var btn = document.getElementById('submitBtn');
+    btn.disabled = true;
+    btn.textContent = 'Submitting…';
     @if(config('services.recaptcha.site_key'))
     e.preventDefault();
     _inquiryProceedSubmit();

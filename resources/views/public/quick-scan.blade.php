@@ -404,7 +404,6 @@ body{background:var(--bg);color:var(--ivory);font-family:'DM Sans',sans-serif;fo
 
       @if(config('services.turnstile.site_key'))
       <input type="hidden" name="cf-turnstile-response" id="qs-cf-turnstile-response" value="">
-      <div id="cf-turnstile-scan" aria-hidden="true"></div>
       @endif
       <button type="submit" class="qs-submit" id="submitBtn">
         <span id="btnText">See Where You Stand — $2</span>
@@ -416,6 +415,10 @@ body{background:var(--bg);color:var(--ivory);font-family:'DM Sans',sans-serif;fo
         Secure checkout via Stripe &nbsp;·&nbsp; Score delivered instantly &nbsp;·&nbsp; Non-refundable once processing begins
       </p>
     </form>
+    @if(config('services.turnstile.site_key'))
+    {{-- Widget div outside form — prevents Cloudflare's auto-injected input from duplicating ours --}}
+    <div id="cf-turnstile-scan" aria-hidden="true" style="display:none"></div>
+    @endif
   </div>
 
   <!-- System Progression Rail -->
@@ -545,40 +548,56 @@ body{background:var(--bg);color:var(--ivory);font-family:'DM Sans',sans-serif;fo
   document.getElementById('_loadedAt').value = (Date.now() / 1000).toFixed(3);
 
   @if(config('services.turnstile.site_key'))
-  var _scanTsReady = false;
+  // Cloudflare Turnstile — widget is outside the form to prevent duplicate hidden inputs
   var _scanTsWidgetId = null;
-  window._scanTsCallback = function(token) {
-    document.getElementById('qs-cf-turnstile-response').value = token;
-    _scanTsReady = true;
-    _scanProceedSubmit();
-  };
-  window._scanTsError = function() { _scanTsReady = true; _scanProceedSubmit(); };
-  function _scanProceedSubmit() {
-    var btn = document.getElementById('submitBtn');
-    var txt = document.getElementById('btnText');
-    var spin = document.getElementById('btnSpinner');
-    btn.disabled = true; txt.style.display = 'none'; spin.style.display = 'inline';
-    document.getElementById('scanForm').submit();
-  }
+  var _scanTsVerified = false;
   function _scanRenderTs() {
     if (window.turnstile && !_scanTsWidgetId) {
       _scanTsWidgetId = turnstile.render('#cf-turnstile-scan', {
         sitekey: @json(config('services.turnstile.site_key')),
         size: 'invisible', theme: 'dark', execution: 'execute',
-        callback: window._scanTsCallback,
-        'error-callback': window._scanTsError,
+        callback: function(token) {
+          var form = document.getElementById('scanForm');
+          var inp = form.querySelector('input[name="cf-turnstile-response"]');
+          if (inp) inp.value = token;
+          _scanTsVerified = true;
+          var btn = document.getElementById('submitBtn');
+          var txt = document.getElementById('btnText');
+          var spin = document.getElementById('btnSpinner');
+          btn.disabled = true; txt.style.display = 'none'; spin.style.display = 'inline';
+          form.submit();
+        },
+        'error-callback': function() {
+          // Fail-open
+          _scanTsVerified = true;
+          var btn = document.getElementById('submitBtn');
+          var txt = document.getElementById('btnText');
+          var spin = document.getElementById('btnSpinner');
+          btn.disabled = true; txt.style.display = 'none'; spin.style.display = 'inline';
+          document.getElementById('scanForm').submit();
+        },
       });
     }
   }
   if (window.turnstile) { _scanRenderTs(); }
   else {
     var _prevTsLoad = window.onTurnstileLoad;
-    window.onTurnstileLoad = function() { if(_prevTsLoad) _prevTsLoad(); _scanRenderTs(); };
+    window.onTurnstileLoad = function() { if (_prevTsLoad) _prevTsLoad(); _scanRenderTs(); };
   }
   document.getElementById('scanForm').addEventListener('submit', function(e) {
-    if (!_scanTsReady && _scanTsWidgetId !== null) {
+    if (!_scanTsVerified) {
       e.preventDefault();
-      turnstile.execute(_scanTsWidgetId);
+      if (_scanTsWidgetId !== null) {
+        turnstile.execute(_scanTsWidgetId);
+      } else {
+        // Widget not ready — fail-open
+        _scanTsVerified = true;
+        var btn = document.getElementById('submitBtn');
+        var txt = document.getElementById('btnText');
+        var spin = document.getElementById('btnSpinner');
+        btn.disabled = true; txt.style.display = 'none'; spin.style.display = 'inline';
+        document.getElementById('scanForm').submit();
+      }
       return;
     }
     var btn = document.getElementById('submitBtn');

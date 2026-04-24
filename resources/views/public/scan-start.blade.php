@@ -502,12 +502,15 @@
         @csrf
         @if(config('services.turnstile.site_key'))
         <input type="hidden" name="cf-turnstile-response" id="ss-cf-turnstile-response" value="">
-        <div id="cf-turnstile-scanstart" aria-hidden="true"></div>
         @endif
         <input type="hidden" name="url" :value="url">
         <input type="hidden" name="email" :value="email">
-        <button type="submit" class="se-btn" :class="{ 'is-securing': hasAdvanced }" :disabled="hasAdvanced" style="max-width:480px;margin:0 auto;display:block" x-text="hasAdvanced ? 'Securing Checkout\u2026' : 'Unlock Full Scan \u2192'"></button>
+        <button type="submit" class="se-btn" :class="{ 'is-securing': hasAdvanced }" :disabled="hasAdvanced" style="max-width:480px;margin:0 auto;display:block" x-text="hasAdvanced ? 'Securing Checkout…' : 'Unlock Full Scan →'"></button>
       </form>
+      @if(config('services.turnstile.site_key'))
+      {{-- Widget div outside the form — prevents Cloudflare's auto-injected input from duplicating ours --}}
+      <div id="cf-turnstile-scanstart" aria-hidden="true" style="display:none"></div>
+      @endif
       <p class="se-note" style="margin-top:10px">Secure checkout powered by Stripe &bull; Takes 10 seconds</p>
       <p class="se-cta-reinforce">Includes: signal map, ranking gaps, and prioritized fixes</p>
       <p class="se-note">Your <strong style="color:var(--gold-secondary);font-weight:500">$2 diagnostic</strong> runs in seconds. Results carry forward through every level.</p>
@@ -524,22 +527,23 @@ const nav = document.getElementById('nav');
 if(nav) window.addEventListener('scroll', () => nav.classList.toggle('stuck', scrollY > 60), {passive:true});
 
 @if(config('services.turnstile.site_key'))
-// Cloudflare Turnstile — executed just before form submit
+// Cloudflare Turnstile — widget is outside the form to prevent duplicate hidden inputs
 var _ssTsWidgetId = null;
-var _ssTsToken = null;
-window._ssTsCallback = function(token) {
-  _ssTsToken = token;
-  var inp = document.getElementById('ss-cf-turnstile-response');
-  if (inp) inp.value = token;
-};
-window._ssTsError = function() { _ssTsToken = ''; };
+var _ssTsVerified = false;
 function _ssRenderTs() {
   if (window.turnstile && !_ssTsWidgetId) {
     _ssTsWidgetId = turnstile.render('#cf-turnstile-scanstart', {
       sitekey: @json(config('services.turnstile.site_key')),
       size: 'invisible', theme: 'dark', execution: 'execute',
-      callback: window._ssTsCallback,
-      'error-callback': window._ssTsError,
+      callback: function(token) {
+        var inp = document.getElementById('ss-cf-turnstile-response');
+        if (inp) inp.value = token;
+        _ssTsVerified = true;
+      },
+      'error-callback': function() {
+        // Fail-open
+        _ssTsVerified = true;
+      },
     });
   }
 }
@@ -549,27 +553,26 @@ else {
   window.onTurnstileLoad = function() { if (_prevTsLoad2) _prevTsLoad2(); _ssRenderTs(); };
 }
 window._scanStartSubmit = function(form) {
-  if (_ssTsToken !== null) {
-    // Token already received (or error — fail-open)
+  if (_ssTsVerified) {
+    // Token already written (or fail-open) — submit immediately
     form.submit();
     return;
   }
   if (_ssTsWidgetId !== null) {
-    // Execute and submit in callback
-    var _orig = window._ssTsCallback;
-    window._ssTsCallback = function(token) {
-      _orig(token);
-      form.submit();
-    };
-    var _origErr = window._ssTsError;
-    window._ssTsError = function() {
-      _origErr();
-      form.submit();
-    };
+    // Execute challenge; poll until verified, then submit
     turnstile.execute(_ssTsWidgetId);
+    // Poll every 50ms until callback fires (or 8s timeout for fail-open)
+    var _poll = setInterval(function() {
+      if (_ssTsVerified) {
+        clearInterval(_poll);
+        form.submit();
+      }
+    }, 50);
+    // Safety timeout — if not verified within 8s, fail-open and submit anyway
+    setTimeout(function() { clearInterval(_poll); if (!_ssTsVerified) { _ssTsVerified = true; form.submit(); } }, 8000);
     return;
   }
-  // Fallback: widget not ready, submit without token (fail-open)
+  // Widget not ready — fail-open
   form.submit();
 };
 @else
