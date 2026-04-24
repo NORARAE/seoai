@@ -11,7 +11,7 @@
 <meta name="theme-color" content="#080808">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Terms of Service — SEO AI Co™</title>
-<meta name="description" content="SEO AI Co™ Terms of Service — licensing terms, usage policies, and service conditions.">
+<meta name="description" content="SEO AI Co™ Terms of Service — how our services work, what you can expect, and how payments and refunds are handled.">
 <link rel="canonical" href="{{ url('/terms') }}">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -176,6 +176,7 @@ footer{border-top:1px solid var(--border);padding:36px 64px;display:flex;flex-di
   <nav class="footer-legal">
     <a href="{{ route('privacy') }}">Privacy</a>
     <a href="{{ route('terms') }}">Terms</a>
+    <a href="{{ route('refund-policy') }}">Refund Policy</a>
   </nav>
 </footer>
 

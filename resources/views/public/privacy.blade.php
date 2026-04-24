@@ -167,6 +167,7 @@ footer{border-top:1px solid var(--border);padding:36px 64px;display:flex;flex-di
   <nav class="footer-legal">
     <a href="{{ route('privacy') }}">Privacy</a>
     <a href="{{ route('terms') }}">Terms</a>
+    <a href="{{ route('refund-policy') }}">Refund Policy</a>
   </nav>
 </footer>
 

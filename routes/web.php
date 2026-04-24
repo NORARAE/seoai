@@ -76,6 +76,7 @@ Route::get('/auth/google/redirect', [GoogleAuthController::class, 'redirect'])->
 Route::get('/auth/google/callback', [GoogleAuthController::class, 'callback'])->name('auth.google.callback');
 Route::get('/privacy', [PublicController::class, 'privacy'])->name('privacy');
 Route::get('/terms', [PublicController::class, 'terms'])->name('terms');
+Route::get('/refund-policy', [PublicController::class, 'refundPolicy'])->name('refund-policy');
 Route::post('/licensing-inquiry', [PublicController::class, 'storeLicensingInquiry'])
     ->middleware('throttle:inquiry')
     ->name('licensing-inquiry.store');

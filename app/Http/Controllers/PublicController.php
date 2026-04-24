@@ -227,6 +227,11 @@ class PublicController extends Controller
         return view('public.terms');
     }
 
+    public function refundPolicy(): View
+    {
+        return view('public.refund-policy');
+    }
+
     public function howItWorks(): View
     {
         return view('public.how-it-works');

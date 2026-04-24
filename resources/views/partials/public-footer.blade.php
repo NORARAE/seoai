@@ -11,6 +11,7 @@
   <nav class="footer-links" aria-label="Footer links">
     <a href="{{ route('privacy') }}">Privacy</a>
     <a href="{{ route('terms') }}">Terms</a>
+    <a href="{{ route('refund-policy') }}">Refund Policy</a>
     <a href="{{ route('scan.start') }}">AI Citation Scan</a>
   </nav>
 </footer>
