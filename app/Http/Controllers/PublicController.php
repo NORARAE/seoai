@@ -150,24 +150,49 @@ class PublicController extends Controller
             $inquiry->update(['spam_risk' => 'high', 'status' => 'rejected']);
 
             SpamLog::create([
-                'inquiry_id' => $inquiry->id,
-                'reason' => 'antispam_blocked',
-                'spam_risk' => 'high',
-                'risk_score' => $antiSpamResult['risk_score'],
-                'ip_address' => $ip,
-                'email' => $validated['email'],
-                'signals' => $antiSpamResult['reasons'],
+                'inquiry_id'       => $inquiry->id,
+                'action'           => 'block',
+                'reason'           => 'antispam_blocked',
+                'spam_risk'        => 'high',
+                'risk_score'       => $antiSpamResult['risk_score'],
+                'ip_address'       => $ip,
+                'email'            => $validated['email'],
+                'name'             => $validated['name'],
+                'company'          => $validated['company'],
+                'user_agent'       => substr((string) $request->userAgent(), 0, 512),
+                'turnstile_valid'  => $turnstileValid,
+                'turnstile_reason' => $tsResult['reason'],
+                'signals'          => $antiSpamResult['reasons'],
             ]);
 
             Log::info('Inquiry blocked by anti-spam pre-flight', [
-                'id' => $inquiry->id,
-                'ip' => $ip,
-                'email' => $validated['email'],
-                'score' => $antiSpamResult['risk_score'],
+                'id'      => $inquiry->id,
+                'ip'      => $ip,
+                'email'   => $validated['email'],
+                'score'   => $antiSpamResult['risk_score'],
                 'reasons' => $antiSpamResult['reasons'],
             ]);
 
             return redirect(url('/') . '#contact')->with('inquiry_success', $successMsg);
+        }
+
+        // ── 5b. Log flagged-but-allowed pre-flight decisions ─────────────────────
+        if ($antiSpamResult['action'] === 'flag') {
+            SpamLog::create([
+                'inquiry_id'       => $inquiry->id,
+                'action'           => 'flag',
+                'reason'           => 'antispam_flagged',
+                'spam_risk'        => 'medium',
+                'risk_score'       => $antiSpamResult['risk_score'],
+                'ip_address'       => $ip,
+                'email'            => $validated['email'],
+                'name'             => $validated['name'],
+                'company'          => $validated['company'],
+                'user_agent'       => substr((string) $request->userAgent(), 0, 512),
+                'turnstile_valid'  => $turnstileValid,
+                'turnstile_reason' => $tsResult['reason'],
+                'signals'          => $antiSpamResult['reasons'],
+            ]);
         }
 
         // ── 6. Enrichment pipeline ──────────────────────────────────────────────
@@ -218,27 +243,52 @@ class PublicController extends Controller
             $inquiry->update(['status' => 'rejected']);
 
             SpamLog::create([
-                'inquiry_id' => $inquiry->id,
-                'reason' => $reason,
-                'spam_risk' => $spamRisk,
-                'risk_score' => $riskScore,
-                'ip_address' => $ip,
-                'email' => $validated['email'],
-                'signals' => $signals,
+                'inquiry_id'       => $inquiry->id,
+                'action'           => 'block',
+                'reason'           => $reason,
+                'spam_risk'        => $spamRisk,
+                'risk_score'       => $riskScore,
+                'ip_address'       => $ip,
+                'email'            => $validated['email'],
+                'name'             => $validated['name'],
+                'company'          => $validated['company'],
+                'user_agent'       => substr((string) $request->userAgent(), 0, 512),
+                'turnstile_valid'  => $turnstileValid,
+                'turnstile_reason' => $tsResult['reason'],
+                'signals'          => $signals,
             ]);
 
             Log::info('Inquiry silently rejected', [
-                'id' => $inquiry->id,
-                'reason' => $reason,
-                'risk' => $spamRisk,
-                'score' => $riskScore,
+                'id'      => $inquiry->id,
+                'reason'  => $reason,
+                'risk'    => $spamRisk,
+                'score'   => $riskScore,
                 'signals' => $signals,
-                'email' => $validated['email'],
-                'ip' => $ip,
+                'email'   => $validated['email'],
+                'ip'      => $ip,
             ]);
 
             // Return normal success — do NOT reveal rejection to submitter
             return redirect(url('/') . '#contact')->with('inquiry_success', $successMsg);
+        }
+
+        // ── 8b. Log medium-risk submissions that were allowed through ────────────
+        if ($spamRisk === 'medium') {
+            SpamLog::create([
+                'inquiry_id'       => $inquiry->id,
+                'action'           => 'flag',
+                'reason'           => 'medium_risk_allowed',
+                'spam_risk'        => 'medium',
+                'risk_score'       => $riskScore,
+                'ip_address'       => $ip,
+                'email'            => $validated['email'],
+                'name'             => $validated['name'],
+                'company'          => $validated['company'],
+                'user_agent'       => substr((string) $request->userAgent(), 0, 512),
+                'turnstile_valid'  => $turnstileValid,
+                'turnstile_reason' => $tsResult['reason'],
+                'signals'          => $signals,
+            ]);
         }
 
         // ── 9. Send emails ────────────────────────────────────────────────────────
