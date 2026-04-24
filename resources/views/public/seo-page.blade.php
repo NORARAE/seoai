@@ -34,7 +34,7 @@
 <meta property="og:site_name" content="SEO AI Co™">
 
 {{-- JSON-LD Schema --}}
-<script type="application/ld+json">{!! json_encode($page->resolved_schema, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT) !!}</script>
+<script type="application/ld+json">{!! json_encode($page->resolved_schema, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT | JSON_HEX_TAG) !!}</script>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>

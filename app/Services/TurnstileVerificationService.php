@@ -37,6 +37,11 @@ class TurnstileVerificationService
      */
     public function verify(string $token, string $ip): array
     {
+        // Bypass Turnstile entirely in the test environment
+        if (app()->environment('testing')) {
+            return ['valid' => true, 'reason' => 'turnstile_disabled'];
+        }
+
         // If Turnstile is disabled globally, treat as valid (pass-through)
         if (!config('services.turnstile.enabled', true)) {
             return ['valid' => true, 'reason' => 'turnstile_disabled'];

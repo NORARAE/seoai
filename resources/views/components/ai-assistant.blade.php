@@ -52,7 +52,7 @@ if ($_market) {
         $_actionData[] = ['label' => 'Create page: ' . ($gap['suggested_title'] ?? '') . ' (' . ($gap['suggested_url'] ?? '') . ')', 'type' => 'create', 'key' => 'gap_' . ($gap['service'] ?? '') . '_' . ($gap['city'] ?? '')];
     }
 }
-$_actionDataJson = json_encode(array_slice($_actionData, 0, 5), JSON_UNESCAPED_SLASHES);
+$_actionDataJson = json_encode(array_slice($_actionData, 0, 5), JSON_UNESCAPED_SLASHES | JSON_HEX_TAG);
 
 $csrfToken = csrf_token();
 @endphp
