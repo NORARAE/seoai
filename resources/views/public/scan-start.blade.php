@@ -536,11 +536,18 @@ function _ssRenderTs() {
       sitekey: @json(config('services.turnstile.site_key')),
       size: 'invisible', theme: 'dark', execution: 'execute',
       callback: function(token) {
+        console.log('[Turnstile] scan-start token received', token ? token.substring(0,20)+'...' : '(empty)');
+        if (!token) {
+          console.error('[Turnstile] callback fired but token is empty — will not write to input');
+          _ssTsVerified = false;
+          return;
+        }
         var inp = document.getElementById('ss-cf-turnstile-response');
         if (inp) inp.value = token;
         _ssTsVerified = true;
       },
-      'error-callback': function() {
+      'error-callback': function(code) {
+        console.error('[Turnstile] error-callback', code);
         // Fail-open
         _ssTsVerified = true;
       },

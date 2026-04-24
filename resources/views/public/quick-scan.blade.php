@@ -557,6 +557,16 @@ body{background:var(--bg);color:var(--ivory);font-family:'DM Sans',sans-serif;fo
         sitekey: @json(config('services.turnstile.site_key')),
         size: 'invisible', theme: 'dark', execution: 'execute',
         callback: function(token) {
+          console.log('[Turnstile] scan token received', token ? token.substring(0,20)+'...' : '(empty)');
+          if (!token) {
+            console.error('[Turnstile] callback fired but token is empty — aborting submit');
+            _scanTsVerified = false;
+            var btn2 = document.getElementById('submitBtn');
+            var txt2 = document.getElementById('btnText');
+            var spin2 = document.getElementById('btnSpinner');
+            btn2.disabled = false; txt2.style.display = ''; spin2.style.display = 'none';
+            return;
+          }
           var form = document.getElementById('scanForm');
           var inp = form.querySelector('input[name="cf-turnstile-response"]');
           if (inp) inp.value = token;
@@ -567,7 +577,8 @@ body{background:var(--bg);color:var(--ivory);font-family:'DM Sans',sans-serif;fo
           btn.disabled = true; txt.style.display = 'none'; spin.style.display = 'inline';
           form.submit();
         },
-        'error-callback': function() {
+        'error-callback': function(code) {
+          console.error('[Turnstile] error-callback', code);
           // Fail-open
           _scanTsVerified = true;
           var btn = document.getElementById('submitBtn');

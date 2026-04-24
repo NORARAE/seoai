@@ -4841,13 +4841,22 @@ body::before{
         sitekey: @json(config('services.turnstile.site_key')),
         size: 'invisible', theme: 'dark', execution: 'execute',
         callback: function(token) {
+          console.log('[Turnstile] inquiry token received', token ? token.substring(0,20)+'...' : '(empty)');
           var form = document.getElementById('inquiryForm');
           var inp = form.querySelector('input[name="cf-turnstile-response"]');
+          if (!token) {
+            console.error('[Turnstile] callback fired but token is empty — aborting submit');
+            var btn = document.getElementById('submitBtn');
+            btn.disabled = false; btn.textContent = 'Send My Question';
+            _inquiryTurnstileVerified = false;
+            return;
+          }
           if (inp) inp.value = token;
           _inquiryTurnstileVerified = true;
           _inquiryProceedSubmit();
         },
-        'error-callback': function() {
+        'error-callback': function(code) {
+          console.error('[Turnstile] error-callback', code);
           // Fail-open: do not block legitimate users on Turnstile error
           _inquiryTurnstileVerified = true;
           _inquiryProceedSubmit();
