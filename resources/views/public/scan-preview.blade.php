@@ -375,7 +375,7 @@
 }
 .prev-locked-depth-row{
   display:flex;align-items:center;gap:12px;
-  padding:9px 0;opacity:.45;filter:blur(.4px);
+  padding:9px 0;opacity:.45;
 }
 .prev-locked-depth-row .depth-icon{
   width:20px;height:20px;border-radius:50%;

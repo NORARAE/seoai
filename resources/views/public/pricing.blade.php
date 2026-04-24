@@ -1323,7 +1323,7 @@
             @if($ownedTierRank >= 2)
             <span class="sys-cta-owned-badge"><svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M1.5 5l2.5 2.5 4.5-5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg> Signal Analysis active</span>
             @else
-            <a href="{{ route('checkout.signal-expansion') }}" class="sys-cta --primary" onclick="track('cta_click',{tier:99,label:'signal_analysis',location:'pricing_step2'})">Unlock Signal Analysis &mdash; $99</a>
+            <a href="{{ route('checkout.signal-expansion') }}" class="sys-cta --primary" onclick="track('cta_click',{tier:99,label:'signal_analysis',location:'pricing_step2'})">Upgrade to Signal Analysis &mdash; $99</a>
             <span class="sys-cta-note">Available after scan</span>
             @endif
           </div>

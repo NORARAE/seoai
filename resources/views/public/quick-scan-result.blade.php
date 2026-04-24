@@ -202,7 +202,7 @@
 
     $layerCards = [
           ['rank' => 1, 'name' => 'Base Scan', 'status' => 'Included', 'enabled' => true, 'value' => 'Current visibility is confirmed, but deeper trust signals are still limited.', 'cta' => '#priority-actions', 'cta_label' => 'View Fix Sequence', 'cta_note' => 'Opens ranked constraint fixes for this layer.'],
-          ['rank' => 2, 'name' => 'Signal Analysis', 'status' => $unlockLevel >= 2 ? 'Included' : 'Locked', 'enabled' => $unlockLevel >= 2, 'value' => 'Full signal-by-signal breakdown from your scan — see exactly what is suppressing your score.', 'cta' => $unlockLevel >= 2 ? '#priority-actions' : ($singleNextStep['href'] ?? route('checkout.signal-expansion')), 'cta_label' => $unlockLevel >= 2 ? 'View Your Signals' : 'Unlock Signal Analysis', 'cta_note' => $unlockLevel >= 2 ? 'Opens your full signal map.' : 'Full breakdown of your scan signals.'],
+          ['rank' => 2, 'name' => 'Signal Analysis', 'status' => $unlockLevel >= 2 ? 'Included' : 'Locked', 'enabled' => $unlockLevel >= 2, 'value' => 'Full signal-by-signal breakdown from your scan — see exactly what is suppressing your score.', 'cta' => $unlockLevel >= 2 ? '#priority-actions' : ($singleNextStep['href'] ?? route('checkout.signal-expansion')), 'cta_label' => $unlockLevel >= 2 ? 'View Your Signals' : 'Upgrade to Signal Analysis', 'cta_note' => $unlockLevel >= 2 ? 'Opens your full signal map.' : 'Full breakdown of your scan signals.'],
           ['rank' => 3, 'name' => 'Action Plan', 'status' => $unlockLevel >= 3 ? 'Included' : 'Locked', 'enabled' => $unlockLevel >= 3, 'value' => 'Prioritized fix list from your scan data — ordered by impact, grouped by effort.', 'cta' => $unlockLevel >= 3 ? '#priority-actions' : ($singleNextStep['href'] ?? route('quick-scan.upgrade')), 'cta_label' => $unlockLevel >= 3 ? 'View Your Action Plan' : 'Unlock Action Plan', 'cta_note' => $unlockLevel >= 3 ? 'Opens your ranked fix list.' : 'Fix list ranked by impact from your scan.'],
           ['rank' => 4, 'name' => 'Guided Execution', 'status' => $unlockLevel >= 4 ? 'Included' : 'Locked', 'enabled' => $unlockLevel >= 4, 'value' => 'Step-by-step execution checklist inside your dashboard with progress tracking.', 'cta' => $unlockLevel >= 4 ? '#priority-actions' : ($singleNextStep['href'] ?? route('quick-scan.upgrade')), 'cta_label' => $unlockLevel >= 4 ? 'Open Execution Checklist' : 'Unlock Guided Execution', 'cta_note' => $unlockLevel >= 4 ? 'Opens your in-dashboard checklist.' : 'Requires Action Plan first.'],
     ];
@@ -250,7 +250,7 @@
   ];
 
   $lockedLayerModules = [
-      ['rank' => 2, 'title' => 'Signal Analysis', 'statement' => 'Full signal-by-signal breakdown of your scan data — every category scored and explained.', 'reveals' => 'While suppressed, you only see your score. Signal Analysis shows exactly which signals are failing and why.', 'improvement' => ['See every failing signal from your scan', 'Understand why each is suppressing your score', 'Know exactly what to fix'], 'cta' => 'Unlock Signal Analysis', 'href' => $singleNextStep['href'] ?? route('checkout.signal-expansion')],
+      ['rank' => 2, 'title' => 'Signal Analysis', 'statement' => 'Full signal-by-signal breakdown of your scan data — every category scored and explained.', 'reveals' => 'Until you upgrade, you only see your score. Signal Analysis shows exactly which signals are failing and why.', 'improvement' => ['See every failing signal from your scan', 'Understand why each is suppressing your score', 'Know exactly what to fix'], 'cta' => 'Upgrade to Signal Analysis', 'href' => $singleNextStep['href'] ?? route('checkout.signal-expansion')],
       ['rank' => 3, 'title' => 'Action Plan', 'statement' => 'Prioritized fix list from your scan data — ordered by impact, grouped by effort level.', 'reveals' => 'Fixing low-impact issues first wastes effort and delays results. Action Plan sequences your fixes by what moves your score most.', 'improvement' => ['Fix list ranked by scan impact', 'Ordered execution sequence', 'Grouped by effort'], 'cta' => 'Unlock Action Plan', 'href' => $singleNextStep['href'] ?? route('quick-scan.upgrade')],
       ['rank' => 4, 'title' => 'Guided Execution', 'statement' => 'Step-by-step execution checklist inside your dashboard with in-progress tracking.', 'reveals' => 'Requires Action Plan to be unlocked first. Turns your fix list into an active workflow you track and complete.', 'improvement' => ['Execution checklist inside dashboard', 'Guided steps for each fix', 'Progress tracking as you complete items'], 'cta' => 'Unlock Guided Execution', 'href' => $singleNextStep['href'] ?? route('quick-scan.upgrade')],
   ];
@@ -626,7 +626,7 @@ a{text-decoration:none;color:inherit}
 .module.locked{position:relative;border-color:rgba(200,168,75,.2);border-left:2px solid rgba(214,181,95,.4);background:linear-gradient(150deg,rgba(214,181,95,.06),rgba(16,13,9,.97));overflow:hidden;box-shadow:0 0 16px rgba(214,181,95,.08);transition:all .18s ease}
 .module.locked:hover{transform:translateY(-2px);box-shadow:0 0 20px rgba(214,181,95,.12)}
 .module.locked .module-body{position:relative;background:rgba(0,0,0,.12)}
-.module.locked .module-body p{filter:blur(.6px);opacity:.9}
+.module.locked .module-body p{opacity:.85}
 .module.locked .module-cta{filter:drop-shadow(0 0 12px rgba(214,181,95,.2))}
 .locked-logic{margin-top:9px;display:grid;gap:7px}
 .locked-logic-item{border:1px solid var(--line-soft);border-radius:8px;background:rgba(214,181,95,.06);padding:7px 8px}
@@ -682,7 +682,7 @@ body.fix-panel-open .fix-ai-nudge{display:none!important}
 .fix-locked-partial{margin:8px 0 0;border:1px solid rgba(196,120,120,.2);border-radius:8px;overflow:hidden}
 .fix-locked-partial-head{font-size:.5rem;letter-spacing:.14em;text-transform:uppercase;padding:5px 9px;background:rgba(196,120,120,.1);color:#c47878;opacity:.82}
 .fix-locked-partial-row{padding:5px 9px;font-size:.67rem;color:#ccbf9e;border-top:1px solid rgba(255,255,255,.04)}
-.fix-locked-partial-row.is-blurred{filter:blur(3px);opacity:.42;user-select:none;pointer-events:none}
+.fix-locked-partial-row.is-blurred{opacity:.5}
 
 .fix-friction-bar{margin:0 0 8px;padding:9px 11px;border:1px solid rgba(196,120,120,.22);border-radius:9px;background:rgba(196,120,120,.05);display:none}
 .fix-friction-bar.is-visible{display:block}
@@ -1521,11 +1521,11 @@ button.sys-bar-node:hover .sys-bar-dot{border-color:rgba(214,181,95,.54);backgro
             <article class="action secondary is-locked-card" data-action-key="locked-sequence-upgrade">
               <div class="action-top">
                 <span class="rank"><span class="lock-glyph" aria-hidden="true"></span></span>
-                <span class="badge"><span class="lock-glyph" aria-hidden="true"></span> RESTRICTED</span>
+                <span class="badge"><span class="lock-glyph" aria-hidden="true"></span> Locked</span>
               </div>
               <h3>{{ count($sysActions) - 3 }} advanced fixes available</h3>
               <div class="inline">
-                <span class="muted">State: restricted access</span>
+                <span class="muted">Upgrade to access</span>
                 <span>Progress to unlock precision</span>
               </div>
               <div class="action-outcome">
@@ -1554,9 +1554,9 @@ button.sys-bar-node:hover .sys-bar-dot{border-color:rgba(214,181,95,.54);backgro
                 @if($singleNextStep)
                 <a href="{{ $singleNextStep['href'] }}" class="btn btn-primary js-unlock-signal-expansion" data-exec-init="Opening layer access..." data-exec-process="Preparing layer access..." data-exec-resolved="Layer access initiated">Unlock {{ $nextUnlockName }}</a>
                 @else
-                <a href="{{ route('checkout.signal-expansion') }}" class="btn btn-primary js-unlock-signal-expansion" data-exec-init="Opening layer access..." data-exec-process="Preparing layer access..." data-exec-resolved="Layer access initiated">Unlock Signal Analysis</a>
+                <a href="{{ route('checkout.signal-expansion') }}" class="btn btn-primary js-unlock-signal-expansion" data-exec-init="Opening layer access..." data-exec-process="Preparing layer access..." data-exec-resolved="Layer access initiated">Upgrade to Signal Analysis</a>
                 @endif
-                <button type="button" class="btn btn-secondary" disabled><span class="lock-glyph" aria-hidden="true"></span> Preview Restricted Layer</button>
+                <button type="button" class="btn btn-secondary" disabled><span class="lock-glyph" aria-hidden="true"></span> Preview what's included</button>
               </div>
               <p class="action-memory">Not started</p>
             </article>
@@ -1580,7 +1580,7 @@ button.sys-bar-node:hover .sys-bar-dot{border-color:rgba(214,181,95,.54);backgro
           <details class="module locked">
             <summary>
               <span class="module-title">Layer {{ $module['rank'] }} · {{ $module['title'] }}</span>
-              <span class="module-tag"><span class="lock-glyph" aria-hidden="true"></span> Restricted</span>
+              <span class="module-tag"><span class="lock-glyph" aria-hidden="true"></span> Locked</span>
             </summary>
             <div class="module-body">
               <div class="locked-logic">
@@ -1637,7 +1637,7 @@ button.sys-bar-node:hover .sys-bar-dot{border-color:rgba(214,181,95,.54);backgro
       </div>
       <p class="cta-time-value">Takes 2-5 minutes to apply. Start seeing improvements today.</p>
       <p class="cta-consequence" style="margin:0 0 8px">{{ $singleNextStep ? 'Advances to ' . $nextUnlockName . ' → unlocks ranked priorities and signal depth' : 'Removes constraint → improves AI selection likelihood' }}</p>
-      <a href="#deeper-layers" class="sticky-link">Preview Restricted Layers</a>
+      <a href="#deeper-layers" class="sticky-link">Preview what's included</a>
 
       <div class="consult-offer" id="consultOffer" data-show="{{ $showConsultationOffer ? 'true' : 'false' }}">
         <h3>Need expert guidance?</h3>
@@ -1733,8 +1733,8 @@ button.sys-bar-node:hover .sys-bar-dot{border-color:rgba(214,181,95,.54);backgro
           <div class="fix-locked-partial-head">Additional impacted pages</div>
           <div class="fix-locked-partial-row">Page structure layer — signal: detected</div>
           <div class="fix-locked-partial-row">Content depth layer — signal: partial</div>
-          <div class="fix-locked-partial-row is-blurred">Authority layer — signal: suppressed</div>
-          <div class="fix-locked-partial-row is-blurred">Extraction node map — status: restricted</div>
+          <div class="fix-locked-partial-row is-blurred">Authority layer — signal: not yet active</div>
+          <div class="fix-locked-partial-row is-blurred">Extraction node map — status: locked</div>
           <div class="fix-locked-partial-row is-blurred">Competitive gap analysis — status: locked</div>
         </div>
         <div style="margin-top:9px">

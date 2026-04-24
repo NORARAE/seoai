@@ -109,7 +109,7 @@ footer{border-top:1px solid var(--border);padding:36px 64px;display:flex;flex-di
   <h2>5. Payments &amp; Billing</h2>
   <ul>
     <li>All payments are processed through <strong>Stripe</strong>. We do not store your payment details.</li>
-    <li>Licences at the 5K and 10K tiers operate on a <strong>structured 4-month initial deployment cycle</strong>. Each deployment runs in a structured 4-month cycle — build, stabilization, expansion, and growth.</li>
+    <li>Licences on structured deployment tiers operate on a <strong>4-month initial deployment cycle</strong>. Each deployment runs in a structured 4-month cycle — build, stabilization, expansion, and growth.</li>
     <li>Pricing is as listed at the time of your licence activation and may be updated for new subscribers.</li>
     <li>Failed payments will trigger a grace period. If payment is not resolved, your licence will lapse (see Section 4).</li>
   </ul>

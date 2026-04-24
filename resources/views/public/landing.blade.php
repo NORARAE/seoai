@@ -4622,7 +4622,7 @@ body::before{
       <div class="c-meta">
         <div class="cm"><label>Licensing Model</label><span>Reviewed individually — not automated</span></div>
         <div class="cm"><label>Commitment</label><span>Structured 4-month deployment cycle</span></div>
-        <div class="cm"><label>Legacy Builds</label><span>Re-entry at 10K tier required</span></div>
+        <div class="cm"><label>Legacy Builds</label><span>Reviewed separately based on scope and system state.</span></div>
       </div>
     </div>
 

@@ -571,7 +571,7 @@ body{line-height:1.85}
           <p class="bk-card-for"><strong>For:</strong> Businesses who have scanned and want diagnostic clarity before acting. Builds directly on your baseline scan data.</p>
           <p class="bk-card-outcome">Score explanation, signal-gap identification, and immediate in-dashboard access.</p>
           <div class="bk-card-cta">
-            <a href="{{ route('checkout.signal-expansion') }}" class="bk-cta-primary">Unlock Signal Analysis &mdash; $99 &rarr;</a>
+            <a href="{{ route('checkout.signal-expansion') }}" class="bk-cta-primary">Upgrade to Signal Analysis &mdash; $99 &rarr;</a>
           </div>
         </article>
 

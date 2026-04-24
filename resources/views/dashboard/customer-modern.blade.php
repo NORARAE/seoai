@@ -80,7 +80,7 @@
   $nextMoveFastestFix = trim((string) ($leadScan['fastest_fix'] ?? '')) !== ''
     ? $leadScan['fastest_fix']
     : 'Strengthen your primary service signal and rerun the scan.';
-  $nextMoveStep = $nextStep ?? 'Unlock Signal Analysis';
+  $nextMoveStep = $nextStep ?? 'Upgrade to Signal Analysis';
   $nextMoveActionHref = $nextUnlockHref;
   $scanFocusList = $scanHistory->take(6);
   $isScansView = request()->is('dashboard/scans');
@@ -2049,7 +2049,7 @@
             $tierRank >= 4 => 'Book Strategy Session',
             $tierRank === 3 => 'Start Guided Execution',
             $tierRank === 2 => 'Get My Action Plan',
-            default        => 'Unlock Signal Analysis',
+            default        => 'Upgrade to Signal Analysis',
           };
         @endphp
         <p class="dash-section-label">Your next move</p>
@@ -4778,7 +4778,7 @@
   var nextLabel = tierRank >= 4 ? 'Book Strategy Session'
                 : tierRank === 3 ? 'Start Guided Execution'
                 : tierRank === 2 ? 'Get My Action Plan'
-                : 'Unlock Signal Analysis';
+                : 'Upgrade to Signal Analysis';
 
   var lastVisitMs = parseInt(localStorage.getItem(VISIT_KEY) || '0', 10);
   var now         = Date.now();
