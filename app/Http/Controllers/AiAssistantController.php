@@ -4,7 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Models\AiChatLog;
 use App\Models\QuickScan;
+use App\Models\Site;
 use App\Services\AiAssistantService;
+use App\Services\Crawl\CrawlSummaryService;
+use App\Services\Crawl\MarketCoverageService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -12,8 +15,11 @@ use Illuminate\Support\Facades\Log;
 
 class AiAssistantController extends Controller
 {
-    public function __construct(private readonly AiAssistantService $assistant)
-    {
+    public function __construct(
+        private readonly AiAssistantService $assistant,
+        private readonly CrawlSummaryService $crawlSummary,
+        private readonly MarketCoverageService $marketCoverage,
+    ) {
     }
 
     /**
@@ -52,10 +58,10 @@ class AiAssistantController extends Controller
             // Attach behavior signals from the client if present (client-side localStorage)
             $signals = $validated['behavior_signals'] ?? [];
             if (!empty($signals) && is_array($signals)) {
-                $context['hesitation_type']    = $signals['hesitation_type'] ?? null;
-                $context['last_cta_label']     = isset($signals['cta_label']) ? substr((string) $signals['cta_label'], 0, 80) : null;
+                $context['hesitation_type'] = $signals['hesitation_type'] ?? null;
+                $context['last_cta_label'] = isset($signals['cta_label']) ? substr((string) $signals['cta_label'], 0, 80) : null;
                 $context['hours_since_action'] = isset($signals['hours_since_action']) ? (int) $signals['hours_since_action'] : null;
-                $context['heavily_viewed']     = isset($signals['heavily_viewed']) ? substr((string) $signals['heavily_viewed'], 0, 200) : null;
+                $context['heavily_viewed'] = isset($signals['heavily_viewed']) ? substr((string) $signals['heavily_viewed'], 0, 200) : null;
             }
         }
 
@@ -177,7 +183,7 @@ class AiAssistantController extends Controller
     {
         $ctx = [
             'user_name' => $user->name ?? null,
-            'has_scan'  => false,
+            'has_scan' => false,
             'tier_rank' => 0,
         ];
 
@@ -196,7 +202,7 @@ class AiAssistantController extends Controller
 
         $score = (int) ($scan->score ?? 0);
 
-        $ctx['domain'] = $scan->domain();
+        $ctx['domain'] = $scan->domain;
         $ctx['score'] = $score;
         $ctx['scan_date'] = $scan->scanned_at
             ? \Carbon\Carbon::parse($scan->scanned_at)->format('M j, Y')
@@ -271,6 +277,46 @@ class AiAssistantController extends Controller
         // Upgrade plan from scan
         if (!empty($scan->upgrade_plan)) {
             $ctx['upgrade_plan'] = (string) $scan->upgrade_plan;
+        }
+
+        // Crawl intelligence — site linked to this scan.
+        $site = $scan->site_id
+            ? Site::find($scan->site_id)
+            : $user->sites()->latest('site_user.created_at')->first();
+
+        if ($site) {
+            try {
+                $crawl = $this->crawlSummary->compute($site);
+                if (!empty($crawl)) {
+                    $ctx['crawl_pages'] = (int) ($crawl['total_crawled'] ?? 0);
+                    $ctx['crawl_missing_h1'] = (int) ($crawl['pages_missing_h1'] ?? 0);
+                    $ctx['crawl_missing_meta'] = (int) ($crawl['pages_missing_meta_desc'] ?? 0);
+                    $ctx['crawl_schema_pct'] = (float) ($crawl['schema_coverage_pct'] ?? 0.0);
+                    $ctx['crawl_orphan_pages'] = (int) ($crawl['orphan_pages'] ?? 0);
+                    $ctx['crawl_avg_words'] = (int) ($crawl['avg_word_count'] ?? 0);
+                }
+            } catch (\Throwable $e) {
+                Log::debug('AiAssistantController: crawl summary unavailable', ['error' => $e->getMessage()]);
+            }
+
+            try {
+                $market = $this->marketCoverage->compute($site);
+                if (!empty($market)) {
+                    $ctx['market_coverage_pct'] = (float) ($market['coverage_pct'] ?? 0.0);
+                    $ctx['market_gaps_count'] = count($market['missing_combinations'] ?? []);
+                    $ctx['market_services'] = (int) ($market['services_count'] ?? 0);
+                    $ctx['market_cities'] = (int) ($market['cities_count'] ?? 0);
+                    $topGaps = array_slice($market['high_value_gaps'] ?? [], 0, 3);
+                    if (!empty($topGaps)) {
+                        $ctx['top_market_gaps'] = array_map(
+                            fn($g) => ($g['suggested_title'] ?? '') . ' (' . ($g['suggested_url'] ?? '') . ')',
+                            $topGaps
+                        );
+                    }
+                }
+            } catch (\Throwable $e) {
+                Log::debug('AiAssistantController: market coverage unavailable', ['error' => $e->getMessage()]);
+            }
         }
 
         // Current plan tier label — system_tier is a SystemTier enum.

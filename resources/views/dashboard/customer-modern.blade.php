@@ -182,10 +182,14 @@
     $leadScore > 0   => 'Low',
     default          => null,
   };
-  $pagesAnalyzed = (int) ($leadScan['pages_scanned'] ?? 0);
+  $pagesAnalyzed = $hasCrawlData
+    ? ($crawlTotalPages ?: (int) ($leadScan['pages_scanned'] ?? 0))
+    : (int) ($leadScan['pages_scanned'] ?? 0);
   $profileData = auth()->user()->profile_data ?? [];
   $profileBrand = $profileData['business_name'] ?? $profileData['public_brand_name'] ?? null;
-  $heroHeadline = $projectDomain ? 'AI Visibility Baseline for ' . $projectDomain : 'Your AI Visibility Baseline';
+  $heroHeadline = $hasCrawlData && $projectDomain
+    ? 'Market Expansion Profile — ' . $projectDomain
+    : ($projectDomain ? 'AI Visibility Baseline for ' . $projectDomain : 'Your AI Visibility Baseline');
   $scanCompletedLabel = null;
   if (!empty($leadScan['scanned_at'])) {
     try { $scanCompletedLabel = \Carbon\Carbon::parse($leadScan['scanned_at'])->format('M j, Y'); } catch (\Throwable $e) {}
@@ -490,7 +494,7 @@
   .cta-view:hover{border-color:rgba(200,168,75,.45);background:rgba(200,168,75,.14)}
   .system-card-actions{margin-top:auto;display:flex;gap:7px;padding-top:8px}
 
-  .execution-state{position:absolute;inset:0;display:none;align-items:center;justify-content:center;background:linear-gradient(160deg,rgba(15,12,8,.82),rgba(8,7,5,.9));backdrop-filter:blur(2px);z-index:5}
+  .execution-state{position:absolute;inset:0;display:none;align-items:center;justify-content:center;background:linear-gradient(160deg,rgba(15,12,8,.82),rgba(8,7,5,.9));z-index:5}
   .execution-state.active{display:flex}
   .execution-state .chip{display:inline-flex;align-items:center;gap:8px;padding:7px 11px;border-radius:999px;border:1px solid rgba(214,181,84,.44);background:rgba(214,181,84,.15);font-size:10px;letter-spacing:.13em;text-transform:uppercase;color:#ecd9a8}
   .execution-state .chip::before{content:'';width:8px;height:8px;border-radius:999px;background:#d6b15f;box-shadow:0 0 0 0 rgba(214,177,95,.48);animation:execPulse 1.05s ease-in-out infinite}
@@ -657,6 +661,10 @@
   @keyframes ctaSweep {
     0%{transform:translateX(-130%)}
     100%{transform:translateX(130%)}
+  }
+  @keyframes ciIndeterminate {
+    0%   { left:-60%; }
+    100% { left:120%; }
   }
 
   .next-action-block{border:1px solid rgba(200,168,75,.26);border-radius:14px;background:linear-gradient(155deg,rgba(30,22,10,.96),rgba(12,9,6,.98) 68%);padding:14px;box-shadow:0 10px 24px rgba(0,0,0,.28),inset 0 1px 0 rgba(255,255,255,.03)}
@@ -936,7 +944,7 @@
   .lc-impact-badge::before{content:'';width:4px;height:4px;border-radius:50%;background:currentColor;flex-shrink:0}
 
   /* Locked card overlay */
-  .lc-locked-overlay{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(8,6,4,.62);backdrop-filter:blur(2px);border-radius:inherit;z-index:10}
+  .lc-locked-overlay{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(8,6,4,.62);border-radius:inherit;z-index:10}
   .lc-locked-overlay-chip{display:inline-flex;align-items:center;gap:7px;padding:8px 13px;border-radius:999px;background:rgba(18,14,8,.92);border:1px solid rgba(200,168,75,.24);font-size:.58rem;letter-spacing:.14em;text-transform:uppercase;color:rgba(200,168,75,.65)}
 
   /* Premium gate */
@@ -1513,6 +1521,21 @@
   .post-fix-cta-line.is-visible{opacity:1}
   .unlock-level-line{font-size:.52rem;letter-spacing:.12em;text-transform:uppercase;color:rgba(200,168,75,.42);text-align:center;margin-top:8px;pointer-events:none}
   .confidence-line{font-size:.6rem;letter-spacing:.08em;color:rgba(162,148,134,.44);font-style:italic;text-align:center;margin:10px 0 0;line-height:1.5}
+  /* Score trend chart */
+  .score-trend-shell{border:1px solid rgba(200,168,75,.16);border-radius:14px;background:linear-gradient(155deg,#131008,#0c0a07 70%);padding:14px 16px}
+  .score-trend-head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:10px}
+  .score-trend-kicker{font-size:.52rem;letter-spacing:.22em;text-transform:uppercase;color:rgba(200,168,75,.65)}
+  .score-trend-delta{display:inline-flex;align-items:center;gap:5px;font-size:.58rem;letter-spacing:.1em;text-transform:uppercase;padding:2px 8px;border-radius:999px}
+  .score-trend-delta.up{background:rgba(106,175,144,.1);color:#6aaf90;border:1px solid rgba(106,175,144,.2)}
+  .score-trend-delta.down{background:rgba(200,80,80,.08);color:#d47878;border:1px solid rgba(200,80,80,.18)}
+  .score-trend-delta.flat{background:rgba(200,168,75,.08);color:rgba(200,168,75,.6);border:1px solid rgba(200,168,75,.14)}
+  .score-trend-svg{width:100%;overflow:visible}
+  .score-trend-line{fill:none;stroke:rgba(200,168,75,.7);stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
+  .score-trend-area{fill:url(#scoreTrendGrad);opacity:.35}
+  .score-trend-bars{display:flex;align-items:flex-end;gap:6px;height:48px;margin-top:4px}
+  .score-trend-bar-wrap{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px}
+  .score-trend-bar{width:100%;border-radius:3px 3px 0 0;background:rgba(200,168,75,.45);min-height:3px;transition:height .3s ease}
+  .score-trend-bar-label{font-size:.5rem;letter-spacing:.06em;color:rgba(200,168,75,.5)}
 </style>
 @endpush
 
@@ -1563,6 +1586,13 @@
     {{-- ELSE at ~line 2678 → onboarding command section                  --}}
     {{-- END:   @endif at ~line 2713                                       --}}
     {{-- ═══════════════════════════════════════════════════════════════ --}}
+    @php
+    // Initialise $nextLevelMeta / $completedLevelMeta to safe defaults so
+    // they are always defined even when the @if($hasSystem) block below does
+    // not execute (e.g. new users with no scan).
+    $nextLevelMeta      = $nextLevelMeta      ?? null;
+    $completedLevelMeta = $completedLevelMeta ?? collect();
+    @endphp
     @if($hasSystem)
 
     {{-- START: return-banner script (tierRank < 4) --}}
@@ -1774,6 +1804,53 @@
     </section>
     {{-- END: exec-hero --}}
 
+    {{-- START: score-trend (chart foundation — shown when >= 2 renderable scans) --}}
+    @if($trendScores->count() >= 2)
+    @php
+      $trendMax = max(1, $trendScores->max());
+      $trendDates = $trendSource->map(fn($s) => \Carbon\Carbon::parse($s['scanned_at'] ?? $s['created_at'] ?? now())->format('M j'))->values();
+    @endphp
+    <section class="system-section mb-4 dash-section-anchor surface-reveal is-visible" id="score-trend" aria-label="Score trend">
+      <div class="score-trend-shell">
+        <div class="score-trend-head">
+          <span class="score-trend-kicker">Score Trend &mdash; last {{ $trendScores->count() }} scans</span>
+          <span class="score-trend-delta {{ $scoreDeltaTone }}"
+            aria-label="Score change: {{ $scoreDeltaLabel }}">
+            {{ $scoreDeltaLabel }} pts
+          </span>
+        </div>
+        {{-- SVG sparkline using pre-computed points --}}
+        <svg class="score-trend-svg" viewBox="0 0 {{ $sparklineWidth }} {{ $sparklineHeight }}" height="{{ $sparklineHeight }}" aria-hidden="true" preserveAspectRatio="none">
+          <defs>
+            <linearGradient id="scoreTrendGrad" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="rgba(200,168,75,.6)"/>
+              <stop offset="100%" stop-color="rgba(200,168,75,0)"/>
+            </linearGradient>
+          </defs>
+          <polygon class="score-trend-area" points="{{ $sparklineAreaPoints }}"/>
+          <polyline class="score-trend-line" points="{{ $sparklinePoints }}"/>
+        </svg>
+        {{-- CSS bar chart with score labels --}}
+        <div class="score-trend-bars" role="img" aria-label="Score trend bar chart">
+          @foreach($trendScores->values() as $si => $sv)
+          <div class="score-trend-bar-wrap">
+            <div class="score-trend-bar"
+              style="height:{{ max(6, round($sv / max(1, $trendMax) * 48)) }}px;
+                     background:{{ $sv >= 70 ? 'rgba(106,175,144,.55)' : ($sv >= 45 ? 'rgba(200,168,75,.55)' : 'rgba(196,120,120,.55)') }}"
+              aria-label="Score {{ $sv }}">
+            </div>
+            <span class="score-trend-bar-label">{{ $sv }}</span>
+            @if(isset($trendDates[$si]))
+            <span class="score-trend-bar-label" style="color:rgba(200,168,75,.32)">{{ $trendDates[$si] }}</span>
+            @endif
+          </div>
+          @endforeach
+        </div>
+      </div>
+    </section>
+    @endif
+    {{-- END: score-trend --}}
+
     {{-- START: compact scan strip (system view, multi-scan) --}}
     @if($isSystemView && $scanHistory->count() > 1)
     <div class="scan-strip" role="navigation" aria-label="Your scans">
@@ -1922,7 +1999,7 @@
               <span class="sdc-rank" aria-label="Priority {{ $findingIdx + 1 }}">{{ $findingIdx + 1 }}</span>
               <span class="sdc-impact-badge {{ $impactClass }}">{{ $impactLabel }}</span>
               @if(!$findingIsUnlocked && $findingTierName)
-              <span class="sdc-lock-badge">Unlock {{ $findingTierName }}</span>
+              <span class="sdc-lock-badge">Requires {{ $findingTierName }}</span>
               @endif
             </div>
             <h3 class="sdc-issue">{{ $finding['what_missing'] ?? 'Issue detected' }}</h3>
@@ -1944,8 +2021,8 @@
                 Ask AI about this
               </button>
             @else
-              <p class="sdc-locked-hint">Unlock {{ $findingTierName }}{{ $findingTierPrice ? ' ('.$findingTierPrice.')' : '' }} to see the full explanation and fix for this issue.</p>
-              <a href="{{ $findingUnlockHref }}" class="sdc-unlock-btn">Unlock to See Fix &rarr;</a>
+              <p class="sdc-locked-hint">{{ $findingTierName }} includes the full explanation and step-by-step fix for this issue.</p>
+              <a href="{{ $findingUnlockHref }}" class="sdc-unlock-btn">Upgrade to {{ $findingTierName }}{{ $findingTierPrice ? ' &mdash; '.$findingTierPrice : '' }} &rarr;</a>
             @endif
           </article>
           @endforeach
@@ -2160,16 +2237,20 @@
               data-checkout-href="{{ $nextCheckHref }}"
               data-price="{{ $nextLevelMeta['price'] }}"
               onclick="track('cta_click',{tier:{{ $nextLevelMeta['price'] }},label:'{{ $nextLevelMeta['name'] }}',location:'your_plan'})">
-              Unlock {{ $nextLevelMeta['name'] }} &mdash; {{ $nextLevelMeta['price'] }}
+              Upgrade to {{ $nextLevelMeta['name'] }} &mdash; {{ $nextLevelMeta['price'] }}
             </button>
             <p class="unlock-level-line">Next step: unlock the next level of visibility improvement.</p>
           </div>
           @else
           {{-- All levels complete --}}
           <div class="plan-all-unlocked-card">
-            <p class="plan-all-unlocked-kicker">All levels complete</p>
+            <p class="plan-all-unlocked-kicker">All layers active</p>
             <h3 class="plan-all-unlocked-title">System fully activated</h3>
-            <p class="plan-all-unlocked-desc">You have access to all four analysis levels. Your complete visibility framework is active.</p>
+            <p class="plan-all-unlocked-desc">All four analysis layers are active. Work through your execution checklist to turn fixes into real visibility improvements.</p>
+            <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:14px">
+              <a href="#guided-execution" class="plan-view-report-btn">Continue execution &rarr;</a>
+              <a href="{{ route('book.index') }}?entry=dashboard-plan-complete" class="plan-consult-btn" style="margin-top:0">Need implementation help? Book a session &rarr;</a>
+            </div>
           </div>
           @endif
 
@@ -2200,9 +2281,9 @@
 
         {{-- Consultation row --}}
         <div class="plan-consult-row">
-          <p class="plan-consult-copy">Your system is built from your scan data. We can deploy, scale, and accelerate what it&rsquo;s already surfaced &mdash; done for you.</p>
-          <p class="confidence-line">Your system is already improving &mdash; continuing will accelerate results.</p>
-          <a href="{{ route('book.index') }}?entry=dashboard-plan" class="plan-consult-btn" onclick="track('cta_click',{tier:'consult',label:'consultation',location:'your_plan'})">Book a Strategy Session &rarr;</a>
+          <p class="plan-consult-copy">Once you&rsquo;ve worked through your self-serve layers, we can deploy, scale, and accelerate your full system &mdash; implemented for you.</p>
+          <p class="confidence-line">Your system is already improving &mdash; expert guidance accelerates what you&rsquo;ve already built.</p>
+          <a href="{{ route('book.index') }}?entry=dashboard-plan" class="plan-consult-btn" onclick="track('cta_click',{tier:'consult',label:'consultation',location:'your_plan'})">Need guided implementation? Book a session &rarr;</a>
         </div>
 
       </div>
@@ -2458,15 +2539,15 @@
 
         {{-- Consultation nudge --}}
         <div class="ge-upsell-banner">
-          <span class="ge-upsell-text">Your checklist is built from your scan. We can now deploy, scale, and accelerate the full system &mdash; implemented for you.</span>
-          <a href="{{ route('book.index', ['entry' => 'dashboard-upgrade']) }}" class="ge-upsell-btn" onclick="track('cta_click',{tier:'consult',label:'consultation',location:'ge_upsell'})">Book Strategy Session &rarr;</a>
+          <span class="ge-upsell-text">You&rsquo;ve surfaced the full picture. Ready to hand off execution? We can deploy and scale everything your checklist has identified &mdash; implemented for you.</span>
+          <a href="{{ route('book.index', ['entry' => 'dashboard-upgrade']) }}" class="ge-upsell-btn" onclick="track('cta_click',{tier:'consult',label:'consultation',location:'ge_upsell'})">Ready to hand off? Book a guided session &rarr;</a>
         </div>
 
         {{-- Phase 9: 100% completion nudge --}}
         <div id="ge-completion-nudge" class="ge-completion-nudge" role="status" aria-live="polite">
-          <p class="ge-cn-hed">Ready to take this further?</p>
-          <p class="ge-cn-body">Your checklist reveals exactly what your system needs. We can build, deploy, and scale everything it&rsquo;s surfaced &mdash; so you don&rsquo;t have to do it alone.</p>
-          <a href="{{ route('book.index', ['entry' => 'dashboard-completion']) }}" class="ge-cn-cta" onclick="track('cta_click',{tier:'consult',label:'consultation_post_completion',location:'ge_completion'})">Book Strategy Session &rarr;</a>
+          <p class="ge-cn-hed">You&rsquo;ve completed the self-serve system.</p>
+          <p class="ge-cn-body">Your checklist is done. The next step is guided activation &mdash; we build, deploy, and scale everything your system has surfaced, so you own the outcome without doing it alone.</p>
+          <a href="{{ route('book.index', ['entry' => 'dashboard-completion']) }}" class="ge-cn-cta" onclick="track('cta_click',{tier:'consult',label:'consultation_post_completion',location:'ge_completion'})">Book a Guided Activation Session &rarr;</a>
         </div>
       </div>
     </section>
@@ -2542,6 +2623,510 @@
     @endif
     {{-- END: ai-advisor --}}
 
+    {{-- START: crawl-intelligence panels (market command center) --}}
+    @if(!$hasCrawlData)
+    {{-- ── PREMIUM AWAITING STATE ─────────────────────────────────────── --}}
+    <section class="system-section mb-6 dash-section-anchor surface-reveal is-visible" id="ci-building" aria-label="Intelligence gathering">
+      <div class="system-subshell" style="position:relative;overflow:hidden">
+        <div style="position:absolute;inset:0;background:radial-gradient(circle at 25% 40%,rgba(200,168,75,.07),transparent 55%);pointer-events:none"></div>
+        <div style="position:relative;z-index:1">
+          <p style="font-size:.62rem;letter-spacing:.24em;text-transform:uppercase;color:rgba(200,168,75,.55);margin:0 0 10px">Market Command Center</p>
+          <div style="display:flex;align-items:center;gap:9px;margin-bottom:10px">
+            <span style="width:8px;height:8px;border-radius:50%;background:rgba(200,168,75,.55);flex-shrink:0;animation:scorePulse 2.2s ease-in-out infinite"></span>
+            <p style="font-size:.9rem;font-weight:600;color:#f0ead8;margin:0">Building your intelligence profile&hellip;</p>
+          </div>
+          <p style="font-size:.74rem;color:#a79f8d;max-width:42rem;line-height:1.6;margin:0 0 16px">Once your site crawl completes, you&rsquo;ll see your Market Control score, expansion opportunities, structure breakdown, and a prioritised action plan &mdash; all derived from real page data.</p>
+          <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px;margin-bottom:16px">
+            @foreach(['Market Control %','Missing Opportunities','Structure Score','Next Actions'] as $ciAwaitPanel)
+            <div style="background:rgba(255,255,255,.02);border:1px solid rgba(200,168,75,.08);border-radius:10px;padding:12px;opacity:.5">
+              <p style="font-size:.6rem;letter-spacing:.14em;text-transform:uppercase;color:#a79f8d;margin:0 0 9px">{{ $ciAwaitPanel }}</p>
+              <div style="height:5px;background:rgba(255,255,255,.06);border-radius:3px;overflow:hidden;position:relative">
+                <div style="position:absolute;height:100%;width:55%;background:linear-gradient(90deg,rgba(200,168,75,.15),rgba(200,168,75,.45),rgba(200,168,75,.15));border-radius:3px;animation:ciIndeterminate 2.4s ease-in-out infinite"></div>
+              </div>
+            </div>
+            @endforeach
+          </div>
+          <p style="font-size:.64rem;letter-spacing:.06em;color:rgba(200,168,75,.4);margin:0">This panel updates automatically when the crawl finishes</p>
+        </div>
+      </div>
+    </section>
+    @else
+    {{-- ── MAIN INTELLIGENCE DISPLAY ──────────────────────────────────── --}}
+    @php
+      $ciIsPartial = $crawlIsPartial;
+
+      // ── Coverage / market values ─────────────────────────────────────
+      $mcPct      = (float) ($marketCoverage['coverage_pct']         ?? 0.0);
+      $mcFound    = (int)   ($marketCoverage['combinations_found']   ?? 0);
+      $mcPossible = (int)   ($marketCoverage['combinations_possible'] ?? 0);
+      $mcMissing  = max(0, $mcPossible - $mcFound);
+      $mcHasData  = $marketCoverage && !$ciIsPartial && $mcPossible > 0;
+
+      $mcPhase = match (true) {
+        $mcPct >  85 => 'Dominant Coverage',
+        $mcPct >= 60 => 'Market Leader',
+        $mcPct >= 25 => 'Growth Phase',
+        default      => 'Early Expansion Phase',
+      };
+      $mcPhaseColor = match (true) {
+        $mcPct >  85 => '#6bcf8f',
+        $mcPct >= 60 => '#6bcf8f',
+        $mcPct >= 25 => '#e8c44a',
+        default      => '#e8634a',
+      };
+
+      // ── Score values ─────────────────────────────────────────────────
+      $ciScoreTotal = (int) ($crawlScore['total'] ?? 0);
+      $ciScoreColor = $ciScoreTotal >= 70 ? '#6bcf8f' : ($ciScoreTotal >= 45 ? '#e8c44a' : '#e8634a');
+
+      // ── Gap buckets (derived from existing priority signal) ──────────
+      $allGaps         = $marketCoverage['high_value_gaps'] ?? [];
+      $maxGapPriority  = !empty($allGaps) ? max(array_column($allGaps,'priority') ?: [1]) : 1;
+      $fastWins        = array_values(array_filter($allGaps, fn($g) => ($g['priority']??0) >= ($maxGapPriority * 0.75)));
+      $highPriorityGaps = array_values(array_filter($allGaps, fn($g) => ($g['priority']??0) >= ($maxGapPriority * 0.4) && ($g['priority']??0) < ($maxGapPriority * 0.75)));
+      $lowerPriorityGaps = array_values(array_filter($allGaps, fn($g) => ($g['priority']??0) < ($maxGapPriority * 0.4)));
+
+      // ── Next Actions ─────────────────────────────────────────────────
+      $nextActions   = [];
+      $crawledTotal  = (int) ($crawlSummary['total_crawled'] ?? 0);
+      $withSchema    = (int) ($crawlSummary['pages_with_schema'] ?? 0);
+      $schemaMissing = max(0, $crawledTotal - $withSchema);
+      $orphanCount   = (int) ($crawlSummary['orphan_pages'] ?? 0);
+      $missingTitles = (int) ($crawlSummary['pages_missing_title'] ?? 0);
+      $missingH1s    = (int) ($crawlSummary['pages_missing_h1'] ?? 0);
+
+      // 1 — Coverage gaps
+      foreach (array_slice($allGaps, 0, 3) as $gap) {
+        $nextActions[] = [
+          'priority' => 'HIGH',
+          'color'    => '#e8634a',
+          'type'     => 'coverage',
+          'action'   => 'Build page',
+          'target'   => $gap['suggested_url'],
+          'detail'   => $gap['service_label'] . ' in ' . $gap['city_label'],
+        ];
+      }
+      // 2 — Schema
+      if ($schemaMissing > 0) {
+        $nextActions[] = [
+          'priority' => $schemaMissing > 10 ? 'HIGH' : 'MEDIUM',
+          'color'    => $schemaMissing > 10 ? '#e8634a' : '#e8c44a',
+          'type'     => 'schema',
+          'action'   => 'Add schema',
+          'target'   => number_format($schemaMissing) . ' pages',
+          'detail'   => 'Structured data improves AI extractability and rich results eligibility',
+        ];
+      }
+      // 3 — Orphans
+      if ($orphanCount > 0) {
+        $nextActions[] = [
+          'priority' => $orphanCount > 5 ? 'MEDIUM' : 'LOW',
+          'color'    => $orphanCount > 5 ? '#e8c44a' : '#a79f8d',
+          'type'     => 'linking',
+          'action'   => 'Fix orphan pages',
+          'target'   => number_format($orphanCount) . ' pages',
+          'detail'   => 'Orphan pages receive no link equity and are hard to discover',
+        ];
+      }
+      // 4 — Missing titles
+      if ($missingTitles > 0) {
+        $nextActions[] = [
+          'priority' => $missingTitles > 5 ? 'MEDIUM' : 'LOW',
+          'color'    => $missingTitles > 5 ? '#e8c44a' : '#a79f8d',
+          'type'     => 'technical',
+          'action'   => 'Fix missing titles',
+          'target'   => number_format($missingTitles) . ' pages',
+          'detail'   => 'Title tags are required for indexing and search snippet generation',
+        ];
+      }
+      // 5 — Missing H1s
+      if ($missingH1s > 0) {
+        $nextActions[] = [
+          'priority' => 'LOW',
+          'color'    => '#a79f8d',
+          'type'     => 'technical',
+          'action'   => 'Fix missing H1s',
+          'target'   => number_format($missingH1s) . ' pages',
+          'detail'   => 'H1 headings are the primary on-page topic relevance signal',
+        ];
+      }
+
+      // ── Action type icon SVGs ────────────────────────────────────────
+      $naIcons = [
+        'coverage' => '<svg width="13" height="13" viewBox="0 0 13 13" fill="none" aria-hidden="true"><rect x="1" y="1" width="11" height="11" rx="2" stroke="currentColor" stroke-width="1.25"/><path d="M6.5 4v5M4 6.5h5" stroke="currentColor" stroke-width="1.25" stroke-linecap="round"/></svg>',
+        'schema'   => '<svg width="13" height="13" viewBox="0 0 13 13" fill="none" aria-hidden="true"><path d="M4 4L2 6.5L4 9M9 4l2 2.5L9 9M5.5 9.5l2-6" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+        'linking'  => '<svg width="13" height="13" viewBox="0 0 13 13" fill="none" aria-hidden="true"><path d="M5 8l3-3M5.5 3.5H4A2 2 0 002 5.5v2A2 2 0 004 9.5h1.5A2 2 0 007.5 7.5" stroke="currentColor" stroke-width="1.25" stroke-linecap="round"/><path d="M7.5 9.5H9A2 2 0 0011 7.5v-2A2 2 0 009 3.5H7.5A2 2 0 005.5 5.5" stroke="currentColor" stroke-width="1.25" stroke-linecap="round"/></svg>',
+        'technical'=> '<svg width="13" height="13" viewBox="0 0 13 13" fill="none" aria-hidden="true"><circle cx="6.5" cy="6.5" r="2" stroke="currentColor" stroke-width="1.25"/><path d="M6.5 1v1.5M6.5 10v1.5M1 6.5h1.5M10 6.5h1.5M2.75 2.75l1 1M9.25 9.25l1 1M9.25 2.75l-1 1M3.75 9.25l-1 1" stroke="currentColor" stroke-width="1.1" stroke-linecap="round"/></svg>',
+      ];
+    @endphp
+
+    {{-- ╔══════════════════════════════════════════════════╗ --}}
+    {{-- ║  KPI COMMAND ROW                                 ║ --}}
+    {{-- ╚══════════════════════════════════════════════════╝ --}}
+    <section class="system-section mb-6 dash-section-anchor surface-reveal is-visible" id="ci-kpi-row" aria-label="Market intelligence at a glance">
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(155px,1fr));gap:10px">
+
+        {{-- KPI 1: Market Control --}}
+        <div style="position:relative;background:linear-gradient(150deg,rgba(28,22,10,.98),rgba(14,11,7,.99));border:1px solid rgba(200,168,75,.22);border-radius:14px;padding:18px 16px;overflow:hidden">
+          <div style="position:absolute;top:0;right:0;width:80px;height:80px;background:radial-gradient(circle at 80% 20%,{{ $mcHasData ? $mcPhaseColor.'28' : 'rgba(200,168,75,.1)' }},transparent 70%);pointer-events:none"></div>
+          <p style="font-size:.58rem;letter-spacing:.2em;text-transform:uppercase;color:rgba(200,168,75,.58);margin:0 0 12px">Market Control</p>
+          @if($mcHasData)
+            <p style="font-size:2.5rem;font-weight:700;color:{{ $mcPhaseColor }};margin:0;line-height:.9;letter-spacing:-.05em">{{ number_format($mcPct,1) }}<span style="font-size:1.1rem;opacity:.65">%</span></p>
+            <p style="font-size:.64rem;font-weight:500;color:{{ $mcPhaseColor }};margin:10px 0 0;opacity:.85">{{ $mcPhase }}</p>
+          @elseif($ciIsPartial)
+            <p style="font-size:2rem;font-weight:700;color:rgba(200,168,75,.25);margin:0;line-height:.9">&mdash;</p>
+            <p style="font-size:.64rem;color:#a79f8d;margin:10px 0 0">Crawl in progress</p>
+          @else
+            <p style="font-size:2rem;font-weight:700;color:rgba(200,168,75,.25);margin:0;line-height:.9">&mdash;</p>
+            <p style="font-size:.64rem;color:#a79f8d;margin:10px 0 0">No data yet</p>
+          @endif
+        </div>
+
+        {{-- KPI 2: Missing Opportunities --}}
+        <div style="position:relative;background:linear-gradient(150deg,rgba(28,22,10,.98),rgba(14,11,7,.99));border:1px solid rgba(200,168,75,.22);border-radius:14px;padding:18px 16px;overflow:hidden">
+          <div style="position:absolute;top:0;right:0;width:80px;height:80px;background:radial-gradient(circle at 80% 20%,rgba(232,99,74,.12),transparent 70%);pointer-events:none"></div>
+          <p style="font-size:.58rem;letter-spacing:.2em;text-transform:uppercase;color:rgba(200,168,75,.58);margin:0 0 12px">Missing Opportunities</p>
+          @if($mcHasData)
+            <p style="font-size:2.5rem;font-weight:700;color:#f0ead8;margin:0;line-height:.9;letter-spacing:-.05em">{{ number_format($mcMissing) }}</p>
+            <p style="font-size:.64rem;color:#a79f8d;margin:10px 0 0">pages not yet built</p>
+          @else
+            <p style="font-size:2rem;font-weight:700;color:rgba(200,168,75,.25);margin:0;line-height:.9">&mdash;</p>
+            <p style="font-size:.64rem;color:#a79f8d;margin:10px 0 0">{{ $ciIsPartial ? 'Crawl in progress' : 'No data yet' }}</p>
+          @endif
+        </div>
+
+        {{-- KPI 3: Structure Score --}}
+        <div style="position:relative;background:linear-gradient(150deg,rgba(28,22,10,.98),rgba(14,11,7,.99));border:1px solid rgba(200,168,75,.22);border-radius:14px;padding:18px 16px;overflow:hidden">
+          <div style="position:absolute;top:0;right:0;width:80px;height:80px;background:radial-gradient(circle at 80% 20%,{{ $crawlScore ? $ciScoreColor.'22' : 'rgba(200,168,75,.08)' }},transparent 70%);pointer-events:none"></div>
+          <p style="font-size:.58rem;letter-spacing:.2em;text-transform:uppercase;color:rgba(200,168,75,.58);margin:0 0 12px">Structure Score</p>
+          @if($crawlScore)
+            <p style="font-size:2.5rem;font-weight:700;color:{{ $ciScoreColor }};margin:0;line-height:.9;letter-spacing:-.05em">{{ $ciScoreTotal }}<span style="font-size:1.1rem;opacity:.6">/100</span></p>
+            <p style="font-size:.64rem;color:{{ $ciScoreColor }};margin:10px 0 0;opacity:.82">{{ $ciScoreTotal >= 70 ? 'Strong' : ($ciScoreTotal >= 45 ? 'Improving' : 'Needs work') }}</p>
+          @else
+            <p style="font-size:2rem;font-weight:700;color:rgba(200,168,75,.25);margin:0;line-height:.9">&mdash;</p>
+            <p style="font-size:.64rem;color:#a79f8d;margin:10px 0 0">{{ $ciIsPartial ? 'Crawl in progress' : 'No data yet' }}</p>
+          @endif
+        </div>
+
+        {{-- KPI 4: Expansion Phase --}}
+        <div style="position:relative;background:linear-gradient(150deg,rgba(28,22,10,.98),rgba(14,11,7,.99));border:1px solid rgba(200,168,75,.22);border-radius:14px;padding:18px 16px;overflow:hidden">
+          <div style="position:absolute;top:0;right:0;width:80px;height:80px;background:radial-gradient(circle at 80% 20%,rgba(200,168,75,.1),transparent 70%);pointer-events:none"></div>
+          <p style="font-size:.58rem;letter-spacing:.2em;text-transform:uppercase;color:rgba(200,168,75,.58);margin:0 0 12px">Expansion Phase</p>
+          @if($mcHasData)
+            <p style="font-size:1rem;font-weight:700;color:#f0ead8;margin:0;line-height:1.15">{{ $mcPhase }}</p>
+            <p style="font-size:.64rem;color:#a79f8d;margin:10px 0 0">{{ number_format($mcFound) }} of {{ number_format($mcPossible) }} pages</p>
+          @else
+            <p style="font-size:1rem;font-weight:700;color:rgba(200,168,75,.25);margin:0;line-height:1.15">&mdash;</p>
+            <p style="font-size:.64rem;color:#a79f8d;margin:10px 0 0">{{ $ciIsPartial ? 'Crawl in progress' : 'No data yet' }}</p>
+          @endif
+        </div>
+
+      </div>
+    </section>
+
+    {{-- ╔══════════════════════════════════════════════════╗ --}}
+    {{-- ║  MARKET POSITION                                 ║ --}}
+    {{-- ╚══════════════════════════════════════════════════╝ --}}
+    @if($mcHasData || $ciIsPartial)
+    <section class="system-section mb-6 dash-section-anchor surface-reveal is-visible" id="market-position" aria-labelledby="market-position-heading">
+      <div class="system-subshell" style="position:relative;overflow:hidden">
+        <div style="position:absolute;top:-40%;left:-10%;width:55%;height:180%;background:radial-gradient(ellipse at 30% 50%,{{ $mcHasData ? $mcPhaseColor.'0d' : 'rgba(200,168,75,.04)' }},transparent 65%);pointer-events:none"></div>
+        @if($ciIsPartial)
+          {{-- Partial state --}}
+          <div style="position:relative;z-index:1">
+            <p style="font-size:.62rem;letter-spacing:.22em;text-transform:uppercase;color:rgba(200,168,75,.55);margin:0 0 10px">Market Position</p>
+            <div style="display:flex;align-items:center;gap:9px;margin-bottom:10px">
+              <span style="width:7px;height:7px;border-radius:50%;background:rgba(200,168,75,.5);flex-shrink:0;animation:scorePulse 2s ease-in-out infinite"></span>
+              <p style="font-size:.84rem;font-weight:600;color:#f0ead8;margin:0">Mapping your market coverage&hellip;</p>
+            </div>
+            <p style="font-size:.73rem;color:#a79f8d;line-height:1.55;margin:0 0 14px;max-width:44rem">Market control percentage and expansion phase will appear once the crawl finishes.</p>
+            <div style="height:5px;background:rgba(255,255,255,.06);border-radius:4px;overflow:hidden;position:relative">
+              <div style="position:absolute;height:100%;width:55%;background:linear-gradient(90deg,rgba(200,168,75,.15),rgba(200,168,75,.5),rgba(200,168,75,.15));border-radius:4px;animation:ciIndeterminate 2.4s ease-in-out infinite"></div>
+            </div>
+          </div>
+        @else
+          {{-- Full state --}}
+          <div style="position:relative;z-index:1">
+            {{-- Header row --}}
+            <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-bottom:24px">
+              <div>
+                <p style="font-size:.62rem;letter-spacing:.22em;text-transform:uppercase;color:rgba(200,168,75,.55);margin:0 0 8px">Market Position</p>
+                <h2 id="market-position-heading" style="font-size:1.3rem;font-weight:700;color:#f0ead8;margin:0 0 8px;line-height:1.05;letter-spacing:-.025em">
+                  Market Control: <span style="color:{{ $mcPhaseColor }}">{{ number_format($mcPct,1) }}%</span>
+                </h2>
+                <div style="display:inline-flex;align-items:center;gap:6px;padding:4px 10px;background:{{ $mcPhaseColor }}14;border:1px solid {{ $mcPhaseColor }}30;border-radius:20px">
+                  <span style="width:5px;height:5px;border-radius:50%;background:{{ $mcPhaseColor }};flex-shrink:0"></span>
+                  <span style="font-size:.64rem;font-weight:600;letter-spacing:.1em;color:{{ $mcPhaseColor }}">{{ $mcPhase }}</span>
+                </div>
+              </div>
+              <div style="text-align:right;flex-shrink:0">
+                <p style="font-size:.6rem;letter-spacing:.14em;text-transform:uppercase;color:#a79f8d;margin:0 0 5px">Expansion opportunity</p>
+                <p style="font-size:2.1rem;font-weight:700;color:rgba(200,168,75,.88);margin:0;line-height:.9;letter-spacing:-.04em">{{ number_format($mcMissing) }}</p>
+                <p style="font-size:.64rem;color:#a79f8d;margin:5px 0 0">pages not yet built</p>
+              </div>
+            </div>
+
+            {{-- Progress bar with phase markers --}}
+            <div style="margin-bottom:24px">
+              <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:9px">
+                <span style="font-size:.62rem;letter-spacing:.14em;text-transform:uppercase;color:#a79f8d">Coverage progress</span>
+                <span style="font-size:.7rem;font-weight:600;color:{{ $mcPhaseColor }}">{{ number_format($mcFound) }} built &mdash; {{ number_format($mcMissing) }} remaining</span>
+              </div>
+              {{-- Track --}}
+              <div style="position:relative;height:12px;background:rgba(255,255,255,.07);border-radius:8px;overflow:hidden">
+                {{-- Fill --}}
+                <div style="height:100%;width:{{ min(100,$mcPct) }}%;background:linear-gradient(90deg,{{ $mcPhaseColor }}88,{{ $mcPhaseColor }});border-radius:8px;transition:width .9s ease;position:relative">
+                  <div style="position:absolute;inset:0;background:linear-gradient(180deg,rgba(255,255,255,.2),transparent 55%);border-radius:8px"></div>
+                </div>
+                {{-- Phase tick marks at 25%, 60%, 85% --}}
+                <div style="position:absolute;top:2px;bottom:2px;left:25%;width:1px;background:rgba(255,255,255,.18)"></div>
+                <div style="position:absolute;top:2px;bottom:2px;left:60%;width:1px;background:rgba(255,255,255,.18)"></div>
+                <div style="position:absolute;top:2px;bottom:2px;left:85%;width:1px;background:rgba(255,255,255,.18)"></div>
+              </div>
+              {{-- Phase labels --}}
+              <div style="position:relative;height:20px;margin-top:6px">
+                <span style="position:absolute;left:0;font-size:.58rem;color:rgba(200,168,75,.38);white-space:nowrap">Early</span>
+                <span style="position:absolute;left:25%;transform:translateX(-50%);font-size:.58rem;color:rgba(200,168,75,.38);white-space:nowrap">Growth</span>
+                <span style="position:absolute;left:60%;transform:translateX(-50%);font-size:.58rem;color:rgba(200,168,75,.38);white-space:nowrap">Leader</span>
+                <span style="position:absolute;left:85%;transform:translateX(-50%);font-size:.58rem;color:rgba(200,168,75,.38);white-space:nowrap">Dominant</span>
+              </div>
+            </div>
+
+            {{-- Stats grid --}}
+            <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:8px">
+              @foreach([
+                ['label'=>'Services',      'val'=>number_format($marketCoverage['services_count'] ?? 0), 'sub'=>'detected'],
+                ['label'=>'Cities',        'val'=>number_format($marketCoverage['cities_count']   ?? 0), 'sub'=>'detected'],
+                ['label'=>'Pages Built',   'val'=>number_format($mcFound),                               'sub'=>'of '.number_format($mcPossible)],
+                ['label'=>'Still Missing', 'val'=>number_format($mcMissing),                             'sub'=>'pages'],
+              ] as $mps)
+              <div style="background:rgba(255,255,255,.028);border:1px solid rgba(200,168,75,.1);border-radius:10px;padding:11px 13px">
+                <p style="font-size:.58rem;letter-spacing:.12em;text-transform:uppercase;color:#a79f8d;margin:0 0 6px">{{ $mps['label'] }}</p>
+                <p style="font-size:1.3rem;font-weight:600;color:rgba(200,168,75,.88);margin:0;line-height:1;letter-spacing:-.02em">{{ $mps['val'] }}</p>
+                <p style="font-size:.6rem;color:rgba(200,168,75,.4);margin:4px 0 0">{{ $mps['sub'] }}</p>
+              </div>
+              @endforeach
+            </div>
+          </div>
+        @endif
+      </div>
+    </section>
+    @endif
+
+    {{-- ╔══════════════════════════════════════════════════╗ --}}
+    {{-- ║  EXPANSION OPPORTUNITIES (bucketed)              ║ --}}
+    {{-- ╚══════════════════════════════════════════════════╝ --}}
+    @if($mcHasData && !empty($allGaps))
+    <section class="system-section mb-6 dash-section-anchor surface-reveal is-visible" id="expansion-opportunities" aria-labelledby="opp-heading">
+      <div class="system-subshell">
+        <div style="margin-bottom:18px">
+          <p style="font-size:.62rem;letter-spacing:.22em;text-transform:uppercase;color:rgba(200,168,75,.55);margin:0 0 5px">Expansion Opportunities</p>
+          <h2 id="opp-heading" style="font-size:.88rem;font-weight:600;color:#f0ead8;margin:0">{{ number_format(count($allGaps)) }} page{{ count($allGaps) !== 1 ? 's' : '' }} not yet built &mdash; sorted by impact</h2>
+        </div>
+
+        {{-- Fast Wins --}}
+        @if(!empty($fastWins))
+        <div style="margin-bottom:18px">
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:9px">
+            <span style="font-size:.58rem;letter-spacing:.14em;text-transform:uppercase;font-weight:700;color:#e8634a;background:rgba(232,99,74,.1);border:1px solid rgba(232,99,74,.3);border-radius:5px;padding:2px 7px">Fast Wins</span>
+            <span style="font-size:.65rem;color:#a79f8d">Highest-traffic pairs &mdash; build these first</span>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:6px">
+            @foreach(array_slice($fastWins,0,5) as $gap)
+            <div style="display:grid;grid-template-columns:1fr auto;align-items:center;gap:10px;padding:10px 12px;background:rgba(232,99,74,.04);border:1px solid rgba(232,99,74,.15);border-left:3px solid rgba(232,99,74,.45);border-radius:0 9px 9px 0">
+              <div style="min-width:0">
+                <p style="font-size:.76rem;font-weight:500;color:#f0ead8;margin:0 0 2px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ $gap['service_label'] }} in {{ $gap['city_label'] }}</p>
+                <p style="font-size:.63rem;color:#a79f8d;margin:0;font-family:monospace;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ $gap['suggested_url'] }}</p>
+              </div>
+              <span style="flex-shrink:0;font-size:.6rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:rgba(200,168,75,.5);white-space:nowrap">Build page</span>
+            </div>
+            @endforeach
+            @if(count($fastWins)>5)
+            <p style="font-size:.64rem;color:#a79f8d;margin:2px 0 0;padding-left:12px">+{{ count($fastWins)-5 }} more fast wins</p>
+            @endif
+          </div>
+        </div>
+        @endif
+
+        {{-- High Priority --}}
+        @if(!empty($highPriorityGaps))
+        <div style="margin-bottom:18px">
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:9px">
+            <span style="font-size:.58rem;letter-spacing:.14em;text-transform:uppercase;font-weight:700;color:#e8c44a;background:rgba(232,196,74,.08);border:1px solid rgba(232,196,74,.28);border-radius:5px;padding:2px 7px">High Priority</span>
+            <span style="font-size:.65rem;color:#a79f8d">Strong expansion targets</span>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:6px">
+            @foreach(array_slice($highPriorityGaps,0,5) as $gap)
+            <div style="display:grid;grid-template-columns:1fr auto;align-items:center;gap:10px;padding:10px 12px;background:rgba(232,196,74,.03);border:1px solid rgba(232,196,74,.12);border-left:3px solid rgba(232,196,74,.35);border-radius:0 9px 9px 0">
+              <div style="min-width:0">
+                <p style="font-size:.76rem;font-weight:500;color:#f0ead8;margin:0 0 2px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ $gap['service_label'] }} in {{ $gap['city_label'] }}</p>
+                <p style="font-size:.63rem;color:#a79f8d;margin:0;font-family:monospace;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ $gap['suggested_url'] }}</p>
+              </div>
+              <span style="flex-shrink:0;font-size:.6rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:rgba(200,168,75,.5);white-space:nowrap">Build page</span>
+            </div>
+            @endforeach
+            @if(count($highPriorityGaps)>5)
+            <p style="font-size:.64rem;color:#a79f8d;margin:2px 0 0;padding-left:12px">+{{ count($highPriorityGaps)-5 }} more</p>
+            @endif
+          </div>
+        </div>
+        @endif
+
+        {{-- Lower Priority --}}
+        @if(!empty($lowerPriorityGaps))
+        <div>
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:9px">
+            <span style="font-size:.58rem;letter-spacing:.14em;text-transform:uppercase;font-weight:700;color:#a79f8d;background:rgba(167,159,141,.08);border:1px solid rgba(167,159,141,.2);border-radius:5px;padding:2px 7px">Lower Priority</span>
+            <span style="font-size:.65rem;color:#a79f8d">Build after completing higher-impact pages</span>
+          </div>
+          <div style="display:flex;flex-wrap:wrap;gap:5px">
+            @foreach(array_slice($lowerPriorityGaps,0,15) as $gap)
+            <span style="font-size:.67rem;color:#a79f8d;background:rgba(255,255,255,.03);border:1px solid rgba(200,168,75,.1);border-radius:6px;padding:4px 10px;white-space:nowrap">{{ $gap['service_label'] }} in {{ $gap['city_label'] }}</span>
+            @endforeach
+            @if(count($lowerPriorityGaps)>15)
+            <span style="font-size:.67rem;color:rgba(200,168,75,.4);border:1px solid rgba(200,168,75,.14);border-radius:6px;padding:4px 10px;white-space:nowrap">+{{ count($lowerPriorityGaps)-15 }} more</span>
+            @endif
+          </div>
+        </div>
+        @endif
+
+        @if(count($allGaps)>20)
+        <p style="font-size:.63rem;color:rgba(200,168,75,.38);margin:16px 0 0;text-align:center;letter-spacing:.06em">{{ number_format(count($allGaps)) }} total expansion opportunities identified</p>
+        @endif
+      </div>
+    </section>
+    @endif
+
+    {{-- ╔══════════════════════════════════════════════════╗ --}}
+    {{-- ║  NEXT ACTIONS                                    ║ --}}
+    {{-- ╚══════════════════════════════════════════════════╝ --}}
+    @if(!empty($nextActions))
+    <section class="system-section mb-6 dash-section-anchor surface-reveal is-visible" id="next-actions" aria-labelledby="na-heading">
+      <div class="system-subshell">
+        <div style="margin-bottom:16px">
+          <p style="font-size:.62rem;letter-spacing:.22em;text-transform:uppercase;color:rgba(200,168,75,.55);margin:0 0 5px">Next Actions</p>
+          <h2 id="na-heading" style="font-size:.88rem;font-weight:600;color:#f0ead8;margin:0">{{ count($nextActions) }} recommended move{{ count($nextActions) !== 1 ? 's' : '' }}</h2>
+        </div>
+        <ol style="list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:7px" aria-label="Recommended actions">
+          @foreach($nextActions as $naIdx => $na)
+          <li style="display:grid;grid-template-columns:26px 1fr auto;align-items:start;gap:10px;padding:12px 13px;background:rgba(255,255,255,.025);border:1px solid rgba(200,168,75,.1);border-radius:10px;border-left:3px solid {{ $na['color'] }}55">
+            {{-- Rank --}}
+            <span style="font-size:.6rem;font-weight:700;color:{{ $na['color'] }};opacity:.65;padding-top:3px;text-align:center">{{ $naIdx+1 }}</span>
+            {{-- Content --}}
+            <div>
+              <div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin-bottom:4px">
+                <span style="display:inline-flex;align-items:center;gap:4px;font-size:.6rem;letter-spacing:.1em;text-transform:uppercase;font-weight:700;color:{{ $na['color'] }};background:{{ $na['color'] }}18;border:1px solid {{ $na['color'] }}28;border-radius:4px;padding:2px 6px;line-height:1">
+                  <span style="color:{{ $na['color'] }};display:inline-flex;align-items:center">{!! $naIcons[$na['type']] ?? '' !!}</span>
+                  {{ $na['action'] }}
+                </span>
+                <span style="font-size:.76rem;font-weight:500;color:#f0ead8">{{ $na['target'] }}</span>
+              </div>
+              <p style="font-size:.66rem;color:#a79f8d;margin:0;line-height:1.45">{{ $na['detail'] }}</p>
+            </div>
+            {{-- Priority --}}
+            <span style="font-size:.58rem;letter-spacing:.1em;text-transform:uppercase;font-weight:700;color:{{ $na['color'] }};opacity:.68;white-space:nowrap;padding-top:3px">{{ $na['priority'] }}</span>
+          </li>
+          @endforeach
+        </ol>
+      </div>
+    </section>
+    @endif
+
+    {{-- ╔══════════════════════════════════════════════════╗ --}}
+    {{-- ║  STRUCTURE STRENGTH                              ║ --}}
+    {{-- ╚══════════════════════════════════════════════════╝ --}}
+    <section class="system-section mb-6 dash-section-anchor surface-reveal is-visible" id="structure-strength" aria-labelledby="structure-strength-heading">
+      <div class="system-subshell">
+        <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:16px">
+          <div>
+            <p style="font-size:.62rem;letter-spacing:.22em;text-transform:uppercase;color:rgba(200,168,75,.55);margin:0 0 5px">Structure Strength</p>
+            <h2 id="structure-strength-heading" style="font-size:.88rem;font-weight:600;color:#f0ead8;margin:0">On-page signals across {{ number_format($crawlTotalPages) }} pages @if($ciIsPartial)<span style="font-size:.7rem;font-weight:400;color:#a79f8d"> &mdash; updating</span>@endif</h2>
+          </div>
+        </div>
+        <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(145px,1fr));gap:9px">
+          @php
+            $chMetrics = [
+              ['label'=>'Missing Titles',    'val'=>$crawlSummary['pages_missing_title']     ?? 0,   'good'=>0,   'warn'=>3,   'suffix'=>' pages', 'higherGood'=>false],
+              ['label'=>'Missing H1',        'val'=>$crawlSummary['pages_missing_h1']        ?? 0,   'good'=>0,   'warn'=>3,   'suffix'=>' pages', 'higherGood'=>false],
+              ['label'=>'Missing Meta',      'val'=>$crawlSummary['pages_missing_meta_desc'] ?? 0,   'good'=>0,   'warn'=>5,   'suffix'=>' pages', 'higherGood'=>false],
+              ['label'=>'Schema Coverage',   'val'=>$crawlSummary['schema_coverage_pct']     ?? 0.0, 'good'=>60,  'warn'=>30,  'suffix'=>'%',      'higherGood'=>true],
+              ['label'=>'Orphan Pages',      'val'=>$crawlSummary['orphan_pages']            ?? 0,   'good'=>0,   'warn'=>3,   'suffix'=>' pages', 'higherGood'=>false],
+              ['label'=>'Avg Word Count',    'val'=>$crawlSummary['avg_word_count']          ?? 0,   'good'=>400, 'warn'=>200, 'suffix'=>' words', 'higherGood'=>true],
+            ];
+          @endphp
+          @foreach($chMetrics as $chm)
+          @php
+            $chv = $chm['val'];
+            $chColor = $chm['higherGood']
+              ? ($chv >= $chm['good'] ? '#6bcf8f' : ($chv >= $chm['warn'] ? '#e8c44a' : '#e8634a'))
+              : ($chv <= $chm['good'] ? '#6bcf8f' : ($chv <= $chm['warn'] ? '#e8c44a' : '#e8634a'));
+            $chFmt = is_float($chv) ? number_format($chv,1) : number_format((int)$chv);
+          @endphp
+          <div style="background:rgba(255,255,255,.025);border:1px solid rgba(200,168,75,.1);border-top:2px solid {{ $chColor }}42;border-radius:10px;padding:11px 13px">
+            <p style="font-size:.6rem;letter-spacing:.12em;text-transform:uppercase;color:#a79f8d;margin:0 0 7px">{{ $chm['label'] }}</p>
+            <p style="font-size:1.3rem;font-weight:600;color:{{ $chColor }};margin:0;line-height:1;letter-spacing:-.025em">{{ $chFmt }}<span style="font-size:.64rem;color:#a79f8d;font-weight:400;letter-spacing:0">{{ $chm['suffix'] }}</span></p>
+          </div>
+          @endforeach
+        </div>
+      </div>
+    </section>
+
+    {{-- ╔══════════════════════════════════════════════════╗ --}}
+    {{-- ║  SITE INTELLIGENCE SCORE                         ║ --}}
+    {{-- ╚══════════════════════════════════════════════════╝ --}}
+    @if($crawlScore)
+    <section class="system-section mb-6 dash-section-anchor surface-reveal is-visible" id="crawl-score" aria-labelledby="crawl-score-heading">
+      <div class="system-subshell">
+        <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-bottom:20px">
+          <div>
+            <p style="font-size:.62rem;letter-spacing:.22em;text-transform:uppercase;color:rgba(200,168,75,.55);margin:0 0 5px">Site Intelligence Score</p>
+            <h2 id="crawl-score-heading" style="font-size:.88rem;font-weight:600;color:#f0ead8;margin:0">Structural readiness across 5 dimensions @if($crawlScore['is_partial'])<span style="font-size:.7rem;font-weight:400;color:#a79f8d"> &mdash; partial</span>@endif</h2>
+          </div>
+          <div style="text-align:right;flex-shrink:0">
+            <p style="font-size:2.3rem;font-weight:700;color:{{ $ciScoreColor }};line-height:.9;margin:0;letter-spacing:-.04em">{{ $ciScoreTotal }}<span style="font-size:.9rem;font-weight:400;color:#a79f8d">/100</span></p>
+            <p style="font-size:.63rem;color:{{ $ciScoreColor }};margin:5px 0 0;opacity:.8">{{ $ciScoreTotal >= 70 ? 'Strong foundation' : ($ciScoreTotal >= 45 ? 'Improving' : 'Needs attention') }}</p>
+          </div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:11px">
+          @php
+            $csDimensions = [
+              ['key'=>'structure_score',        'label'=>'Structure'],
+              ['key'=>'coverage_score',         'label'=>'Coverage'],
+              ['key'=>'schema_score',           'label'=>'Schema'],
+              ['key'=>'internal_linking_score', 'label'=>'Linking'],
+              ['key'=>'technical_score',        'label'=>'Technical'],
+            ];
+          @endphp
+          @foreach($csDimensions as $dim)
+          @php
+            $dimData  = $crawlScore[$dim['key']] ?? null;
+            $dimScore = (int) ($dimData['score'] ?? 0);
+            $dimMax   = (int) ($dimData['max']   ?? 1);
+            $dimPct   = (int) ($dimData['pct']   ?? 0);
+            $dimNote  = $dimData['notes'][0] ?? '';
+            $dimBar   = $dimPct >= 70 ? '#6bcf8f' : ($dimPct >= 40 ? '#e8c44a' : '#e8634a');
+          @endphp
+          <div>
+            <div style="display:flex;align-items:center;gap:10px">
+              <span style="font-size:.65rem;letter-spacing:.1em;text-transform:uppercase;color:#a79f8d;min-width:78px;flex-shrink:0">{{ $dim['label'] }}</span>
+              <div style="flex:1;height:6px;background:rgba(255,255,255,.07);border-radius:4px;overflow:hidden">
+                <div style="height:100%;width:{{ $dimPct }}%;background:{{ $dimBar }};border-radius:4px;transition:width .6s ease"></div>
+              </div>
+              <span style="font-size:.7rem;font-weight:600;color:{{ $dimBar }};min-width:40px;text-align:right;flex-shrink:0">{{ $dimScore }}/{{ $dimMax }}</span>
+            </div>
+            @if($dimNote)
+            <p style="font-size:.62rem;color:#a79f8d;margin:3px 0 0;padding-left:88px;opacity:.72;line-height:1.4">{{ $dimNote }}</p>
+            @endif
+          </div>
+          @endforeach
+        </div>
+      </div>
+    </section>
+    @endif
+
+    @endif {{-- end $hasCrawlData --}}
+    {{-- END: crawl-intelligence panels --}}
+
     {{-- START: reports-view inline section (isReportsView) --}}
     @if($isReportsView)
     <section class="system-section mb-8 dash-section-anchor surface-reveal is-visible" id="report-readouts">
@@ -2578,7 +3163,7 @@
             <span class="secondary" aria-disabled="true">{{ $leadReadoutStatus }}</span>
           @endif
           @if($nextLayer)
-            <a href="{{ $nextLevelHref }}" class="primary">Unlock {{ $nextLevelLabel }}{{ $nextLevelPrice ? (' — ' . $nextLevelPrice) : '' }} →</a>
+            <a href="{{ $nextLevelHref }}" class="primary">Upgrade: {{ $nextLevelLabel }}{{ $nextLevelPrice ? (' — ' . $nextLevelPrice) : '' }} &rarr;</a>
           @endif
         </div>
 

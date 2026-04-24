@@ -17,6 +17,8 @@ class MarketingSitemapController extends Controller
             ['path' => '/solutions/agencies', 'changefreq' => 'monthly', 'priority' => '0.7'],
             ['path' => '/solutions/business-owners', 'changefreq' => 'monthly', 'priority' => '0.7'],
             ['path' => '/about', 'changefreq' => 'monthly', 'priority' => '0.6'],
+            ['path' => '/quick-scan', 'changefreq' => 'weekly', 'priority' => '0.9'],
+            ['path' => '/book', 'changefreq' => 'weekly', 'priority' => '0.9'],
         ],
         'agency' => [
             ['path' => '/growth-services', 'changefreq' => 'monthly', 'priority' => '0.7'],
@@ -25,6 +27,8 @@ class MarketingSitemapController extends Controller
             ['path' => '/ads-management', 'changefreq' => 'monthly', 'priority' => '0.7'],
             ['path' => '/branding-print', 'changefreq' => 'monthly', 'priority' => '0.7'],
             ['path' => '/access-plans', 'changefreq' => 'monthly', 'priority' => '0.7'],
+            ['path' => '/ai-citation-tracking', 'changefreq' => 'monthly', 'priority' => '0.7'],
+            ['path' => '/for-agencies', 'changefreq' => 'monthly', 'priority' => '0.7'],
         ],
         'local' => [
             ['path' => '/local-ai-search', 'changefreq' => 'monthly', 'priority' => '0.7'],

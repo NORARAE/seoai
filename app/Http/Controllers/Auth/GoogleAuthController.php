@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
-use App\Models\QuickScan;
 use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
@@ -24,17 +23,6 @@ class GoogleAuthController extends Controller
             abort(404);
         }
 
-        // Preserve optional scan_id so we can return the user to their scan
-        $scanId = (int) request()->query('scan_id', 0);
-        if ($scanId) {
-            request()->session()->put('oauth_scan_id', $scanId);
-        }
-
-        $returnTo = $this->sanitizeRedirectTarget(request()->query('redirect'));
-        if ($returnTo) {
-            request()->session()->put('oauth_return_to', $returnTo);
-        }
-
         return Socialite::driver('google')
             ->scopes(['openid', 'email', 'profile'])
             ->redirect();
@@ -49,10 +37,6 @@ class GoogleAuthController extends Controller
             abort(404);
         }
 
-        // Determine if this is a public scan-originated flow
-        $oauthScanId = (int) request()->session()->get('oauth_scan_id', 0);
-        $isPublicScanFlow = $oauthScanId > 0;
-
         // Handle OAuth denial / errors from Google
         if (request()->has('error')) {
             Log::info('Google OAuth: user denied or error returned', [
@@ -60,7 +44,8 @@ class GoogleAuthController extends Controller
                 'ip' => request()->ip(),
             ]);
 
-            return $this->errorRedirect('Google sign-in was cancelled or denied.', $oauthScanId);
+            return redirect()->route('filament.admin.auth.login')
+                ->with('google_error', 'Google sign-in was cancelled or denied.');
         }
 
         try {
@@ -71,7 +56,8 @@ class GoogleAuthController extends Controller
                 'ip' => request()->ip(),
             ]);
 
-            return $this->errorRedirect('Google sign-in failed. Please try again.', $oauthScanId);
+            return redirect()->route('filament.admin.auth.login')
+                ->with('google_error', 'Google sign-in failed. Please try again.');
         }
 
         // Email is required — Google always provides one, but be defensive.
@@ -79,12 +65,13 @@ class GoogleAuthController extends Controller
         if (blank($email)) {
             Log::warning('Google OAuth: no email returned', ['ip' => request()->ip()]);
 
-            return $this->errorRedirect('No email address was returned by Google.', $oauthScanId);
+            return redirect()->route('filament.admin.auth.login')
+                ->with('google_error', 'No email address was returned by Google.');
         }
 
-        // Domain restriction (not applied to public scan users — they've already paid)
+        // Domain restriction
         $allowedDomains = $this->getAllowedDomains();
-        if (!empty($allowedDomains) && !$isPublicScanFlow) {
+        if (!empty($allowedDomains)) {
             $emailDomain = Str::after($email, '@');
             if (!in_array($emailDomain, $allowedDomains, true)) {
                 Log::info('Google OAuth: domain not allowed', [
@@ -92,29 +79,28 @@ class GoogleAuthController extends Controller
                     'ip' => request()->ip(),
                 ]);
 
-                return $this->errorRedirect('Your email domain is not authorised to sign in.', $oauthScanId);
+                return redirect()->route('filament.admin.auth.login')
+                    ->with('google_error', 'Your email domain is not authorised to sign in. Contact your administrator.');
             }
         }
 
         // Locate existing user: first by google_id, then by email.
+        // This prevents account takeover — Google is only linked to a matching email.
         $user = User::where('google_id', $googleUser->getId())->first()
             ?? User::where('email', $email)->first();
 
         if (!$user) {
-            // Auto-provision: always for paid scan users, otherwise respect config.
-            $shouldProvision = $isPublicScanFlow || config('services.google_login.auto_provision', false);
-
-            if (!$shouldProvision) {
+            if (!config('services.google_login.auto_provision', false)) {
                 Log::info('Google OAuth: no account, auto-provision disabled', [
                     'email' => $email,
                     'ip' => request()->ip(),
                 ]);
 
-                return $this->errorRedirect('No account found for this email address.', $oauthScanId);
+                return redirect()->route('filament.admin.auth.login')
+                    ->with('google_error', 'No account found for this email address. Please contact your administrator.');
             }
 
-            // Auto-provision: create account. Approved=false initially —
-            // auto-approval happens below if user has a paid scan.
+            // Auto-provision: create account, unapproved by default.
             $user = User::create([
                 'name' => $googleUser->getName() ?: Str::before($email, '@'),
                 'email' => $email,
@@ -126,22 +112,16 @@ class GoogleAuthController extends Controller
                 'role' => config('services.google_login.default_role', 'viewer'),
                 'approved' => false,
                 'last_login_at' => now(),
-                'signup_ip' => request()->ip(),
-                'signup_user_agent' => substr((string) request()->userAgent(), 0, 512),
-                'signup_referrer' => substr((string) request()->headers->get('referer', ''), 0, 512) ?: null,
-                'signup_source' => $isPublicScanFlow ? 'quick-scan' : 'google-oauth',
             ]);
 
-            Log::info('Google OAuth: auto-provisioned new user', [
-                'email' => $email,
-                'source' => $isPublicScanFlow ? 'quick-scan' : 'google-oauth',
-            ]);
+            Log::info('Google OAuth: auto-provisioned new user', ['email' => $email]);
         } else {
             // Attach google_id if this is the first Google sign-in for this account.
             if (blank($user->google_id)) {
                 $user->google_id = $googleUser->getId();
             }
             $user->google_avatar = $googleUser->getAvatar();
+            $user->auth_provider = 'google';
             $user->last_login_at = now();
             if (blank($user->email_verified_at)) {
                 $user->email_verified_at = now();
@@ -153,98 +133,20 @@ class GoogleAuthController extends Controller
         Auth::login($user, remember: true);
         request()->session()->regenerate();
 
-        // Link any Quick Scans purchased with this email to the user account.
-        $linked = QuickScan::where('email', $user->email)
-            ->whereNull('user_id')
-            ->update(['user_id' => $user->id]);
-
-        // Also link the specific scan from the OAuth flow (handles email mismatch:
-        // user may have purchased as work@co.com but signed in with personal@gmail.com).
-        $oauthScanId = (int) request()->session()->get('oauth_scan_id', 0);
-        if ($oauthScanId) {
-            $oauthScan = QuickScan::find($oauthScanId);
-            if ($oauthScan && is_null($oauthScan->user_id)) {
-                $oauthScan->update(['user_id' => $user->id]);
-                $linked++;
-            }
-        }
-
-        // Auto-approve users who have at least one paid scan.
-        if (!$user->isApproved() && $user->quickScans()->where('paid', true)->exists()) {
-            $user->update(['approved' => true]);
-        }
-
         Log::info('Google OAuth: login successful', [
             'user_id' => $user->id,
             'email' => $user->email,
-            'scans_linked' => $linked,
-            'oauth_scan_id' => $oauthScanId ?: null,
         ]);
 
-        // ── Public scan flow: send user to dashboard so the report is immediately visible ──
-        if ($oauthScanId) {
-            $scan = QuickScan::find($oauthScanId);
-            if ($scan && ($scan->user_id === $user->id || $scan->email === $user->email)) {
-                request()->session()->pull('oauth_scan_id');
-
-                $returnTo = $this->sanitizeRedirectTarget(request()->session()->pull('oauth_return_to'));
-
-                return redirect($returnTo ?: '/dashboard')
-                    ->with('scan_saved', 'Your report has been saved to your account.');
-            }
-        }
-
-        // ── Non-scan flows below ────────────────────────────────────────
-
-        // Approval check: unapproved customers go to pending page.
-        if (!$user->isPrivilegedStaff() && !$user->isFrontendDev() && !$user->isApproved()) {
+        // Approval check: unapproved non-staff users go to pending page.
+        if (!$user->isPrivilegedStaff() && !$user->isApproved()) {
             return redirect()->route('pending-approval');
         }
 
-        // Approved but onboarding not yet complete
-        if (!$user->isPrivilegedStaff() && !$user->isFrontendDev() && $user->isApproved() && is_null($user->onboarding_completed_at)) {
-            return redirect()->route('user.onboarding');
-        }
-
-        // Privileged staff → Filament panel
-        if ($user->isPrivilegedStaff() || $user->isFrontendDev()) {
-            return redirect()->intended('/admin');
-        }
-
-        // Regular approved + onboarded user → SaaS dashboard
-        $hasPaidScans = $user->quickScans()->where('paid', true)->exists();
-        $flash = $linked > 0
-            ? 'We found a previous purchase and added it to your dashboard.'
-            : ($hasPaidScans ? 'Your previous scans are ready — view them in your dashboard.' : null);
-
-        $redirect = redirect()->intended('/dashboard');
-        return $flash ? $redirect->with('scan_saved', $flash) : $redirect;
+        return redirect()->intended('/admin');
     }
 
     // ─── Private Helpers ────────────────────────────────────────────────────
-
-    /**
-     * Redirect to the appropriate error page depending on context.
-     * Public scan users go back to their scan result; admin users go to Filament login.
-     */
-    private function errorRedirect(string $message, int $oauthScanId = 0): RedirectResponse
-    {
-        if ($oauthScanId) {
-            $scan = QuickScan::find($oauthScanId);
-            if ($scan) {
-                $resultUrl = url('/quick-scan/result')
-                    . '?session_id=' . ($scan->stripe_session_id ?? 'none')
-                    . '&scan_id=' . $scan->id;
-
-                return redirect()->to($resultUrl)
-                    ->with('google_error', $message);
-            }
-        }
-
-        return redirect()->to('/login')
-            ->with('google_error', $message)
-            ->with('google_error_type', $this->classifyError($message));
-    }
 
     private function isEnabled(): bool
     {
@@ -260,33 +162,5 @@ class GoogleAuthController extends Controller
         }
 
         return array_values(array_filter(array_map('trim', explode(',', $domains))));
-    }
-
-    private function classifyError(string $message): string
-    {
-        if (str_contains($message, 'No account found')) {
-            return 'no-account';
-        }
-        if (str_contains($message, 'domain is not authorised')) {
-            return 'domain-blocked';
-        }
-        if (str_contains($message, 'No email')) {
-            return 'no-email';
-        }
-        return 'failed';
-    }
-
-    private function sanitizeRedirectTarget(mixed $target): ?string
-    {
-        if (!is_string($target)) {
-            return null;
-        }
-
-        $target = trim($target);
-        if ($target === '' || !str_starts_with($target, '/')) {
-            return null;
-        }
-
-        return str_starts_with($target, '//') ? null : $target;
     }
 }

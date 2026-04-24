@@ -191,7 +191,7 @@ class OnboardingController extends Controller
                 'email' => $validated['email'],
                 'company' => $validated['business_name'],
                 'website' => $validated['website'] ?? null,
-                'phone' => $validated['phone'],
+                'phone' => $validated['phone'] ?? null,
                 'session_type' => 'preview',
                 'payment_status' => 'none',
                 'source' => 'preview',
@@ -335,7 +335,7 @@ class OnboardingController extends Controller
 
         Log::channel('booking')->info('Onboarding submitted', [
             'lead_id' => $lead->id,
-            'booking_id' => $validated['booking_id'],
+            'booking_id' => $validated['booking_id'] ?? null,
             'submission_id' => $submission->id,
         ]);
 

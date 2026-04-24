@@ -46,7 +46,9 @@ class QuickScanWebhookController extends Controller
         if ($secret === '') {
             Log::error('QuickScan Stripe webhook secret is not configured.');
 
-            return response()->json(['message' => 'Webhook secret not configured.'], Response::HTTP_BAD_REQUEST);
+            // Return 200 to prevent Stripe from disabling the endpoint when the secret
+            // is temporarily missing from config. Matches BookingWebhookController behaviour.
+            return response()->json(['message' => 'Webhook secret not configured.'], 200);
         }
 
         try {

@@ -2,7 +2,8 @@
     AI Assistant Widget — floating orb trigger + slide-up chat panel
     Include once, just before </body>.
     Props (optional): $aiGreeting (string), $aiSuggestedPrompts (array),
-                      $aiMicroLabel (string), $aiTeaserTitle (string), $aiTeaserText (string)
+                      $aiMicroLabel (string), $aiTeaserTitle (string), $aiTeaserText (string),
+                      $aiCrawlSummary (array|null), $aiMarketData (array|null)
 --}}
 
 @php
@@ -15,17 +16,43 @@ $aiTierRank = $isAuth && (auth()->user()?->system_tier instanceof \App\Enums\Sys
 
 $greeting = $aiGreeting ?? (
     $isAuth && $firstName
-        ? "Hi {$firstName} — I can walk you through what your score means, which fix to tackle first, and what each level unlocks. Where would you like to start?"
+        ? "Hi {$firstName} — choose a guided question below for a structured analysis, or type your own."
         : "Hi there — I can explain how AI visibility works, what your scan results mean, or help you figure out the right next step. What's on your mind?"
 );
 
 $suggestedPrompts = $aiSuggestedPrompts ?? ($isAuth
-    ? ["What does my score mean?", "What should I fix first?", "Walk me through my top issue", "What does upgrading unlock?"]
+    ? ["Explain my market gaps", "What should I build next?", "Show highest impact opportunities", "How do I improve my score?"]
     : ["What does an AI visibility scan check?", "How does the $2 scan work?", "What's the difference between tiers?", "How do I get started?"]);
 
 $microLabel  = $aiMicroLabel  ?? 'AI Analysis Ready';
 $teaserTitle = $aiTeaserTitle ?? 'Your AI System';
-$teaserText  = $aiTeaserText  ?? 'Questions about AI visibility, your score, or next steps? I can help.';
+$teaserText  = $aiTeaserText  ?? 'Get a structured analysis of your market gaps, next actions, or score improvements.';
+
+// Crawl action data — passed from dashboard view (nullable on non-dashboard pages)
+$_crawl  = $aiCrawlSummary ?? null;
+$_market = $aiMarketData ?? null;
+$_actionData = [];
+if ($_crawl) {
+    if (($_crawl['pages_missing_h1'] ?? 0) > 0) {
+        $_actionData[] = ['label' => 'Fix ' . $_crawl['pages_missing_h1'] . ' pages missing H1 tags', 'type' => 'fix', 'key' => 'missing_h1'];
+    }
+    if (($_crawl['pages_missing_meta_desc'] ?? 0) > 0) {
+        $_actionData[] = ['label' => 'Add meta descriptions to ' . $_crawl['pages_missing_meta_desc'] . ' pages', 'type' => 'fix', 'key' => 'missing_meta'];
+    }
+    if (($_crawl['schema_coverage_pct'] ?? 100) < 60) {
+        $_actionData[] = ['label' => 'Improve schema markup (' . $_crawl['schema_coverage_pct'] . '% coverage)', 'type' => 'fix', 'key' => 'schema'];
+    }
+    if (($_crawl['orphan_pages'] ?? 0) > 0) {
+        $_actionData[] = ['label' => 'Fix ' . $_crawl['orphan_pages'] . ' orphan pages with no internal links', 'type' => 'fix', 'key' => 'orphan'];
+    }
+}
+if ($_market) {
+    $topGaps = array_slice($_market['high_value_gaps'] ?? [], 0, 2);
+    foreach ($topGaps as $gap) {
+        $_actionData[] = ['label' => 'Create page: ' . ($gap['suggested_title'] ?? '') . ' (' . ($gap['suggested_url'] ?? '') . ')', 'type' => 'create', 'key' => 'gap_' . ($gap['service'] ?? '') . '_' . ($gap['city'] ?? '')];
+    }
+}
+$_actionDataJson = json_encode(array_slice($_actionData, 0, 5), JSON_UNESCAPED_SLASHES);
 
 $csrfToken = csrf_token();
 @endphp
@@ -311,7 +338,12 @@ $csrfToken = csrf_token();
 }
 
 /* Chips */
-.aia-chips { padding: 0 14px 10px; display: flex; gap: 6px; flex-wrap: wrap; flex-shrink: 0; }
+.aia-chips { padding: 0 14px 10px; display: flex; gap: 6px; flex-wrap: wrap; flex-shrink: 0; flex-direction: column; }
+.aia-chips-label {
+  font-family: 'DM Sans', sans-serif; font-size: .6rem; letter-spacing: .08em; text-transform: uppercase;
+  color: rgba(200,168,75,.45); padding: 4px 2px 2px; font-weight: 500;
+}
+.aia-chips-row { display: flex; gap: 6px; flex-wrap: wrap; }
 .aia-chip {
   background: rgba(200,168,75,.06); border: 1px solid rgba(200,168,75,.17); border-radius: 18px;
   padding: 5px 11px; font-family: 'DM Sans', sans-serif; font-size: .7rem; letter-spacing: .03em;
@@ -319,8 +351,35 @@ $csrfToken = csrf_token();
   transition: background .2s, border-color .2s, color .2s;
   -webkit-tap-highlight-color: transparent;
 }
+.aia-chip--guided {
+  background: rgba(200,168,75,.1); border-color: rgba(200,168,75,.28);
+  padding: 7px 13px; font-size: .75rem; border-radius: 8px; white-space: normal; text-align: left; width: 100%;
+}
+.aia-chip--guided:hover { background: rgba(200,168,75,.18); border-color: rgba(200,168,75,.5); color: #d8be72; }
 .aia-chip:hover { background: rgba(200,168,75,.13); border-color: rgba(200,168,75,.36); color: #d8be72; }
 .aia-chips.gone { display: none; }
+
+/* Action panel — shown after AI response */
+.aia-actions {
+  margin: 6px 14px 2px; padding: 11px 13px; background: rgba(200,168,75,.05);
+  border: 1px solid rgba(200,168,75,.12); border-radius: 10px;
+}
+.aia-actions-label {
+  font-family: 'DM Sans', sans-serif; font-size: .58rem; letter-spacing: .09em; text-transform: uppercase;
+  color: rgba(200,168,75,.4); font-weight: 600; margin-bottom: 8px;
+}
+.aia-action-item {
+  display: flex; align-items: center; gap: 9px; padding: 7px 9px; margin-bottom: 4px;
+  background: rgba(200,168,75,.05); border: 1px solid rgba(200,168,75,.1); border-radius: 7px;
+  font-family: 'DM Sans', sans-serif; font-size: .75rem; color: rgba(237,232,222,.8);
+  cursor: default;
+}
+.aia-action-item:last-child { margin-bottom: 0; }
+.aia-action-dot {
+  width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0;
+  background: rgba(200,168,75,.7);
+}
+.aia-action-dot--create { background: rgba(100,200,120,.7); }
 
 /* Error */
 .aia-err {
@@ -445,15 +504,18 @@ $csrfToken = csrf_token();
 
   <div class="aia-err" id="aiaErr" role="alert"></div>
 
-  <div class="aia-chips" id="aiaChips" aria-label="Suggested questions">
+  <div class="aia-chips" id="aiaChips" aria-label="Guided questions">
+    @if($isAuth)
+    <div class="aia-chips-label">Guided questions</div>
+    @endif
     @foreach($suggestedPrompts as $p)
-      <button class="aia-chip" type="button" data-prompt="{{ $p }}">{{ $p }}</button>
+      <button class="aia-chip{{ $isAuth ? ' aia-chip--guided' : '' }}" type="button" data-prompt="{{ $p }}">{{ $p }}</button>
     @endforeach
   </div>
 
   <div class="aia-input-row">
     <textarea class="aia-ta" id="aiaInput"
-      placeholder="Ask anything&hellip;" rows="1"
+      placeholder="{{ $isAuth ? 'Or ask a specific question…' : 'Ask anything…' }}" rows="1"
       aria-label="Your message" autocomplete="off"
       spellcheck="true" maxlength="600"></textarea>
     <button class="aia-send" id="aiaSend" type="button" aria-label="Send" disabled>
@@ -474,6 +536,7 @@ $csrfToken = csrf_token();
   var MSG     = @json($greeting);
   var IS_AUTH = {{ $isAuth ? 'true' : 'false' }};
   var TIER_RANK = {{ (int) $aiTierRank }};
+  var ACTION_DATA = {!! $_actionDataJson !!};
 
   /* ── Behavior signal reader ────────────────────────────────────────── */
   function readBehaviorSignals() {
@@ -653,6 +716,7 @@ $csrfToken = csrf_token();
       if (!d.ok || d.error) { showErr(d.error || 'Something went wrong.'); return; }
       var rep = d.reply || '(no reply)';
       addMsg('ai', rep);
+      if (IS_AUTH && ACTION_DATA && ACTION_DATA.length) { renderActionPanel(); }
       addNextStepNudge(text);
       aiRespCount += 1;
       history.push({ role: 'assistant', content: rep });
@@ -696,6 +760,24 @@ $csrfToken = csrf_token();
     if (/why is my score|score (is )?low|score mean|what does.{0,20}score|bad score|score stuck/.test(t))  return 'score';
     if (/confused|don.t understand|what does this mean|can you explain|not sure/.test(t))                   return 'confused';
     return IS_AUTH ? 'has-scan' : 'no-scan';
+  }
+
+  /* ── Append action panel below AI message (data-driven from crawl) ── */
+  function renderActionPanel () {
+    var panel = document.createElement('div');
+    panel.className = 'aia-actions';
+    var lbl = document.createElement('div'); lbl.className = 'aia-actions-label'; lbl.textContent = 'Suggested actions';
+    panel.appendChild(lbl);
+    ACTION_DATA.forEach(function (action) {
+      var item = document.createElement('div'); item.className = 'aia-action-item';
+      var dot = document.createElement('div');
+      dot.className = 'aia-action-dot' + (action.type === 'create' ? ' aia-action-dot--create' : '');
+      var txt = document.createElement('span'); txt.textContent = action.label;
+      item.appendChild(dot); item.appendChild(txt);
+      panel.appendChild(item);
+    });
+    msgs.appendChild(panel);
+    msgs.scrollTop = msgs.scrollHeight;
   }
 
   /* ── Append next-step nudge below AI message (tier-aware) ── */

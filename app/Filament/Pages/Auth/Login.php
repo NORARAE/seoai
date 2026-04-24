@@ -2,28 +2,15 @@
 
 namespace App\Filament\Pages\Auth;
 
-use App\Models\User;
 use Filament\Auth\Pages\Login as BaseLogin;
 use Filament\Auth\Http\Responses\Contracts\LoginResponse;
 use Filament\Notifications\Notification;
-use Illuminate\Contracts\Support\Htmlable;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
 
 class Login extends BaseLogin
 {
-    public function getHeading(): string|Htmlable|null
-    {
-        return 'Staff access';
-    }
-
-    public function getSubheading(): string|Htmlable|null
-    {
-        return 'SEOAIco administration panel';
-    }
-
     /**
      * Show any Google OAuth error returned via session flash as a danger notification.
      */
@@ -79,15 +66,6 @@ class Login extends BaseLogin
             return $response;
 
         } catch (ValidationException $e) {
-            // If a Google-only user tries email/password, give a helpful message
-            $user = User::where('email', $email)->first();
-            if ($user && $user->auth_provider === 'google' && !Hash::check($this->data['password'] ?? '', $user->password)) {
-                RateLimiter::hit($key, 60);
-                throw ValidationException::withMessages([
-                    'data.email' => 'This account uses Google sign-in. Click "Continue with Google" above, or use "Forgot password?" to set an email password.',
-                ]);
-            }
-
             RateLimiter::hit($key, 60);
             throw $e;
         }

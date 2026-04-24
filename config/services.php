@@ -48,10 +48,6 @@ return [
         'redirect' => env('GOOGLE_LOGIN_REDIRECT', env('APP_URL') . '/auth/google/callback'),
     ],
 
-    'registration' => [
-        'access_code' => env('REGISTRATION_ACCESS_CODE'),
-    ],
-
     'google_login' => [
         'enabled' => env('GOOGLE_LOGIN_ENABLED', true),
         'auto_provision' => env('GOOGLE_AUTO_PROVISION_USERS', false),
@@ -79,11 +75,6 @@ return [
         'webhook_secret' => env('COINBASE_COMMERCE_WEBHOOK_SECRET'),
     ],
 
-    'openai' => [
-        'api_key' => env('OPENAI_API_KEY'),
-        'model' => env('OPENAI_CHAT_MODEL', 'gpt-4o-mini'),
-    ],
-
     'gsc' => [
         'site_url' => env('GSC_SITE_URL'),
         'credentials_path' => env('GOOGLE_APPLICATION_CREDENTIALS', storage_path('app/google-credentials.json')),
@@ -101,44 +92,12 @@ return [
 
     // Stripe webhook secret for the booking payment flow (separate from license webhook).
     'stripe_booking' => [
-        'booking_webhook_secret' => env('STRIPE_BOOKING_WEBHOOK_SECRET'),
         'webhook_secret' => env('STRIPE_BOOKING_WEBHOOK_SECRET'),
     ],
 
-    // Stripe webhook secret for the Quick Scan payment flow.
-    'stripe_quick_scan' => [
-        'webhook_secret' => env('STRIPE_QUICK_SCAN_WEBHOOK_SECRET'),
-    ],
-
-    // Stripe tier price IDs for commitment-based billing.
-    // monthly = recurring subscription price; activation = one-time invoice item.
-    // These are resolved by recommended_tier at checkout — never exposed to the UI.
-    // Stripe tier price IDs and canonical product naming.
-    // product_name / activation_name are used in Stripe Checkout line items when
-    // pre-configured price IDs are not yet live — keeping Stripe dashboard consistent.
-    'stripe_tiers' => [
-        'core' => [
-            'monthly' => env('STRIPE_PRICE_CORE_MONTHLY'),
-            'activation' => env('STRIPE_PRICE_ACTIVATION_CORE'),
-            'product_name' => 'SEO AI Co™ Core System — Monthly',
-            'activation_name' => 'SEO AI Co™ Core Activation',
-        ],
-        'multi' => [
-            'monthly' => env('STRIPE_PRICE_MULTI_MONTHLY'),
-            'activation' => env('STRIPE_PRICE_ACTIVATION_MULTI'),
-            'product_name' => 'SEO AI Co™ Multi-Market System — Monthly',
-            'activation_name' => 'SEO AI Co™ Multi-Market Activation',
-        ],
-        'agency' => [
-            'monthly' => env('STRIPE_PRICE_AGENCY_MONTHLY'),
-            'activation' => env('STRIPE_PRICE_ACTIVATION_AGENCY'),
-            'product_name' => 'SEO AI Co™ Partner System — Monthly',
-            'activation_name' => 'SEO AI Co™ Partner Activation',
-        ],
-    ],
-
-    'clarity' => [
-        'project_id' => env('CLARITY_PROJECT_ID', 'w5480s37m6'),
+    'openai' => [
+        'api_key' => env('OPENAI_API_KEY'),
+        'model' => env('OPENAI_MODEL', 'gpt-4o-mini'),
     ],
 
 ];

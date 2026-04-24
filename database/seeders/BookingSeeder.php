@@ -33,11 +33,11 @@ class BookingSeeder extends Seeder
             ConsultType::updateOrCreate(['slug' => $type['slug']], $type);
         }
 
-        // Default availability: Monday (1) through Friday (5), 9am–5pm
+        // Default availability: Monday (1) through Friday (5), 10am–1:30pm (Pacific preferred window)
         for ($day = 1; $day <= 5; $day++) {
             BookingAvailability::updateOrCreate(
                 ['day_of_week' => $day],
-                ['start_time' => '09:00:00', 'end_time' => '17:00:00', 'is_active' => true]
+                ['start_time' => '10:00:00', 'end_time' => '13:30:00', 'is_active' => true]
             );
         }
     }

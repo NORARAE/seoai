@@ -2,39 +2,22 @@
 
 namespace App\Models;
 
-use App\Enums\SystemTier;
-use App\Models\UserProfile;
 use App\Notifications\AdminPasswordResetNotification;
 use App\Support\ActiveSiteContext;
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
-use Filament\Auth\MultiFactor\App\Concerns\InteractsWithAppAuthentication;
-use Filament\Auth\MultiFactor\App\Concerns\InteractsWithAppAuthenticationRecovery;
-use Filament\Auth\MultiFactor\App\Contracts\HasAppAuthentication;
-use Filament\Auth\MultiFactor\App\Contracts\HasAppAuthenticationRecovery;
-use Filament\Models\Contracts\FilamentUser;
-use Filament\Panel;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Relations\HasOne;
+use Filament\Models\Contracts\FilamentUser;
+use Filament\Panel;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Collection;
 
-class User extends Authenticatable implements FilamentUser, HasAppAuthentication, HasAppAuthenticationRecovery
+class User extends Authenticatable implements FilamentUser
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
-    use HasFactory, InteractsWithAppAuthentication, InteractsWithAppAuthenticationRecovery, Notifiable;
-
-    /**
-     * Determine if the user can access the Filament admin panel.
-     */
-    public function canAccessPanel(Panel $panel): bool
-    {
-        return $this->is_active !== false
-            && ($this->isPrivilegedStaff() || $this->isFrontendDev());
-    }
+    use HasFactory, Notifiable;
 
     /**
      * The attributes that are mass assignable.
@@ -61,23 +44,16 @@ class User extends Authenticatable implements FilamentUser, HasAppAuthentication
         'onboarding_completed_at',
         'is_active',
         'approved',
-        'use_case',
         'google_id',
         'google_avatar',
         'auth_provider',
-        'signup_ip',
-        'signup_user_agent',
-        'signup_referrer',
-        'signup_source',
-        'signup_timezone',
-        'signup_utm',
         'system_tier',
         'system_tier_upgraded_at',
-        'profile_data',
         'stripe_checkout_session_id',
-        'email_marketing_opt_in',
-        'email_product_updates',
-        'email_scan_notifications',
+        'signup_ip',
+        'signup_user_agent',
+        'signup_source',
+        'signup_referrer',
     ];
 
     /**
@@ -103,14 +79,9 @@ class User extends Authenticatable implements FilamentUser, HasAppAuthentication
             'permissions' => 'array',
             'last_login_at' => 'datetime',
             'onboarding_completed_at' => 'datetime',
+            'system_tier_upgraded_at' => 'datetime',
             'is_active' => 'boolean',
             'approved' => 'boolean',
-            'system_tier' => SystemTier::class,
-            'system_tier_upgraded_at' => 'datetime',
-            'profile_data' => 'array',
-            'email_marketing_opt_in' => 'boolean',
-            'email_product_updates' => 'boolean',
-            'email_scan_notifications' => 'boolean',
         ];
     }
 
@@ -120,14 +91,6 @@ class User extends Authenticatable implements FilamentUser, HasAppAuthentication
     public function client(): BelongsTo
     {
         return $this->belongsTo(Client::class);
-    }
-
-    /**
-     * Onboarding profile collected during workspace setup.
-     */
-    public function profile(): HasOne
-    {
-        return $this->hasOne(UserProfile::class);
     }
 
     /**
@@ -143,14 +106,27 @@ class User extends Authenticatable implements FilamentUser, HasAppAuthentication
         return $this->belongsToMany(Site::class, 'site_user')->withTimestamps();
     }
 
-    public function quickScans(): HasMany
+    public function quickScans(): \Illuminate\Database\Eloquent\Relations\HasMany
     {
-        return $this->hasMany(QuickScan::class);
+        return $this->hasMany(\App\Models\QuickScan::class);
     }
 
-    public function entitlements(): HasMany
+    public function entitlements(): \Illuminate\Database\Eloquent\Relations\HasMany
     {
-        return $this->hasMany(UserEntitlement::class);
+        return $this->hasMany(\App\Models\UserEntitlement::class);
+    }
+
+    public function hasAccessTo(string $key): bool
+    {
+        return $this->entitlements()
+            ->where('entitlement_key', $key)
+            ->where('status', 'active')
+            ->exists();
+    }
+
+    public function isGoogleOnlyAccount(): bool
+    {
+        return $this->auth_provider === 'google' || (!empty($this->google_id) && empty($this->password));
     }
 
     /**
@@ -223,21 +199,50 @@ class User extends Authenticatable implements FilamentUser, HasAppAuthentication
     /**
      * Check if user is admin
      */
+    public function canAccessPanel(Panel $panel): bool
+    {
+        return $this->isPrivilegedStaff() || $this->isFrontendDev();
+    }
+
+    /**
+     * Check if user is admin
+     */
     public function isAdmin(): bool
     {
         return $this->isSuperAdmin() || in_array($this->role, ['owner', 'buyer', 'admin'], true);
     }
 
     /**
-     * True when the account should authenticate through Google OAuth.
+     * Upgrade the user's system_tier if the incoming tier is equal or higher rank.
+     * Accepts a SystemTier enum or its string value. Silently no-ops on invalid input.
      */
-    public function isGoogleOnlyAccount(): bool
+    public function upgradeSystemTier(\App\Enums\SystemTier|string|null $tier): void
     {
-        if ($this->auth_provider === 'google') {
-            return true;
+        if ($tier === null) {
+            return;
         }
 
-        return filled($this->google_id) && blank($this->password);
+        $incoming = $tier instanceof \App\Enums\SystemTier
+            ? $tier
+            : \App\Enums\SystemTier::tryFrom((string) $tier);
+
+        if ($incoming === null) {
+            return;
+        }
+
+        $current = $this->system_tier instanceof \App\Enums\SystemTier
+            ? $this->system_tier
+            : (is_string($this->system_tier) && $this->system_tier !== ''
+                ? \App\Enums\SystemTier::tryFrom($this->system_tier)
+                : null);
+
+        if ($current !== null && $current->rank() >= $incoming->rank()) {
+            return;
+        }
+
+        $this->system_tier = $incoming->value;
+        $this->system_tier_upgraded_at = now();
+        $this->save();
     }
 
     /**
@@ -314,39 +319,5 @@ class User extends Authenticatable implements FilamentUser, HasAppAuthentication
     public function sendPasswordResetNotification($token): void
     {
         $this->notify(new AdminPasswordResetNotification($token));
-    }
-
-    /**
-     * Upgrade the user's system tier if the new tier is higher.
-     */
-    public function upgradeSystemTier(SystemTier $tier): bool
-    {
-        $currentRank = $this->system_tier?->rank() ?? 0;
-
-        if ($tier->rank() > $currentRank) {
-            $this->update([
-                'system_tier' => $tier,
-                'system_tier_upgraded_at' => now(),
-            ]);
-            return true;
-        }
-
-        return false;
-    }
-
-    /**
-     * Get the tier rank (0 = no tier, 1-4 = scan-basic through system-activation).
-     */
-    public function tierRank(): int
-    {
-        return $this->system_tier?->rank() ?? 0;
-    }
-
-    public function hasAccessTo(string $entitlementKey): bool
-    {
-        return $this->entitlements()
-            ->where('entitlement_key', $entitlementKey)
-            ->where('status', 'active')
-            ->exists();
     }
 }

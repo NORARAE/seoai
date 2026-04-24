@@ -57,7 +57,7 @@ class ScanRunResource extends Resource
     {
         $user = Auth::user();
 
-        return $user instanceof User && ($user->isAdmin() || $user->isOperator());
+        return $user instanceof User && $user->canApproveUsers();
     }
 
     public static function getEloquentQuery(): Builder

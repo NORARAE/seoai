@@ -60,6 +60,7 @@ class QuickScan extends Model
         'onboarding_submission_id',
         'dimensions',
         'intelligence',
+        'site_id',
     ];
 
     protected $casts = [
@@ -106,6 +107,19 @@ class QuickScan extends Model
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function site(): BelongsTo
+    {
+        return $this->belongsTo(Site::class);
+    }
+
+    /**
+     * Return the most recent ScanRun triggered by this QuickScan.
+     */
+    public function scanRun(): \Illuminate\Database\Eloquent\Relations\HasOne
+    {
+        return $this->hasOne(ScanRun::class)->latestOfMany('started_at');
     }
 
     public function onboardingSubmission(): BelongsTo
@@ -163,9 +177,17 @@ class QuickScan extends Model
         return ($this->paid || in_array($this->status, [self::STATUS_PAID, self::STATUS_SCANNED], true)) ? 1 : 0;
     }
 
+    /**
+     * Returns the domain for this scan.
+     * Uses the stored domain column when present; falls back to parsing the
+     * host from the url field so callers always receive a usable string.
+     */
     public function domain(): string
     {
-        return parse_url($this->url, PHP_URL_HOST) ?? $this->url;
+        $stored = $this->attributes['domain'] ?? null;
+        return ($stored !== null && $stored !== '')
+            ? $stored
+            : (parse_url($this->url, PHP_URL_HOST) ?? $this->url ?? '');
     }
 
     public function publicScanId(): string
@@ -274,5 +296,29 @@ class QuickScan extends Model
     public function matchesPublicShareKey(string $shareKey): bool
     {
         return hash_equals($this->publicShareKey(), strtolower($shareKey));
+    }
+
+    /**
+     * Returns the real page count for this scan.
+     *
+     * Phase 4 fix: once the full-site crawl triggered by this QuickScan has run,
+     * the url_inventory count is a far more accurate measure than the homepage
+     * link count stored in page_count at scan time.
+     *
+     * Falls back to the stored page_count when no crawl data exists yet.
+     */
+    public function effectivePageCount(): int
+    {
+        if ($this->site_id) {
+            $crawledCount = UrlInventory::where('site_id', $this->site_id)
+                ->where('status', 'completed')
+                ->count();
+
+            if ($crawledCount > 0) {
+                return $crawledCount;
+            }
+        }
+
+        return $this->page_count ?? 0;
     }
 }

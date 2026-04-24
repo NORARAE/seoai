@@ -47,7 +47,7 @@
   ] : null;
 
   $scanCount = auth()->check() ? auth()->user()->quickScans()->count() : 1;
-  $showConsultationOffer = $scanCount >= 1;
+  $showConsultationOffer = $unlockLevel >= 3;
   $consultationHref = url('/book?entry=consultation');
   $momentumCta = 'Apply Fix';
 
@@ -1049,7 +1049,7 @@ button.sys-bar-node:hover .sys-bar-dot{border-color:rgba(214,181,95,.54);backgro
     <div>
       <p class="mode-kicker">System Analysis Mode</p>
       <div class="mode-meta">
-        <span class="mode-chip"><strong>Domain</strong> {{ $scan->domain() }}</span>
+        <span class="mode-chip"><strong>Domain</strong> {{ $scan->domain }}</span>
         <span class="mode-chip"><strong>Score</strong> {{ $score }}</span>
         <span class="mode-chip state-{{ $readoutStateKey }}"><strong>State</strong> {{ $readoutState }}</span>
         <span class="mode-chip"><strong>Last Eval</strong> {{ $lastEvaluatedLabel }}</span>
@@ -1116,7 +1116,7 @@ button.sys-bar-node:hover .sys-bar-dot{border-color:rgba(214,181,95,.54);backgro
       <section class="card hero" id="sys-overview">
         <div class="hero-top">
           <div>
-            <p class="hero-domain">{{ $scan->domain() }}</p>
+            <p class="hero-domain">{{ $scan->domain }}</p>
             <h1 class="hero-title">Your Scan Results</h1>
             <div class="hero-state">
               <span class="pill pill-score">Score {{ $score }}</span>
@@ -1233,7 +1233,7 @@ button.sys-bar-node:hover .sys-bar-dot{border-color:rgba(214,181,95,.54);backgro
                     data-layer="{{ $nbmSecondaryStep['modal'] }}"
                     aria-haspopup="dialog">View {{ $nbmSecondaryStep['label'] }} &rarr;</button>
             @elseif($showConsultationOffer)
-            <a href="{{ $consultationHref }}" class="btn btn-secondary nbm-secondary">Book a Consultation</a>
+            <a href="{{ $consultationHref }}" class="btn btn-secondary nbm-secondary">Book a Guided Strategy Session</a>
             @endif
           </div>
         </div>
@@ -1640,9 +1640,9 @@ button.sys-bar-node:hover .sys-bar-dot{border-color:rgba(214,181,95,.54);backgro
       <a href="#deeper-layers" class="sticky-link">Preview Restricted Layers</a>
 
       <div class="consult-offer" id="consultOffer" data-show="{{ $showConsultationOffer ? 'true' : 'false' }}">
-        <h3>Want help implementing this faster?</h3>
-        <p>Once you have scan momentum, we can help you apply fixes in the right order.</p>
-        <a href="{{ $consultationHref }}" class="btn btn-secondary js-track-consultation-cta">Request System Consultation</a>
+        <h3>Need expert guidance?</h3>
+        <p>After completing your analysis layers, we can guide expert implementation of your highest-leverage fixes.</p>
+        <a href="{{ $consultationHref }}" class="btn btn-secondary js-track-consultation-cta">Book a Strategy Session</a>
       </div>
     </aside>
   </div>
@@ -2320,7 +2320,7 @@ var resolvedLabel = trigger.dataset.execResolved || '✓ Fix applied';
 </script>
 @php
 $_scanAiGreeting = auth()->check()
-    ? "Your scan for {$scan->domain()} scored {$score}/100 — {$scoreSelectionInterpretation}.\n\nThe fastest way to improve: {$topBottleneck}.\n\nI can walk you through each fix, explain what it improves, or help you decide what to do next."
+    ? "Your scan for {$scan->domain} scored {$score}/100 — {$scoreSelectionInterpretation}.\n\nThe fastest way to improve: {$topBottleneck}.\n\nI can walk you through each fix, explain what it improves, or help you decide what to do next."
     : "Your scan scored {$score}/100 — {$scoreSelectionInterpretation}.\n\nI can walk you through each fix, explain what it improves, or help you decide what to do next.";
 $_scanAiPrompts = [
     "Why is my score {$score} and what does it mean?",

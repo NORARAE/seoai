@@ -19,13 +19,13 @@
 <meta name="theme-color" content="#080808">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="csrf-token" content="{{ csrf_token() }}">
-<title>Book a Session | SEO AI Co™</title>
-<meta name="description" content="Choose your next step: start with a $2 AI visibility scan, book a paid consultation after your scan, or proceed to full system activation.">
+<title>Choose Your Entry Level | SEO AI Co™</title>
+<meta name="description" content="Four self-serve levels advance your AI visibility step by step. Expert sessions are available when you need guided implementation — after you've seen what your scan reveals.">
 <link rel="canonical" href="{{ url('/book') }}">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="SEO AI Co™">
-<meta property="og:title" content="Book a Session | SEO AI Co™">
-<meta property="og:description" content="Start with a $2 scan, book a post-scan consultation, or proceed to full system activation.">
+<meta property="og:title" content="Choose Your Entry Level | SEO AI Co™">
+<meta property="og:description" content="Four self-serve levels fix your AI visibility step by step. Expert sessions are available when you need guided implementation.">
 <meta property="og:url" content="{{ url('/book') }}">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -728,8 +728,8 @@ body{line-height:1.85}
   <div class="bk-entry-gate" id="entryGate" data-open="false" role="dialog" aria-modal="true" aria-labelledby="entryGateTitle">
     <div class="bk-entry-gate-panel">
       <p class="bk-entry-gate-kicker">Before you schedule</p>
-      <h2 class="bk-entry-gate-title" id="entryGateTitle">A quick note on the consultation</h2>
-      <p class="bk-entry-gate-body">The AI Visibility Consultation is a paid, working session — not a sales call. You'll leave with a prioritized roadmap and a specific recommendation for your next move.</p>
+      <h2 class="bk-entry-gate-title" id="entryGateTitle">This session is for users who have scanned</h2>
+      <p class="bk-entry-gate-body">The AI Visibility Consultation is a paid, working session &mdash; not a sales call. We interpret your scan results, identify your highest-leverage gaps, and build a clear activation sequence. You leave with a specific plan and next-step recommendation.</p>
       <p class="bk-entry-gate-sub">$500 &middot; 60 minutes &middot; Full prepayment at booking</p>
       <div class="bk-entry-gate-actions">
         <button type="button" id="entryGateProceed" class="bk-entry-gate-primary">Continue to Scheduling</button>

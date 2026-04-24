@@ -113,7 +113,7 @@ class BookingFlowTest extends TestCase
         $response = $this->get('/book');
 
         $response->assertOk();
-        $response->assertSee("_bkOpenHT({$consultation->id}, 90, 'AI Visibility Consultation', 'full_prepay')", false);
+        $response->assertSee("_bkOpenHT({$consultation->id}, 90, 'Strategic Activation Intake', 'full_prepay')", false);
         $response->assertSee("_bkOpenHT({$activation->id}, 60, 'Full System Activation', '50_50_split')", false);
     }
 

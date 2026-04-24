@@ -12,6 +12,9 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware): void {
+        $middleware->alias([
+            'ai.sanitize' => \App\Http\Middleware\SanitizeAiInput::class,
+        ]);
         // Trust the immediate Nginx reverse proxy (SSL termination on DigitalOcean droplet).
         // Without this, $request->isSecure() is always false because PHP sees HTTP from
         // Nginx, causing HSTS headers to be skipped and secure cookie flags to misbehave.

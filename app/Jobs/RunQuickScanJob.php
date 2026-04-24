@@ -8,6 +8,8 @@ use App\Mail\QuickScanDay3;
 use App\Mail\QuickScanResult;
 use App\Models\Lead;
 use App\Models\QuickScan;
+use App\Models\Site;
+use App\Models\SiteCrawlSetting;
 use App\Services\QuickScanService;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldBeUnique;
@@ -15,6 +17,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 use Throwable;
@@ -77,8 +80,19 @@ class RunQuickScanJob implements ShouldQueue, ShouldBeUnique
                     'intelligence' => $result['intelligence'] ?? null,
                     'status' => QuickScan::STATUS_SCANNED,
                     'scanned_at' => now(),
+                    // Persist the derived domain so crawl trigger + future look-ups
+                    // can use the column directly without reparsing the URL.
+                    'domain' => parse_url($scan->url, PHP_URL_HOST) ?? $scan->url,
                 ]);
                 $scan->refresh();
+
+                // ── Phase 1+2+3: Trigger full site crawl after successful scan ──
+                // Only when the scan produced a meaningful result (score is set).
+                // Wrapped in its own try/catch — crawl failures must NEVER fail the
+                // QuickScan itself; the paid result has already been stored above.
+                if ($result['score'] !== null && empty($result['error'])) {
+                    $this->triggerSiteCrawl($scan);
+                }
             } catch (Throwable $e) {
                 $scan->update(['status' => QuickScan::STATUS_ERROR]);
 
@@ -199,4 +213,108 @@ class RunQuickScanJob implements ShouldQueue, ShouldBeUnique
             'error' => $e->getMessage(),
         ]);
     }
+
+    // ──────────────────────────────────────────────────────────────────────────
+    // Phase 1+2+3+6: Site discovery pipeline trigger
+    // ──────────────────────────────────────────────────────────────────────────
+
+    /**
+     * Find or create a Site for the scanned domain, seed conservative crawl
+     * settings (Phase 6 safety limits), and dispatch StartSiteDiscoveryJob.
+     *
+     * This method must NEVER throw — it is wrapped in a try/catch at the call
+     * site so that crawl failures cannot affect the paid QuickScan result.
+     */
+    private function triggerSiteCrawl(QuickScan $scan): void
+    {
+        try {
+            $domain = $scan->domain;
+
+            if (blank($domain)) {
+                Log::warning('RunQuickScanJob: crawl trigger skipped — blank domain', [
+                    'scan_id' => $scan->id,
+                ]);
+                return;
+            }
+
+            // ── Phase 1: Find or create the Site record ──────────────────────
+            $site = Site::firstOrCreate(
+                ['domain' => $domain],
+                [
+                    'name' => $domain,
+                    'status' => 'active',
+                    'crawl_status' => 'idle',
+                    // sitemap_enabled defaults to false; leave crawl to homepage
+                    // seeding until explicitly enabled by an admin.
+                    'sitemap_enabled' => false,
+                ]
+            );
+
+            // Store site_id on the QuickScan so dashboard can later join crawl data.
+            if ($scan->site_id !== $site->id) {
+                $scan->update(['site_id' => $site->id]);
+            }
+
+            // Associate the authenticated user to the site via the pivot table
+            // so they can access it from the dashboard later.
+            if ($scan->user_id) {
+                DB::table('site_user')->insertOrIgnore([
+                    'site_id' => $site->id,
+                    'user_id' => $scan->user_id,
+                    'created_at' => now(),
+                    'updated_at' => now(),
+                ]);
+            }
+
+            // ── Phase 6: Seed conservative crawl settings ────────────────────
+            // SiteCrawlSetting::firstOrCreate means existing manual overrides
+            // from the admin are preserved. Only new Sites get these defaults.
+            SiteCrawlSetting::firstOrCreate(
+                ['site_id' => $site->id],
+                [
+                    // QuickScan-triggered crawls: 250 pages max, depth 3.
+                    // This prevents runaway crawls on large sites. An admin can
+                    // raise these limits in the admin panel after first crawl.
+                    'max_pages' => 250,
+                    'crawl_delay' => 1,    // seconds between requests
+                    'max_depth' => 3,
+                    'obey_robots' => true,
+                    'follow_nofollow' => false,
+                ]
+            );
+
+            Log::info('RunQuickScanJob: site record resolved for crawl', [
+                'scan_id' => $scan->id,
+                'site_id' => $site->id,
+                'domain' => $domain,
+                'site_was_new' => $site->wasRecentlyCreated,
+            ]);
+
+            // ── Phase 3: Dispatch the discovery pipeline ─────────────────────
+            // StartSiteDiscoveryJob guards against duplicate runs internally:
+            // if a crawl is already running for this site it will log + return.
+            StartSiteDiscoveryJob::dispatch(
+                siteId: $site->id,
+                triggeredByType: 'quick_scan',
+                initiatedBy: $scan->user_id,
+                quickScanId: $scan->id,
+            )->onQueue('crawl');
+
+            Log::info('RunQuickScanJob: StartSiteDiscoveryJob dispatched', [
+                'scan_id' => $scan->id,
+                'site_id' => $site->id,
+                'domain' => $domain,
+                'queue' => 'crawl',
+            ]);
+        } catch (Throwable $e) {
+            // Crawl trigger failure is non-fatal — log and continue.
+            Log::error('RunQuickScanJob: site crawl trigger failed (non-fatal)', [
+                'scan_id' => $scan->id,
+                'domain' => $scan->domain,
+                'error' => $e->getMessage(),
+                'trace' => $e->getTraceAsString(),
+            ]);
+        }
+    }
 }
+

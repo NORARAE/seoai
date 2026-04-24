@@ -23,6 +23,7 @@ class ScanRun extends Model
         'opportunities_found',
         'error_summary',
         'notes',
+        'quick_scan_id',
     ];
 
     protected $casts = [
@@ -41,6 +42,11 @@ class ScanRun extends Model
     public function site(): BelongsTo
     {
         return $this->belongsTo(Site::class);
+    }
+
+    public function quickScan(): BelongsTo
+    {
+        return $this->belongsTo(QuickScan::class);
     }
 
     public function initiatedBy(): BelongsTo

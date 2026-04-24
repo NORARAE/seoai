@@ -5,15 +5,23 @@ namespace App\Http\Controllers;
 use App\Models\FunnelEvent;
 use App\Models\LocationPage;
 use App\Models\QuickScan;
+use App\Models\Site;
 use App\Models\User;
+use App\Services\Crawl\CrawlScoreService;
+use App\Services\Crawl\CrawlSummaryService;
+use App\Services\Crawl\MarketCoverageService;
 use App\Services\Entitlements\EntitlementService;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class DashboardController extends Controller
 {
-    public function __construct(private readonly EntitlementService $entitlements)
-    {
+    public function __construct(
+        private readonly EntitlementService $entitlements,
+        private readonly CrawlSummaryService $crawlSummary,
+        private readonly MarketCoverageService $marketCoverage,
+        private readonly CrawlScoreService $crawlScore,
+    ) {
     }
 
     public function index()
@@ -32,7 +40,35 @@ class DashboardController extends Controller
             'score_band' => $scoreBand,
         ]);
 
-        return view('dashboard.customer-modern', $scanData);
+        // Load crawl intelligence from the site linked to the user's latest scan.
+        // Resolving Site: prefer the scan's site_id, fall back to the user's first
+        // assigned site. Returns null if no crawl has run yet.
+        $site = $this->resolveSiteForUser($user, $latestScan);
+        $crawlSummaryData = $site ? $this->crawlSummary->compute($site) : null;
+        $marketCoverageData = $site ? $this->marketCoverage->compute($site) : null;
+        $crawlScoreData = $site ? $this->crawlScore->compute($site) : null;
+
+        return view('dashboard.customer-modern', array_merge($scanData, [
+            'crawlSummary' => $crawlSummaryData,
+            'marketCoverage' => $marketCoverageData,
+            'crawlScore' => $crawlScoreData,
+            'hasCrawlData' => $crawlSummaryData !== null,
+            'crawlIsPartial' => (bool) ($crawlSummaryData['is_partial'] ?? false),
+            'crawlTotalPages' => (int) ($crawlSummaryData['total_crawled'] ?? 0),
+        ]));
+    }
+
+    /**
+     * Resolve the Site record to use for crawl intelligence.
+     * Prefers the site attached to the latest scan; falls back to BelongsToMany pivot.
+     */
+    private function resolveSiteForUser(User $user, ?QuickScan $latestScan): ?Site
+    {
+        if ($latestScan?->site_id) {
+            return Site::find($latestScan->site_id);
+        }
+
+        return $user->sites()->latest('site_user.created_at')->first();
     }
 
     public function saveProfileData(\Illuminate\Http\Request $request): \Illuminate\Http\JsonResponse
@@ -165,13 +201,13 @@ class DashboardController extends Controller
                     'score_change' => $scan->score_change,
                     'scanned_at' => $scan->scanned_at,
                     'created_at' => $scan->created_at,
-                    'domain' => $scan->domain(),
+                    'domain' => $scan->domain,
                     'issues_count' => $issuesCount,
-                    'pages_scanned' => (int) ($scan->page_count ?? 0),
+                    'pages_scanned' => $scan->effectivePageCount(),
                     'quick_insight' => $quickInsight,
                     'fastest_fix' => $scan->fastest_fix,
                     // Future-ready dashboard fields for client naming/tagging/filtering.
-                    'scan_name' => $scan->domain(),
+                    'scan_name' => $scan->domain,
                     'scan_tags' => [],
                     'scan_filter_bucket' => $score >= 88 ? 'high' : ($score >= 60 ? 'mid' : 'low'),
                 ];

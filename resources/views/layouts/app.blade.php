@@ -344,7 +344,10 @@ body.is-admin-viewing-dashboard {
 
     @stack('scripts')
 
-    @include('components.ai-assistant')
+    @include('components.ai-assistant', [
+        'aiCrawlSummary' => $crawlSummary ?? null,
+        'aiMarketData'   => $marketCoverage ?? null,
+    ])
     @include('partials.back-to-top', ['dashMode' => true])
 </body>
 </html>

@@ -11,6 +11,7 @@ use App\Http\Controllers\MarketingPageController;
 use App\Http\Controllers\MarketingSitemapController;
 use App\Http\Controllers\OnboardingController;
 use App\Http\Controllers\PublicController;
+use App\Http\Controllers\SeoController;
 use App\Http\Controllers\TrackingController;
 use App\Http\Controllers\UserOnboardingController;
 use App\Http\Middleware\EnsureOnboardingComplete;
@@ -40,7 +41,7 @@ use Illuminate\Support\Facades\Route;
 // AI ASSISTANT — available to guests and authenticated users
 // ============================================================================
 Route::post('/ai/chat', [AiAssistantController::class, 'chat'])
-    ->middleware('throttle:30,1')
+    ->middleware(['ai.sanitize', 'throttle:30,1'])
     ->name('ai.chat');
 
 // ============================================================================
@@ -297,9 +298,9 @@ Route::middleware(['auth', EnsureUserIsApproved::class])->prefix('admin/bookings
 // PREVIEW LAYER - Public-facing location pages (with auth check for drafts)
 // ============================================================================
 
-// Route::get('/seo/dashboard', [SeoController::class, 'dashboard'])
-//     ->middleware('auth')
-//     ->name('seo.dashboard');
+Route::get('/seo/dashboard', [SeoController::class, 'dashboard'])
+    ->middleware('auth')
+    ->name('seo.dashboard');
 
 Route::get('/preview/{slug}', [LocationPagePreviewController::class, 'show'])
     ->name('location-pages.preview')

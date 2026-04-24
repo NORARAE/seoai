@@ -53,15 +53,21 @@ class EntitlementService
     {
         $rank = max(0, min(4, $this->rankFromSystemTier($user->system_tier)));
 
+        // system_tier may be a SystemTier enum OR a plain string (no cast on User).
+        // ?-> only guards null; calling ->value on a string throws a fatal.
+        $tierValue = $user->system_tier instanceof SystemTier
+            ? $user->system_tier->value
+            : (is_string($user->system_tier) && $user->system_tier !== '' ? $user->system_tier : null);
+
         $this->issueForRank(
             userId: (int) $user->id,
             rank: $rank,
             sourceType: 'user_tier',
             sourceId: (int) $user->id,
-            sourceRef: $user->system_tier?->value,
+            sourceRef: $tierValue,
             metadata: [
-                'system_tier' => $user->system_tier?->value,
-                'system_tier_upgraded_at' => $user->system_tier_upgraded_at?->toIso8601String(),
+                'system_tier' => $tierValue,
+                'system_tier_upgraded_at' => self::safeDateIso($user->system_tier_upgraded_at),
             ],
         );
     }
@@ -123,6 +129,25 @@ class EntitlementService
                     'metadata' => $metadata,
                 ]
             );
+        }
+    }
+
+    /**
+     * Safely convert a date value (Carbon, string, or null) to ISO 8601.
+     * Guards against raw string dates returned when a model has no datetime cast.
+     */
+    private static function safeDateIso(mixed $date): ?string
+    {
+        if ($date === null || $date === '') {
+            return null;
+        }
+        if ($date instanceof \Carbon\CarbonInterface) {
+            return $date->toIso8601String();
+        }
+        try {
+            return \Carbon\Carbon::parse($date)->toIso8601String();
+        } catch (\Throwable) {
+            return null;
         }
     }
 

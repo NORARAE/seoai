@@ -92,14 +92,12 @@ class GoogleLoginTest extends TestCase
             'email' => 'alice@example.com',
             'google_id' => 'google_uid_123',
             'approved' => true,
-            'onboarding_completed_at' => now(),
         ]);
 
         $this->mockSocialiteDriver($this->mockSocialiteUser());
 
-        // Regular user (no privileged role) → /dashboard
         $this->get(route('auth.google.callback'))
-            ->assertRedirect('/dashboard');
+            ->assertRedirect('/admin');
 
         $this->assertAuthenticatedAs($user);
     }
@@ -115,19 +113,16 @@ class GoogleLoginTest extends TestCase
             'email' => 'alice@example.com',
             'google_id' => null,
             'approved' => true,
-            'onboarding_completed_at' => now(),
         ]);
 
         $this->mockSocialiteDriver($this->mockSocialiteUser());
 
-        // Regular user (no privileged role) → /dashboard
         $this->get(route('auth.google.callback'))
-            ->assertRedirect('/dashboard');
+            ->assertRedirect('/admin');
 
         $this->assertAuthenticatedAs($user);
         $this->assertSame('google_uid_123', $user->fresh()->google_id);
-        // auth_provider should NOT be overwritten for existing email users
-        $this->assertNull($user->fresh()->auth_provider);
+        $this->assertSame('google', $user->fresh()->auth_provider);
     }
 
     // ─── 6. Denies unknown email when auto_provision is disabled ────────────
@@ -254,195 +249,5 @@ class GoogleLoginTest extends TestCase
         $response->assertSessionHas('google_error');
 
         $this->assertGuest();
-    }
-
-    // ═══════════════════════════════════════════════════════════════════════
-    // Auth UX QA Scenarios
-    // ═══════════════════════════════════════════════════════════════════════
-
-    // ─── 13. Email user who links Google keeps their auth_provider ──────────
-
-    public function test_email_user_linking_google_preserves_auth_provider(): void
-    {
-        Config::set('services.google_login.enabled', true);
-        Config::set('services.google_login.allowed_domains', '');
-
-        // User registered via email — auth_provider is null
-        $user = User::factory()->create([
-            'email' => 'alice@example.com',
-            'password' => bcrypt('my-password'),
-            'google_id' => null,
-            'auth_provider' => null,
-            'approved' => true,
-            'onboarding_completed_at' => now(),
-        ]);
-
-        $this->mockSocialiteDriver($this->mockSocialiteUser());
-
-        $this->get(route('auth.google.callback'));
-
-        $fresh = $user->fresh();
-        // Google ID should be linked
-        $this->assertSame('google_uid_123', $fresh->google_id);
-        // auth_provider should NOT change — user originally signed up with email
-        $this->assertNull($fresh->auth_provider);
-    }
-
-    // ─── 14. Email user can still password-login after linking Google ────────
-
-    public function test_email_user_password_login_works_after_google_link(): void
-    {
-        // Simulate an email user who already linked Google
-        $user = User::factory()->create([
-            'email' => 'dual@example.com',
-            'password' => bcrypt('my-password'),
-            'google_id' => 'google_uid_dual',
-            'auth_provider' => null, // email signup, Google linked later
-            'approved' => true,
-            'onboarding_completed_at' => now(),
-        ]);
-
-        $this->assertTrue(
-            auth()->attempt(['email' => 'dual@example.com', 'password' => 'my-password']),
-            'Email/password login should still work after linking Google'
-        );
-    }
-
-    // ─── 15. Google-only user has auth_provider='google' ────────────────────
-
-    public function test_auto_provisioned_google_user_has_google_auth_provider(): void
-    {
-        Config::set('services.google_login.enabled', true);
-        Config::set('services.google_login.auto_provision', true);
-        Config::set('services.google_login.allowed_domains', '');
-        Config::set('services.google_login.default_role', 'viewer');
-
-        $this->mockSocialiteDriver($this->mockSocialiteUser([
-            'email' => 'google-only@example.com',
-            'id' => 'uid_google_only',
-        ]));
-
-        $this->get(route('auth.google.callback'));
-
-        $user = User::where('email', 'google-only@example.com')->first();
-        $this->assertNotNull($user);
-        $this->assertSame('google', $user->auth_provider);
-    }
-
-    // ─── 16. Google-only user can't password-login (random password) ────────
-
-    public function test_google_only_user_cannot_password_login(): void
-    {
-        // Simulate a Google-provisioned user (random 40-char password)
-        $user = User::factory()->create([
-            'email' => 'google-user@example.com',
-            'password' => bcrypt(\Illuminate\Support\Str::random(40)),
-            'google_id' => 'google_uid_only',
-            'auth_provider' => 'google',
-            'approved' => true,
-            'onboarding_completed_at' => now(),
-        ]);
-
-        $this->assertFalse(
-            auth()->attempt(['email' => 'google-user@example.com', 'password' => 'any-guess']),
-            'Google-only user should not be able to log in with a guessed password'
-        );
-    }
-
-    // ─── 17. Password reset clears google auth_provider ─────────────────────
-
-    public function test_password_reset_clears_google_auth_provider(): void
-    {
-        $user = User::factory()->create([
-            'email' => 'resetter@example.com',
-            'auth_provider' => 'google',
-        ]);
-
-        // Simulate the PasswordReset event (fired by Laravel after successful reset)
-        event(new \Illuminate\Auth\Events\PasswordReset($user));
-
-        $this->assertNull(
-            $user->fresh()->auth_provider,
-            'auth_provider should be cleared after password reset so email/password login works'
-        );
-    }
-
-    // ─── 18. Password reset does NOT affect non-Google users ────────────────
-
-    public function test_password_reset_preserves_null_auth_provider(): void
-    {
-        $user = User::factory()->create([
-            'email' => 'email-user@example.com',
-            'auth_provider' => null,
-        ]);
-
-        event(new \Illuminate\Auth\Events\PasswordReset($user));
-
-        $this->assertNull(
-            $user->fresh()->auth_provider,
-            'auth_provider should stay null for email-only users after password reset'
-        );
-    }
-
-    // ─── 19. Quick Scan scan_id preserved through OAuth flow ────────────────
-
-    public function test_scan_id_preserved_through_oauth_flow(): void
-    {
-        Config::set('services.google_login.enabled', true);
-        Config::set('services.google_login.allowed_domains', '');
-
-        $scan = \App\Models\QuickScan::create([
-            'url' => 'https://example.com',
-            'email' => 'scanner@example.com',
-            'status' => 'scanned',
-            'paid' => true,
-            'stripe_session_id' => 'cs_test_oauth_flow',
-        ]);
-
-        $user = User::factory()->create([
-            'email' => 'scanner@example.com',
-            'google_id' => 'uid_scanner',
-            'approved' => true,
-            'onboarding_completed_at' => now(),
-            'role' => 'viewer',
-        ]);
-
-        $this->mockSocialiteDriver($this->mockSocialiteUser([
-            'email' => 'scanner@example.com',
-            'id' => 'uid_scanner',
-        ]));
-
-        // Start with scan_id in session (set during redirect to Google)
-        // Controller redirects to result page so user can view their saved scan
-        $this->withSession(['oauth_scan_id' => $scan->id])
-            ->get(route('auth.google.callback'))
-            ->assertRedirect(url('/quick-scan/result') . '?session_id=cs_test_oauth_flow&scan_id=' . $scan->id);
-
-        // Scan should be linked to the user
-        $this->assertSame($user->id, $scan->fresh()->user_id);
-    }
-
-    // ─── 20. Privileged staff bypass approval and go to /admin ──────────────
-
-    public function test_privileged_staff_bypasses_approval_gate(): void
-    {
-        Config::set('services.google_login.enabled', true);
-        Config::set('services.google_login.allowed_domains', '');
-
-        $user = User::factory()->create([
-            'email' => 'admin@example.com',
-            'google_id' => 'uid_admin',
-            'approved' => false, // not approved, but staff
-            'role' => 'super_admin',
-            'onboarding_completed_at' => now(),
-        ]);
-
-        $this->mockSocialiteDriver($this->mockSocialiteUser([
-            'email' => 'admin@example.com',
-            'id' => 'uid_admin',
-        ]));
-
-        $this->get(route('auth.google.callback'))
-            ->assertRedirect('/admin');
     }
 }

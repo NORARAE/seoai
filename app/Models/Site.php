@@ -7,6 +7,10 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use App\Services\Crawl\CrawlSummaryService;
+use App\Services\Crawl\StructureDetectionService;
+use App\Services\Crawl\MarketCoverageService;
+use App\Services\Crawl\CrawlScoreService;
 
 class Site extends Model
 {
@@ -139,6 +143,82 @@ class Site extends Model
         return $this->hasMany(CrawlQueue::class);
     }
 
+    public function scanRuns(): HasMany
+    {
+        return $this->hasMany(ScanRun::class);
+    }
+
+    public function latestScanRun(): HasOne
+    {
+        return $this->hasOne(ScanRun::class)->latestOfMany('started_at');
+    }
+
+    public function quickScans(): HasMany
+    {
+        return $this->hasMany(QuickScan::class);
+    }
+
+    // ─────────────────────────────────────────────────────────────────────────
+    // Crawl Intelligence — Data Access Layer (Phase 6)
+    // ─────────────────────────────────────────────────────────────────────────
+
+    /**
+     * Structured crawl summary: page counts, title/H1/schema coverage,
+     * word count, internal linking, depth distribution.
+     * Returns null when no crawl data exists yet.
+     *
+     * @return array<string, mixed>|null
+     */
+    public function getCrawlSummary(): ?array
+    {
+        return app(CrawlSummaryService::class)->compute($this);
+    }
+
+    /**
+     * URL structure analysis: detected service pages, location pages,
+     * and service+location combination pages. Includes segment frequency map.
+     * Returns null when no crawl data exists yet.
+     *
+     * @return array<string, mixed>|null
+     */
+    public function getStructureData(): ?array
+    {
+        return app(StructureDetectionService::class)->detect($this);
+    }
+
+    /**
+     * Market coverage engine: services × cities combinatorial analysis,
+     * coverage percentage, missing combinations, high-value gaps.
+     * Returns null when no crawl data exists yet.
+     *
+     * @return array<string, mixed>|null
+     */
+    public function getMarketCoverage(): ?array
+    {
+        return app(MarketCoverageService::class)->compute($this);
+    }
+
+    /**
+     * Crawl intelligence score (0–100) broken down into five dimensions:
+     * structure, coverage, schema, internal linking, technical.
+     * Returns null when fewer than 2 pages have been crawled.
+     *
+     * @return array<string, mixed>|null
+     */
+    public function getCrawlScore(): ?array
+    {
+        return app(CrawlScoreService::class)->compute($this);
+    }
+
+    /**
+     * @deprecated Use getCrawlSummary() instead.
+     * Kept for backward compatibility. Will be removed in a future release.
+     */
+    public function crawlStats(): ?array
+    {
+        return $this->getCrawlSummary();
+    }
+
     public function competitorDomains(): HasMany
     {
         return $this->hasMany(CompetitorDomain::class);
@@ -210,7 +290,7 @@ class Site extends Model
     protected function parseSitemapUrlList(?string $value): array
     {
         return collect(preg_split('/\r\n|\r|\n/', (string) $value) ?: [])
-            ->map(fn (string $line) => trim($line))
+            ->map(fn(string $line) => trim($line))
             ->filter()
             ->values()
             ->all();

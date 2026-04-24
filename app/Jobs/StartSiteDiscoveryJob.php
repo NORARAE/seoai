@@ -24,7 +24,9 @@ class StartSiteDiscoveryJob implements ShouldQueue
         public int $siteId,
         public string $triggeredByType = 'scheduled',
         public ?int $initiatedBy = null,
-    ) {}
+        public ?int $quickScanId = null,
+    ) {
+    }
 
     public function handle(
         RobotsPolicyService $robotsPolicyService,
@@ -51,13 +53,14 @@ class StartSiteDiscoveryJob implements ShouldQueue
 
         // Create a durable scan run record before doing any work.
         $scanRun = ScanRun::create([
-            'site_id'           => $site->id,
+            'site_id' => $site->id,
             'triggered_by_type' => $this->triggeredByType,
-            'initiated_by'      => $this->initiatedBy,
-            'crawl_mode'        => 'full',
-            'seed_source'       => 'homepage',
-            'status'            => 'running',
-            'started_at'        => now(),
+            'initiated_by' => $this->initiatedBy,
+            'quick_scan_id' => $this->quickScanId,
+            'crawl_mode' => 'full',
+            'seed_source' => 'homepage',
+            'status' => 'running',
+            'started_at' => now(),
         ]);
 
         $site->forceFill([
@@ -80,6 +83,7 @@ class StartSiteDiscoveryJob implements ShouldQueue
             'site_id' => $site->id,
             'domain' => $site->domain,
             'scan_run_id' => $scanRun->id,
+            'quick_scan_id' => $this->quickScanId,
             'triggered_by_type' => $this->triggeredByType,
             'used_sitemap_seed' => $site->sitemap_enabled,
             'sitemap_discovered' => $ingested['discovered'],
@@ -104,9 +108,9 @@ class StartSiteDiscoveryJob implements ShouldQueue
         );
 
         Log::error('StartSiteDiscoveryJob catastrophic failure', [
-            'site_id'  => $this->siteId,
+            'site_id' => $this->siteId,
             'scan_run_id' => $scanRun?->id,
-            'error'    => $exception->getMessage(),
+            'error' => $exception->getMessage(),
         ]);
     }
 }
