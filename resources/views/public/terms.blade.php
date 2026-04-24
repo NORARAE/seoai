@@ -167,6 +167,12 @@ footer{border-top:1px solid var(--border);padding:36px 64px;display:flex;flex-di
   <h2>15. Contact</h2>
   <p>Questions about these Terms? Contact us at:<br>
   <a href="mailto:hello@seoaico.com">hello@seoaico.com</a></p>
+
+  <h2>16. Legacy Systems &amp; Prior Deployments</h2>
+  <p>If you previously engaged SEO AI Co&trade; under a prior licensing, deployment, or infrastructure-based model (&ldquo;Legacy Systems&rdquo;), those systems are no longer actively maintained under the current platform structure.</p>
+  <p>Reactivation, continuation, or support of any Legacy System may require transition into the current service model. This may include updated scope, pricing, and service level requirements based on market conditions and system complexity.</p>
+  <p>In certain cases, Legacy Systems may require entry at a higher service level to ensure alignment with current platform standards and operational integrity.</p>
+  <p>All legacy-related requests are reviewed individually. Approval is not guaranteed. To enquire, contact <a href="mailto:hello@seoaico.com">hello@seoaico.com</a>.</p>
 </main>
 
 <footer>
