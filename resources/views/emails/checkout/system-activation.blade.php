@@ -32,7 +32,8 @@
   </div>
 
   <div style="padding:20px 24px;border-top:1px solid #e8e8e8;text-align:center">
-    <p style="font-size:11px;color:#bbb;margin:0">&copy; {{ date('Y') }} SEO AI Co&trade; &middot; <a href="{{ url('/unsubscribe/' . urlencode($email)) }}" style="color:#bbb">Unsubscribe</a></p>
+    <p style="font-size:11px;color:#bbb;margin:0 0 4px">&copy; {{ date('Y') }} SEO AI Co&trade; &middot; <a href="{{ url('/unsubscribe/' . urlencode($email)) }}" style="color:#bbb">Unsubscribe</a></p>
+    <p style="font-size:10px;color:#ccc;margin:0;line-height:1.5">This is a digital analysis product. Results are not guaranteed. <a href="{{ url('/terms') }}" style="color:#ccc">Terms</a> &middot; <a href="{{ url('/refund-policy') }}" style="color:#ccc">Refund Policy</a></p>
   </div>
 
 </div>

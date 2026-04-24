@@ -69,9 +69,10 @@
     </p>
 
     <hr style="border:none;border-top:1px solid #eee;margin:24px 0">
-    <p style="font-size:12px;color:#aaa;margin:0;line-height:1.6">
+    <p style="font-size:12px;color:#aaa;margin:0 0 8px;line-height:1.6">
       You're receiving this because you booked a strategy session at <a href="{{ url('/') }}" style="color:#c8a84b;text-decoration:none">seoaico.com</a>.
     </p>
+    <p style="font-size:11px;color:#ccc;margin:0;line-height:1.5">Cancellation policy: cancel at least 24 hours before your session for a full refund. Cancellations within 24 hours and no-shows are non-refundable. To cancel, reply to this email. <a href="{{ url('/refund-policy') }}" style="color:#ccc">Refund Policy</a></p>
   </div>
 
 </div>

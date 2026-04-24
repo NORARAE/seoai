@@ -507,6 +507,7 @@
       <p class="se-note" style="margin-top:10px">Secure checkout powered by Stripe &bull; Takes 10 seconds</p>
       <p class="se-cta-reinforce">Includes: signal map, ranking gaps, and prioritized fixes</p>
       <p class="se-note">Your <strong style="color:var(--gold-secondary);font-weight:500">$2 diagnostic</strong> runs in seconds. Results carry forward through every level.</p>
+      <p class="se-note" style="margin-top:8px;font-size:.58rem;opacity:.55">By continuing you agree to our <a href="{{ route('terms') }}" style="color:inherit" target="_blank">Terms</a> and <a href="{{ route('refund-policy') }}" style="color:inherit" target="_blank">Refund Policy</a>. The $2 scan is non-refundable once processed.</p>
     </div>
 
   </div>

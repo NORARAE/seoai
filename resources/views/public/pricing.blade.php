@@ -1444,10 +1444,10 @@
 
     </div>
 
+    <p class="sys-legal-note" style="text-align:center;font-size:.62rem;letter-spacing:.06em;color:rgba(168,168,160,.45);margin:16px auto 0;max-width:600px;line-height:1.6">Digital products &mdash; delivered immediately. Non-refundable once accessed. No guaranteed rankings, traffic, or AI visibility. By purchasing, you agree to our <a href="{{ route('terms') }}" style="color:rgba(200,168,75,.55);text-decoration:none" target="_blank">Terms</a> and <a href="{{ route('refund-policy') }}" style="color:rgba(200,168,75,.55);text-decoration:none" target="_blank">Refund Policy</a>.</p>
+
   </div>
 </section>
-
-<div class="section-divide" aria-hidden="true"><span class="divide-pulse"></span></div>
 
 
 {{-- ══════════════════════════════════════════

@@ -74,7 +74,7 @@ footer{border-top:1px solid var(--border);padding:36px 64px;display:flex;flex-di
 
 <main class="legal">
   <h1>Privacy Policy</h1>
-  <span class="effective">Effective Date: March 25, 2026</span>
+  <span class="effective">Effective Date: April 23, 2026</span>
 
   <p>SEO AI Co™ ("we," "us," or "our") operates the seoaico.com website and related services. This Privacy Policy explains what information we collect, how we use it, and your choices regarding that information.</p>
 
@@ -82,9 +82,10 @@ footer{border-top:1px solid var(--border);padding:36px 64px;display:flex;flex-di
 
   <p><strong>Information you provide directly:</strong></p>
   <ul>
-    <li>Name, company name, and email address when you submit a licensing inquiry</li>
-    <li>Website URL and business details you include in your inquiry</li>
-    <li>Any messages or additional context you send through our contact form</li>
+    <li>Name, email address, and website URL when you submit a scan or create an account</li>
+    <li>Company name and business details when you submit an inquiry or book a session</li>
+    <li>Any messages or additional context you send through our contact forms</li>
+    <li>Billing information entered during checkout &mdash; this is handled directly by Stripe and never stored on our servers (see Section 5)</li>
   </ul>
 
   <p><strong>Information collected automatically:</strong></p>
@@ -96,9 +97,9 @@ footer{border-top:1px solid var(--border);padding:36px 64px;display:flex;flex-di
 
   <h2>2. How We Use Your Information</h2>
   <ul>
-    <li>To review and respond to your licensing inquiry</li>
-    <li>To communicate with you about your licence, account, or services</li>
-    <li>To process payments and manage your subscription (via Stripe — see Section 5)</li>
+    <li>To review and respond to your inquiry or booking</li>
+    <li>To communicate with you about your account, purchase, or services</li>
+    <li>To process payments (via Stripe &mdash; see Section 5)</li>
     <li>To improve our website, services, and user experience</li>
     <li>To prevent fraud, abuse, and unauthorised access</li>
   </ul>
@@ -117,12 +118,12 @@ footer{border-top:1px solid var(--border);padding:36px 64px;display:flex;flex-di
   <h2>5. Payment Security</h2>
   <p>All payment processing is handled by <strong>Stripe</strong>. We never see, store, or have access to your full credit card number. Stripe is PCI-DSS Level 1 certified — the highest level of security certification available in the payments industry.</p>
 
-  <h2>6. Cookies &amp; Tracking</h2>
-  <p>Our website may use minimal cookies for:</p>
+  <h2>6. Cookies &amp; Analytics</h2>
+  <p>Our website uses the following for analytics and session management:</p>
   <ul>
-    <li>Session management (keeping you logged in)</li>
-    <li>Remembering your preferences (such as dismissing the paywall prompt)</li>
-    <li>Analytics to understand how visitors use our site</li>
+    <li><strong>Microsoft Clarity</strong> &mdash; a behavioural analytics tool that records session replays and heatmaps to help us understand how visitors use the site. Clarity may collect mouse movements, clicks, and scroll patterns. No personally identifiable information is transmitted. See <a href="https://privacy.microsoft.com/privacystatement" target="_blank" rel="noopener">Microsoft&rsquo;s Privacy Statement</a>.</li>
+    <li><strong>Session cookies</strong> &mdash; used to keep you logged in during your visit</li>
+    <li><strong>Preference cookies</strong> &mdash; used to remember UI state (such as dismissed prompts)</li>
   </ul>
   <p>We do not use third-party advertising trackers. You can disable cookies in your browser settings at any time.</p>
 

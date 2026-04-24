@@ -1558,7 +1558,7 @@ button.sys-bar-node:hover .sys-bar-dot{border-color:rgba(214,181,95,.54);backgro
                 @endif
                 <button type="button" class="btn btn-secondary" disabled><span class="lock-glyph" aria-hidden="true"></span> Preview what's included</button>
               </div>
-              <p class="action-memory">Not started</p>
+              <p class="action-memory" style="font-size:.52rem;color:rgba(168,168,160,.4);margin-top:6px">Digital product &mdash; non-refundable once accessed. <a href="{{ route('refund-policy') }}" style="color:inherit" target="_blank">Refund Policy</a></p>
             </article>
             @endif
           </div>

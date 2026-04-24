@@ -67,7 +67,7 @@
     <div style="text-align:center;margin:28px 0 20px;padding:20px;background:#f9f8f5;border:1px solid #ede8de">
       <p style="font-size:14px;font-weight:500;color:#222;margin:0 0 6px">You&rsquo;ve only unlocked the first layer.</p>
       <p style="font-size:12px;color:#888;margin:0 0 16px;line-height:1.5">The next layer maps every gap ranked by revenue impact &mdash; so you know exactly what to fix first.</p>
-      <a href="{{ \App\Support\EmailUrl::tracked('/checkout/signal-expansion', 'quick-scan-result', $scan->user_id, $scan->id) }}" style="display:inline-block;background:#c8a84b;color:#080808;font-size:12px;font-weight:600;text-decoration:none;padding:12px 32px;letter-spacing:.08em">Unlock Signal Analysis &mdash; $99</a>
+      <a href="{{ \App\Support\EmailUrl::tracked('/checkout/signal-expansion', 'quick-scan-result', $scan->user_id, $scan->id) }}" style="display:inline-block;background:#c8a84b;color:#080808;font-size:12px;font-weight:600;text-decoration:none;padding:12px 32px;letter-spacing:.08em">Upgrade to Signal Analysis &mdash; $99</a>
     </div>
 
     <p style="font-size:12px;color:#bbb;text-align:center;margin:0">
